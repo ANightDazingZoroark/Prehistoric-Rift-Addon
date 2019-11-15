@@ -1,28 +1,40 @@
 {
   "format_version": "1.10.0",
   "animation_controllers": {
-    "controller.animation.tyrannosaurus.baby": {
-			"initial_state" : "baby",
-			"states" : {
-				"baby" : {
-					"animations" : [
-						{
-							"baby_transform" : "query.is_baby"
-						}
-					]
-				}
-			}
-    },
-    "controller.animation.tyrannosaurus.look_at_target": {
-			"initial_state" : "default",
-			"states" : {
-				"default" : {
-					"animations" : [ "look_at_target" ]
-				}
-			}    
-    },
-    "controller.animation.tyrannosaurus.move": {
-      //will be edited soon
+    "controller.animation.tyrannosaurus.attack": {
+      "initial_state": "default",
+      "states": {
+        "default": {
+          "animations": [
+	    "default": {
+	      "transitions": [
+	        {
+		  "attacking" : "variable.attack_time >= 0.0"  
+	        }
+	      ]
+	    },
+	    "attack": {
+	      "transitions": [
+		{
+	          "default" : "variable.attack_time < 0.0"
+		}
+	      ]
+            }
+	  ]
+	}
+      }
     }
-  }
+    "controller.animation.tyrannosaurus.move": {
+      "initial_state": "default",
+      "states": {
+        "default": {
+	  "animations": [
+	    {
+	      "walk": "query.modified_move_speed"
+	    }
+          ],
+	  "blend_transition": 0.1,
+	},    
+      }
+    }
 }
