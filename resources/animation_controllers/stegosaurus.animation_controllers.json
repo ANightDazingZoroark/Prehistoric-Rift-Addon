@@ -1,28 +1,39 @@
 {
   "format_version": "1.10.0",
   "animation_controllers": {
-    "controller.animation.stegosaurus.baby": {
-			"initial_state" : "baby",
-			"states" : {
-				"baby" : {
-					"animations" : [
-						{
-							"baby_transform" : "query.is_baby"
-						}
-					]
-				}
-			}
-    },
-    "controller.animation.stegosaurus.look_at_target": {
-			"initial_state" : "default",
-			"states" : {
-				"default" : {
-					"animations" : [ "look_at_target" ]
-				}
-			}    
-    },
     "controller.animation.stegosaurus.move": {
-      //will be edited soon
-    }
+      "initial_state": "default",
+      "states": {
+        "default": {
+	      "animations": [
+	        "look_at_target",
+	        {
+	          "walk": "query.modified_move_speed"
+	        }
+          ],
+	      "blend_transition": 0.1
+        } 
+      }
+    },
+	"controller.animation.stegosaurus.tail_movement": {
+      "initial_state": "default",
+      "states": {
+	    "default": {
+	      "transitions": [
+	        {
+              "attacking" : "variable.attack_time >= 0.0"	  
+	        }
+	      ]
+        },
+        "attacking": {
+	      "animations": ["attack"],
+	      "transitions": [
+            {
+              "default" : "variable.attack_time < 0.0"
+	        }
+	      ]
+	    }
+      }	
+	}
   }
 }
