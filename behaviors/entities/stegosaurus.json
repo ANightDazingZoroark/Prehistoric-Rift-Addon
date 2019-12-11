@@ -53,10 +53,10 @@
               "target": "self"
             }
           },
-          "minecraft:on_target_acquired": {
-            "minecraft:event": "minecraft:baby_become_angry",
-            "target": "self"
-          },
+		  "minecraft:on_hurt": {
+		    "event": "minecraft:baby_become_angry",
+			"target": "self"
+		  },
           "minecraft:behavior.tempt": {
             "priority": 5,
             "speed_multiplier": 0.5,
@@ -71,7 +71,13 @@
             ]
           }
         },
-        "minecraft:angery_stegosaurus_baby": {
+        "minecraft:stegosaurus_baby_calm": {
+          "minecraft:on_target_acquired": {
+            "event": "minecraft:baby_become_angry",
+            "target": "self"
+          }
+		},
+		"minecraft:angery_stegosaurus_baby": {
           "minecraft:angry": {
             "duration": 25,
             "broadcastAnger": true,
@@ -81,7 +87,7 @@
               "target": "self"
             }
           },
-          "minecraft:on_target_acquired": {}
+		  "minecraft:on_target_acquired": {}
         },
         "minecraft:tamed_stegosaurus_baby": {
           "minecraft:health": {
@@ -208,12 +214,14 @@
               "minecraft:event": "minecraft:on_tame_adult",
               "target": "self"
             }
-          },
-          "minecraft:on_target_acquired": {
-            "minecraft:event": "minecraft:adult_become_angry",
-            "target": "self"
           }
         },
+		"minecraft:stegosaurus_adult_calm": {
+          "minecraft:on_target_acquired": {
+            "event": "minecraft:adult_become_angry",
+            "target": "self"
+          }
+		},
         "minecraft:angery_stegosaurus_adult": {
           "minecraft:angry": {
             "duration": 25,
@@ -357,11 +365,7 @@
       },
       "components": {
         "minecraft:type_family": {
-          "family": [
-            "dinosaur",
-            "stegosaurus",
-            "herbivore"
-          ]
+          "family": [ "dinosaur", "stegosaurus", "herbivore", "mob" ]
         },
         "minecraft:breathable": {
           "totalSupply": 15,
@@ -387,6 +391,14 @@
 		  "height": 0.85,
 		  "width": 0.85
 		},
+        "minecraft:behavior.melee_attack": {
+          "priority": 3,
+          "speed_multiplier": 1,
+          "track_target": false
+        },
+        "minecraft:behavior.hurt_by_target": {
+          "priority": 1
+        },
         "minecraft:navigation.walk": {},		
         "minecraft:nameable": {},
         "minecraft:movement.basic": {},
@@ -403,7 +415,8 @@
               "weight": 85,
               "add": {
                 "component_groups": [
-                  "minecraft:stegosaurus_adult"
+                  "minecraft:stegosaurus_adult",
+				  "minecraft:stegosaurus_adult_calm"
                 ]
               }
             },
@@ -411,7 +424,8 @@
               "weight": 15,
               "add": {
                 "component_groups": [
-                  "minecraft:stegosaurus_baby"
+                  "minecraft:stegosaurus_baby",
+				  "minecraft:stegosaurus_baby_calm"
                 ]
               }
             }
@@ -427,12 +441,14 @@
         "minecraft:wild_baby_grow_up": {
           "add": {
             "component_groups": [
-              "minecraft:stegosaurus_adult"
+              "minecraft:stegosaurus_adult",
+			  "minecraft:stegosaurus_adult_calm"
             ]
           },
           "remove": {
             "component_groups": [
-              "minecraft:stegosaurus_baby"
+              "minecraft:stegosaurus_baby",
+			  "minecraft:stegosaurus_baby_calm"
             ]
           }
         },
@@ -456,7 +472,8 @@
           },
           "remove": {
             "component_groups": [
-              "minecraft:stegosaurus_baby"
+              "minecraft:stegosaurus_baby",
+			  "minecraft:stegosaurus_baby_calm"
             ]
           }
         },
@@ -468,7 +485,8 @@
           },
           "remove": {
             "component_groups": [
-              "minecraft:stegosaurus_adult"
+              "minecraft:stegosaurus_adult",
+			  "minecraft:stegosaurus_adult_calm"
             ]
           }
         },
@@ -477,24 +495,44 @@
             "component_groups": [
               "minecraft:angery_stegosaurus_baby"
             ]
-          }
+          },
+		  "remove": {
+		    "component_groups": [
+			  "minecraft:stegosaurus_baby_calm"
+			]
+		  }
         },
         "minecraft:adult_become_angry": {
           "add": {
             "component_groups": [
               "minecraft:angery_stegosaurus_adult"
             ]
-          }
+          },
+		  "remove": {
+		    "component_groups": [
+			  "minecraft:stegosaurus_adult_calm"
+			]
+		  }
         },
         "minecraft:baby_on_calm": {
-          "remove": {
+          "add": {
+		    "component_groups": [
+			  "minecraft:stegosaurus_baby_calm"
+			]
+		  },
+		  "remove": {
             "component_groups": [
               "minecraft:angery_stegosaurus_baby"
             ]
           }
         },
         "minecraft:adult_on_calm": {
-          "remove": {
+          "add": {
+		    "component_groups": [
+			  "minecraft:stegosaurus_adult_calm"
+			]
+		  },
+		  "remove": {
             "component_groups": [
               "minecraft:angery_stegosaurus_adult"
             ]
