@@ -18,7 +18,7 @@
 	      },
           "minecraft:scale_by_age": {
             "start_scale": 0.3,
-            "end_scale": 2.5
+			"end_scale": 2.5
           },
           "minecraft:ageable": {
             "duration": 1200,
@@ -47,10 +47,6 @@
               "target": "self"
             }
           },
-          "minecraft:on_target_acquired": {
-            "event": "minecraft:become_angry",
-            "target": "self"
-          },
           "minecraft:behavior.tempt": {
             "priority": 5,
             "speed_multiplier": 0.5,
@@ -73,6 +69,12 @@
             "priority": 1
           }
         },
+		"minecraft:tyrannosaurus_baby_calm": {
+          "minecraft:on_target_acquired": {
+            "event": "minecraft:become_angry",
+            "target": "self"
+          }
+		},
         "minecraft:angery_tyrannosaurus_baby": {
           "minecraft:angry": {
             "duration": 60,
@@ -88,7 +90,7 @@
           "minecraft:is_tamed": {},
           "minecraft:ageable": {
             "duration": 1200,
-            "feedItems": [
+            "feed_items": [
               {
                 "item": "beef",
                 "growth": 0.15
@@ -157,7 +159,7 @@
           },
           "minecraft:scale_by_age": {
             "start_scale": 0.3,
-            "end_scale": 2.5
+			"end_scale": 2.5
           },
           "minecraft:behavior.follow_owner": {
             "priority": 6,
@@ -172,6 +174,9 @@
             "priority": 2
           },
           "minecraft:sittable": {},
+          "minecraft:behavior.stay_while_sitting": {
+            "priority": 1
+          },
           "minecraft:attack": {
             "damage": 8
           },
@@ -193,7 +198,7 @@
           "minecraft:behavior.nearest_attackable_target": {
             "priority": 2,
             "within_radius": 50,
-            "must_see": true,
+            "must_see": false,
             "must_see_forget_duration": 30,
             "entity_types": [
               {
@@ -321,9 +326,12 @@
             "priority": 1
           },
           "minecraft:behavior.owner_hurt_target": {
-            "priority": 2
+            "priority": 1
           },
           "minecraft:sittable": {},
+          "minecraft:behavior.stay_while_sitting": {
+            "priority": 2
+          },
           "minecraft:rideable": {
             "priority": 0,
             "seat_count": 1,
@@ -333,11 +341,7 @@
             ],
             "interact_text": "action.interact.ride.horse",
             "seats": {
-              "position": [
-                0,
-                1.1,
-                -0.2
-              ]
+              "position": [ 0, 1.1, -0.2 ]
             }
           },
           "minecraft:equippable": {
@@ -481,7 +485,8 @@
               "weight": 15,
               "add": {
                 "component_groups": [
-                  "minecraft:tyrannosaurus_baby"
+                  "minecraft:tyrannosaurus_baby",
+				  "minecraft:tyrannosaurus_baby_calm"
                 ]
               }
             }
@@ -535,7 +540,12 @@
             "component_groups": [
               "minecraft:angery_tyrannosaurus_baby"
             ]
-          }
+          },
+		  "remove": {
+		    "component_groups": [
+			  "minecraft:tyrannosaurus_baby_calm"
+			]
+		  }
         },
         "minecraft:on_calm": {
           "remove": {
