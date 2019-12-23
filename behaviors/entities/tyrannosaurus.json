@@ -67,6 +67,16 @@
           },
           "minecraft:behavior.hurt_by_target": {
             "priority": 1
+          },
+		  "minecraft:navigation.walk": {},
+          "minecraft:behavior.random_stroll": {},
+          "minecraft:movement.basic": {},
+		  "minecraft:movement.generic": {},
+          "minecraft:navigation.generic": {
+            "can_path_over_water": true
+          },
+          "minecraft:movement": {
+            "value": 0.25
           }
         },
 		"minecraft:tyrannosaurus_baby_calm": {
@@ -161,22 +171,6 @@
             "start_scale": 0.3,
 			"end_scale": 2.5
           },
-          "minecraft:behavior.follow_owner": {
-            "priority": 6,
-            "speed_multiplier": 1,
-            "start_distance": 10,
-            "stop_distance": 2
-          },
-          "minecraft:behavior.owner_hurt_by_target": {
-            "priority": 1
-          },
-          "minecraft:behavior.owner_hurt_target": {
-            "priority": 2
-          },
-          "minecraft:sittable": {},
-          "minecraft:behavior.stay_while_sitting": {
-            "priority": 1
-          },
           "minecraft:attack": {
             "damage": 8
           },
@@ -185,7 +179,7 @@
             "max": 35
           }
         },
-        "minecraft:tyrannosaurus_adult": {
+		"minecraft:tyrannosaurus_adult": {
           "minecraft:health": {
             "value": 50
           },
@@ -220,6 +214,16 @@
           "minecraft:experience_reward": {
             "on_bred": "Math.Random(1,7)",
             "on_death": "query.last_hit_by_player ? Math.Random(7,12) : 0"
+          },
+		  "minecraft:navigation.walk": {},
+          "minecraft:behavior.random_stroll": {},
+          "minecraft:movement.basic": {},
+		  "minecraft:movement.generic": {},
+          "minecraft:navigation.generic": {
+            "can_path_over_water": true
+          },
+          "minecraft:movement": {
+            "value": 0.25
           }
         },
         "minecraft:tamed_tyrannosaurus_adult": {
@@ -316,32 +320,14 @@
               }
             ]
           },
-          "minecraft:behavior.follow_owner": {
-            "priority": 1,
-            "speed_multiplier": 1,
-            "start_distance": 10,
-            "stop_distance": 2
-          },
-          "minecraft:behavior.owner_hurt_by_target": {
-            "priority": 2
-          },
-          "minecraft:behavior.owner_hurt_target": {
-            "priority": 2
-          },
-          "minecraft:sittable": {},
-          "minecraft:behavior.stay_while_sitting": {
-            "priority": 1
-          },
           "minecraft:rideable": {
             "priority": 0,
             "seat_count": 1,
             "crouching_skip_interact": true,
-            "family_types": [
-              "player"
-            ],
+            "family_types": [ "player" ],
             "interact_text": "action.interact.ride.horse",
             "seats": {
-              "position": [ 0, 1.1, -0.2 ]
+              "position": [ 0, 1.6, 0.40 ]
             }
           },
           "minecraft:equippable": {
@@ -349,9 +335,7 @@
               {
                 "slot": 0,
                 "item": "saddle",
-                "accepted_items": [
-                  "saddle"
-                ],
+                "accepted_items": [ "saddle" ],
                 "on_equip": {
                   "event": "minecraft:tyrannosaurus_saddled"
                 },
@@ -362,7 +346,7 @@
             ]
           },
           "minecraft:inventory": {
-            "inventory_size": 31,
+            "inventory_size": 16,
             "container_type": "horse"
           },
           "minecraft:breedable": {
@@ -398,11 +382,7 @@
             "interactions": [
               {
                 "on_interact": {
-                  "filters": {
-                    "test": "is_riding",
-                    "subject": "other",
-                    "value": true
-                  },
+                  "filters": { "test": "is_riding", "subject": "other", "value": true },
                   "target": "self",
                   "event": "minecraft:tyrannosaurus_roar"
                 },
@@ -411,7 +391,31 @@
             ]
           }
         },
-        "minecraft:tamed_roaring_tyrannosaurus": {
+        "minecraft:unchested_tyrannosaurus": {
+          "minecraft:interact": {
+            "interactions": [
+              {
+                "play_sounds": "armor.equip_generic",
+                "on_interact": {
+                  "filters": {
+                    "all_of": [
+                      { "test" :  "is_family", "subject" : "other", "value" :  "player" },
+                      { "test" :  "has_equipment", "domain": "hand", "subject" : "other", "value" :  "chest" }
+                    ]
+                  },
+                  "event": "minecraft:attach_chest",
+                  "target": "self"
+                },
+                "use_item": true,
+                "interact_text": "action.interact.attachchest"
+              }
+            ]
+          }
+		},
+		"minecraft:chested_tyrannosaurus": {
+		  "minecraft:is_chested": {}
+		},
+		"minecraft:tamed_roaring_tyrannosaurus": {
           "minecraft:type_family": {
             "family": [ "roar", "dinosaur", "tyrannosaurus", "carnivore", "mob" ]
           },
@@ -423,14 +427,74 @@
               "target": "self"
             }
           }
-        }
+        },
+		"minecraft:standing": {
+          "minecraft:interact": {
+            "interactions": [
+              {
+                "on_interact": {
+                  "filters": {
+                    "all_of": [
+                      { "test" :  "is_family", "subject" : "other", "value" :  "player" },
+                      { "test" :  "has_equipment", "domain": "hand", "subject" : "other", "value" :  "bone" }
+                    ]
+                  },
+                  "event": "minecraft:sit_down",
+                  "target": "self"
+                },
+                "interact_text": "action.interact.sit"
+              }
+            ]
+		  },
+		  "minecraft:navigation.walk": {},
+          "minecraft:behavior.random_stroll": {},
+          "minecraft:movement.basic": {},
+		  "minecraft:movement.generic": {},
+          "minecraft:navigation.generic": {
+            "can_path_over_water": true
+          },
+          "minecraft:behavior.owner_hurt_by_target": {
+            "priority": 1
+          },
+          "minecraft:behavior.owner_hurt_target": {
+            "priority": 2
+          },
+          "minecraft:behavior.follow_owner": {
+            "priority": 6,
+            "speed_multiplier": 1,
+            "start_distance": 10,
+            "stop_distance": 2
+          },
+          "minecraft:movement": {
+            "value": 0.25
+          }
+		},
+		"minecraft:sitting": {
+          "minecraft:interact": {
+            "interactions": [
+              {
+                "on_interact": {
+                  "filters": {
+                    "all_of": [
+                      { "test" :  "is_family", "subject" : "other", "value" :  "player" },
+                      { "test" :  "has_equipment", "domain": "hand", "subject" : "other", "value" :  "bone" }
+                    ]
+                  },
+                  "event": "minecraft:stand_up",
+                  "target": "self"
+                },
+                "interact_text": "action.interact.sit"
+              }
+            ]
+		  },
+          "minecraft:movement": {
+            "value": 0
+          }
+		}
       },
       "components": {
         "minecraft:type_family": {
           "family": [ "dinosaur", "tyrannosaurus", "carnivore", "mob" ]
-        },
-        "minecraft:navigation.generic": {
-          "can_path_over_water": true
         },
         "minecraft:breathable": {
           "totalSupply": 15,
@@ -449,9 +513,6 @@
             "target": "self"
           }
         },
-        "minecraft:movement": {
-          "value": 0.25
-        },
 		"minecraft:collision_box": {
 		  "height": 1.25,
 		  "width": 1.25
@@ -461,12 +522,8 @@
           "speed_multiplier": 1,
           "track_target": false
         },
-		"minecraft:navigation.walk": {},
         "minecraft:nameable": {},
-        "minecraft:movement.basic": {},
-		"minecraft:movement.generic": {},
         "minecraft:jump.static": {},
-        "minecraft:behavior.random_stroll": {},
         "minecraft:physics": {},
         "minecraft:pushable": {}
       },
@@ -514,7 +571,8 @@
         "minecraft:tamed_baby_grow_up": {
           "add": {
             "component_groups": [
-              "minecraft:tamed_tyrannosaurus_adult"
+              "minecraft:tamed_tyrannosaurus_adult",
+			  "minecraft:unchested_tyrannosaurus"
             ]
           },
           "remove": {
@@ -526,7 +584,8 @@
         "minecraft:on_tame": {
           "add": {
             "component_groups": [
-              "minecraft:tamed_tyrannosaurus_baby"
+              "minecraft:tamed_tyrannosaurus_baby",
+			  "minecraft:standing"
             ]
           },
           "remove": {
@@ -571,17 +630,53 @@
         "minecraft:tyrannosaurus_roar": {
           "add": {
             "component_groups": [
-              "minecraft:tyrannosaurus_roar"
+              "minecraft:tamed_roaring_tyrannosaurus"
             ]
           }
         },
         "minecraft:tyrannosaurus_stop_roar": {
           "remove": {
             "component_groups": [
-              "minecraft:tyrannosaurus_roar"
+              "minecraft:tamed_roaring_tyrannosaurus"
             ]
           }
-        }
+        },
+		"minecraft:attach_chest": {
+		  "add": {
+		    "component_groups": [
+			  "minecraft:chested_tyrannosaurus"
+			]
+		  },
+		  "remove": {
+		    "component_groups": [
+			  "minecraft:unchested_tyrannosaurus"
+			]
+		  }
+		},
+		"minecraft:stand_up": {
+		  "add": {
+		    "component_groups": [
+			  "minecraft:standing"
+			]
+		  },
+		  "remove": {
+		    "component_groups": [
+			  "minecraft:sitting"
+			]
+		  }
+		},
+		"minecraft:stand_up": {
+		  "add": {
+		    "component_groups": [
+			  "minecraft:sitting"
+			]
+		  },
+		  "remove": {
+		    "component_groups": [
+			  "minecraft:standing"
+			]
+		  }
+		}
       }
     }
   }
