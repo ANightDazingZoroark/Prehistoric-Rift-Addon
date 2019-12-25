@@ -320,35 +320,6 @@
               }
             ]
           },
-          "minecraft:rideable": {
-            "priority": 0,
-            "seat_count": 1,
-            "crouching_skip_interact": true,
-            "family_types": [ "player" ],
-            "interact_text": "action.interact.ride.horse",
-            "seats": {
-              "position": [ 0, 1.6, 0.40 ]
-            }
-          },
-          "minecraft:equippable": {
-            "slots": [
-              {
-                "slot": 0,
-                "item": "saddle",
-                "accepted_items": [ "saddle" ],
-                "on_equip": {
-                  "event": "minecraft:tyrannosaurus_saddled"
-                },
-                "on_unequip": {
-                  "event": "minecraft:tyrannosaurus_unsaddled"
-                }
-              }
-            ]
-          },
-          "minecraft:inventory": {
-            "inventory_size": 16,
-            "container_type": "horse"
-          },
           "minecraft:breedable": {
             "requireTame": true,
             "breedItems": [
@@ -374,7 +345,38 @@
             }
           }
         },
+		"minecraft:unsaddled_tyrannosaurus": {
+          "minecraft:interact": {
+            "interactions": [
+              {
+                "play_sounds": "armor.equip_generic",
+                "on_interact": {
+                  "filters": {
+                    "all_of": [
+                      { "test" :  "is_family", "subject" : "other", "value" :  "player" },
+                      { "test" :  "has_equipment", "domain": "hand", "subject" : "other", "value" :  "saddle" }
+                    ]
+                  },
+                  "event": "minecraft:attach_saddle",
+                  "target": "self"
+                },
+                "use_item": true,
+                "interact_text": "action.interact.saddle"
+              }
+            ]
+          }
+		},
         "minecraft:saddled_tyrannosaurus": {
+          "minecraft:rideable": {
+            "priority": 0,
+            "seat_count": 1,
+            "crouching_skip_interact": true,
+            "family_types": [ "player" ],
+            "interact_text": "action.interact.ride.horse",
+            "seats": {
+              "position": [ 0, 1.6, 0.40 ]
+            }
+          },
           "minecraft:is_saddled": {},
           "minecraft:input_ground_controlled": {},
           "minecraft:behavior.player_ride_tamed": {},
@@ -413,6 +415,10 @@
           }
 		},
 		"minecraft:chested_tyrannosaurus": {
+          "minecraft:inventory": {
+            "inventory_size": 16,
+            "container_type": "horse"
+          },
 		  "minecraft:is_chested": {}
 		},
 		"minecraft:tamed_roaring_tyrannosaurus": {
@@ -572,7 +578,8 @@
           "add": {
             "component_groups": [
               "minecraft:tamed_tyrannosaurus_adult",
-			  "minecraft:unchested_tyrannosaurus"
+			  "minecraft:unchested_tyrannosaurus",
+			  "minecraft:unsaddled_tyrannosaurus"
             ]
           },
           "remove": {
@@ -665,7 +672,7 @@
 			]
 		  }
 		},
-		"minecraft:stand_up": {
+		"minecraft:sit_down": {
 		  "add": {
 		    "component_groups": [
 			  "minecraft:sitting"
@@ -674,6 +681,18 @@
 		  "remove": {
 		    "component_groups": [
 			  "minecraft:standing"
+			]
+		  }
+		},
+		"minecraft:attach_saddle": {
+		  "add": {
+		    "component_groups": [
+			  "minecraft:saddled_tyrannosaurus"
+			]
+		  },
+		  "remove": {
+		    "component_groups": [
+			  "minecraft:saddled_tyrannosaurus"
 			]
 		  }
 		}
