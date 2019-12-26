@@ -343,29 +343,41 @@
                 "target": "baby"
               }
             }
-          }
+          },
+          "minecraft:inventory": {
+		    "restrict_to_owner": true,
+            "inventory_size": 17,
+            "container_type": "horse"
+          },
+		  "minecraft:equippable": {
+		    "slots": [
+			  {
+			    "slot": 0,
+				"item": "saddle",
+				"interact_text": "action.interact.saddle",
+				"accepted_items": [ "saddle" ],
+				"on_equip": {
+				  "event": "minecraft:attach_saddle"
+				},
+				"on_unequip": {
+				  "event": "minecraft:remove_saddle"
+				}
+			  },
+			  {
+			    "slot": 1,
+				"item": "chest",
+				"interact_text": "action.interact.attachchest",
+				"accepted_items": [ "chest" ],
+				"on_equip": {
+				  "event": "minecraft:attach_chest"
+				},
+				"on_unequip": {
+				  "event": "minecraft:remove_chest"
+				}
+			  }
+			]
+		  }
         },
-		"minecraft:unsaddled_tyrannosaurus": {
-          "minecraft:interact": {
-            "interactions": [
-              {
-                "play_sounds": "armor.equip_generic",
-                "on_interact": {
-                  "filters": {
-                    "all_of": [
-                      { "test" :  "is_family", "subject" : "other", "value" :  "player" },
-                      { "test" :  "has_equipment", "domain": "hand", "subject" : "other", "value" :  "saddle" }
-                    ]
-                  },
-                  "event": "minecraft:attach_saddle",
-                  "target": "self"
-                },
-                "use_item": true,
-                "interact_text": "action.interact.saddle"
-              }
-            ]
-          }
-		},
         "minecraft:saddled_tyrannosaurus": {
           "minecraft:rideable": {
             "priority": 0,
@@ -393,33 +405,7 @@
             ]
           }
         },
-        "minecraft:unchested_tyrannosaurus": {
-          "minecraft:interact": {
-            "interactions": [
-              {
-                "play_sounds": "armor.equip_generic",
-                "on_interact": {
-                  "filters": {
-                    "all_of": [
-                      { "test":"is_family", "subject":"other", "value":"player" },
-                      { "test":"has_equipment", "domain":"hand", "subject":"other", "value":"chest" },
-                    ]
-                  },
-                  "event": "minecraft:attach_chest",
-                  "target": "self"
-                },
-                "use_item": true,
-                "interact_text": "action.interact.attachchest"
-              }
-            ]
-          }
-		},
 		"minecraft:chested_tyrannosaurus": {
-          "minecraft:inventory": {
-		    "restrict_to_owner": true,
-            "inventory_size": 36,
-            "container_type": "minecart_hopper"
-          },
 		  "minecraft:is_chested": {}
 		},
 		"minecraft:tamed_roaring_tyrannosaurus": {
@@ -559,7 +545,8 @@
         "minecraft:entity_born": {
           "add": {
             "component_groups": [
-              "minecraft:tamed_tyrannosaurus_baby"
+              "minecraft:tamed_tyrannosaurus_baby",
+			  "minecraft:standing"
             ]
           }
         },
@@ -578,9 +565,7 @@
         "minecraft:tamed_baby_grow_up": {
           "add": {
             "component_groups": [
-              "minecraft:tamed_tyrannosaurus_adult",
-			  "minecraft:unchested_tyrannosaurus",
-			  "minecraft:unsaddled_tyrannosaurus"
+              "minecraft:tamed_tyrannosaurus_adult"
             ]
           },
           "remove": {
@@ -621,14 +606,14 @@
             ]
           }
         },
-        "minecraft:tyrannosaurus_saddled": {
+        "minecraft:attach_saddle": {
           "add": {
             "component_groups": [
               "minecraft:saddled_tyrannosaurus"
             ]
           }
         },
-        "minecraft:tyrannosaurus_unsaddled": {
+        "minecraft:remove_saddle": {
           "remove": {
             "component_groups": [
               "minecraft:saddled_tyrannosaurus"
@@ -654,10 +639,12 @@
 		    "component_groups": [
 			  "minecraft:chested_tyrannosaurus"
 			]
-		  },
+		  }
+		},
+		"minecraft:remove_chest": {
 		  "remove": {
 		    "component_groups": [
-			  "minecraft:unchested_tyrannosaurus"
+			  "minecraft:chested_tyrannosaurus"
 			]
 		  }
 		},
@@ -690,10 +677,12 @@
 		    "component_groups": [
 			  "minecraft:saddled_tyrannosaurus"
 			]
-		  },
+		  }
+		},
+		"minecraft:remove_saddle": {
 		  "remove": {
 		    "component_groups": [
-			  "minecraft:unsaddled_tyrannosaurus"
+			  "minecraft:saddled_tyrannosaurus"
 			]
 		  }
 		}
