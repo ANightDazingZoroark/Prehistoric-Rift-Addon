@@ -1,707 +1,669 @@
 {
-    "format_version": "1.13.0",
-    "minecraft:entity": {
-      "description": {
-        "identifier": "rift:tyrannosaurus",
-        "is_spawnable": true,
-        "is_summonable": true,
-        "is_experimental": false
-      },
-      "component_groups": {
-        "minecraft:tyrannosaurus_baby": {
-          "minecraft:health": {
-	        "value": 30
-	      },
-	      "minecraft:is_baby": {},
-	      "minecraft:attack": {
-	        "damage": 8
-	      },
-          "minecraft:scale_by_age": {
-            "start_scale": 0.3,
-			"end_scale": 2.5
-          },
-          "minecraft:ageable": {
-            "duration": 1200,
-            "grow_up": {
-              "event": "minecraft:wild_baby_grow_up",
-              "target": "self"
-            }
-          },
-          "minecraft:tameable": {
-            "probability": 0.33,
-            "tameItems": [
-	          "beef",
-	          "cooked_beef",
-	          "porkchop",
-	          "cooked_porkchop",
-	          "chicken",
-	          "cooked_chicken",
-	          "muttonRaw",
-	          "muttonCooked",
-	          "rabbit",
-	          "cooked_rabbit",
-	          "rotten_flesh"
-	        ],
-            "tame_event": {
-              "event": "minecraft:on_tame",
-              "target": "self"
-            }
-          },
-          "minecraft:behavior.tempt": {
-            "priority": 5,
-            "speed_multiplier": 0.5,
-            "within_radius": 16,
-            "items": [
-	          "beef",
-	          "cooked_beef",
-	          "porkchop",
-	          "cooked_porkchop",
-	          "chicken",
-	          "cooked_chicken",
-              "muttonRaw",
-	          "muttonCooked",
-	          "rabbit",
-	          "cooked_rabbit",
-	          "rotten_flesh"
-            ]
-          },
-          "minecraft:behavior.hurt_by_target": {
-            "priority": 1
-          },
-		  "minecraft:navigation.walk": {},
-          "minecraft:behavior.random_stroll": {},
-          "minecraft:movement.basic": {},
-		  "minecraft:movement.generic": {},
-          "minecraft:navigation.generic": {
-            "can_path_over_water": true
-          },
-          "minecraft:movement": {
-            "value": 0.25
-          }
+  "format_version": "1.13.0",
+  "minecraft:entity": {
+    "description": {
+      "identifier": "rift:tyrannosaurus",
+      "is_spawnable": true,
+      "is_summonable": true,
+      "is_experimental": false
+    },
+    "component_groups": {
+      "minecraft:tyrannosaurus_baby": {
+        "minecraft:health": {
+          "value": 30
         },
-		"minecraft:tyrannosaurus_baby_calm": {
-          "minecraft:on_target_acquired": {
-            "event": "minecraft:become_angry",
-            "target": "self"
-          }
-		},
-        "minecraft:angery_tyrannosaurus_baby": {
-          "minecraft:angry": {
-            "duration": 60,
-            "calm_event": {
-              "event": "minecraft:on_calm",
-              "target": "self"
-            }
-          },
-          "minecraft:on_target_acquired": {}
+        "minecraft:is_baby": {},
+        "minecraft:attack": {
+          "damage": 8
         },
-        "minecraft:tamed_tyrannosaurus_baby": {
-          "minecraft:is_baby": {},
-          "minecraft:is_tamed": {},
-          "minecraft:ageable": {
-            "duration": 1200,
-            "feed_items": [
-              {
-                "item": "beef",
-                "growth": 0.15
-              },
-              {
-                "item": "cooked_beef",
-                "growth": 0.25
-              },
-              {
-                "item": "porkchop",
-                "growth": 0.15
-              },
-              {
-                "item": "cooked_porkchop",
-                "growth": 0.25
-              },
-              {
-                "item": "chicken",
-                "growth": 0.15
-              },
-              {
-                "item": "cooked_chicken",
-                "growth": 0.25
-              },
-              {
-                "item": "muttonRaw",
-                "growth": 0.15
-              },
-              {
-                "item": "muttonCooked",
-                "growth": 0.25
-              },
-              {
-                "item": "rabbit",
-                "growth": 0.15
-              },
-              {
-                "item": "cooked_rabbit",
-                "growth": 0.25
-              },
-              {
-                "item": "cod",
-                "growth": 0.1
-              },
-              {
-                "item": "cooked_cod",
-                "growth": 0.2
-              },
-              {
-                "item": "salmon",
-                "growth": 0.1
-              },
-              {
-                "item": "cooked_salmon",
-                "growth": 0.2
-              },
-              {
-                "item": "rotten_flesh",
-                "growth": 0.08
-              }
-            ],
-            "grow_up": {
-              "event": "minecraft:tamed_baby_grow_up",
-              "target": "self"
-            }
-          },
-          "minecraft:scale_by_age": {
-            "start_scale": 0.3,
-			"end_scale": 2.5
-          },
-          "minecraft:attack": {
-            "damage": 8
-          },
-          "minecraft:health": {
-            "value": 30,
-            "max": 35
-          }
+        "minecraft:scale_by_age": {
+          "start_scale": 0.3,
+          "end_scale": 2.5
         },
-		"minecraft:tyrannosaurus_adult": {
-          "minecraft:health": {
-            "value": 50
-          },
-          "minecraft:attack": {
-            "damage": 15
-          },
-          "minecraft:scale": {
-            "value": 2.5
-          },
-          "minecraft:behavior.nearest_attackable_target": {
-            "priority": 2,
-            "within_radius": 50,
-            "must_see": false,
-            "must_see_forget_duration": 30,
-            "entity_types": [
-              {
-                "filters": {
-                  "any_of": [
-                    { "test": "is_family", "subject": "other", "value": "player" },
-                    { "test": "is_family", "subject": "other", "value": "herbivore" },
-					{ "test": "is_family", "subject": "other", "value": "pig" },
-					{ "test": "is_family", "subject": "other", "value": "sheep" },
-					{ "test": "is_family", "subject": "other", "value": "cow" },
-					{ "test": "is_family", "subject": "other", "value": "chicken" },
-					{ "test": "is_family", "subject": "other", "value": "horse" },
-					{ "test": "is_family", "subject": "other", "value": "llama" }
-                  ]
-                }
-              }
-            ]
-          },
-          "minecraft:experience_reward": {
-            "on_bred": "Math.Random(1,7)",
-            "on_death": "query.last_hit_by_player ? Math.Random(7,12) : 0"
-          },
-		  "minecraft:navigation.walk": {},
-          "minecraft:behavior.random_stroll": {},
-          "minecraft:movement.basic": {},
-		  "minecraft:movement.generic": {},
-          "minecraft:navigation.generic": {
-            "can_path_over_water": true
-          },
-          "minecraft:movement": {
-            "value": 0.25
-          }
-        },
-        "minecraft:tamed_tyrannosaurus_adult": {
-          "minecraft:health": {
-            "value": 50,
-            "max": 60
-          },
-          "minecraft:attack": {
-            "damage": 15
-          },
-          "minecraft:is_tamed": {},
-          "minecraft:behavior.tempt": {
-            "priority": 5,
-            "speed_multiplier": 1.5,
-            "within_radius": 30,
-            "items": [
-              "beef",
-              "cooked_beef",
-              "porkchop",
-              "cooked_porkchop",
-              "chicken",
-              "cooked_chicken",
-              "muttonRaw",
-              "muttonCooked",
-              "rabbit",
-              "cooked_rabbit",
-              "rotten_flesh"
-            ]
-          },
-          "minecraft:scale": {
-            "value": 2.5
-          },
-          "minecraft:healable": {
-            "items": [
-              {
-                "item": "beef",
-                "heal_amount": 15
-              },
-              {
-                "item": "cooked_beef",
-                "heal_amount": 25
-              },
-              {
-                "item": "porkchop",
-                "heal_amount": 15
-              },
-              {
-                "item": "cooked_porkchop",
-                "heal_amount": 25
-              },
-              {
-                "item": "chicken",
-                "heal_amount": 15
-              },
-              {
-                "item": "cooked_chicken",
-                "heal_amount": 25
-              },
-              {
-                "item": "muttonRaw",
-                "heal_amount": 15
-              },
-              {
-                "item": "muttonCooked",
-                "heal_amount": 25
-              },
-              {
-                "item": "rabbit",
-                "heal_amount": 15
-              },
-              {
-                "item": "cooked_rabbit",
-                "heal_amount": 25
-              },
-              {
-                "item": "cod",
-                "heal_amount": 10
-              },
-              {
-                "item": "cooked_cod",
-                "heal_amount": 20
-              },
-              {
-                "item": "salmon",
-                "heal_amount": 10
-              },
-              {
-                "item": "cooked_salmon",
-                "heal_amount": 20
-              },
-              {
-                "item": "rotten_flesh",
-                "heal_amount": 30
-              }
-            ]
-          },
-          "minecraft:breedable": {
-            "breed_items": [
-              "beef",
-              "cooked_beef",
-              "porkchop",
-              "cooked_porkchop",
-              "chicken",
-              "cooked_chicken",
-              "muttonRaw",
-              "muttonCooked",
-              "rabbit",
-              "cooked_rabbit",
-              "rotten_flesh"
-            ],
-            "breeds_with": {
-              "mate_type": "rift:tyrannosaurus",
-              "baby_type": "rift:tyrannosaurus",
-              "breed_event": {
-                "event": "minecraft:entity_born",
-                "target": "baby"
-              }
-            }
-          },
-          "minecraft:inventory": {
-		    "restrict_to_owner": true,
-            "inventory_size": 18,
-            "container_type": "horse"
-          },
-		  "minecraft:equippable": {
-		    "slots": [
-			  {
-			    "slot": 0,
-				"item": "saddle",
-				"interact_text": "action.interact.saddle",
-				"accepted_items": [ "saddle" ],
-				"on_equip": {
-				  "event": "minecraft:attach_saddle"
-				},
-				"on_unequip": {
-				  "event": "minecraft:remove_saddle"
-				}
-			  },
-			  {
-			    "slot": 1,
-				"item": "chest",
-				"interact_text": "action.interact.attachchest",
-				"accepted_items": [ "chest" ],
-				"on_equip": {
-				  "event": "minecraft:attach_chest"
-				},
-				"on_unequip": {
-				  "event": "minecraft:remove_chest"
-				}
-			  },
-			  {
-			    "slot": 2,
-				"item": "bone",
-				"interact_text": "action.interact.attachchest",
-				"accepted_items": [ "bone" ],
-				"on_equip": {
-				  "event": "minecraft:sit_down"
-				},
-				"on_unequip": {
-				  "event": "minecraft:stand_up"
-				}
-			  }
-			]
-		  }
-        },
-        "minecraft:saddled_tyrannosaurus": {
-          "minecraft:rideable": {
-            "priority": 0,
-            "seat_count": 1,
-            "crouching_skip_interact": false,
-            "family_types": [ "player" ],
-            "interact_text": "action.interact.ride.horse",
-            "seats": {
-              "position": [ 0, 1.6, 0.40 ]
-            }
-          },
-          "minecraft:is_saddled": {},
-          "minecraft:input_ground_controlled": {},
-          "minecraft:behavior.player_ride_tamed": {},
-          "minecraft:interact": {
-            "interactions": [
-              {
-                "on_interact": {
-                  "filters": {
-				    "all_of": [
-					  { "test": "is_riding", "subject": "other" }
-					]
-				  },
-                  "target": "self",
-                  "event": "minecraft:tyrannosaurus_roar"
-                },
-                "interact_text": "action.interact.tyrannosaurus.roar",
-				"play_sounds": "mob.tyrannosaurus.roar"
-              }
-            ]
-          }
-        },
-		"minecraft:chested_tyrannosaurus": {
-		  "minecraft:is_chested": {}
-		},
-		"minecraft:tamed_roaring_tyrannosaurus": {
-          "minecraft:type_family": {
-            "family": [ "roar", "dinosaur", "tyrannosaurus", "carnivore", "mob" ]
-          },
-          "minecraft:timer": {
-            "time": [ 3, 3 ],
-            "looping": false,
-            "time_down_event": {
-              "event": "minecraft:tyrannosaurus_stop_roar",
-              "target": "self"
-            }
-          }
-        },
-		"minecraft:standing": {
-          "minecraft:interact": {
-            "interactions": [
-              {
-                "on_interact": {
-                  "filters": {
-                    "all_of": [
-                      { "test":"is_family", "subject":"other", "value":"player" },
-                      { "test":"has_equipment", "domain":"hand", "subject":"other", "value":"bone" }
-                    ]
-                  },
-                  "event": "minecraft:sit_down",
-                  "target": "self"
-                },
-                "interact_text": "action.interact.sit"
-              }
-            ]
-		  },
-		  "minecraft:navigation.walk": {},
-          "minecraft:behavior.random_stroll": {},
-          "minecraft:movement.basic": {},
-		  "minecraft:movement.generic": {},
-          "minecraft:navigation.generic": {
-            "can_path_over_water": true
-          },
-          "minecraft:behavior.owner_hurt_by_target": {
-            "priority": 1
-          },
-          "minecraft:behavior.owner_hurt_target": {
-            "priority": 2
-          },
-          "minecraft:behavior.follow_owner": {
-            "priority": 6,
-            "speed_multiplier": 1,
-            "start_distance": 10,
-            "stop_distance": 2
-          },
-          "minecraft:movement": {
-            "value": 0.25
-          }
-		},
-		"minecraft:sitting": {
-          "minecraft:interact": {
-            "interactions": [
-              {
-                "on_interact": {
-                  "filters": {
-                    "all_of": [
-                      { "test":"is_family", "subject":"other", "value":"player" },
-                      { "test":"has_equipment", "domain":"hand", "subject":"other", "value":"bone" }
-                    ]
-                  },
-                  "event": "minecraft:stand_up",
-                  "target": "self"
-                },
-                "interact_text": "action.interact.sit"
-              }
-            ]
-		  },
-          "minecraft:movement": {
-            "value": 0
-          }
-		}
-      },
-      "components": {
-        "minecraft:type_family": {
-          "family": [ "dinosaur", "tyrannosaurus", "carnivore", "mob" ]
-        },
-        "minecraft:breathable": {
-          "totalSupply": 15,
-          "suffocateTime": 0
-        },
-        "minecraft:leashable": {
-          "soft_distance": 4,
-          "hard_distance": 6,
-          "max_distance": 10,
-          "on_leash": {
-            "event": "minecraft:on_leash",
-            "target": "self"
-          },
-          "on_unleash": {
-            "event": "minecraft:on_unleash",
+        "minecraft:ageable": {
+          "duration": 1200,
+          "grow_up": {
+            "event": "minecraft:wild_baby_grow_up",
             "target": "self"
           }
         },
-		"minecraft:collision_box": {
-		  "height": 1.25,
-		  "width": 1.25
-		},
-        "minecraft:behavior.melee_attack": {
-          "priority": 3,
-          "speed_multiplier": 1,
-          "track_target": false
+        "minecraft:tameable": {
+          "probability": 0.33,
+          "tameItems": [
+            "beef",
+            "cooked_beef",
+            "porkchop",
+            "cooked_porkchop",
+            "chicken",
+            "cooked_chicken",
+            "muttonRaw",
+            "muttonCooked",
+            "rabbit",
+            "cooked_rabbit",
+            "rotten_flesh"
+          ],
+          "tame_event": {
+            "event": "minecraft:on_tame",
+            "target": "self"
+          }
         },
-        "minecraft:nameable": {},
-        "minecraft:jump.static": {},
-        "minecraft:physics": {},
-        "minecraft:pushable": {}
+        "minecraft:behavior.tempt": {
+          "priority": 5,
+          "speed_multiplier": 0.5,
+          "within_radius": 16,
+          "items": [
+            "beef",
+            "cooked_beef",
+            "porkchop",
+            "cooked_porkchop",
+            "chicken",
+            "cooked_chicken",
+            "muttonRaw",
+            "muttonCooked",
+            "rabbit",
+            "cooked_rabbit",
+            "rotten_flesh"
+          ]
+        },
+        "minecraft:behavior.hurt_by_target": {
+          "priority": 1
+        },
+        "minecraft:behavior.random_stroll": {}
       },
-      "events": {
-        "minecraft:entity_spawned": {
-          "randomize": [
+      "minecraft:tyrannosaurus_baby_calm": {
+        "minecraft:on_target_acquired": {
+          "event": "minecraft:become_angry",
+          "target": "self"
+        }
+      },
+      "minecraft:angery_tyrannosaurus_baby": {
+        "minecraft:angry": {
+          "duration": 60,
+          "calm_event": {
+            "event": "minecraft:on_calm",
+            "target": "self"
+          }
+        },
+        "minecraft:on_target_acquired": {}
+      },
+      "minecraft:tamed_tyrannosaurus_baby": {
+        "minecraft:is_baby": {},
+        "minecraft:is_tamed": {},
+        "minecraft:ageable": {
+          "duration": 1200,
+          "feed_items": [
             {
-              "weight": 85,
-              "add": {
-                "component_groups": [
-                  "minecraft:tyrannosaurus_adult"
-                ]
-              }
+              "item": "beef",
+              "growth": 0.15
             },
             {
-              "weight": 15,
-              "add": {
-                "component_groups": [
-                  "minecraft:tyrannosaurus_baby",
-				  "minecraft:tyrannosaurus_baby_calm"
+              "item": "cooked_beef",
+              "growth": 0.25
+            },
+            {
+              "item": "porkchop",
+              "growth": 0.15
+            },
+            {
+              "item": "cooked_porkchop",
+              "growth": 0.25
+            },
+            {
+              "item": "chicken",
+              "growth": 0.15
+            },
+            {
+              "item": "cooked_chicken",
+              "growth": 0.25
+            },
+            {
+              "item": "muttonRaw",
+              "growth": 0.15
+            },
+            {
+              "item": "muttonCooked",
+              "growth": 0.25
+            },
+            {
+              "item": "rabbit",
+              "growth": 0.15
+            },
+            {
+              "item": "cooked_rabbit",
+              "growth": 0.25
+            },
+            {
+              "item": "cod",
+              "growth": 0.1
+            },
+            {
+              "item": "cooked_cod",
+              "growth": 0.2
+            },
+            {
+              "item": "salmon",
+              "growth": 0.1
+            },
+            {
+              "item": "cooked_salmon",
+              "growth": 0.2
+            },
+            {
+              "item": "rotten_flesh",
+              "growth": 0.08
+            }
+          ],
+          "grow_up": {
+            "event": "minecraft:tamed_baby_grow_up",
+            "target": "self"
+          }
+        },
+        "minecraft:scale_by_age": {
+          "start_scale": 0.3,
+          "end_scale": 2.5
+        },
+        "minecraft:attack": {
+          "damage": 8
+        },
+        "minecraft:health": {
+          "value": 30,
+          "max": 35
+        }
+      },
+      "minecraft:tyrannosaurus_adult": {
+        "minecraft:health": {
+          "value": 50
+        },
+        "minecraft:attack": {
+          "damage": 15
+        },
+        "minecraft:scale": {
+          "value": 2.5
+        },
+        "minecraft:behavior.nearest_attackable_target": {
+          "priority": 2,
+          "within_radius": 50,
+          "must_see": false,
+          "must_see_forget_duration": 30,
+          "entity_types": [
+            {
+              "filters": {
+                "any_of": [
+                  { "test": "is_family", "subject": "other", "value": "player" },
+                  { "test": "is_family", "subject": "other", "value": "herbivore" },
+                  { "test": "is_family", "subject": "other", "value": "pig" },
+                  { "test": "is_family", "subject": "other", "value": "sheep" },
+                  { "test": "is_family", "subject": "other", "value": "cow" },
+                  { "test": "is_family", "subject": "other", "value": "chicken" },
+                  { "test": "is_family", "subject": "other", "value": "horse" },
+                  { "test": "is_family", "subject": "other", "value": "llama" }
                 ]
               }
             }
           ]
         },
-        "minecraft:entity_born": {
-          "add": {
-            "component_groups": [
-              "minecraft:tamed_tyrannosaurus_baby",
-			  "minecraft:standing"
-            ]
+        "minecraft:experience_reward": {
+          "on_bred": "Math.Random(1,7)",
+          "on_death": "query.last_hit_by_player ? Math.Random(7,12) : 0"
+        },
+        "minecraft:behavior.random_stroll": {}
+      },
+      "minecraft:tamed_tyrannosaurus_adult": {
+        "minecraft:health": {
+          "value": 50,
+          "max": 60
+        },
+        "minecraft:attack": {
+          "damage": 15
+        },
+        "minecraft:is_tamed": {},
+        "minecraft:behavior.tempt": {
+          "priority": 5,
+          "speed_multiplier": 1.5,
+          "within_radius": 30,
+          "items": [
+            "beef",
+            "cooked_beef",
+            "porkchop",
+            "cooked_porkchop",
+            "chicken",
+            "cooked_chicken",
+            "muttonRaw",
+            "muttonCooked",
+            "rabbit",
+            "cooked_rabbit",
+            "rotten_flesh"
+          ]
+        },
+        "minecraft:scale": {
+          "value": 2.5
+        },
+        "minecraft:healable": {
+          "items": [
+            {
+              "item": "beef",
+              "heal_amount": 15
+            },
+            {
+              "item": "cooked_beef",
+              "heal_amount": 25
+            },
+            {
+              "item": "porkchop",
+              "heal_amount": 15
+            },
+            {
+              "item": "cooked_porkchop",
+              "heal_amount": 25
+            },
+            {
+              "item": "chicken",
+              "heal_amount": 15
+            },
+            {
+              "item": "cooked_chicken",
+              "heal_amount": 25
+            },
+            {
+              "item": "muttonRaw",
+              "heal_amount": 15
+            },
+            {
+              "item": "muttonCooked",
+              "heal_amount": 25
+            },
+            {
+              "item": "rabbit",
+              "heal_amount": 15
+            },
+            {
+              "item": "cooked_rabbit",
+              "heal_amount": 25
+            },
+            {
+              "item": "cod",
+              "heal_amount": 10
+            },
+            {
+              "item": "cooked_cod",
+              "heal_amount": 20
+            },
+            {
+              "item": "salmon",
+              "heal_amount": 10
+            },
+            {
+              "item": "cooked_salmon",
+              "heal_amount": 20
+            },
+            {
+              "item": "rotten_flesh",
+              "heal_amount": 30
+            }
+          ]
+        },
+        "minecraft:breedable": {
+          "breed_items": [
+            "beef",
+            "cooked_beef",
+            "porkchop",
+            "cooked_porkchop",
+            "chicken",
+            "cooked_chicken",
+            "muttonRaw",
+            "muttonCooked",
+            "rabbit",
+            "cooked_rabbit",
+            "rotten_flesh"
+          ],
+          "breeds_with": {
+            "mate_type": "rift:tyrannosaurus",
+            "baby_type": "rift:tyrannosaurus",
+            "breed_event": {
+              "event": "minecraft:entity_born",
+              "target": "baby"
+            }
           }
         },
-        "minecraft:wild_baby_grow_up": {
-          "add": {
-            "component_groups": [
-              "minecraft:tyrannosaurus_adult"
-            ]
-          },
-          "remove": {
-            "component_groups": [
-              "minecraft:tyrannosaurus_baby"
-            ]
+        "minecraft:inventory": {
+          "restrict_to_owner": true,
+          "inventory_size": 18,
+          "container_type": "horse"
+        },
+        "minecraft:equippable": {
+          "slots": [
+            {
+              "slot": 0,
+              "item": "saddle",
+              "interact_text": "action.interact.saddle",
+              "accepted_items": [ "saddle" ],
+              "on_equip": {
+                "event": "minecraft:attach_saddle"
+              },
+              "on_unequip": {
+                "event": "minecraft:remove_saddle"
+              }
+            },
+            {
+              "slot": 1,
+              "item": "chest",
+              "interact_text": "action.interact.attachchest",
+              "accepted_items": [ "chest" ],
+              "on_equip": {
+                "event": "minecraft:attach_chest"
+              },
+              "on_unequip": {
+                "event": "minecraft:remove_chest"
+              }
+            }
+          ]
+        }
+      },
+      "minecraft:saddled_tyrannosaurus": {
+        "minecraft:rideable": {
+          "priority": 0,
+          "seat_count": 1,
+          "crouching_skip_interact": true,
+          "family_types": [ "player" ],
+          "interact_text": "action.interact.ride.horse",
+          "seats": {
+            "position": [ 0, 1.6, 0.40 ]
           }
         },
-        "minecraft:tamed_baby_grow_up": {
-          "add": {
-            "component_groups": [
-              "minecraft:tamed_tyrannosaurus_adult"
-            ]
-          },
-          "remove": {
-            "component_groups": [
-              "minecraft:tamed_tyrannosaurus_baby"
-            ]
+        "minecraft:is_saddled": {},
+        "minecraft:input_ground_controlled": {},
+        "minecraft:behavior.player_ride_tamed": {}
+      },
+      "minecraft:chested_tyrannosaurus": {
+        "minecraft:is_chested": {}
+      },
+      "minecraft:tamed_roaring_tyrannosaurus": {
+        "minecraft:type_family": {
+          "family": [ "roar", "dinosaur", "tyrannosaurus", "carnivore", "mob" ]
+        },
+        "minecraft:timer": {
+          "time": [ 3, 3 ],
+          "looping": false,
+          "time_down_event": {
+            "event": "minecraft:tyrannosaurus_stop_roar",
+            "target": "self"
           }
+        }
+      },
+      "minecraft:standing": {
+        "minecraft:behavior.random_stroll": {},
+        "minecraft:behavior.owner_hurt_by_target": {
+          "priority": 1
         },
-        "minecraft:on_tame": {
-          "add": {
-            "component_groups": [
-              "minecraft:tamed_tyrannosaurus_baby",
-			  "minecraft:standing"
-            ]
-          },
-          "remove": {
-            "component_groups": [
-              "minecraft:tyrannosaurus_baby"
-            ]
-          }
+        "minecraft:behavior.owner_hurt_target": {
+          "priority": 2
         },
-        "minecraft:become_angry": {
-          "add": {
-            "component_groups": [
-              "minecraft:angery_tyrannosaurus_baby"
-            ]
-          },
-		  "remove": {
-		    "component_groups": [
-			  "minecraft:tyrannosaurus_baby_calm"
-			]
-		  }
+        "minecraft:behavior.follow_owner": {
+          "priority": 6,
+          "speed_multiplier": 1,
+          "start_distance": 10,
+          "stop_distance": 2
         },
-        "minecraft:on_calm": {
-          "remove": {
-            "component_groups": [
-              "minecraft:angery_tyrannosaurus_baby"
-            ]
-          }
-        },
-        "minecraft:attach_saddle": {
-          "add": {
-            "component_groups": [
-              "minecraft:saddled_tyrannosaurus"
-            ]
-          }
-        },
-        "minecraft:remove_saddle": {
-          "remove": {
-            "component_groups": [
-              "minecraft:saddled_tyrannosaurus"
-            ]
-          }
-        },
-        "minecraft:tyrannosaurus_roar": {
-          "add": {
-            "component_groups": [
-              "minecraft:tamed_roaring_tyrannosaurus"
-            ]
-          }
-        },
-        "minecraft:tyrannosaurus_stop_roar": {
-          "remove": {
-            "component_groups": [
-              "minecraft:tamed_roaring_tyrannosaurus"
-            ]
-          }
-        },
-		"minecraft:attach_chest": {
-		  "add": {
-		    "component_groups": [
-			  "minecraft:chested_tyrannosaurus"
-			]
-		  }
-		},
-		"minecraft:remove_chest": {
-		  "remove": {
-		    "component_groups": [
-			  "minecraft:chested_tyrannosaurus"
-			]
-		  }
-		},
-		"minecraft:stand_up": {
-		  "add": {
-		    "component_groups": [
-			  "minecraft:standing"
-			]
-		  },
-		  "remove": {
-		    "component_groups": [
-			  "minecraft:sitting"
-			]
-		  }
-		},
-		"minecraft:sit_down": {
-		  "add": {
-		    "component_groups": [
-			  "minecraft:sitting"
-			]
-		  },
-		  "remove": {
-		    "component_groups": [
-			  "minecraft:standing"
-			]
-		  }
-		},
-		"minecraft:attach_saddle": {
-		  "add": {
-		    "component_groups": [
-			  "minecraft:saddled_tyrannosaurus"
-			]
-		  }
-		},
-		"minecraft:remove_saddle": {
-		  "remove": {
-		    "component_groups": [
-			  "minecraft:saddled_tyrannosaurus"
-			]
-		  }
-		}
+        "minecraft:movement": {
+          "value": 0.25
+        }
+      },
+      "minecraft:sitting": {
+        "minecraft:is_sheared": {},
+        "minecraft:movement": {
+          "value": 0
+        }
       }
+    },
+    "components": {
+      "minecraft:type_family": {
+        "family": [ "dinosaur", "tyrannosaurus", "carnivore", "mob" ]
+      },
+      "minecraft:breathable": {
+        "totalSupply": 15,
+        "suffocateTime": 0
+      },
+      "minecraft:leashable": {
+        "soft_distance": 4,
+        "hard_distance": 6,
+        "max_distance": 10,
+        "on_leash": {
+          "event": "minecraft:on_leash",
+          "target": "self"
+        },
+        "on_unleash": {
+          "event": "minecraft:on_unleash",
+          "target": "self"
+        }
+      },
+      "minecraft:interact": {
+        "interactions": [
+          {
+            "on_interact": {
+              "filters": {
+                "all_of": [
+                  { "test": "is_riding", "subject": "other" },
+                  { "test": "rider_count", "subject": "self", "operator": ">", "value": 0 },
+                  { "test": "has_component", "subject": "self", "operator": "==", "value": "minecraft:is_saddled" },
+                  { "test": "has_component", "subject": "self", "operator": "==", "value": "minecraft:is_tamed" },
+				  { "test": "is_family", "subject": "self", "operator": "!=", "value": "roar" }
+                ]
+              },
+              "target": "self",
+              "event": "minecraft:tyrannosaurus_roar"
+            },
+            "interact_text": "action.interact.tyrannosaurus.roar",
+            "play_sounds": "mob.tyrannosaurus.roar",
+			"cooldown": 5.0
+          },
+          {
+            "on_interact": {
+              "filters": {
+                "all_of": [
+                  { "test": "is_riding", "subject": "other", "operator": "!=" },
+                  { "test": "is_sneaking", "subject":  "other" },
+                  { "test": "rider_count", "subject": "self", "operator": "==", "value": 0 },
+                  { "test": "has_component", "subject": "self", "operator": "==", "value": "minecraft:is_tamed" },
+                  { "test": "has_component", "subject": "self", "operator": "==", "value": "minecraft:is_sheared" }
+                ]
+              },
+              "event": "minecraft:stand_up",
+              "target": "self"
+            },
+            "interact_text": "action.interact.sit"
+          },
+          {
+            "on_interact": {
+              "filters": {
+                "all_of": [
+                  { "test": "is_riding", "subject": "other", "operator": "!=" },
+                  { "test": "is_sneaking", "subject":  "other" },
+                  { "test": "rider_count", "subject": "self", "operator": "==", "value": 0 },
+                  { "test": "has_component", "subject": "self", "operator": "==", "value": "minecraft:is_tamed" },
+                  { "test": "has_component", "subject": "self", "operator": "!=", "value": "minecraft:is_sheared" }
+                ]
+              },
+              "event": "minecraft:sit_down",
+              "target": "self"
+            },
+            "interact_text": "action.interact.sit"
+          }
+        ]
+      },
+      "minecraft:collision_box": {
+        "height": 1.25,
+        "width": 1.25
+      },
+      "minecraft:behavior.melee_attack": {
+        "priority": 3,
+        "speed_multiplier": 1,
+        "track_target": false
+      },
+      "minecraft:movement": {
+        "value": 0.25
+      },
+      "minecraft:navigation.walk": {
+        "can_path_over_water": true
+      },
+      "minecraft:movement.basic": {},
+      "minecraft:jump.static": {},
+      "minecraft:nameable": {},
+      "minecraft:pushable": {},
+      "minecraft:physics": {
+      }
+    },
+    "events": {
+      "minecraft:entity_spawned": {
+        "randomize": [
+          {
+            "weight": 85,
+            "add": {
+              "component_groups": [
+                "minecraft:tyrannosaurus_adult"
+              ]
+            }
+          },
+          {
+            "weight": 15,
+            "add": {
+              "component_groups": [
+                "minecraft:tyrannosaurus_baby",
+                "minecraft:tyrannosaurus_baby_calm"
+              ]
+            }
+          }
+        ]
+      },
+      "minecraft:entity_born": {
+        "add": {
+          "component_groups": [
+            "minecraft:tamed_tyrannosaurus_baby",
+      "minecraft:standing"
+          ]
+        }
+      },
+      "minecraft:wild_baby_grow_up": {
+        "add": {
+          "component_groups": [
+            "minecraft:tyrannosaurus_adult"
+          ]
+        },
+        "remove": {
+          "component_groups": [
+            "minecraft:tyrannosaurus_baby"
+          ]
+        }
+      },
+      "minecraft:tamed_baby_grow_up": {
+        "add": {
+          "component_groups": [
+            "minecraft:tamed_tyrannosaurus_adult"
+          ]
+        },
+        "remove": {
+          "component_groups": [
+            "minecraft:tamed_tyrannosaurus_baby"
+          ]
+        }
+      },
+      "minecraft:on_tame": {
+        "add": {
+          "component_groups": [
+            "minecraft:tamed_tyrannosaurus_baby",
+            "minecraft:standing"
+          ]
+        },
+        "remove": {
+          "component_groups": [
+            "minecraft:tyrannosaurus_baby"
+          ]
+        }
+      },
+      "minecraft:become_angry": {
+        "add": {
+          "component_groups": [
+            "minecraft:angery_tyrannosaurus_baby"
+          ]
+        },
+    "remove": {
+      "component_groups": [
+      "minecraft:tyrannosaurus_baby_calm"
+    ]
+    }
+      },
+      "minecraft:on_calm": {
+        "remove": {
+          "component_groups": [
+            "minecraft:angery_tyrannosaurus_baby"
+          ]
+        }
+      },
+      "minecraft:attach_saddle": {
+        "add": {
+          "component_groups": [
+            "minecraft:saddled_tyrannosaurus"
+          ]
+        }
+      },
+      "minecraft:remove_saddle": {
+        "remove": {
+          "component_groups": [
+            "minecraft:saddled_tyrannosaurus"
+          ]
+        }
+      },
+      "minecraft:tyrannosaurus_roar": {
+        "add": {
+          "component_groups": [
+            "minecraft:tamed_roaring_tyrannosaurus"
+          ]
+        }
+      },
+      "minecraft:tyrannosaurus_stop_roar": {
+        "remove": {
+          "component_groups": [
+            "minecraft:tamed_roaring_tyrannosaurus"
+          ]
+        }
+      },
+  "minecraft:attach_chest": {
+    "add": {
+      "component_groups": [
+      "minecraft:chested_tyrannosaurus"
+    ]
+    }
+  },
+  "minecraft:remove_chest": {
+    "remove": {
+      "component_groups": [
+      "minecraft:chested_tyrannosaurus"
+    ]
+    }
+  },
+  "minecraft:stand_up": {
+    "add": {
+      "component_groups": [
+      "minecraft:standing"
+    ]
+    },
+    "remove": {
+      "component_groups": [
+      "minecraft:sitting"
+    ]
+    }
+  },
+  "minecraft:sit_down": {
+    "add": {
+      "component_groups": [
+      "minecraft:sitting"
+    ]
+    },
+    "remove": {
+      "component_groups": [
+      "minecraft:standing"
+    ]
     }
   }
+    }
+  }
+}
