@@ -6,33 +6,39 @@
       "states": {
         "default": {
 	      "animations": [
-	        "look_at_target",
-	        {
-	          "walk": "query.modified_move_speed"
-	        }
-          ]
-        }
+	        { "walk": "query.modified_move_speed" }
+          ],
+		  "transitions": [
+		    { "idle": "query.ground_speed == 0" },
+			{ "attacking" : "variable.attack_time > 0.0" }
+		  ]			  
+        },
+		"idle": {
+		  "animations": [
+		    "idle"
+		  ],
+		  "transitions": [
+		    { "default": "query.ground_speed > 0" }
+		  ]		  
+		},
+		"attacking": {
+		  "animations": [
+		    { "walk": "query.modified_move_speed" },
+			"attack"
+		  ],
+		  "transitions": [
+		    { "default" : "variable.attack_time == 0.0" }
+		  ]
+		}
       }
     },
-	"controller.animation.stegosaurus.tail_movement": {
-      "initial_state": "default",
-      "states": {
+	"controller.animation.stegosaurus.head_movement": {
+	  "initial_state": "default",
+	  "states": {
 	    "default": {
-	      "transitions": [
-	        {
-              "attacking" : "variable.attack_time > 0.0"	  
-	        }
-	      ]
-        },
-        "attacking": {
-	        "animations": ["attack"],
-	        "transitions": [
-            {
-              "default" : "variable.attack_time == 0.0"
-	        }
-	      ]
-	    }
-      }	
+	      "animations": ["look_at_target"]
+		}
+	  }
 	}
   }
 }
