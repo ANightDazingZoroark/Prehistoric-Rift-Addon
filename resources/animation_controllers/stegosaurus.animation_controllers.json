@@ -9,8 +9,7 @@
 	        { "walk": "query.modified_move_speed" }
           ],
 		  "transitions": [
-		    { "idle": "query.ground_speed == 0" },
-			{ "attacking" : "variable.attack_time > 0.0" }
+		    { "idle": "query.ground_speed == 0" }
 		  ]			  
         },
 		"idle": {
@@ -20,15 +19,6 @@
 		  "transitions": [
 		    { "default": "query.ground_speed > 0" }
 		  ]		  
-		},
-		"attacking": {
-		  "animations": [
-		    { "walk": "query.modified_move_speed" },
-			"attack"
-		  ],
-		  "transitions": [
-		    { "default" : "variable.attack_time == 0.0" }
-		  ]
 		}
       }
     },
@@ -37,6 +27,22 @@
 	  "states": {
 	    "default": {
 	      "animations": ["look_at_target"]
+		}
+	  }
+	},
+	"controller.animation.stegosaurus.attack": {
+	  "initial_state": "default",
+	  "states": {
+	    "default": {
+		  "transitions": [
+		    { "attacking" : "query.is_delayed_attacking > 0" }
+		  ]
+		},
+		"attacking": {
+		  "animations": ["attack"],
+          "transitions": [
+		    { "default" : "query.is_delayed_attacking == 0" }
+          ]		  
 		}
 	  }
 	}
