@@ -1,48 +1,103 @@
+//bridge-file-version: #14
 {
-  "format_version": "1.10.0",
-  "animation_controllers": {
-    "controller.animation.tyrannosaurus.move": {
-      "initial_state": "default",
-      "states": {
-        "default": {
-	      "animations": [
-	        { "walk": "query.modified_move_speed" }
-          ],
-		  "transitions": [
-		    { "idle": "query.ground_speed == 0" }
-		  ]
-        },
-		"idle": {
-		  "animations": [
-		    "idle"
-		  ],
-		  "transitions": [
-		    { "default": "query.ground_speed > 0" }
-		  ]
+	"format_version": "1.10.0",
+	"animation_controllers": {
+		"controller.animation.tyrannosaurus.move": {
+			"initial_state": "default",
+			"states": {
+				"default": {
+					"animations": [
+						{
+							"walk": "query.modified_move_speed"
+						}
+					],
+					"transitions": [
+						{
+							"idle": "query.ground_speed == 0"
+						}
+					]
+				},
+				"idle": {
+					"animations": [
+						"idle"
+					],
+					"transitions": [
+						{
+							"default": "query.ground_speed > 0"
+						}
+					]
+				}
+			}
+		},
+		"controller.animation.tyrannosaurus.head_movement": {
+			"initial_state": "default",
+			"states": {
+				"default": {
+					"animations": [
+						"look_at_target"
+					],
+					"transitions": [
+						{
+							"attacking": "variable.attack_time > 0.0"
+						}
+					]
+				},
+				"attacking": {
+					"animations": [
+						"attack",
+						"look_at_target"
+					],
+					"transitions": [
+						{
+							"default": "variable.attack_time == 0.0"
+						}
+					]
+				}
+			}
+		},
+		"controller.animation.tyrannosaurus.roar": {
+			"initial_state": "default",
+			"states": {
+				"default": {
+					"transitions": [
+						{
+							"roar": "query.is_charged > 0"
+						}
+					]
+				},
+				"roar": {
+					"animations": [
+						"roaring"
+					],
+					"transitions": [
+						{
+							"default": "query.is_charged == 0"
+						}
+					]
+				}
+			}
+		},
+		"controller.animation.tyrannosaurus.attack": {
+			"initial_state": "default",
+			"states": {
+				"default": {
+					"transitions": [
+						{
+							"attack": "query.is_delayed_attacking > 0"
+						}
+					]
+				},
+				"attack": {
+					"animations": [
+						"attack"
+					],
+					"transitions": [
+						{
+							"default": "query.is_delayed_attacking == 0"
+						}
+					]
+				}
+			}
 		}
-      }
-    },
-    "controller.animation.tyrannosaurus.head_movement": {
-      "initial_state": "default",
-      "states": {
-	    "default": {
-		  "animations": [
-		    "look_at_target"
-		  ],
-	      "transitions": [
-	        { "attacking" : "variable.attack_time > 0.0" }
-	      ]
-        },
-        "attacking": {
-	      "animations": [
-		    "attack",
-			"look_at_target"
-		  ],
-	      "transitions": [
-            { "default" : "variable.attack_time == 0.0" }
-	      ]
-	    }
-      }
-    }
-  }
+	}
 }
