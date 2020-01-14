@@ -1,4 +1,4 @@
-//bridge-file-version: #4
+//bridge-file-version: #117
 {
 	"format_version": "1.13.0",
 	"minecraft:entity": {
@@ -66,18 +66,67 @@
 						"rotten_flesh"
 					]
 				},
+				"minecraft:behavior.random_stroll": {},
 				"minecraft:behavior.hurt_by_target": {
 					"priority": 1
 				},
-				"minecraft:behavior.random_stroll": {}
+				"minecraft:behavior.nearest_attackable_target": {
+					"priority": 2,
+					"within_radius": 50,
+					"must_see": false,
+					"must_see_forget_duration": 30,
+					"entity_types": [
+						{
+							"filters": {
+								"any_of": [
+									{
+										"test": "is_family",
+										"subject": "other",
+										"value": "herbivore"
+									},
+									{
+										"test": "is_family",
+										"subject": "other",
+										"value": "pig"
+									},
+									{
+										"test": "is_family",
+										"subject": "other",
+										"value": "sheep"
+									},
+									{
+										"test": "is_family",
+										"subject": "other",
+										"value": "cow"
+									},
+									{
+										"test": "is_family",
+										"subject": "other",
+										"value": "chicken"
+									},
+									{
+										"test": "is_family",
+										"subject": "other",
+										"value": "horse"
+									},
+									{
+										"test": "is_family",
+										"subject": "other",
+										"value": "llama"
+									}
+								]
+							}
+						}
+					]
+				}
 			},
-			"minecraft:tyrannosaurus_baby_calm": {
+			"minecraft:tyrannosaurus_calm": {
 				"minecraft:on_target_acquired": {
 					"event": "minecraft:become_angry",
 					"target": "self"
 				}
 			},
-			"minecraft:angery_tyrannosaurus_baby": {
+			"minecraft:angery_tyrannosaurus": {
 				"minecraft:angry": {
 					"duration": 60,
 					"calm_event": {
@@ -176,11 +225,37 @@
 					"value": 50
 				},
 				"minecraft:attack": {
-					"damage": 15
+					"damage": 69420666
 				},
 				"minecraft:scale": {
 					"value": 2.5
 				},
+				"minecraft:experience_reward": {
+					"on_death": "query.last_hit_by_player ? Math.Random(7,12) : 0"
+				},
+				"minecraft:behavior.random_stroll": {}
+			},
+			"minecraft:tyrannosaurus_not_hunting": {
+				"minecraft:timer": {
+					"looping": false,
+					"time": [
+						45,
+						75
+					],
+					"time_down_event": {
+						"target": "self",
+						"event": "minecraft:start_hunting"
+					}
+				},
+				"minecraft:on_target_acquired": {
+					"event": "minecraft:become_angry",
+					"target": "self"
+				},
+				"minecraft:behavior.hurt_by_target": {
+					"priority": 1
+				}
+			},
+			"minecraft:tyrannosaurus_hunting": {
 				"minecraft:behavior.nearest_attackable_target": {
 					"priority": 2,
 					"within_radius": 50,
@@ -240,10 +315,17 @@
 						}
 					]
 				},
-				"minecraft:experience_reward": {
-					"on_death": "query.last_hit_by_player ? Math.Random(7,12) : 0"
-				},
-				"minecraft:behavior.random_stroll": {}
+				"minecraft:timer": {
+					"looping": false,
+					"time": [
+						45,
+						75
+					],
+					"time_down_event": {
+						"target": "self",
+						"event": "minecraft:stop_hunting"
+					}
+				}
 			},
 			"minecraft:tamed_tyrannosaurus_adult": {
 				"minecraft:health": {
@@ -251,7 +333,7 @@
 					"max": 60
 				},
 				"minecraft:attack": {
-					"damage": 15
+					"damage": 69420666
 				},
 				"minecraft:is_tamed": {},
 				"minecraft:behavior.tempt": {
@@ -407,7 +489,6 @@
 				"minecraft:rideable": {
 					"priority": 0,
 					"seat_count": 1,
-					"crouching_skip_interact": true,
 					"family_types": [
 						"player"
 					],
@@ -418,7 +499,8 @@
 							1.6,
 							0.3
 						]
-					}
+					},
+					"rider_can_interact": true
 				},
 				"minecraft:is_saddled": {},
 				"minecraft:input_ground_controlled": {},
@@ -447,7 +529,8 @@
 						"event": "minecraft:tyrannosaurus_stop_roar",
 						"target": "self"
 					}
-				}
+				},
+				"minecraft:is_charged": {}
 			},
 			"minecraft:standing": {
 				"minecraft:behavior.random_stroll": {},
@@ -468,10 +551,10 @@
 				}
 			},
 			"minecraft:sitting": {
-				"minecraft:is_sheared": {},
 				"minecraft:movement": {
 					"value": 0
-				}
+				},
+				"minecraft:is_sheared": {}
 			}
 		},
 		"components": {
@@ -529,10 +612,10 @@
 										"value": "minecraft:is_tamed"
 									},
 									{
-										"test": "is_family",
-										"subject": "self",
-										"operator": "!=",
-										"value": "roar"
+										"test": "has_equipment",
+										"subject": "other",
+										"domain": "hand",
+										"value": "minecraft:bone"
 									}
 								]
 							},
@@ -576,10 +659,10 @@
 									}
 								]
 							},
-							"event": "minecraft:stand_up",
-							"target": "self"
+							"target": "self",
+							"event": "minecraft:stand_up"
 						},
-						"interact_text": "action.interact.sit"
+						"interact_text": "action.interact.stand"
 					},
 					{
 						"on_interact": {
@@ -614,8 +697,8 @@
 									}
 								]
 							},
-							"event": "minecraft:sit_down",
-							"target": "self"
+							"target": "self",
+							"event": "minecraft:sit_down"
 						},
 						"interact_text": "action.interact.sit"
 					}
@@ -625,41 +708,57 @@
 				"height": 1.25,
 				"width": 1.25
 			},
-			"minecraft:behavior.melee_attack": {
-				"priority": 3,
-				"speed_multiplier": 1,
-				"track_target": false
-			},
 			"minecraft:movement": {
 				"value": 0.25
 			},
 			"minecraft:navigation.walk": {
 				"can_path_over_water": true
 			},
-			"minecraft:movement.basic": {},
 			"minecraft:jump.static": {},
+			"minecraft:movement.basic": {},
 			"minecraft:nameable": {},
 			"minecraft:pushable": {},
 			"minecraft:physics": {},
-			"minecraft:behavior.breed": {}
+			"minecraft:behavior.breed": {},
+			"minecraft:behavior.delayed_attack": {
+				"priority": 0,
+				"attack_duration": 0.5,
+				"hit_delay_pct": 1,
+				"track_target": true
+			}
 		},
 		"events": {
 			"minecraft:entity_spawned": {
 				"randomize": [
 					{
 						"weight": 85,
-						"add": {
-							"component_groups": [
-								"minecraft:tyrannosaurus_adult"
-							]
-						}
+						"randomize": [
+							{
+								"weight": 50,
+								"add": {
+									"component_groups": [
+										"minecraft:tyrannosaurus_adult",
+										"minecraft:tyrannosaurus_not_hunting"
+									]
+								}
+							},
+							{
+								"weight": 50,
+								"add": {
+									"component_groups": [
+										"minecraft:tyrannosaurus_adult",
+										"minecraft:tyrannosaurus_hunting"
+									]
+								}
+							}
+						]
 					},
 					{
 						"weight": 15,
 						"add": {
 							"component_groups": [
 								"minecraft:tyrannosaurus_baby",
-								"minecraft:tyrannosaurus_baby_calm"
+								"minecraft:tyrannosaurus_calm"
 							]
 						}
 					}
@@ -674,16 +773,38 @@
 				}
 			},
 			"minecraft:wild_baby_grow_up": {
-				"add": {
-					"component_groups": [
-						"minecraft:tyrannosaurus_adult"
-					]
-				},
-				"remove": {
-					"component_groups": [
-						"minecraft:tyrannosaurus_baby"
-					]
-				}
+				"randomize": [
+					{
+						"weight": 50,
+						"add": {
+							"component_groups": [
+								"minecraft:tyrannosaurus_adult",
+								"minecraft:tyrannosaurus_not_hunting"
+							]
+						},
+						"remove": {
+							"component_groups": [
+								"minecraft:tyrannosaurus_baby",
+								"minecraft:tyrannosaurus_calm"
+							]
+						}
+					},
+					{
+						"weight": 50,
+						"add": {
+							"component_groups": [
+								"minecraft:tyrannosaurus_adult",
+								"minecraft:tyrannosaurus_hunting"
+							]
+						},
+						"remove": {
+							"component_groups": [
+								"minecraft:tyrannosaurus_baby",
+								"minecraft:tyrannosaurus_calm"
+							]
+						}
+					}
+				]
 			},
 			"minecraft:tamed_baby_grow_up": {
 				"add": {
@@ -713,19 +834,24 @@
 			"minecraft:become_angry": {
 				"add": {
 					"component_groups": [
-						"minecraft:angery_tyrannosaurus_baby"
+						"minecraft:angery_tyrannosaurus"
 					]
 				},
 				"remove": {
 					"component_groups": [
-						"minecraft:tyrannosaurus_baby_calm"
+						"minecraft:tyrannosaurus_calm"
 					]
 				}
 			},
 			"minecraft:on_calm": {
+				"add": {
+					"component_groups": [
+						"minecraft:tyrannosaurus_calm"
+					]
+				},
 				"remove": {
 					"component_groups": [
-						"minecraft:angery_tyrannosaurus_baby"
+						"minecraft:angery_tyrannosaurus"
 					]
 				}
 			},
@@ -792,6 +918,30 @@
 				"remove": {
 					"component_groups": [
 						"minecraft:standing"
+					]
+				}
+			},
+			"minecraft:start_hunting": {
+				"add": {
+					"component_groups": [
+						"minecraft:tyrannosaurus_hunting"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"minecraft:tyrannosaurus_not_hunting"
+					]
+				}
+			},
+			"minecraft:stop_hunting": {
+				"add": {
+					"component_groups": [
+						"minecraft:tyrannosaurus_not_hunting"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"minecraft:tyrannosaurus_hunting"
 					]
 				}
 			}
