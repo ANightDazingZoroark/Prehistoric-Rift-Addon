@@ -1,6 +1,12 @@
 Yes, this exists ~~because of DT~~
 # How 2 compile???
-Thats simple actually. Just click that green button to get a .zip file. Once done, go to the folder where it got downloaded into, then change the ".zip" to ".mcaddon". Just note that doing so gives you a really high chance of giving you a quite messy version of the addon.
+Thats simple actually
+1. Click that green download button to get a .zip file
+2. Extract the "behaviors" and "resources" folders
+3. Compress the folders into a .zip file (which you can name to whatever you want)
+4. Change the ".zip" to ".mcaddon"
+5. Click on the newly renamed file to import it to Minecraft
+And there you go. Only problem is that doing so may give you a buggy version not fit for release, so trust the [releases tab](https://github.com/ANightDazingZoroark/Prehistoric-Rift-Addon/releases) for a stable version 
 # Editing
 * Make sure that the code is readable
 * Vanilla spawn eggs are formatted as Spawn ((insert mob name here)). This should also apply to the addon's own custom mobs
