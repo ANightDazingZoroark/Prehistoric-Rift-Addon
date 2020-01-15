@@ -1,4 +1,4 @@
-//bridge-file-version: #16
+//bridge-file-version: #33
 {
 	"format_version": "1.13.0",
 	"minecraft:entity": {
@@ -25,9 +25,6 @@
 						}
 					}
 				},
-				"minecraft:attack": {
-					"damage": 8
-				},
 				"minecraft:scale_by_age": {
 					"start_scale": 0.3,
 					"end_scale": 1.7
@@ -53,10 +50,6 @@
 						"event": "minecraft:on_tame_baby",
 						"target": "self"
 					}
-				},
-				"minecraft:on_hurt": {
-					"event": "minecraft:baby_become_angry",
-					"target": "self"
 				},
 				"minecraft:behavior.tempt": {
 					"priority": 5,
@@ -93,22 +86,47 @@
 				}
 			},
 			"minecraft:stegosaurus_baby_calm": {
+				"minecraft:behavior.nearest_attackable_target": {
+					"entity_types": [
+						{
+							"filters": {
+								"all_of": [
+									{
+										"test": "is_family",
+										"value": "mob"
+									},
+									{
+										"test": "is_family",
+										"operator": "!=",
+										"value": "stegosaurus"
+									}
+								]
+							},
+							"max_dist": 8,
+							"must_see": false
+						}
+					],
+					"priority": 0
+				},
 				"minecraft:on_target_acquired": {
-					"event": "minecraft:baby_become_angry",
+					"event": "minecraft:baby_become_scared",
 					"target": "self"
 				}
 			},
-			"minecraft:angery_stegosaurus_baby": {
+			"minecraft:scared_stegosaurus_baby": {
 				"minecraft:angry": {
 					"duration": 60,
 					"broadcastAnger": true,
-					"broadcastRange": 20,
+					"broadcastRange": 30,
 					"calm_event": {
 						"event": "minecraft:baby_on_calm",
 						"target": "self"
 					}
 				},
-				"minecraft:on_target_acquired": {}
+				"minecraft:on_target_acquired": {},
+				"minecraft:behavior.run_around_like_crazy": {
+					"priority": 0
+				}
 			},
 			"minecraft:tamed_stegosaurus_baby": {
 				"minecraft:health": {
@@ -258,6 +276,10 @@
 				"minecraft:on_target_acquired": {
 					"event": "minecraft:adult_become_angry",
 					"target": "self"
+				},
+				"minecraft:on_friendly_anger": {
+					"event": "minecraft:adult_become_angry",
+					"target": "self"
 				}
 			},
 			"minecraft:angery_stegosaurus_adult": {
@@ -374,8 +396,8 @@
 						"mate_type": "rift:stegosaurus",
 						"baby_type": "rift:stegosaurus",
 						"breed_event": {
-							"event": "minecraft:entity_born",
-							"target": "baby"
+							"target": "baby",
+							"event": "minecraft:entity_born"
 						}
 					}
 				},
@@ -544,8 +566,8 @@
 				]
 			},
 			"minecraft:collision_box": {
-				"height": 0.85,
-				"width": 0.85
+				"height": 1,
+				"width": 0.9
 			},
 			"minecraft:behavior.hurt_by_target": {
 				"priority": 1
@@ -560,7 +582,8 @@
 				"attack_duration": 1.75,
 				"hit_delay_pct": 0.5,
 				"track_target": true
-			}
+			},
+			"minecraft:is_hidden_when_invisible": {}
 		},
 		"events": {
 			"minecraft:entity_spawned": {
@@ -647,10 +670,10 @@
 					]
 				}
 			},
-			"minecraft:baby_become_angry": {
+			"minecraft:baby_become_scared": {
 				"add": {
 					"component_groups": [
-						"minecraft:angery_stegosaurus_baby"
+						"minecraft:scared_stegosaurus_baby"
 					]
 				},
 				"remove": {
@@ -679,7 +702,7 @@
 				},
 				"remove": {
 					"component_groups": [
-						"minecraft:angery_stegosaurus_baby"
+						"minecraft:scared_stegosaurus_baby"
 					]
 				}
 			},
