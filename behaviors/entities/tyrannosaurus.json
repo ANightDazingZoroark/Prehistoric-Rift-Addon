@@ -1,4 +1,4 @@
-//bridge-file-version: #126
+//bridge-file-version: #144
 {
 	"format_version": "1.13.0",
 	"minecraft:entity": {
@@ -41,7 +41,8 @@
 						"muttonCooked",
 						"rabbit",
 						"cooked_rabbit",
-						"rotten_flesh"
+						"rotten_flesh",
+						"rift:raw_exotic_meat"
 					],
 					"tame_event": {
 						"event": "minecraft:on_tame",
@@ -63,7 +64,8 @@
 						"muttonCooked",
 						"rabbit",
 						"cooked_rabbit",
-						"rotten_flesh"
+						"rotten_flesh",
+						"rift:raw_exotic_meat"
 					]
 				},
 				"minecraft:behavior.random_stroll": {},
@@ -211,6 +213,10 @@
 						{
 							"item": "rotten_flesh",
 							"growth": 0.08
+						},
+						{
+							"item": "rift:raw_exotic_meat",
+							"growth": 0.25
 						}
 					],
 					"grow_up": {
@@ -237,6 +243,25 @@
 						"mob",
 						"baby",
 						"tamed"
+					]
+				},
+				"minecraft:behavior.tempt": {
+					"priority": 5,
+					"speed_multiplier": 0.5,
+					"within_radius": 16,
+					"items": [
+						"beef",
+						"cooked_beef",
+						"porkchop",
+						"cooked_porkchop",
+						"chicken",
+						"cooked_chicken",
+						"muttonRaw",
+						"muttonCooked",
+						"rabbit",
+						"cooked_rabbit",
+						"rotten_flesh",
+						"rift:raw_exotic_meat"
 					]
 				}
 			},
@@ -381,7 +406,8 @@
 						"muttonCooked",
 						"rabbit",
 						"cooked_rabbit",
-						"rotten_flesh"
+						"rotten_flesh",
+						"rift:raw_exotic_meat"
 					]
 				},
 				"minecraft:scale": {
@@ -448,6 +474,10 @@
 						{
 							"item": "rotten_flesh",
 							"heal_amount": 30
+						},
+						{
+							"item": "rift:raw_exotic_meat",
+							"heal_amount": 25
 						}
 					]
 				},
@@ -463,7 +493,8 @@
 						"muttonCooked",
 						"rabbit",
 						"cooked_rabbit",
-						"rotten_flesh"
+						"rotten_flesh",
+						"rift:raw_exotic_meat"
 					],
 					"breeds_with": {
 						"mate_type": "rift:tyrannosaurus",
@@ -643,7 +674,7 @@
 										"test": "has_equipment",
 										"subject": "other",
 										"domain": "hand",
-										"value": "minecraft:bone"
+										"value": "rift:command_staff"
 									}
 								]
 							},
@@ -664,10 +695,6 @@
 										"operator": "!="
 									},
 									{
-										"test": "is_sneaking",
-										"subject": "other"
-									},
-									{
 										"test": "rider_count",
 										"subject": "self",
 										"operator": "==",
@@ -684,13 +711,19 @@
 										"subject": "self",
 										"operator": "==",
 										"value": "minecraft:is_sheared"
+									},
+									{
+										"test": "has_equipment",
+										"subject": "other",
+										"value": "rift:command_staff"
 									}
 								]
 							},
 							"target": "self",
 							"event": "minecraft:stand_up"
 						},
-						"interact_text": "action.interact.stand"
+						"interact_text": "action.interact.stand",
+						"hurt_item": 6
 					},
 					{
 						"on_interact": {
@@ -700,10 +733,6 @@
 										"test": "is_riding",
 										"subject": "other",
 										"operator": "!="
-									},
-									{
-										"test": "is_sneaking",
-										"subject": "other"
 									},
 									{
 										"test": "rider_count",
@@ -722,13 +751,19 @@
 										"subject": "self",
 										"operator": "!=",
 										"value": "minecraft:is_sheared"
+									},
+									{
+										"test": "has_equipment",
+										"subject": "other",
+										"value": "rift:command_staff"
 									}
 								]
 							},
 							"target": "self",
 							"event": "minecraft:sit_down"
 						},
-						"interact_text": "action.interact.sit"
+						"interact_text": "action.interact.sit",
+						"hurt_item": 6
 					}
 				]
 			},
@@ -754,7 +789,10 @@
 				"hit_delay_pct": 1,
 				"track_target": true
 			},
-			"minecraft:is_hidden_when_invisible": {}
+			"minecraft:is_hidden_when_invisible": {},
+			"minecraft:loot": {
+				"table": "loot_tables/entities/tyrannosaurus.loot.json"
+			}
 		},
 		"events": {
 			"minecraft:entity_spawned": {

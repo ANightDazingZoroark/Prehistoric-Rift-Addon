@@ -1,4 +1,4 @@
-//bridge-file-version: #35
+//bridge-file-version: #42
 {
 	"format_version": "1.13.0",
 	"minecraft:entity": {
@@ -497,10 +497,6 @@
 										"operator": "!="
 									},
 									{
-										"test": "is_sneaking",
-										"subject": "other"
-									},
-									{
 										"test": "rider_count",
 										"subject": "self",
 										"operator": "==",
@@ -517,13 +513,19 @@
 										"subject": "self",
 										"operator": "==",
 										"value": "minecraft:is_sheared"
+									},
+									{
+										"test": "has_equipment",
+										"subject": "other",
+										"value": "rift:command_staff"
 									}
 								]
 							},
 							"event": "minecraft:stand_up",
 							"target": "self"
 						},
-						"interact_text": "action.interact.sit"
+						"interact_text": "action.interact.sit",
+						"hurt_item": 3
 					},
 					{
 						"on_interact": {
@@ -533,10 +535,6 @@
 										"test": "is_riding",
 										"subject": "other",
 										"operator": "!="
-									},
-									{
-										"test": "is_sneaking",
-										"subject": "other"
 									},
 									{
 										"test": "rider_count",
@@ -555,13 +553,19 @@
 										"subject": "self",
 										"operator": "!=",
 										"value": "minecraft:is_sheared"
+									},
+									{
+										"test": "has_equipment",
+										"subject": "other",
+										"value": "rift:command_staff"
 									}
 								]
 							},
 							"event": "minecraft:sit_down",
 							"target": "self"
 						},
-						"interact_text": "action.interact.sit"
+						"interact_text": "action.interact.sit",
+						"hurt_item": 3
 					}
 				]
 			},
@@ -583,7 +587,10 @@
 				"hit_delay_pct": 0.5,
 				"track_target": true
 			},
-			"minecraft:is_hidden_when_invisible": {}
+			"minecraft:is_hidden_when_invisible": {},
+			"minecraft:loot": {
+				"table": "loot_tables/entities/stegosaurus.loot.json"
+			}
 		},
 		"events": {
 			"minecraft:entity_spawned": {
