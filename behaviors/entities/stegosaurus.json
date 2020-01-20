@@ -1,4 +1,4 @@
-//bridge-file-version: #42
+//bridge-file-version: #75
 {
 	"format_version": "1.13.0",
 	"minecraft:entity": {
@@ -38,13 +38,10 @@
 				},
 				"minecraft:tameable": {
 					"probability": 0.33,
-					"tameItems": [
-						"wheat",
-						"carrot",
-						"potato",
-						"beetroot",
-						"apple",
-						"sweet_berries"
+					"tame_items": [
+						"rift:grassy_treat",
+						"rift:rooted_treat",
+						"rift:berry_treat"
 					],
 					"tame_event": {
 						"event": "minecraft:on_tame_baby",
@@ -61,7 +58,10 @@
 						"potato",
 						"beetroot",
 						"apple",
-						"sweet_berries"
+						"sweet_berries",
+						"rift:rooted_treat",
+						"rift:grassy_treat",
+						"rift:berry_treat"
 					]
 				},
 				"minecraft:navigation.walk": {},
@@ -223,7 +223,10 @@
 						"potato",
 						"beetroot",
 						"apple",
-						"sweet_berries"
+						"sweet_berries",
+						"rift:grassy_treat",
+						"rift:rooted_treat",
+						"rift:berry_treat"
 					]
 				},
 				"minecraft:behavior.follow_caravan": {
@@ -238,18 +241,15 @@
 				},
 				"minecraft:tameable": {
 					"probability": 0.33,
-					"tameItems": [
-						"wheat",
-						"carrot",
-						"potato",
-						"beetroot",
-						"apple",
-						"sweet_berries"
-					],
 					"tame_event": {
 						"event": "minecraft:on_tame_adult",
 						"target": "self"
-					}
+					},
+					"tame_items": [
+						"rift:rooted_treat",
+						"rift:grassy_treat",
+						"rift:berry_treat"
+					]
 				},
 				"minecraft:navigation.walk": {},
 				"minecraft:behavior.random_stroll": {},
@@ -413,22 +413,6 @@
 				}
 			},
 			"minecraft:saddled_stegosaurus": {
-				"minecraft:rideable": {
-					"priority": 0,
-					"seat_count": 1,
-					"crouching_skip_interact": true,
-					"family_types": [
-						"player"
-					],
-					"interact_text": "action.interact.ride.horse",
-					"seats": {
-						"position": [
-							-0.065,
-							1.5,
-							-0.2
-						]
-					}
-				},
 				"minecraft:is_saddled": {},
 				"minecraft:input_ground_controlled": {},
 				"minecraft:behavior.player_ride_tamed": {}
@@ -464,6 +448,43 @@
 				"minecraft:is_sheared": {},
 				"minecraft:movement": {
 					"value": 0
+				},
+				"minecraft:on_target_acquired": {
+					"event": "minecraft:sitting_interruption",
+					"filters": {
+						"test": "is_owner",
+						"subject": "other",
+						"operator": "!="
+					}
+				}
+			},
+			"minecraft:interrupted_sitting": {
+				"minecraft:angry": {
+					"duration": 45,
+					"broadcastAnger": false,
+					"calm_event": {
+						"event": "minecraft:stopped_interruption",
+						"target": "self"
+					}
+				},
+				"minecraft:on_target_acquired": {}
+			},
+			"minecraft:can_be_ridden": {
+				"minecraft:rideable": {
+					"priority": 0,
+					"seat_count": 1,
+					"crouching_skip_interact": true,
+					"family_types": [
+						"player"
+					],
+					"interact_text": "action.interact.ride.horse",
+					"seats": {
+						"position": [
+							-0.065,
+							1.5,
+							-0.2
+						]
+					}
 				}
 			}
 		},
@@ -640,7 +661,8 @@
 			"minecraft:tamed_baby_grow_up": {
 				"add": {
 					"component_groups": [
-						"minecraft:tamed_stegosaurus_adult"
+						"minecraft:tamed_stegosaurus_adult",
+						"minecraft:can_be_ridden"
 					]
 				},
 				"remove": {
@@ -667,7 +689,8 @@
 				"add": {
 					"component_groups": [
 						"minecraft:tamed_stegosaurus_adult",
-						"minecraft:standing"
+						"minecraft:standing",
+						"minecraft:can_be_ridden"
 					]
 				},
 				"remove": {
@@ -761,19 +784,47 @@
 				},
 				"remove": {
 					"component_groups": [
-						"minecraft:standing"
+						"minecraft:standing",
+						"minecraft:can_be_ridden"
 					]
 				}
 			},
 			"minecraft:stand_up": {
 				"add": {
 					"component_groups": [
+						"minecraft:standing",
+						"minecraft:can_be_ridden"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"minecraft:sitting"
+					]
+				}
+			},
+			"minecraft:sitting_interruption": {
+				"add": {
+					"component_groups": [
+						"minecraft:interrupted_sitting",
 						"minecraft:standing"
 					]
 				},
 				"remove": {
 					"component_groups": [
 						"minecraft:sitting"
+					]
+				}
+			},
+			"minecraft:stopped_interruption": {
+				"add": {
+					"component_groups": [
+						"minecraft:sitting"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"minecraft:standing",
+						"minecraft:interrupted_sitting"
 					]
 				}
 			}
