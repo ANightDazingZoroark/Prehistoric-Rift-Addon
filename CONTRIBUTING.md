@@ -16,3 +16,4 @@ And there you go. Only problem is that doing so may give you a buggy version not
 # Issues
 * Make sure to give an issue the correct label
 * Don't make the title too vague
+* Don't delete issues. It's pointless anyway, just close them instead
