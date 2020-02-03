@@ -1,841 +1,119 @@
-//bridge-file-version: #82
+//bridge-file-version: #39
 {
-	"format_version": "1.13.0",
+	"format_version": "1.14.0",
 	"minecraft:entity": {
 		"description": {
 			"identifier": "rift:stegosaurus",
-			"is_spawnable": true,
 			"is_summonable": true,
+			"is_spawnable": true,
 			"is_experimental": false
 		},
 		"component_groups": {
-			"minecraft:stegosaurus_baby": {
-				"minecraft:health": {
-					"value": 30
-				},
+			"rift:stegosaurus_baby": {
 				"minecraft:is_baby": {},
-				"minecraft:behavior.follow_parent": {},
-				"minecraft:behavior.follow_caravan": {
-					"entity_count": 4,
-					"entity_types": {
-						"filters": {
-							"test": "is_family",
-							"subject": "other",
-							"value": "stegosaurus"
-						}
-					}
-				},
-				"minecraft:scale_by_age": {
-					"start_scale": 0.3,
-					"end_scale": 1.7
-				},
-				"minecraft:ageable": {
-					"duration": 1200,
-					"grow_up": {
-						"event": "minecraft:wild_baby_grow_up",
-						"target": "self"
-					}
-				},
-				"minecraft:tameable": {
-					"probability": 0.33,
-					"tame_items": [
-						"rift:grassy_treat",
-						"rift:rooted_treat",
-						"rift:berry_treat"
-					],
-					"tame_event": {
-						"event": "minecraft:on_tame_baby",
-						"target": "self"
-					}
-				},
-				"minecraft:behavior.tempt": {
-					"priority": 5,
-					"speed_multiplier": 0.5,
-					"within_radius": 16,
-					"items": [
-						"wheat",
-						"carrot",
-						"potato",
-						"beetroot",
-						"apple",
-						"sweet_berries",
-						"rift:rooted_treat",
-						"rift:grassy_treat",
-						"rift:berry_treat"
-					]
-				},
-				"minecraft:navigation.walk": {},
-				"minecraft:behavior.random_stroll": {},
-				"minecraft:movement.basic": {},
-				"minecraft:movement.generic": {},
-				"minecraft:navigation.generic": {
-					"can_path_over_water": true
-				},
-				"minecraft:movement": {
-					"value": 0.25
-				},
-				"minecraft:type_family": {
-					"family": [
-						"dinosaur",
-						"stegosaurus",
-						"herbivore",
-						"mob",
-						"baby",
-						"wild"
-					]
-				}
-			},
-			"minecraft:stegosaurus_baby_calm": {
-				"minecraft:behavior.nearest_attackable_target": {
-					"entity_types": [
-						{
-							"filters": {
-								"all_of": [
-									{
-										"test": "is_family",
-										"value": "mob"
-									},
-									{
-										"test": "is_family",
-										"operator": "!=",
-										"value": "stegosaurus"
-									}
-								]
-							},
-							"max_dist": 8,
-							"must_see": false
-						}
-					],
-					"priority": 0
-				},
-				"minecraft:on_target_acquired": {
-					"event": "minecraft:baby_become_scared",
-					"target": "self"
-				}
-			},
-			"minecraft:scared_stegosaurus_baby": {
-				"minecraft:angry": {
-					"duration": 60,
-					"broadcastAnger": true,
-					"broadcastRange": 30,
-					"calm_event": {
-						"event": "minecraft:baby_on_calm",
-						"target": "self"
-					}
-				},
-				"minecraft:on_target_acquired": {},
-				"minecraft:behavior.run_around_like_crazy": {
-					"priority": 0
-				}
-			},
-			"minecraft:tamed_stegosaurus_baby": {
 				"minecraft:health": {
 					"value": 30,
 					"max": 40
 				},
-				"minecraft:is_baby": {},
-				"minecraft:is_tamed": {},
-				"minecraft:attack": {
-					"damage": 8
-				},
+				"minecraft:behavior.follow_parent": {},
 				"minecraft:scale_by_age": {
 					"start_scale": 0.3,
-					"end_scale": 1.7
+					"end_scale": 1.75
 				},
 				"minecraft:ageable": {
 					"duration": 1200,
 					"grow_up": {
-						"event": "minecraft:tamed_baby_grow_up",
+						"event": "rift:grow_up",
 						"target": "self"
 					},
 					"feed_items": [
 						{
-							"item": "wheat",
+							"item": "minecraft:wheat",
 							"growth": 0.2
 						},
 						{
-							"item": "carrot",
+							"item": "minecraft:carrot",
 							"growth": 0.2
 						},
 						{
-							"item": "potato",
+							"item": "minecraft:potato",
 							"growth": 0.2
 						},
 						{
-							"item": "beetroot",
+							"item": "minecraft:beetroot",
 							"growth": 0.2
 						},
 						{
-							"item": "apple",
+							"item": "minecraft:apple",
 							"growth": 0.15
 						},
 						{
-							"item": "sweet_berries",
-							"growth": 0.3
+							"item": "minecraft:sweet_berries",
+							"growth": 0.25
 						}
 					]
-				},
-				"minecraft:behavior.tempt": {
-					"priority": 5,
-					"speed_multiplier": 0.5,
-					"within_radius": 16,
-					"items": [
-						"wheat",
-						"carrot",
-						"potato",
-						"beetroot",
-						"apple",
-						"sweet_berries"
-					]
-				},
-				"minecraft:type_family": {
-					"family": [
-						"dinosaur",
-						"stegosaurus",
-						"herbivore",
-						"mob",
-						"baby",
-						"tamed"
-					]
 				}
 			},
-			"minecraft:stegosaurus_adult": {
-				"minecraft:health": {
-					"value": 60
-				},
-				"minecraft:attack": {
-					"damage": 69420666
-				},
-				"minecraft:scale": {
-					"value": 1.7
-				},
-				"minecraft:experience_reward": {
-					"on_bred": "Math.Random(6,9)",
-					"on_death": "query.last_hit_by_player ? Math.Random(6,12) : 0"
-				},
-				"minecraft:behavior.tempt": {
-					"priority": 5,
-					"speed_multiplier": 0.5,
-					"within_radius": 16,
-					"items": [
-						"wheat",
-						"carrot",
-						"potato",
-						"beetroot",
-						"apple",
-						"sweet_berries",
-						"rift:grassy_treat",
-						"rift:rooted_treat",
-						"rift:berry_treat"
-					]
-				},
-				"minecraft:behavior.follow_caravan": {
-					"entity_count": 4,
-					"entity_types": {
-						"filters": {
-							"test": "is_family",
-							"subject": "other",
-							"value": "rift:stegosaurus"
-						}
-					}
-				},
-				"minecraft:tameable": {
-					"probability": 0.33,
-					"tame_event": {
-						"event": "minecraft:on_tame_adult",
-						"target": "self"
-					},
-					"tame_items": [
-						"rift:rooted_treat",
-						"rift:grassy_treat",
-						"rift:berry_treat"
-					]
-				},
-				"minecraft:navigation.walk": {},
-				"minecraft:behavior.random_stroll": {},
-				"minecraft:movement.basic": {},
-				"minecraft:movement.generic": {},
-				"minecraft:navigation.generic": {
-					"can_path_over_water": true
-				},
-				"minecraft:movement": {
-					"value": 0.25
-				},
-				"minecraft:type_family": {
-					"family": [
-						"dinosaur",
-						"stegosaurus",
-						"herbivore",
-						"mob",
-						"adult",
-						"wild"
-					]
-				}
-			},
-			"minecraft:stegosaurus_adult_calm": {
-				"minecraft:on_target_acquired": {
-					"event": "minecraft:adult_become_angry",
-					"target": "self"
-				},
-				"minecraft:on_friendly_anger": {
-					"event": "minecraft:adult_become_angry",
-					"target": "self"
-				}
-			},
-			"minecraft:angery_stegosaurus_adult": {
-				"minecraft:angry": {
-					"duration": 60,
-					"broadcastAnger": true,
-					"broadcastRange": 20,
-					"calm_event": {
-						"event": "minecraft:adult_on_calm",
-						"target": "self"
-					}
-				},
-				"minecraft:on_target_acquired": {}
-			},
-			"minecraft:tamed_stegosaurus_adult": {
+			"rift:stegosaurus_adult": {
 				"minecraft:health": {
 					"value": 60,
 					"max": 65
 				},
 				"minecraft:attack": {
-					"damage": 20
-				},
-				"minecraft:is_tamed": {},
-				"minecraft:behavior.tempt": {
-					"priority": 5,
-					"speed_multiplier": 1.5,
-					"within_radius": 30,
-					"items": [
-						"wheat",
-						"carrot",
-						"potato",
-						"beetroot",
-						"apple",
-						"sweet_berries"
-					]
-				},
-				"minecraft:healable": {
-					"items": [
-						{
-							"item": "wheat",
-							"heal_amount": 15
-						},
-						{
-							"item": "carrot",
-							"heal_amount": 15
-						},
-						{
-							"item": "potato",
-							"heal_amount": 15
-						},
-						{
-							"item": "beetroot",
-							"heal_amount": 15
-						},
-						{
-							"item": "apple",
-							"heal_amount": 12
-						},
-						{
-							"item": "sweet_berries",
-							"heal_amount": 30
-						}
-					]
+					"damage": 69420666
 				},
 				"minecraft:scale": {
-					"value": 1.7
+					"value": 1.75
 				},
-				"minecraft:equippable": {
-					"slots": [
-						{
-							"slot": 0,
-							"item": "saddle",
-							"interact_text": "action.interact.saddle",
-							"accepted_items": [
-								"saddle"
-							],
-							"on_equip": {
-								"event": "minecraft:attach_saddle"
-							},
-							"on_unequip": {
-								"event": "minecraft:remove_saddle"
-							}
-						},
-						{
-							"slot": 1,
-							"item": "chest",
-							"interact_text": "action.interact.attachchest",
-							"accepted_items": [
-								"chest"
-							],
-							"on_equip": {
-								"event": "minecraft:attach_chest"
-							},
-							"on_unequip": {
-								"event": "minecraft:remove_chest"
-							}
-						}
-					]
-				},
-				"minecraft:inventory": {
-					"inventory_size": 17,
-					"container_type": "horse"
-				},
-				"minecraft:breedable": {
-					"breed_items": [
-						"wheat",
-						"carrot",
-						"potato",
-						"beetroot",
-						"apple",
-						"sweet_berries"
-					],
-					"breeds_with": {
-						"mate_type": "rift:stegosaurus",
-						"baby_type": "rift:stegosaurus",
-						"breed_event": {
-							"target": "baby",
-							"event": "minecraft:entity_born"
-						}
-					}
-				},
-				"minecraft:type_family": {
-					"family": [
-						"dinosaur",
-						"stegosaurus",
-						"herbivore",
-						"mob",
-						"adult",
-						"tamed"
-					]
+				"minecraft:experience_reward": {
+					"on_bred": "Math.Random(6,9)",
+					"on_death": "query.last_hit_by_player ? Math.Random(6,12) : 0"
 				}
 			},
-			"minecraft:saddled_stegosaurus": {
-				"minecraft:is_saddled": {},
-				"minecraft:input_ground_controlled": {},
-				"minecraft:behavior.player_ride_tamed": {}
-			},
-			"minecraft:chested_stegosaurus": {
-				"minecraft:is_chested": {}
-			},
-			"minecraft:standing": {
-				"minecraft:navigation.walk": {},
-				"minecraft:behavior.random_stroll": {},
-				"minecraft:movement.basic": {},
-				"minecraft:movement.generic": {},
-				"minecraft:navigation.generic": {
-					"can_path_over_water": true
-				},
-				"minecraft:behavior.owner_hurt_by_target": {
-					"priority": 1
-				},
-				"minecraft:behavior.owner_hurt_target": {
-					"priority": 2
-				},
-				"minecraft:behavior.follow_owner": {
-					"priority": 6,
+			"rift:stegosaurus_wild": {
+				"minecraft:behavior.follow_caravan": {
+					"priority": 2,
+					"entity_count": 4,
 					"speed_multiplier": 1,
-					"start_distance": 18,
-					"stop_distance": 6
+					"entity_types": [
+						{
+							"filters": {
+								"test": "is_family",
+								"subject": "other",
+								"value": "stegosaurus"
+							}
+						}
+					]
 				},
+				"minecraft:behavior.tempt": {
+					"priority": 5,
+					"speed_multiplier": 1,
+					"within_radius": 16,
+					"items": [
+						"minecraft:wheat",
+						"minecraft:carrot",
+						"minecraft:potato",
+						"minecraft:beetroot",
+						"minecraft:apple",
+						"minecraft:sweet_berries",
+						"rift:berry_treat",
+						"rift:rooted_treat",
+						"rift:grassy_treat"
+					]
+				},
+				"minecraft:behavior.random_stroll": {},
 				"minecraft:movement": {
 					"value": 0.25
 				}
 			},
-			"minecraft:sitting": {
-				"minecraft:is_sheared": {},
-				"minecraft:movement": {
-					"value": 0
-				},
-				"minecraft:on_target_acquired": {
-					"event": "minecraft:sitting_interruption",
-					"filters": {
-						"test": "is_owner",
-						"subject": "other",
-						"operator": "!="
-					},
-					"target": "self"
-				}
-			},
-			"minecraft:interrupted_sitting": {
-				"minecraft:angry": {
-					"duration": 45,
-					"broadcastAnger": false,
-					"calm_event": {
-						"event": "minecraft:stopped_interruption",
-						"target": "self"
-					}
-				},
-				"minecraft:on_target_acquired": {},
-				"minecraft:movement": {
-					"value": 0.25
-				},
-				"minecraft:navigation.walk": {},
-				"minecraft:movement.basic": {},
-				"minecraft:navigation.generic": {
-					"can_path_over_water": true
-				}
-			},
-			"minecraft:can_be_ridden": {
-				"minecraft:rideable": {
-					"priority": 0,
-					"seat_count": 1,
-					"crouching_skip_interact": true,
-					"family_types": [
-						"player"
-					],
-					"interact_text": "action.interact.ride.horse",
-					"seats": {
-						"position": [
-							-0.065,
-							1.5,
-							-0.2
-						]
-					}
-				}
-			}
+			"rift:stegosaurus_tamed": {},
+			"rift:stegosaurus_tamed_standing": {},
+			"rift:stegosaurus_tamed_sitting": {},
+			"rift:stegosaurus_rideable": {},
+			"rift:stegosaurus_saddled": {},
+			"rift:stegosaurus_angery": {}
 		},
-		"components": {
-			"minecraft:breathable": {
-				"totalSupply": 15,
-				"suffocateTime": 0
-			},
-			"minecraft:leashable": {
-				"soft_distance": 4,
-				"hard_distance": 8,
-				"max_distance": 12,
-				"on_leash": {
-					"event": "minecraft:on_leash",
-					"target": "self"
-				},
-				"on_unleash": {
-					"event": "minecraft:on_unleash",
-					"target": "self"
-				}
-			},
-			"minecraft:interact": {
-				"interactions": [
-					{
-						"on_interact": {
-							"filters": {
-								"all_of": [
-									{
-										"test": "is_riding",
-										"subject": "other",
-										"operator": "!="
-									},
-									{
-										"test": "rider_count",
-										"subject": "self",
-										"operator": "==",
-										"value": 0
-									},
-									{
-										"test": "has_component",
-										"subject": "self",
-										"operator": "==",
-										"value": "minecraft:is_tamed"
-									},
-									{
-										"test": "has_component",
-										"subject": "self",
-										"operator": "==",
-										"value": "minecraft:is_sheared"
-									},
-									{
-										"test": "has_equipment",
-										"subject": "other",
-										"value": "rift:command_staff"
-									}
-								]
-							},
-							"event": "minecraft:stand_up",
-							"target": "self"
-						},
-						"interact_text": "action.interact.sit",
-						"hurt_item": 3
-					},
-					{
-						"on_interact": {
-							"filters": {
-								"all_of": [
-									{
-										"test": "is_riding",
-										"subject": "other",
-										"operator": "!="
-									},
-									{
-										"test": "rider_count",
-										"subject": "self",
-										"operator": "==",
-										"value": 0
-									},
-									{
-										"test": "has_component",
-										"subject": "self",
-										"operator": "==",
-										"value": "minecraft:is_tamed"
-									},
-									{
-										"test": "has_component",
-										"subject": "self",
-										"operator": "!=",
-										"value": "minecraft:is_sheared"
-									},
-									{
-										"test": "has_equipment",
-										"subject": "other",
-										"value": "rift:command_staff"
-									}
-								]
-							},
-							"event": "minecraft:sit_down",
-							"target": "self"
-						},
-						"interact_text": "action.interact.sit",
-						"hurt_item": 3
-					}
-				]
-			},
-			"minecraft:collision_box": {
-				"height": 1,
-				"width": 0.9
-			},
-			"minecraft:behavior.hurt_by_target": {
-				"priority": 1
-			},
-			"minecraft:nameable": {},
-			"minecraft:jump.static": {},
-			"minecraft:physics": {},
-			"minecraft:pushable": {},
-			"minecraft:behavior.breed": {},
-			"minecraft:behavior.delayed_attack": {
-				"priority": 0,
-				"attack_duration": 1.75,
-				"hit_delay_pct": 0.5,
-				"track_target": true,
-				"reach_multiplier": 2.5
-			},
-			"minecraft:is_hidden_when_invisible": {},
-			"minecraft:loot": {
-				"table": "loot_tables/entities/stegosaurus.loot.json"
-			}
-		},
-		"events": {
-			"minecraft:entity_spawned": {
-				"randomize": [
-					{
-						"weight": 85,
-						"add": {
-							"component_groups": [
-								"minecraft:stegosaurus_adult",
-								"minecraft:stegosaurus_adult_calm"
-							]
-						}
-					},
-					{
-						"weight": 15,
-						"add": {
-							"component_groups": [
-								"minecraft:stegosaurus_baby",
-								"minecraft:stegosaurus_baby_calm"
-							]
-						}
-					}
-				]
-			},
-			"minecraft:entity_born": {
-				"add": {
-					"component_groups": [
-						"minecraft:tamed_stegosaurus_baby",
-						"minecraft:standing"
-					]
-				}
-			},
-			"minecraft:wild_baby_grow_up": {
-				"add": {
-					"component_groups": [
-						"minecraft:stegosaurus_adult",
-						"minecraft:stegosaurus_adult_calm"
-					]
-				},
-				"remove": {
-					"component_groups": [
-						"minecraft:stegosaurus_baby",
-						"minecraft:stegosaurus_baby_calm"
-					]
-				}
-			},
-			"minecraft:tamed_baby_grow_up": {
-				"add": {
-					"component_groups": [
-						"minecraft:tamed_stegosaurus_adult",
-						"minecraft:can_be_ridden"
-					]
-				},
-				"remove": {
-					"component_groups": [
-						"minecraft:tamed_stegosaurus_baby"
-					]
-				}
-			},
-			"minecraft:on_tame_baby": {
-				"add": {
-					"component_groups": [
-						"minecraft:tamed_stegosaurus_baby",
-						"minecraft:standing"
-					]
-				},
-				"remove": {
-					"component_groups": [
-						"minecraft:stegosaurus_baby",
-						"minecraft:stegosaurus_baby_calm"
-					]
-				}
-			},
-			"minecraft:on_tame_adult": {
-				"add": {
-					"component_groups": [
-						"minecraft:tamed_stegosaurus_adult",
-						"minecraft:standing",
-						"minecraft:can_be_ridden"
-					]
-				},
-				"remove": {
-					"component_groups": [
-						"minecraft:stegosaurus_adult",
-						"minecraft:stegosaurus_adult_calm"
-					]
-				}
-			},
-			"minecraft:baby_become_scared": {
-				"add": {
-					"component_groups": [
-						"minecraft:scared_stegosaurus_baby"
-					]
-				},
-				"remove": {
-					"component_groups": [
-						"minecraft:stegosaurus_baby_calm"
-					]
-				}
-			},
-			"minecraft:adult_become_angry": {
-				"add": {
-					"component_groups": [
-						"minecraft:angery_stegosaurus_adult"
-					]
-				},
-				"remove": {
-					"component_groups": [
-						"minecraft:stegosaurus_adult_calm"
-					]
-				}
-			},
-			"minecraft:baby_on_calm": {
-				"add": {
-					"component_groups": [
-						"minecraft:stegosaurus_baby_calm"
-					]
-				},
-				"remove": {
-					"component_groups": [
-						"minecraft:scared_stegosaurus_baby"
-					]
-				}
-			},
-			"minecraft:adult_on_calm": {
-				"add": {
-					"component_groups": [
-						"minecraft:stegosaurus_adult_calm"
-					]
-				},
-				"remove": {
-					"component_groups": [
-						"minecraft:angery_stegosaurus_adult"
-					]
-				}
-			},
-			"minecraft:attach_saddle": {
-				"add": {
-					"component_groups": [
-						"minecraft:saddled_stegosaurus"
-					]
-				}
-			},
-			"minecraft:remove_saddle": {
-				"remove": {
-					"component_groups": [
-						"minecraft:saddled_stegosaurus"
-					]
-				}
-			},
-			"minecraft:attach_chest": {
-				"add": {
-					"component_groups": [
-						"minecraft:chested_stegosaurus"
-					]
-				}
-			},
-			"minecraft:remove_chest": {
-				"remove": {
-					"component_groups": [
-						"minecraft:chested_stegosaurus"
-					]
-				}
-			},
-			"minecraft:sit_down": {
-				"add": {
-					"component_groups": [
-						"minecraft:sitting"
-					]
-				},
-				"remove": {
-					"component_groups": [
-						"minecraft:standing",
-						"minecraft:can_be_ridden"
-					]
-				}
-			},
-			"minecraft:stand_up": {
-				"add": {
-					"component_groups": [
-						"minecraft:standing",
-						"minecraft:can_be_ridden"
-					]
-				},
-				"remove": {
-					"component_groups": [
-						"minecraft:sitting"
-					]
-				}
-			},
-			"minecraft:sitting_interruption": {
-				"add": {
-					"component_groups": [
-						"minecraft:interrupted_sitting"
-					]
-				},
-				"remove": {
-					"component_groups": [
-						"minecraft:sitting"
-					]
-				}
-			},
-			"minecraft:stopped_interruption": {
-				"add": {
-					"component_groups": [
-						"minecraft:sitting"
-					]
-				},
-				"remove": {
-					"component_groups": [
-						"minecraft:interrupted_sitting"
-					]
-				}
-			}
-		}
+		"components": {},
+		"events": {}
 	}
 }
