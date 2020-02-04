@@ -1,4 +1,4 @@
-//bridge-file-version: #250
+//bridge-file-version: #271
 {
 	"format_version": "1.14.0",
 	"minecraft:entity": {
@@ -140,6 +140,15 @@
 				}
 			},
 			"rift:tyrannosaurus_wild": {
+				"minecraft:behavior.random_stroll": {},
+				"minecraft:behavior.hurt_by_target": {
+					"priority": 0
+				},
+				"minecraft:movement": {
+					"value": 0.25
+				}
+			},
+			"rift:can_be_tamed": {
 				"minecraft:tameable": {
 					"probability": 0.25,
 					"tame_items": [
@@ -148,11 +157,6 @@
 					"tame_event": {
 						"event": "rift:tame_mob"
 					}
-				},
-				"minecraft:behavior.random_stroll": {},
-				"minecraft:behavior.hurt_by_target": {},
-				"minecraft:movement": {
-					"value": 0.25
 				}
 			},
 			"rift:tyrannosaurus_tamed": {
@@ -250,7 +254,6 @@
 						}
 					]
 				},
-				"minecraft:breedable": {},
 				"minecraft:inventory": {
 					"restrict_to_owner": true,
 					"container_type": "horse",
@@ -435,7 +438,8 @@
 				"family": [
 					"tyrannosaurus",
 					"mob",
-					"carnivore"
+					"carnivore",
+					"dinosaur"
 				]
 			},
 			"minecraft:navigation.walk": {
@@ -556,6 +560,25 @@
 						},
 						"event": "rift:become_ridable",
 						"target": "self"
+					},
+					{
+						"filters": {
+							"all_of": [
+								{
+									"test": "has_component",
+									"subject": "self",
+									"value": "minecraft:is_tamed",
+									"operator": "!="
+								},
+								{
+									"test": "has_component",
+									"subject": "self",
+									"value": "minecraft:is_baby",
+									"operator": "!="
+								}
+							]
+						},
+						"event": "rift:no_longer_tameable"
 					}
 				]
 			}
@@ -597,7 +620,8 @@
 									"component_groups": [
 										"rift:tyrannosaurus_baby",
 										"rift:tyrannosaurus_wild",
-										"rift:tyrannosaurus_hunting"
+										"rift:tyrannosaurus_hunting",
+										"rift:can_be_tamed"
 									]
 								}
 							},
@@ -607,7 +631,8 @@
 									"component_groups": [
 										"rift:tyrannosaurus_baby",
 										"rift:tyrannosaurus_wild",
-										"rift:tyrannosaurus_not_hunting"
+										"rift:tyrannosaurus_not_hunting",
+										"rift:can_be_tamed"
 									]
 								}
 							}
@@ -641,7 +666,8 @@
 					"component_groups": [
 						"rift:tyrannosaurus_wild",
 						"rift:tyrannosaurus_hunting",
-						"rift:tyrannosaurus_not_hunting"
+						"rift:tyrannosaurus_not_hunting",
+						"rift:can_be_tamed"
 					]
 				},
 				"add": {
@@ -731,6 +757,13 @@
 				"add": {
 					"component_groups": [
 						"rift:tyrannosaurus_rideable"
+					]
+				}
+			},
+			"rift:no_longer_tameable": {
+				"remove": {
+					"component_groups": [
+						"rift:can_be_tamed"
 					]
 				}
 			}
