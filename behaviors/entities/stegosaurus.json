@@ -1,4 +1,4 @@
-//bridge-file-version: #158
+//bridge-file-version: #226
 {
 	"format_version": "1.14.0",
 	"minecraft:entity": {
@@ -53,6 +53,11 @@
 						}
 					]
 				},
+				"minecraft:behavior.panic": {
+					"priority": 0
+				}
+			},
+			"rift:stegosaurus_baby_calm": {
 				"minecraft:on_target_acquired": {
 					"filters": {
 						"all_of": [
@@ -71,6 +76,48 @@
 					},
 					"event": "rift:baby_become_scared",
 					"target": "self"
+				},
+				"minecraft:behavior.nearest_attackable_target": {
+					"priority": 2,
+					"must_see": false,
+					"entity_types": [
+						{
+							"filters": {
+								"any_of": [
+									{
+										"test": "is_family",
+										"value": "carnivore",
+										"subject": "other"
+									},
+									{
+										"test": "is_family",
+										"value": "player",
+										"subject": "other"
+									},
+									{
+										"test": "is_family",
+										"value": "villager",
+										"subject": "other"
+									}
+								]
+							}
+						}
+					]
+				}
+			},
+			"rift:stegosaurus_baby_scared": {
+				"minecraft:behavior.run_around_like_crazy": {
+					"priority": 0,
+					"speed_multiplier": 1.25
+				},
+				"minecraft:angry": {
+					"broadcast_anger": true,
+					"duration": 60,
+					"broadcast_range": 30,
+					"calm_event": {
+						"event": "rift:baby_on_calm",
+						"target": "self"
+					}
 				}
 			},
 			"rift:stegosaurus_adult": {
@@ -88,6 +135,26 @@
 					"on_bred": "Math.Random(6,9)",
 					"on_death": "query.last_hit_by_player ? Math.Random(6,12) : 0"
 				},
+				"minecraft:breedable": {
+					"breed_items": [
+						"rift:berry_treat",
+						"rift:grassy_treat",
+						"rift:rooted_treat"
+					],
+					"breeds_with": {
+						"mate_type": "rift:stegosaurus",
+						"baby_type": "rift:stegosaurus",
+						"breed_event": {
+							"event": "minecraft:entity_born",
+							"target": "self"
+						}
+					}
+				},
+				"minecraft:loot": {
+					"table": "loot_tables/entities/stegosaurus_adult.loot.json"
+				}
+			},
+			"rift:stegosaurus_adult_calm": {
 				"minecraft:on_target_acquired": {
 					"filters": {
 						"all_of": [
@@ -136,29 +203,22 @@
 					},
 					"event": "rift:adult_protect_baby",
 					"target": "self"
-				},
-				"minecraft:breedable": {
-					"breed_items": [
-						"rift:berry_treat",
-						"rift:grassy_treat",
-						"rift:rooted_treat"
-					],
-					"breeds_with": {
-						"mate_type": "rift:stegosaurus",
-						"baby_type": "rift:stegosaurus",
-						"breed_event": {
-							"event": "minecraft:entity_born",
-							"target": "self"
-						}
+				}
+			},
+			"rift:stegosaurus_angery": {
+				"minecraft:angry": {
+					"broadcast_anger": true,
+					"duration": 60,
+					"broadcast_range": 30,
+					"calm_event": {
+						"event": "rift:adult_on_calm",
+						"target": "self"
 					}
-				},
-				"minecraft:loot": {
-					"table": "loot_tables/entities/stegosaurus_adult.loot.json"
 				}
 			},
 			"rift:stegosaurus_wild": {
 				"minecraft:behavior.follow_caravan": {
-					"priority": 2,
+					"priority": 1,
 					"entity_count": 4,
 					"speed_multiplier": 1,
 					"entity_types": [
@@ -257,11 +317,6 @@
 						}
 					]
 				},
-				"minecraft:inventory": {
-					"restrict_to_owner": true,
-					"container_type": "horse",
-					"inventory_size": 16
-				},
 				"minecraft:equippable": {
 					"slots": [
 						{
@@ -279,6 +334,11 @@
 							}
 						}
 					]
+				},
+				"minecraft:inventory": {
+					"restrict_to_owner": true,
+					"container_type": "horse",
+					"inventory_size": 16
 				}
 			},
 			"rift:stegosaurus_tamed_standing": {
@@ -345,32 +405,7 @@
 				"minecraft:input_ground_controlled": {},
 				"minecraft:behavior.player_ride_tamed": {}
 			},
-			"rift:stegosaurus_baby_scared": {
-				"minecraft:behavior.run_around_like_crazy": {
-					"priority": 0,
-					"speed_multiplier": 1.25
-				},
-				"minecraft:angry": {
-					"broadcast_anger": true,
-					"duration": 60,
-					"broadcast_range": 30,
-					"calm_event": {
-						"event": "rift:baby_on_calm",
-						"target": "self"
-					}
-				}
-			},
-			"rift:stegosaurus_angery": {
-				"minecraft:angry": {
-					"broadcast_anger": true,
-					"duration": 60,
-					"broadcast_range": 30,
-					"calm_event": {
-						"event": "rift:adult_on_calm",
-						"target": "self"
-					}
-				}
-			},
+			"rift:stegosaurus_inventory": {},
 			"rift:interrupted_sitting": {
 				"minecraft:angry": {
 					"broadcast_anger": false,
@@ -496,21 +531,50 @@
 				"scheduled_events": [
 					{
 						"filters": {
-							"all_of": [
+							"any_of": [
 								{
-									"test": "has_component",
-									"subject": "self",
-									"value": "minecraft:is_baby",
-									"operator": "!="
-								},
-								{
-									"test": "has_component",
-									"subject": "self",
-									"value": "minecraft:is_tamed"
+									"all_of": [
+										{
+											"test": "has_component",
+											"subject": "self",
+											"value": "minecraft:is_tamed"
+										},
+										{
+											"test": "has_component",
+											"subject": "self",
+											"value": "minecraft:is_baby",
+											"operator": "!="
+										},
+										{
+											"test": "has_component",
+											"subject": "self",
+											"value": "minecraft:is_sheared",
+											"operator": "!="
+										}
+									]
 								}
 							]
 						},
 						"event": "rift:become_ridable",
+						"target": "self"
+					},
+					{
+						"filters": {
+							"all_of": [
+								{
+									"test": "has_component",
+									"subject": "self",
+									"value": "minecraft:is_sheared"
+								},
+								{
+									"test": "rider_count",
+									"subject": "self",
+									"value": 0,
+									"operator": "=="
+								}
+							]
+						},
+						"event": "rift:become_unridable",
 						"target": "self"
 					}
 				]
@@ -524,6 +588,7 @@
 						"add": {
 							"component_groups": [
 								"rift:stegosaurus_adult",
+								"rift:stegosaurus_adult_calm",
 								"rift:stegosaurus_wild"
 							]
 						}
@@ -533,6 +598,7 @@
 						"add": {
 							"component_groups": [
 								"rift:stegosaurus_baby",
+								"rift:stegosaurus_baby_calm",
 								"rift:stegosaurus_wild"
 							]
 						}
@@ -542,12 +608,14 @@
 			"rift:grow_up": {
 				"add": {
 					"component_groups": [
-						"rift:stegosaurus_adult"
+						"rift:stegosaurus_adult",
+						"rift:stegosaurus_adult_calm"
 					]
 				},
 				"remove": {
 					"component_groups": [
-						"rift:stegosaurus_baby"
+						"rift:stegosaurus_baby",
+						"rift:stegosaurus_baby_calm"
 					]
 				}
 			},
@@ -555,6 +623,11 @@
 				"add": {
 					"component_groups": [
 						"rift:stegosaurus_baby_scared"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:stegosaurus_baby_calm"
 					]
 				}
 			},
@@ -590,9 +663,11 @@
 				},
 				"remove": {
 					"component_groups": [
-						"rift:stegosaurus_wild",
+						"rift:stegosaurus_adult_calm",
 						"rift:stegosaurus_angery",
-						"rift:stegosaurus_baby_scared"
+						"rift:stegosaurus_baby_scared",
+						"rift:stegosaurus_baby_calm",
+						"rift:stegosaurus_wild"
 					]
 				}
 			},
@@ -623,6 +698,11 @@
 				}
 			},
 			"rift:baby_on_calm": {
+				"add": {
+					"component_groups": [
+						"rift:stegosaurus_baby_calm"
+					]
+				},
 				"remove": {
 					"component_groups": [
 						"rift:stegosaurus_baby_scared"
@@ -674,6 +754,13 @@
 			},
 			"rift:become_ridable": {
 				"add": {
+					"component_groups": [
+						"rift:stegosaurus_rideable"
+					]
+				}
+			},
+			"rift:become_unridable": {
+				"remove": {
 					"component_groups": [
 						"rift:stegosaurus_rideable"
 					]
