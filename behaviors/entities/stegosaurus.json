@@ -1,4 +1,4 @@
-//bridge-file-version: #226
+//bridge-file-version: #240
 {
 	"format_version": "1.14.0",
 	"minecraft:entity": {
@@ -316,29 +316,6 @@
 							"heal_amount": 20
 						}
 					]
-				},
-				"minecraft:equippable": {
-					"slots": [
-						{
-							"slot": 0,
-							"accepted_items": [
-								"minecraft:saddle"
-							],
-							"item": "minecraft:saddle",
-							"interact_text": "action.interact.saddle",
-							"on_equip": {
-								"event": "rift:attach_saddle"
-							},
-							"on_unequip": {
-								"event": "rift:remove_saddle"
-							}
-						}
-					]
-				},
-				"minecraft:inventory": {
-					"restrict_to_owner": true,
-					"container_type": "horse",
-					"inventory_size": 16
 				}
 			},
 			"rift:stegosaurus_tamed_standing": {
@@ -405,7 +382,6 @@
 				"minecraft:input_ground_controlled": {},
 				"minecraft:behavior.player_ride_tamed": {}
 			},
-			"rift:stegosaurus_inventory": {},
 			"rift:interrupted_sitting": {
 				"minecraft:angry": {
 					"broadcast_anger": false,
@@ -418,6 +394,27 @@
 				"minecraft:movement": {
 					"value": 0.25
 				}
+			},
+			"rift:stegosaurus_inventory": {
+				"minecraft:equippable": {
+					"slots": [
+						{
+							"slot": 0,
+							"accepted_items": [
+								"minecraft:saddle"
+							],
+							"item": "minecraft:saddle",
+							"interact_text": "action.interact.saddle",
+							"on_equip": {
+								"event": "rift:attach_saddle"
+							},
+							"on_unequip": {
+								"event": "rift:remove_saddle"
+							}
+						}
+					]
+				},
+				"minecraft:inventory": {}
 			}
 		},
 		"components": {
@@ -575,6 +572,25 @@
 							]
 						},
 						"event": "rift:become_unridable",
+						"target": "self"
+					},
+					{
+						"filters": {
+							"all_of": [
+								{
+									"test": "has_component",
+									"subject": "self",
+									"value": "minecraft:is_baby",
+									"operator": "!="
+								},
+								{
+									"test": "has_component",
+									"subject": "self",
+									"value": "minecraft:is_tamed"
+								}
+							]
+						},
+						"event": "rift:get_inventory",
 						"target": "self"
 					}
 				]
@@ -763,6 +779,13 @@
 				"remove": {
 					"component_groups": [
 						"rift:stegosaurus_rideable"
+					]
+				}
+			},
+			"rift:get_inventory": {
+				"add": {
+					"component_groups": [
+						"rift:stegosaurus_inventory"
 					]
 				}
 			}
