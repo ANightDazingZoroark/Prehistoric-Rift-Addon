@@ -1,4 +1,4 @@
-//bridge-file-version: #465
+//bridge-file-version: #511
 {
 	"format_version": "1.14.0",
 	"minecraft:entity": {
@@ -284,7 +284,18 @@
 						}
 					]
 				},
-				"minecraft:behavior.player_ride_tamed": {}
+				"minecraft:behavior.player_ride_tamed": {},
+				"minecraft:rideable": {
+					"seats": [
+						{
+							"position": [
+								0,
+								1.6,
+								0.3
+							]
+						}
+					]
+				}
 			},
 			"rift:tyrannosaurus_not_hunting": {
 				"minecraft:timer": {
@@ -434,19 +445,7 @@
 				"minecraft:is_chested": {},
 				"minecraft:input_ground_controlled": {}
 			},
-			"rift:rideable": {
-				"minecraft:rideable": {
-					"seats": [
-						{
-							"position": [
-								0,
-								1.6,
-								0.3
-							]
-						}
-					]
-				}
-			}
+			"rift:rideable": {}
 		},
 		"components": {
 			"minecraft:type_family": {
@@ -743,10 +742,19 @@
 				"sequence": [
 					{
 						"filters": {
-							"test": "has_component",
-							"subject": "self",
-							"operator": "!=",
-							"value": "minecraft:is_baby"
+							"all_of": [
+								{
+									"test": "has_component",
+									"subject": "self",
+									"value": "minecraft:is_baby",
+									"operator": "!="
+								},
+								{
+									"test": "has_component",
+									"subject": "self",
+									"value": "minecraft:behavior.player_ride_tamed"
+								}
+							]
 						},
 						"add": {
 							"component_groups": [
@@ -770,12 +778,21 @@
 				"sequence": [
 					{
 						"filters": {
-							"test": "has_component",
-							"subject": "self",
-							"operator": "!=",
-							"value": "minecraft:is_baby"
+							"all_of": [
+								{
+									"test": "has_component",
+									"subject": "self",
+									"value": "minecraft:is_baby",
+									"operator": "!="
+								},
+								{
+									"test": "has_component",
+									"subject": "self",
+									"value": "minecraft:behavior.player_ride_tamed"
+								}
+							]
 						},
-						"remove": {
+						"add": {
 							"component_groups": [
 								"rift:rideable"
 							]
