@@ -1,4 +1,4 @@
-//bridge-file-version: #473
+//bridge-file-version: #478
 {
 	"format_version": "1.14.0",
 	"minecraft:entity": {
@@ -328,18 +328,7 @@
 						}
 					]
 				},
-				"minecraft:behavior.player_ride_tamed": {},
-				"minecraft:rideable": {
-					"seats": [
-						{
-							"position": [
-								-0.065,
-								1.5,
-								-0.2
-							]
-						}
-					]
-				}
+				"minecraft:behavior.player_ride_tamed": {}
 			},
 			"rift:standing": {
 				"minecraft:behavior.owner_hurt_by_target": {
@@ -367,6 +356,19 @@
 				"minecraft:is_saddled": {},
 				"minecraft:is_chested": {},
 				"minecraft:input_ground_controlled": {}
+			},
+			"rift:rideable": {
+				"minecraft:rideable": {
+					"seats": [
+						{
+							"position": [
+								-0.065,
+								1.5,
+								-0.2
+							]
+						}
+					]
+				}
 			}
 		},
 		"components": {
@@ -645,30 +647,6 @@
 					]
 				}
 			},
-			"rift:stand_up": {
-				"add": {
-					"component_groups": [
-						"rift:standing"
-					]
-				},
-				"remove": {
-					"component_groups": [
-						"rift:sitting"
-					]
-				}
-			},
-			"rift:sit_down": {
-				"add": {
-					"component_groups": [
-						"rift:sitting"
-					]
-				},
-				"remove": {
-					"component_groups": [
-						"rift:standing"
-					]
-				}
-			},
 			"rift:tamed_baby_grow_up": {
 				"add": {
 					"component_groups": [
@@ -681,6 +659,82 @@
 						"rift:stegosaurus_adult_calm"
 					]
 				}
+			},
+			"rift:stand_up": {
+				"sequence": [
+					{
+						"filters": {
+							"all_of": [
+								{
+									"test": "has_component",
+									"subject": "self",
+									"value": "minecraft:is_baby",
+									"operator": "!="
+								},
+								{
+									"test": "has_component",
+									"subject": "self",
+									"value": "minecraft:behavior.player_ride_tamed"
+								}
+							]
+						},
+						"add": {
+							"component_groups": [
+								"rift:rideable"
+							]
+						}
+					},
+					{
+						"add": {
+							"component_groups": [
+								"rift:standing"
+							]
+						},
+						"remove": {
+							"component_groups": [
+								"rift:sitting"
+							]
+						}
+					}
+				]
+			},
+			"rift:sit_down": {
+				"sequence": [
+					{
+						"filters": {
+							"all_of": [
+								{
+									"test": "has_component",
+									"subject": "self",
+									"value": "minecraft:is_baby",
+									"operator": "!="
+								},
+								{
+									"test": "has_component",
+									"subject": "self",
+									"value": "minecraft:behavior.player_ride_tamed"
+								}
+							]
+						},
+						"remove": {
+							"component_groups": [
+								"rift:rideable"
+							]
+						}
+					},
+					{
+						"add": {
+							"component_groups": [
+								"rift:sitting"
+							]
+						},
+						"remove": {
+							"component_groups": [
+								"rift:standing"
+							]
+						}
+					}
+				]
 			}
 		}
 	}
