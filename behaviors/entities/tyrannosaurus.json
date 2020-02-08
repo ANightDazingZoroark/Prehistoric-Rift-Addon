@@ -1,4 +1,4 @@
-//bridge-file-version: #438
+//bridge-file-version: #465
 {
 	"format_version": "1.14.0",
 	"minecraft:entity": {
@@ -284,18 +284,7 @@
 						}
 					]
 				},
-				"minecraft:behavior.player_ride_tamed": {},
-				"minecraft:rideable": {
-					"seats": [
-						{
-							"position": [
-								0,
-								1.6,
-								0.3
-							]
-						}
-					]
-				}
+				"minecraft:behavior.player_ride_tamed": {}
 			},
 			"rift:tyrannosaurus_not_hunting": {
 				"minecraft:timer": {
@@ -444,6 +433,19 @@
 				"minecraft:is_saddled": {},
 				"minecraft:is_chested": {},
 				"minecraft:input_ground_controlled": {}
+			},
+			"rift:rideable": {
+				"minecraft:rideable": {
+					"seats": [
+						{
+							"position": [
+								0,
+								1.6,
+								0.3
+							]
+						}
+					]
+				}
 			}
 		},
 		"components": {
@@ -737,7 +739,22 @@
 					"component_groups": [
 						"rift:sitting"
 					]
-				}
+				},
+				"sequence": [
+					{
+						"filters": {
+							"test": "has_component",
+							"subject": "self",
+							"operator": "!=",
+							"value": "minecraft:is_baby"
+						},
+						"add": {
+							"component_groups": [
+								"rift:rideable"
+							]
+						}
+					}
+				]
 			},
 			"rift:sit_down": {
 				"add": {
@@ -749,7 +766,22 @@
 					"component_groups": [
 						"rift:standing"
 					]
-				}
+				},
+				"sequence": [
+					{
+						"filters": {
+							"test": "has_component",
+							"subject": "self",
+							"operator": "!=",
+							"value": "minecraft:is_baby"
+						},
+						"remove": {
+							"component_groups": [
+								"rift:rideable"
+							]
+						}
+					}
+				]
 			},
 			"rift:tamed_baby_grow_up": {
 				"add": {
