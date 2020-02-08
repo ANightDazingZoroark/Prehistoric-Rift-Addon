@@ -1,4 +1,4 @@
-//bridge-file-version: #511
+//bridge-file-version: #517
 {
 	"format_version": "1.14.0",
 	"minecraft:entity": {
@@ -284,18 +284,7 @@
 						}
 					]
 				},
-				"minecraft:behavior.player_ride_tamed": {},
-				"minecraft:rideable": {
-					"seats": [
-						{
-							"position": [
-								0,
-								1.6,
-								0.3
-							]
-						}
-					]
-				}
+				"minecraft:behavior.player_ride_tamed": {}
 			},
 			"rift:tyrannosaurus_not_hunting": {
 				"minecraft:timer": {
@@ -445,7 +434,22 @@
 				"minecraft:is_chested": {},
 				"minecraft:input_ground_controlled": {}
 			},
-			"rift:rideable": {}
+			"rift:rideable": {
+				"minecraft:rideable": {
+					"priority": 0,
+					"seats": [
+						{
+							"position": [
+								0,
+								1.6,
+								0.3
+							]
+						}
+					],
+					"seat_count": 1,
+					"interact_text": "action.interact.ride.horse"
+				}
+			}
 		},
 		"components": {
 			"minecraft:type_family": {
@@ -729,16 +733,6 @@
 				}
 			},
 			"rift:stand_up": {
-				"add": {
-					"component_groups": [
-						"rift:standing"
-					]
-				},
-				"remove": {
-					"component_groups": [
-						"rift:sitting"
-					]
-				},
 				"sequence": [
 					{
 						"filters": {
@@ -761,20 +755,22 @@
 								"rift:rideable"
 							]
 						}
+					},
+					{
+						"add": {
+							"component_groups": [
+								"rift:standing"
+							]
+						},
+						"remove": {
+							"component_groups": [
+								"rift:sitting"
+							]
+						}
 					}
 				]
 			},
 			"rift:sit_down": {
-				"add": {
-					"component_groups": [
-						"rift:sitting"
-					]
-				},
-				"remove": {
-					"component_groups": [
-						"rift:standing"
-					]
-				},
 				"sequence": [
 					{
 						"filters": {
@@ -792,9 +788,21 @@
 								}
 							]
 						},
-						"add": {
+						"remove": {
 							"component_groups": [
 								"rift:rideable"
+							]
+						}
+					},
+					{
+						"add": {
+							"component_groups": [
+								"rift:sitting"
+							]
+						},
+						"remove": {
+							"component_groups": [
+								"rift:standing"
 							]
 						}
 					}
