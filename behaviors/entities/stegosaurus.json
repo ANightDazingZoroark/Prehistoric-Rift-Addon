@@ -1,4 +1,4 @@
-//bridge-file-version: #478
+//bridge-file-version: #491
 {
 	"format_version": "1.14.0",
 	"minecraft:entity": {
@@ -354,8 +354,10 @@
 			},
 			"rift:stegosaurus_saddled": {
 				"minecraft:is_saddled": {},
-				"minecraft:is_chested": {},
 				"minecraft:input_ground_controlled": {}
+			},
+			"rift:stegosaurus_chested": {
+				"minecraft:is_chested": {}
 			},
 			"rift:rideable": {
 				"minecraft:rideable": {
@@ -480,6 +482,45 @@
 						},
 						"hurt_item": 3,
 						"interact_text": "action.interact.sit"
+					},
+					{
+						"on_interact": {
+							"filters": {
+								"all_of": [
+									{
+										"test": "has_equipment",
+										"subject": "other",
+										"domain": "hand",
+										"value": "minecraft:chest"
+									},
+									{
+										"test": "is_owner",
+										"subject": "other",
+										"value": true
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_baby",
+										"operator": "!="
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_tamed"
+									},
+									{
+										"test": "is_sneaking",
+										"subject": "other",
+										"value": true
+									}
+								]
+							},
+							"event": "rift:attach_chest",
+							"target": "self"
+						},
+						"interact_text": "action.interact.attachchest",
+						"use_item": true
 					}
 				]
 			},
@@ -735,6 +776,13 @@
 						}
 					}
 				]
+			},
+			"rift:attach_chest": {
+				"add": {
+					"component_groups": [
+						"rift:stegosaurus_chested"
+					]
+				}
 			}
 		}
 	}
