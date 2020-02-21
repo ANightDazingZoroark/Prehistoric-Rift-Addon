@@ -1,4 +1,4 @@
-//bridge-file-version: #531
+//bridge-file-version: #629
 {
 	"format_version": "1.14.0",
 	"minecraft:entity": {
@@ -262,7 +262,9 @@
 				},
 				"minecraft:inventory": {
 					"container_type": "horse",
-					"inventory_size": 16
+					"inventory_size": 16,
+					"restrict_to_owner": true,
+					"private": false
 				},
 				"minecraft:equippable": {
 					"slots": [
@@ -429,13 +431,32 @@
 				},
 				"minecraft:is_sheared": {}
 			},
+			"rift:tyrannosaurus_tamed": {
+				"minecraft:sittable": {
+					"sit_event": {
+						"event": "rift:sit_down",
+						"target": "self"
+					},
+					"stand_event": {
+						"event": "rift:stand_up",
+						"target": "self"
+					}
+				}
+			},
 			"rift:tyrannosaurus_saddled": {
 				"minecraft:is_saddled": {},
 				"minecraft:input_ground_controlled": {}
 			},
+			"rift:tyrannosaurus_chested": {
+				"minecraft:is_chested": {}
+			},
 			"rift:rideable": {
 				"minecraft:rideable": {
-					"priority": 0,
+					"seat_count": 1,
+					"family_types": [
+						"player"
+					],
+					"interact_text": "action.interact.mount",
 					"seats": [
 						{
 							"position": [
@@ -444,13 +465,8 @@
 								0.3
 							]
 						}
-					],
-					"seat_count": 1,
-					"interact_text": "action.interact.ride.horse"
+					]
 				}
-			},
-			"rift:tyrannosaurus_chested": {
-				"minecraft:is_chested": {}
 			}
 		},
 		"components": {
@@ -502,89 +518,10 @@
 							"filters": {
 								"all_of": [
 									{
-										"test": "is_riding",
-										"operator": "!=",
-										"subject": "other"
-									},
-									{
-										"test": "has_component",
-										"value": "minecraft:is_tamed",
-										"subject": "self"
-									},
-									{
-										"test": "has_component",
-										"value": "minecraft:is_sheared",
-										"subject": "self"
-									},
-									{
-										"test": "has_equipment",
-										"value": "rift:command_staff",
-										"subject": "other"
-									}
-								]
-							},
-							"event": "rift:stand_up",
-							"target": "self"
-						},
-						"interact_text": "action.interact.stand"
-					},
-					{
-						"on_interact": {
-							"filters": {
-								"all_of": [
-									{
-										"test": "is_riding",
-										"operator": "!=",
-										"subject": "other"
-									},
-									{
-										"test": "has_component",
-										"value": "minecraft:is_tamed",
-										"subject": "self"
-									},
-									{
-										"test": "has_component",
-										"value": "minecraft:is_sheared",
-										"subject": "self",
-										"operator": "!="
-									},
-									{
-										"test": "has_equipment",
-										"value": "rift:command_staff",
-										"subject": "other"
-									}
-								]
-							},
-							"event": "rift:sit_down",
-							"target": "self"
-						},
-						"interact_text": "action.interact.sit"
-					},
-					{
-						"on_interact": {
-							"filters": {
-								"all_of": [
-									{
 										"test": "has_equipment",
 										"subject": "other",
 										"domain": "hand",
 										"value": "minecraft:chest"
-									},
-									{
-										"test": "is_owner",
-										"subject": "other",
-										"value": true
-									},
-									{
-										"test": "has_component",
-										"subject": "self",
-										"value": "minecraft:is_baby",
-										"operator": "!="
-									},
-									{
-										"test": "has_component",
-										"subject": "self",
-										"value": "minecraft:is_tamed"
 									},
 									{
 										"test": "is_sneaking",
@@ -596,32 +533,8 @@
 							"event": "rift:attach_chest",
 							"target": "self"
 						},
-						"interact_text": "action.interact.attachchest",
-						"use_item": true
-					}
-				]
-			},
-			"minecraft:scheduler": {
-				"scheduled_events": [
-					{
-						"filters": {
-							"all_of": [
-								{
-									"test": "has_component",
-									"subject": "self",
-									"value": "minecraft:is_baby",
-									"operator": "!="
-								},
-								{
-									"test": "has_component",
-									"subject": "self",
-									"value": "minecraft:is_tamed",
-									"operator": "=="
-								}
-							]
-						},
-						"event": "rift:tamed_baby_grow_up",
-						"target": "self"
+						"use_item": true,
+						"interact_text": "action.interact.attachchest"
 					}
 				]
 			}
@@ -682,24 +595,51 @@
 				]
 			},
 			"rift:baby_grow_up": {
-				"add": {
-					"component_groups": [
-						"rift:tyrannosaurus_adult",
-						"rift:tyrannosaurus_adult_wild"
-					]
-				},
-				"remove": {
-					"component_groups": [
-						"rift:tyrannosaurus_baby",
-						"rift:tyrannosaurus_baby_wild"
-					]
-				}
+				"sequence": [
+					{
+						"add": {
+							"component_groups": [
+								"rift:tyrannosaurus_adult",
+								"rift:tyrannosaurus_adult_wild"
+							]
+						},
+						"remove": {
+							"component_groups": [
+								"rift:tyrannosaurus_baby",
+								"rift:tyrannosaurus_baby_wild"
+							]
+						}
+					},
+					{
+						"filters": {
+							"all_of": [
+								{
+									"test": "has_component",
+									"subject": "self",
+									"value": "minecraft:is_tamed",
+									"operator": "=="
+								}
+							]
+						},
+						"add": {
+							"component_groups": [
+								"rift:tyrannosaurus_adult_tamed"
+							]
+						},
+						"remove": {
+							"component_groups": [
+								"rift:tyrannosaurus_adult_wild"
+							]
+						}
+					}
+				]
 			},
 			"rift:on_tame": {
 				"add": {
 					"component_groups": [
 						"rift:tyrannosaurus_baby_tamed",
-						"rift:standing"
+						"rift:standing",
+						"rift:tyrannosaurus_tamed"
 					]
 				},
 				"remove": {
@@ -774,6 +714,18 @@
 			"rift:stand_up": {
 				"sequence": [
 					{
+						"add": {
+							"component_groups": [
+								"rift:standing"
+							]
+						},
+						"remove": {
+							"component_groups": [
+								"rift:sitting"
+							]
+						}
+					},
+					{
 						"filters": {
 							"all_of": [
 								{
@@ -792,18 +744,6 @@
 						"add": {
 							"component_groups": [
 								"rift:rideable"
-							]
-						}
-					},
-					{
-						"add": {
-							"component_groups": [
-								"rift:standing"
-							]
-						},
-						"remove": {
-							"component_groups": [
-								"rift:sitting"
 							]
 						}
 					}
@@ -812,6 +752,18 @@
 			"rift:sit_down": {
 				"sequence": [
 					{
+						"add": {
+							"component_groups": [
+								"rift:sitting"
+							]
+						},
+						"remove": {
+							"component_groups": [
+								"rift:standing"
+							]
+						}
+					},
+					{
 						"filters": {
 							"all_of": [
 								{
@@ -832,32 +784,8 @@
 								"rift:rideable"
 							]
 						}
-					},
-					{
-						"add": {
-							"component_groups": [
-								"rift:sitting"
-							]
-						},
-						"remove": {
-							"component_groups": [
-								"rift:standing"
-							]
-						}
 					}
 				]
-			},
-			"rift:tamed_baby_grow_up": {
-				"add": {
-					"component_groups": [
-						"rift:tyrannosaurus_adult_tamed"
-					]
-				},
-				"remove": {
-					"component_groups": [
-						"rift:tyrannosaurus_adult_wild"
-					]
-				}
 			},
 			"rift:attach_chest": {
 				"add": {

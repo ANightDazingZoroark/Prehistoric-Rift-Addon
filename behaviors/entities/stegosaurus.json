@@ -1,4 +1,4 @@
-//bridge-file-version: #494
+//bridge-file-version: #507
 {
 	"format_version": "1.14.0",
 	"minecraft:entity": {
@@ -352,6 +352,18 @@
 				},
 				"minecraft:is_sheared": {}
 			},
+			"rift:stegosaurus_tamed": {
+				"minecraft:sittable": {
+					"sit_event": {
+						"event": "rift:sit_down",
+						"target": "self"
+					},
+					"stand_event": {
+						"event": "rift:stand_up",
+						"target": "self"
+					}
+				}
+			},
 			"rift:stegosaurus_saddled": {
 				"minecraft:is_saddled": {},
 				"minecraft:input_ground_controlled": {}
@@ -423,69 +435,6 @@
 							"filters": {
 								"all_of": [
 									{
-										"test": "is_riding",
-										"operator": "!=",
-										"subject": "other"
-									},
-									{
-										"test": "has_component",
-										"value": "minecraft:is_tamed",
-										"subject": "self"
-									},
-									{
-										"test": "has_component",
-										"value": "minecraft:is_sheared",
-										"subject": "self"
-									},
-									{
-										"test": "has_equipment",
-										"value": "rift:command_staff",
-										"subject": "other"
-									}
-								]
-							},
-							"event": "rift:stand_up",
-							"target": "self"
-						},
-						"interact_text": "action.interact.stand"
-					},
-					{
-						"on_interact": {
-							"filters": {
-								"all_of": [
-									{
-										"test": "is_riding",
-										"operator": "!=",
-										"subject": "other"
-									},
-									{
-										"test": "has_component",
-										"value": "minecraft:is_tamed",
-										"subject": "self"
-									},
-									{
-										"test": "has_component",
-										"value": "minecraft:is_sheared",
-										"subject": "self",
-										"operator": "!="
-									},
-									{
-										"test": "has_equipment",
-										"value": "rift:command_staff",
-										"subject": "other"
-									}
-								]
-							},
-							"event": "rift:sit_down",
-							"target": "self"
-						},
-						"interact_text": "action.interact.sit"
-					},
-					{
-						"on_interact": {
-							"filters": {
-								"all_of": [
-									{
 										"test": "has_equipment",
 										"subject": "other",
 										"domain": "hand",
@@ -519,29 +468,6 @@
 						},
 						"interact_text": "action.interact.attachchest",
 						"use_item": true
-					}
-				]
-			},
-			"minecraft:scheduler": {
-				"scheduled_events": [
-					{
-						"filters": {
-							"all_of": [
-								{
-									"test": "has_component",
-									"value": "minecraft:is_tamed",
-									"subject": "self"
-								},
-								{
-									"test": "has_component",
-									"value": "minecraft:is_baby",
-									"subject": "self",
-									"operator": "!="
-								}
-							]
-						},
-						"event": "rift:tamed_baby_grow_up",
-						"target": "self"
 					}
 				]
 			}
@@ -581,26 +507,53 @@
 				}
 			},
 			"rift:grow_up": {
-				"add": {
-					"component_groups": [
-						"rift:stegosaurus_adult",
-						"rift:stegosaurus_adult_wild",
-						"rift:stegosaurus_adult_calm"
-					]
-				},
-				"remove": {
-					"component_groups": [
-						"rift:stegosaurus_baby",
-						"rift:stegosaurus_baby_wild",
-						"rift:stegosaurus_baby_calm"
-					]
-				}
+				"sequence": [
+					{
+						"add": {
+							"component_groups": [
+								"rift:stegosaurus_adult",
+								"rift:stegosaurus_adult_wild",
+								"rift:stegosaurus_adult_calm"
+							]
+						},
+						"remove": {
+							"component_groups": [
+								"rift:stegosaurus_baby",
+								"rift:stegosaurus_baby_wild",
+								"rift:stegosaurus_baby_calm"
+							]
+						}
+					},
+					{
+						"filters": {
+							"all_of": [
+								{
+									"test": "has_component",
+									"value": "minecraft:is_tamed",
+									"subject": "self"
+								}
+							]
+						},
+						"add": {
+							"component_groups": [
+								"rift:stegosaurus_adult_tamed"
+							]
+						},
+						"remove": {
+							"component_groups": [
+								"rift:stegosaurus_adult_wild",
+								"rift:stegosaurus_adult_calm"
+							]
+						}
+					}
+				]
 			},
 			"rift:baby_on_tame": {
 				"add": {
 					"component_groups": [
 						"rift:stegosaurus_baby_tamed",
-						"rift:standing"
+						"rift:standing",
+						"rift:stegosaurus_tamed"
 					]
 				},
 				"remove": {
@@ -638,7 +591,8 @@
 				"add": {
 					"component_groups": [
 						"rift:stegosaurus_adult_tamed",
-						"rift:standing"
+						"rift:standing",
+						"rift:stegosaurus_tamed"
 					]
 				},
 				"remove": {
@@ -683,19 +637,6 @@
 				"remove": {
 					"component_groups": [
 						"rift:stegosaurus_saddled"
-					]
-				}
-			},
-			"rift:tamed_baby_grow_up": {
-				"add": {
-					"component_groups": [
-						"rift:stegosaurus_adult_tamed"
-					]
-				},
-				"remove": {
-					"component_groups": [
-						"rift:stegosaurus_adult_wild",
-						"rift:stegosaurus_adult_calm"
 					]
 				}
 			},
