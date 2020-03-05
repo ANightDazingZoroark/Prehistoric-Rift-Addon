@@ -1,50 +1,78 @@
+//bridge-file-version: #48
 {
-  "format_version": "1.10.0",
-  "animation_controllers": {
-    "controller.animation.stegosaurus.move": {
-      "initial_state": "default",
-      "states": {
-        "default": {
-	      "animations": [
-	        { "walk": "query.modified_move_speed" }
-          ],
-		  "transitions": [
-		    { "idle": "query.ground_speed == 0" }
-		  ]			  
-        },
-		"idle": {
-		  "animations": [
-		    "idle"
-		  ],
-		  "transitions": [
-		    { "default": "query.ground_speed > 0" }
-		  ]		  
-		}
-      }
-    },
-	"controller.animation.stegosaurus.head_movement": {
-	  "initial_state": "default",
-	  "states": {
-	    "default": {
-	      "animations": ["look_at_target"]
-		}
-	  }
-	},
-	"controller.animation.stegosaurus.attack": {
-	  "initial_state": "default",
-	  "states": {
-	    "default": {
-		  "transitions": [
-		    { "attacking" : "query.is_delayed_attacking > 0" }
-		  ]
+	"format_version": "1.10.0",
+	"animation_controllers": {
+		"controller.animation.stegosaurus_movement": {
+			"initial_state": "default",
+			"states": {
+				"default": {
+					"animations": [
+						"animStanding"
+					],
+					"transitions": [
+						{
+							"moving": "query.ground_speed > 0.0"
+						},
+						{
+							"sitting": "query.is_sitting"
+						}
+					]
+				},
+				"moving": {
+					"animations": [
+						{
+							"animWalk": "query.modified_move_speed"
+						}
+					],
+					"transitions": [
+						{
+							"default": "query.ground_speed == 0.0"
+						}
+					]
+				},
+				"sitting": {
+					"animations": [
+						"animSitting"
+					],
+					"transitions": [
+						{
+							"default": "!query.is_sitting"
+						}
+					]
+				}
+			}
 		},
-		"attacking": {
-		  "animations": ["attack"],
-          "transitions": [
-		    { "default" : "query.is_delayed_attacking == 0" }
-          ]		  
+		"controller.animation.stegosaurus_head_movement": {
+			"initial_state": "default",
+			"states": {
+				"default": {
+					"animations": [
+						"animLook"
+					]
+				}
+			}
+		},
+		"controller.animation.stegosaurus_attack": {
+			"initial_state": "default",
+			"states": {
+				"default": {
+					"transitions": [
+						{
+							"attack": "query.is_delayed_attacking > 0"
+						}
+					]
+				},
+				"attack": {
+					"animations": [
+						"animAttack"
+					],
+					"transitions": [
+						{
+							"default": "query.is_delayed_attacking == 0"
+						}
+					]
+				}
+			}
 		}
-	  }
 	}
-  }
 }
