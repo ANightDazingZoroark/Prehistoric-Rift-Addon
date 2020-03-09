@@ -2,85 +2,53 @@
 {
 	"format_version": "1.10.0",
 	"animation_controllers": {
-		"controller.animation.tyrannosaurus.move": {
+		"controller.animation.tyrannosaurus_movement": {
 			"initial_state": "default",
 			"states": {
 				"default": {
 					"animations": [
-						{
-							"walk": "query.modified_move_speed"
-						}
+						"animStanding"
 					],
 					"transitions": [
 						{
-							"idle": "query.ground_speed == 0"
+							"moving": "query.ground_speed > 0.0"
+						},
+						{
+							"sitting": "query.is_sitting"
 						}
 					]
 				},
-				"idle": {
+				"moving": {
 					"animations": [
-						"idle"
+						{
+							"animWalk": "query.modified_move_speed"
+						}
 					],
 					"transitions": [
 						{
-							"default": "query.ground_speed > 0"
+							"default": "query.ground_speed == 0.0"
+						}
+					]
+				},
+				"sitting": {
+					"animations": [
+						"animSitting"
+					],
+					"transitions": [
+						{
+							"default": "!query.is_sitting"
 						}
 					]
 				}
 			}
 		},
-		"controller.animation.tyrannosaurus.head_movement": {
+		"controller.animation.tyrannosaurus_head_movement": {
 			"initial_state": "default",
 			"states": {
 				"default": {
 					"animations": [
-						"look_at_target"
+						"animLook"
 					],
-					"transitions": [
-						{
-							"attacking": "variable.attack_time > 0.0"
-						}
-					]
-				},
-				"attacking": {
-					"animations": [
-						"attack",
-						"look_at_target"
-					],
-					"transitions": [
-						{
-							"default": "variable.attack_time == 0.0"
-						}
-					]
-				}
-			}
-		},
-		"controller.animation.tyrannosaurus.roar": {
-			"initial_state": "default",
-			"states": {
-				"default": {
-					"transitions": [
-						{
-							"roar": "query.is_charged > 0"
-						}
-					]
-				},
-				"roar": {
-					"animations": [
-						"roaring"
-					],
-					"transitions": [
-						{
-							"default": "query.is_charged == 0"
-						}
-					]
-				}
-			}
-		},
-		"controller.animation.tyrannosaurus.attack": {
-			"initial_state": "default",
-			"states": {
-				"default": {
 					"transitions": [
 						{
 							"attack": "query.is_delayed_attacking > 0"
@@ -89,7 +57,7 @@
 				},
 				"attack": {
 					"animations": [
-						"attack"
+						"animAttack"
 					],
 					"transitions": [
 						{
