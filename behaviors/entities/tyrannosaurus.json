@@ -1,4 +1,4 @@
-//bridge-file-version: #680
+//bridge-file-version: #743
 {
 	"format_version": "1.14.0",
 	"minecraft:entity": {
@@ -429,8 +429,7 @@
 			"rift:sitting": {
 				"minecraft:movement": {
 					"value": 0
-				},
-				"minecraft:is_sheared": {}
+				}
 			},
 			"rift:tyrannosaurus_tamed": {
 				"minecraft:sittable": {
@@ -446,7 +445,54 @@
 			},
 			"rift:tyrannosaurus_saddled": {
 				"minecraft:is_saddled": {},
-				"minecraft:input_ground_controlled": {}
+				"minecraft:input_ground_controlled": {},
+				"minecraft:interact": {
+					"interactions": [
+						{
+							"on_interact": {
+								"filters": {
+									"all_of": [
+										{
+											"test": "has_component",
+											"subject": "self",
+											"operator": "==",
+											"value": "minecraft:is_tamed"
+										},
+										{
+											"test": "has_component",
+											"subject": "self",
+											"operator": "!=",
+											"value": "minecraft:is_baby"
+										},
+										{
+											"test": "is_riding",
+											"subject": "player",
+											"operator": "==",
+											"value": true
+										},
+										{
+											"test": "rider_count",
+											"subject": "self",
+											"operator": ">",
+											"value": 0
+										},
+										{
+											"test": "has_equipment",
+											"subject": "player",
+											"domain": "hand",
+											"value": "rift:command_staff"
+										}
+									]
+								},
+								"target": "self",
+								"event": "rift:tyrannosaurus_roar"
+							},
+							"interact_text": "action.interact.tyrannosaurus.roar",
+							"cooldown": 10,
+							"play_sounds": "mob.tyrannosaurus.roar"
+						}
+					]
+				}
 			},
 			"rift:tyrannosaurus_chested": {
 				"minecraft:is_chested": {}
@@ -466,7 +512,8 @@
 								1.25
 							]
 						}
-					]
+					],
+					"rider_can_interact": true
 				}
 			},
 			"rift:variant_zero": {
@@ -487,6 +534,26 @@
 			"rift:variant_three": {
 				"minecraft:variant": {
 					"value": 3
+				}
+			},
+			"rift:roaring": {
+				"minecraft:is_sheared": {},
+				"minecraft:timer": {
+					"time": 1.5,
+					"time_down_event": {
+						"event": "rift:stop_roaring",
+						"target": "self"
+					}
+				}
+			},
+			"bridge:execute_command_id_1": {
+				"minecraft:skin_id": {
+					"value": 1
+				}
+			},
+			"bridge:execute_no_command": {
+				"minecraft:skin_id": {
+					"value": 0
 				}
 			}
 		},
@@ -517,7 +584,7 @@
 			"minecraft:physics": {},
 			"minecraft:nameable": {},
 			"minecraft:collision_box": {
-				"height": 1.25,
+				"height": 1000,
 				"width": 1.25
 			},
 			"minecraft:breathable": {
@@ -969,6 +1036,33 @@
 				"add": {
 					"component_groups": [
 						"rift:tyrannosaurus_chested"
+					]
+				}
+			},
+			"rift:tyrannosaurus_roar": {
+				"add": {
+					"component_groups": [
+						"rift:roaring",
+						"bridge:execute_command_id_1"
+					]
+				}
+			},
+			"rift:stop_roaring": {
+				"remove": {
+					"component_groups": [
+						"rift:roaring"
+					]
+				}
+			},
+			"bridge:remove_command_id_1": {
+				"add": {
+					"component_groups": [
+						"bridge:execute_no_command"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"bridge:execute_command_id_1"
 					]
 				}
 			}
