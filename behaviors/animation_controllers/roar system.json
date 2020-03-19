@@ -1,0 +1,47 @@
+//bridge-file-version: #24
+{
+	"format_version": "1.10.0",
+	"animation_controllers": {
+		"controller.animation.tyrannosaurus_roar": {
+			"initial_state": "default",
+			"states": {
+				"default": {
+					"transitions": [
+						{
+							"can_roar": "query.has_rider"
+						}
+					]
+				},
+				"can_roar": {
+					"transitions": [
+						{
+							"default": "!query.has_rider"
+						},
+						{
+							"roar": "query.is_sheared"
+						}
+					],
+					"on_entry": [
+						"@s rift:will_roar"
+					],
+					"on_exit": [
+						"@s rift:will_not_roar"
+					]
+				},
+				"roar": {
+					"on_entry": [
+						"/tag @s add tyrannoRoar"
+					],
+					"transitions": [
+						{
+							"can_roar": "!query.is_sheared"
+						}
+					],
+					"on_exit": [
+						"/tag @s remove tyrannoRoar"
+					]
+				}
+			}
+		}
+	}
+}
