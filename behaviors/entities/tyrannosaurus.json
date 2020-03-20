@@ -1,4 +1,4 @@
-//bridge-file-version: #829
+//bridge-file-version: #860
 {
 	"format_version": "1.14.0",
 	"minecraft:entity": {
@@ -8,7 +8,8 @@
 			"is_spawnable": true,
 			"is_experimental": false,
 			"animations": {
-				"contRoar": "controller.animation.tyrannosaurus_roar"
+				"contRoar": "controller.animation.tyrannosaurus_roar",
+				"animScare": "animation.tyrannosaurus.scare_system"
 			},
 			"scripts": {
 				"animate": [
@@ -180,6 +181,19 @@
 						"rift:flesh_treat"
 					],
 					"breed_cooldown": 1200
+				}
+			},
+			"rift:tyrannosaurus_tamed": {
+				"minecraft:behavior.owner_hurt_by_target": {
+					"priority": 1
+				},
+				"minecraft:behavior.owner_hurt_target": {
+					"priority": 1
+				},
+				"minecraft:behavior.follow_owner": {
+					"start_distance": 5,
+					"stop_distance": 20,
+					"priority": 1
 				}
 			},
 			"rift:tyrannosaurus_adult_wild": {
@@ -438,37 +452,7 @@
 				}
 			},
 			"rift:tyrannosaurus_sittable": {
-				"minecraft:sittable": {
-					"sit_event": {
-						"event": "rift:sit_down",
-						"target": "self"
-					},
-					"stand_event": {
-						"event": "rift:stand_up",
-						"target": "self"
-					}
-				}
-			},
-			"rift:standing": {
-				"minecraft:behavior.owner_hurt_by_target": {
-					"priority": 1
-				},
-				"minecraft:behavior.owner_hurt_target": {
-					"priority": 1
-				},
-				"minecraft:behavior.follow_owner": {
-					"start_distance": 5,
-					"stop_distance": 20,
-					"priority": 1
-				},
-				"minecraft:movement": {
-					"value": 0.25
-				}
-			},
-			"rift:sitting": {
-				"minecraft:movement": {
-					"value": 0
-				}
+				"minecraft:sittable": {}
 			},
 			"rift:tyrannosaurus_saddled": {
 				"minecraft:is_saddled": {},
@@ -493,7 +477,10 @@
 							]
 						}
 					],
-					"rider_can_interact": true
+					"rider_can_interact": true,
+					"crouching_skip_interact": true,
+					"controlling_seat": 0,
+					"priority": 1
 				}
 			},
 			"rift:variant_zero": {
@@ -519,17 +506,14 @@
 			"rift:roaring": {
 				"minecraft:is_sheared": {},
 				"minecraft:timer": {
-					"time": 3,
+					"time": 10,
 					"time_down_event": {
 						"event": "rift:stop_roaring",
 						"target": "self"
 					}
 				}
 			},
-			"rift:is_ridden": {
-				"minecraft:movement": {
-					"value": 0.25
-				},
+			"rift:roarable": {
 				"minecraft:interact": {
 					"interactions": [
 						{
@@ -537,20 +521,8 @@
 								"filters": {
 									"all_of": [
 										{
-											"test": "has_component",
-											"subject": "self",
-											"operator": "==",
-											"value": "minecraft:is_tamed"
-										},
-										{
-											"test": "has_component",
-											"subject": "self",
-											"operator": "!=",
-											"value": "minecraft:is_baby"
-										},
-										{
 											"test": "is_riding",
-											"subject": "player",
+											"subject": "other",
 											"operator": "==",
 											"value": true
 										},
@@ -572,7 +544,7 @@
 								"event": "rift:tyrannosaurus_roar"
 							},
 							"interact_text": "action.interact.tyrannosaurus.roar",
-							"cooldown": 3,
+							"cooldown": 15,
 							"play_sounds": "mob.tyrannosaurus.roar"
 						}
 					]
@@ -620,6 +592,9 @@
 			},
 			"minecraft:behavior.hurt_by_target": {
 				"priority": 3
+			},
+			"minecraft:movement": {
+				"value": 0.25
 			}
 		},
 		"events": {
@@ -862,7 +837,8 @@
 						},
 						"add": {
 							"component_groups": [
-								"rift:tyrannosaurus_adult_tamed"
+								"rift:tyrannosaurus_adult_tamed",
+								"rift:rideable"
 							]
 						},
 						"remove": {
@@ -877,8 +853,8 @@
 				"add": {
 					"component_groups": [
 						"rift:tyrannosaurus_baby_tamed",
-						"rift:standing",
-						"rift:tyrannosaurus_sittable"
+						"rift:tyrannosaurus_sittable",
+						"rift:tyrannosaurus_tamed"
 					]
 				},
 				"remove": {
@@ -894,8 +870,8 @@
 					"component_groups": [
 						"rift:tyrannosaurus_baby",
 						"rift:tyrannosaurus_baby_tamed",
-						"rift:standing",
-						"rift:tyrannosaurus_sittable"
+						"rift:tyrannosaurus_sittable",
+						"rift:tyrannosaurus_tamed"
 					]
 				}
 			},
@@ -951,82 +927,6 @@
 					]
 				}
 			},
-			"rift:stand_up": {
-				"sequence": [
-					{
-						"add": {
-							"component_groups": [
-								"rift:standing"
-							]
-						},
-						"remove": {
-							"component_groups": [
-								"rift:sitting"
-							]
-						}
-					},
-					{
-						"filters": {
-							"all_of": [
-								{
-									"test": "has_component",
-									"subject": "self",
-									"value": "minecraft:is_baby",
-									"operator": "!="
-								},
-								{
-									"test": "has_component",
-									"subject": "self",
-									"value": "minecraft:behavior.player_ride_tamed"
-								}
-							]
-						},
-						"add": {
-							"component_groups": [
-								"rift:rideable"
-							]
-						}
-					}
-				]
-			},
-			"rift:sit_down": {
-				"sequence": [
-					{
-						"add": {
-							"component_groups": [
-								"rift:sitting"
-							]
-						},
-						"remove": {
-							"component_groups": [
-								"rift:standing"
-							]
-						}
-					},
-					{
-						"filters": {
-							"all_of": [
-								{
-									"test": "has_component",
-									"subject": "self",
-									"value": "minecraft:is_baby",
-									"operator": "!="
-								},
-								{
-									"test": "has_component",
-									"subject": "self",
-									"value": "minecraft:behavior.player_ride_tamed"
-								}
-							]
-						},
-						"remove": {
-							"component_groups": [
-								"rift:rideable"
-							]
-						}
-					}
-				]
-			},
 			"rift:attach_chest": {
 				"add": {
 					"component_groups": [
@@ -1051,12 +951,11 @@
 			"rift:will_roar": {
 				"add": {
 					"component_groups": [
-						"rift:is_ridden"
+						"rift:roarable"
 					]
 				},
 				"remove": {
 					"component_groups": [
-						"rift:standing",
 						"rift:tyrannosaurus_sittable"
 					]
 				}
@@ -1064,13 +963,12 @@
 			"rift:will_not_roar": {
 				"add": {
 					"component_groups": [
-						"rift:standing",
 						"rift:tyrannosaurus_sittable"
 					]
 				},
 				"remove": {
 					"component_groups": [
-						"rift:is_ridden"
+						"rift:roarable"
 					]
 				}
 			},
