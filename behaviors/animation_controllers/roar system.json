@@ -1,4 +1,4 @@
-//bridge-file-version: #29
+//bridge-file-version: #48
 {
 	"format_version": "1.10.0",
 	"animation_controllers": {
@@ -8,14 +8,14 @@
 				"default": {
 					"transitions": [
 						{
-							"can_roar": "query.has_rider"
+							"can_roar": "query.has_rider && query.mark_variant == 1"
 						}
 					]
 				},
 				"can_roar": {
 					"transitions": [
 						{
-							"default": "!query.has_rider"
+							"default": "!query.has_rider && query.mark_variant == 0"
 						},
 						{
 							"roar": "query.is_sheared"
@@ -29,13 +29,16 @@
 					]
 				},
 				"roar": {
-					"animations": [
-						"animScare"
-					],
+					"animations": {},
 					"transitions": [
 						{
 							"can_roar": "!query.is_sheared"
 						}
+					],
+					"on_entry": [
+						"/say Test",
+						"/playsound mob.tyrannosaurus.roar @p [x=~, y=~, z=~, r=15]",
+						"/tag @s add tyrannoRoar"
 					]
 				}
 			}
