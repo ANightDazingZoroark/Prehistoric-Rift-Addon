@@ -1,4 +1,4 @@
-//bridge-file-version: #0
+//bridge-file-version: #31
 {
 	"format_version": "1.13.0",
 	"minecraft:entity": {
@@ -6,7 +6,17 @@
 			"identifier": "minecraft:player",
 			"is_spawnable": false,
 			"is_summonable": false,
-			"is_experimental": false
+			"is_experimental": false,
+			"animations": {
+				"contCommandStaff": "controller.animation.command_staff",
+				"contFindStaff": "controller.animation.check_for_staff"
+			},
+			"scripts": {
+				"animate": [
+					"contCommandStaff",
+					"contFindStaff"
+				]
+			}
 		},
 		"component_groups": {
 			"minecraft:add_bad_omen": {
@@ -44,6 +54,9 @@
 				"minecraft:spell_effects": {
 					"remove_effects": "bad_omen"
 				}
+			},
+			"rift:command_staff": {
+				"minecraft:is_sheared": {}
 			}
 		},
 		"components": {
@@ -148,23 +161,46 @@
 			},
 			"minecraft:scaffolding_climber": {},
 			"minecraft:environment_sensor": {
-				"triggers": {
-					"filters": {
-						"all_of": [
-							{
-								"test": "has_mob_effect",
-								"subject": "self",
-								"value": "bad_omen"
-							},
-							{
-								"test": "is_in_village",
-								"subject": "self",
-								"value": true
-							}
-						]
+				"triggers": [
+					{
+						"filters": {
+							"all_of": [
+								{
+									"test": "has_mob_effect",
+									"subject": "self",
+									"value": "bad_omen"
+								},
+								{
+									"test": "is_in_village",
+									"subject": "self",
+									"value": true
+								}
+							]
+						},
+						"event": "minecraft:trigger_raid"
 					},
-					"event": "minecraft:trigger_raid"
-				}
+					{
+						"filters": {
+							"test": "has_equipment",
+							"subject": "self",
+							"domain": "hand",
+							"value": "rift:command_staff"
+						},
+						"event": "rift:has_staff",
+						"target": "self"
+					},
+					{
+						"filters": {
+							"test": "has_equipment",
+							"subject": "self",
+							"domain": "hand",
+							"value": "rift:command_staff",
+							"operator": "!="
+						},
+						"event": "rift:has_no_staff",
+						"target": "self"
+					}
+				]
 			},
 			"minecraft:damage_sensor": {
 				"triggers": [
@@ -223,6 +259,20 @@
 				"remove": {
 					"component_groups": [
 						"minecraft:raid_trigger"
+					]
+				}
+			},
+			"rift:has_staff": {
+				"add": {
+					"component_groups": [
+						"rift:command_staff"
+					]
+				}
+			},
+			"rift:has_no_staff": {
+				"remove": {
+					"component_groups": [
+						"rift:command_staff"
 					]
 				}
 			}
