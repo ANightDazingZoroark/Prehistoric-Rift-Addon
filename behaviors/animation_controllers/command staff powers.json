@@ -1,4 +1,4 @@
-//bridge-file-version: #30
+//bridge-file-version: #35
 {
 	"format_version": "1.10.0",
 	"animation_controllers": {
@@ -8,14 +8,14 @@
 				"default": {
 					"transitions": [
 						{
-							"use": "query.is_eating && query.is_riding && query.is_sheared"
+							"use": "query.is_using_item && query.is_riding && query.is_sheared"
 						}
 					]
 				},
 				"use": {
 					"transitions": [
 						{
-							"default": "!query.is_eating"
+							"default": "!query.is_using_item"
 						}
 					],
 					"on_entry": [
@@ -24,31 +24,6 @@
 					],
 					"on_exit": [
 						"/tag @s remove commandStaffUser"
-					]
-				}
-			}
-		},
-		"controller.animation.check_for_staff": {
-			"initial_state": "default",
-			"states": {
-				"default": {
-					"transitions": [
-						{
-							"yeet": "query.is_sheared && query.is_eating"
-						}
-					]
-				},
-				"yeet": {
-					"on_entry": [
-						"/say I has staff"
-					],
-					"transitions": [
-						{
-							"default": "!query.is_sheared && !query.is_eating"
-						}
-					],
-					"on_exit": [
-						"/say i has no staff"
 					]
 				}
 			}
