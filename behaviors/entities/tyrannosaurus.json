@@ -1,4 +1,4 @@
-//bridge-file-version: #895
+//bridge-file-version: #926
 {
 	"format_version": "1.14.0",
 	"minecraft:entity": {
@@ -502,57 +502,30 @@
 				}
 			},
 			"rift:roaring": {
-				"minecraft:behavior.knockback_roar": {
-					"priority": 0,
-					"duration": 1.5,
-					"knockback_range": 15,
-					"knockback_strength": 25,
-					"knockback_damage": 5,
-					"cooldown_time": 15,
-					"knockback_filters": {
-						"test": "rider_count",
-						"subject": "self",
-						"operator": ">",
-						"value": 0
-					},
-					"on_roar_end": {
+				"minecraft:is_sheared": {},
+				"minecraft:timer": {
+					"time": [
+						1.5,
+						1.5
+					],
+					"time_down_event": {
 						"event": "rift:stop_roaring",
 						"target": "self"
 					}
-				},
-				"minecraft:behavior.nearest_attackable_target": {
-					"entity_types": [
-						{
-							"filters": {
-								"test": "is_family",
-								"value": "mob",
-								"subject": "other"
-							}
-						}
-					]
 				}
 			},
 			"rift:roarable": {
-				"minecraft:environment_sensor": {
-					"triggers": {
-						"filters": {
-							"all_of": [
-								{
-									"test": "rider_count",
-									"operator": ">",
-									"value": 0,
-									"subject": "self"
-								},
-								{
-									"test": "has_tag",
-									"subject": "player",
-									"value": "commandStaffUser"
-								}
-							]
-						},
-						"event": "rift:tyrannosaurus_roar",
-						"target": "self"
-					}
+				"minecraft:scheduler": {
+					"scheduled_events": [
+						{
+							"filters": {
+								"test": "has_tag",
+								"value": "tyrannosaurusRoar",
+								"subject": "self"
+							},
+							"event": "rift:tyrannosaurus_roar"
+						}
+					]
 				}
 			}
 		},
