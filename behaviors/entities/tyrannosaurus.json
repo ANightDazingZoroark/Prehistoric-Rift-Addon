@@ -1,4 +1,4 @@
-//bridge-file-version: #926
+//bridge-file-version: #932
 {
 	"format_version": "1.14.0",
 	"minecraft:entity": {
@@ -287,7 +287,7 @@
 				},
 				"minecraft:inventory": {
 					"container_type": "horse",
-					"inventory_size": 17,
+					"inventory_size": 16,
 					"restrict_to_owner": true,
 					"private": false
 				},
@@ -306,22 +306,6 @@
 							},
 							"on_unequip": {
 								"event": "rift:remove_saddle",
-								"target": "self"
-							}
-						},
-						{
-							"slot": 1,
-							"accepted_items": [
-								"minecraft:chest"
-							],
-							"item": "minecraft:chest",
-							"interact_text": "action.interact.attachchest",
-							"on_equip": {
-								"event": "rift:attach_chest",
-								"target": "self"
-							},
-							"on_unequip": {
-								"event": "rift:remove_chest",
 								"target": "self"
 							}
 						}
@@ -547,7 +531,7 @@
 			"minecraft:jump.static": {},
 			"minecraft:behavior.delayed_attack": {
 				"priority": 0,
-				"attack_duration": 1,
+				"attack_duration": 0.5,
 				"hit_delay_pct": 1,
 				"track_target": true
 			},
@@ -573,6 +557,49 @@
 			},
 			"minecraft:movement": {
 				"value": 0.25
+			},
+			"minecraft:interact": {
+				"interactions": [
+					{
+						"on_interact": {
+							"filters": {
+								"all_of": [
+									{
+										"test": "has_equipment",
+										"subject": "other",
+										"domain": "hand",
+										"value": "minecraft:chest"
+									},
+									{
+										"test": "is_owner",
+										"subject": "other",
+										"value": true
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_baby",
+										"operator": "!="
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_tamed"
+									},
+									{
+										"test": "is_sneaking",
+										"subject": "other",
+										"value": true
+									}
+								]
+							},
+							"event": "rift:attach_chest",
+							"target": "self"
+						},
+						"interact_text": "action.interact.attachchest",
+						"use_item": true
+					}
+				]
 			}
 		},
 		"events": {
