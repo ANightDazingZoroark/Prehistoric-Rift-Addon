@@ -1,0 +1,26 @@
+#bridge-file-version: #19
+fill ~-10 ~ ~-10 ~+10 ~+15 ~+10 air 0 replace planks 0
+fill ~-10 ~ ~-10 ~+10 ~+15 ~+10 air 0 replace planks 1
+fill ~-10 ~ ~-10 ~+10 ~+15 ~+10 air 0 replace planks 2
+fill ~-10 ~ ~-10 ~+10 ~+15 ~+10 air 0 replace planks 3
+fill ~-10 ~ ~-10 ~+10 ~+15 ~+10 air 0 replace planks 4
+fill ~-10 ~ ~-10 ~+10 ~+15 ~+10 air 0 replace planks 5
+fill ~-10 ~ ~-10 ~+10 ~+15 ~+10 air 0 replace leaves 0
+fill ~-10 ~ ~-10 ~+10 ~+15 ~+10 air 0 replace leaves 1
+fill ~-10 ~ ~-10 ~+10 ~+15 ~+10 air 0 replace leaves 2
+fill ~-10 ~ ~-10 ~+10 ~+15 ~+10 air 0 replace leaves 3
+fill ~-10 ~ ~-10 ~+10 ~+15 ~+10 air 0 replace leaves2 0
+fill ~-10 ~ ~-10 ~+10 ~+15 ~+10 air 0 replace leaves2 1
+fill ~-10 ~ ~-10 ~+10 ~+15 ~+10 air 0 replace log 0
+fill ~-10 ~ ~-10 ~+10 ~+15 ~+10 air 0 replace log 1
+fill ~-10 ~ ~-10 ~+10 ~+15 ~+10 air 0 replace log 2
+fill ~-10 ~ ~-10 ~+10 ~+15 ~+10 air 0 replace log 3
+fill ~-10 ~ ~-10 ~+10 ~+15 ~+10 air 0 replace log2 0
+fill ~-10 ~ ~-10 ~+10 ~+15 ~+10 air 0 replace log2 1
+fill ~-10 ~ ~-10 ~+10 ~+15 ~+10 air 0 replace dirt 0
+fill ~-10 ~ ~-10 ~+10 ~+15 ~+10 air 0 replace double_plant 0
+fill ~-10 ~ ~-10 ~+10 ~+15 ~+10 air 0 replace double_plant 1
+fill ~-10 ~ ~-10 ~+10 ~+15 ~+10 air 0 replace double_plant 2
+fill ~-10 ~ ~-10 ~+10 ~+15 ~+10 air 0 replace double_plant 3
+fill ~-10 ~ ~-10 ~+10 ~+15 ~+10 air 0 replace double_plant 4
+fill ~-10 ~ ~-10 ~+10 ~+15 ~+10 air 0 replace double_plant 5

@@ -1,6 +1,6 @@
-//bridge-file-version: #932
+//bridge-file-version: #973
 {
-	"format_version": "1.14.0",
+	"format_version": "1.16.0",
 	"minecraft:entity": {
 		"description": {
 			"identifier": "rift:tyrannosaurus",
@@ -205,6 +205,17 @@
 				},
 				"minecraft:skin_id": {
 					"value": 0
+				},
+				"minecraft:timer": {
+					"looping": false,
+					"time": [
+						4800,
+						7200
+					],
+					"time_down_event": {
+						"event": "rift:despawn",
+						"target": "self"
+					}
 				}
 			},
 			"rift:tyrannosaurus_adult_tamed": {
@@ -461,8 +472,7 @@
 						}
 					],
 					"crouching_skip_interact": true,
-					"controlling_seat": 0,
-					"priority": 1
+					"controlling_seat": 0
 				}
 			},
 			"rift:variant_zero": {
@@ -511,6 +521,17 @@
 						}
 					]
 				}
+			},
+			"rift:despawn": {
+				"minecraft:type_family": {
+					"family": [
+						"tyrannosaurus",
+						"mob",
+						"carnivore",
+						"dinosaur",
+						"despawn"
+					]
+				}
 			}
 		},
 		"components": {
@@ -539,10 +560,6 @@
 			"minecraft:pushable": {},
 			"minecraft:physics": {},
 			"minecraft:nameable": {},
-			"minecraft:collision_box": {
-				"height": 10,
-				"width": 1.25
-			},
 			"minecraft:breathable": {
 				"total_supply": 15,
 				"suffocate_time": 5
@@ -600,6 +617,27 @@
 						"use_item": true
 					}
 				]
+			},
+			"minecraft:despawn": {
+				"filters": {
+					"all_of": [
+						{
+							"test": "is_family",
+							"subject": "self",
+							"value": "despawn"
+						},
+						{
+							"test": "distance_to_nearest_player",
+							"subject": "self",
+							"value": 25,
+							"operator": ">"
+						}
+					]
+				}
+			},
+			"minecraft:collision_box": {
+				"height": 10,
+				"width": 1.25
 			}
 		},
 		"events": {
@@ -981,6 +1019,13 @@
 				"remove": {
 					"component_groups": [
 						"rift:tyrannosaurus_chested"
+					]
+				}
+			},
+			"rift:despawn": {
+				"add": {
+					"component_groups": [
+						"rift:despawn"
 					]
 				}
 			}
