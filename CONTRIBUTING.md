@@ -1,4 +1,3 @@
-Yes, this exists ~~because of DT~~
 # How 2 compile???
 Thats simple actually
 1. Click that green download button to get a .zip file
