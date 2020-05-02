@@ -1,0 +1,54 @@
+//bridge-file-version: #19
+{
+	"format_version": "1.10.0",
+	"animation_controllers": {
+		"controller.animation.dodo_movement": {
+			"initial_state": "default",
+			"states": {
+				"default": {
+					"animations": [
+						"animStanding"
+					],
+					"transitions": [
+						{
+							"sitting": "query.is_sitting"
+						},
+						{
+							"falling": "!query.is_on_ground"
+						},
+						{
+							"moving": "query.ground_speed>0"
+						}
+					]
+				},
+				"moving": {
+					"animations": [
+						{
+							"animWalk": "query.ground_speed"
+						}
+					],
+					"transitions": [
+						{
+							"default": "query.ground_speed==0"
+						}
+					]
+				},
+				"sitting": {
+					"animations": [
+						"animSitting"
+					],
+					"transitions": [
+						{
+							"default": "!query.is_sitting"
+						}
+					]
+				},
+				"falling": {
+					"animations": [
+						"animFall"
+					]
+				}
+			}
+		}
+	}
+}
