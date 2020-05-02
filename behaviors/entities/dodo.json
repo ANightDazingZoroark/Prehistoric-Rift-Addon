@@ -1,4 +1,4 @@
-//bridge-file-version: #32
+//bridge-file-version: #87
 {
 	"format_version": "1.16.0",
 	"minecraft:entity": {
@@ -9,15 +9,104 @@
 			"is_experimental": true
 		},
 		"component_groups": {
-			"rift:dodo_baby": {},
+			"rift:dodo_baby": {
+				"minecraft:is_baby": {},
+				"minecraft:scale": {
+					"value": 0.25
+				},
+				"minecraft:behavior.follow_parent": {
+					"priority": 1
+				},
+				"minecraft:ageable": {
+					"duration": 1200,
+					"feed_items": [
+						{
+							"item": "minecraft:wheat_seeds",
+							"growth": 0.25
+						},
+						{
+							"item": "minecraft:pumpkin_seeds",
+							"growth": 0.25
+						},
+						{
+							"item": "minecraft:melon_seeds",
+							"growth": 0.25
+						},
+						{
+							"item": "minecraft:beetroot_seeds",
+							"growth": 0.25
+						},
+						{
+							"item": "minecraft:sweet_berries",
+							"growth": 0.25
+						}
+					],
+					"grow_up": {
+						"event": "rift:grow_up",
+						"target": "self"
+					}
+				}
+			},
 			"rift:dodo_adult": {
-				"minecraft:behavior.run_around_like_crazy": {},
-				"minecraft:breedable": {},
+				"minecraft:breedable": {
+					"breeds_with": {
+						"mate_type": "rift:dodo",
+						"baby_type": "rift:dodo",
+						"breed_event": {
+							"event": "minecraft:entity_born",
+							"target": "baby"
+						}
+					},
+					"breed_items": [
+						"rift:berry_treat"
+					]
+				},
 				"minecraft:behavior.breed": {},
-				"minecraft:behavior.random_sitting": {}
+				"minecraft:behavior.random_sitting": {},
+				"minecraft:scale": {
+					"value": 0.5
+				},
+				"minecraft:loot": {
+					"table": "loot_tables/entities/dodo.loot.json"
+				},
+				"minecraft:experience_reward": {
+					"on_bred": "Math.Random(5,8)",
+					"on_death": "query.last_hit_by_player ? Math.Random(4,7) : 0"
+				},
+				"minecraft:group_size": {
+					"radius": 10,
+					"filters": {
+						"test": "is_family",
+						"value": "dodo",
+						"subject": "other"
+					}
+				}
+			},
+			"rift:variant_zero": {
+				"minecraft:variant": {
+					"value": 0
+				}
+			},
+			"rift:variant_one": {
+				"minecraft:variant": {
+					"value": 1
+				}
+			},
+			"rift:variant_two": {
+				"minecraft:variant": {
+					"value": 2
+				}
+			},
+			"rift:variant_three": {
+				"minecraft:variant": {
+					"value": 3
+				}
 			}
 		},
 		"components": {
+			"minecraft:health": {
+				"value": 6
+			},
 			"minecraft:type_family": {
 				"family": [
 					"dodo",
@@ -44,8 +133,113 @@
 			"minecraft:collision_box": {},
 			"minecraft:breathable": {},
 			"minecraft:leashable": {},
-			"minecraft:behavior.hurt_by_target": {}
+			"minecraft:behavior.hurt_by_target": {},
+			"minecraft:behavior.random_stroll": {},
+			"minecraft:movement": {
+				"value": 0.125
+			},
+			"minecraft:behavior.panic": {}
 		},
-		"events": {}
+		"events": {
+			"minecraft:entity_spawned": {
+				"randomize": [
+					{
+						"weight": 75,
+						"randomize": [
+							{
+								"weight": 25,
+								"add": {
+									"component_groups": [
+										"rift:dodo_adult",
+										"rift:variant_zero"
+									]
+								}
+							},
+							{
+								"weight": 25,
+								"add": {
+									"component_groups": [
+										"rift:dodo_adult",
+										"rift:variant_one"
+									]
+								}
+							},
+							{
+								"weight": 25,
+								"add": {
+									"component_groups": [
+										"rift:dodo_adult",
+										"rift:variant_two"
+									]
+								}
+							},
+							{
+								"weight": 25,
+								"add": {
+									"component_groups": [
+										"rift:dodo_adult",
+										"rift:variant_three"
+									]
+								}
+							}
+						]
+					},
+					{
+						"weight": 25,
+						"randomize": [
+							{
+								"weight": 25,
+								"add": {
+									"component_groups": [
+										"rift:dodo_baby",
+										"rift:variant_zero"
+									]
+								}
+							},
+							{
+								"weight": 25,
+								"add": {
+									"component_groups": [
+										"rift:dodo_baby",
+										"rift:variant_one"
+									]
+								}
+							},
+							{
+								"weight": 25,
+								"add": {
+									"component_groups": [
+										"rift:dodo_baby",
+										"rift:variant_two"
+									]
+								}
+							},
+							{
+								"weight": 25,
+								"add": {
+									"component_groups": [
+										"rift:dodo_baby",
+										"rift:variant_three"
+									]
+								}
+							}
+						]
+					}
+				]
+			},
+			"rift:grow_up": {
+				"add": {
+					"component_groups": [
+						"rift:dodo_adult"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:dodo_baby"
+					]
+				}
+			},
+			"minecraft:entity_born": {}
+		}
 	}
 }
