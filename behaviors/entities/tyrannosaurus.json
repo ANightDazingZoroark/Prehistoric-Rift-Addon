@@ -1,4 +1,4 @@
-//bridge-file-version: #974
+//bridge-file-version: #1297
 {
 	"format_version": "1.16.0",
 	"minecraft:entity": {
@@ -56,7 +56,7 @@
 						},
 						{
 							"item": "minecraft:muttoncooked",
-							"growth": 0.2
+							"growth": 0.25
 						},
 						{
 							"item": "minecraft:rabbit",
@@ -67,24 +67,8 @@
 							"growth": 0.25
 						},
 						{
-							"item": "minecraft:fish",
-							"growth": 0.15
-						},
-						{
-							"item": "minecraft:cooked_fish",
-							"growth": 0.2
-						},
-						{
-							"item": "minecraft:salmon",
-							"growth": 0.15
-						},
-						{
-							"item": "minecraft:cooked_salmon",
-							"growth": 0.2
-						},
-						{
 							"item": "minecraft:rotten_flesh",
-							"growth": 0.08
+							"growth": 0.2
 						},
 						{
 							"item": "rift:raw_exotic_meat",
@@ -92,6 +76,14 @@
 						},
 						{
 							"item": "rift:cooked_exotic_meat",
+							"growth": 0.25
+						},
+						{
+							"item": "rift:raw_dodo_meat",
+							"growth": 0.2
+						},
+						{
+							"item": "rift:cooked_dodo_meat",
 							"growth": 0.25
 						}
 					]
@@ -101,7 +93,6 @@
 					"end_scale": 1.75
 				},
 				"minecraft:behavior.tempt": {
-					"priority": 2,
 					"items": [
 						"minecraft:beef",
 						"minecraft:cooked_beef",
@@ -113,26 +104,20 @@
 						"minecraft:muttoncooked",
 						"minecraft:rabbit",
 						"minecraft:cooked_rabbit",
-						"minecraft:fish",
-						"minecraft:cooked_fish",
-						"minecraft:salmon",
-						"minecraft:cooked_salmon",
-						"rift:flesh_treat",
 						"rift:raw_exotic_meat",
-						"rift:cooked_exotic_meat"
+						"rift:cooked_exotic_meat",
+						"rift:raw_dodo_meat",
+						"rift:cooked_dodo_meat",
+						"rift:flesh_treat"
 					]
 				},
 				"minecraft:attack": {
 					"damage": 8
 				}
 			},
-			"rift:tyrannosaurus_baby_wild": {
+			"rift:tyrannosaurus_wild_baby": {
 				"minecraft:health": {
 					"value": 30
-				},
-				"minecraft:behavior.random_stroll": {},
-				"minecraft:movement": {
-					"value": 0.25
 				},
 				"minecraft:tameable": {
 					"probability": 0.25,
@@ -140,16 +125,15 @@
 						"rift:flesh_treat"
 					],
 					"tame_event": {
-						"event": "rift:on_tame",
+						"event": "rift:is_tamed",
 						"target": "self"
 					}
 				}
 			},
-			"rift:tyrannosaurus_baby_tamed": {
-				"minecraft:is_tamed": {},
+			"rift:tyrannosaurus_tamed_baby": {
+				"minecraft:is_baby": {},
 				"minecraft:health": {
-					"value": 30,
-					"max": 35
+					"value": 30
 				}
 			},
 			"rift:tyrannosaurus_adult": {
@@ -173,38 +157,31 @@
 						"baby_type": "rift:tyrannosaurus",
 						"breed_event": {
 							"event": "minecraft:entity_born",
-							"target": "self"
+							"target": "baby"
 						}
 					},
 					"breed_items": [
 						"rift:flesh_treat"
 					],
 					"breed_cooldown": 1200
+				},
+				"minecraft:scheduler": {
+					"scheduled_events": [
+						{
+							"filters": {
+								"test": "has_tag",
+								"subject": "self",
+								"value": "tyrannosaurusRoar"
+							},
+							"event": "rift:tyrannosaurus_roar",
+							"target": "self"
+						}
+					]
 				}
 			},
-			"rift:tyrannosaurus_tamed": {
-				"minecraft:behavior.owner_hurt_by_target": {
-					"priority": 1
-				},
-				"minecraft:behavior.owner_hurt_target": {
-					"priority": 1
-				},
-				"minecraft:behavior.follow_owner": {
-					"start_distance": 5,
-					"stop_distance": 20,
-					"priority": 1
-				}
-			},
-			"rift:tyrannosaurus_adult_wild": {
+			"rift:tyrannosaurus_wild_adult": {
 				"minecraft:health": {
-					"value": 50
-				},
-				"minecraft:behavior.random_stroll": {},
-				"minecraft:movement": {
-					"value": 0.25
-				},
-				"minecraft:skin_id": {
-					"value": 0
+					"value": 60
 				},
 				"minecraft:timer": {
 					"looping": false,
@@ -218,12 +195,11 @@
 					}
 				}
 			},
-			"rift:tyrannosaurus_adult_tamed": {
+			"rift:tyrannosaurus_tamed_adult": {
 				"minecraft:health": {
-					"value": 50,
-					"max": 60
+					"value": 60,
+					"max": 75
 				},
-				"minecraft:is_tamed": {},
 				"minecraft:healable": {
 					"items": [
 						{
@@ -267,24 +243,8 @@
 							"heal_amount": 25
 						},
 						{
-							"item": "minecraft:fish",
-							"heal_amount": 15
-						},
-						{
-							"item": "minecraft:cooked_fish",
-							"heal_amount": 20
-						},
-						{
-							"item": "minecraft:salmon",
-							"heal_amount": 15
-						},
-						{
-							"item": "minecraft:cooked_salmon",
-							"heal_amount": 20
-						},
-						{
 							"item": "minecraft:rotten_flesh",
-							"heal_amount": 8
+							"heal_amount": 20
 						},
 						{
 							"item": "rift:raw_exotic_meat",
@@ -292,6 +252,14 @@
 						},
 						{
 							"item": "rift:cooked_exotic_meat",
+							"heal_amount": 25
+						},
+						{
+							"item": "rift:raw_dodo_meat",
+							"heal_amount": 20
+						},
+						{
+							"item": "rift:cooked_dodo_meat",
 							"heal_amount": 25
 						}
 					]
@@ -306,13 +274,13 @@
 					"slots": [
 						{
 							"slot": 0,
+							"item": "minecraft:saddle",
 							"accepted_items": [
 								"minecraft:saddle"
 							],
-							"item": "minecraft:saddle",
 							"interact_text": "action.interact.saddle",
 							"on_equip": {
-								"event": "rift:attach_saddle",
+								"event": "rift:equip_saddle",
 								"target": "self"
 							},
 							"on_unequip": {
@@ -326,6 +294,7 @@
 			},
 			"rift:tyrannosaurus_not_hunting": {
 				"minecraft:timer": {
+					"looping": false,
 					"time": [
 						45,
 						75
@@ -342,6 +311,7 @@
 			},
 			"rift:tyrannosaurus_hunting": {
 				"minecraft:timer": {
+					"looping": false,
 					"time": [
 						45,
 						75
@@ -359,76 +329,45 @@
 					"entity_types": [
 						{
 							"filters": {
-								"any_of": [
+								"test": "is_family",
+								"subject": "other",
+								"value": "herbivore"
+							}
+						},
+						{
+							"filters": {
+								"test": "is_family",
+								"subject": "other",
+								"value": "animal"
+							}
+						},
+						{
+							"filters": {
+								"all_of": [
 									{
-										"test": "is_family",
-										"subject": "other",
-										"value": "herbivore"
-									},
-									{
-										"test": "is_family",
-										"subject": "other",
-										"value": "pig"
-									},
-									{
-										"test": "is_family",
-										"subject": "other",
-										"value": "cow"
-									},
-									{
-										"test": "is_family",
-										"subject": "other",
-										"value": "sheep"
-									},
-									{
-										"test": "is_family",
-										"subject": "other",
-										"value": "chicken"
-									},
-									{
-										"test": "is_family",
-										"subject": "other",
-										"value": "horse"
-									},
-									{
-										"test": "is_family",
-										"subject": "other",
-										"value": "llama"
-									},
-									{
-										"test": "is_family",
-										"subject": "other",
-										"value": "fox"
-									},
-									{
-										"all_of": [
+										"any_of": [
 											{
 												"test": "is_family",
-												"subject": "other",
-												"value": "player"
+												"value": "player",
+												"subject": "other"
 											},
 											{
-												"test": "has_component",
-												"subject": "self",
-												"value": "minecraft:is_baby",
-												"operator": "!="
+												"test": "is_family",
+												"value": "villager",
+												"subject": "other"
+											},
+											{
+												"test": "is_family",
+												"value": "illager",
+												"subject": "other"
 											}
 										]
 									},
 									{
-										"all_of": [
-											{
-												"test": "is_family",
-												"subject": "other",
-												"value": "villager"
-											},
-											{
-												"test": "has_component",
-												"subject": "self",
-												"value": "minecraft:is_baby",
-												"operator": "!="
-											}
-										]
+										"test": "has_component",
+										"subject": "self",
+										"operator": "!=",
+										"value": "minecraft:is_baby"
 									}
 								]
 							}
@@ -445,23 +384,31 @@
 					}
 				}
 			},
+			"rift:tyrannosaurus_tamed": {
+				"minecraft:is_tamed": {},
+				"minecraft:behavior.follow_owner": {
+					"priority": 1,
+					"stop_distance": 8,
+					"start_distance": 20
+				},
+				"minecraft:behavior.owner_hurt_target": {
+					"priority": 1
+				},
+				"minecraft:behavior.owner_hurt_by_target": {
+					"priority": 1
+				}
+			},
 			"rift:tyrannosaurus_sittable": {
 				"minecraft:sittable": {},
 				"minecraft:behavior.stay_while_sitting": {}
 			},
-			"rift:tyrannosaurus_saddled": {
-				"minecraft:is_saddled": {},
-				"minecraft:input_ground_controlled": {}
-			},
-			"rift:tyrannosaurus_chested": {
-				"minecraft:is_chested": {}
-			},
-			"rift:rideable": {
+			"rift:tyrannosaurus_rideable": {
 				"minecraft:rideable": {
 					"seat_count": 1,
 					"family_types": [
 						"player"
 					],
+					"controlling_seat": 0,
 					"interact_text": "action.interact.mount",
 					"seats": [
 						{
@@ -472,9 +419,35 @@
 							]
 						}
 					],
-					"crouching_skip_interact": true,
-					"controlling_seat": 0
+					"crouching_skip_interact": true
 				}
+			},
+			"rift:tyrannosaurus_roaring": {
+				"minecraft:is_sheared": {},
+				"minecraft:spawn_entity": {
+					"entities": [
+						{
+							"spawn_entity": "rift:tyrannosaurus_roar"
+						}
+					]
+				},
+				"minecraft:timer": {
+					"time": [
+						1.5,
+						1.5
+					],
+					"time_down_event": {
+						"event": "rift:stop_roaring",
+						"target": "self"
+					}
+				}
+			},
+			"rift:tyrannosaurus_saddled": {
+				"minecraft:is_saddled": {},
+				"minecraft:input_ground_controlled": {}
+			},
+			"rift:tyrannosaurus_chested": {
+				"minecraft:is_chested": {}
 			},
 			"rift:variant_zero": {
 				"minecraft:variant": {
@@ -494,33 +467,6 @@
 			"rift:variant_three": {
 				"minecraft:variant": {
 					"value": 3
-				}
-			},
-			"rift:roaring": {
-				"minecraft:is_sheared": {},
-				"minecraft:timer": {
-					"time": [
-						1.5,
-						1.5
-					],
-					"time_down_event": {
-						"event": "rift:stop_roaring",
-						"target": "self"
-					}
-				}
-			},
-			"rift:roarable": {
-				"minecraft:scheduler": {
-					"scheduled_events": [
-						{
-							"filters": {
-								"test": "has_tag",
-								"value": "tyrannosaurusRoar",
-								"subject": "self"
-							},
-							"event": "rift:tyrannosaurus_roar"
-						}
-					]
 				}
 			},
 			"rift:despawn": {
@@ -639,7 +585,8 @@
 			"minecraft:collision_box": {
 				"height": 10,
 				"width": 1.25
-			}
+			},
+			"minecraft:behavior.random_stroll": {}
 		},
 		"events": {
 			"minecraft:entity_spawned": {
@@ -648,97 +595,107 @@
 						"weight": 85,
 						"randomize": [
 							{
-								"weight": 50,
+								"weight": 25,
 								"randomize": [
 									{
-										"weight": 25,
+										"weight": 50,
 										"add": {
 											"component_groups": [
 												"rift:tyrannosaurus_adult",
-												"rift:tyrannosaurus_adult_wild",
-												"rift:tyrannosaurus_hunting",
+												"rift:tyrannosaurus_wild_adult",
+												"rift:tyrannosaurus_not_hunting",
 												"rift:variant_zero"
 											]
 										}
 									},
 									{
-										"weight": 25,
+										"weight": 50,
 										"add": {
 											"component_groups": [
 												"rift:tyrannosaurus_adult",
-												"rift:tyrannosaurus_adult_wild",
+												"rift:tyrannosaurus_wild_adult",
 												"rift:tyrannosaurus_hunting",
-												"rift:variant_one"
-											]
-										}
-									},
-									{
-										"weight": 25,
-										"add": {
-											"component_groups": [
-												"rift:tyrannosaurus_adult",
-												"rift:tyrannosaurus_adult_wild",
-												"rift:tyrannosaurus_hunting",
-												"rift:variant_two"
-											]
-										}
-									},
-									{
-										"weight": 25,
-										"add": {
-											"component_groups": [
-												"rift:tyrannosaurus_adult",
-												"rift:tyrannosaurus_adult_wild",
-												"rift:tyrannosaurus_hunting",
-												"rift:variant_three"
+												"rift:variant_zero"
 											]
 										}
 									}
 								]
 							},
 							{
-								"weight": 50,
+								"weight": 25,
 								"randomize": [
 									{
-										"weight": 25,
+										"weight": 50,
 										"add": {
 											"component_groups": [
 												"rift:tyrannosaurus_adult",
-												"rift:tyrannosaurus_adult_wild",
-												"rift:tyrannosaurus_not_hunting",
-												"rift:variant_zero"
-											]
-										}
-									},
-									{
-										"weight": 25,
-										"add": {
-											"component_groups": [
-												"rift:tyrannosaurus_adult",
-												"rift:tyrannosaurus_adult_wild",
+												"rift:tyrannosaurus_wild_adult",
 												"rift:tyrannosaurus_not_hunting",
 												"rift:variant_one"
 											]
 										}
 									},
 									{
-										"weight": 25,
+										"weight": 50,
 										"add": {
 											"component_groups": [
 												"rift:tyrannosaurus_adult",
-												"rift:tyrannosaurus_adult_wild",
+												"rift:tyrannosaurus_wild_adult",
+												"rift:tyrannosaurus_hunting",
+												"rift:variant_one"
+											]
+										}
+									}
+								]
+							},
+							{
+								"weight": 25,
+								"randomize": [
+									{
+										"weight": 50,
+										"add": {
+											"component_groups": [
+												"rift:tyrannosaurus_adult",
+												"rift:tyrannosaurus_wild_adult",
 												"rift:tyrannosaurus_not_hunting",
 												"rift:variant_two"
 											]
 										}
 									},
 									{
-										"weight": 25,
+										"weight": 50,
 										"add": {
 											"component_groups": [
 												"rift:tyrannosaurus_adult",
-												"rift:tyrannosaurus_adult_wild",
+												"rift:tyrannosaurus_wild_adult",
+												"rift:tyrannosaurus_hunting",
+												"rift:variant_two"
+											]
+										}
+									}
+								]
+							},
+							{
+								"weight": 25,
+								"randomize": [
+									{
+										"weight": 50,
+										"add": {
+											"component_groups": [
+												"rift:tyrannosaurus_adult",
+												"rift:tyrannosaurus_wild_adult",
 												"rift:tyrannosaurus_not_hunting",
+												"rift:variant_three"
+											]
+										}
+									},
+									{
+										"weight": 50,
+										"add": {
+											"component_groups": [
+												"rift:tyrannosaurus_adult",
+												"rift:tyrannosaurus_wild_adult",
+												"rift:tyrannosaurus_hunting",
 												"rift:variant_three"
 											]
 										}
@@ -751,102 +708,139 @@
 						"weight": 15,
 						"randomize": [
 							{
-								"weight": 50,
+								"weight": 25,
 								"randomize": [
 									{
-										"weight": 25,
+										"weight": 50,
 										"add": {
 											"component_groups": [
 												"rift:tyrannosaurus_baby",
-												"rift:tyrannosaurus_baby_wild",
-												"rift:tyrannosaurus_hunting",
+												"rift:tyrannosaurus_wild_baby",
+												"rift:tyrannosaurus_not_hunting",
 												"rift:variant_zero"
 											]
 										}
 									},
 									{
-										"weight": 25,
+										"weight": 50,
 										"add": {
 											"component_groups": [
 												"rift:tyrannosaurus_baby",
-												"rift:tyrannosaurus_baby_wild",
+												"rift:tyrannosaurus_wild_baby",
 												"rift:tyrannosaurus_hunting",
-												"rift:variant_one"
-											]
-										}
-									},
-									{
-										"weight": 25,
-										"add": {
-											"component_groups": [
-												"rift:tyrannosaurus_baby",
-												"rift:tyrannosaurus_baby_wild",
-												"rift:tyrannosaurus_hunting",
-												"rift:variant_two"
-											]
-										}
-									},
-									{
-										"weight": 25,
-										"add": {
-											"component_groups": [
-												"rift:tyrannosaurus_baby",
-												"rift:tyrannosaurus_baby_wild",
-												"rift:tyrannosaurus_hunting",
-												"rift:variant_three"
+												"rift:variant_zero"
 											]
 										}
 									}
 								]
 							},
 							{
-								"weight": 50,
+								"weight": 25,
 								"randomize": [
 									{
-										"weight": 25,
+										"weight": 50,
 										"add": {
 											"component_groups": [
 												"rift:tyrannosaurus_baby",
-												"rift:tyrannosaurus_baby_wild",
-												"rift:tyrannosaurus_not_hunting",
-												"rift:variant_zero"
-											]
-										}
-									},
-									{
-										"weight": 25,
-										"add": {
-											"component_groups": [
-												"rift:tyrannosaurus_baby",
-												"rift:tyrannosaurus_baby_wild",
+												"rift:tyrannosaurus_wild_baby",
 												"rift:tyrannosaurus_not_hunting",
 												"rift:variant_one"
 											]
 										}
 									},
 									{
-										"weight": 25,
+										"weight": 50,
 										"add": {
 											"component_groups": [
 												"rift:tyrannosaurus_baby",
-												"rift:tyrannosaurus_baby_wild",
-												"rift:tyrannosaurus_not_hunting",
-												"rift:variant_two"
-											]
-										}
-									},
-									{
-										"weight": 25,
-										"add": {
-											"component_groups": [
-												"rift:tyrannosaurus_baby",
-												"rift:tyrannosaurus_baby_wild",
-												"rift:tyrannosaurus_not_hunting",
-												"rift:variant_three"
+												"rift:tyrannosaurus_wild_baby",
+												"rift:tyrannosaurus_hunting",
+												"rift:variant_one"
 											]
 										}
 									}
 								]
+							},
+							{
+								"weight": 25,
+								"randomize": [
+									{
+										"weight": 50,
+										"add": {
+											"component_groups": [
+												"rift:tyrannosaurus_baby",
+												"rift:tyrannosaurus_wild_baby",
+												"rift:tyrannosaurus_not_hunting",
+												"rift:variant_one"
+											]
+										}
+									},
+									{
+										"weight": 50,
+										"add": {
+											"component_groups": [
+												"rift:tyrannosaurus_baby",
+												"rift:tyrannosaurus_wild_baby",
+												"rift:tyrannosaurus_hunting",
+												"rift:variant_one"
+											]
+										}
+									}
+								]
+							}
+						]
+					},
+					{
+						"weight": 25,
+						"randomize": [
+							{
+								"weight": 50,
+								"add": {
+									"component_groups": [
+										"rift:tyrannosaurus_baby",
+										"rift:tyrannosaurus_wild_baby",
+										"rift:tyrannosaurus_not_hunting",
+										"rift:variant_two"
+									]
+								}
+							},
+							{
+								"weight": 50,
+								"add": {
+									"component_groups": [
+										"rift:tyrannosaurus_baby",
+										"rift:tyrannosaurus_wild_baby",
+										"rift:tyrannosaurus_hunting",
+										"rift:variant_two"
+									]
+								}
+							}
+						]
+					},
+					{
+						"weight": 25,
+						"randomize": [
+							{
+								"weight": 50,
+								"add": {
+									"component_groups": [
+										"rift:tyrannosaurus_baby",
+										"rift:tyrannosaurus_wild_baby",
+										"rift:tyrannosaurus_not_hunting",
+										"rift:variant_three"
+									]
+								}
+							},
+							{
+								"weight": 50,
+								"add": {
+									"component_groups": [
+										"rift:tyrannosaurus_baby",
+										"rift:tyrannosaurus_wild_baby",
+										"rift:tyrannosaurus_hunting",
+										"rift:variant_three"
+									]
+								}
 							}
 						]
 					}
@@ -858,54 +852,53 @@
 						"add": {
 							"component_groups": [
 								"rift:tyrannosaurus_adult",
-								"rift:tyrannosaurus_adult_wild"
+								"rift:tyrannosaurus_wild_adult"
 							]
 						},
 						"remove": {
 							"component_groups": [
 								"rift:tyrannosaurus_baby",
-								"rift:tyrannosaurus_baby_wild"
+								"rift:tyrannosaurus_wild_baby"
 							]
 						}
 					},
 					{
 						"filters": {
-							"all_of": [
-								{
-									"test": "has_component",
-									"subject": "self",
-									"value": "minecraft:is_tamed",
-									"operator": "=="
-								}
-							]
+							"test": "has_component",
+							"value": "minecraft:is_tamed",
+							"subject": "self",
+							"operator": "=="
 						},
 						"add": {
 							"component_groups": [
-								"rift:tyrannosaurus_adult_tamed",
-								"rift:rideable"
+								"rift:tyrannosaurus_adult",
+								"rift:tyrannosaurus_tamed_adult",
+								"rift:tyrannosaurus_rideable"
 							]
 						},
 						"remove": {
 							"component_groups": [
-								"rift:tyrannosaurus_adult_wild"
+								"rift:tyrannosaurus_baby",
+								"rift:tyrannosaurus_tamed_baby",
+								"rift:tyrannosaurus_wild_baby"
 							]
 						}
 					}
 				]
 			},
-			"rift:on_tame": {
+			"rift:is_tamed": {
 				"add": {
 					"component_groups": [
-						"rift:tyrannosaurus_baby_tamed",
-						"rift:tyrannosaurus_sittable",
-						"rift:tyrannosaurus_tamed"
+						"rift:tyrannosaurus_tamed_baby",
+						"rift:tyrannosaurus_tamed",
+						"rift:tyrannosaurus_sittable"
 					]
 				},
 				"remove": {
 					"component_groups": [
-						"rift:tyrannosaurus_baby_wild",
-						"rift:tyrannosaurus_hunting",
-						"rift:tyrannosaurus_not_hunting"
+						"rift:tyrannosaurus_wild_baby",
+						"rift:tyrannosaurus_not_hunting",
+						"rift:tyrannosaurus_hunting"
 					]
 				}
 			},
@@ -913,13 +906,27 @@
 				"add": {
 					"component_groups": [
 						"rift:tyrannosaurus_baby",
-						"rift:tyrannosaurus_baby_tamed",
-						"rift:tyrannosaurus_sittable",
-						"rift:tyrannosaurus_tamed"
+						"rift:tyrannosaurus_tamed",
+						"rift:tyrannosaurus_tamed_baby",
+						"rift:tyrannosaurus_sittable"
 					]
 				}
 			},
-			"rift:attach_saddle": {
+			"rift:tyrannosaurus_roar": {
+				"add": {
+					"component_groups": [
+						"rift:tyrannosaurus_roaring"
+					]
+				}
+			},
+			"rift:despawn": {
+				"add": {
+					"component_groups": [
+						"rift:despawn"
+					]
+				}
+			},
+			"rift:equip_saddle": {
 				"add": {
 					"component_groups": [
 						"rift:tyrannosaurus_saddled"
@@ -950,6 +957,11 @@
 					"component_groups": [
 						"rift:tyrannosaurus_angry"
 					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:tyrannosaurus_not_hunting"
+					]
 				}
 			},
 			"rift:stop_hunting": {
@@ -965,9 +977,21 @@
 				}
 			},
 			"rift:calm_down": {
+				"add": {
+					"component_groups": [
+						"rift:tyrannosaurus_not_hunting"
+					]
+				},
 				"remove": {
 					"component_groups": [
 						"rift:tyrannosaurus_angry"
+					]
+				}
+			},
+			"rift:stop_roaring": {
+				"remove": {
+					"component_groups": [
+						"rift:tyrannosaurus_roaring"
 					]
 				}
 			},
@@ -975,58 +999,6 @@
 				"add": {
 					"component_groups": [
 						"rift:tyrannosaurus_chested"
-					]
-				}
-			},
-			"rift:tyrannosaurus_roar": {
-				"add": {
-					"component_groups": [
-						"rift:roaring"
-					]
-				}
-			},
-			"rift:stop_roaring": {
-				"remove": {
-					"component_groups": [
-						"rift:roaring"
-					]
-				}
-			},
-			"rift:will_roar": {
-				"add": {
-					"component_groups": [
-						"rift:roarable"
-					]
-				},
-				"remove": {
-					"component_groups": [
-						"rift:tyrannosaurus_sittable"
-					]
-				}
-			},
-			"rift:will_not_roar": {
-				"add": {
-					"component_groups": [
-						"rift:tyrannosaurus_sittable"
-					]
-				},
-				"remove": {
-					"component_groups": [
-						"rift:roarable"
-					]
-				}
-			},
-			"rift:remove_chest": {
-				"remove": {
-					"component_groups": [
-						"rift:tyrannosaurus_chested"
-					]
-				}
-			},
-			"rift:despawn": {
-				"add": {
-					"component_groups": [
-						"rift:despawn"
 					]
 				}
 			}

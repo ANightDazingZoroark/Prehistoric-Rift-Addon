@@ -1,4 +1,4 @@
-//bridge-file-version: #566
+//bridge-file-version: #14
 {
 	"format_version": "1.16.0",
 	"minecraft:entity": {
@@ -344,7 +344,7 @@
 				},
 				"minecraft:behavior.player_ride_tamed": {}
 			},
-			"rift:standing": {
+			"rift:stegosaurus_tamed": {
 				"minecraft:behavior.owner_hurt_by_target": {
 					"priority": 1
 				},
@@ -355,27 +355,6 @@
 					"start_distance": 8,
 					"stop_distance": 40,
 					"priority": 1
-				},
-				"minecraft:movement": {
-					"value": 0.25
-				}
-			},
-			"rift:sitting": {
-				"minecraft:movement": {
-					"value": 0
-				},
-				"minecraft:is_sheared": {}
-			},
-			"rift:stegosaurus_tamed": {
-				"minecraft:sittable": {
-					"sit_event": {
-						"event": "rift:sit_down",
-						"target": "self"
-					},
-					"stand_event": {
-						"event": "rift:stand_up",
-						"target": "self"
-					}
 				}
 			},
 			"rift:stegosaurus_saddled": {
@@ -417,6 +396,10 @@
 				"minecraft:variant": {
 					"value": 3
 				}
+			},
+			"rift:stegosaurus_sittable": {
+				"minecraft:sittable": {},
+				"minecraft:behavior.stay_while_sitting": {}
 			}
 		},
 		"components": {
@@ -614,8 +597,8 @@
 					"component_groups": [
 						"rift:stegosaurus_baby",
 						"rift:stegosaurus_baby_tamed",
-						"rift:standing",
-						"rift:stegosaurus_tamed"
+						"rift:stegosaurus_tamed",
+						"rift:stegosaurus_sittable"
 					]
 				}
 			},
@@ -649,7 +632,9 @@
 						},
 						"add": {
 							"component_groups": [
-								"rift:stegosaurus_adult_tamed"
+								"rift:stegosaurus_adult",
+								"rift:stegosaurus_adult_tamed",
+								"rift:rideable"
 							]
 						},
 						"remove": {
@@ -665,7 +650,7 @@
 				"add": {
 					"component_groups": [
 						"rift:stegosaurus_baby_tamed",
-						"rift:standing",
+						"rift:stegosaurus_sittable",
 						"rift:stegosaurus_tamed",
 						"rift:stegosaurus_baby"
 					]
@@ -705,8 +690,9 @@
 				"add": {
 					"component_groups": [
 						"rift:stegosaurus_adult_tamed",
-						"rift:standing",
-						"rift:stegosaurus_tamed"
+						"rift:stegosaurus_sittable",
+						"rift:stegosaurus_tamed",
+						"rift:rideable"
 					]
 				},
 				"remove": {
@@ -753,82 +739,6 @@
 						"rift:stegosaurus_saddled"
 					]
 				}
-			},
-			"rift:stand_up": {
-				"sequence": [
-					{
-						"filters": {
-							"all_of": [
-								{
-									"test": "has_component",
-									"subject": "self",
-									"value": "minecraft:is_baby",
-									"operator": "!="
-								},
-								{
-									"test": "has_component",
-									"subject": "self",
-									"value": "minecraft:behavior.player_ride_tamed"
-								}
-							]
-						},
-						"add": {
-							"component_groups": [
-								"rift:rideable"
-							]
-						}
-					},
-					{
-						"add": {
-							"component_groups": [
-								"rift:standing"
-							]
-						},
-						"remove": {
-							"component_groups": [
-								"rift:sitting"
-							]
-						}
-					}
-				]
-			},
-			"rift:sit_down": {
-				"sequence": [
-					{
-						"filters": {
-							"all_of": [
-								{
-									"test": "has_component",
-									"subject": "self",
-									"value": "minecraft:is_baby",
-									"operator": "!="
-								},
-								{
-									"test": "has_component",
-									"subject": "self",
-									"value": "minecraft:behavior.player_ride_tamed"
-								}
-							]
-						},
-						"remove": {
-							"component_groups": [
-								"rift:rideable"
-							]
-						}
-					},
-					{
-						"add": {
-							"component_groups": [
-								"rift:sitting"
-							]
-						},
-						"remove": {
-							"component_groups": [
-								"rift:standing"
-							]
-						}
-					}
-				]
 			},
 			"rift:attach_chest": {
 				"add": {
