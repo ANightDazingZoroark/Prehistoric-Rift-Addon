@@ -1,4 +1,4 @@
-//bridge-file-version: #17
+//bridge-file-version: #33
 {
 	"format_version": "1.16.0",
 	"minecraft:entity": {
@@ -191,7 +191,7 @@
 					"value": 2.75
 				},
 				"minecraft:attack": {
-					"damage": 69420666
+					"damage": 20
 				},
 				"minecraft:experience_reward": {
 					"on_bred": "Math.Random(6,9)",
@@ -252,6 +252,47 @@
 								"subject": "other",
 								"value": "minecraft:is_tamed",
 								"operator": "!="
+							}
+						]
+					}
+				},
+				"minecraft:despawn": {
+					"filters": {
+						"any_of": [
+							{
+								"all_of": [
+									{
+										"test": "is_persistent",
+										"value": false
+									},
+									{
+										"test": "distance_to_nearest_player",
+										"operator": ">",
+										"value": 54
+									}
+								]
+							},
+							{
+								"all_of": [
+									{
+										"test": "is_persistent",
+										"value": false
+									},
+									{
+										"test": "inactivity_timer",
+										"subject": "self",
+										"value": 30
+									},
+									{
+										"test": "random_chance",
+										"value": 800
+									},
+									{
+										"test": "distance_to_nearest_player",
+										"operator": ">",
+										"value": 32
+									}
+								]
 							}
 						]
 					}
@@ -485,6 +526,30 @@
 						},
 						"interact_text": "action.interact.attachchest",
 						"use_item": true
+					}
+				]
+			},
+			"minecraft:scheduler": {
+				"scheduled_events": [
+					{
+						"filters": {
+							"test": "rider_count",
+							"subject": "self",
+							"operator": ">",
+							"value": 0
+						},
+						"event": "rift:no_longer_sittable",
+						"target": "self"
+					},
+					{
+						"filters": {
+							"test": "rider_count",
+							"subject": "self",
+							"operator": "==",
+							"value": 0
+						},
+						"event": "rift:is_now_sittable",
+						"target": "self"
 					}
 				]
 			}
@@ -744,6 +809,20 @@
 				"add": {
 					"component_groups": [
 						"rift:stegosaurus_chested"
+					]
+				}
+			},
+			"rift:no_longer_sittable": {
+				"remove": {
+					"component_groups": [
+						"rift:stegosaurus_sittable"
+					]
+				}
+			},
+			"rift:is_now_sittable": {
+				"add": {
+					"component_groups": [
+						"rift:stegosaurus_sittable"
 					]
 				}
 			}

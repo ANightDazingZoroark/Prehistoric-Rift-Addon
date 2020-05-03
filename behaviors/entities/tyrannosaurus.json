@@ -1,4 +1,4 @@
-//bridge-file-version: #3
+//bridge-file-version: #15
 {
 	"format_version": "1.16.0",
 	"minecraft:entity": {
@@ -206,15 +206,45 @@
 				"minecraft:skin_id": {
 					"value": 0
 				},
-				"minecraft:timer": {
-					"looping": false,
-					"time": [
-						4800,
-						7200
-					],
-					"time_down_event": {
-						"event": "rift:despawn",
-						"target": "self"
+				"minecraft:despawn": {
+					"filters": {
+						"any_of": [
+							{
+								"all_of": [
+									{
+										"test": "is_persistent",
+										"value": false
+									},
+									{
+										"test": "distance_to_nearest_player",
+										"operator": ">",
+										"value": 54
+									}
+								]
+							},
+							{
+								"all_of": [
+									{
+										"test": "is_persistent",
+										"value": false
+									},
+									{
+										"test": "inactivity_timer",
+										"subject": "self",
+										"value": 30
+									},
+									{
+										"test": "random_chance",
+										"value": 800
+									},
+									{
+										"test": "distance_to_nearest_player",
+										"operator": ">",
+										"value": 32
+									}
+								]
+							}
+						]
 					}
 				}
 			},
@@ -533,17 +563,6 @@
 						}
 					]
 				}
-			},
-			"rift:despawn": {
-				"minecraft:type_family": {
-					"family": [
-						"tyrannosaurus",
-						"mob",
-						"carnivore",
-						"dinosaur",
-						"despawn"
-					]
-				}
 			}
 		},
 		"components": {
@@ -630,26 +649,23 @@
 					}
 				]
 			},
-			"minecraft:despawn": {
-				"filters": {
-					"all_of": [
-						{
-							"test": "is_family",
-							"subject": "self",
-							"value": "despawn"
-						},
-						{
-							"test": "distance_to_nearest_player",
-							"subject": "self",
-							"value": 25,
-							"operator": ">"
-						}
-					]
-				}
-			},
 			"minecraft:collision_box": {
 				"height": 10,
 				"width": 1.25
+			},
+			"minecraft:damage_sensor": {
+				"triggers": [
+					{
+						"on_damage": {
+							"filters": {
+								"test": "is_family",
+								"value": "stegosaurus",
+								"subject": "other"
+							}
+						},
+						"damage_multiplier": 5
+					}
+				]
 			}
 		},
 		"events": {
@@ -1031,13 +1047,6 @@
 				"remove": {
 					"component_groups": [
 						"rift:tyrannosaurus_chested"
-					]
-				}
-			},
-			"rift:despawn": {
-				"add": {
-					"component_groups": [
-						"rift:despawn"
 					]
 				}
 			}
