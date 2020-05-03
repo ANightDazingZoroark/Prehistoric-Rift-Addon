@@ -1,4 +1,4 @@
-//bridge-file-version: #91
+//bridge-file-version: #117
 {
 	"format_version": "1.16.0",
 	"minecraft:entity": {
@@ -64,7 +64,12 @@
 					"require_tame": false
 				},
 				"minecraft:behavior.breed": {},
-				"minecraft:behavior.random_sitting": {},
+				"minecraft:behavior.random_sitting": {
+					"priority": 3,
+					"start_chance": 0.45,
+					"stop_chance": 0.45,
+					"min_sit_time": 30
+				},
 				"minecraft:scale": {
 					"value": 0.5
 				},
@@ -82,7 +87,8 @@
 						"value": "dodo",
 						"subject": "other"
 					}
-				}
+				},
+				"minecraft:behavior.stay_while_sitting": {}
 			},
 			"rift:variant_zero": {
 				"minecraft:variant": {
@@ -133,7 +139,10 @@
 			},
 			"minecraft:nameable": {},
 			"minecraft:collision_box": {},
-			"minecraft:breathable": {},
+			"minecraft:breathable": {
+				"total_supply": 15,
+				"suffocate_time": 0
+			},
 			"minecraft:leashable": {},
 			"minecraft:behavior.hurt_by_target": {},
 			"minecraft:behavior.random_stroll": {},
@@ -147,6 +156,60 @@
 						"cause": "fall",
 						"deals_damage": false
 					}
+				]
+			},
+			"minecraft:behavior.float": {},
+			"minecraft:despawn": {
+				"filters": {
+					"any_of": [
+						{
+							"all_of": [
+								{
+									"test": "distance_to_nearest_player",
+									"operator": ">",
+									"value": 54,
+									"subject": "self"
+								},
+								{
+									"test": "is_persistent",
+									"value": false,
+									"subject": "self",
+									"all_of": [
+										{}
+									]
+								}
+							]
+						},
+						{
+							"all_of": [
+								{
+									"test": "is_persistent",
+									"value": false
+								},
+								{
+									"test": "inactivity_timer",
+									"subject": "self",
+									"value": 30
+								},
+								{
+									"test": "random_chance",
+									"value": 800
+								},
+								{
+									"test": "distance_to_nearest_player",
+									"operator": ">",
+									"value": 32
+								}
+							]
+						}
+					]
+				}
+			},
+			"minecraft:behavior.random_look_around": {
+				"priority": 3,
+				"look_time": [
+					15,
+					30
 				]
 			}
 		},
