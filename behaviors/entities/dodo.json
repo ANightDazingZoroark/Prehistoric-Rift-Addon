@@ -1,4 +1,4 @@
-//bridge-file-version: #87
+//bridge-file-version: #91
 {
 	"format_version": "1.16.0",
 	"minecraft:entity": {
@@ -6,7 +6,8 @@
 			"identifier": "rift:dodo",
 			"is_spawnable": true,
 			"is_summonable": true,
-			"is_experimental": true
+			"is_experimental": true,
+			"runtime_identifier": "minecraft:chicken"
 		},
 		"component_groups": {
 			"rift:dodo_baby": {
@@ -59,7 +60,8 @@
 					},
 					"breed_items": [
 						"rift:berry_treat"
-					]
+					],
+					"require_tame": false
 				},
 				"minecraft:behavior.breed": {},
 				"minecraft:behavior.random_sitting": {},
@@ -138,7 +140,15 @@
 			"minecraft:movement": {
 				"value": 0.125
 			},
-			"minecraft:behavior.panic": {}
+			"minecraft:behavior.panic": {},
+			"minecraft:damage_sensor": {
+				"triggers": [
+					{
+						"cause": "fall",
+						"deals_damage": false
+					}
+				]
+			}
 		},
 		"events": {
 			"minecraft:entity_spawned": {
@@ -239,7 +249,13 @@
 					]
 				}
 			},
-			"minecraft:entity_born": {}
+			"minecraft:entity_born": {
+				"add": {
+					"component_groups": [
+						"rift:dodo_baby"
+					]
+				}
+			}
 		}
 	}
 }
