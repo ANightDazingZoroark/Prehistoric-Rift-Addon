@@ -1,4 +1,4 @@
-//bridge-file-version: #15
+//bridge-file-version: #28
 {
 	"format_version": "1.16.0",
 	"minecraft:entity": {
@@ -203,48 +203,14 @@
 				"minecraft:movement": {
 					"value": 0.25
 				},
-				"minecraft:skin_id": {
-					"value": 0
-				},
-				"minecraft:despawn": {
-					"filters": {
-						"any_of": [
-							{
-								"all_of": [
-									{
-										"test": "is_persistent",
-										"value": false
-									},
-									{
-										"test": "distance_to_nearest_player",
-										"operator": ">",
-										"value": 54
-									}
-								]
-							},
-							{
-								"all_of": [
-									{
-										"test": "is_persistent",
-										"value": false
-									},
-									{
-										"test": "inactivity_timer",
-										"subject": "self",
-										"value": 30
-									},
-									{
-										"test": "random_chance",
-										"value": 800
-									},
-									{
-										"test": "distance_to_nearest_player",
-										"operator": ">",
-										"value": 32
-									}
-								]
-							}
-						]
+				"minecraft:timer": {
+					"time": [
+						2400,
+						7200
+					],
+					"time_down_event": {
+						"event": "rift:despawn",
+						"target": "self"
 					}
 				}
 			},
@@ -563,6 +529,17 @@
 						}
 					]
 				}
+			},
+			"rift:despawn": {
+				"minecraft:type_family": {
+					"family": [
+						"tyrannosaurus",
+						"mob",
+						"carnivore",
+						"dinosaur",
+						"despawn"
+					]
+				}
 			}
 		},
 		"components": {
@@ -575,7 +552,7 @@
 				]
 			},
 			"minecraft:navigation.walk": {
-				"can_path_over_water": true
+				"avoid_water": true
 			},
 			"minecraft:movement.basic": {},
 			"minecraft:movement.generic": {},
@@ -666,6 +643,22 @@
 						"damage_multiplier": 5
 					}
 				]
+			},
+			"minecraft:despawn": {
+				"filters": {
+					"all_of": [
+						{
+							"test": "is_family",
+							"subject": "self",
+							"value": "despawn"
+						},
+						{
+							"test": "has_target",
+							"subject": "self",
+							"value": false
+						}
+					]
+				}
 			}
 		},
 		"events": {
@@ -1047,6 +1040,13 @@
 				"remove": {
 					"component_groups": [
 						"rift:tyrannosaurus_chested"
+					]
+				}
+			},
+			"rift:despawn": {
+				"add": {
+					"component_groups": [
+						"rift:despawn"
 					]
 				}
 			}

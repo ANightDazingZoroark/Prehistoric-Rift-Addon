@@ -1,4 +1,4 @@
-//bridge-file-version: #33
+//bridge-file-version: #39
 {
 	"format_version": "1.16.0",
 	"minecraft:entity": {
@@ -256,45 +256,14 @@
 						]
 					}
 				},
-				"minecraft:despawn": {
-					"filters": {
-						"any_of": [
-							{
-								"all_of": [
-									{
-										"test": "is_persistent",
-										"value": false
-									},
-									{
-										"test": "distance_to_nearest_player",
-										"operator": ">",
-										"value": 54
-									}
-								]
-							},
-							{
-								"all_of": [
-									{
-										"test": "is_persistent",
-										"value": false
-									},
-									{
-										"test": "inactivity_timer",
-										"subject": "self",
-										"value": 30
-									},
-									{
-										"test": "random_chance",
-										"value": 800
-									},
-									{
-										"test": "distance_to_nearest_player",
-										"operator": ">",
-										"value": 32
-									}
-								]
-							}
-						]
+				"minecraft:timer": {
+					"time": [
+						2400,
+						7200
+					],
+					"time_down_event": {
+						"event": "rift:despawn",
+						"target": "self"
 					}
 				}
 			},
@@ -441,6 +410,17 @@
 			"rift:stegosaurus_sittable": {
 				"minecraft:sittable": {},
 				"minecraft:behavior.stay_while_sitting": {}
+			},
+			"rift:despawn": {
+				"minecraft:type_family": {
+					"family": [
+						"stegosaurus",
+						"mob",
+						"herbivore",
+						"dinosaur",
+						"despawn"
+					]
+				}
 			}
 		},
 		"components": {
@@ -453,7 +433,7 @@
 				]
 			},
 			"minecraft:navigation.walk": {
-				"can_path_over_water": true
+				"avoid_water": true
 			},
 			"minecraft:movement.basic": {},
 			"minecraft:movement.generic": {},
@@ -552,6 +532,22 @@
 						"target": "self"
 					}
 				]
+			},
+			"minecraft:despawn": {
+				"filters": {
+					"all_of": [
+						{
+							"test": "is_family",
+							"subject": "self",
+							"value": "despawn"
+						},
+						{
+							"test": "has_target",
+							"subject": "self",
+							"value": false
+						}
+					]
+				}
 			}
 		},
 		"events": {
@@ -823,6 +819,13 @@
 				"add": {
 					"component_groups": [
 						"rift:stegosaurus_sittable"
+					]
+				}
+			},
+			"rift:despawn": {
+				"add": {
+					"component_groups": [
+						"rift:despawn"
 					]
 				}
 			}
