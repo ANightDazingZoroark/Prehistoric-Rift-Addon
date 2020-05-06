@@ -1,16 +1,102 @@
-//bridge-file-version: #10
+//bridge-file-version: #57
 {
 	"format_version": "1.10.0",
 	"animation_controllers": {
 		"controller.animation.triceratops_movement": {
 			"initial_state": "default",
 			"states": {
-				"default": {},
-				"moving": {},
-				"charging": {},
-				"sitting": {},
-				"happy": {},
-				"melee": {}
+				"default": {
+					"animations": [
+						"animStanding"
+					],
+					"transitions": [
+						{
+							"moving": "query.ground_speed > 0"
+						},
+						{
+							"happy": "query.mark_variant == 1"
+						},
+						{
+							"sitting": "query.is_sitting"
+						},
+						{
+							"melee": "variable.has_target && variable.attack_time >= 0.0"
+						}
+					]
+				},
+				"moving": {
+					"animations": [
+						"animWalk"
+					],
+					"transitions": [
+						{
+							"default": "query.ground_speed == 0"
+						}
+					]
+				},
+				"sitting": {
+					"animations": [
+						"animSitting"
+					],
+					"transitions": [
+						{
+							"default": "!query.is_sitting"
+						}
+					]
+				},
+				"happy": {
+					"animations": [
+						"animHappy"
+					],
+					"transitions": [
+						{
+							"default": "query.mark_variant == 0"
+						}
+					]
+				},
+				"melee": {
+					"animations": [
+						"animAttack"
+					],
+					"transitions": [
+						{
+							"default": "!variable.has_target || variable.attack_time < 0.0"
+						}
+					]
+				}
+			}
+		},
+		"controller.animation.triceratops_charge": {
+			"initial_state": "default",
+			"states": {
+				"default": {
+					"blend_transition": 0.125,
+					"transitions": [
+						{
+							"preparing": "query.is_sheared"
+						}
+					]
+				},
+				"preparing": {
+					"animations": [
+						"animWillCharge"
+					],
+					"transitions": [
+						{
+							"charging": "query.is_charged"
+						}
+					]
+				},
+				"charging": {
+					"animations": [
+						"animCharging"
+					],
+					"transitions": [
+						{
+							"default": {}
+						}
+					]
+				}
 			}
 		}
 	}
