@@ -1,4 +1,4 @@
-//bridge-file-version: #104
+//bridge-file-version: #191
 {
 	"format_version": "1.16.0",
 	"minecraft:entity": {
@@ -46,7 +46,7 @@
 				},
 				"minecraft:scale_by_age": {
 					"start_scale": 0.3,
-					"end_scale": 2.75
+					"end_scale": 1.75
 				},
 				"minecraft:behavior.tempt": {
 					"priority": 2,
@@ -63,6 +63,9 @@
 						"rift:grassy_treat",
 						"rift:berry_treat"
 					]
+				},
+				"minecraft:movement": {
+					"value": 0.25
 				}
 			},
 			"rift:triceratops_baby_wild": {
@@ -121,7 +124,7 @@
 			},
 			"rift:triceratops_adult": {
 				"minecraft:scale": {
-					"value": 2.75
+					"value": 1.75
 				},
 				"minecraft:attack": {
 					"damage": 20
@@ -137,7 +140,10 @@
 					"breeds_with": {
 						"mate_type": "rift:triceratops",
 						"baby_type": "rift:triceratops",
-						"breed_event": "minecraft:entity_born"
+						"breed_event": {
+							"event": "minecraft:entity_born",
+							"target": "baby"
+						}
 					},
 					"breed_items": [
 						"rift:berry_treat",
@@ -145,7 +151,8 @@
 						"rift:grassy_treat"
 					],
 					"require_tame": true,
-					"breed_cooldown": 1200
+					"breed_cooldown": 1200,
+					"inherit_tamed": true
 				}
 			},
 			"rift:triceratops_adult_wild": {
@@ -195,6 +202,26 @@
 						"event": "rift:despawn",
 						"target": "self"
 					}
+				},
+				"minecraft:flocking": {
+					"in_water": false,
+					"match_variants": false,
+					"use_center_of_mass": true,
+					"low_flock_limit": 2,
+					"high_flock_limit": 6,
+					"goal_weight": 2,
+					"loner_chance": 0.1,
+					"influence_radius": 3,
+					"breach_influence": 7,
+					"separation_weight": 1.75,
+					"separation_threshold": 0.95,
+					"cohesion_weight": 2,
+					"cohesion_threshold": 1.95,
+					"innner_cohesion_threshold": 1.25,
+					"min_height": 0,
+					"max_height": 6,
+					"block_distance": 2,
+					"block_weight": 0.85
 				}
 			},
 			"rift:triceratops_adult_calm": {
@@ -226,11 +253,98 @@
 					}
 				}
 			},
-			"rift:triceratops_adult_tamed": {},
-			"rift:triceratops_tamed": {},
-			"rift:triceratops_saddled": {},
-			"rift:triceratops_chested": {},
-			"rift:rideable": {},
+			"rift:triceratops_adult_tamed": {
+				"minecraft:health": {
+					"value": 60,
+					"max": 65
+				},
+				"minecraft:healable": {
+					"items": [
+						{
+							"item": "minecraft:wheat",
+							"heal_amount": 15
+						},
+						{
+							"item": "minecraft:carrot",
+							"heal_amount": 15
+						},
+						{
+							"item": "minecraft:potato",
+							"heal_amount": 15
+						},
+						{
+							"item": "minecraft:beetroot",
+							"heal_amount": 15
+						},
+						{
+							"item": "minecraft:apple",
+							"heal_amount": 12
+						},
+						{
+							"item": "minecraft:sweet_berries",
+							"heal_amount": 20
+						}
+					]
+				},
+				"minecraft:inventory": {
+					"container_type": "horse",
+					"inventory_size": 16
+				},
+				"minecraft:equippable": {
+					"slots": [
+						{
+							"slot": 0,
+							"accepted_items": [
+								"minecraft:saddle"
+							],
+							"item": "minecraft:saddle",
+							"interact_text": "action.interact.saddle",
+							"on_equip": {
+								"event": "rift:attach_saddle",
+								"target": "self"
+							},
+							"on_unequip": {
+								"event": "rift:remove_saddle",
+								"target": "self"
+							}
+						}
+					]
+				},
+				"minecraft:behavior.player_ride_tamed": {}
+			},
+			"rift:triceratops_tamed": {
+				"minecraft:behavior.owner_hurt_by_target": {
+					"priority": 1
+				},
+				"minecraft:behavior.owner_hurt_target": {
+					"priority": 1
+				},
+				"minecraft:behavior.follow_owner": {
+					"start_distance": 8,
+					"stop_distance": 40,
+					"priority": 1
+				},
+				"minecraft:is_tamed": {}
+			},
+			"rift:triceratops_saddled": {
+				"minecraft:is_saddled": {}
+			},
+			"rift:triceratops_chested": {
+				"minecraft:is_chested": {}
+			},
+			"rift:rideable": {
+				"minecraft:rideable": {
+					"seats": [
+						{
+							"position": [
+								0,
+								1.125,
+								0
+							]
+						}
+					]
+				}
+			},
 			"rift:variant_zero": {
 				"minecraft:variant": {
 					"value": 0
@@ -255,11 +369,77 @@
 				"minecraft:sittable": {},
 				"minecraft:behavior.stay_while_sitting": {}
 			},
-			"rift:despawn": {},
-			"rift:charge_mode_one": {},
-			"rift:charge_mode_two": {},
-			"rift:charge_mode_three": {},
-			"rift:triceratops_happy": {}
+			"rift:despawn": {
+				"minecraft:type_family": {
+					"family": [
+						"triceratops",
+						"mob",
+						"herbivore",
+						"dinosaur",
+						"despawn"
+					]
+				}
+			},
+			"rift:triceratops_will_charge": {
+				"minecraft:scheduler": {
+					"scheduled_events": [
+						{
+							"filters": {
+								"test": "has_tag",
+								"value": "trikeCharge",
+								"subject": "self"
+							},
+							"event": "rift:triceratops_charge"
+						}
+					]
+				}
+			},
+			"rift:triceratops_happy": {
+				"minecraft:mark_variant": {
+					"value": 1
+				},
+				"minecraft:timer": {
+					"time": [
+						1.25,
+						1.25
+					],
+					"time_down_event": {
+						"event": "rift:stop_being_happy",
+						"target": "self"
+					}
+				}
+			},
+			"rift:triceratops_tamed_charging": {
+				"minecraft:behavior.controlled_by_player": {
+					"priority": 0,
+					"mount_speed_multiplier": 2.5
+				},
+				"minecraft:movement": {
+					"value": 0.5
+				},
+				"minecraft:area_attack": {
+					"damage_range": 0.2,
+					"damage_per_tick": 20,
+					"cause": "entity_attack",
+					"entity_filter": {
+						"test": "is_owner",
+						"value": true,
+						"subject": "other"
+					}
+				}
+			},
+			"rift:triceratops_tamed_not_charging": {
+				"minecraft:input_ground_controlled": {}
+			},
+			"rift:triceratops_wild_melee_mode": {
+				"minecraft:behavior.melee_attack": {}
+			},
+			"rift:triceratops_wild_charge_mode": {
+				"minecraft:behavior.melee_attack": {},
+				"minecraft:movement": {
+					"value": 0.5
+				}
+			}
 		},
 		"components": {
 			"minecraft:type_family": {
@@ -363,30 +543,6 @@
 					}
 				]
 			},
-			"minecraft:scheduler": {
-				"scheduled_events": [
-					{
-						"filters": {
-							"test": "rider_count",
-							"subject": "self",
-							"operator": ">",
-							"value": 0
-						},
-						"event": "rift:no_longer_sittable",
-						"target": "self"
-					},
-					{
-						"filters": {
-							"test": "rider_count",
-							"subject": "self",
-							"operator": "==",
-							"value": 0
-						},
-						"event": "rift:is_now_sittable",
-						"target": "self"
-					}
-				]
-			},
 			"minecraft:despawn": {
 				"filters": {
 					"all_of": [
@@ -402,11 +558,294 @@
 						}
 					]
 				}
-			}
+			},
+			"minecraft:behavior.random_look_around": {}
 		},
 		"events": {
-			"minecraft:entity_spawned": {},
-			"minecraft:entity_born": {}
+			"minecraft:entity_spawned": {
+				"randomize": [
+					{
+						"weight": 75,
+						"randomize": [
+							{
+								"weight": 25,
+								"add": {
+									"component_groups": [
+										"rift:triceratops_adult",
+										"rift:triceratops_adult_wild",
+										"rift:triceratops_adult_calm",
+										"rift:variant_zero"
+									]
+								}
+							},
+							{
+								"weight": 25,
+								"add": {
+									"component_groups": [
+										"rift:triceratops_adult",
+										"rift:triceratops_adult_wild",
+										"rift:triceratops_adult_calm",
+										"rift:variant_one"
+									]
+								}
+							},
+							{
+								"weight": 25,
+								"add": {
+									"component_groups": [
+										"rift:triceratops_adult",
+										"rift:triceratops_adult_wild",
+										"rift:triceratops_adult_calm",
+										"rift:variant_two"
+									]
+								}
+							},
+							{
+								"weight": 25,
+								"add": {
+									"component_groups": [
+										"rift:triceratops_adult",
+										"rift:triceratops_adult_wild",
+										"rift:triceratops_adult_calm",
+										"rift:variant_three"
+									]
+								}
+							}
+						]
+					},
+					{
+						"weight": 25,
+						"randomize": [
+							{
+								"weight": 25,
+								"add": {
+									"component_groups": [
+										"rift:triceratops_baby",
+										"rift:triceratops_baby_wild",
+										"rift:triceratops_baby_calm",
+										"rift:variant_zero"
+									]
+								}
+							},
+							{
+								"weight": 25,
+								"add": {
+									"component_groups": [
+										"rift:triceratops_baby",
+										"rift:triceratops_baby_wild",
+										"rift:triceratops_baby_calm",
+										"rift:variant_one"
+									]
+								}
+							},
+							{
+								"weight": 25,
+								"add": {
+									"component_groups": [
+										"rift:triceratops_baby",
+										"rift:triceratops_baby_wild",
+										"rift:triceratops_baby_calm",
+										"rift:variant_two"
+									]
+								}
+							},
+							{
+								"weight": 25,
+								"add": {
+									"component_groups": [
+										"rift:triceratops_baby",
+										"rift:triceratops_baby_wild",
+										"rift:triceratops_baby_calm",
+										"rift:variant_three"
+									]
+								}
+							}
+						]
+					}
+				]
+			},
+			"minecraft:entity_born": {
+				"add": {
+					"component_groups": [
+						"rift:triceratops_baby",
+						"rift:triceratops_baby_tamed",
+						"rift:triceratops_tamed"
+					]
+				}
+			},
+			"rift:grow_up": {
+				"sequence": [
+					{
+						"add": {
+							"component_groups": [
+								"rift:triceratops_adult",
+								"rift:triceratops_adult_wild",
+								"rift:triceratops_adult_calm"
+							]
+						},
+						"remove": {
+							"component_groups": [
+								"rift:triceratops_baby",
+								"rift:triceratops_baby_wild",
+								"rift:triceratops_baby_calm"
+							]
+						}
+					},
+					{
+						"filters": {
+							"test": "has_component",
+							"value": "minecraft:is_tamed",
+							"subject": "self"
+						},
+						"add": {
+							"component_groups": [
+								"rift:triceratops_adult",
+								"rift:triceratops_adult_tamed",
+								"rift:triceratops_tamed"
+							]
+						},
+						"remove": {
+							"component_groups": [
+								"rift:triceratops_baby",
+								"rift:triceratops_baby_tamed",
+								"rift:triceratops_adult_wild",
+								"rift:triceratops_adult_calm"
+							]
+						}
+					}
+				]
+			},
+			"rift:baby_on_tame": {
+				"add": {
+					"component_groups": [
+						"rift:triceratops_baby_tamed",
+						"rift:triceratops_sittable",
+						"rift:triceratops_tamed"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:triceratops_baby_wild",
+						"rift:triceratops_baby_calm"
+					]
+				}
+			},
+			"rift:baby_become_scared": {
+				"add": {
+					"component_groups": [
+						"rift:triceratops_baby_scared"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:triceratops_baby_calm"
+					]
+				}
+			},
+			"rift:baby_on_calm": {
+				"add": {
+					"component_groups": [
+						"rift:triceratops_baby_calm"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:triceratops_baby_scared"
+					]
+				}
+			},
+			"rift:adult_on_tame": {
+				"add": {
+					"component_groups": [
+						"rift:triceratops_adult_tamed",
+						"rift:triceratops_tamed"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:triceratops_adult_wild",
+						"rift:triceratops_adult_calm"
+					]
+				}
+			},
+			"rift:despawn": {
+				"add": {
+					"component_groups": [
+						"rift:despawn"
+					]
+				}
+			},
+			"rift:become_angry": {
+				"add": {
+					"component_groups": [
+						"rift:triceratops_adult_angry"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:triceratops_adult_calm"
+					]
+				}
+			},
+			"rift:trike_go_melee": {
+				"add": {
+					"component_groups": [
+						"rift:triceratops_wild_melee_mode"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:triceratops_wild_charge_mode"
+					]
+				}
+			},
+			"rift:trike_go_charge": {
+				"add": {
+					"component_groups": [
+						"rift:triceratops_wild_charge_mode"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:triceratops_wild_melee_mode"
+					]
+				}
+			},
+			"rift:attach_saddle": {
+				"add": {
+					"component_groups": [
+						"rift:triceratops_saddled"
+					]
+				}
+			},
+			"rift:remove_saddle": {
+				"remove": {
+					"component_groups": [
+						"rift:triceratops_saddled"
+					]
+				}
+			},
+			"rift:triceratops_charge": {
+				"add": {
+					"component_groups": [
+						"rift:triceratops_tamed_charging"
+					]
+				}
+			},
+			"rift:become_happy": {
+				"add": {
+					"component_groups": [
+						"rift:triceratops_happy"
+					]
+				}
+			},
+			"rift:stop_being_happy": {
+				"remove": {
+					"component_groups": [
+						"rift:triceratops_happy"
+					]
+				}
+			}
 		}
 	}
 }
