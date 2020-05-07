@@ -1,4 +1,4 @@
-//bridge-file-version: #57
+//bridge-file-version: #68
 {
 	"format_version": "1.10.0",
 	"animation_controllers": {
@@ -11,7 +11,7 @@
 					],
 					"transitions": [
 						{
-							"moving": "query.ground_speed > 0"
+							"moving": "query.ground_speed >= 0.25"
 						},
 						{
 							"happy": "query.mark_variant == 1"
@@ -21,6 +21,9 @@
 						},
 						{
 							"melee": "variable.has_target && variable.attack_time >= 0.0"
+						},
+						{
+							"charge": "query.has_target && query.ground_speed >=0.5"
 						}
 					]
 				},
@@ -30,7 +33,7 @@
 					],
 					"transitions": [
 						{
-							"default": "query.ground_speed == 0"
+							"default": "query.ground_speed < 0.25"
 						}
 					]
 				},
@@ -50,7 +53,7 @@
 					],
 					"transitions": [
 						{
-							"default": "query.mark_variant == 0"
+							"default": "query.mark_variant != 1"
 						}
 					]
 				},
@@ -63,37 +66,14 @@
 							"default": "!variable.has_target || variable.attack_time < 0.0"
 						}
 					]
-				}
-			}
-		},
-		"controller.animation.triceratops_charge": {
-			"initial_state": "default",
-			"states": {
-				"default": {
-					"blend_transition": 0.125,
-					"transitions": [
-						{
-							"preparing": "query.is_sheared"
-						}
-					]
 				},
-				"preparing": {
-					"animations": [
-						"animWillCharge"
-					],
-					"transitions": [
-						{
-							"charging": "query.is_charged"
-						}
-					]
-				},
-				"charging": {
+				"charge": {
 					"animations": [
 						"animCharging"
 					],
 					"transitions": [
 						{
-							"default": {}
+							"default": "query.ground_speed < 0.5"
 						}
 					]
 				}
