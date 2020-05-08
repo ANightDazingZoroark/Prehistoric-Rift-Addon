@@ -1,4 +1,4 @@
-//bridge-file-version: #191
+//bridge-file-version: #208
 {
 	"format_version": "1.16.0",
 	"minecraft:entity": {
@@ -338,8 +338,8 @@
 						{
 							"position": [
 								0,
-								1.125,
-								0
+								1.375,
+								-0.375
 							]
 						}
 					]
@@ -425,6 +425,16 @@
 						"test": "is_owner",
 						"value": true,
 						"subject": "other"
+					}
+				},
+				"minecraft:timer": {
+					"time": [
+						5,
+						5
+					],
+					"time_down_event": {
+						"event": "rift:stop_charging",
+						"target": "self"
 					}
 				}
 			},
@@ -533,6 +543,12 @@
 										"test": "is_target",
 										"value": false,
 										"subject": "other"
+									},
+									{
+										"test": "has_component",
+										"value": "minecraft:is_tamed",
+										"subject": "self",
+										"operator": "!="
 									}
 								]
 							},
@@ -701,7 +717,8 @@
 							"component_groups": [
 								"rift:triceratops_adult",
 								"rift:triceratops_adult_tamed",
-								"rift:triceratops_tamed"
+								"rift:triceratops_tamed",
+								"rift:rideable"
 							]
 						},
 						"remove": {
@@ -758,7 +775,9 @@
 				"add": {
 					"component_groups": [
 						"rift:triceratops_adult_tamed",
-						"rift:triceratops_tamed"
+						"rift:triceratops_tamed",
+						"rift:rideable",
+						"rift:triceratops_sittable"
 					]
 				},
 				"remove": {
@@ -814,7 +833,8 @@
 			"rift:attach_saddle": {
 				"add": {
 					"component_groups": [
-						"rift:triceratops_saddled"
+						"rift:triceratops_saddled",
+						"rift:triceratops_tamed_not_charging"
 					]
 				}
 			},
@@ -843,6 +863,37 @@
 				"remove": {
 					"component_groups": [
 						"rift:triceratops_happy"
+					]
+				}
+			},
+			"rift:will_charge": {
+				"add": {
+					"component_groups": [
+						"rift:triceratops_will_charge"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:triceratops_sittable"
+					]
+				}
+			},
+			"rift:will_not_charge": {
+				"add": {
+					"component_groups": [
+						"rift:triceratops_sittable"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:triceratops_will_charge"
+					]
+				}
+			},
+			"rift:stop_charging": {
+				"remove": {
+					"component_groups": [
+						"rift:triceratops_tamed_charging"
 					]
 				}
 			}
