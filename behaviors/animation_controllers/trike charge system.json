@@ -1,4 +1,4 @@
-//bridge-file-version: #17
+//bridge-file-version: #26
 {
 	"format_version": "1.10.0",
 	"animation_controllers": {
@@ -18,7 +18,7 @@
 							"default": "!query.has_rider"
 						},
 						{
-							"is_charging": "query.ground_speed >= 0.5"
+							"is_charging": "query.is_charged"
 						}
 					],
 					"on_entry": [
@@ -28,7 +28,19 @@
 						"@s rift:will_not_charge"
 					]
 				},
-				"is_charging": {}
+				"is_charging": {
+					"on_exit": [
+						"/tag @s remove trikeCharge"
+					],
+					"transitions": [
+						{
+							"can_charge": "!query.is_charged"
+						}
+					],
+					"on_entry": [
+						"/say YEEEET"
+					]
+				}
 			}
 		}
 	}

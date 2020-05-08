@@ -1,4 +1,4 @@
-//bridge-file-version: #208
+//bridge-file-version: #216
 {
 	"format_version": "1.16.0",
 	"minecraft:entity": {
@@ -6,7 +6,15 @@
 			"identifier": "rift:triceratops",
 			"is_spawnable": true,
 			"is_summonable": true,
-			"is_experimental": false
+			"is_experimental": false,
+			"animations": {
+				"contCharge": "controller.animation.triceratops_charge"
+			},
+			"scripts": {
+				"animate": [
+					"contCharge"
+				]
+			}
 		},
 		"component_groups": {
 			"rift:triceratops_baby": {
@@ -395,9 +403,6 @@
 				}
 			},
 			"rift:triceratops_happy": {
-				"minecraft:mark_variant": {
-					"value": 1
-				},
 				"minecraft:timer": {
 					"time": [
 						1.25,
@@ -407,7 +412,8 @@
 						"event": "rift:stop_being_happy",
 						"target": "self"
 					}
-				}
+				},
+				"minecraft:is_sheared": {}
 			},
 			"rift:triceratops_tamed_charging": {
 				"minecraft:behavior.controlled_by_player": {
@@ -436,7 +442,8 @@
 						"event": "rift:stop_charging",
 						"target": "self"
 					}
-				}
+				},
+				"minecraft:is_charged": {}
 			},
 			"rift:triceratops_tamed_not_charging": {
 				"minecraft:input_ground_controlled": {}
@@ -448,7 +455,8 @@
 				"minecraft:behavior.melee_attack": {},
 				"minecraft:movement": {
 					"value": 0.5
-				}
+				},
+				"minecraft:is_charged": {}
 			}
 		},
 		"components": {
@@ -894,6 +902,13 @@
 				"remove": {
 					"component_groups": [
 						"rift:triceratops_tamed_charging"
+					]
+				}
+			},
+			"rift:attach_chest": {
+				"add": {
+					"component_groups": [
+						"rift:triceratops_chested"
 					]
 				}
 			}
