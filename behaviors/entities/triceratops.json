@@ -1,4 +1,4 @@
-//bridge-file-version: #216
+//bridge-file-version: #221
 {
 	"format_version": "1.16.0",
 	"minecraft:entity": {
@@ -8,11 +8,13 @@
 			"is_summonable": true,
 			"is_experimental": false,
 			"animations": {
-				"contCharge": "controller.animation.triceratops_charge"
+				"contCharge": "controller.animation.triceratops_charge",
+				"contHappySound": "controller.animation.triceratops_happiness"
 			},
 			"scripts": {
 				"animate": [
-					"contCharge"
+					"contCharge",
+					"contHappySound"
 				]
 			}
 		},
@@ -395,7 +397,8 @@
 							"filters": {
 								"test": "has_tag",
 								"value": "trikeCharge",
-								"subject": "self"
+								"subject": "self",
+								"operator": "=="
 							},
 							"event": "rift:triceratops_charge"
 						}
@@ -858,6 +861,11 @@
 					"component_groups": [
 						"rift:triceratops_tamed_charging"
 					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:triceratops_tamed_not_charging"
+					]
 				}
 			},
 			"rift:become_happy": {
@@ -902,6 +910,11 @@
 				"remove": {
 					"component_groups": [
 						"rift:triceratops_tamed_charging"
+					]
+				},
+				"add": {
+					"component_groups": [
+						"rift:triceratops_tamed_not_charging"
 					]
 				}
 			},
