@@ -1,4 +1,4 @@
-//bridge-file-version: #245
+//bridge-file-version: #267
 {
 	"format_version": "1.16.0",
 	"minecraft:entity": {
@@ -9,12 +9,14 @@
 			"is_experimental": false,
 			"animations": {
 				"contCharge": "controller.animation.triceratops_charge",
-				"contHappySound": "controller.animation.triceratops_happiness"
+				"contHappySound": "controller.animation.triceratops_happiness",
+				"contWildCharge": "controller.animation.triceratops_wild_charge"
 			},
 			"scripts": {
 				"animate": [
 					"contCharge",
-					"contHappySound"
+					"contHappySound",
+					"contWildCharge"
 				]
 			}
 		},
@@ -73,9 +75,6 @@
 						"rift:grassy_treat",
 						"rift:berry_treat"
 					]
-				},
-				"minecraft:movement": {
-					"value": 0.25
 				}
 			},
 			"rift:triceratops_baby_wild": {
@@ -182,9 +181,6 @@
 					}
 				},
 				"minecraft:behavior.random_stroll": {},
-				"minecraft:movement": {
-					"value": 0.25
-				},
 				"minecraft:group_size": {
 					"radius": 10,
 					"filters": {
@@ -250,17 +246,51 @@
 					"broadcast_range": 30,
 					"duration": 60
 				},
-				"minecraft:target_nearby_sensor": {
-					"inside_range": 5,
-					"outside_range": 12,
-					"on_inside_range": {
-						"event": "rift:trike_go_melee",
-						"target": "self"
-					},
-					"on_outside_range": {
-						"event": "rift:trike_go_charge",
-						"target": "self"
-					}
+				"minecraft:is_charged": {},
+				"minecraft:break_blocks": {
+					"breakable_blocks": [
+						"minecraft:planks",
+						"minecraft:leaves",
+						"minecraft:leaves2",
+						"minecraft:log",
+						"minecraft:log2",
+						"minecraft:dirt",
+						"minecraft:grass",
+						"minecraft:double_plant",
+						"minecraft:glass",
+						"minecraft:stained_glass",
+						"minecraft:glass_pane",
+						"minecraft:stained_glass_pane",
+						"minecraft:wooden_slab",
+						"minecraft:double_wooden_slab",
+						"minecraft:wooden_door",
+						"minecraft:birch_door",
+						"minecraft:spruce_door",
+						"minecraft:acacia_door",
+						"minecraft:jungle_door",
+						"minecraft:dark_oak_door",
+						"minecraft:wood",
+						"minecraft:stripped_oak_log",
+						"minecraft:stripped_birch_log",
+						"minecraft:stripped_spruce_log",
+						"minecraft:stripped_jungle_log",
+						"minecraft:stripped_acacia_log",
+						"minecraft:stripped_dark_oak_log",
+						"minecraft:sand",
+						"minecraft:acacia_stairs",
+						"minecraft:birch_stairs",
+						"minecraft:dark_oak_stairs",
+						"minecraft:jungle_stairs",
+						"minecraft:oak_stairs",
+						"minecraft:spruce_stairs",
+						"minecraft:fence",
+						"minecraft:acacia_fence_gate",
+						"minecraft:birch_fence_gate",
+						"minecraft:dark_oak_fence_gate",
+						"minecraft:fence_gate",
+						"minecraft:jungle_fence_gate",
+						"minecraft:wool"
+					]
 				}
 			},
 			"rift:triceratops_adult_tamed": {
@@ -324,10 +354,30 @@
 			},
 			"rift:triceratops_tamed": {
 				"minecraft:behavior.owner_hurt_by_target": {
-					"priority": 1
+					"priority": 1,
+					"entity_types": [
+						{
+							"filters": {
+								"test": "has_component",
+								"subject": "self",
+								"value": "minecraft:is_baby",
+								"operator": "!="
+							}
+						}
+					]
 				},
 				"minecraft:behavior.owner_hurt_target": {
-					"priority": 1
+					"priority": 1,
+					"entity_types": [
+						{
+							"filters": {
+								"test": "has_component",
+								"subject": "self",
+								"value": "minecraft:is_baby",
+								"operator": "!="
+							}
+						}
+					]
 				},
 				"minecraft:behavior.follow_owner": {
 					"start_distance": 8,
@@ -337,7 +387,8 @@
 				"minecraft:is_tamed": {}
 			},
 			"rift:triceratops_saddled": {
-				"minecraft:is_saddled": {}
+				"minecraft:is_saddled": {},
+				"minecraft:input_ground_controlled": {}
 			},
 			"rift:triceratops_chested": {
 				"minecraft:is_chested": {}
@@ -423,9 +474,6 @@
 					"priority": 0,
 					"mount_speed_multiplier": 2.5
 				},
-				"minecraft:movement": {
-					"value": 0.5
-				},
 				"minecraft:area_attack": {
 					"damage_range": 0.5,
 					"damage_per_tick": 20,
@@ -491,21 +539,7 @@
 						"minecraft:jungle_fence_gate",
 						"minecraft:wool"
 					]
-				},
-				"minecraft:input_ground_controlled": {}
-			},
-			"rift:triceratops_tamed_not_charging": {
-				"minecraft:input_ground_controlled": {}
-			},
-			"rift:triceratops_wild_melee_mode": {
-				"minecraft:behavior.melee_attack": {}
-			},
-			"rift:triceratops_wild_charge_mode": {
-				"minecraft:behavior.melee_attack": {},
-				"minecraft:movement": {
-					"value": 0.5
-				},
-				"minecraft:is_charged": {}
+				}
 			}
 		},
 		"components": {
@@ -606,6 +640,12 @@
 										"value": "minecraft:is_tamed",
 										"subject": "self",
 										"operator": "!="
+									},
+									{
+										"test": "has_component",
+										"value": "minecraft:angry",
+										"subject": "self",
+										"operator": "!="
 									}
 								]
 							},
@@ -636,6 +676,25 @@
 			"minecraft:collision_box": {
 				"width": 0.9,
 				"height": 1.25
+			},
+			"minecraft:behavior.melee_attack": {},
+			"minecraft:movement": {
+				"value": 0.25
+			},
+			"minecraft:damage_sensor": {
+				"triggers": [
+					{
+						"on_damage": {
+							"filters": {
+								"test": "is_family",
+								"value": "stegosaurus",
+								"subject": "other"
+							}
+						},
+						"damage_multiplier": 5,
+						"cause": "entity_attack"
+					}
+				]
 			}
 		},
 		"events": {
@@ -867,35 +926,10 @@
 					]
 				}
 			},
-			"rift:trike_go_melee": {
-				"add": {
-					"component_groups": [
-						"rift:triceratops_wild_melee_mode"
-					]
-				},
-				"remove": {
-					"component_groups": [
-						"rift:triceratops_wild_charge_mode"
-					]
-				}
-			},
-			"rift:trike_go_charge": {
-				"add": {
-					"component_groups": [
-						"rift:triceratops_wild_charge_mode"
-					]
-				},
-				"remove": {
-					"component_groups": [
-						"rift:triceratops_wild_melee_mode"
-					]
-				}
-			},
 			"rift:attach_saddle": {
 				"add": {
 					"component_groups": [
-						"rift:triceratops_saddled",
-						"rift:triceratops_tamed_not_charging"
+						"rift:triceratops_saddled"
 					]
 				}
 			},
@@ -910,11 +944,6 @@
 				"add": {
 					"component_groups": [
 						"rift:triceratops_tamed_charging"
-					]
-				},
-				"remove": {
-					"component_groups": [
-						"rift:triceratops_tamed_not_charging"
 					]
 				}
 			},
@@ -960,11 +989,6 @@
 				"remove": {
 					"component_groups": [
 						"rift:triceratops_tamed_charging"
-					]
-				},
-				"add": {
-					"component_groups": [
-						"rift:triceratops_tamed_not_charging"
 					]
 				}
 			},

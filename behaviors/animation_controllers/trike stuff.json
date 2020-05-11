@@ -1,4 +1,4 @@
-//bridge-file-version: #41
+//bridge-file-version: #57
 {
 	"format_version": "1.10.0",
 	"animation_controllers": {
@@ -18,30 +18,29 @@
 							"default": "!query.has_rider"
 						},
 						{
-							"is_charging": "query.is_powered"
+							"is_charging": "query.is_powered && query.is_tamed"
 						}
 					],
 					"on_entry": [
-						"@s rift:will_charge",
-						"/say yeet charge"
+						"@s rift:will_charge"
 					],
 					"on_exit": [
-						"@s rift:will_not_charge",
-						"/say oof"
+						"@s rift:will_not_charge"
 					]
 				},
 				"is_charging": {
 					"on_exit": [
-						"/tag @s remove trikeCharge"
+						"/tag @s remove trikeCharge",
+						"/msg @p Charge Mode Deactivated"
 					],
 					"transitions": [
 						{
-							"can_charge": "!query.is_powered"
+							"can_charge": "!query.is_powered && query.is_tamed"
 						}
 					],
 					"on_entry": [
-						"/say YEEEET",
-						"/effect @s speed 5 3"
+						"/effect @s speed 5 3",
+						"/msg @p Charge Mode Activated"
 					]
 				}
 			}
@@ -54,6 +53,9 @@
 						{
 							"happy": "query.is_sheared"
 						}
+					],
+					"on_entry": [
+						"/playsound mob.triceratops.happy"
 					]
 				},
 				"happy": {
@@ -62,8 +64,30 @@
 					],
 					"transitions": [
 						{
-							"default": "!query.is_sheared"
+							"default": "query.is_sheared"
 						}
+					]
+				}
+			}
+		},
+		"controller.animation.triceratops_wild_charge": {
+			"initial_state": "default",
+			"states": {
+				"default": {
+					"transitions": [
+						{
+							"charging": "query.is_powered && !query.is_tamed"
+						}
+					]
+				},
+				"charging": {
+					"transitions": [
+						{
+							"default": "!query.is_powered && !query.is_tamed"
+						}
+					],
+					"on_entry": [
+						"/effect @s speed 60 3"
 					]
 				}
 			}

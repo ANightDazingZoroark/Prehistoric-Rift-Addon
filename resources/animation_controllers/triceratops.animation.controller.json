@@ -1,4 +1,4 @@
-//bridge-file-version: #78
+//bridge-file-version: #99
 {
 	"format_version": "1.10.0",
 	"animation_controllers": {
@@ -11,7 +11,7 @@
 					],
 					"transitions": [
 						{
-							"moving": "query.ground_speed >= 0.25"
+							"moving": "query.ground_speed > 0"
 						},
 						{
 							"happy": "query.is_sheared"
@@ -20,10 +20,7 @@
 							"sitting": "query.is_sitting"
 						},
 						{
-							"melee": "variable.has_target && variable.attack_time >= 0.0"
-						},
-						{
-							"charge": "query.has_target && query.ground_speed >=0.5"
+							"charge": "query.is_powered query.ground_speed > 0"
 						}
 					]
 				},
@@ -33,7 +30,10 @@
 					],
 					"transitions": [
 						{
-							"default": "query.ground_speed < 0.25"
+							"default": "query.ground_speed == 0"
+						},
+						{
+							"charge": "query.is_powered"
 						}
 					]
 				},
@@ -57,23 +57,16 @@
 						}
 					]
 				},
-				"melee": {
-					"animations": [
-						"animAttack"
-					],
-					"transitions": [
-						{
-							"default": "!variable.has_target || variable.attack_time < 0.0"
-						}
-					]
-				},
 				"charge": {
 					"animations": [
 						"animCharging"
 					],
 					"transitions": [
 						{
-							"default": "query.ground_speed < 0.5"
+							"default": "!query.is_powered && query.ground_speed == 0"
+						},
+						{
+							"moving": "!query.is_powered"
 						}
 					]
 				}
