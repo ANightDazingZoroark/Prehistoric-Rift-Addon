@@ -8,3 +8,13 @@ This addon was also made with the following software:
 * [.bridge](https://github.com/bridge-core/bridge.)
 * [Piskel](https://www.piskelapp.com/)
 * [Notepad++](https://notepad-plus-plus.org/)
+
+# Credits and More
+The addon itself and the assets used are under the MIT License. 
+
+The following assets are excempt from the MIT License, with credits to their original creators  listed
+* Vivek (Trike Horn, Dodo Beak, new exotic meats)
+* DTRaptor (Command Staff, old exotic meats)
+* AGSucho (All the Stego textures)
+* Professor squiggles (Utahraptor Claw, Harvest Staff)
+* The Gaming Baryonyx (Raw Dodo Meat)
