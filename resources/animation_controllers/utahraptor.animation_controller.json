@@ -1,0 +1,79 @@
+//bridge-file-version: #38
+{
+	"format_version": "1.10.0",
+	"animation_controllers": {
+		"controller.animation.utahraptor_movement": {
+			"initial_state": "default",
+			"states": {
+				"default": {
+					"animations": [
+						"animStanding"
+					],
+					"transitions": [
+						{
+							"moving": "query.ground_speed > 0"
+						},
+						{
+							"sitting": "query.is_sitting"
+						},
+						{
+							"clinging": "query.is_wall_climbing || query.is_sheared"
+						}
+					]
+				},
+				"moving": {
+					"animations": [
+						"animWalk"
+					],
+					"transitions": [
+						{
+							"default": "query.ground_speed == 0"
+						}
+					]
+				},
+				"sitting": {
+					"animations": [
+						"animSitting"
+					],
+					"transitions": [
+						{
+							"default": "!query.is_sitting"
+						}
+					]
+				},
+				"clinging": {
+					"animations": [
+						"animCling"
+					],
+					"transitions": [
+						{
+							"default": "!query.is_wall_climbing || !query.is_sheared"
+						}
+					]
+				}
+			}
+		},
+		"controller.animation.utahraptor_looking": {
+			"initial_state": "default",
+			"states": {
+				"default": {
+					"animations": [
+						"animLook"
+					],
+					"transitions": [
+						{
+							"climb_no_look": "query.is_wall_climbing || query.is_sheared"
+						}
+					]
+				},
+				"climb_no_look": {
+					"transitions": [
+						{
+							"default": "!query.is_wall_climbing || !query.is_sheared"
+						}
+					]
+				}
+			}
+		}
+	}
+}

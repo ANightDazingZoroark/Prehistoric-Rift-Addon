@@ -1,4 +1,4 @@
-//bridge-file-version: #267
+//bridge-file-version: #273
 {
 	"format_version": "1.16.0",
 	"minecraft:entity": {
@@ -228,6 +228,10 @@
 					"max_height": 6,
 					"block_distance": 2,
 					"block_weight": 0.85
+				},
+				"minecraft:follow_range": {
+					"value": 48,
+					"max": 48
 				}
 			},
 			"rift:triceratops_adult_calm": {
@@ -244,7 +248,11 @@
 				"minecraft:angry": {
 					"broadcast_anger": true,
 					"broadcast_range": 30,
-					"duration": 60
+					"duration": 60,
+					"calm_event": {
+						"event": "rift:become_calm",
+						"target": "self"
+					}
 				},
 				"minecraft:is_charged": {},
 				"minecraft:break_blocks": {
@@ -291,6 +299,10 @@
 						"minecraft:jungle_fence_gate",
 						"minecraft:wool"
 					]
+				},
+				"minecraft:on_target_escape": {
+					"event": "rift:become_calm",
+					"target": "self"
 				}
 			},
 			"rift:triceratops_adult_tamed": {
@@ -923,6 +935,18 @@
 				"remove": {
 					"component_groups": [
 						"rift:triceratops_adult_calm"
+					]
+				}
+			},
+			"rift:become_calm": {
+				"add": {
+					"component_groups": [
+						"rift:triceratops_baby_calm"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:triceratops_adult_angry"
 					]
 				}
 			},
