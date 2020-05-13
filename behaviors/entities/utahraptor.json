@@ -1,4 +1,4 @@
-//bridge-file-version: #108
+//bridge-file-version: #192
 {
 	"format_version": "1.16.0",
 	"minecraft:entity": {
@@ -119,7 +119,6 @@
 				"minecraft:health": {
 					"value": 25
 				},
-				"minecraft:behavior.random_stroll": {},
 				"minecraft:behavior.follow_parent": {
 					"priority": 3
 				},
@@ -213,13 +212,18 @@
 					"priority": 0
 				}
 			},
-			"rift:utahraptor_baby_tamed": {},
+			"rift:utahraptor_baby_tamed": {
+				"minecraft:health": {
+					"value": 25,
+					"max": 30
+				}
+			},
 			"rift:utahraptor_adult": {
 				"minecraft:scale": {
 					"value": 1.75
 				},
 				"minecraft:attack": {
-					"damage": 7
+					"damage": 10
 				},
 				"minecraft:experience_reward": {
 					"on_bred": "Math.Random(4,6)",
@@ -245,10 +249,116 @@
 					"breed_cooldown": 1200
 				}
 			},
-			"rift:utahraptor_adult_wild": {},
-			"rift:utahraptor_hunting": {},
-			"rift:utahraptor_not_hunting": {},
-			"rift:utahraptor_adult_trusting": {},
+			"rift:utahraptor_adult_wild": {
+				"minecraft:health": {
+					"value": 50
+				},
+				"minecraft:timer": {
+					"time": [
+						2400,
+						7200
+					],
+					"time_down_event": {
+						"event": "rift:despawn",
+						"target": "self"
+					}
+				},
+				"minecraft:trusting": {
+					"probability": 0.2,
+					"trust_items": [
+						"rift:flesh_treat"
+					],
+					"trust_event": {
+						"event": "rift:on_trust",
+						"target": "self"
+					}
+				},
+				"minecraft:behavior.nearest_attackable_target": {
+					"priority": 1,
+					"must_see": false,
+					"within_radius": 50,
+					"persist_time": 25,
+					"entity_types": [
+						{
+							"filters": {
+								"any_of": [
+									{
+										"test": "is_family",
+										"subject": "other",
+										"value": "herbivore"
+									},
+									{
+										"test": "is_family",
+										"subject": "other",
+										"value": "pig"
+									},
+									{
+										"test": "is_family",
+										"subject": "other",
+										"value": "cow"
+									},
+									{
+										"test": "is_family",
+										"subject": "other",
+										"value": "sheep"
+									},
+									{
+										"test": "is_family",
+										"subject": "other",
+										"value": "chicken"
+									},
+									{
+										"test": "is_family",
+										"subject": "other",
+										"value": "horse"
+									},
+									{
+										"test": "is_family",
+										"subject": "other",
+										"value": "llama"
+									},
+									{
+										"test": "is_family",
+										"subject": "other",
+										"value": "fox"
+									},
+									{
+										"all_of": [
+											{
+												"test": "is_family",
+												"subject": "other",
+												"value": "player"
+											},
+											{
+												"test": "trusts",
+												"subject": "other",
+												"value": true
+											}
+										]
+									},
+									{
+										"test": "is_family",
+										"subject": "other",
+										"value": "villager"
+									}
+								]
+							}
+						}
+					]
+				}
+			},
+			"rift:utahraptor_adult_wild_pack_leader": {
+				"minecraft:is_illager_captain": {}
+			},
+			"rift:utahraptor_adult_wild_pack_member": {
+				"minecraft:behavior.follow_target_captain": {}
+			},
+			"rift:utahraptor_adult_trusting": {
+				"minecraft:trust": {},
+				"minecraft:behavior.defend_trusted_target": {
+					"attack_chance": 0.75
+				}
+			},
 			"rift:utahraptor_adult_tamed": {},
 			"rift:utahraptor_tamed": {
 				"minecraft:is_tamed": {}
@@ -406,7 +516,8 @@
 					]
 				}
 			},
-			"minecraft:behavior.random_look_around": {}
+			"minecraft:behavior.random_look_around": {},
+			"minecraft:behavior.random_stroll": {}
 		},
 		"events": {}
 	}

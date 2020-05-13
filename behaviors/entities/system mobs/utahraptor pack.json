@@ -1,0 +1,66 @@
+//bridge-file-version: #22
+{
+	"format_version": "1.16.0",
+	"minecraft:entity": {
+		"description": {
+			"identifier": "rift:utahraptor_pack",
+			"is_spawnable": true,
+			"is_summonable": false,
+			"is_experimental": false
+		},
+		"component_groups": {
+			"rift:spawn_stuff": {
+				"minecraft:spawn_entity": {
+					"entities": [
+						{
+							"spawn_entity": "rift:utahraptor",
+							"num_to_spawn": 1,
+							"single_use": true,
+							"spawn_event": "rift:utahraptor_leader_setup"
+						},
+						{
+							"spawn_entity": "rift:utahraptor",
+							"num_to_spawn": 3,
+							"single_use": true,
+							"spawn_event": "rift:utahraptor_pack_member_setup"
+						}
+					]
+				},
+				"minecraft:timer": {
+					"time": [
+						0.5,
+						0.5
+					],
+					"time_down_event": {
+						"event": "rift:die"
+					}
+				}
+			},
+			"rift:go_commit_die": {
+				"minecraft:is_sheared": {}
+			}
+		},
+		"components": {},
+		"events": {
+			"minecraft:entity_spawned": {
+				"add": {
+					"component_groups": [
+						"rift:spawn_stuff"
+					]
+				}
+			},
+			"rift:die": {
+				"add": {
+					"component_groups": [
+						"rift:go_commit_die"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:spawn_stuff"
+					]
+				}
+			}
+		}
+	}
+}
