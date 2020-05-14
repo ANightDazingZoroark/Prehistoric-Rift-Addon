@@ -1,0 +1,52 @@
+//bridge-file-version: #21
+{
+	"format_version": "1.10.0",
+	"animation_controllers": {
+		"controller.animation.utahraptor_abilities": {
+			"initial_state": "default",
+			"states": {
+				"default": {
+					"transitions": [
+						{
+							"activate": "query.has_rider"
+						}
+					],
+					"on_exit": [
+						"@s rift:activate_abilities"
+					],
+					"on_entry": [
+						"@s rift:deactivate_abilities"
+					]
+				},
+				"activate": {
+					"transitions": [
+						{
+							"default": "query.has_rider"
+						},
+						{
+							"leapOfDeath": "query.is_jumping"
+						},
+						{
+							"climb": "query.is_sheared"
+						}
+					]
+				},
+				"leapOfDeath": {
+					"on_entry": [
+						"@s rift:leap_ability"
+					],
+					"transitions": [
+						{
+							"default": {}
+						},
+						{
+							"riding": "query.is_riding"
+						}
+					]
+				},
+				"riding": {},
+				"climb": {}
+			}
+		}
+	}
+}
