@@ -1,4 +1,4 @@
-//bridge-file-version: #22
+//bridge-file-version: #28
 {
 	"format_version": "1.16.0",
 	"minecraft:entity": {
@@ -6,41 +6,31 @@
 			"identifier": "rift:utahraptor_pack",
 			"is_spawnable": true,
 			"is_summonable": false,
-			"is_experimental": false
-		},
-		"component_groups": {
-			"rift:spawn_stuff": {
-				"minecraft:spawn_entity": {
-					"entities": [
-						{
-							"spawn_entity": "rift:utahraptor",
-							"num_to_spawn": 1,
-							"single_use": true,
-							"spawn_event": "rift:utahraptor_leader_setup"
-						},
-						{
-							"spawn_entity": "rift:utahraptor",
-							"num_to_spawn": 3,
-							"single_use": true,
-							"spawn_event": "rift:utahraptor_pack_member_setup"
-						}
-					]
-				},
-				"minecraft:timer": {
-					"time": [
-						0.5,
-						0.5
-					],
-					"time_down_event": {
-						"event": "rift:die"
-					}
-				}
+			"is_experimental": false,
+			"animations": {
+				"contSpawn": "controller.animation.utahraptor_pack_spawner"
 			},
-			"rift:go_commit_die": {
-				"minecraft:is_sheared": {}
+			"scripts": {
+				"animate": [
+					"contSpawn"
+				]
 			}
 		},
-		"components": {},
+		"components": {
+			"minecraft:physics": {
+				"has_collision": false,
+				"has_gravity": false
+			},
+			"minecraft:fire_immune": true,
+			"minecraft:movement": {
+				"value": 0
+			},
+			"minecraft:collision_box": {
+				"width": 0,
+				"height": 0
+			},
+			"minecraft:is_sheared": {}
+		},
 		"events": {
 			"minecraft:entity_spawned": {
 				"add": {
@@ -61,6 +51,7 @@
 					]
 				}
 			}
-		}
+		},
+		"component_groups": {}
 	}
 }

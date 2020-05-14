@@ -1,4 +1,4 @@
-//bridge-file-version: #21
+//bridge-file-version: #40
 {
 	"format_version": "1.10.0",
 	"animation_controllers": {
@@ -21,10 +21,10 @@
 				"activate": {
 					"transitions": [
 						{
-							"default": "query.has_rider"
+							"default": "!query.has_rider"
 						},
 						{
-							"leapOfDeath": "query.is_jumping"
+							"leapOfDeath": "!query.is_on_ground"
 						},
 						{
 							"climb": "query.is_sheared"
@@ -33,19 +33,55 @@
 				},
 				"leapOfDeath": {
 					"on_entry": [
-						"@s rift:leap_ability"
+						"@s rift:leap_ability",
+						"/say hi"
 					],
 					"transitions": [
 						{
-							"default": {}
+							"activate": "query.is_on_ground"
 						},
 						{
 							"riding": "query.is_riding"
 						}
 					]
 				},
-				"riding": {},
-				"climb": {}
+				"riding": {
+					"transitions": [
+						{
+							"activate": "!query.is_riding"
+						}
+					],
+					"on_exit": [
+						"@s rift:disable_leap"
+					]
+				},
+				"climb": {
+					"transitions": [
+						{
+							"activate": "!query.is_sheared"
+						}
+					]
+				}
+			}
+		},
+		"controller.animation.utahraptor_pack_spawner": {
+			"initial_state": "default",
+			"states": {
+				"default": {
+					"transitions": [
+						{
+							"spawn": "query.is_sheared"
+						}
+					],
+					"on_entry": [
+						"/function cmd.utahraptor_pack_summon"
+					]
+				},
+				"spawn": {
+					"on_entry": [
+						"/function cmd.utahraptor_pack_summon"
+					]
+				}
 			}
 		}
 	}

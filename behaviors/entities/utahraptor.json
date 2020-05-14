@@ -1,4 +1,4 @@
-//bridge-file-version: #316
+//bridge-file-version: #342
 {
 	"format_version": "1.16.0",
 	"minecraft:entity": {
@@ -6,7 +6,15 @@
 			"identifier": "rift:utahraptor",
 			"is_spawnable": true,
 			"is_summonable": true,
-			"is_experimental": false
+			"is_experimental": false,
+			"animations": {
+				"contAbilities": "controller.animation.utahraptor_abilities"
+			},
+			"scripts": {
+				"animate": [
+					"contAbilities"
+				]
+			}
 		},
 		"component_groups": {
 			"rift:utahraptor_baby": {
@@ -86,7 +94,7 @@
 				},
 				"minecraft:scale_by_age": {
 					"start_scale": 0.3,
-					"end_scale": 1.75
+					"end_scale": 0.3
 				},
 				"minecraft:behavior.tempt": {
 					"priority": 2,
@@ -224,7 +232,7 @@
 			},
 			"rift:utahraptor_adult": {
 				"minecraft:scale": {
-					"value": 1.75
+					"value": 0.9
 				},
 				"minecraft:attack": {
 					"damage": 10
@@ -251,7 +259,8 @@
 					"require_tame": true,
 					"inherit_tamed": true,
 					"breed_cooldown": 1200
-				}
+				},
+				"minecraft:behavior.melee_attack": {}
 			},
 			"rift:utahraptor_adult_wild": {
 				"minecraft:health": {
@@ -506,18 +515,42 @@
 					"value": 0.8
 				},
 				"minecraft:can_power_jump": {},
-				"minecraft:is_saddled": {}
+				"minecraft:is_saddled": {},
+				"minecraft:input_ground_controlled": {}
 			},
 			"rift:utahraptor_chested": {
 				"minecraft:is_chested": {}
 			},
 			"rift:rideable": {
-				"minecraft:rideable": {}
+				"minecraft:rideable": {
+					"family_types": [
+						"player"
+					],
+					"seats": [
+						{
+							"position": [
+								0,
+								1.75,
+								-0.625
+							]
+						}
+					],
+					"interact_text": "action.interact.mount",
+					"controlling_seat": 0
+				}
 			},
 			"rift:utahraptor_tamed_climbing": {
 				"minecraft:is_sheared": {}
 			},
-			"rift:utahraptor_tamed_pounce_killing": {
+			"rift:utahraptor_tamed_pounceable": {
+				"minecraft:type_family": {
+					"family": [
+						"utahraptorLeap",
+						"mob",
+						"carnivore",
+						"dinosaur"
+					]
+				},
 				"minecraft:area_attack": {
 					"damage_range": 0.5,
 					"entity_filter": {
@@ -542,17 +575,6 @@
 					},
 					"damage_per_tick": 12,
 					"cause": "entity_attack"
-				},
-				"minecraft:is_sheared": {}
-			},
-			"rift:utahraptor_tamed_pounceable": {
-				"minecraft:type_family": {
-					"family": [
-						"utahraptorLeap",
-						"mob",
-						"carnivore",
-						"dinosaur"
-					]
 				}
 			},
 			"rift:despawn": {
@@ -1144,6 +1166,61 @@
 						"rift:utahraptor_tamed_pounceable"
 					]
 				}
+			},
+			"rift:disable_leap": {
+				"remove": {
+					"component_groups": [
+						"rift:utahraptor_tamed_pounceable"
+					]
+				}
+			},
+			"rift:spawn_as_baby": {
+				"randomize": [
+					{
+						"weight": 25,
+						"add": {
+							"component_groups": [
+								"rift:utahraptor_baby",
+								"rift:utahraptor_baby_wild",
+								"rift:utahraptor_baby_calm",
+								"rift:variant_zero"
+							]
+						}
+					},
+					{
+						"weight": 25,
+						"add": {
+							"component_groups": [
+								"rift:utahraptor_baby",
+								"rift:utahraptor_baby_wild",
+								"rift:utahraptor_baby_calm",
+								"rift:variant_one"
+							]
+						}
+					},
+					{
+						"weight": 25,
+						"add": {
+							"component_groups": [
+								"rift:utahraptor_baby",
+								"rift:utahraptor_baby_wild",
+								"rift:utahraptor_baby_calm",
+								"rift:variant_two"
+							]
+						}
+					},
+					{
+						"weight": 25,
+						"add": {
+							"component_groups": [
+								"rift:utahraptor_baby",
+								"rift:utahraptor_baby_wild",
+								"rift:utahraptor_baby_calm",
+								"rift:variant_three"
+							]
+						}
+					}
+				]
 			}
 		}
 	}
