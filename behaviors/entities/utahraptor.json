@@ -1,4 +1,4 @@
-//bridge-file-version: #342
+//bridge-file-version: #353
 {
 	"format_version": "1.16.0",
 	"minecraft:entity": {
@@ -117,11 +117,7 @@
 						"rift:raw_exotic_meat",
 						"rift:cooked_exotic_meat"
 					]
-				},
-				"minecraft:attack": {
-					"damage": 8
-				},
-				"minecraft:behavior.melee_attack": {}
+				}
 			},
 			"rift:utahraptor_baby_wild": {
 				"minecraft:health": {
@@ -170,41 +166,10 @@
 				"minecraft:behavior.hurt_by_target": {
 					"priority": 3,
 					"alert_same_type": true
-				}
+				},
+				"minecraft:behavior.random_stroll": {}
 			},
 			"rift:utahraptor_baby_calm": {
-				"minecraft:behavior.nearest_attackable_target": {
-					"priority": 0,
-					"entity_types": [
-						{
-							"filters": {
-								"all_of": [
-									{
-										"any_of": [
-											{
-												"test": "is_family",
-												"value": "utahraptor",
-												"subject": "other",
-												"operator": "!="
-											},
-											{
-												"test": "is_family",
-												"value": "utahraptorLeap",
-												"subject": "other",
-												"operator": "!="
-											}
-										]
-									},
-									{
-										"test": "is_family",
-										"subject": "other",
-										"value": "mob"
-									}
-								]
-							}
-						}
-					]
-				},
 				"minecraft:on_target_acquired": {
 					"event": "rift:baby_become_scared",
 					"target": "self"
@@ -228,6 +193,10 @@
 				"minecraft:health": {
 					"value": 25,
 					"max": 30
+				},
+				"minecraft:behavior.melee_attack": {},
+				"minecraft:attack": {
+					"damage": 8
 				}
 			},
 			"rift:utahraptor_adult": {
@@ -260,7 +229,10 @@
 					"inherit_tamed": true,
 					"breed_cooldown": 1200
 				},
-				"minecraft:behavior.melee_attack": {}
+				"minecraft:behavior.melee_attack": {},
+				"minecraft:navigation.climb": {
+					"avoid_water": true
+				}
 			},
 			"rift:utahraptor_adult_wild": {
 				"minecraft:health": {
@@ -362,7 +334,8 @@
 				"minecraft:behavior.hurt_by_target": {
 					"priority": 3,
 					"alert_same_type": true
-				}
+				},
+				"minecraft:behavior.random_stroll": {}
 			},
 			"rift:utahraptor_adult_wild_pack_leader": {
 				"minecraft:is_illager_captain": {}
@@ -502,9 +475,15 @@
 			},
 			"rift:utahraptor_tamed": {
 				"minecraft:is_tamed": {},
-				"minecraft:behavior.follow_owner": {},
-				"minecraft:behavior.owner_hurt_by_target": {},
-				"minecraft:behavior.owner_hurt_target": {}
+				"minecraft:behavior.follow_owner": {
+					"priority": 3
+				},
+				"minecraft:behavior.owner_hurt_by_target": {
+					"priority": 3
+				},
+				"minecraft:behavior.owner_hurt_target": {
+					"priority": 3
+				}
 			},
 			"rift:utahraptor_sittable": {
 				"minecraft:sittable": {},
@@ -516,7 +495,8 @@
 				},
 				"minecraft:can_power_jump": {},
 				"minecraft:is_saddled": {},
-				"minecraft:input_ground_controlled": {}
+				"minecraft:input_ground_controlled": {},
+				"minecraft:behavior.controlled_by_player": {}
 			},
 			"rift:utahraptor_chested": {
 				"minecraft:is_chested": {}
@@ -619,9 +599,6 @@
 				]
 			},
 			"minecraft:navigation.walk": {
-				"avoid_water": true
-			},
-			"minecraft:navigation.climb": {
 				"avoid_water": true
 			},
 			"minecraft:can_climb": {},
@@ -730,8 +707,7 @@
 					]
 				}
 			},
-			"minecraft:behavior.random_look_around": {},
-			"minecraft:behavior.random_stroll": {}
+			"minecraft:behavior.random_look_around": {}
 		},
 		"events": {
 			"minecraft:entity_spawned": {
@@ -895,6 +871,12 @@
 			"rift:baby_grow_up": {
 				"sequence": [
 					{
+						"filters": {
+							"test": "has_component",
+							"subject": "self",
+							"value": "minecraft:is_tamed",
+							"operator": "!="
+						},
 						"add": {
 							"component_groups": [
 								"rift:utahraptor_adult",
