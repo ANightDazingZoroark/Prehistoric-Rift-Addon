@@ -1,4 +1,4 @@
-//bridge-file-version: #353
+//bridge-file-version: #366
 {
 	"format_version": "1.16.0",
 	"minecraft:entity": {
@@ -510,7 +510,7 @@
 						{
 							"position": [
 								0,
-								1.75,
+								1.875,
 								-0.625
 							]
 						}
@@ -532,26 +532,11 @@
 					]
 				},
 				"minecraft:area_attack": {
-					"damage_range": 0.5,
+					"damage_range": 0.75,
 					"entity_filter": {
-						"all_of": [
-							{
-								"test": "is_riding",
-								"subject": "self",
-								"value": true
-							},
-							{
-								"test": "rider_count",
-								"subject": "other",
-								"operator": ">",
-								"value": 0
-							},
-							{
-								"test": "is_owner",
-								"subject": "other",
-								"value": false
-							}
-						]
+						"test": "is_owner",
+						"subject": "other",
+						"value": false
 					},
 					"damage_per_tick": 12,
 					"cause": "entity_attack"
@@ -586,6 +571,16 @@
 			"rift:variant_three": {
 				"minecraft:variant": {
 					"value": 3
+				}
+			},
+			"rift:utahraptor_unpounceable": {
+				"minecraft:type_family": {
+					"family": [
+						"utahraptor",
+						"mob",
+						"carnivore",
+						"dinosaur"
+					]
 				}
 			}
 		},
@@ -686,8 +681,8 @@
 						"cause": "entity_attack"
 					},
 					{
-						"cause": "fall",
-						"damage_multiplier": 0.25
+						"deals_damage": false,
+						"cause": "fall"
 					}
 				]
 			},
@@ -707,7 +702,11 @@
 					]
 				}
 			},
-			"minecraft:behavior.random_look_around": {}
+			"minecraft:behavior.random_look_around": {},
+			"minecraft:collision_box": {
+				"width": 0.75,
+				"height": 1
+			}
 		},
 		"events": {
 			"minecraft:entity_spawned": {
@@ -1147,12 +1146,22 @@
 					"component_groups": [
 						"rift:utahraptor_tamed_pounceable"
 					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:utahraptor_unpounceable"
+					]
 				}
 			},
 			"rift:disable_leap": {
 				"remove": {
 					"component_groups": [
 						"rift:utahraptor_tamed_pounceable"
+					]
+				},
+				"add": {
+					"component_groups": [
+						"rift:utahraptor_unpounceable"
 					]
 				}
 			},
