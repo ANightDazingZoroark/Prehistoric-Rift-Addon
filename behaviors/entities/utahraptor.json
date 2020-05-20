@@ -1,4 +1,4 @@
-//bridge-file-version: #366
+//bridge-file-version: #413
 {
 	"format_version": "1.16.0",
 	"minecraft:entity": {
@@ -258,6 +258,37 @@
 						"target": "self"
 					}
 				},
+				"minecraft:behavior.hurt_by_target": {
+					"priority": 3,
+					"alert_same_type": true
+				},
+				"minecraft:behavior.random_stroll": {}
+			},
+			"rift:utahraptor_adult_wild_pack_leader": {
+				"minecraft:is_illager_captain": {}
+			},
+			"rift:utahraptor_adult_wild_pack_member": {
+				"minecraft:behavior.follow_target_captain": {}
+			},
+			"rift:utahraptor_adult_wild_in_open_area": {
+				"minecraft:behavior.leap_at_target": {
+					"must_be_on_ground": false
+				}
+			},
+			"rift:utahraptor_adult_wild_in_forest": {
+				"minecraft:behavior.stalk_and_pounce_on_target": {
+					"priority": 1,
+					"set_persistent": true,
+					"leap_height": 5,
+					"pounce_max_dist": 10,
+					"interest_time": 75,
+					"leap_dist": 5,
+					"stalk_speed": 0.25,
+					"strike_dist": 7,
+					"max_stalk_dist": 10
+				}
+			},
+			"rift:utahraptor_adult_wild_not_trusting": {
 				"minecraft:behavior.nearest_attackable_target": {
 					"priority": 1,
 					"must_see": false,
@@ -315,9 +346,11 @@
 												"value": "player"
 											},
 											{
-												"test": "trusts",
+												"test": "has_equipment",
 												"subject": "other",
-												"value": true
+												"operator": "!=",
+												"domain": "hand",
+												"value": "rift:flesh_treat"
 											}
 										]
 									},
@@ -330,35 +363,6 @@
 							}
 						}
 					]
-				},
-				"minecraft:behavior.hurt_by_target": {
-					"priority": 3,
-					"alert_same_type": true
-				},
-				"minecraft:behavior.random_stroll": {}
-			},
-			"rift:utahraptor_adult_wild_pack_leader": {
-				"minecraft:is_illager_captain": {}
-			},
-			"rift:utahraptor_adult_wild_pack_member": {
-				"minecraft:behavior.follow_target_captain": {}
-			},
-			"rift:utahraptor_adult_wild_in_open_area": {
-				"minecraft:behavior.leap_at_target": {
-					"must_be_on_ground": false
-				}
-			},
-			"rift:utahraptor_adult_wild_in_forest": {
-				"minecraft:behavior.stalk_and_pounce_on_target": {
-					"priority": 1,
-					"set_persistent": true,
-					"leap_height": 5,
-					"pounce_max_dist": 10,
-					"interest_time": 75,
-					"leap_dist": 5,
-					"stalk_speed": 0.25,
-					"strike_dist": 7,
-					"max_stalk_dist": 10
 				}
 			},
 			"rift:utahraptor_adult_trusting": {
@@ -367,6 +371,65 @@
 					"attack_chance": 0.75,
 					"priority": 3,
 					"within_radius": 45
+				},
+				"minecraft:behavior.nearest_attackable_target": {
+					"priority": 1,
+					"must_see": false,
+					"within_radius": 50,
+					"persist_time": 25,
+					"entity_types": [
+						{
+							"filters": {
+								"any_of": [
+									{
+										"test": "is_family",
+										"subject": "other",
+										"value": "herbivore"
+									},
+									{
+										"test": "is_family",
+										"subject": "other",
+										"value": "pig"
+									},
+									{
+										"test": "is_family",
+										"subject": "other",
+										"value": "cow"
+									},
+									{
+										"test": "is_family",
+										"subject": "other",
+										"value": "sheep"
+									},
+									{
+										"test": "is_family",
+										"subject": "other",
+										"value": "chicken"
+									},
+									{
+										"test": "is_family",
+										"subject": "other",
+										"value": "horse"
+									},
+									{
+										"test": "is_family",
+										"subject": "other",
+										"value": "llama"
+									},
+									{
+										"test": "is_family",
+										"subject": "other",
+										"value": "fox"
+									},
+									{
+										"test": "is_family",
+										"subject": "other",
+										"value": "villager"
+									}
+								]
+							}
+						}
+					]
 				}
 			},
 			"rift:utahraptor_adult_tamed": {
@@ -533,13 +596,22 @@
 				},
 				"minecraft:area_attack": {
 					"damage_range": 0.75,
-					"entity_filter": {
-						"test": "is_owner",
-						"subject": "other",
-						"value": false
-					},
 					"damage_per_tick": 12,
-					"cause": "entity_attack"
+					"cause": "entity_attack",
+					"entity_filter": {
+						"all_of": [
+							{
+								"test": "is_owner",
+								"subject": "other",
+								"value": false
+							},
+							{
+								"test": "is_riding",
+								"subject": "self",
+								"value": false
+							}
+						]
+					}
 				}
 			},
 			"rift:despawn": {
@@ -706,6 +778,49 @@
 			"minecraft:collision_box": {
 				"width": 0.75,
 				"height": 1
+			},
+			"minecraft:scheduler": {
+				"scheduled_events": [
+					{
+						"filters": {
+							"all_of": [
+								{
+									"test": "has_component",
+									"value": "minecraft:is_tamed",
+									"operator": "!=",
+									"subject": "self"
+								},
+								{
+									"test": "is_biome",
+									"value": "forest",
+									"subject": "self"
+								}
+							]
+						},
+						"event": "rift:is_in_forest",
+						"target": "self"
+					},
+					{
+						"filters": {
+							"all_of": [
+								{
+									"test": "has_component",
+									"value": "minecraft:is_tamed",
+									"operator": "!=",
+									"subject": "self"
+								},
+								{
+									"test": "is_biome",
+									"value": "forest",
+									"operator": "!=",
+									"subject": "self"
+								}
+							]
+						},
+						"event": "rift:is_not_in_forest",
+						"target": "self"
+					}
+				]
 			}
 		},
 		"events": {
@@ -720,7 +835,8 @@
 										"rift:utahraptor_adult",
 										"rift:utahraptor_adult_wild",
 										"rift:variant_zero",
-										"rift:utahraptor_adult_wild_in_open_area"
+										"rift:utahraptor_adult_wild_in_open_area",
+										"rift:utahraptor_adult_wild_not_trusting"
 									]
 								}
 							},
@@ -731,7 +847,8 @@
 										"rift:utahraptor_adult",
 										"rift:utahraptor_adult_wild",
 										"rift:variant_one",
-										"rift:utahraptor_adult_wild_in_open_area"
+										"rift:utahraptor_adult_wild_in_open_area",
+										"rift:utahraptor_adult_wild_not_trusting"
 									]
 								}
 							},
@@ -742,7 +859,8 @@
 										"rift:utahraptor_adult",
 										"rift:utahraptor_adult_wild",
 										"rift:variant_two",
-										"rift:utahraptor_adult_wild_in_open_area"
+										"rift:utahraptor_adult_wild_in_open_area",
+										"rift:utahraptor_adult_wild_not_trusting"
 									]
 								}
 							},
@@ -753,7 +871,8 @@
 										"rift:utahraptor_adult",
 										"rift:utahraptor_adult_wild",
 										"rift:variant_three",
-										"rift:utahraptor_adult_wild_in_open_area"
+										"rift:utahraptor_adult_wild_in_open_area",
+										"rift:utahraptor_adult_wild_not_trusting"
 									]
 								}
 							}
@@ -775,7 +894,8 @@
 												"rift:utahraptor_adult",
 												"rift:utahraptor_adult_wild",
 												"rift:utahraptor_adult_wild_in_forest",
-												"rift:variant_zero"
+												"rift:variant_zero",
+												"rift:utahraptor_adult_wild_not_trusting"
 											]
 										}
 									},
@@ -786,7 +906,8 @@
 												"rift:utahraptor_adult",
 												"rift:utahraptor_adult_wild",
 												"rift:utahraptor_adult_wild_in_forest",
-												"rift:variant_one"
+												"rift:variant_one",
+												"rift:utahraptor_adult_wild_not_trusting"
 											]
 										}
 									},
@@ -797,7 +918,8 @@
 												"rift:utahraptor_adult",
 												"rift:utahraptor_adult_wild",
 												"rift:utahraptor_adult_wild_in_forest",
-												"rift:variant_two"
+												"rift:variant_two",
+												"rift:utahraptor_adult_wild_not_trusting"
 											]
 										}
 									},
@@ -808,7 +930,8 @@
 												"rift:utahraptor_adult",
 												"rift:utahraptor_adult_wild",
 												"rift:utahraptor_adult_wild_in_forest",
-												"rift:variant_three"
+												"rift:variant_three",
+												"rift:utahraptor_adult_wild_not_trusting"
 											]
 										}
 									}
@@ -880,7 +1003,8 @@
 							"component_groups": [
 								"rift:utahraptor_adult",
 								"rift:utahraptor_adult_wild",
-								"rift:utahraptor_adult_wild_in_open_area"
+								"rift:utahraptor_adult_wild_in_open_area",
+								"rift:utahraptor_adult_wild_not_trusting"
 							]
 						},
 						"remove": {
@@ -911,7 +1035,8 @@
 							"component_groups": [
 								"rift:utahraptor_adult",
 								"rift:utahraptor_adult_wild",
-								"rift:utahraptor_adult_wild_in_forest"
+								"rift:utahraptor_adult_wild_in_forest",
+								"rift:utahraptor_adult_wild_not_trusting"
 							]
 						},
 						"remove": {
@@ -942,7 +1067,8 @@
 								"rift:utahraptor_baby_tamed",
 								"rift:utahraptor_adult_wild",
 								"rift:utahraptor_adult_wild_in_forest",
-								"rift:utahraptor_adult_wild_in_open_area"
+								"rift:utahraptor_adult_wild_in_open_area",
+								"rift:utahraptor_adult_wild_not_trusting"
 							]
 						}
 					}
@@ -1006,7 +1132,8 @@
 				"remove": {
 					"component_groups": [
 						"rift:utahraptor_adult_wild_pack_leader",
-						"rift:utahraptor_adult_wild_pack_member"
+						"rift:utahraptor_adult_wild_pack_member",
+						"rift:utahraptor_adult_wild_not_trusting"
 					]
 				}
 			},
@@ -1212,6 +1339,30 @@
 						}
 					}
 				]
+			},
+			"rift:is_in_forest": {
+				"add": {
+					"component_groups": [
+						"rift:utahraptor_adult_wild_in_forest"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:utahraptor_adult_wild_in_open_area"
+					]
+				}
+			},
+			"rift:is_not_in_forest": {
+				"add": {
+					"component_groups": [
+						"rift:utahraptor_adult_wild_in_open_area"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:utahraptor_adult_wild_in_forest"
+					]
+				}
 			}
 		}
 	}
