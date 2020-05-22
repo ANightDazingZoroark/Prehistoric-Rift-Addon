@@ -1,4 +1,4 @@
-#bridge-file-version: #165
+#bridge-file-version: #215
 fill ~-10 ~ ~-10 ~+10 ~+15 ~+10 air 0 replace planks 0
 fill ~-10 ~ ~-10 ~+10 ~+15 ~+10 air 0 replace planks 1
 fill ~-10 ~ ~-10 ~+10 ~+15 ~+10 air 0 replace planks 2
@@ -234,6 +234,24 @@ fill ~-10 ~ ~-10 ~+10 ~+15 ~+10 air 0 replace crimson_stem 2
 fill ~-10 ~ ~-10 ~+10 ~+15 ~+10 air 0 replace warped_stem 0
 fill ~-10 ~ ~-10 ~+10 ~+15 ~+10 air 0 replace warped_stem 1
 fill ~-10 ~ ~-10 ~+10 ~+15 ~+10 air 0 replace warped_stem 2
+fill ~-10 ~ ~-10 ~+10 ~+15 ~+10 air 0 replace stripped_crimson_stem 0
+fill ~-10 ~ ~-10 ~+10 ~+15 ~+10 air 0 replace stripped_crimson_stem 1
+fill ~-10 ~ ~-10 ~+10 ~+15 ~+10 air 0 replace stripped_crimson_stem 2
+fill ~-10 ~ ~-10 ~+10 ~+15 ~+10 air 0 replace stripped_warped_stem 0
+fill ~-10 ~ ~-10 ~+10 ~+15 ~+10 air 0 replace stripped_warped_stem 1
+fill ~-10 ~ ~-10 ~+10 ~+15 ~+10 air 0 replace stripped_warped_stem 2
+fill ~-10 ~ ~-10 ~+10 ~+15 ~+10 air 0 replace crimson_hyphae 0
+fill ~-10 ~ ~-10 ~+10 ~+15 ~+10 air 0 replace crimson_hyphae 1
+fill ~-10 ~ ~-10 ~+10 ~+15 ~+10 air 0 replace crimson_hyphae 2
+fill ~-10 ~ ~-10 ~+10 ~+15 ~+10 air 0 replace warped_hyphae 0
+fill ~-10 ~ ~-10 ~+10 ~+15 ~+10 air 0 replace warped_hyphae 1
+fill ~-10 ~ ~-10 ~+10 ~+15 ~+10 air 0 replace warped_hyphae 2
+fill ~-10 ~ ~-10 ~+10 ~+15 ~+10 air 0 replace stripped_crimson_hyphae 0
+fill ~-10 ~ ~-10 ~+10 ~+15 ~+10 air 0 replace stripped_crimson_hyphae 1
+fill ~-10 ~ ~-10 ~+10 ~+15 ~+10 air 0 replace stripped_crimson_hyphae 2
+fill ~-10 ~ ~-10 ~+10 ~+15 ~+10 air 0 replace stripped_warped_hyphae 0
+fill ~-10 ~ ~-10 ~+10 ~+15 ~+10 air 0 replace stripped_warped_hyphae 1
+fill ~-10 ~ ~-10 ~+10 ~+15 ~+10 air 0 replace stripped_warped_hyphae 2
 fill ~-10 ~ ~-10 ~+10 ~+15 ~+10 air 0 replace nether_wart_block
 fill ~-10 ~ ~-10 ~+10 ~+15 ~+10 air 0 replace warped_wart_block
 fill ~-10 ~ ~-10 ~+10 ~+15 ~+10 air 0 replace netherrack
@@ -253,3 +271,29 @@ fill ~-10 ~ ~-10 ~+10 ~+15 ~+10 air 0 replace warped_door 1
 fill ~-10 ~ ~-10 ~+10 ~+15 ~+10 air 0 replace warped_door 2
 fill ~-10 ~ ~-10 ~+10 ~+15 ~+10 air 0 replace warped_door 3
 fill ~-10 ~ ~-10 ~+10 ~+15 ~+10 air 0 replace warped_door 4
+fill ~-10 ~ ~-10 ~+10 ~+15 ~+10 air 0 replace crimson_stairs 0
+fill ~-10 ~ ~-10 ~+10 ~+15 ~+10 air 0 replace crimson_stairs 1
+fill ~-10 ~ ~-10 ~+10 ~+15 ~+10 air 0 replace crimson_stairs 2
+fill ~-10 ~ ~-10 ~+10 ~+15 ~+10 air 0 replace crimson_stairs 3
+fill ~-10 ~ ~-10 ~+10 ~+15 ~+10 air 0 replace crimson_stairs 4
+fill ~-10 ~ ~-10 ~+10 ~+15 ~+10 air 0 replace crimson_stairs 5
+fill ~-10 ~ ~-10 ~+10 ~+15 ~+10 air 0 replace crimson_stairs 6
+fill ~-10 ~ ~-10 ~+10 ~+15 ~+10 air 0 replace crimson_stairs 7
+fill ~-10 ~ ~-10 ~+10 ~+15 ~+10 air 0 replace warped_stairs 0
+fill ~-10 ~ ~-10 ~+10 ~+15 ~+10 air 0 replace warped_stairs 1
+fill ~-10 ~ ~-10 ~+10 ~+15 ~+10 air 0 replace warped_stairs 2
+fill ~-10 ~ ~-10 ~+10 ~+15 ~+10 air 0 replace warped_stairs 3
+fill ~-10 ~ ~-10 ~+10 ~+15 ~+10 air 0 replace warped_stairs 4
+fill ~-10 ~ ~-10 ~+10 ~+15 ~+10 air 0 replace warped_stairs 5
+fill ~-10 ~ ~-10 ~+10 ~+15 ~+10 air 0 replace warped_stairs 6
+fill ~-10 ~ ~-10 ~+10 ~+15 ~+10 air 0 replace warped_stairs 7
+fill ~-10 ~ ~-10 ~+10 ~+15 ~+10 air 0 replace crimson_fence
+fill ~-10 ~ ~-10 ~+10 ~+15 ~+10 air 0 replace warped_fence
+fill ~-10 ~ ~-10 ~+10 ~+15 ~+10 air 0 replace crimson_fence_gate 0
+fill ~-10 ~ ~-10 ~+10 ~+15 ~+10 air 0 replace crimson_fence_gate 1
+fill ~-10 ~ ~-10 ~+10 ~+15 ~+10 air 0 replace warped_fence_gate 0
+fill ~-10 ~ ~-10 ~+10 ~+15 ~+10 air 0 replace warped_fence_gate 1
+fill ~-10 ~ ~-10 ~+10 ~+15 ~+10 air 0 replace crimson_slab 0
+fill ~-10 ~ ~-10 ~+10 ~+15 ~+10 air 0 replace crimson_slab 1
+fill ~-10 ~ ~-10 ~+10 ~+15 ~+10 air 0 replace warped_slab 0
+fill ~-10 ~ ~-10 ~+10 ~+15 ~+10 air 0 replace warped_slab 1
