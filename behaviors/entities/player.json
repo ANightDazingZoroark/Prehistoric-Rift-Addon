@@ -1,4 +1,4 @@
-//bridge-file-version: #7
+//bridge-file-version: #24
 {
 	"format_version": "1.13.0",
 	"minecraft:entity": {
@@ -51,6 +51,16 @@
 				},
 				"minecraft:spell_effects": {
 					"remove_effects": "bad_omen"
+				}
+			},
+			"rift:no_staff": {
+				"minecraft:variant": {
+					"value": 0
+				}
+			},
+			"rift:command_staff": {
+				"minecraft:variant": {
+					"value": 1
 				}
 			}
 		},
@@ -200,6 +210,31 @@
 						"damage_multiplier": 2
 					}
 				]
+			},
+			"minecraft:scheduler": {
+				"scheduled_events": [
+					{
+						"filters": {
+							"test": "has_equipment",
+							"subject": "self",
+							"domain": "hand",
+							"value": "rift:command_staff"
+						},
+						"event": "rift:has_command_staff",
+						"target": "self"
+					},
+					{
+						"filters": {
+							"test": "has_equipment",
+							"subject": "self",
+							"domain": "hand",
+							"operator": "!=",
+							"value": "rift:command_staff"
+						},
+						"event": "rift:has_no_command_staff",
+						"target": "self"
+					}
+				]
 			}
 		},
 		"events": {
@@ -233,6 +268,30 @@
 				"remove": {
 					"component_groups": [
 						"minecraft:raid_trigger"
+					]
+				}
+			},
+			"rift:has_command_staff": {
+				"add": {
+					"component_groups": [
+						"rift:command_staff"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:no_staff"
+					]
+				}
+			},
+			"rift:has_no_command_staff": {
+				"remove": {
+					"component_groups": [
+						"rift:command_staff"
+					]
+				},
+				"add": {
+					"component_groups": [
+						"rift:no_staff"
 					]
 				}
 			}

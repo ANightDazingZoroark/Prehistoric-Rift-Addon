@@ -1,4 +1,4 @@
-#bridge-file-version: #134
+#bridge-file-version: #165
 fill ~-10 ~ ~-10 ~+10 ~+15 ~+10 air 0 replace planks 0
 fill ~-10 ~ ~-10 ~+10 ~+15 ~+10 air 0 replace planks 1
 fill ~-10 ~ ~-10 ~+10 ~+15 ~+10 air 0 replace planks 2
@@ -93,14 +93,29 @@ fill ~-10 ~ ~-10 ~+10 ~+15 ~+10 air 0 replace wooden_slab 4
 fill ~-10 ~ ~-10 ~+10 ~+15 ~+10 air 0 replace wooden_slab 5
 fill ~-10 ~ ~-10 ~+10 ~+15 ~+10 air 0 replace wooden_door 0
 fill ~-10 ~ ~-10 ~+10 ~+15 ~+10 air 0 replace wooden_door 1
+fill ~-10 ~ ~-10 ~+10 ~+15 ~+10 air 0 replace wooden_door 2
+fill ~-10 ~ ~-10 ~+10 ~+15 ~+10 air 0 replace wooden_door 3
+fill ~-10 ~ ~-10 ~+10 ~+15 ~+10 air 0 replace wooden_door 4
 fill ~-10 ~ ~-10 ~+10 ~+15 ~+10 air 0 replace birch_door 0
 fill ~-10 ~ ~-10 ~+10 ~+15 ~+10 air 0 replace birch_door 1
+fill ~-10 ~ ~-10 ~+10 ~+15 ~+10 air 0 replace birch_door 2
+fill ~-10 ~ ~-10 ~+10 ~+15 ~+10 air 0 replace birch_door 3
+fill ~-10 ~ ~-10 ~+10 ~+15 ~+10 air 0 replace birch_door 4
 fill ~-10 ~ ~-10 ~+10 ~+15 ~+10 air 0 replace spruce_door 0
 fill ~-10 ~ ~-10 ~+10 ~+15 ~+10 air 0 replace spruce_door 1
+fill ~-10 ~ ~-10 ~+10 ~+15 ~+10 air 0 replace spruce_door 2
+fill ~-10 ~ ~-10 ~+10 ~+15 ~+10 air 0 replace spruce_door 3
+fill ~-10 ~ ~-10 ~+10 ~+15 ~+10 air 0 replace spruce_door 4
 fill ~-10 ~ ~-10 ~+10 ~+15 ~+10 air 0 replace acacia_door 0
 fill ~-10 ~ ~-10 ~+10 ~+15 ~+10 air 0 replace acacia_door 1
+fill ~-10 ~ ~-10 ~+10 ~+15 ~+10 air 0 replace acacia_door 2
+fill ~-10 ~ ~-10 ~+10 ~+15 ~+10 air 0 replace acacia_door 3
+fill ~-10 ~ ~-10 ~+10 ~+15 ~+10 air 0 replace acacia_door 4
 fill ~-10 ~ ~-10 ~+10 ~+15 ~+10 air 0 replace jungle_door 0
 fill ~-10 ~ ~-10 ~+10 ~+15 ~+10 air 0 replace jungle_door 1
+fill ~-10 ~ ~-10 ~+10 ~+15 ~+10 air 0 replace jungle_door 2
+fill ~-10 ~ ~-10 ~+10 ~+15 ~+10 air 0 replace jungle_door 3
+fill ~-10 ~ ~-10 ~+10 ~+15 ~+10 air 0 replace jungle_door 4
 fill ~-10 ~ ~-10 ~+10 ~+15 ~+10 air 0 replace dark_oak_door 0
 fill ~-10 ~ ~-10 ~+10 ~+15 ~+10 air 0 replace dark_oak_door 1
 fill ~-10 ~ ~-10 ~+10 ~+15 ~+10 air 0 replace wooden_slab 0
@@ -213,3 +228,28 @@ fill ~-10 ~ ~-10 ~+10 ~+15 ~+10 air 0 replace wool 12
 fill ~-10 ~ ~-10 ~+10 ~+15 ~+10 air 0 replace wool 13
 fill ~-10 ~ ~-10 ~+10 ~+15 ~+10 air 0 replace wool 14
 fill ~-10 ~ ~-10 ~+10 ~+15 ~+10 air 0 replace wool 15
+fill ~-10 ~ ~-10 ~+10 ~+15 ~+10 air 0 replace crimson_stem 0
+fill ~-10 ~ ~-10 ~+10 ~+15 ~+10 air 0 replace crimson_stem 1
+fill ~-10 ~ ~-10 ~+10 ~+15 ~+10 air 0 replace crimson_stem 2
+fill ~-10 ~ ~-10 ~+10 ~+15 ~+10 air 0 replace warped_stem 0
+fill ~-10 ~ ~-10 ~+10 ~+15 ~+10 air 0 replace warped_stem 1
+fill ~-10 ~ ~-10 ~+10 ~+15 ~+10 air 0 replace warped_stem 2
+fill ~-10 ~ ~-10 ~+10 ~+15 ~+10 air 0 replace nether_wart_block
+fill ~-10 ~ ~-10 ~+10 ~+15 ~+10 air 0 replace warped_wart_block
+fill ~-10 ~ ~-10 ~+10 ~+15 ~+10 air 0 replace netherrack
+fill ~-10 ~ ~-10 ~+10 ~+15 ~+10 air 0 replace crimson_nylium
+fill ~-10 ~ ~-10 ~+10 ~+15 ~+10 air 0 replace warped_nylium
+fill ~-10 ~ ~-10 ~+10 ~+15 ~+10 air 0 replace soul_sand
+fill ~-10 ~ ~-10 ~+10 ~+15 ~+10 air 0 replace soul_soil
+fill ~-10 ~ ~-10 ~+10 ~+15 ~+10 air 0 replace crimson_planks
+fill ~-10 ~ ~-10 ~+10 ~+15 ~+10 air 0 replace warped_planks
+fill ~-10 ~ ~-10 ~+10 ~+15 ~+10 air 0 replace crimson_door 0
+fill ~-10 ~ ~-10 ~+10 ~+15 ~+10 air 0 replace crimson_door 1
+fill ~-10 ~ ~-10 ~+10 ~+15 ~+10 air 0 replace crimson_door 2
+fill ~-10 ~ ~-10 ~+10 ~+15 ~+10 air 0 replace crimson_door 3
+fill ~-10 ~ ~-10 ~+10 ~+15 ~+10 air 0 replace crimson_door 4
+fill ~-10 ~ ~-10 ~+10 ~+15 ~+10 air 0 replace warped_door 0
+fill ~-10 ~ ~-10 ~+10 ~+15 ~+10 air 0 replace warped_door 1
+fill ~-10 ~ ~-10 ~+10 ~+15 ~+10 air 0 replace warped_door 2
+fill ~-10 ~ ~-10 ~+10 ~+15 ~+10 air 0 replace warped_door 3
+fill ~-10 ~ ~-10 ~+10 ~+15 ~+10 air 0 replace warped_door 4
