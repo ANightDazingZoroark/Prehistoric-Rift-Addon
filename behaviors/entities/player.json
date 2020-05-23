@@ -1,6 +1,6 @@
-//bridge-file-version: #24
+//bridge-file-version: #43
 {
-	"format_version": "1.13.0",
+	"format_version": "1.16.0",
 	"minecraft:entity": {
 		"description": {
 			"identifier": "minecraft:player",
@@ -53,15 +53,8 @@
 					"remove_effects": "bad_omen"
 				}
 			},
-			"rift:no_staff": {
-				"minecraft:variant": {
-					"value": 0
-				}
-			},
-			"rift:command_staff": {
-				"minecraft:variant": {
-					"value": 1
-				}
+			"rift:is_riding": {
+				"minecraft:is_sheared": {}
 			}
 		},
 		"components": {
@@ -183,6 +176,24 @@
 							]
 						},
 						"event": "minecraft:trigger_raid"
+					},
+					{
+						"filters": {
+							"test": "is_riding",
+							"subject": "self",
+							"value": true
+						},
+						"event": "rift:is_riding",
+						"target": "self"
+					},
+					{
+						"filters": {
+							"test": "is_riding",
+							"subject": "self",
+							"value": false
+						},
+						"event": "rift:is_not_riding",
+						"target": "self"
 					}
 				]
 			},
@@ -208,31 +219,6 @@
 						},
 						"deals_damage": true,
 						"damage_multiplier": 2
-					}
-				]
-			},
-			"minecraft:scheduler": {
-				"scheduled_events": [
-					{
-						"filters": {
-							"test": "has_equipment",
-							"subject": "self",
-							"domain": "hand",
-							"value": "rift:command_staff"
-						},
-						"event": "rift:has_command_staff",
-						"target": "self"
-					},
-					{
-						"filters": {
-							"test": "has_equipment",
-							"subject": "self",
-							"domain": "hand",
-							"operator": "!=",
-							"value": "rift:command_staff"
-						},
-						"event": "rift:has_no_command_staff",
-						"target": "self"
 					}
 				]
 			}
@@ -271,27 +257,17 @@
 					]
 				}
 			},
-			"rift:has_command_staff": {
+			"rift:is_riding": {
 				"add": {
 					"component_groups": [
-						"rift:command_staff"
-					]
-				},
-				"remove": {
-					"component_groups": [
-						"rift:no_staff"
+						"rift:is_riding"
 					]
 				}
 			},
-			"rift:has_no_command_staff": {
+			"rift:is_not_riding": {
 				"remove": {
 					"component_groups": [
-						"rift:command_staff"
-					]
-				},
-				"add": {
-					"component_groups": [
-						"rift:no_staff"
+						"rift:is_riding"
 					]
 				}
 			}
