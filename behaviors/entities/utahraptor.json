@@ -1,4 +1,4 @@
-//bridge-file-version: #432
+//bridge-file-version: #449
 {
 	"format_version": "1.16.0",
 	"minecraft:entity": {
@@ -8,11 +8,14 @@
 			"is_summonable": true,
 			"is_experimental": false,
 			"animations": {
-				"contAbilities": "controller.animation.utahraptor_abilities"
+				"contAbilities": "controller.animation.utahraptor_abilities",
+				"contStaffAbility": "controller.animation.utahraptor_command_staff",
+				"animCallSounds": "animation.utahraptor.pack_sounds"
 			},
 			"scripts": {
 				"animate": [
-					"contAbilities"
+					"contAbilities",
+					"contStaffAbility"
 				]
 			}
 		},
@@ -639,7 +642,23 @@
 						"dinosaur"
 					]
 				}
-			}
+			},
+			"rift:utahraptor_will_buff": {
+				"minecraft:environment_sensor": {
+					"triggers": [
+						{
+							"filters": {
+								"test": "has_tag",
+								"subject": "self",
+								"value": "utahBuff"
+							},
+							"event": "rift:buffing",
+							"target": "self"
+						}
+					]
+				}
+			},
+			"rift:utahraptor_buffing": {}
 		},
 		"components": {
 			"minecraft:type_family": {
@@ -1350,6 +1369,34 @@
 				"remove": {
 					"component_groups": [
 						"rift:utahraptor_adult_wild_in_forest"
+					]
+				}
+			},
+			"rift:will_buff": {
+				"add": {
+					"component_groups": [
+						"rift:utahraptor_will_buff"
+					]
+				}
+			},
+			"rift:will_not_buff": {
+				"remove": {
+					"component_groups": [
+						"rift:utahraptor_will_buff"
+					]
+				}
+			},
+			"rift:buffing": {
+				"add": {
+					"component_groups": [
+						"rift:utahraptor_buffing"
+					]
+				}
+			},
+			"rift:stop_buffing": {
+				"remove": {
+					"component_groups": [
+						"rift:utahraptor_buffing"
 					]
 				}
 			}

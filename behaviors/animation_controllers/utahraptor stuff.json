@@ -1,4 +1,4 @@
-//bridge-file-version: #49
+//bridge-file-version: #69
 {
 	"format_version": "1.10.0",
 	"animation_controllers": {
@@ -82,6 +82,70 @@
 				"spawn": {
 					"on_entry": [
 						"/function cmd.utahraptor_pack_summon"
+					]
+				}
+			}
+		},
+		"controller.animation.utahraptor_command_staff": {
+			"initial_state": "default",
+			"states": {
+				"default": {
+					"transitions": [
+						{
+							"can_buff": "query.has_rider"
+						}
+					]
+				},
+				"can_buff": {
+					"transitions": [
+						{
+							"default": "!query.has_rider"
+						},
+						{
+							"buffing": "query.is_powered"
+						}
+					],
+					"on_entry": [
+						"@s rift:will_buff"
+					],
+					"on_exit": [
+						"@s rift:will_not_buff"
+					]
+				},
+				"buffing": {
+					"transitions": [
+						{
+							"can_buff": "!query.is_powered"
+						}
+					],
+					"on_exit": [
+						"/tag @s remove utahBuff"
+					],
+					"on_entry": [
+						"/function cmd.utahraptor_pack_buff"
+					],
+					"animations": [
+						"animCallSounds"
+					]
+				}
+			}
+		},
+		"controller.animation.utahraptor_add_tame_tag": {
+			"initial_state": "default",
+			"states": {
+				"default": {
+					"transitions": [
+						{
+							"tamed": "query.is_tamed"
+						}
+					],
+					"on_exit": [
+						"/tag @s utahTamed"
+					]
+				},
+				"tamed": {
+					"on_entry": [
+						"/tag @s add utahTamed"
 					]
 				}
 			}
