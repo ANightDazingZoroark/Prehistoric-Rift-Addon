@@ -1,4 +1,4 @@
-//bridge-file-version: #42
+//bridge-file-version: #69
 {
 	"format_version": "1.10.0",
 	"animation_controllers": {
@@ -17,7 +17,7 @@
 							"sitting": "query.is_sitting"
 						},
 						{
-							"clinging": "query.is_wall_climbing || query.is_sheared"
+							"clinging": "query.is_wall_climbing"
 						}
 					]
 				},
@@ -47,13 +47,13 @@
 					],
 					"transitions": [
 						{
-							"default": "!query.is_wall_climbing || !query.is_sheared"
+							"default": "!query.is_wall_climbing"
 						}
 					]
 				}
 			}
 		},
-		"controller.animation.utahraptor_looking": {
+		"controller.animation.utahraptor_head_movement": {
 			"initial_state": "default",
 			"states": {
 				"default": {
@@ -62,16 +62,20 @@
 					],
 					"transitions": [
 						{
-							"climb_no_look": "query.is_wall_climbing || query.is_sheared"
+							"buffing": "query.is_sheared"
 						}
 					]
 				},
-				"climb_no_look": {
+				"buffing": {
+					"animations": [
+						"animCall"
+					],
 					"transitions": [
 						{
-							"default": "!query.is_wall_climbing || !query.is_sheared"
+							"default": "!query.is_sheared"
 						}
-					]
+					],
+					"blend_transition": 1
 				}
 			}
 		}
