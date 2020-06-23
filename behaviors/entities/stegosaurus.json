@@ -1,4 +1,4 @@
-//bridge-file-version: #62
+//bridge-file-version: #77
 {
 	"format_version": "1.16.0",
 	"minecraft:entity": {
@@ -6,7 +6,15 @@
 			"identifier": "rift:stegosaurus",
 			"is_summonable": true,
 			"is_spawnable": true,
-			"is_experimental": false
+			"is_experimental": false,
+			"animations": {
+				"contHarvest": "controller.animation.stego_harvest"
+			},
+			"scripts": {
+				"animate": [
+					"contHarvest"
+				]
+			}
 		},
 		"component_groups": {
 			"rift:stegosaurus_baby": {
@@ -396,6 +404,31 @@
 			"rift:stegosaurus_chested": {
 				"minecraft:is_chested": {}
 			},
+			"rift:stego_will_harvest": {
+				"minecraft:scheduler": {
+					"scheduled_events": [
+						{
+							"filters": {
+								"test": "has_tag",
+								"value": "stegoHarvest",
+								"subject": "self",
+								"operator": "=="
+							},
+							"event": "rift:stego_harvesting"
+						}
+					]
+				}
+			},
+			"rift:stego_harvest": {
+				"minecraft:is_charged": {},
+				"minecraft:timer": {
+					"time": 0.5,
+					"time_down_event": {
+						"event": "rift:stego_no_harvest",
+						"target": "self"
+					}
+				}
+			},
 			"rift:rideable": {
 				"minecraft:rideable": {
 					"seats": [
@@ -526,30 +559,6 @@
 						},
 						"interact_text": "action.interact.attachchest",
 						"use_item": true
-					}
-				]
-			},
-			"minecraft:scheduler": {
-				"scheduled_events": [
-					{
-						"filters": {
-							"test": "rider_count",
-							"subject": "self",
-							"operator": ">",
-							"value": 0
-						},
-						"event": "rift:no_longer_sittable",
-						"target": "self"
-					},
-					{
-						"filters": {
-							"test": "rider_count",
-							"subject": "self",
-							"operator": "==",
-							"value": 0
-						},
-						"event": "rift:is_now_sittable",
-						"target": "self"
 					}
 				]
 			},
@@ -828,20 +837,6 @@
 					]
 				}
 			},
-			"rift:no_longer_sittable": {
-				"remove": {
-					"component_groups": [
-						"rift:stegosaurus_sittable"
-					]
-				}
-			},
-			"rift:is_now_sittable": {
-				"add": {
-					"component_groups": [
-						"rift:stegosaurus_sittable"
-					]
-				}
-			},
 			"rift:despawn": {
 				"add": {
 					"component_groups": [
@@ -896,6 +891,44 @@
 						}
 					}
 				]
+			},
+			"rift:will_harvest": {
+				"add": {
+					"component_groups": [
+						"rift:stego_will_harvest"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:stegosaurus_sittable"
+					]
+				}
+			},
+			"rift:will_not_harvest": {
+				"remove": {
+					"component_groups": [
+						"rift:stego_will_harvest"
+					]
+				},
+				"add": {
+					"component_groups": [
+						"rift:stegosaurus_sittable"
+					]
+				}
+			},
+			"rift:stego_harvesting": {
+				"add": {
+					"component_groups": [
+						"rift:stego_harvest"
+					]
+				}
+			},
+			"rift:stego_no_harvest": {
+				"remove": {
+					"component_groups": [
+						"rift:stego_harvest"
+					]
+				}
 			}
 		}
 	}

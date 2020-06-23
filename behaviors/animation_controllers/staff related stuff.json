@@ -1,4 +1,4 @@
-//bridge-file-version: #104
+//bridge-file-version: #112
 {
 	"format_version": "1.10.0",
 	"animation_controllers": {
@@ -8,7 +8,7 @@
 				"default": {
 					"transitions": [
 						{
-							"has_staff": "query.get_equipped_item_name('main_hand') == 'command_staff' && query.is_sheared"
+							"has_staff": "query.get_equipped_item_name('main_hand') == 'command_staff' && query.is_riding"
 						}
 					]
 				},
@@ -18,7 +18,7 @@
 							"use": "query.get_equipped_item_name('main_hand') == 'command_staff' && query.is_using_item"
 						},
 						{
-							"default": "!query.is_sheared && query.get_equipped_item_name('main_hand') != 'command_staff'"
+							"default": "!query.is_riding && query.get_equipped_item_name('main_hand') != 'command_staff'"
 						}
 					]
 				},
@@ -30,6 +30,38 @@
 					],
 					"on_entry": [
 						"/function cmd.command_staff"
+					]
+				}
+			}
+		},
+		"controller.animation.harvest_staff": {
+			"initial_state": "default",
+			"states": {
+				"default": {
+					"transitions": [
+						{
+							"has_staff": "query.get_equipped_item_name('main_hand') == 'harvest_staff' && query.is_riding"
+						}
+					]
+				},
+				"has_staff": {
+					"transitions": [
+						{
+							"use": "query.get_equipped_item_name('main_hand') == 'harvest_staff' && query.is_using_item"
+						},
+						{
+							"default": "!query.is_riding && query.get_equipped_item_name('main_hand') != 'harvest_staff'"
+						}
+					]
+				},
+				"use": {
+					"transitions": [
+						{
+							"has_staff": "!query.is_using_item"
+						}
+					],
+					"on_entry": [
+						"/function cmd.harvest_staff"
 					]
 				}
 			}

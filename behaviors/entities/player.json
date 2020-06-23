@@ -1,4 +1,4 @@
-//bridge-file-version: #43
+//bridge-file-version: #45
 {
 	"format_version": "1.16.0",
 	"minecraft:entity": {
@@ -8,11 +8,13 @@
 			"is_summonable": false,
 			"is_experimental": false,
 			"animations": {
-				"contCommandStaff": "controller.animation.command_staff"
+				"contCommandStaff": "controller.animation.command_staff",
+				"contHarvestStaff": "controller.animation.harvest_staff"
 			},
 			"scripts": {
 				"animate": [
-					"contCommandStaff"
+					"contCommandStaff",
+					"contHarvestStaff"
 				]
 			}
 		},
@@ -52,9 +54,6 @@
 				"minecraft:spell_effects": {
 					"remove_effects": "bad_omen"
 				}
-			},
-			"rift:is_riding": {
-				"minecraft:is_sheared": {}
 			}
 		},
 		"components": {
@@ -176,24 +175,6 @@
 							]
 						},
 						"event": "minecraft:trigger_raid"
-					},
-					{
-						"filters": {
-							"test": "is_riding",
-							"subject": "self",
-							"value": true
-						},
-						"event": "rift:is_riding",
-						"target": "self"
-					},
-					{
-						"filters": {
-							"test": "is_riding",
-							"subject": "self",
-							"value": false
-						},
-						"event": "rift:is_not_riding",
-						"target": "self"
 					}
 				]
 			},
@@ -254,20 +235,6 @@
 				"remove": {
 					"component_groups": [
 						"minecraft:raid_trigger"
-					]
-				}
-			},
-			"rift:is_riding": {
-				"add": {
-					"component_groups": [
-						"rift:is_riding"
-					]
-				}
-			},
-			"rift:is_not_riding": {
-				"remove": {
-					"component_groups": [
-						"rift:is_riding"
 					]
 				}
 			}
