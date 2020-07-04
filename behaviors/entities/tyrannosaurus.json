@@ -1,4 +1,4 @@
-//bridge-file-version: #53
+//bridge-file-version: #96
 {
 	"format_version": "1.16.0",
 	"minecraft:entity": {
@@ -8,11 +8,13 @@
 			"is_spawnable": true,
 			"is_experimental": false,
 			"animations": {
-				"contRoar": "controller.animation.tyrannosaurus_roar"
+				"contRoar": "controller.animation.tyrannosaurus_roar",
+				"contLowHP": "controller.animation.wild_tyranno_roar"
 			},
 			"scripts": {
 				"animate": [
-					"contRoar"
+					"contRoar",
+					"contLowHP"
 				]
 			}
 		},
@@ -372,7 +374,7 @@
 					}
 				},
 				"minecraft:behavior.nearest_attackable_target": {
-					"priority": 1,
+					"priority": 3,
 					"must_see": false,
 					"within_radius": 50,
 					"persist_time": 25,
@@ -439,6 +441,92 @@
 							}
 						}
 					]
+				}
+			},
+			"rift:wild_is_too_weak": {
+				"minecraft:behavior.avoid_mob_type": {
+					"priority": 2,
+					"max_flee": 10,
+					"max_dist": 20,
+					"entity_types": [
+						{
+							"filters": {
+								"any_of": [
+									{
+										"test": "is_family",
+										"subject": "other",
+										"value": "mob"
+									},
+									{
+										"test": "is_family",
+										"subject": "other",
+										"value": "player"
+									}
+								]
+							}
+						}
+					]
+				},
+				"minecraft:entity_sensor": {
+					"sensor_range": 5,
+					"minimum_count": 1,
+					"event_filters": {
+						"any_of": [
+							{
+								"test": "is_family",
+								"subject": "other",
+								"value": "mob"
+							},
+							{
+								"test": "is_family",
+								"subject": "other",
+								"value": "player"
+							}
+						]
+					},
+					"event": "rift:wild_roar"
+				}
+			},
+			"rift:roar_in_wild": {
+				"minecraft:behavior.knockback_roar": {
+					"priority": 1,
+					"duration": 1.5,
+					"attack_time": 0.1,
+					"knockback_damage": 4,
+					"knockback_strength": 15,
+					"knockback_range": 25,
+					"damage_filters": {
+						"any_of": [
+							{
+								"test": "is_family",
+								"subject": "other",
+								"value": "mob"
+							},
+							{
+								"test": "is_family",
+								"subject": "other",
+								"value": "player"
+							}
+						]
+					},
+					"knockback_filters": {
+						"any_of": [
+							{
+								"test": "is_family",
+								"subject": "other",
+								"value": "mob"
+							},
+							{
+								"test": "is_family",
+								"subject": "other",
+								"value": "player"
+							}
+						]
+					},
+					"on_roar_end": {
+						"event": "rift:stop_wild_roaring",
+						"target": "self"
+					}
 				}
 			},
 			"rift:tyrannosaurus_angry": {
@@ -1168,6 +1256,64 @@
 								}
 							}
 						]
+					}
+				]
+			},
+			"rift:on_low_health_in_wild": {
+				"add": {
+					"component_groups": [
+						"rift:wild_is_too_weak"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:tyrannosaurus_not_hunting",
+						"rift:tyrannosaurus_hunting",
+						"rift:tyrannosaurus_angry"
+					]
+				}
+			},
+			"rift:wild_roar": {
+				"add": {
+					"component_groups": [
+						"rift:roar_in_wild"
+					]
+				}
+			},
+			"rift:stop_wild_roaring": {
+				"remove": {
+					"component_groups": [
+						"rift:roar_in_wild"
+					]
+				}
+			},
+			"rift:return_to_normal": {
+				"randomize": [
+					{
+						"weight": 50,
+						"add": {
+							"component_groups": [
+								"rift:tyrannosaurus_not_hunting"
+							]
+						},
+						"remove": {
+							"component_groups": [
+								"rift:wild_is_too_weak"
+							]
+						}
+					},
+					{
+						"weight": 50,
+						"add": {
+							"component_groups": [
+								"rift:tyrannosaurus_hunting"
+							]
+						},
+						"remove": {
+							"component_groups": [
+								"rift:wild_is_too_weak"
+							]
+						}
 					}
 				]
 			}

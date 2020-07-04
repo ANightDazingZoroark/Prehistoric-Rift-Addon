@@ -1,4 +1,4 @@
-//bridge-file-version: #1
+//bridge-file-version: #10
 {
 	"format_version": "1.10.0",
 	"animation_controllers": {
@@ -70,6 +70,33 @@
 				"break_stuff": {
 					"on_entry": [
 						"/function cmd.roar_break_stuff"
+					]
+				}
+			}
+		},
+		"controller.animation.wild_tyranno_roar": {
+			"initial_state": "default",
+			"states": {
+				"default": {
+					"transitions": [
+						{
+							"low_health": "!query.is_baby && !query.is_tamed && (query.health <= query.max_health/4)"
+						}
+					]
+				},
+				"low_health": {
+					"transitions": [
+						{
+							"default": "!query.is_baby && !query.is_tamed && (query.health > query.max_health/4)"
+						}
+					],
+					"on_entry": [
+						"/say aaaaaaaa",
+						"@s rift:on_low_health_in_wild"
+					],
+					"on_exit": [
+						"/say hell ye",
+						"@s rift:return_to_normal"
 					]
 				}
 			}
