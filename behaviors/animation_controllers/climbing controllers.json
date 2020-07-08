@@ -1,0 +1,84 @@
+//bridge-file-version: #45
+{
+	"format_version": "1.10.0",
+	"animation_controllers": {
+		"controller.animation.climb_controlling": {
+			"initial_state": "default",
+			"states": {
+				"lookUp": {
+					"transitions": [
+						{
+							"default": "query.target_x_rotation >= -30"
+						}
+					],
+					"on_entry": [
+						"/say looking up"
+					],
+					"animations": [
+						"animClimbUp"
+					]
+				},
+				"default": {
+					"transitions": [
+						{
+							"lookUp": "query.target_x_rotation < -30"
+						},
+						{
+							"lookDown": "query.target_x_rotation > 30"
+						}
+					],
+					"on_entry": [
+						"/say looking straight"
+					],
+					"animations": [
+						"animClimbStay"
+					]
+				},
+				"lookDown": {
+					"transitions": [
+						{
+							"default": "query.target_x_rotation <= 30"
+						}
+					],
+					"on_entry": [
+						"/say looking down"
+					],
+					"animations": [
+						"animClimbDown"
+					]
+				}
+			}
+		},
+		"controller.animation.configure_climber": {
+			"initial_state": "default",
+			"states": {
+				"default": {
+					"transitions": [
+						{
+							"climber": "query.has_rider"
+						}
+					],
+					"on_entry": [
+						"/tag @s remove climber"
+					],
+					"on_exit": [
+						"/tag @s add climber"
+					]
+				},
+				"climber": {
+					"transitions": [
+						{
+							"default": "!query.has_rider"
+						}
+					],
+					"on_entry": [
+						"/tag @s add climber"
+					],
+					"on_exit": [
+						"/tag @s remove climber"
+					]
+				}
+			}
+		}
+	}
+}
