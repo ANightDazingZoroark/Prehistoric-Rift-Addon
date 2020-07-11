@@ -1,4 +1,4 @@
-//bridge-file-version: #51
+//bridge-file-version: #56
 {
 	"format_version": "1.16.0",
 	"minecraft:entity": {
@@ -59,6 +59,9 @@
 				"minecraft:spell_effects": {
 					"remove_effects": "bad_omen"
 				}
+			},
+			"rift:is_riding_climber": {
+				"minecraft:is_sheared": {}
 			}
 		},
 		"components": {
@@ -180,6 +183,24 @@
 							]
 						},
 						"event": "minecraft:trigger_raid"
+					},
+					{
+						"filters": {
+							"test": "has_tag",
+							"subject": "self",
+							"value": "climbMount"
+						},
+						"event": "rift:riding_climber",
+						"target": "self"
+					},
+					{
+						"filters": {
+							"test": "has_tag",
+							"subject": "self",
+							"value": "nClimbMount"
+						},
+						"event": "rift:not_riding_climber",
+						"target": "self"
 					}
 				]
 			}
@@ -215,6 +236,20 @@
 				"remove": {
 					"component_groups": [
 						"minecraft:raid_trigger"
+					]
+				}
+			},
+			"rift:riding_climber": {
+				"add": {
+					"component_groups": [
+						"rift:is_riding_climber"
+					]
+				}
+			},
+			"rift:not_riding_climber": {
+				"remove": {
+					"component_groups": [
+						"rift:is_riding_climber"
 					]
 				}
 			}
