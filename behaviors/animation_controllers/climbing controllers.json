@@ -1,4 +1,4 @@
-//bridge-file-version: #114
+//bridge-file-version: #207
 {
 	"format_version": "1.10.0",
 	"animation_controllers": {
@@ -8,27 +8,17 @@
 				"default": {
 					"transitions": [
 						{
-							"stay": "query.is_jumping && query.is_riding && query.is_sheared"
+							"stay": "query.is_jumping && query.is_riding && query.is_sheared && query.target_x_rotation <= 0"
 						}
 					],
-					"on_entry": [
-						"/say on ground"
-					]
-				},
-				"lookUp": {
-					"transitions": [
-						{
-							"stay": "!query.is_jumping"
-						}
+					"animations": [
+						"animClimbDown"
 					],
 					"on_entry": [
-						"/say looking up"
+						"/say default"
 					],
 					"on_exit": [
 						"/execute @e[tag=climber, r=2] ~ ~ ~  effect @s clear"
-					],
-					"animations": [
-						"animClimbUp"
 					]
 				},
 				"stay": {
@@ -37,33 +27,30 @@
 							"lookUp": "query.is_jumping && query.target_x_rotation < -30"
 						},
 						{
-							"lookDown": "query.is_jumping && query.target_x_rotation > 30"
-						},
-						{
-							"default": "!query.is_riding"
+							"default": "!query.is_riding || (query.target_x_rotation > 15 && query.is_jumping)"
 						}
-					],
-					"on_entry": [
-						"/say looking straight"
-					],
-					"animations": [
-						"animClimbStay"
-					]
-				},
-				"lookDown": {
-					"transitions": [
-						{
-							"stay": "!query.is_jumping"
-						}
-					],
-					"on_entry": [
-						"/say looking down"
 					],
 					"on_exit": [
 						"/execute @e[tag=climber, r=2] ~ ~ ~  effect @s clear"
 					],
 					"animations": [
-						"animClimbDown"
+						"animClimbStay"
+					],
+					"on_entry": [
+						"/say stay in place"
+					]
+				},
+				"lookUp": {
+					"transitions": [
+						{
+							"stay": "!query.is_jumping"
+						}
+					],
+					"on_exit": [
+						"/execute @e[tag=climber, r=2] ~ ~ ~  effect @s clear"
+					],
+					"animations": [
+						"animClimbUp"
 					]
 				}
 			}
@@ -74,19 +61,18 @@
 				"default": {
 					"transitions": [
 						{
-							"climber": "query.has_rider && !query.is_on_ground"
+							"climber": "query.has_rider && !query.is_on_ground && query.ground_speed > 0"
 						}
 					],
 					"on_entry": [
 						"/tag @s remove climber",
-						"/tag @p[r=1] remove climbMount",
-						"/effect @s clear",
-						"/tag @p[r=1] add nClimbMount"
+						"/tag @p[r=2] remove climbMount",
+						"/tag @p[r=3] add nClimbMount",
+						"/effect @s clear"
 					],
 					"on_exit": [
 						"/tag @s add climber",
-						"/tag @p[r=1] add climbMount",
-						"/tag @p[r=1] remove nClimbMount"
+						"/tag @p[r=2] add climbMount"
 					]
 				},
 				"climber": {
@@ -97,14 +83,38 @@
 					],
 					"on_entry": [
 						"/tag @s add climber",
-						"/tag @p[r=1] add climbMount",
-						"/tag @p[r=1] remove nClimbMount"
+						"/tag @p[r=2] add climbMount"
 					],
 					"on_exit": [
 						"/tag @s remove climber",
-						"/tag @p[r=1] remove climbMount",
-						"/tag @p[r=1] add nClimbMount",
+						"/tag @p[r=2] remove climbMount",
+						"/tag @p[r=3] add nClimbMount",
 						"/effect @s clear"
+					]
+				}
+			}
+		},
+		"controller.animation.is_player_sheared": {
+			"initial_state": "default",
+			"states": {
+				"default": {
+					"transitions": [
+						{
+							"aaa": "query.is_sheared"
+						}
+					]
+				},
+				"aaa": {
+					"on_entry": [
+						"/say is sheared"
+					],
+					"transitions": [
+						{
+							"default": "!query.is_sheared"
+						}
+					],
+					"on_exit": [
+						"/say is no longer sheared"
 					]
 				}
 			}

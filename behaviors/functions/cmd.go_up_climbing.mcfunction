@@ -1,4 +1,4 @@
-#bridge-file-version: #83
+#bridge-file-version: #85
 #for blocks found naturally
 execute @e[tag=climber, r=2] ~ ~ ~ detect ^ ^ ^+1 dirt 0 effect @s levitation 69420666 5
 execute @e[tag=climber, r=2] ~ ~ ~ detect ^ ^ ^+1 dirt 1 effect @s levitation 69420666 5
