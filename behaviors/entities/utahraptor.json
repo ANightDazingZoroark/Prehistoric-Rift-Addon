@@ -1,4 +1,4 @@
-//bridge-file-version: #548
+//bridge-file-version: #581
 {
 	"format_version": "1.16.0",
 	"minecraft:entity": {
@@ -141,6 +141,9 @@
 				},
 				"minecraft:navigation.walk": {
 					"avoid_water": true
+				},
+				"minecraft:movement": {
+					"value": 0.35
 				}
 			},
 			"rift:utahraptor_baby_wild": {
@@ -227,9 +230,6 @@
 				"minecraft:scale": {
 					"value": 0.9
 				},
-				"minecraft:attack": {
-					"damage": 10
-				},
 				"minecraft:experience_reward": {
 					"on_bred": "Math.Random(4,6)",
 					"on_death": "query.last_hit_by_player ? Math.Random(5,9) : 0"
@@ -286,6 +286,12 @@
 				"minecraft:follow_range": {
 					"value": 50,
 					"max": 50
+				},
+				"minecraft:attack": {
+					"damage": 10
+				},
+				"minecraft:movement": {
+					"value": 0.35
 				}
 			},
 			"rift:utahraptor_adult_wild_pack_leader": {
@@ -615,9 +621,6 @@
 					"pull_in_entities": true
 				}
 			},
-			"rift:utahraptor_tamed_climbing": {
-				"minecraft:is_sheared": {}
-			},
 			"rift:utahraptor_tamed_pounceable": {
 				"minecraft:type_family": {
 					"family": [
@@ -629,7 +632,36 @@
 				},
 				"minecraft:area_attack": {
 					"damage_range": 0.75,
-					"damage_per_tick": 12,
+					"damage_per_tick": 10,
+					"cause": "entity_attack",
+					"entity_filter": {
+						"all_of": [
+							{
+								"test": "is_owner",
+								"subject": "other",
+								"value": false
+							},
+							{
+								"test": "is_riding",
+								"subject": "self",
+								"value": false
+							}
+						]
+					}
+				}
+			},
+			"rift:utahraptor_tamed_buff_pounceable": {
+				"minecraft:type_family": {
+					"family": [
+						"utahraptorLeap",
+						"mob",
+						"carnivore",
+						"dinosaur"
+					]
+				},
+				"minecraft:area_attack": {
+					"damage_range": 0.75,
+					"damage_per_tick": 20,
 					"cause": "entity_attack",
 					"entity_filter": {
 						"all_of": [
@@ -705,16 +737,42 @@
 			},
 			"rift:utahraptor_buffing": {
 				"minecraft:timer": {
-					"time": [
-						1.5,
-						1.5
-					],
+					"time": 1.5,
 					"time_down_event": {
 						"event": "rift:stop_buffing",
 						"target": "self"
 					}
 				},
 				"minecraft:is_sheared": {}
+			},
+			"rift:buffs": {
+				"minecraft:skin_id": {
+					"value": 1
+				},
+				"minecraft:attack": {
+					"damage": 20
+				},
+				"minecraft:movement": {
+					"value": 0.65
+				},
+				"minecraft:timer": {
+					"time": 60,
+					"time_down_event": {
+						"event": "rift:remove_buff_effects",
+						"target": "self"
+					}
+				}
+			},
+			"rift:no_buffs": {
+				"minecraft:skin_id": {
+					"value": 0
+				},
+				"minecraft:attack": {
+					"damage": 10
+				},
+				"minecraft:movement": {
+					"value": 0.35
+				}
 			}
 		},
 		"components": {
@@ -749,9 +807,6 @@
 				"soft_distance": 4,
 				"hard_distance": 10,
 				"max_distance": 16
-			},
-			"minecraft:movement": {
-				"value": 0.35
 			},
 			"minecraft:interact": {
 				"interactions": [
@@ -890,6 +945,15 @@
 							]
 						},
 						"event": "rift:is_not_in_forest",
+						"target": "self"
+					},
+					{
+						"filters": {
+							"test": "has_tag",
+							"subject": "self",
+							"value": "utahBuffEffects"
+						},
+						"event": "rift:buff_effects",
 						"target": "self"
 					}
 				]
@@ -1179,7 +1243,8 @@
 							"component_groups": [
 								"rift:utahraptor_adult",
 								"rift:utahraptor_adult_tamed",
-								"rift:rideable"
+								"rift:rideable",
+								"rift:no_buffs"
 							]
 						},
 						"remove": {
@@ -1409,10 +1474,23 @@
 					]
 				}
 			},
+			"rift:buffed_leap_ability": {
+				"add": {
+					"component_groups": [
+						"rift:utahraptor_tamed_buff_pounceable"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:utahraptor_unpounceable"
+					]
+				}
+			},
 			"rift:disable_leap": {
 				"remove": {
 					"component_groups": [
-						"rift:utahraptor_tamed_pounceable"
+						"rift:utahraptor_tamed_pounceable",
+						"rift:utahraptor_tamed_buff_pounceable"
 					]
 				},
 				"add": {
@@ -1535,6 +1613,30 @@
 				"add": {
 					"component_groups": [
 						"rift:utahraptor_buffing"
+					]
+				}
+			},
+			"rift:buff_effects": {
+				"add": {
+					"component_groups": [
+						"rift:buffs"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:no_buffs"
+					]
+				}
+			},
+			"rift:remove_buff_effects": {
+				"add": {
+					"component_groups": [
+						"rift:no_buffs"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:buffs"
 					]
 				}
 			}

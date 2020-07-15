@@ -1,4 +1,4 @@
-//bridge-file-version: #86
+//bridge-file-version: #96
 {
 	"format_version": "1.10.0",
 	"animation_controllers": {
@@ -24,10 +24,10 @@
 							"default": "!query.has_rider"
 						},
 						{
-							"leapOfDeath": "!query.is_on_ground"
+							"leapOfDeath": "!query.is_on_ground && query.skin_id == 0"
 						},
 						{
-							"climb": "query.is_sheared"
+							"buffedLeapOfDeath": "!query.is_on_ground && query.skin_id == 1"
 						}
 					],
 					"on_entry": [
@@ -41,26 +41,16 @@
 					"transitions": [
 						{
 							"activate": "query.is_on_ground"
-						},
-						{
-							"riding": "query.is_riding"
 						}
 					]
 				},
-				"riding": {
-					"transitions": [
-						{
-							"activate": "!query.is_riding"
-						}
+				"buffedLeapOfDeath": {
+					"on_entry": [
+						"@s rift:buffed_leap_ability"
 					],
-					"on_exit": [
-						"@s rift:disable_leap"
-					]
-				},
-				"climb": {
 					"transitions": [
 						{
-							"activate": "!query.is_sheared"
+							"activate": "query.is_on_ground"
 						}
 					]
 				}
@@ -153,7 +143,7 @@
 				"default": {
 					"transitions": [
 						{
-							"buff": "query.is_sheared"
+							"buff": "query.is_sheared && !query.is_tamed"
 						}
 					]
 				},
@@ -163,7 +153,7 @@
 					],
 					"transitions": [
 						{
-							"default": "!query.is_sheared"
+							"default": "!query.is_sheared && !query.is_tamed"
 						}
 					],
 					"on_entry": [
