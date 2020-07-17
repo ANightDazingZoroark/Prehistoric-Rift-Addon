@@ -94,18 +94,12 @@
 						{
 							"buffing": "query.is_sheared"
 						}
-					],
-					"on_entry": [
-						"@s rift:will_buff"
-					],
-					"on_exit": [
-						"@s rift:will_not_buff"
 					]
 				},
 				"buffing": {
 					"transitions": [
 						{
-							"can_buff": "!query.is_sheared"
+							"can_buff": "!query.is_sheared || query.life_time >= 5"
 						}
 					],
 					"on_entry": [
@@ -113,6 +107,9 @@
 					],
 					"animations": [
 						"animCallSounds"
+					],
+					"on_exit": [
+						"@s rift:stop_buffing"
 					]
 				}
 			}
@@ -153,12 +150,15 @@
 					],
 					"transitions": [
 						{
-							"default": "!query.is_sheared && !query.is_tamed"
+							"default": "(!query.is_sheared && !query.is_tamed) || query.life_time >= 1.5"
 						}
 					],
 					"on_entry": [
 						"/function cmd.utahraptor_leader_cry"
-					]
+					],
+					"on_exit": [
+						"@s rift:stop_buffing"
+					]					
 				}
 			}
 		},
@@ -179,7 +179,33 @@
 						}
 					],
 					"on_entry": [
-						"/effect @s clear"
+						"/tag @s add nUtahBuffEffects"
+					]
+				}
+			}
+		},
+		"controller.animation.utahraptor_use_cry_test": {
+			"initial_state": "default",
+			"states": {
+				"default": {
+					"transitions": [
+						{
+							"is_sheared": "query.is_sheared"
+						}
+					]
+				},
+				"is_sheared": {
+					"on_entry": [
+						"/tag @s add isBuffing"
+					],
+					"on_exit": [
+						"/tag @s remove isBuffing",
+						"/tag @s add utahBuffEffects"
+					],
+					"transitions": [
+						{
+							"default": "!query.is_sheared"
+						}
 					]
 				}
 			}

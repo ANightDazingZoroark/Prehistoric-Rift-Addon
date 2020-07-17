@@ -6,3 +6,4 @@ tag @e remove stegoHarvest
 tag @e remove climbMount
 tag @e remove nClimbMount
 tag @e remove utahBuffEffects
+tag @e remove nUtahBuffEffects
