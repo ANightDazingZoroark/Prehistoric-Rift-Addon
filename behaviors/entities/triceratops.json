@@ -487,6 +487,15 @@
 								"operator": "=="
 							},
 							"event": "rift:triceratops_charge"
+						},
+						{
+							"filters": {
+								"test": "has_tag",
+								"value": "trikeHarvest",
+								"subject": "self",
+								"operator": "=="
+							},
+							"event": "rift:triceratops_harvest"						
 						}
 					]
 				}
@@ -601,6 +610,23 @@
 						"minecraft:crimson_slab",
 						"minecraft:warped_slab"
 					]
+				}
+			},
+			"rift:triceratops_harvesting": {
+				"minecraft:skin_id": {
+					"value": 1
+				},
+				"minecraft:timer": {
+					"time": 0.5,
+					"time_down_event": {
+						"event": "rift:stop_harvesting",
+						"target": "self"
+					}
+				}
+			},
+			"rift:triceratops_not_harvesting": {
+				"minecraft:skin_id": {
+					"value": 0
 				}
 			}
 		},
@@ -1128,6 +1154,32 @@
 						}
 					}
 				]
+			},
+			"rift:triceratops_harvest": {
+				"add": {
+					"component_groups": [
+						"rift:triceratops_harvesting"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:triceratops_will_charge",
+						"rift:triceratops_not_harvesting"
+					]
+				}
+			},
+			"rift:stop_harvesting": {
+				"add": {
+					"component_groups": [
+						"rift:triceratops_will_charge",
+						"rift:triceratops_not_harvesting"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:triceratops_harvesting"
+					]
+				}
 			}
 		}
 	}
