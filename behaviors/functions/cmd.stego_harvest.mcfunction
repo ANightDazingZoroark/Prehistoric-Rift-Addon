@@ -5,6 +5,7 @@ function cmd.stego_harvest_blue_orchid
 function cmd.stego_harvest_carrot
 function cmd.stego_harvest_cornflower
 function cmd.stego_harvest_dandelion
+function cmd.stego_harvest_grass_fiber
 function cmd.stego_harvest_light_grey_dye
 function cmd.stego_harvest_lilac
 function cmd.stego_harvest_lily_of_the_valley
