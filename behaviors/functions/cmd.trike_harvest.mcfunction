@@ -1,1 +1,6 @@
 function cmd.trike_harvest_oak_leaves
+function cmd.trike_harvest_spruce_leaves
+function cmd.trike_harvest_birch_leaves
+function cmd.trike_harvest_jungle_leaves
+function cmd.trike_harvest_dark_oak_leaves
+function cmd.trike_harvest_acacia_leaves
