@@ -6,3 +6,4 @@ function cmd.trike_harvest_dark_oak_leaves
 function cmd.trike_harvest_acacia_leaves
 function cmd.trike_harvest_nether_wart_block
 function cmd.trike_harvest_warped_wart_block
+function cmd.trike_harvest_oak_log
