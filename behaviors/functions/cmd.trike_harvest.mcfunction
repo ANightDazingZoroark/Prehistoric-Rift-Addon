@@ -9,4 +9,3 @@ function cmd.trike_harvest_warped_wart_block
 function cmd.trike_harvest_oak_log
 function cmd.trike_harvest_spruce_log
 function cmd.trike_harvest_birch_log
-function cmd.trike_harvest_jungle_log
