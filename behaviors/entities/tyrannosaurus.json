@@ -638,20 +638,6 @@
 					]
 				}
 			},
-			"rift:roarable": {
-				"minecraft:scheduler": {
-					"scheduled_events": [
-						{
-							"filters": {
-								"test": "has_tag",
-								"value": "tyrannosaurusRoar",
-								"subject": "self"
-							},
-							"event": "rift:tyrannosaurus_roar"
-						}
-					]
-				}
-			},
 			"rift:despawn": {
 				"minecraft:type_family": {
 					"family": [
@@ -805,6 +791,39 @@
 				"damage_range": 1,
 				"damage_per_tick": 20,
 				"cause": "entity_attack"
+			},
+			"minecraft:scheduler": {
+				"scheduled_events": [
+					{
+						"filters": {
+							"all_of": [
+								{
+									"test": "has_tag",
+									"value": "tyrannosaurusRoar",
+									"subject": "self"									
+								},
+								{
+									"test": "rider_count",
+									"operator": ">",
+									"value": 0,
+									"subject": "self"
+								},
+								{
+									"test": "has_component",
+									"value": "minecraft:is_tamed",
+									"subject": "self"
+								},
+								{
+									"test": "has_component",
+									"operator": "!=",
+									"value": "minecraft:is_baby",
+									"subject": "self"
+								}
+							]
+						},
+						"event": "rift:tyrannosaurus_roar"
+					}
+				]
 			}
 		},
 		"events": {
@@ -1166,11 +1185,6 @@
 					"component_groups": [
 						"rift:roaring"
 					]
-				},
-				"remove": {
-					"component_groups": [
-						"rift:roarable"
-					]
 				}
 			},
 			"rift:stop_roaring": {
@@ -1178,19 +1192,9 @@
 					"component_groups": [
 						"rift:roaring"
 					]
-				},
-				"add": {
-					"component_groups": [
-						"rift:roarable"
-					]
 				}
 			},
 			"rift:will_roar": {
-				"add": {
-					"component_groups": [
-						"rift:roarable"
-					]
-				},
 				"remove": {
 					"component_groups": [
 						"rift:tyrannosaurus_sittable"
@@ -1201,11 +1205,6 @@
 				"add": {
 					"component_groups": [
 						"rift:tyrannosaurus_sittable"
-					]
-				},
-				"remove": {
-					"component_groups": [
-						"rift:roarable"
 					]
 				}
 			},

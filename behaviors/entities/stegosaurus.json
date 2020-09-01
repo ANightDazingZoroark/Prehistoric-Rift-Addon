@@ -400,21 +400,6 @@
 			"rift:stegosaurus_chested": {
 				"minecraft:is_chested": {}
 			},
-			"rift:stego_will_harvest": {
-				"minecraft:scheduler": {
-					"scheduled_events": [
-						{
-							"filters": {
-								"test": "has_tag",
-								"value": "stegoHarvest",
-								"subject": "self",
-								"operator": "=="
-							},
-							"event": "rift:stego_harvesting"
-						}
-					]
-				}
-			},
 			"rift:stego_harvest": {
 				"minecraft:is_charged": {},
 				"minecraft:timer": {
@@ -573,7 +558,41 @@
 						}
 					]
 				}
-			}
+			},
+			"minecraft:scheduler": {
+				"scheduled_events": [
+					{
+						"filters": {
+							"all_of": [
+								{
+									"test": "has_tag",
+									"value": "stegoHarvest",
+									"subject": "self",
+									"operator": "=="
+								},
+								{
+									"test": "rider_count",
+									"operator": ">",
+									"value": 0,
+									"subject": "self"
+								},
+								{
+									"test": "has_component",
+									"value": "minecraft:is_tamed",
+									"subject": "self"
+								},
+								{
+									"test": "has_component",
+									"operator": "!=",
+									"value": "minecraft:is_baby",
+									"subject": "self"
+								}
+							]
+						},
+						"event": "rift:stego_harvesting"
+					}
+				]
+			}			
 		},
 		"events": {
 			"minecraft:entity_spawned": {
@@ -889,11 +908,6 @@
 				]
 			},
 			"rift:will_harvest": {
-				"add": {
-					"component_groups": [
-						"rift:stego_will_harvest"
-					]
-				},
 				"remove": {
 					"component_groups": [
 						"rift:stegosaurus_sittable"
@@ -901,11 +915,6 @@
 				}
 			},
 			"rift:will_not_harvest": {
-				"remove": {
-					"component_groups": [
-						"rift:stego_will_harvest"
-					]
-				},
 				"add": {
 					"component_groups": [
 						"rift:stegosaurus_sittable"
@@ -917,22 +926,12 @@
 					"component_groups": [
 						"rift:stego_harvest"
 					]
-				},
-				"remove": {
-					"component_groups": [
-						"rift:stego_will_harvest"
-					]
 				}
 			},
 			"rift:stego_no_harvest": {
 				"remove": {
 					"component_groups": [
 						"rift:stego_harvest"
-					]
-				},
-				"add": {
-					"component_groups": [
-						"rift:stego_will_harvest"
 					]
 				}
 			}

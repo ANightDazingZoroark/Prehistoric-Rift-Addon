@@ -476,30 +476,6 @@
 					]
 				}
 			},
-			"rift:triceratops_will_charge": {
-				"minecraft:scheduler": {
-					"scheduled_events": [
-						{
-							"filters": {
-								"test": "has_tag",
-								"value": "trikeCharge",
-								"subject": "self",
-								"operator": "=="
-							},
-							"event": "rift:triceratops_charge"
-						},
-						{
-							"filters": {
-								"test": "has_tag",
-								"value": "trikeHarvest",
-								"subject": "self",
-								"operator": "=="
-							},
-							"event": "rift:triceratops_harvest"						
-						}
-					]
-				}
-			},
 			"rift:triceratops_happy": {
 				"minecraft:timer": {
 					"time": [
@@ -777,6 +753,70 @@
 						"cause": "entity_attack"
 					}
 				]
+			},
+			"minecraft:scheduler": {
+				"scheduled_events": [
+					{
+						"filters": {
+							"all_of": [
+								{
+									"test": "has_tag",
+									"value": "trikeCharge",
+									"subject": "self",
+									"operator": "=="
+								},
+								{
+									"test": "rider_count",
+									"operator": ">",
+									"value": 0,
+									"subject": "self"
+								},
+								{
+									"test": "has_component",
+									"value": "minecraft:is_tamed",
+									"subject": "self"
+								},
+								{
+									"test": "has_component",
+									"operator": "!=",
+									"value": "minecraft:is_baby",
+									"subject": "self"
+								}
+							]
+						},
+						"event": "rift:triceratops_charge"
+					},
+					{
+						"filters": {
+							"all_of":[
+								{
+									"test": "has_tag",
+									"value": "trikeHarvest",
+									"subject": "self",
+									"operator": "=="
+								},
+								{
+									"test": "rider_count",
+									"operator": ">",
+									"value": 0,
+									"subject": "self"
+								},
+								{
+									"test": "has_component",
+									"value": "minecraft:is_tamed",
+									"subject": "self"
+								},
+								{
+									"test": "has_component",
+									"operator": "!=",
+									"value": "minecraft:is_baby",
+									"subject": "self"
+								}
+							]
+						},
+						"event": "rift:triceratops_harvest"						
+					}
+				]
 			}
 		},
 		"events": {
@@ -1039,22 +1079,12 @@
 					"component_groups": [
 						"rift:triceratops_tamed_charging"
 					]
-				},
-				"remove": {
-					"component_groups": [
-						"rift:triceratops_will_charge"
-					]
 				}
 			},
 			"rift:stop_charging": {
 				"remove": {
 					"component_groups": [
 						"rift:triceratops_tamed_charging"
-					]
-				},
-				"add": {
-					"component_groups": [
-						"rift:triceratops_will_charge"
 					]
 				}
 			},
@@ -1073,11 +1103,6 @@
 				}
 			},
 			"rift:will_charge": {
-				"add": {
-					"component_groups": [
-						"rift:triceratops_will_charge"
-					]
-				},
 				"remove": {
 					"component_groups": [
 						"rift:triceratops_sittable"
@@ -1088,11 +1113,6 @@
 				"add": {
 					"component_groups": [
 						"rift:triceratops_sittable"
-					]
-				},
-				"remove": {
-					"component_groups": [
-						"rift:triceratops_will_charge"
 					]
 				}
 			},
@@ -1159,7 +1179,6 @@
 				},
 				"remove": {
 					"component_groups": [
-						"rift:triceratops_will_charge",
 						"rift:triceratops_not_harvesting"
 					]
 				}
@@ -1167,7 +1186,6 @@
 			"rift:stop_harvesting": {
 				"add": {
 					"component_groups": [
-						"rift:triceratops_will_charge",
 						"rift:triceratops_not_harvesting"
 					]
 				},
