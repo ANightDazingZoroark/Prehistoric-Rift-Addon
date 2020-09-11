@@ -1,4 +1,3 @@
-//bridge-file-version: #207
 {
 	"format_version": "1.10.0",
 	"animation_controllers": {
@@ -13,9 +12,6 @@
 					],
 					"animations": [
 						"animClimbDown"
-					],
-					"on_entry": [
-						"/say default"
 					],
 					"on_exit": [
 						"/execute @e[tag=climber, r=2] ~ ~ ~  effect @s clear"
@@ -35,9 +31,6 @@
 					],
 					"animations": [
 						"animClimbStay"
-					],
-					"on_entry": [
-						"/say stay in place"
 					]
 				},
 				"lookUp": {
@@ -61,7 +54,7 @@
 				"default": {
 					"transitions": [
 						{
-							"climber": "query.has_rider && !query.is_on_ground && query.ground_speed > 0"
+							"climber": "query.is_saddled && query.has_rider && !query.is_on_ground && query.ground_speed > 0"
 						}
 					],
 					"on_entry": [
@@ -78,7 +71,7 @@
 				"climber": {
 					"transitions": [
 						{
-							"default": "!query.has_rider || query.is_on_ground"
+							"default": "!query.has_rider || query.is_on_ground || !query.is_saddled"
 						}
 					],
 					"on_entry": [
@@ -90,31 +83,6 @@
 						"/tag @p[r=2] remove climbMount",
 						"/tag @p[r=3] add nClimbMount",
 						"/effect @s clear"
-					]
-				}
-			}
-		},
-		"controller.animation.is_player_sheared": {
-			"initial_state": "default",
-			"states": {
-				"default": {
-					"transitions": [
-						{
-							"aaa": "query.is_sheared"
-						}
-					]
-				},
-				"aaa": {
-					"on_entry": [
-						"/say is sheared"
-					],
-					"transitions": [
-						{
-							"default": "!query.is_sheared"
-						}
-					],
-					"on_exit": [
-						"/say is no longer sheared"
 					]
 				}
 			}
