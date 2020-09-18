@@ -1,4 +1,3 @@
-//bridge-file-version: #40
 {
 	"format_version": "1.14.0",
 	"minecraft:entity": {
@@ -6,33 +5,7 @@
 			"identifier": "rift:tyrannosaurus_roar",
 			"is_spawnable": false,
 			"is_summonable": true,
-			"is_experimental": false,
-			"animations": {
-				"contOof": "controller.animation.tyrannosaurus_roar_stop",
-				"contBreakStuff": "controller.animation.roar_break_stuff"
-			},
-			"scripts": {
-				"animate": [
-					"contOof",
-					"contBreakStuff"
-				]
-			}
-		},
-		"component_groups": {
-			"rift:alive": {
-				"minecraft:timer": {
-					"time": [
-						0.5,
-						0.5
-					],
-					"time_down_event": {
-						"event": "rift:die"
-					}
-				}
-			},
-			"rift:commit_disappear": {
-				"minecraft:is_sheared": {}
-			}
+			"is_experimental": false
 		},
 		"components": {
 			"minecraft:behavior.knockback_roar": {
@@ -89,25 +62,29 @@
 			"minecraft:pushable": {
 				"is_pushable": false,
 				"is_pushable_by_piston": false
+			},
+			"minecraft:timer": {
+				"time": [
+					0.5,
+					0.5
+				],
+				"time_down_event": {
+					"event": "rift:die"
+				}
 			}
 		},
 		"events": {
 			"minecraft:entity_spawned": {
-				"add": {
-					"component_groups": [
-						"rift:alive"
+				"run_command": {
+					"command": [
+						"function cmd.roar_break_stuff"
 					]
 				}
 			},
 			"rift:die": {
-				"add": {
-					"component_groups": [
-						"rift:commit_disappear"
-					]
-				},
-				"remove": {
-					"component_groups": [
-						"rift:alive"
+				"run_command": {
+					"command": [
+						"kill @s"
 					]
 				}
 			}

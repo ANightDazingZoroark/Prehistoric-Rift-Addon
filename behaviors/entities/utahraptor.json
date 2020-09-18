@@ -893,7 +893,47 @@
                         "target": "self"
                     }                    
                 ]
-            },
+			},
+			"minecraft:scheduler": {
+				"scheduled_events": [
+					{
+						"filters": {
+							"all_of": [
+								{
+									"test": "rider_count",
+									"subject": "self",
+									"operator": ">",
+									"value": 0
+								},
+								{
+									"test": "has_component",
+									"subject": "self",
+									"value": "minecraft:is_tamed"
+								}
+							]
+						},
+						"event": "rift:cannot_sit"
+					},
+					{
+						"filters": {
+							"all_of": [
+								{
+									"test": "rider_count",
+									"subject": "self",
+									"operator": "==",
+									"value": 0
+								},
+								{
+									"test": "has_component",
+									"subject": "self",
+									"value": "minecraft:is_tamed"
+								}
+							]
+						},
+						"event": "rift:can_sit"
+					}
+				]
+			},
             "minecraft:behavior.float": {},
             "minecraft:behavior.melee_attack": {}                                   
         },
@@ -1397,14 +1437,14 @@
 					}
 				]
             },
-			"rift:activate_abilities": {
+			"rift:cannot_sit": {
 				"remove": {
 					"component_groups": [
 						"rift:utahraptor_sittable"
 					]
 				}
 			},
-			"rift:deactivate_abilities": {
+			"rift:can_sit": {
 				"add": {
 					"component_groups": [
 						"rift:utahraptor_sittable"

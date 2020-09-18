@@ -5,15 +5,7 @@
 			"identifier": "rift:stegosaurus",
 			"is_summonable": true,
 			"is_spawnable": true,
-			"is_experimental": false,
-			"animations": {
-				"contHarvest": "controller.animation.stego_harvest"
-			},
-			"scripts": {
-				"animate": [
-					"contHarvest"
-				]
-			}
+			"is_experimental": false
 		},
 		"component_groups": {
 			"rift:stegosaurus_baby": {
@@ -524,8 +516,8 @@
 					]
 				}
 			},
-			"minecraft:scheduler": {
-				"scheduled_events": [
+			"minecraft:environment_sensor": {
+				"triggers": [
 					{
 						"filters": {
 							"all_of": [
@@ -560,6 +552,46 @@
 							]
 						},
 						"event": "rift:stego_harvesting"
+					}
+				]
+			},
+			"minecraft:scheduler": {
+				"scheduled_events": [
+					{
+						"filters": {
+							"all_of": [
+								{
+									"test": "rider_count",
+									"subject": "self",
+									"operator": ">",
+									"value": 0
+								},
+								{
+									"test": "has_component",
+									"subject": "self",
+									"value": "minecraft:is_tamed"
+								}
+							]
+						},
+						"event": "rift:cannot_sit"
+					},
+					{
+						"filters": {
+							"all_of": [
+								{
+									"test": "rider_count",
+									"subject": "self",
+									"operator": "==",
+									"value": 0
+								},
+								{
+									"test": "has_component",
+									"subject": "self",
+									"value": "minecraft:is_tamed"
+								}
+							]
+						},
+						"event": "rift:can_sit"
 					}
 				]
 			}			
@@ -877,14 +909,14 @@
 					}
 				]
 			},
-			"rift:will_harvest": {
+			"rift:cannot_sit": {
 				"remove": {
 					"component_groups": [
 						"rift:stegosaurus_sittable"
 					]
 				}
 			},
-			"rift:will_not_harvest": {
+			"rift:can_sit": {
 				"add": {
 					"component_groups": [
 						"rift:stegosaurus_sittable"
@@ -895,6 +927,11 @@
 				"add": {
 					"component_groups": [
 						"rift:stego_harvest"
+					]
+				},
+				"run_command": {
+					"command": [
+						"function cmd.stego_harvest"
 					]
 				}
 			},

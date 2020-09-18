@@ -7,14 +7,10 @@
 			"is_summonable": true,
 			"is_experimental": false,
 			"animations": {
-				"contCharge": "controller.animation.triceratops_charge",
-				"contHappySound": "controller.animation.triceratops_happiness",
 				"contWildCharge": "controller.animation.triceratops_wild_charge"
 			},
 			"scripts": {
 				"animate": [
-					"contCharge",
-					"contHappySound",
 					"contWildCharge"
 				]
 			}
@@ -574,23 +570,6 @@
 						"minecraft:warped_slab"
 					]
 				}
-			},
-			"rift:triceratops_harvesting": {
-				"minecraft:skin_id": {
-					"value": 1
-				},
-				"minecraft:timer": {
-					"time": 0.5,
-					"time_down_event": {
-						"event": "rift:stop_harvesting",
-						"target": "self"
-					}
-				}
-			},
-			"rift:triceratops_not_harvesting": {
-				"minecraft:skin_id": {
-					"value": 0
-				}
 			}
 		},
 		"components": {
@@ -745,8 +724,8 @@
 					}
 				]
 			},
-			"minecraft:scheduler": {
-				"scheduled_events": [
+			"minecraft:environment_sensor": {
+				"triggers": [
 					{
 						"filters": {
 							"all_of": [
@@ -816,6 +795,46 @@
 							]
 						},
 						"event": "rift:triceratops_harvest"						
+					}					
+				]
+			},
+			"minecraft:scheduler": {
+				"scheduled_events": [
+					{
+						"filters": {
+							"all_of": [
+								{
+									"test": "rider_count",
+									"subject": "self",
+									"operator": ">",
+									"value": 0
+								},
+								{
+									"test": "has_component",
+									"subject": "self",
+									"value": "minecraft:is_tamed"
+								}
+							]
+						},
+						"event": "rift:cannot_sit"
+					},
+					{
+						"filters": {
+							"all_of": [
+								{
+									"test": "rider_count",
+									"subject": "self",
+									"operator": "==",
+									"value": 0
+								},
+								{
+									"test": "has_component",
+									"subject": "self",
+									"value": "minecraft:is_tamed"
+								}
+							]
+						},
+						"event": "rift:can_sit"
 					}
 				]
 			}
@@ -1080,6 +1099,12 @@
 					"component_groups": [
 						"rift:triceratops_tamed_charging"
 					]
+				},
+				"run_command": {
+					"command": [
+						"effect @s speed 5 3",
+						"msg @p Charge Mode Activated"
+					]
 				}
 			},
 			"rift:stop_charging": {
@@ -1094,6 +1119,11 @@
 					"component_groups": [
 						"rift:triceratops_happy"
 					]
+				},
+				"run_command": {
+					"command": [
+						"playsound mob.triceratops.happy @p[r=7]"
+					]
 				}
 			},
 			"rift:stop_being_happy": {
@@ -1103,14 +1133,14 @@
 					]
 				}
 			},
-			"rift:will_charge": {
+			"rift:cannot_sit": {
 				"remove": {
 					"component_groups": [
 						"rift:triceratops_sittable"
 					]
 				}
 			},
-			"rift:will_not_charge": {
+			"rift:can_sit": {
 				"add": {
 					"component_groups": [
 						"rift:triceratops_sittable"
@@ -1173,26 +1203,14 @@
 				]
 			},
 			"rift:triceratops_harvest": {
-				"add": {
-					"component_groups": [
-						"rift:triceratops_harvesting"
-					]
-				},
-				"remove": {
-					"component_groups": [
-						"rift:triceratops_not_harvesting"
-					]
-				}
-			},
-			"rift:stop_harvesting": {
-				"add": {
-					"component_groups": [
-						"rift:triceratops_not_harvesting"
-					]
-				},
-				"remove": {
-					"component_groups": [
-						"rift:triceratops_harvesting"
+				"run_command": {
+					"command": [
+						"function cmd.trike_harvest",
+						"function cmd.trike_harvest_dark_oak_log",
+						"function cmd.trike_harvest_jungle_log",
+						"function cmd.trike_harvest_acacia_log",
+						"function cmd.trike_harvest_crimson_stem",
+						"function cmd.trike_harvest_warped_stem"
 					]
 				}
 			}
