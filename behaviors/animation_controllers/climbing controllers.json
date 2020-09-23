@@ -7,14 +7,11 @@
 				"default": {
 					"transitions": [
 						{
-							"stay": "query.is_jumping && query.is_riding && query.is_sheared && query.target_x_rotation <= 0"
+							"stay": "query.is_jumping && query.is_riding && query.target_x_rotation <= 0"
 						}
 					],
 					"animations": [
 						"animClimbDown"
-					],
-					"on_exit": [
-						"/execute @e[tag=climber, r=2] ~ ~ ~  effect @s clear"
 					]
 				},
 				"stay": {
@@ -26,9 +23,6 @@
 							"default": "!query.is_riding || (query.target_x_rotation > 15 && query.is_jumping)"
 						}
 					],
-					"on_exit": [
-						"/execute @e[tag=climber, r=2] ~ ~ ~  effect @s clear"
-					],
 					"animations": [
 						"animClimbStay"
 					]
@@ -39,50 +33,8 @@
 							"stay": "!query.is_jumping"
 						}
 					],
-					"on_exit": [
-						"/execute @e[tag=climber, r=2] ~ ~ ~  effect @s clear"
-					],
 					"animations": [
 						"animClimbUp"
-					]
-				}
-			}
-		},
-		"controller.animation.configure_climber": {
-			"initial_state": "default",
-			"states": {
-				"default": {
-					"transitions": [
-						{
-							"climber": "query.is_saddled && query.has_rider && !query.is_on_ground && query.ground_speed > 0"
-						}
-					],
-					"on_entry": [
-						"/tag @s remove climber",
-						"/tag @p[r=2] remove climbMount",
-						"/tag @p[r=3] add nClimbMount",
-						"/effect @s clear"
-					],
-					"on_exit": [
-						"/tag @s add climber",
-						"/tag @p[r=2] add climbMount"
-					]
-				},
-				"climber": {
-					"transitions": [
-						{
-							"default": "!query.has_rider || query.is_on_ground || !query.is_saddled"
-						}
-					],
-					"on_entry": [
-						"/tag @s add climber",
-						"/tag @p[r=2] add climbMount"
-					],
-					"on_exit": [
-						"/tag @s remove climber",
-						"/tag @p[r=2] remove climbMount",
-						"/tag @p[r=3] add nClimbMount",
-						"/effect @s clear"
 					]
 				}
 			}

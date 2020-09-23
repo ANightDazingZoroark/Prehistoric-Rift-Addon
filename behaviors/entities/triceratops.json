@@ -5,15 +5,7 @@
 			"identifier": "rift:triceratops",
 			"is_spawnable": true,
 			"is_summonable": true,
-			"is_experimental": false,
-			"animations": {
-				"contWildCharge": "controller.animation.triceratops_wild_charge"
-			},
-			"scripts": {
-				"animate": [
-					"contWildCharge"
-				]
-			}
+			"is_experimental": false
 		},
 		"component_groups": {
 			"rift:triceratops_baby": {
@@ -311,6 +303,11 @@
 					]
 				},
 				"minecraft:on_target_escape": {
+					"filters": {
+						"test": "has_mob_effect",
+						"subject": "self",
+						"value": "speed"
+					},
 					"event": "rift:become_calm",
 					"target": "self"
 				}
@@ -1066,6 +1063,11 @@
 					"component_groups": [
 						"rift:triceratops_adult_calm"
 					]
+				},
+				"run_command": {
+					"command": [
+						"effect @s speed 60 3"
+					]
 				}
 			},
 			"rift:become_calm": {
@@ -1077,6 +1079,11 @@
 				"remove": {
 					"component_groups": [
 						"rift:triceratops_adult_angry"
+					]
+				},
+				"run_command": {
+					"command": [
+						"effect @s clear"
 					]
 				}
 			},

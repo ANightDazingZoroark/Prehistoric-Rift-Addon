@@ -5,28 +5,7 @@
             "identifier": "rift:utahraptor",
             "is_spawnable": true,
             "is_summonable": true,
-            "is_experimental": false,
-            "animations": {
-				"contAbilities": "controller.animation.utahraptor_abilities",
-				"contStaffAbility": "controller.animation.utahraptor_command_staff",
-				"contTameTag": "controller.animation.utahraptor_add_tame_tag",
-				"contWildPackBuff": "controller.animation.utahraptor_pack_leader_cry",
-				"contRemoveBuffs": "controller.animation.utahraptor_remove_buffs",
-				"animCallSounds": "animation.utahraptor.pack_sounds",
-                "contClimber": "controller.animation.configure_climber",
-                "contBuffTest": "controller.animation.utahraptor_use_cry_test"
-            },
-            "scripts": {
-                "animate": [
-					"contAbilities",
-					"contStaffAbility",
-					"contTameTag",
-					"contWildPackBuff",
-					"contRemoveBuffs",
-                    "contClimber",
-                    "contBuffTest"
-                ]
-            }
+            "is_experimental": false
         },
         "component_groups": {
             "rift:utahraptor_baby": {
@@ -79,22 +58,6 @@
 							"growth": 0.25
 						},
 						{
-							"item": "minecraft:fish",
-							"growth": 0.15
-						},
-						{
-							"item": "minecraft:cooked_fish",
-							"growth": 0.2
-						},
-						{
-							"item": "minecraft:salmon",
-							"growth": 0.15
-						},
-						{
-							"item": "minecraft:cooked_salmon",
-							"growth": 0.2
-						},
-						{
 							"item": "rift:raw_exotic_meat",
 							"growth": 0.2
 						},
@@ -129,10 +92,6 @@
 						"minecraft:muttoncooked",
 						"minecraft:rabbit",
 						"minecraft:cooked_rabbit",
-						"minecraft:fish",
-						"minecraft:cooked_fish",
-						"minecraft:salmon",
-						"minecraft:cooked_salmon",
 						"rift:flesh_treat",
 						"rift:raw_exotic_meat",
 						"rift:cooked_exotic_meat",
@@ -142,9 +101,6 @@
                 },
                 "minecraft:navigation.walk": {
                     "avoid_water": true
-                },
-                "minecraft:movement": {
-                    "value": 0.35
                 }
             },
             "rift:utahraptor_baby_wild": {
@@ -250,9 +206,9 @@
                     "inherit_tamed": true,
                     "breed_cooldown": 1200
                 },
-                "minecraft:navigation.climb": {
-                    "avoid_water": true
-                }
+				"minecraft:attack": {
+					"damage": 10
+				}
             },
             "rift:utahraptor_adult_wild": {
                 "minecraft:health": {
@@ -296,7 +252,10 @@
 							}                            
                         ]
                     }
-                }
+				},
+				"minecraft:navigation.climb": {
+                    "avoid_water": true
+				}
             },
             "rift:utahraptor_adult_wild_pack_leader": {
                 "minecraft:is_illager_captain": {
@@ -304,12 +263,50 @@
                 "minecraft:on_target_acquired": {
                     "event": "rift:wild_utahraptor_buffing",
                     "target": "self"
-                }
+				},
+				"minecraft:on_target_escape": {
+					"filters": {
+						"all_of": [
+							{
+								"test": "has_mob_effect",
+								"subject": "self",
+								"value": "speed"
+							},
+							{
+								"test": "has_mob_effect",
+								"subject": "self",
+								"value": "strength"
+							}
+						]
+					},
+					"event": "rift:wild_utahraptor_remove_buffs",
+					"target": "self"
+				}
             },
             "rift:utahraptor_adult_wild_pack_member": {
                 "minecraft:behavior.follow_target_captain": {
-                    "priority": 1
-                }
+					"priority": 1,
+					"within_radius": 64,
+					"follow_distance": 5
+				},
+				"minecraft:on_target_escape": {
+					"filters": {
+						"all_of": [
+							{
+								"test": "has_mob_effect",
+								"subject": "self",
+								"value": "speed"
+							},
+							{
+								"test": "has_mob_effect",
+								"subject": "self",
+								"value": "strength"
+							}
+						]
+					},
+					"event": "rift:wild_utahraptor_remove_buffs",
+					"target": "self"
+				}
 			},
             "rift:utahraptor_adult_wild_not_trusting": {
                 "minecraft:trusting": {
@@ -463,26 +460,6 @@
 							"heal_amount": 25
 						},
 						{
-							"item": "minecraft:fish",
-							"heal_amount": 15
-						},
-						{
-							"item": "minecraft:cooked_fish",
-							"heal_amount": 20
-						},
-						{
-							"item": "minecraft:salmon",
-							"heal_amount": 15
-						},
-						{
-							"item": "minecraft:cooked_salmon",
-							"heal_amount": 20
-						},
-						{
-							"item": "minecraft:rotten_flesh",
-							"heal_amount": 8
-						},
-						{
 							"item": "rift:raw_exotic_meat",
 							"heal_amount": 20
 						},
@@ -532,11 +509,16 @@
 						}
 					]
 				},
-				"minecraft:behavior.player_ride_tamed": {}                                                
+				"minecraft:behavior.player_ride_tamed": {},
+				"minecraft:navigation.walk": {
+					"avoid_water": true
+				}                                          
             },
 			"rift:utahraptor_tamed": {
 				"minecraft:is_tamed": {},
 				"minecraft:behavior.follow_owner": {
+					"start_distance": 8,
+					"stop_distance": 40,
 					"priority": 3
 				},
 				"minecraft:behavior.owner_hurt_by_target": {
@@ -559,8 +541,7 @@
 				},
 				"minecraft:can_power_jump": {},
 				"minecraft:is_saddled": {},
-				"minecraft:input_ground_controlled": {},
-				"minecraft:behavior.controlled_by_player": {}
+				"minecraft:input_ground_controlled": {}
 			},
 			"rift:utahraptor_chested": {
 				"minecraft:is_chested": {}
@@ -610,7 +591,7 @@
 						]
 					}
 				}
-            },
+			},
 			"rift:utahraptor_tamed_buff_pounceable": {
 				"minecraft:type_family": {
 					"family": [
@@ -622,7 +603,7 @@
 				},
 				"minecraft:area_attack": {
 					"damage_range": 0.75,
-					"damage_per_tick": 20,
+					"damage_per_tick": 16,
 					"cause": "entity_attack",
 					"entity_filter": {
 						"all_of": [
@@ -690,36 +671,7 @@
 					}
 				},
 				"minecraft:is_sheared": {}
-            },
-			"rift:buffs": {
-				"minecraft:skin_id": {
-					"value": 1
-				},
-				"minecraft:attack": {
-					"damage": 20
-				},
-				"minecraft:movement": {
-					"value": 0.65
-				},
-				"minecraft:timer": {
-					"time": 60,
-					"time_down_event": {
-						"event": "rift:remove_buff_effects",
-						"target": "self"
-					}
-				}
-            },
-			"rift:no_buffs": {
-				"minecraft:skin_id": {
-					"value": 0
-				},
-				"minecraft:attack": {
-					"damage": 10
-				},
-				"minecraft:movement": {
-					"value": 0.35
-				}
-			}                                                                                                                   
+            }                                                                            
         },
         "components": {
 			"minecraft:type_family": {
@@ -734,6 +686,9 @@
 			"minecraft:scaffolding_climber": {},
 			"minecraft:movement.basic": {},
 			"minecraft:behavior.breed": {},
+			"minecraft:movement": {
+				"value": 0.35
+			},
 			"minecraft:jump.static": {},
 			"minecraft:is_hidden_when_invisible": {},
 			"minecraft:pushable": {
@@ -835,28 +790,10 @@
 			"minecraft:behavior.random_look_around": {},
 			"minecraft:collision_box": {
 				"width": 1.25,
-				"height": 1.25
+				"height": 1.5
             },
             "minecraft:environment_sensor": {
                 "triggers":[
-					{
-						"filters": {
-							"test": "has_tag",
-							"subject": "self",
-							"value": "utahBuffEffects"
-						},
-						"event": "rift:buff_effects",
-						"target": "self"
-                    },
-                    {
-                        "filters": {
-                            "test": "has_tag",
-                            "subject": "self",
-                            "value": "nUtahBuffEffects"
-                        },
-                        "event": "rift:remove_buff_effects",
-                        "target": "self"
-                    },
                     {
                         "filters": {
                             "all_of": [
@@ -891,7 +828,170 @@
                         },
                         "event": "rift:buffing",
                         "target": "self"
-                    }                    
+					},
+					{
+						"filters": {
+							"all_of": [
+								{
+									"test": "on_ground",
+									"subject": "self",
+									"value": false
+								},
+								{
+									"test": "has_component",
+									"subject": "self",
+									"value": "minecraft:is_tamed"
+								},
+								{
+									"test": "has_component",
+									"subject": "self",
+									"value": "minecraft:is_saddled"
+								},
+								{
+									"test": "rider_count",
+									"subject": "self",
+									"operator": ">",
+									"value": 0
+								},
+								{
+									"test": "has_mob_effect",
+									"subject": "self",
+									"operator": "!=",
+									"value": "speed"
+								},
+								{
+									"test": "has_mob_effect",
+									"subject": "self",
+									"operator": "!=",
+									"value": "strength"
+								}
+							]
+						},
+						"event": "rift:leap_ability"
+					},
+					{
+						"filters": {
+							"all_of": [
+								{
+									"test": "on_ground",
+									"subject": "self",
+									"value": false
+								},
+								{
+									"test": "has_component",
+									"subject": "self",
+									"value": "minecraft:is_tamed"
+								},
+								{
+									"test": "has_component",
+									"subject": "self",
+									"value": "minecraft:is_saddled"
+								},
+								{
+									"test": "rider_count",
+									"subject": "self",
+									"operator": ">",
+									"value": 0
+								},
+								{
+									"test": "has_mob_effect",
+									"subject": "self",
+									"operator": "==",
+									"value": "speed"
+								},
+								{
+									"test": "has_mob_effect",
+									"subject": "self",
+									"operator": "==",
+									"value": "strength"
+								}
+							]
+						},
+						"event": "rift:buffed_leap_ability"
+					},
+					{
+						"filters": {
+							"all_of": [
+								{
+									"test": "on_ground",
+									"subject": "self",
+									"value": true
+								},
+								{
+									"test": "has_component",
+									"subject": "self",
+									"value": "minecraft:is_tamed"
+								},
+								{
+									"test": "has_component",
+									"subject": "self",
+									"value": "minecraft:is_saddled"
+								},
+								{
+									"test": "rider_count",
+									"subject": "self",
+									"operator": ">",
+									"value": 0
+								}
+							]
+						},
+						"event": "rift:disable_leap",
+						"target": "self"
+					},
+					{
+						"filters": {
+							"all_of": [
+								{
+									"test": "on_ground",
+									"subject": "self",
+									"value": false
+								},
+								{
+									"test": "has_component",
+									"subject": "self",
+									"value": "minecraft:is_tamed"
+								},
+								{
+									"test": "has_component",
+									"subject": "self",
+									"value": "minecraft:is_saddled"
+								},
+								{
+									"test": "rider_count",
+									"subject": "self",
+									"operator": ">",
+									"value": 0
+								}
+							]
+						},
+						"event": "rift:activate_climbing",
+						"target": "self"
+					},
+					{
+						"filters": {
+							"any_of": [
+								{
+									"test": "on_ground",
+									"subject": "self",
+									"value": true
+								},
+								{
+									"test": "has_component",
+									"subject": "self",
+									"operator": "!=",
+									"value": "minecraft:is_saddled"
+								},
+								{
+									"test": "rider_count",
+									"subject": "self",
+									"operator": "==",
+									"value": 0
+								}
+							]
+						},
+						"event": "rift:deactivate_climbing",
+						"target": "self"
+					}
                 ]
 			},
 			"minecraft:scheduler": {
@@ -949,8 +1049,7 @@
 										"rift:utahraptor_adult",
 										"rift:utahraptor_adult_wild",
 										"rift:variant_zero",
-                                        "rift:utahraptor_adult_wild_not_trusting",
-                                        "rift:no_buffs"
+                                        "rift:utahraptor_adult_wild_not_trusting"
 									]
 								}
 							},
@@ -961,8 +1060,7 @@
 										"rift:utahraptor_adult",
 										"rift:utahraptor_adult_wild",
 										"rift:variant_one",
-                                        "rift:utahraptor_adult_wild_not_trusting",
-                                        "rift:no_buffs"
+                                        "rift:utahraptor_adult_wild_not_trusting"
 									]
 								}
 							},
@@ -973,8 +1071,7 @@
 										"rift:utahraptor_adult",
 										"rift:utahraptor_adult_wild",
 										"rift:variant_two",
-                                        "rift:utahraptor_adult_wild_not_trusting",
-                                        "rift:no_buffs"
+                                        "rift:utahraptor_adult_wild_not_trusting"
 									]
 								}
 							},
@@ -985,8 +1082,7 @@
 										"rift:utahraptor_adult",
 										"rift:utahraptor_adult_wild",
 										"rift:variant_three",
-                                        "rift:utahraptor_adult_wild_not_trusting",
-                                        "rift:no_buffs"
+                                        "rift:utahraptor_adult_wild_not_trusting"
 									]
 								}
 							}
@@ -1016,8 +1112,7 @@
 												"rift:utahraptor_adult",
 												"rift:utahraptor_adult_wild",
 												"rift:variant_zero",
-                                                "rift:utahraptor_adult_wild_not_trusting",
-                                                "rift:no_buffs"
+                                                "rift:utahraptor_adult_wild_not_trusting"
 											]
 										}
 									},
@@ -1028,8 +1123,7 @@
 												"rift:utahraptor_adult",
 												"rift:utahraptor_adult_wild",
 												"rift:variant_one",
-                                                "rift:utahraptor_adult_wild_not_trusting",
-                                                "rift:no_buffs"
+                                                "rift:utahraptor_adult_wild_not_trusting"
 											]
 										}
 									},
@@ -1040,8 +1134,7 @@
 												"rift:utahraptor_adult",
 												"rift:utahraptor_adult_wild",
 												"rift:variant_two",
-                                                "rift:utahraptor_adult_wild_not_trusting",
-                                                "rift:no_buffs"
+                                                "rift:utahraptor_adult_wild_not_trusting"
 											]
 										}
 									},
@@ -1052,8 +1145,7 @@
 												"rift:utahraptor_adult",
 												"rift:utahraptor_adult_wild",
 												"rift:variant_three",
-                                                "rift:utahraptor_adult_wild_not_trusting",
-                                                "rift:no_buffs"
+                                                "rift:utahraptor_adult_wild_not_trusting"
 											]
 										}
 									}
@@ -1157,7 +1249,6 @@
 							"component_groups": [
 								"rift:utahraptor_adult",
 								"rift:utahraptor_adult_wild",
-								"rift:utahraptor_adult_wild_in_open_area",
 								"rift:utahraptor_adult_wild_not_trusting"
 							]
 						},
@@ -1197,7 +1288,6 @@
 							"component_groups": [
 								"rift:utahraptor_adult",
 								"rift:utahraptor_adult_wild",
-								"rift:utahraptor_adult_wild_in_forest",
 								"rift:utahraptor_adult_wild_not_trusting"
 							]
 						},
@@ -1220,8 +1310,7 @@
 							"component_groups": [
 								"rift:utahraptor_adult",
 								"rift:utahraptor_adult_tamed",
-								"rift:rideable",
-								"rift:no_buffs"
+								"rift:rideable"
 							]
 						},
 						"remove": {
@@ -1229,8 +1318,6 @@
 								"rift:utahraptor_baby",
 								"rift:utahraptor_baby_tamed",
 								"rift:utahraptor_adult_wild",
-								"rift:utahraptor_adult_wild_in_forest",
-								"rift:utahraptor_adult_wild_in_open_area",
 								"rift:utahraptor_adult_wild_not_trusting"
 							]
 						}
@@ -1250,6 +1337,11 @@
 						"rift:utahraptor_baby_wild",
 						"rift:utahraptor_baby_calm",
 						"rift:utahraptor_baby_scared"
+					]
+				},
+				"run_command": {
+					"command": [
+						"tag @s add utahTamed"
 					]
 				}
 			},
@@ -1331,8 +1423,7 @@
 								"rift:utahraptor_adult_wild",
 								"rift:variant_zero",
 								"rift:utahraptor_adult_wild_pack_leader",
-                                "rift:utahraptor_adult_wild_not_trusting",
-								"rift:no_buffs"
+                                "rift:utahraptor_adult_wild_not_trusting"
 							]
 						}
 					},
@@ -1344,8 +1435,7 @@
 								"rift:utahraptor_adult_wild",
 								"rift:variant_one",
 								"rift:utahraptor_adult_wild_pack_leader",
-                                "rift:utahraptor_adult_wild_not_trusting",
-								"rift:no_buffs"
+                                "rift:utahraptor_adult_wild_not_trusting"
 							]
 						}
 					},
@@ -1357,8 +1447,7 @@
 								"rift:utahraptor_adult_wild",
 								"rift:variant_two",
 								"rift:utahraptor_adult_wild_pack_leader",
-                                "rift:utahraptor_adult_wild_not_trusting",
-								"rift:no_buffs"
+                                "rift:utahraptor_adult_wild_not_trusting"
 							]
 						}
 					},
@@ -1370,8 +1459,7 @@
 								"rift:utahraptor_adult_wild",
 								"rift:variant_three",
 								"rift:utahraptor_adult_wild_pack_leader",
-                                "rift:utahraptor_adult_wild_not_trusting",
-								"rift:no_buffs"
+                                "rift:utahraptor_adult_wild_not_trusting"
 							]
 						}
 					}
@@ -1388,7 +1476,6 @@
 								"rift:variant_zero",
 								"rift:utahraptor_adult_wild_pack_member",
                                 "rift:utahraptor_adult_wild_not_trusting",
-								"rift:no_buffs",
 								"rift:utahraptor_pack_member_despawn"
 							]
 						}
@@ -1402,7 +1489,6 @@
 								"rift:variant_one",
 								"rift:utahraptor_adult_wild_pack_member",
                                 "rift:utahraptor_adult_wild_not_trusting",
-								"rift:no_buffs",
 								"rift:utahraptor_pack_member_despawn"
 							]
 						}
@@ -1416,7 +1502,6 @@
 								"rift:variant_two",
 								"rift:utahraptor_adult_wild_pack_member",
                                 "rift:utahraptor_adult_wild_not_trusting",
-								"rift:no_buffs",
 								"rift:utahraptor_pack_member_despawn"
 							]
 						}
@@ -1430,7 +1515,6 @@
 								"rift:variant_three",
 								"rift:utahraptor_adult_wild_pack_member",
                                 "rift:utahraptor_adult_wild_not_trusting",
-								"rift:no_buffs",
 								"rift:utahraptor_pack_member_despawn"
 							]
 						}
@@ -1541,6 +1625,12 @@
 					"component_groups": [
 						"rift:utahraptor_buffing"
 					]
+				},
+				"run_command": {
+					"command": [
+						"function cmd.utahraptor_pack_buff",
+						"playsound mob.utahraptor.call @p[r=7]"
+					]
 				}
 			},
 			"rift:stop_buffing": {
@@ -1555,32 +1645,35 @@
 					"component_groups": [
 						"rift:utahraptor_buffing"
 					]
+				},
+				"run_command": {
+					"command": [
+						"function cmd.utahraptor_wild_pack_buff",
+						"playsound mob.utahraptor.call @p[r=7]"
+					]
 				}
-			},                                                                                                    
-            "rift:buff_effects":{
-                "add": {
-                    "component_groups": [
-                        "rift:buffs"
-                    ]
-                },
-                "remove": {
-                    "component_groups": [
-                        "rift:no_buffs"
-                    ]
-                }
-            },
-            "rift:remove_buff_effects": {
-                "add": {
-                    "component_groups": [
-                        "rift:no_buffs"
-                    ]
-                },
-                "remove": {
-                    "component_groups": [
-                        "rift:buffs"
-                    ]
-                }
-            }
+			},
+			"rift:wild_utahraptor_remove_buffs": {
+				"run_command": {
+					"command": [
+						"effect @s clear"
+					]
+				}
+			},
+			"rift:activate_climbing": {
+				"run_command": {
+					"command": [
+						"tag @s add climber"
+					]
+				}
+			},
+			"rift:deactivate_climbing": {
+				"run_command": {
+					"command": [
+						"tag @s remove climber"
+					]
+				}
+			}
         }
     }
 }

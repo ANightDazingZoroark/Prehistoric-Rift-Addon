@@ -1,4 +1,3 @@
-#bridge-file-version: #21
 #for blocks found naturally
 execute @e[tag=climber, r=2] ~ ~ ~ detect ^ ^ ^+1 dirt 0 tp @s ~ ~ ~
 execute @e[tag=climber, r=2] ~ ~ ~ detect ^ ^ ^+1 dirt 1 tp @s ~ ~ ~
