@@ -7,3 +7,5 @@ tag @e remove nClimbMount
 tag @e remove utahBuffEffects
 tag @e remove nUtahBuffEffects
 tag @e remove trikeHarvest
+tag @e remove apatoHarvest
+tag @e remove apatoCannonFire

@@ -6,26 +6,16 @@
 			"states": {
 				"default": {
 					"animations": [
-						"animStanding"
-					],
-					"transitions": [
 						{
-							"moving": "query.ground_speed > 0.0"
+							"animStanding": "query.ground_speed == 0"
 						},
 						{
-							"sitting": "query.is_sitting"
-						}
-					]
-				},
-				"moving": {
-					"animations": [
-						{
-							"animWalk": "query.modified_move_speed"
+							"animWalk": "query.ground_speed > 0"
 						}
 					],
 					"transitions": [
 						{
-							"default": "query.ground_speed == 0.0"
+							"sitting": "query.is_sitting"
 						}
 					]
 				},
@@ -41,23 +31,13 @@
 				}
 			}
 		},
-		"controller.animation.stegosaurus_head_movement": {
-			"initial_state": "default",
-			"states": {
-				"default": {
-					"animations": [
-						"animLook"
-					]
-				}
-			}
-		},
 		"controller.animation.stegosaurus_attack": {
 			"initial_state": "default",
 			"states": {
 				"default": {
 					"transitions": [
 						{
-							"attack": "query.is_delayed_attacking > 0"
+							"attack": "query.is_delayed_attacking"
 						}
 					]
 				},
@@ -68,7 +48,7 @@
 					],
 					"transitions": [
 						{
-							"default": "query.is_delayed_attacking == 0"
+							"default": "!query.is_delayed_attacking"
 						}
 					]
 				}
