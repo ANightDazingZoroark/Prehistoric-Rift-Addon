@@ -9,3 +9,5 @@ tag @e remove nUtahBuffEffects
 tag @e remove trikeHarvest
 tag @e remove apatoHarvest
 tag @e remove apatoCannonFire
+tag @e remove apatoAddRiders
+tag @e remove apatoRemoveRiders

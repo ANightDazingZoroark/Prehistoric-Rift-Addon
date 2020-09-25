@@ -102,7 +102,13 @@
                 "minecraft:scale_by_age": {
                     "start_scale": 0.75,
                     "end_scale": 1.25
-                }
+				},
+				"minecraft:loot": {
+					"table": "loot_tables/entities/apatosaurus adolescent.loot.json"
+				},
+				"minecraft:experience_reward": {
+					"on_death": "query.last_hit_by_player ? Math.Random(8,12) : 0"
+				}
             },
             "rift:apatosaurus_baby_wild_tameable": {
                 "minecraft:scale_by_age": {
@@ -173,7 +179,7 @@
 					"on_death": "query.last_hit_by_player ? Math.Random(15,20) : 0"
 				},
 				"minecraft:loot": {
-					"table": "loot_tables/entities/apatosaurus.loot.json"
+					"table": "loot_tables/entities/apatosaurus adult.loot.json"
 				},
 				"minecraft:breedable": {
 					"breeds_with": {
@@ -193,7 +199,123 @@
 					"breed_cooldown": 1200,
 					"inherit_tamed": true
                 },
-                "minecraft:break_blocks": {
+                "minecraft:area_attack": {
+					"damage_range": 0.85,
+					"damage_per_tick": 20,
+					"cause": "entity_attack",
+					"entity_filter": {
+                        "all_of": [
+                            {
+                                "test": "is_owner",
+                                "subject": "other",
+                                "operator": "!="
+                            },
+                            {
+                                "any_of": [
+                                    {
+                                        "all_of": [
+                                            {
+                                                "test": "has_component",
+                                                "subject": "other",
+                                                "value": "minecraft:is_baby"
+                                            },
+                                            {
+                                                "test": "is_family",
+                                                "subject": "other",
+                                                "operator": "!=",
+                                                "value": "apatosaurus"
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "test": "is_family",
+                                        "subject": "other",
+                                        "value": "chicken"
+                                    },
+                                    {
+                                        "test": "is_family",
+                                        "subject": "other",
+                                        "value": "dodo"
+                                    },
+                                    {
+                                        "all_of": [
+                                            {
+                                                "test": "is_family",
+                                                "subject": "other",
+                                                "value": "parrot"
+                                            },
+                                            {
+                                                "test": "has_component",
+                                                "subject": "other",
+                                                "operator": "!=",
+                                                "value": "minecraft:is_tamed"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
+					}
+                },
+                "minecraft:movement": {
+                    "value": 0.10
+				},
+				"minecraft:knockback_resistance": {
+					"value": 100
+				}
+            },
+            "rift:apatosaurus_adult_wild": {
+				"minecraft:health": {
+					"value": 200
+                },
+                "minecraft:behavior.random_stroll": {},
+				"minecraft:group_size": {
+					"radius": 10,
+					"filters": {
+						"all_of": [
+							{
+								"test": "is_family",
+								"value": "apatosaurus",
+								"subject": "other"
+							},
+							{
+								"test": "has_component",
+								"subject": "other",
+								"value": "minecraft:is_tamed",
+								"operator": "!="
+							}
+						]
+					}
+				},
+				"minecraft:timer": {
+					"time": 2400,
+					"time_down_event": {
+						"event": "rift:despawn",
+						"target": "self"
+					}
+				}
+            },
+            "rift:apatosaurus_adult_calm": {
+                "minecraft:on_target_acquired": {
+					"event": "rift:adult_become_angry",
+					"target": "self"
+				},
+				"minecraft:on_friendly_anger": {
+					"event": "rift:adult_become_angry",
+					"target": "self"
+				}
+            },
+            "rift:apatosaurus_adult_angry": {
+				"minecraft:angry": {
+					"broadcast_anger": true,
+					"duration": 60,
+					"broadcast_range": 30,
+					"calm_event": {
+						"event": "rift:adult_on_calm",
+						"target": "self"
+					}
+				},
+				"minecraft:break_blocks": {
 					"breakable_blocks": [
 						"minecraft:planks",
 						"minecraft:leaves",
@@ -264,120 +386,7 @@
 						"minecraft:crimson_slab",
 						"minecraft:warped_slab"
 					]
-                },
-                "minecraft:area_attack": {
-					"damage_range": 0.85,
-					"damage_per_tick": 20,
-					"cause": "entity_attack",
-					"entity_filter": {
-                        "all_of": [
-                            {
-                                "test": "is_owner",
-                                "subject": "other",
-                                "operator": "!="
-                            },
-                            {
-                                "any_of": [
-                                    {
-                                        "all_of": [
-                                            {
-                                                "test": "has_component",
-                                                "subject": "other",
-                                                "value": "minecraft:is_baby"
-                                            },
-                                            {
-                                                "test": "is_family",
-                                                "subject": "other",
-                                                "operator": "!=",
-                                                "value": "apatosaurus"
-                                            }
-                                        ]
-                                    },
-                                    {
-                                        "test": "is_family",
-                                        "subject": "other",
-                                        "value": "chicken"
-                                    },
-                                    {
-                                        "test": "is_family",
-                                        "subject": "other",
-                                        "value": "dodo"
-                                    },
-                                    {
-                                        "all_of": [
-                                            {
-                                                "test": "is_family",
-                                                "subject": "other",
-                                                "value": "parrot"
-                                            },
-                                            {
-                                                "test": "has_component",
-                                                "subject": "other",
-                                                "operator": "!=",
-                                                "value": "minecraft:is_tamed"
-                                            }
-                                        ]
-                                    }
-                                ]
-                            }
-                        ]
-					}
-                },
-                "minecraft:movement": {
-                    "value": 0.10
                 }
-            },
-            "rift:apatosaurus_adult_wild": {
-				"minecraft:health": {
-					"value": 200
-                },
-                "minecraft:behavior.random_stroll": {},
-				"minecraft:group_size": {
-					"radius": 10,
-					"filters": {
-						"all_of": [
-							{
-								"test": "is_family",
-								"value": "apatosaurus",
-								"subject": "other"
-							},
-							{
-								"test": "has_component",
-								"subject": "other",
-								"value": "minecraft:is_tamed",
-								"operator": "!="
-							}
-						]
-					}
-				},
-				"minecraft:timer": {
-					"time": 2400,
-					"time_down_event": {
-						"event": "rift:despawn",
-						"target": "self"
-					}
-				}
-            },
-            "rift:apatosaurus_adult_calm": {
-                "minecraft:on_target_acquired": {
-					"event": "rift:adult_become_angry",
-					"target": "self"
-				},
-				"minecraft:on_friendly_anger": {
-					"event": "rift:adult_become_angry",
-					"target": "self"
-				}
-            },
-            "rift:apatosaurus_adult_angry": {
-				"minecraft:angry": {
-					"broadcast_anger": true,
-					"duration": 60,
-					"broadcast_range": 30,
-					"calm_event": {
-						"event": "rift:adult_on_calm",
-						"target": "self"
-					}
-				}
             },
             "rift:apatosaurus_adult_tamed": {
 				"minecraft:health": {
@@ -460,7 +469,79 @@
 						}
 					]
 				},
-				"minecraft:behavior.player_ride_tamed": {}
+				"minecraft:behavior.player_ride_tamed": {},
+				"minecraft:break_blocks": {
+					"breakable_blocks": [
+						"minecraft:planks",
+						"minecraft:leaves",
+						"minecraft:leaves2",
+						"minecraft:log",
+						"minecraft:log2",
+						"minecraft:dirt",
+						"minecraft:grass",
+						"minecraft:double_plant",
+						"minecraft:glass",
+						"minecraft:stained_glass",
+						"minecraft:glass_pane",
+						"minecraft:stained_glass_pane",
+						"minecraft:wooden_slab",
+						"minecraft:double_wooden_slab",
+						"minecraft:wooden_door",
+						"minecraft:birch_door",
+						"minecraft:spruce_door",
+						"minecraft:acacia_door",
+						"minecraft:jungle_door",
+						"minecraft:dark_oak_door",
+						"minecraft:wood",
+						"minecraft:stripped_oak_log",
+						"minecraft:stripped_birch_log",
+						"minecraft:stripped_spruce_log",
+						"minecraft:stripped_jungle_log",
+						"minecraft:stripped_acacia_log",
+						"minecraft:stripped_dark_oak_log",
+						"minecraft:sand",
+						"minecraft:acacia_stairs",
+						"minecraft:birch_stairs",
+						"minecraft:dark_oak_stairs",
+						"minecraft:jungle_stairs",
+						"minecraft:oak_stairs",
+						"minecraft:spruce_stairs",
+						"minecraft:fence",
+						"minecraft:acacia_fence_gate",
+						"minecraft:birch_fence_gate",
+						"minecraft:dark_oak_fence_gate",
+						"minecraft:fence_gate",
+						"minecraft:jungle_fence_gate",
+						"minecraft:wool",
+						"minecraft:crimson_planks",
+						"minecraft:warped_planks",
+						"minecraft:crimson_stem",
+						"minecraft:warped_stem",
+						"minecraft:stripped_crimson_stem",
+						"minecraft:stripped_warped_stem",
+						"minecraft:crimson_hyphae",
+						"minecraft:warped_hyphae",
+						"minecraft:stripped_crimson_hyphae",
+						"minecraft:stripped_warped_hyphae",
+						"minecraft:nether_wart_block",
+						"minecraft:warped_wart_block",
+						"minecraft:netherrack",
+						"minecraft:crimson_nylium",
+						"minecraft:warped_nylium",
+						"minecraft:soul_sand",
+						"minecraft:soul_soil",
+						"minecraft:crimson_door",
+						"minecraft:warped_door",
+						"minecraft:crimson_stairs",
+						"minecraft:warped_stairs",
+						"minecraft:crimson_fence",
+						"minecraft:warped_fence",
+						"minecraft:crimson_fence_gate",
+						"minecraft:warped_fence_gate",
+						"minecraft:crimson_slab",
+						"minecraft:warped_slab"
+					]
+                }
             },
             "rift:apatosaurus_tamed": {
 				"minecraft:behavior.owner_hurt_by_target": {
@@ -499,7 +580,14 @@
             "rift:apatosaurus_platformed": {
                 "minecraft:is_saddled": {},
                 "minecraft:is_chested": {},
-				"minecraft:input_ground_controlled": {}
+				"minecraft:input_ground_controlled": {},
+				"minecraft:can_power_jump": {},
+				"minecraft:horse.jump_strength": {
+					"value": {
+						"range_min": 0,
+						"range_max": 0
+					}
+				}
             },
             "rift:apatosaurus_harvest": {
 				"minecraft:is_sheared": {},
@@ -513,12 +601,46 @@
             },
             "rift:apatosaurus_rideable": {
 				"minecraft:rideable": {
+					"seat_count": 3,
+					"family_types": [
+						"player",
+						"pig",
+						"sheep",
+						"cow",
+						"horse",
+						"fox",
+						"polarbear",
+						"wolf",
+						"cat",
+						"fox",
+						"turtle",
+						"llama",
+						"donkey",
+						"skeletonhorse",
+						"zombiehorse",
+						"irongolem",
+						"villager"
+					],
 					"seats": [
 						{
 							"position": [
 								0,
 								2.9,
 								1.15
+							]
+						},
+						{
+							"position": [
+								0,
+								3.3,
+								-0.4
+							]
+						},
+						{
+							"position": [
+								0,
+								3.3,
+								-1.5
 							]
 						}
 					]
@@ -602,6 +724,7 @@
 			"minecraft:movement.basic": {},
 			"minecraft:behavior.breed": {},
 			"minecraft:jump.static": {},
+			"minecraft:behavior.move_to_land": {},
 			"minecraft:behavior.delayed_attack": {
 				"priority": 0,
 				"attack_duration": 0.52,
@@ -716,6 +839,76 @@
 							]
 						},
 						"event": "rift:apato_firing"
+					},
+					{
+						"filters": {
+							"all_of": [
+								{
+									"test": "has_tag",
+									"value": "apatoAddRiders",
+									"subject": "self",
+									"operator": "=="
+								},
+								{
+									"test": "rider_count",
+									"operator": ">",
+									"value": 0,
+									"subject": "self"
+								},
+								{
+									"test": "has_component",
+									"value": "minecraft:is_tamed",
+									"subject": "self"
+								},
+								{
+									"test": "has_component",
+									"operator": "!=",
+									"value": "minecraft:is_baby",
+									"subject": "self"
+								},
+								{
+									"test": "has_component",
+									"value": "minecraft:is_saddled",
+									"subject": "self"
+								}
+							]
+						},
+						"event": "rift:apato_add_riders"
+					},
+					{
+						"filters": {
+							"all_of": [
+								{
+									"test": "has_tag",
+									"value": "apatoRemoveRiders",
+									"subject": "self",
+									"operator": "=="
+								},
+								{
+									"test": "rider_count",
+									"operator": ">",
+									"value": 0,
+									"subject": "self"
+								},
+								{
+									"test": "has_component",
+									"value": "minecraft:is_tamed",
+									"subject": "self"
+								},
+								{
+									"test": "has_component",
+									"operator": "!=",
+									"value": "minecraft:is_baby",
+									"subject": "self"
+								},
+								{
+									"test": "has_component",
+									"value": "minecraft:is_saddled",
+									"subject": "self"
+								}
+							]
+						},
+						"event": "rift:apato_remove_riders"
 					}
 				]
 			},
@@ -1074,7 +1267,12 @@
                     "component_groups": [
                         "rift:apatosaurus_sittable"
                     ]
-                }
+				},
+				"run_command": {
+					"command": [
+						"ride @s evict_riders"
+					]
+				}
             },
             "rift:spawn_as_baby": {
                 "randomize": [
@@ -1127,7 +1325,22 @@
                         }
                     }
                 ]
-            }
-        }
+			},
+			"rift:apato_add_riders": {
+				"run_command": {
+					"command": [
+						"ride @e[type=!player, r=10] start_riding @s"
+					]
+				}
+			},
+			"rift:apato_remove_riders": {
+				"run_command": {
+					"command": [
+						"say stop riding me",
+						"ride @e[type=!player, r=7] stop_riding"
+					]
+				}
+			}
+		}
     }
 }

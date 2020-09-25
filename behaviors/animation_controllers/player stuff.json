@@ -1,29 +1,70 @@
 {
 	"format_version": "1.10.0",
 	"animation_controllers": {
-		"controller.animation.reset_player_tags": {
+		"controller.animation.attach_riders_to_apato": {
 			"initial_state": "default",
 			"states": {
 				"default": {
 					"transitions": [
 						{
-							"riding": "query.is_riding"
+							"attachRiders": "query.is_jumping && query.is_riding"
 						}
-					],
-					"on_entry": [
-						"/tag @s add nClimbMount"
-					]
-				},
-				"riding": {
-					"transitions": [
-						{
-							"default": "!query.is_riding"
-						}
-					],
-					"on_exit": [
-						"/tag @s add nClimbMount"
-					]
-				}
+                    ]
+                },
+                "attachRiders": {
+                    "transitions": [
+                        {
+                            "default": "!query.is_riding"
+                        },
+                        {
+                            "limboOne": "!query.is_jumping"
+                        }
+                    ],
+                    "on_entry": [
+                        "/say attach riders",
+                        "/tag @e[type=rift:apatosaurus, r=5] add apatoAddRiders"
+                    ]
+                },
+                "limboOne": {
+                    "transitions": [
+                        {
+                            "default": "!query.is_riding"
+                        },
+                        {
+                            "evictRiders": "query.is_jumping"
+                        }
+                    ],
+                    "on_entry": [
+                        "/say limbo one"
+                    ]
+                },
+                "evictRiders": {
+                    "transitions": [
+                        {
+                            "default": "!query.is_riding"
+                        },
+                        {
+                            "limboTwo": "!query.is_jumping"
+                        }
+                    ],
+                    "on_entry": [
+                        "/say evict riders",
+                        "/tag @e[type=rift:apatosaurus, r=5] add apatoRemoveRiders"
+                    ]
+                },
+                "limboTwo": {
+                    "transitions": [
+                        {
+                            "default": "!query.is_riding"
+                        },
+                        {
+                            "attachRiders": "query.is_jumping"
+                        }
+                    ],
+                    "on_entry": [
+                        "/say limbo two"
+                    ]
+                }
 			}
 		}
 	}

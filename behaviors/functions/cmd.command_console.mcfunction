@@ -1,1 +1,1 @@
-execute @e[type=rift:apatosaurus, r=5] ~ ~ ~ tag @s add apatoCannonFire
+tag @e[type=rift:apatosaurus, r=5] add apatoCannonFire
