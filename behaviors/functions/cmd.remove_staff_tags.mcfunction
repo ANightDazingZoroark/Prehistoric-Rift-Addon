@@ -11,3 +11,6 @@ tag @e remove apatoHarvest
 tag @e remove apatoCannonFire
 tag @e remove apatoAddRiders
 tag @e remove apatoRemoveRiders
+tag @e remove parasaurHarvest
+tag @e remove parasaurCallScare
+tag @e remove parasaurCallAggravate

@@ -21,8 +21,8 @@
                         }
                     ],
                     "on_entry": [
-                        "/say attach riders",
-                        "/tag @e[type=rift:apatosaurus, r=5] add apatoAddRiders"
+                        "/tag @e[type=rift:apatosaurus, r=5] add apatoAddRiders",
+                        "/tellraw @s {\"rawtext\":[{\"text\":\"Picked up passengers\"}]}"
                     ]
                 },
                 "limboOne": {
@@ -33,9 +33,6 @@
                         {
                             "evictRiders": "query.is_jumping"
                         }
-                    ],
-                    "on_entry": [
-                        "/say limbo one"
                     ]
                 },
                 "evictRiders": {
@@ -48,8 +45,8 @@
                         }
                     ],
                     "on_entry": [
-                        "/say evict riders",
-                        "/tag @e[type=rift:apatosaurus, r=5] add apatoRemoveRiders"
+                        "/tag @e[type=rift:apatosaurus, r=5] add apatoRemoveRiders",
+                        "/tellraw @s {\"rawtext\":[{\"text\":\"Removed passengers\"}]}"
                     ]
                 },
                 "limboTwo": {
@@ -60,12 +57,93 @@
                         {
                             "attachRiders": "query.is_jumping"
                         }
-                    ],
-                    "on_entry": [
-                        "/say limbo two"
                     ]
                 }
 			}
-		}
+        },
+        "controller.animation.swap_parasaur_abilities": {
+            "initial_state": "default",
+            "states": {
+                "default": {
+                    "transitions": [
+                        {
+                            "startedRiding": "query.is_riding"
+                        }
+                    ],
+                    "on_entry": [
+                        "/tag @s remove parasaurScarer",
+                        "/tag @s remove parasaurAggravator"
+                    ]
+                },
+                "startedRiding": {
+                    "transitions": [
+                        {
+                            "default": "!query.is_riding"
+                        },
+                        {
+                            "limboOne": "query.is_jumping"
+                        }
+                    ],
+                    "on_entry": [
+                        "/tag @s add parasaurScarer",
+                        "/tellraw @s {\"rawtext\":[{\"text\":\"Parasaur Set to Scare Mode\"}]}"
+                    ]
+                },
+                "limboOne": {
+                    "transitions": [
+                        {
+                            "callModeOne": "!query.is_jumping"
+                        },
+                        {
+                            "default": "!query.is_riding"
+                        }
+                    ],
+                    "on_entry": [
+                        "/tag @s add parasaurAggravator",
+                        "/tag @s remove parasaurScarer"
+                    ]
+                },
+                "callModeOne": {
+                    "transitions": [
+                        {
+                            "limboTwo": "query.is_jumping"
+                        },
+                        {
+                            "default": "!query.is_riding"
+                        }
+                    ],
+                    "on_entry": [
+                        "/tellraw @s {\"rawtext\":[{\"text\":\"Parasaur Set to Aggravate Mode\"}]}"
+                    ]
+                },
+                "limboTwo": {
+                    "transitions": [
+                        {
+                            "callModeTwo": "!query.is_jumping"
+                        },
+                        {
+                            "default": "!query.is_riding"
+                        }
+                    ],
+                    "on_entry": [
+                        "/tag @s add parasaurScarer",
+                        "/tag @s remove parasaurAggravator"
+                    ]
+                },
+                "callModeTwo": {
+                    "transitions": [
+                        {
+                            "limboOne": "query.is_jumping"
+                        },
+                        {
+                            "default": "!query.is_riding"
+                        }
+                    ],
+                    "on_entry": [
+                        "/tellraw @s {\"rawtext\":[{\"text\":\"Parasaur Set to Scare Mode\"}]}"
+                    ]
+                }
+            }
+        }
 	}
 }
