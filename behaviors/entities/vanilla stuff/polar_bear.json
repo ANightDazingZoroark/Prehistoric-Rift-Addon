@@ -38,8 +38,29 @@
           "priority": 4,
           "entity_types": [
             {
-              "filters": { "test" :  "is_family", "subject" : "other", "value" :  "player"},
+              "filters": { 
+                "all_of": [
+                  {
+                    "test" :  "is_family", 
+                    "subject" : "other", 
+                    "value" :  "player"
+                  },
+                  {
+                    "test": "is_riding",
+                    "subject": "other",
+                    "value": false
+                  }
+                ]
+              },
               "max_dist": 16
+            },
+            {
+              "filters": {
+                  "test" :  "is_family", 
+                  "subject" : "other", 
+                  "value" :  "parasaurAngerer"
+               },
+              "max_dist": 35
             }
           ]
         }
@@ -77,6 +98,8 @@
         },
         "minecraft:behavior.nearest_attackable_target": {
           "priority": 4,
+          "reselect_targets": true,
+          "within_radius": 25.0,
           "entity_types": [
             {
               "filters": {
@@ -85,6 +108,14 @@
                 "value": "fox"
               },
               "max_dist": 16
+            },
+            {
+              "filters": {
+                  "test" :  "is_family", 
+                  "subject" : "other", 
+                  "value" :  "parasaurAngerer"
+               },
+              "max_dist": 35
             }
           ],
           "must_see": false

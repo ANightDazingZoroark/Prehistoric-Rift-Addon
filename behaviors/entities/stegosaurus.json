@@ -243,7 +243,23 @@
 				"minecraft:on_friendly_anger": {
 					"event": "rift:adult_become_angry",
 					"target": "self"
-				}
+				},
+				"minecraft:behavior.nearest_attackable_target": {
+					"priority": 2,
+					"reselect_targets": true,
+					"within_radius": 25.0,
+					"must_see": true,
+					"entity_types": [
+					  {
+						"filters": {
+							"test" :  "is_family", 
+							"subject" : "other", 
+							"value" :  "parasaurAngerer"
+						 },
+						"max_dist": 35
+					  }
+					]
+				  }
 			},
 			"rift:stegosaurus_adult_angry": {
 				"minecraft:angry": {
@@ -355,16 +371,6 @@
 			},
 			"rift:stegosaurus_chested": {
 				"minecraft:is_chested": {}
-			},
-			"rift:stego_harvest": {
-				"minecraft:is_charged": {},
-				"minecraft:timer": {
-					"time": 0.5,
-					"time_down_event": {
-						"event": "rift:stego_no_harvest",
-						"target": "self"
-					}
-				}
 			},
 			"rift:rideable": {
 				"minecraft:rideable": {
@@ -925,21 +931,10 @@
 				}
 			},
 			"rift:stego_harvesting": {
-				"add": {
-					"component_groups": [
-						"rift:stego_harvest"
-					]
-				},
 				"run_command": {
 					"command": [
-						"function cmd.stego_harvest"
-					]
-				}
-			},
-			"rift:stego_no_harvest": {
-				"remove": {
-					"component_groups": [
-						"rift:stego_harvest"
+						"function cmd.stego_harvest",
+						"playanimation @s animation.stegosaurus.harvesting"
 					]
 				}
 			}

@@ -190,7 +190,7 @@
 							}
 						]
                     }
-                }
+				}
             },
             "rift:parasaurolophus_adult_calm": {
 				"minecraft:on_target_acquired": {
@@ -200,6 +200,21 @@
 				"minecraft:on_friendly_anger": {
 					"event": "rift:adult_become_angry",
 					"target": "self"
+				},
+				"minecraft:behavior.nearest_attackable_target": {
+					"priority": 2,
+					"reselect_targets": true,
+					"within_radius": 5,
+					"must_see": true,
+					"entity_types": [
+					  {
+						"filters": {
+							"test" :  "is_family", 
+							"subject" : "other", 
+							"value" :  "carnivore"
+						}
+					  }
+					]
 				}
             },
             "rift:parasaurolophus_adult_scared": {
@@ -227,7 +242,11 @@
                             "sprint_speed_multiplier": 1.6
                         }
                     ]
-                }
+				},
+				"minecraft:behavior.run_around_like_crazy": {
+					"priority": 0,
+					"speed_multiplier": 2
+				}
             },
             "rift:is_quadrapedal": {
                 "minecraft:timer": {
@@ -698,6 +717,52 @@
 						"event": "rift:can_sit"
 					}
 				]
+			},
+			"minecraft:damage_sensor": {
+				"triggers": [
+					{
+						"on_damage": {
+							"filters": {
+								"all_of": [
+									{
+										"test": "is_family",
+										"subject": "other",
+										"value": "tyrannosaurus"
+									},
+									{
+										"test": "has_component",
+										"subject": "other",
+										"operator": "!=",
+										"value": "minecraft:baby"
+									}
+								]
+							}
+						},
+						"deals_damage": true,
+						"damage_multiplier": 5
+					},
+					{
+						"on_damage": {
+							"filters": {
+								"all_of": [
+									{
+										"test": "is_family",
+										"subject": "other",
+										"value": "stegosaurus"
+									},
+									{
+										"test": "has_component",
+										"subject": "other",
+										"operator": "!=",
+										"value": "minecraft:baby"
+									}
+								]
+							}
+						},
+						"deals_damage": true,
+						"damage_multiplier": 5
+					}
+				]
 			}
         },
         "events": {
@@ -935,7 +1000,8 @@
 				"run_command": {
                     "command": [
                         "effect @s slowness 1 10 true",
-                        "say guys im getting attacked aaa"
+						"say guys im getting attacked aaa",
+						"playsound mob.parasaurolophus.calling @a[r=10]"
                     ]
                 }
 			},
