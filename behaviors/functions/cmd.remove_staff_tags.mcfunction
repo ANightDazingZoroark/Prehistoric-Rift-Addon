@@ -14,3 +14,4 @@ tag @e remove apatoRemoveRiders
 tag @e remove parasaurHarvest
 tag @e remove parasaurCallScare
 tag @e remove parasaurCallAggravate
+tag @e remove parasaurHarvest

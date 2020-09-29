@@ -235,9 +235,9 @@
                                 "value": "parasaurolophus",
                                 "subject": "other",
                                 "operator": "!="
-                            },
-                            "max_dist": 16,
-                            "max_flee": 120,
+							},
+							"max_flee": 5,
+                            "max_dist": 35,
                             "walk_speed_multiplier": 1.6,
                             "sprint_speed_multiplier": 1.6
                         }
@@ -463,9 +463,6 @@
                         "dinosaur"
                     ]
                 }
-            },
-            "rift:parasaurolophus_harvesting": {
-                "minecraft:is_charged": {}
             }
         },
         "components": {
@@ -715,6 +712,24 @@
 							]
 						},
 						"event": "rift:can_sit"
+					},
+					{
+						"filters": {
+							"all_of": [
+								{
+									"test": "has_component",
+									"subject": "self",
+									"value": "minecraft:is_tamed"
+								},
+								{
+									"test": "has_component",
+									"subject": "self",
+									"operator": "!=",
+									"value": "minecraft:is_baby"
+								}
+							]
+						},
+						"event": "rift:remove_pose_changing_upon_tame"
 					}
 				]
 			},
@@ -936,6 +951,7 @@
 				},
 				"remove": {
 					"component_groups": [
+						"rift:parasaurolophus_baby_scared",
 						"rift:parasaurolophus_baby_wild",
 						"rift:parasaurolophus_baby_calm"
 					]
@@ -976,6 +992,7 @@
 				},
 				"remove": {
 					"component_groups": [
+						"rift:parasaurolophus_adult_scared",
 						"rift:parasaurolophus_adult_wild",
                         "rift:parasaurolophus_adult_calm",
                         "rift:is_bipedal",
@@ -1154,6 +1171,14 @@
                     ]
                 }
 			},
+			"rift:remove_pose_changing_upon_tame": {
+				"remove": {
+					"component_groups": [
+						"rift:is_bipedal",
+						"rift:is_quadrapedal"
+					]
+				}
+			},
 			"rift:parasaur_scarer": {
 				"add": {
 					"component_groups": [
@@ -1209,6 +1234,13 @@
 				"run_command": {
 					"command": [
 						"say is no longer feared or angering"
+					]
+				}
+			},
+			"rift:parasaur_harvesting": {
+				"run_command": {
+					"command": [
+						"playanimation @s animation.parasaurolophus.harvest"
 					]
 				}
 			}
