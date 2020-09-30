@@ -1,0 +1,57 @@
+{
+    "format_version": "1.10.0",
+    "animation_controllers": {
+        "controller.animation.dimetrodon_movement": {
+            "initial_state": "default",
+            "states": {
+                "default": {
+                    "animations": [
+                        {
+                            "animStanding": "query.ground_speed == 0"
+                        },
+                        {
+                            "animWalk": "query.ground_speed > 0"
+                        }
+                    ],
+                    "transitions": [
+                        {
+                            "sitting": "query.is_sitting"
+                        }
+                    ]
+                },
+                "sitting": {
+                    "animations": [
+                        "animSitting"
+                    ],
+                    "transitions": [
+                        {
+                            "default": "!query.is_sitting"
+                        }
+                    ]
+                }
+            }
+        },
+        "controller.animation.dimetrodon_attack": {
+            "initial_state": "default",
+            "states": {
+                "default": {
+                    "transitions": [
+                        {
+                            "attacking": "query.is_delayed_attacking"
+                        }
+                    ]
+                },
+                "attacking": {
+                    "animations": [
+                        "animAttack"
+                    ],
+                    "transitions": [
+                        {
+                            "default": "!query.is_delayed_attacking"
+                        }
+                    ]
+                }
+            }
+        }
+    }
+}
