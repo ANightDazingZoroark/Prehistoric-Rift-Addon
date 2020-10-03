@@ -9,57 +9,476 @@
         },
         "component_groups": {
             "rift:dimetrodon_baby": {
-
+				"minecraft:is_baby": {},
+				"minecraft:ageable": {
+                    "duration": 1200,
+                    "grow_up": {
+                        "event": "rift:baby_grow_up",
+                        "target": "self"
+                    },
+                    "feed_items": [
+						{
+							"item": "minecraft:beef",
+							"growth": 0.2
+						},
+						{
+							"item": "minecraft:cooked_beef",
+							"growth": 0.25
+						},
+						{
+							"item": "minecraft:porkchop",
+							"growth": 0.2
+						},
+						{
+							"item": "minecraft:cooked_porkchop",
+							"growth": 0.25
+						},
+						{
+							"item": "minecraft:chicken",
+							"growth": 0.2
+						},
+						{
+							"item": "minecraft:cooked_chicken",
+							"growth": 0.25
+						},
+						{
+							"item": "minecraft:muttonraw",
+							"growth": 0.2
+						},
+						{
+							"item": "minecraft:muttoncooked",
+							"growth": 0.2
+						},
+						{
+							"item": "minecraft:rabbit",
+							"growth": 0.2
+						},
+						{
+							"item": "minecraft:cooked_rabbit",
+							"growth": 0.25
+						},
+						{
+							"item": "rift:raw_exotic_meat",
+							"growth": 0.2
+						},
+						{
+							"item": "rift:cooked_exotic_meat",
+							"growth": 0.25
+						},
+						{
+							"item": "rift:raw_dodo_meat",
+							"growth": 0.2
+						},
+						{
+							"item": "rift:cooked_dodo_meat",
+							"growth": 0.25
+						}                        
+                    ]
+                },
+                "minecraft:scale_by_age": {
+                    "start_scale": 0.4,
+                    "end_scale": 0.85
+                },
+                "minecraft:behavior.tempt": {
+                    "priority": 2,
+                    "items": [
+                        "minecraft:beef",
+						"minecraft:cooked_beef",
+						"minecraft:porkchop",
+						"minecraft:cooked_porkchop",
+						"minecraft:chicken",
+						"minecraft:cooked_chicken",
+						"minecraft:muttonraw",
+						"minecraft:muttoncooked",
+						"minecraft:rabbit",
+						"minecraft:cooked_rabbit",
+						"rift:flesh_treat",
+						"rift:raw_exotic_meat",
+						"rift:cooked_exotic_meat",
+						"rift:raw_dodo_meat",
+						"rift:cooked_dodo_meat"                        
+                    ]
+                }
             },
             "rift:dimetrodon_baby_wild": {
-
+				"minecraft:health": {
+                    "value": 20
+                },
+                "minecraft:behavior.follow_parent": {
+                    "priority": 3
+                },
+                "minecraft:tameable": {
+                    "probability": 0.25,
+                    "tame_items": [
+                        "rift:flesh_treat"
+                    ],
+                    "tame_event": {
+                        "event": "rift:on_tame",
+                        "target": "self"
+                    }
+				},
+				"minecraft:behavior.random_stroll": {}
             },
             "rift:dimetrodon_baby_tamed": {
-
+                "minecraft:health": {
+                    "value": 20,
+                    "max": 25
+                }
             },
             "rift:dimetrodon_adult": {
-
+                "minecraft:experience_reward": {
+                    "on_bred": "Math.random(4, 6)",
+                    "on_death": "query.last_hit_by_player ? Math.random(5, 9) : 0"
+                },
+                "minecraft:loot": {
+                    "table": "loot_tables/entities/dimetrodon.loot.json"
+                },
+                "minecraft:breedable": {
+                    "breeds_with": {
+                        "mate_type": "rift:dimetrodon",
+                        "baby_type": "rift:egg",
+                        "breed_event": {
+                            "event": "rift:summon_dimetrodon_egg",
+                            "target": "baby"
+                        }
+                    },
+                    "breed_items": [
+                        "rift:flesh_treat"
+                    ],
+                    "require_tame": true,
+                    "inherit_tamed": false,
+                    "breed_cooldown": 1200
+                }
             },
             "rift:dimetrodon_adult_wild": {
-
-            },
+				"minecraft:health": {
+                    "value": 40
+                },
+                "minecraft:timer": {
+                    "time": 2400,
+                    "time_down_event": {
+                        "event": "rift:despawn",
+                        "target": "self"
+                    }
+                },
+                "minecraft:behavior.random_stroll": {},
+				"minecraft:behavior.avoid_mob_type": {
+					"priority": 1,
+					"entity_types": [
+						{
+							"filters": {
+						  		"test": "is_family",
+						  		"value": "parasaurScary",
+						  		"subject": "other"
+							},
+							"max_dist": 12,
+							"must_see": true,
+							"walk_speed_multiplier": 1.2,
+							"sprint_speed_multiplier": 1.2
+					  	}
+					]
+				}
+			},
+			"rift:dimetrodon_adult_calm": {
+				"minecraft:on_target_acquired": {
+					"filters": {
+						"test": "is_family",
+						"subject": "other",
+						"operator": "!=",
+						"value": "dimetrodon"
+					},
+					"event": "rift:become_angry",
+					"target": "self"
+				}
+			},
+			"rift:dimetrodon_adult_angry": {
+				"minecraft:angry": {
+					"duration": 60,
+					"calm_event": {
+						"event": "rift:calm_down",
+						"target": "self"
+					}
+				}
+			},
+			"rift:dimetrodon_adult_not_trusting": {
+				"minecraft:trusting": {
+                    "probability": 0.25,
+                    "trust_event": {
+                        "event": "rift:on_trust",
+                        "target": "self"
+                    },
+                    "trust_items": [
+                        "rift:flesh_treat"
+					]
+				},
+				"minecraft:behavior.nearest_attackable_target": {
+					"priority": 2,
+					"reselect_targets": true,
+					"within_radius": 25.0,
+					"must_see": true,
+					"entity_types": [
+						{
+							"filters": {
+								"all_of": [
+									{
+										"test" :  "is_family", 
+										"subject" : "other", 
+										"value" :  "parasaurAngerer"
+									},
+									{
+										"test": "is_family",
+										"subject": "other",
+										"operator": "!=",
+										"value": "dimetrodon"
+									}
+								]
+							},
+							"max_dist": 35
+						},
+						{
+							"filters": {
+								"all_of": [
+									{
+										"test": "is_family",
+										"subject": "other",
+										"operator": "!=",
+										"value": "dimetrodon"
+									},
+									{
+										"any_of": [
+											{
+												"test": "is_family",
+												"subject": "other",
+												"value": "herbivore"
+											},
+											{
+												"test": "is_family",
+												"subject": "other",
+												"value": "animal"
+											}
+										]
+									}
+								]
+							}
+						}
+					]
+				}
+			},
             "rift:dimetrodon_adult_trusting": {
-
-            },
+				"minecraft:trust": {}
+			},
+			"rift:dimetrodon_adult_waiting_for_tame": {
+				"minecraft:timer": {
+					"time": 10,
+					"time_down_event": {
+						"event": "rift:can_be_tamed_again",
+						"target": "self"
+					}
+				}
+			},
+			"rift:utahraptor_adult_chance_for_tame": {
+				"minecraft:is_sheared": {}
+			},
+			"rift:utahraptor_adult_tameable": {
+				"minecraft:tameable": {
+                    "probability": 1,
+                    "tame_items": [
+                        "rift:flesh_treat"
+                    ],
+                    "tame_event": {
+                        "event": "rift:adult_on_tame",
+                        "target": "self"
+                    }
+                }
+			},
+			"rift:dimetrodon_default_temperature_mode": {
+				"minecraft:movement": {
+					"value": 0.175
+				},
+				"minecraft:navigation.walk": {
+					"avoid_water": true,
+					"avoid_damage_blocks": true,
+					"can_path_over_lava": false,
+					"can_walk_in_lava": false
+				},
+				"minecraft:attack": {
+					"damage": 8
+				}
+			},
+			"rift:dimetrodon_flame_mode": {
+				"minecraft:is_ignited": {},
+				"minecraft:navigation.walk": {
+					"avoid_water": false,
+					"avoid_damage_blocks": true,
+					"can_path_over_lava": false,
+					"can_walk_in_lava": false
+				},
+				"minecraft:attack": {
+					"damage": 8
+				}
+			},
+			"rift:dimetrodon_frost_mode": {
+				"minecraft:is_charged": {},
+				"minecraft:navigation.walk": {
+					"avoid_water": true,
+					"avoid_damage_blocks": false,
+					"can_path_over_lava": true,
+					"can_walk_in_lava": true
+				},
+				"minecraft:attack": {
+					"damage": 8
+				}
+			},
             "rift:dimetrodon_adult_tamed": {
-
-            }
+                "minecraft:health": {
+                    "value": 40,
+                    "max": 50
+                },
+				"minecraft:healable": {
+					"items": [
+						{
+							"item": "minecraft:beef",
+							"heal_amount": 20
+						},
+						{
+							"item": "minecraft:cooked_beef",
+							"heal_amount": 25
+						},
+						{
+							"item": "minecraft:porkchop",
+							"heal_amount": 20
+						},
+						{
+							"item": "minecraft:cooked_porkchop",
+							"heal_amount": 25
+						},
+						{
+							"item": "minecraft:chicken",
+							"heal_amount": 20
+						},
+						{
+							"item": "minecraft:cooked_chicken",
+							"heal_amount": 25
+						},
+						{
+							"item": "minecraft:muttonraw",
+							"heal_amount": 20
+						},
+						{
+							"item": "minecraft:muttoncooked",
+							"heal_amount": 25
+						},
+						{
+							"item": "minecraft:rabbit",
+							"heal_amount": 20
+						},
+						{
+							"item": "minecraft:cooked_rabbit",
+							"heal_amount": 25
+						},
+						{
+							"item": "rift:raw_exotic_meat",
+							"heal_amount": 20
+						},
+						{
+							"item": "rift:cooked_exotic_meat",
+							"heal_amount": 25
+						},
+						{
+							"item": "rift:raw_dodo_meat",
+							"heal_amount": 20
+						},
+						{
+							"item": "rift:cooked_dodo_meat",
+							"heal_amount": 25,
+							"effects": [
+								{
+									"name": "absorption",
+									"duration": 150
+								}
+							]
+						}
+					]
+                }
+			},
+			"rift:dimetrodon_tamed": {
+				"minecraft:is_tamed": {},
+				"minecraft:behavior.follow_owner": {
+					"start_distance": 8,
+					"stop_distance": 40,
+					"priority": 3
+				},
+				"minecraft:behavior.owner_hurt_by_target": {
+					"priority": 3
+				},
+				"minecraft:behavior.owner_hurt_target": {
+					"priority": 3
+				},
+				"minecraft:sittable": {},
+				"minecraft:behavior.stay_while_sitting": {}
+			},
+			"rift:variant_one": {
+				"minecraft:variant": {
+					"value": 0
+				}
+			},
+			"rift:variant_two": {
+				"minecraft:variant": {
+					"value": 1
+				}
+			},
+			"rift:variant_three": {
+				"minecraft:variant": {
+					"value": 2
+				}
+			},
+			"rift:variant_four": {
+				"minecraft:variant": {
+					"value": 3
+				}
+			},
+			"rift:despawn": {
+				"minecraft:type_family": {
+					"family": [
+						"dimetrodon",
+						"mob",
+						"carnivore",
+						"dinosaur",
+						"despawn"
+					]
+				}
+			}
         },
         "components": {
 			"minecraft:type_family": {
 				"family": [
 					"dimetrodon",
 					"mob",
-					"herbivore",
+					"carnivore",
 					"dinosaur"
 				]
 			},
-			"minecraft:navigation.walk": {
-				"avoid_water": true,
-				"avoid_damage_blocks": true
+			"minecraft:movement": {
+				"value": 0.175
 			},
 			"minecraft:movement.basic": {},
+			"minecraft:behavior.float": {},
 			"minecraft:behavior.move_to_land": {},
 			"minecraft:behavior.breed": {},
 			"minecraft:jump.static": {},
 			"minecraft:behavior.delayed_attack": {
 				"priority": 0,
-				"attack_duration": 2,
-				"hit_delay_pct": 0.52,
+				"attack_duration": 0.52,
+				"hit_delay_pct": 1,
 				"track_target": true,
-				"reach_multiplier": 2
+				"reach_multiplier": 3
 			},
 			"minecraft:is_hidden_when_invisible": {},
 			"minecraft:pushable": {},
 			"minecraft:physics": {},
 			"minecraft:nameable": {},
 			"minecraft:collision_box": {
-				"height": 1,
+				"height": 1.5,
 				"width": 1
 			},
 			"minecraft:breathable": {
@@ -73,6 +492,176 @@
 			},
 			"minecraft:behavior.hurt_by_target": {
 				"priority": 3
+			},
+			"minecraft:behavior.random_look_around": {},
+			"minecraft:interact": {
+				"interactions": [
+					{
+						"on_interact": {
+							"filters": {
+								"all_of": [
+									{
+										"test": "has_component",
+										"subject": "self",
+										"operator": "!=",
+										"value": "minecraft:is_tamed"
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"operator": "!=",
+										"value": "minecraft:is_baby"
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_sheared"
+									},
+									{
+										"test": "has_equipment",
+										"subject": "other",
+										"domain": "hand",
+										"value": "rift:flesh_treat"
+									}
+								]
+							},
+							"event": "rift:adult_failed_tame",
+							"target": "self"
+						},
+						"use_item": true
+					}
+				]
+            },
+			"minecraft:damage_sensor": {
+				"triggers": [
+					{
+						"on_damage": {
+							"filters": {
+								"test": "is_family",
+								"value": "stegosaurus",
+								"subject": "other"
+							}
+						},
+						"damage_multiplier": 5
+					}				
+				]
+			},
+			"minecraft:environment_sensor": {
+				"triggers": [
+					{
+						"filters": {
+							"all_of": [
+								{
+									"test": "has_component",
+									"subject": "self",
+									"operator": "!=",
+									"value": "minecraft:is_baby"
+								},
+								{
+									"any_of": [
+										{
+											"test": "has_biome_tag",
+											"value": "desert"
+										},
+										{
+											"test": "has_biome_tag",
+											"value": "mesa"
+										},
+										{
+											"test": "in_nether",
+											"value": true
+										}
+									]
+								}
+							]
+						},
+						"event": "rift:frost_mode",
+						"target": "self"
+					},
+					{
+						"filters": {
+							"all_of": [
+								{
+									"test": "has_biome_tag",
+									"operator": "!=",
+									"value": "desert"
+								},
+								{
+									"test": "has_biome_tag",
+									"operator": "!=",
+									"value": "mesa"
+								},
+								{
+									"test": "in_nether",
+									"value": false
+								}
+							]
+						},
+						"event": "rift:stop_frost_mode",
+						"target": "self"
+					},
+					{
+						"filters": {
+							"all_of": [
+								{
+									"test": "has_component",
+									"subject": "self",
+									"operator": "!=",
+									"value": "minecraft:is_baby"
+								},
+								{
+									"any_of": [
+										{
+											"test": "has_biome_tag",
+											"value": "cold"
+										},
+										{
+											"test": "has_biome_tag",
+											"value": "frozen"
+										},
+										{
+											"test": "has_biome_tag",
+											"value": "taiga"
+										},
+										{
+											"test": "in_water_or_rain",
+											"value": true
+										}
+									]
+								}
+							]
+						},
+						"event": "rift:flame_mode",
+						"target": "self"
+					},
+					{
+						"filters": {
+							"all_of": [
+								{
+									"test": "has_biome_tag",
+									"operator": "!=",
+									"value": "cold"
+								},
+								{
+									"test": "has_biome_tag",
+									"operator": "!=",
+									"value": "frozen"
+								},
+								{
+									"test": "has_biome_tag",
+									"operator": "!=",
+									"value": "taiga"
+								},
+								{
+									"test": "in_water_or_rain",
+									"value": false
+								}
+							]
+						},
+						"event": "rift:stop_flame_mode",
+						"target": "self"
+					}
+				]
 			},
 			"minecraft:despawn": {
 				"filters": {
@@ -92,6 +681,338 @@
 			}
         },
         "events": {
+			"minecraft:entity_spawned": {
+				"randomize": [
+					{
+						"weight": 25,
+						"add": {
+							"component_groups": [
+								"rift:dimetrodon_adult",
+								"rift:dimetrodon_adult_wild",
+								"rift:dimetrodon_adult_calm",
+								"rift:dimetrodon_adult_not_trusting",
+								"rift:dimetrodon_default_temperature_mode",
+								"rift:variant_one"
+							]
+						}
+					},
+					{
+						"weight": 25,
+						"add": {
+							"component_groups": [
+								"rift:dimetrodon_adult",
+								"rift:dimetrodon_adult_wild",
+								"rift:dimetrodon_adult_calm",
+								"rift:dimetrodon_adult_not_trusting",
+								"rift:dimetrodon_default_temperature_mode",
+								"rift:variant_two"
+							]
+						}
+					},
+					{
+						"weight": 25,
+						"add": {
+							"component_groups": [
+								"rift:dimetrodon_adult",
+								"rift:dimetrodon_adult_wild",
+								"rift:dimetrodon_adult_calm",
+								"rift:dimetrodon_adult_not_trusting",
+								"rift:dimetrodon_default_temperature_mode",
+								"rift:variant_three"
+							]
+						}
+					},
+					{
+						"weight": 25,
+						"add": {
+							"component_groups": [
+								"rift:dimetrodon_adult",
+								"rift:dimetrodon_adult_wild",
+								"rift:dimetrodon_adult_calm",
+								"rift:dimetrodon_adult_not_trusting",
+								"rift:dimetrodon_default_temperature_mode",
+								"rift:variant_four"
+							]
+						}
+					}
+				]
+			},
+			"rift:baby_grow_up": {
+				"sequence": [
+					{
+						"add": {
+							"component_groups": [
+								"rift:dimetrodon_adult",
+								"rift:dimetrodon_adult_wild",
+								"rift:dimetrodon_adult_calm",
+								"rift:dimetrodon_adult_not_trusting",
+								"rift:dimetrodon_default_temperature_mode"
+							]
+						},
+						"remove": {
+							"component_groups": [
+								"rift:dimetrodon_baby",
+								"rift:dimetrodon_baby_wild"
+							]
+						}
+					},
+					{
+						"filters": {
+							"test": "has_component",
+							"subject": "self",
+							"value": "minecraft:is_tamed"
+						},
+						"add": {
+							"component_groups": [
+								"rift:dimetrodon_adult_tamed"
+							]
+						},
+						"remove": {
+							"component_groups": [
+								"rift:dimetrodon_baby_tamed",
+								"rift:dimetrodon_adult_wild",
+								"rift:dimetrodon_adult_calm",
+								"rift:dimetrodon_adult_not_trusting"
+							]
+						}
+					}
+				]
+			},
+			"rift:on_tame": {
+				"add": {
+					"component_groups": [
+						"rift:dimetrodon_baby_tamed",
+						"rift:dimetrodon_tamed"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:dimetrodon_baby_wild"
+					]
+				}
+			},
+			"rift:despawn": {
+				"add": {
+					"component_groups": [
+						"rift:despawn"
+					]
+				}
+			},
+			"rift:become_angry": {
+				"add": {
+					"component_groups": [
+						"rift:dimetrodon_adult_angry"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:dimetrodon_adult_calm"
+					]
+				}
+			},
+			"rift:calm_down": {
+				"add": {
+					"component_groups": [
+						"rift:dimetrodon_adult_calm"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:dimetrodon_adult_angry"
+					]
+				}
+			},
+			"rift:on_trust": {
+				"add": {
+					"component_groups": [
+						"rift:dimetrodon_adult_trusting",
+						"rift:dimetrodon_adult_waiting_for_tame"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:dimetrodon_adult_not_trusting",
+						"rift:dimetrodon_adult_wild"
+					]
+				},
+				"run_command": {
+					"command": [
+						"tellraw @p {\"rawtext\":[{\"text\":\"You made a wild Dimetrodon trust you! Keep feeding it every once in a while to eventually tame it!\"}]}"
+					]
+				}
+			},
+			"rift:can_be_tamed_again": {
+				"randomize": [
+					{
+						"weight": 70,
+						"add": {
+							"component_groups": [
+								"rift:utahraptor_adult_chance_for_tame"
+							]
+						},
+						"remove": {
+							"component_groups": [
+								"rift:dimetrodon_adult_waiting_for_tame"
+							]
+						}
+					},
+					{
+						"weight": 30,
+						"add": {
+							"component_groups": [
+								"rift:utahraptor_adult_tameable"
+							]
+						},
+						"remove": {
+							"component_groups": [
+								"rift:dimetrodon_adult_waiting_for_tame"
+							]
+						}
+					}
+				]
+			},
+			"rift:adult_failed_tame": {
+				"add": {
+					"component_groups": [
+						"rift:dimetrodon_adult_waiting_for_tame"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:utahraptor_adult_chance_for_tame"
+					]
+				},
+				"run_command": {
+					"command": [
+						"playsound random.eat @a[r=4]"
+					]
+				}
+			},
+			"rift:adult_on_tame": {
+				"add": {
+					"component_groups": [
+						"rift:dimetrodon_adult_tamed",
+						"rift:dimetrodon_tamed"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:utahraptor_adult_tameable"
+					]
+				},
+				"run_command": {
+					"command": [
+						"tellraw @p {\"rawtext\":[{\"text\":\"You have succesfully tamed a Dimetrodon!\"}]}"
+					]
+				}
+			},
+			"rift:spawn_as_baby": {
+				"randomize": [
+					{
+						"weight": 25,
+						"add": {
+							"component_groups": [
+								"rift:dimetrodon_baby",
+								"rift:dimetrodon_baby_wild",
+								"rift:variant_one"
+							]
+						}
+					},
+					{
+						"weight": 25,
+						"add": {
+							"component_groups": [
+								"rift:dimetrodon_baby",
+								"rift:dimetrodon_baby_wild",
+								"rift:variant_two"
+							]
+						}
+					},
+					{
+						"weight": 25,
+						"add": {
+							"component_groups": [
+								"rift:dimetrodon_baby",
+								"rift:dimetrodon_baby_wild",
+								"rift:variant_three"
+							]
+						}
+					},
+					{
+						"weight": 25,
+						"add": {
+							"component_groups": [
+								"rift:dimetrodon_baby",
+								"rift:dimetrodon_baby_wild",
+								"rift:variant_four"
+							]
+						}
+					}
+				]
+			},
+			"rift:frost_mode": {
+				"add": {
+					"component_groups": [
+						"rift:dimetrodon_frost_mode"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:dimetrodon_flame_mode",
+						"rift:dimetrodon_default_temperature_mode"
+					]
+				},
+				"run_command": {
+					"command": [
+						"fill ~+1 ~-1 ~+1 ~-1 ~-1 ~-1 cobblestone 0 replace lava 0",
+						"fill ~+1 ~-1 ~+1 ~-1 ~-1 ~-1 cobblestone 0 replace flowing_lava 0",
+						"fill ~+1 ~-1 ~+1 ~-1 ~-1 ~-1 ice 0 replace water 0",
+						"fill ~+1 ~-1 ~+1 ~-1 ~-1 ~-1 ice 0 replace flowing_water 0"
+					]
+				}
+			},
+			"rift:stop_frost_mode": {
+				"add": {
+					"component_groups": [
+						"rift:dimetrodon_default_temperature_mode"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:dimetrodon_frost_mode"
+					]
+				},
+				"run_command": {
+					"command": [
+						"tag @s remove dimetroFrost"
+					]
+				}
+			},
+			"rift:flame_mode": {
+				"add": {
+					"component_groups": [
+						"rift:dimetrodon_flame_mode"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:dimetrodon_frost_mode",
+						"rift:dimetrodon_default_temperature_mode"
+					]
+				}
+			},
+			"rift:stop_flame_mode": {
+				"add": {
+					"component_groups": [
+						"rift:dimetrodon_default_temperature_mode"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:dimetrodon_flame_mode"
+					]
+				}
+			}
         }
     }
 }
