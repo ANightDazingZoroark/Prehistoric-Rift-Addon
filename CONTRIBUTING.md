@@ -16,3 +16,4 @@ And there you go. Only problem is that doing so may give you a buggy version not
 * Make sure to give an issue the correct label
 * Don't make the title too vague
 * Don't delete issues. It's pointless anyway, just close them instead
+* (note to self only) if there's a bug that can be easily fixed then don't put it here cause that's pointless
