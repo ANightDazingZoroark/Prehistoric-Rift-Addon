@@ -1,2 +1,0 @@
-execute @e[type=rift:dimetrodon, tag=dimetroFrost] ~ ~ ~ detect ~ ~-1 ~ lava 0 fill ~ ~-1 ~ ~ ~-1 ~ cobblestone 0
-execute @e[type=rift:dimetrodon, tag=dimetroFrost] ~ ~ ~ detect ~ ~-1 ~ flowing_lava 0 fill ~ ~-1 ~ ~ ~-1 ~ cobblestone 0

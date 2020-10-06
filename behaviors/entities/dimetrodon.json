@@ -161,9 +161,11 @@
                         "target": "self"
                     }
                 },
-                "minecraft:behavior.random_stroll": {},
+                "minecraft:behavior.random_stroll": {
+					"priority": 3
+				},
 				"minecraft:behavior.avoid_mob_type": {
-					"priority": 1,
+					"priority": 0,
 					"entity_types": [
 						{
 							"filters": {
@@ -212,7 +214,7 @@
 					]
 				},
 				"minecraft:behavior.nearest_attackable_target": {
-					"priority": 2,
+					"priority": 1,
 					"reselect_targets": true,
 					"within_radius": 25.0,
 					"must_see": true,
@@ -295,38 +297,358 @@
 				"minecraft:movement": {
 					"value": 0.175
 				},
+				"minecraft:water_movement": {
+					"drag_factor": 1
+				},
 				"minecraft:navigation.walk": {
+					"is_amphibious": false,
 					"avoid_water": true,
+					"can_path_over_water": false,
 					"avoid_damage_blocks": true,
 					"can_path_over_lava": false,
 					"can_walk_in_lava": false
 				},
 				"minecraft:attack": {
 					"damage": 8
+				},
+				"minecraft:environment_sensor": {
+					"triggers": [
+						{
+							"filters": {
+								"all_of": [
+									{
+										"test": "has_component",
+										"subject": "self",
+										"operator": "!=",
+										"value": "minecraft:is_baby"
+									},
+									{
+										"any_of": [
+											{
+												"test": "has_biome_tag",
+												"value": "desert"
+											},
+											{
+												"test": "has_biome_tag",
+												"value": "mesa"
+											},
+											{
+												"test": "in_nether",
+												"value": true
+											}
+										]
+									}
+								]
+							},
+							"event": "rift:frost_mode",
+							"target": "self"
+						},
+						{
+							"filters": {
+								"all_of": [
+									{
+										"test": "has_component",
+										"subject": "self",
+										"operator": "!=",
+										"value": "minecraft:is_baby"
+									},
+									{
+										"any_of": [
+											{
+												"test": "has_biome_tag",
+												"value": "cold"
+											},
+											{
+												"test": "has_biome_tag",
+												"value": "frozen"
+											},
+											{
+												"test": "has_biome_tag",
+												"value": "taiga"
+											},
+											{
+												"test": "in_water_or_rain",
+												"value": true
+											}
+										]
+									}
+								]
+							},
+							"event": "rift:flame_mode",
+							"target": "self"
+						}
+					]
 				}
 			},
 			"rift:dimetrodon_flame_mode": {
 				"minecraft:is_ignited": {},
+				"minecraft:movement": {
+					"value": 0.225
+				},
+				"minecraft:water_movement": {
+					"drag_factor": 1
+				},
 				"minecraft:navigation.walk": {
+					"is_amphibious": false,
 					"avoid_water": false,
+					"can_path_over_water": false,
 					"avoid_damage_blocks": true,
 					"can_path_over_lava": false,
 					"can_walk_in_lava": false
 				},
 				"minecraft:attack": {
 					"damage": 8
+				},
+				"minecraft:environment_sensor": {
+					"triggers": [
+						{
+							"filters": {
+								"all_of": [
+									{
+										"test": "has_component",
+										"subject": "self",
+										"operator": "!=",
+										"value": "minecraft:is_baby"
+									},
+									{
+										"any_of": [
+											{
+												"test": "has_biome_tag",
+												"value": "cold"
+											},
+											{
+												"test": "has_biome_tag",
+												"value": "frozen"
+											},
+											{
+												"test": "has_biome_tag",
+												"value": "taiga"
+											},
+											{
+												"test": "in_water_or_rain",
+												"value": true
+											}
+										]
+									}
+								]
+							},
+							"event": "rift:flame_mode",
+							"target": "self"
+						},
+						{
+							"filters": {
+								"all_of": [
+									{
+										"test": "has_biome_tag",
+										"operator": "!=",
+										"value": "cold"
+									},
+									{
+										"test": "has_biome_tag",
+										"operator": "!=",
+										"value": "frozen"
+									},
+									{
+										"test": "has_biome_tag",
+										"operator": "!=",
+										"value": "taiga"
+									},
+									{
+										"test": "in_water_or_rain",
+										"value": false
+									}
+								]
+							},
+							"event": "rift:flame_mode_grace",
+							"target": "self"
+						}
+					]
+				}
+			},
+			"rift:dimetrodon_flame_mode_grace_period": {
+				"minecraft:is_ignited": {},
+				"minecraft:movement": {
+					"value": 0.225
+				},
+				"minecraft:water_movement": {
+					"drag_factor": 1
+				},
+				"minecraft:navigation.walk": {
+					"is_amphibious": false,
+					"avoid_water": false,
+					"can_path_over_water": false,
+					"avoid_damage_blocks": true,
+					"can_path_over_lava": false,
+					"can_walk_in_lava": false
+				},
+				"minecraft:attack": {
+					"damage": 8
+				},
+				"minecraft:environment_sensor": {
+					"triggers": [
+						{
+							"filters": {
+								"all_of": [
+									{
+										"test": "has_biome_tag",
+										"operator": "!=",
+										"value": "cold"
+									},
+									{
+										"test": "has_biome_tag",
+										"operator": "!=",
+										"value": "frozen"
+									},
+									{
+										"test": "has_biome_tag",
+										"operator": "!=",
+										"value": "taiga"
+									},
+									{
+										"test": "in_water_or_rain",
+										"value": false
+									}
+								]
+							},
+							"event": "rift:flame_mode_grace_loop",
+							"target": "self"
+						}
+					]
+				},
+				"minecraft:timer": {
+					"time": 90,
+					"time_down_event": {
+						"event": "rift:stop_flame_mode"
+					}
 				}
 			},
 			"rift:dimetrodon_frost_mode": {
 				"minecraft:is_charged": {},
+				"minecraft:movement": {
+					"value": 0.175
+				},
+				"minecraft:water_movement": {
+					"drag_factor": 1
+				},
 				"minecraft:navigation.walk": {
-					"avoid_water": true,
+					"is_amphibious": true,
+					"avoid_water": false,
+					"can_path_over_water": true,
 					"avoid_damage_blocks": false,
 					"can_path_over_lava": true,
 					"can_walk_in_lava": true
 				},
 				"minecraft:attack": {
-					"damage": 8
+					"damage": 12
+				},
+				"minecraft:environment_sensor": {
+					"triggers": [
+						{
+							"filters": {
+								"all_of": [
+									{
+										"test": "has_component",
+										"subject": "self",
+										"operator": "!=",
+										"value": "minecraft:is_baby"
+									},
+									{
+										"any_of": [
+											{
+												"test": "has_biome_tag",
+												"value": "desert"
+											},
+											{
+												"test": "has_biome_tag",
+												"value": "mesa"
+											},
+											{
+												"test": "in_nether",
+												"value": true
+											}
+										]
+									}
+								]
+							},
+							"event": "rift:frost_mode",
+							"target": "self"
+						},
+						{
+							"filters": {
+								"all_of": [
+									{
+										"test": "has_biome_tag",
+										"operator": "!=",
+										"value": "desert"
+									},
+									{
+										"test": "has_biome_tag",
+										"operator": "!=",
+										"value": "mesa"
+									},
+									{
+										"test": "in_nether",
+										"value": false
+									}
+								]
+							},
+							"event": "rift:frost_mode_grace",
+							"target": "self"
+						}
+					]
+				}
+			},
+			"rift:dimetrodon_frost_mode_grace_period": {
+				"minecraft:is_charged": {},
+				"minecraft:movement": {
+					"value": 0.175
+				},
+				"minecraft:water_movement": {
+					"drag_factor": 1
+				},
+				"minecraft:navigation.walk": {
+					"is_amphibious": true,
+					"avoid_water": false,
+					"can_path_over_water": true,
+					"avoid_damage_blocks": false,
+					"can_path_over_lava": true,
+					"can_walk_in_lava": true
+				},
+				"minecraft:attack": {
+					"damage": 12
+				},
+				"minecraft:environment_sensor": {
+					"triggers": [
+						{
+							"filters": {
+								"all_of": [
+									{
+										"test": "has_biome_tag",
+										"operator": "!=",
+										"value": "desert"
+									},
+									{
+										"test": "has_biome_tag",
+										"operator": "!=",
+										"value": "mesa"
+									},
+									{
+										"test": "in_nether",
+										"value": false
+									}
+								]
+							},
+							"event": "rift:frost_mode_grace_loop",
+							"target": "self"
+						}
+					]
+				},
+				"minecraft:timer": {
+					"time": 90,
+					"time_down_event": {
+						"event": "rift:stop_frost_mode",
+						"target": "self"
+					}
 				}
 			},
             "rift:dimetrodon_adult_tamed": {
@@ -409,10 +731,10 @@
 					"priority": 3
 				},
 				"minecraft:behavior.owner_hurt_by_target": {
-					"priority": 3
+					"priority": 2
 				},
 				"minecraft:behavior.owner_hurt_target": {
-					"priority": 3
+					"priority": 2
 				},
 				"minecraft:sittable": {},
 				"minecraft:behavior.stay_while_sitting": {}
@@ -465,9 +787,11 @@
 			"minecraft:behavior.float": {},
 			"minecraft:behavior.move_to_land": {},
 			"minecraft:behavior.breed": {},
-			"minecraft:jump.static": {},
+			"minecraft:jump.static": {
+				"jump_power": 0.55
+			},
 			"minecraft:behavior.delayed_attack": {
-				"priority": 0,
+				"priority": 1,
 				"attack_duration": 0.52,
 				"hit_delay_pct": 1,
 				"track_target": true,
@@ -544,123 +868,6 @@
 						},
 						"damage_multiplier": 5
 					}				
-				]
-			},
-			"minecraft:environment_sensor": {
-				"triggers": [
-					{
-						"filters": {
-							"all_of": [
-								{
-									"test": "has_component",
-									"subject": "self",
-									"operator": "!=",
-									"value": "minecraft:is_baby"
-								},
-								{
-									"any_of": [
-										{
-											"test": "has_biome_tag",
-											"value": "desert"
-										},
-										{
-											"test": "has_biome_tag",
-											"value": "mesa"
-										},
-										{
-											"test": "in_nether",
-											"value": true
-										}
-									]
-								}
-							]
-						},
-						"event": "rift:frost_mode",
-						"target": "self"
-					},
-					{
-						"filters": {
-							"all_of": [
-								{
-									"test": "has_biome_tag",
-									"operator": "!=",
-									"value": "desert"
-								},
-								{
-									"test": "has_biome_tag",
-									"operator": "!=",
-									"value": "mesa"
-								},
-								{
-									"test": "in_nether",
-									"value": false
-								}
-							]
-						},
-						"event": "rift:stop_frost_mode",
-						"target": "self"
-					},
-					{
-						"filters": {
-							"all_of": [
-								{
-									"test": "has_component",
-									"subject": "self",
-									"operator": "!=",
-									"value": "minecraft:is_baby"
-								},
-								{
-									"any_of": [
-										{
-											"test": "has_biome_tag",
-											"value": "cold"
-										},
-										{
-											"test": "has_biome_tag",
-											"value": "frozen"
-										},
-										{
-											"test": "has_biome_tag",
-											"value": "taiga"
-										},
-										{
-											"test": "in_water_or_rain",
-											"value": true
-										}
-									]
-								}
-							]
-						},
-						"event": "rift:flame_mode",
-						"target": "self"
-					},
-					{
-						"filters": {
-							"all_of": [
-								{
-									"test": "has_biome_tag",
-									"operator": "!=",
-									"value": "cold"
-								},
-								{
-									"test": "has_biome_tag",
-									"operator": "!=",
-									"value": "frozen"
-								},
-								{
-									"test": "has_biome_tag",
-									"operator": "!=",
-									"value": "taiga"
-								},
-								{
-									"test": "in_water_or_rain",
-									"value": false
-								}
-							]
-						},
-						"event": "rift:stop_flame_mode",
-						"target": "self"
-					}
 				]
 			},
 			"minecraft:despawn": {
@@ -964,10 +1171,31 @@
 				},
 				"run_command": {
 					"command": [
-						"fill ~+1 ~-1 ~+1 ~-1 ~-1 ~-1 cobblestone 0 replace lava 0",
-						"fill ~+1 ~-1 ~+1 ~-1 ~-1 ~-1 cobblestone 0 replace flowing_lava 0",
-						"fill ~+1 ~-1 ~+1 ~-1 ~-1 ~-1 ice 0 replace water 0",
-						"fill ~+1 ~-1 ~+1 ~-1 ~-1 ~-1 ice 0 replace flowing_water 0"
+						"function cmd.dimetrodon_frost_mode"
+					]
+				}
+			},
+			"rift:frost_mode_grace": {
+				"add": {
+					"component_groups": [
+						"rift:dimetrodon_frost_mode_grace_period"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:dimetrodon_frost_mode"
+					]
+				},
+				"run_command": {
+					"command": [
+						"function cmd.dimetrodon_frost_mode"
+					]
+				}
+			},
+			"rift:frost_mode_grace_loop": {
+				"run_command": {
+					"command": [
+						"function cmd.dimetrodon_frost_mode"
 					]
 				}
 			},
@@ -979,12 +1207,7 @@
 				},
 				"remove": {
 					"component_groups": [
-						"rift:dimetrodon_frost_mode"
-					]
-				},
-				"run_command": {
-					"command": [
-						"tag @s remove dimetroFrost"
+						"rift:dimetrodon_frost_mode_grace_period"
 					]
 				}
 			},
@@ -996,10 +1219,23 @@
 				},
 				"remove": {
 					"component_groups": [
-						"rift:dimetrodon_frost_mode",
 						"rift:dimetrodon_default_temperature_mode"
 					]
 				}
+			},
+			"rift:flame_mode_grace": {
+				"add": {
+					"component_groups": [
+						"rift:dimetrodon_flame_mode_grace_period"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:dimetrodon_flame_mode"
+					]
+				}
+			},
+			"rift:flame_mode_grace_loop": {
 			},
 			"rift:stop_flame_mode": {
 				"add": {
@@ -1009,7 +1245,7 @@
 				},
 				"remove": {
 					"component_groups": [
-						"rift:dimetrodon_flame_mode"
+						"rift:dimetrodon_flame_mode_grace_period"
 					]
 				}
 			}
