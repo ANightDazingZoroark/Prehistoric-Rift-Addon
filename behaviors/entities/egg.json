@@ -731,7 +731,145 @@
                 "minecraft:transformation": {
                     "into": "rift:parasaurolophus<rift:spawn_as_baby>"
                 }
-            }            
+            },
+            //dimetro egg
+            "rift:dimetrodon_egg": {
+                "minecraft:variant": {
+                    "value": 7
+                },
+                "minecraft:interact": {
+                    "interactions": [
+                        {
+                            "on_interact": {
+                                "filters": {
+                                    "test": "is_sneaking",
+                                    "subject": "other",
+                                    "value": true
+                                },
+                                "event": "rift:dimetro_egg_commit_disappear",
+                                "target": "self"
+                            },
+                            "spawn_items": {
+                                "table": "loot_tables/eggs/dimetrodon egg.loot.json"
+                            }
+                        }
+                    ]
+                },
+                "minecraft:scale": {
+                    "value": 0.6
+                }
+            },
+            "rift:dimetrodon_egg_not_hatching": {
+                "minecraft:environment_sensor": {
+                    "triggers": [
+                        {
+                            "filters": {
+                                "all_of": [
+                                    {
+                                        "test": "in_water_or_rain",
+                                        "value": false
+                                    },
+                                    {
+                                        "test": "has_biome_tag",
+                                        "operator": "!=",
+                                        "value": "cold"
+                                    },
+                                    {
+                                        "test": "has_biome_tag",
+                                        "operator": "!=",
+                                        "value": "frozen"
+                                    },
+                                    {
+                                        "test": "has_biome_tag",
+                                        "operator": "!=",
+                                        "value": "taiga"
+                                    },
+                                    {
+                                        "test": "is_snow_covered",
+                                        "operator": "!=",
+                                        "value": true
+                                    },
+                                    {
+                                        "test": "has_biome_tag",
+                                        "operator": "!=",
+                                        "value": "desert"
+                                    },
+                                    {
+                                        "test": "has_biome_tag",
+                                        "operator": "!=",
+                                        "value": "mesa"
+                                    },
+                                    {
+                                        "test": "in_nether",
+                                        "value": false
+                                    }
+                                ]
+                            },
+                            "event": "rift:dimetrodon_egg_start_hatching",
+                            "target": "self"
+                        }
+                    ]
+                }
+            },
+            "rift:dimetrodon_egg_hatching": {
+                "minecraft:is_sheared": {},
+                "minecraft:environment_sensor": {
+                    "triggers": [
+                        {
+                            "filters": {
+                                "all_of": [
+                                    {
+                                        "test": "in_water_or_rain",
+                                        "value": true
+                                    },
+                                    {
+                                        "test": "has_biome_tag",
+                                        "value": "cold"
+                                    },
+                                    {
+                                        "test": "has_biome_tag",
+                                        "value": "frozen"
+                                    },
+                                    {
+                                        "test": "has_biome_tag",
+                                        "value": "taiga"
+                                    },
+                                    {
+                                        "test": "is_snow_covered",
+                                        "value": true
+                                    },
+                                    {
+                                        "test": "has_biome_tag",
+                                        "value": "desert"
+                                    },
+                                    {
+                                        "test": "has_biome_tag",
+                                        "value": "mesa"
+                                    },
+                                    {
+                                        "test": "in_nether",
+                                        "value": true
+                                    }
+                                ]
+                            },
+                            "event": "rift:dimetrodon_egg_stop_hatching",
+                            "target": "self"
+                        }
+                    ]
+                },
+                "minecraft:timer": {
+                    "time": 450,
+                    "time_down_event": {
+                        "event": "rift:dimetrodon_egg_hatched",
+                        "target": "self"
+                    }
+                }
+            },
+            "rift:dimetrodon_egg_hatched": {
+                "minecraft:transformation": {
+                    "into": "rift:dimetrodon<rift:spawn_as_baby>"
+                }
+            }    
         },
         "components": {
             "minecraft:health": {
@@ -740,6 +878,10 @@
             "minecraft:physics": {
                 "has_collision": true,
                 "has_gravity": true
+            },
+            "minecraft:pushable": {
+                "is_pushable": true,
+                "is_pushable_by_piston": true
             }
         },
         "events": {
@@ -1074,6 +1216,53 @@
                 }
             },
             "rift:parasaur_egg_commit_disappear": {
+                "run_command": {
+                    "command": [
+                        "tp @s ~ ~-40 ~"
+                    ]
+                }
+            },
+            //dimetro egg
+            "rift:summon_dimetrodon_egg": {
+                "add": {
+                    "component_groups": [
+                        "rift:dimetrodon_egg",
+                        "rift:dimetrodon_egg_not_hatching"
+                    ]
+                }
+            },
+            "rift:dimetrodon_egg_start_hatching": {
+                "add": {
+                    "component_groups": [
+                        "rift:dimetrodon_egg_hatching"
+                    ]
+                },
+                "remove": {
+                    "component_groups": [
+                        "rift:dimetrodon_egg_not_hatching"
+                    ]
+                }
+            },
+            "rift:dimetrodon_egg_stop_hatching": {
+                "add": {
+                    "component_groups": [
+                        "rift:dimetrodon_egg_not_hatching"
+                    ]
+                },
+                "remove": {
+                    "component_groups": [
+                        "rift:dimetrodon_egg_hatching"
+                    ]
+                }
+            },
+            "rift:dimetrodon_egg_hatched": {
+                "add": {
+                    "component_groups": [
+                        "rift:dimetrodon_egg_hatched"
+                    ]
+                }
+            },
+            "rift:dimetro_egg_commit_disappear": {
                 "run_command": {
                     "command": [
                         "tp @s ~ ~-40 ~"
