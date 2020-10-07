@@ -12,9 +12,11 @@ This addon was also made with the following software:
 # Credits and More
 The addon itself and the assets used are under the MIT License. 
 
-The following assets are excempt from the MIT License, with credits to their original creators  listed
-* Vivek (Trike Horn, Dodo Beak, new exotic meats, new command staff)
+The following assets are excempt from the MIT License, with credits to their original creators listed
+* Vivek (various tribute items, new exotic meats, new command staff)
+* Professor Squiggles (Utahraptor Claw, Harvest Staff, various journal drawings)
+* Koda Soda (apatosaurus platform, various journal drawings)
+* Ducky (temporary stone and ice blocks)
+* The Gaming Baryonyx (Old Raw Dodo Meat textures, various journal drawings)
 * DTRaptor (Old Command Staff, old exotic meats)
 * AGSucho (All the Stego textures)
-* Professor squiggles (Utahraptor Claw, Harvest Staff)
-* The Gaming Baryonyx (Old Raw Dodo Meat textures)
