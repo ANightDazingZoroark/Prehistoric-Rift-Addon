@@ -399,6 +399,9 @@
 				"minecraft:attack": {
 					"damage": 8
 				},
+				"minecraft:equipment": {
+					"table": "loot_tables/entities/dimetrodon fire weapon.json"
+				},
 				"minecraft:environment_sensor": {
 					"triggers": [
 						{
@@ -463,7 +466,8 @@
 							"target": "self"
 						}
 					]
-				}
+				},
+				"minecraft:fire_immune": {}
 			},
 			"rift:dimetrodon_flame_mode_grace_period": {
 				"minecraft:is_ignited": {},
@@ -483,6 +487,9 @@
 				},
 				"minecraft:attack": {
 					"damage": 8
+				},
+				"minecraft:equipment": {
+					"table": "loot_tables/entities/dimetrodon fire weapon.json"
 				},
 				"minecraft:environment_sensor": {
 					"triggers": [
@@ -520,7 +527,8 @@
 					"time_down_event": {
 						"event": "rift:stop_flame_mode"
 					}
-				}
+				},
+				"minecraft:fire_immune": {}
 			},
 			"rift:dimetrodon_frost_mode": {
 				"minecraft:is_charged": {},
@@ -620,24 +628,6 @@
 				"minecraft:environment_sensor": {
 					"triggers": [
 						{
-							"filters": {
-								"all_of": [
-									{
-										"test": "has_biome_tag",
-										"operator": "!=",
-										"value": "desert"
-									},
-									{
-										"test": "has_biome_tag",
-										"operator": "!=",
-										"value": "mesa"
-									},
-									{
-										"test": "in_nether",
-										"value": false
-									}
-								]
-							},
 							"event": "rift:frost_mode_grace_loop",
 							"target": "self"
 						}
@@ -647,6 +637,113 @@
 					"time": 90,
 					"time_down_event": {
 						"event": "rift:stop_frost_mode",
+						"target": "self"
+					}
+				}
+			},
+			"rift:dimetrodon_forced_flame_mode": {
+				"minecraft:is_ignited": {},
+				"minecraft:movement": {
+					"value": 0.225
+				},
+				"minecraft:water_movement": {
+					"drag_factor": 1
+				},
+				"minecraft:navigation.walk": {
+					"is_amphibious": false,
+					"avoid_water": false,
+					"can_path_over_water": false,
+					"avoid_damage_blocks": true,
+					"can_path_over_lava": false,
+					"can_walk_in_lava": false
+				},
+				"minecraft:attack": {
+					"damage": 8
+				},
+				"minecraft:equipment": {
+					"table": "loot_tables/entities/dimetrodon fire weapon.json"
+				},
+				"minecraft:fire_immune": {},
+				"minecraft:timer": {
+					"time": 300,
+					"time_down_event": {
+						"event": "rift:stop_forced_flame_mode",
+						"target": "self"
+					}
+				}
+			},
+			"rift:dimetrodon_forced_frost_mode": {
+				"minecraft:is_charged": {},
+				"minecraft:movement": {
+					"value": 0.175
+				},
+				"minecraft:water_movement": {
+					"drag_factor": 1
+				},
+				"minecraft:navigation.walk": {
+					"is_amphibious": true,
+					"avoid_water": false,
+					"can_path_over_water": true,
+					"avoid_damage_blocks": false,
+					"can_path_over_lava": true,
+					"can_walk_in_lava": true
+				},
+				"minecraft:attack": {
+					"damage": 12
+				},
+				"minecraft:environment_sensor": {
+					"triggers": [
+						{
+							"filters": {
+								"all_of": [
+									{
+										"test": "has_component",
+										"subject": "self",
+										"operator": "!=",
+										"value": "minecraft:is_baby"
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_charged"
+									}
+								]
+							},
+							"event": "rift:frost_mode_grace_loop",
+							"target": "self"
+						}
+					]
+				},
+				"minecraft:timer": {
+					"time": 300,
+					"time_down_event": {
+						"event": "rift:stop_forced_frost_mode",
+						"target": "self"
+					}
+				}
+			},
+			"rift:dimetrodon_forced_neutral_mode": {
+				"minecraft:movement": {
+					"value": 0.175
+				},
+				"minecraft:water_movement": {
+					"drag_factor": 1
+				},
+				"minecraft:navigation.walk": {
+					"is_amphibious": false,
+					"avoid_water": true,
+					"can_path_over_water": false,
+					"avoid_damage_blocks": true,
+					"can_path_over_lava": false,
+					"can_walk_in_lava": false
+				},
+				"minecraft:attack": {
+					"damage": 8
+				},
+				"minecraft:timer": {
+					"time": 60,
+					"time_down_event": {
+						"event": "rift:stop_forced_neutral_mode",
 						"target": "self"
 					}
 				}
@@ -726,7 +823,7 @@
 			"rift:dimetrodon_tamed": {
 				"minecraft:is_tamed": {},
 				"minecraft:behavior.follow_owner": {
-					"start_distance": 8,
+					"start_distance": 4,
 					"stop_distance": 40,
 					"priority": 3
 				},
@@ -777,7 +874,7 @@
 					"dimetrodon",
 					"mob",
 					"carnivore",
-					"dinosaur"
+					"mammal"
 				]
 			},
 			"minecraft:movement": {
@@ -851,6 +948,95 @@
 							},
 							"event": "rift:adult_failed_tame",
 							"target": "self"
+						},
+						"use_item": true
+					},
+					{
+						"on_interact": {
+							"filters": {
+								"all_of": [
+									{
+										"test": "has_equipment",
+										"subject": "other",
+										"domain": "hand",
+										"value": "rift:flame_stimulant"
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"operator": "!=",
+										"value": "minecraft:is_ignited"
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_tamed"
+									}
+								]
+							},
+							"event": "rift:forced_flame_mode"
+						},
+						"use_item": true
+					},
+					{
+						"on_interact": {
+							"filters": {
+								"all_of": [
+									{
+										"test": "has_equipment",
+										"subject": "other",
+										"domain": "hand",
+										"value": "rift:frost_stimulant"
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"operator": "!=",
+										"value": "minecraft:is_charged"
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_tamed"
+									}
+								]
+							},
+							"event": "rift:forced_frost_mode"
+						},
+						"use_item": true
+					},
+					{
+						"on_interact": {
+							"filters": {
+								"all_of": [
+									{
+										"any_of": [
+											{
+												"test": "has_component",
+												"subject": "self",
+												"value": "minecraft:is_ignited"
+											},
+											{
+												"test": "has_component",
+												"subject": "self",
+												"value": "minecraft:is_charged"
+											}
+										]
+									},
+									{
+										"test": "has_equipment",
+										"subject": "other",
+										"domain": "hand",
+										"value": "rift:neutral_stimulant"
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_tamed"
+									}
+								]
+							},
+							"event": "rift:forced_neutral_mode"
 						},
 						"use_item": true
 					}
@@ -1246,6 +1432,123 @@
 				"remove": {
 					"component_groups": [
 						"rift:dimetrodon_flame_mode_grace_period"
+					]
+				},
+				"run_command": {
+					"command": [
+						"replaceitem entity @s slot.weapon.mainhand 0 air"
+					]
+				}
+			},
+			"rift:forced_flame_mode": {
+				"add": {
+					"component_groups": [
+						"rift:dimetrodon_forced_flame_mode"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:dimetrodon_default_temperature_mode",
+						"rift:dimetrodon_frost_mode",
+						"rift:dimetrodon_frost_mode_grace_period",
+						"rift:dimetrodon_forced_frost_mode",
+						"rift:dimetrodon_forced_neutral_mode"
+					]
+				}
+			},
+			"rift:stop_forced_flame_mode": {
+				"add": {
+					"component_groups": [
+						"rift:dimetrodon_default_temperature_mode"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:dimetrodon_forced_flame_mode"
+					]
+				},
+				"run_command": {
+					"command": [
+						"replaceitem entity @s slot.weapon.mainhand 0 air"
+					]
+				}
+			},
+			"rift:forced_frost_mode": {
+				"add": {
+					"component_groups": [
+						"rift:dimetrodon_forced_frost_mode"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:dimetrodon_default_temperature_mode",
+						"rift:dimetrodon_flame_mode",
+						"rift:dimetrodon_flame_mode_grace_period",
+						"rift:dimetrodon_forced_flame_mode",
+						"rift:dimetrodon_forced_neutral_mode"
+					]
+				},
+				"run_command": {
+					"command": [
+						"replaceitem entity @s slot.weapon.mainhand 0 air"
+					]
+				}
+			},
+			"rift:stop_forced_frost_mode": {
+				"add": {
+					"component_groups": [
+						"rift:dimetrodon_default_temperature_mode"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:dimetrodon_forced_frost_mode"
+					]
+				},
+				"run_command": {
+					"command": [
+						"replaceitem entity @s slot.weapon.mainhand 0 air"
+					]
+				}
+			},
+			"rift:forced_neutral_mode": {
+				"add": {
+					"component_groups": [
+						"rift:dimetrodon_forced_neutral_mode"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:dimetrodon_default_temperature_mode",
+						"rift:dimetrodon_flame_mode",
+						"rift:dimetrodon_flame_mode_grace_period",
+						"rift:dimetrodon_forced_flame_mode",
+						"rift:dimetrodon_frost_mode",
+						"rift:dimetrodon_frost_mode_grace_period",
+						"rift:dimetrodon_forced_frost_mode",
+						"rift:dimetrodon_forced_neutral_mode"
+					]
+				},
+				"run_command": {
+					"command": [
+						"replaceitem entity @s slot.weapon.mainhand 0 air"
+					]
+				}
+			},
+			"rift:stop_forced_neutral_mode": {
+				"add": {
+					"component_groups": [
+						"rift:dimetrodon_default_temperature_mode"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:dimetrodon_forced_neutral_mode"
+					]
+				},
+				"run_command": {
+					"command": [
+						"replaceitem entity @s slot.weapon.mainhand 0 air"
 					]
 				}
 			}
