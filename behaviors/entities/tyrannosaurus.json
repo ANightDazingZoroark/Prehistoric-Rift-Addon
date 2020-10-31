@@ -7,11 +7,13 @@
 			"is_spawnable": true,
 			"is_experimental": false,
 			"animations": {
-				"contLowHP": "controller.animation.wild_tyranno_roar"
+				"contLowHP": "controller.animation.wild_tyranno_roar",
+				"contRoarBreak": "controller.animation.wild_tyranno_break_blocks"
 			},
 			"scripts": {
 				"animate": [
-					"contLowHP"
+					"contLowHP",
+					"contRoarBreak"
 				]
 			}
 		},
@@ -339,16 +341,6 @@
 						"max_dist": 35
 					  }
 					]
-				},
-				"minecraft:on_target_acquired": {
-					"filters": {
-						"test": "is_family",
-						"subject": "other",
-						"operator": "!=",
-						"value": "tyrannosaurus"
-					},
-					"event": "rift:become_angry",
-					"target": "self"
 				}
 			},
 			"rift:tyrannosaurus_hunting": {
@@ -388,51 +380,43 @@
 												"test": "is_family",
 												"subject": "other",
 												"value": "animal"
+											}
+										]
+									}
+								]
+							}
+						},
+						{
+							"filters": {
+								"all_of": [
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_baby",
+										"operator": "!="
+									},
+									{
+										"test": "is_family",
+										"subject": "other",
+										"operator": "!=",
+										"value": "tyrannosaurus"
+									},
+									{
+										"any_of": [
+											{
+												"test": "is_family",
+												"subject": "other",
+												"value": "player"
 											},
 											{
-												"all_of": [
-													{
-														"test": "is_family",
-														"subject": "other",
-														"value": "player"
-													},
-													{
-														"test": "has_component",
-														"subject": "self",
-														"value": "minecraft:is_baby",
-														"operator": "!="
-													}
-												]
+												"test": "is_family",
+												"subject": "other",
+												"value": "villager"
 											},
 											{
-												"all_of": [
-													{
-														"test": "is_family",
-														"subject": "other",
-														"value": "villager"
-													},
-													{
-														"test": "has_component",
-														"subject": "self",
-														"value": "minecraft:is_baby",
-														"operator": "!="
-													}
-												]
-											},
-											{
-												"all_of": [
-													{
-														"test": "is_family",
-														"subject": "other",
-														"value": "wandering_trader"
-													},
-													{
-														"test": "has_component",
-														"subject": "self",
-														"value": "minecraft:is_baby",
-														"operator": "!="
-													}
-												]
+												"test": "is_family",
+												"subject": "other",
+												"value": "wandering_trader"
 											}
 										]
 									}
@@ -551,20 +535,10 @@
 			"rift:tyranno_can_attack": {
 				"minecraft:behavior.delayed_attack": {
 					"priority": 0,
-					"attack_duration": 0.2,
+					"attack_duration": 0.5,
 					"hit_delay_pct": 1,
 					"track_target": true,
-					"attack_once": false,
 					"reach_multiplier": 2.5
-				}
-			},
-			"rift:tyrannosaurus_angry": {
-				"minecraft:angry": {
-					"duration": 60,
-					"calm_event": {
-						"event": "rift:calm_down",
-						"target": "self"
-					}
 				}
 			},
 			"rift:tyrannosaurus_sittable": {
@@ -684,7 +658,7 @@
 				"max_distance": 15
 			},
 			"minecraft:behavior.hurt_by_target": {
-				"priority": 1
+				"priority": 3
 			},
 			"minecraft:movement": {
 				"value": 0.20
@@ -1052,13 +1026,6 @@
 					]
 				}
 			},
-			"rift:become_angry": {
-				"add": {
-					"component_groups": [
-						"rift:tyrannosaurus_angry"
-					]
-				}
-			},
 			"rift:stop_hunting": {
 				"add": {
 					"component_groups": [
@@ -1068,13 +1035,6 @@
 				"remove": {
 					"component_groups": [
 						"rift:tyrannosaurus_hunting"
-					]
-				}
-			},
-			"rift:calm_down": {
-				"remove": {
-					"component_groups": [
-						"rift:tyrannosaurus_angry"
 					]
 				}
 			},
