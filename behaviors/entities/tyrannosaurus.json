@@ -7,12 +7,10 @@
 			"is_spawnable": true,
 			"is_experimental": false,
 			"animations": {
-				"contLowHP": "controller.animation.wild_tyranno_roar",
 				"contRoarBreak": "controller.animation.wild_tyranno_break_blocks"
 			},
 			"scripts": {
 				"animate": [
-					"contLowHP",
 					"contRoarBreak"
 				]
 			}
@@ -187,7 +185,7 @@
 			},
 			"rift:tyrannosaurus_adult_wild": {
 				"minecraft:health": {
-					"value": 120
+					"value": 160
 				},
 				"minecraft:behavior.random_stroll": {},
 				"minecraft:movement": {
@@ -203,8 +201,8 @@
 			},
 			"rift:tyrannosaurus_adult_tamed": {
 				"minecraft:health": {
-					"value": 120,
-					"max": 135
+					"value": 160,
+					"max": 175
 				},
 				"minecraft:is_tamed": {},
 				"minecraft:healable": {
@@ -426,52 +424,6 @@
 					]
 				}
 			},
-			"rift:wild_is_too_weak": {
-				"minecraft:behavior.avoid_mob_type": {
-					"priority": 2,
-					"max_flee": 10,
-					"max_dist": 20,
-					"entity_types": [
-						{
-							"filters": {
-								"any_of": [
-									{
-										"test": "is_family",
-										"subject": "other",
-										"value": "mob"
-									},
-									{
-										"test": "is_family",
-										"subject": "other",
-										"value": "player"
-									}
-								]
-							}
-						}
-					],
-					"walk_speed_multiplier": 1.75,
-					"sprint_speed_multiplier": 1.75
-				},
-				"minecraft:entity_sensor": {
-					"sensor_range": 5,
-					"minimum_count": 1,
-					"event_filters": {
-						"any_of": [
-							{
-								"test": "is_family",
-								"subject": "other",
-								"value": "mob"
-							},
-							{
-								"test": "is_family",
-								"subject": "other",
-								"value": "player"
-							}
-						]
-					},
-					"event": "rift:wild_roar"
-				}
-			},
 			"rift:roar_in_wild": {
 				"minecraft:behavior.knockback_roar": {
 					"priority": 1,
@@ -530,15 +482,6 @@
 						"event": "rift:stop_wild_roaring",
 						"target": "self"
 					}
-				}
-			},
-			"rift:tyranno_can_attack": {
-				"minecraft:behavior.delayed_attack": {
-					"priority": 0,
-					"attack_duration": 0.5,
-					"hit_delay_pct": 1,
-					"track_target": true,
-					"reach_multiplier": 2.5
 				}
 			},
 			"rift:tyrannosaurus_sittable": {
@@ -657,6 +600,13 @@
 				"hard_distance": 10,
 				"max_distance": 15
 			},
+			"minecraft:behavior.delayed_attack": {
+				"priority": 0,
+				"attack_duration": 0.5,
+				"hit_delay_pct": 1,
+				"track_target": true,
+				"reach_multiplier": 2.5
+			},
 			"minecraft:behavior.hurt_by_target": {
 				"priority": 3
 			},
@@ -720,7 +670,35 @@
 								"subject": "other"
 							}
 						},
-						"damage_multiplier": 5,
+						"damage_multiplier": 3,
+						"cause": "entity_attack"
+					},
+					{
+						"on_damage": {
+							"filters": {
+								"all_of": [
+									{
+										"test": "random_chance",
+										"value": 3,
+										"subject": "self"
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"operator": "!=",
+										"value": "minecraft:is_baby"
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"operator": "!=",
+										"value": "minecraft:is_tamed"
+									}
+								]
+							},
+							"event": "rift:wild_roar",
+							"target": "self"
+						},
 						"cause": "entity_attack"
 					}
 				]
@@ -834,8 +812,7 @@
 										"rift:tyrannosaurus_adult",
 										"rift:tyrannosaurus_adult_wild",
 										"rift:tyrannosaurus_hunting",
-										"rift:variant_zero",
-										"rift:tyranno_can_attack"
+										"rift:variant_zero"
 									]
 								}
 							},
@@ -846,8 +823,7 @@
 										"rift:tyrannosaurus_adult",
 										"rift:tyrannosaurus_adult_wild",
 										"rift:tyrannosaurus_hunting",
-										"rift:variant_one",
-										"rift:tyranno_can_attack"
+										"rift:variant_one"
 									]
 								}
 							},
@@ -858,8 +834,7 @@
 										"rift:tyrannosaurus_adult",
 										"rift:tyrannosaurus_adult_wild",
 										"rift:tyrannosaurus_hunting",
-										"rift:variant_two",
-										"rift:tyranno_can_attack"
+										"rift:variant_two"
 									]
 								}
 							},
@@ -870,8 +845,7 @@
 										"rift:tyrannosaurus_adult",
 										"rift:tyrannosaurus_adult_wild",
 										"rift:tyrannosaurus_hunting",
-										"rift:variant_three",
-										"rift:tyranno_can_attack"
+										"rift:variant_three"
 									]
 								}
 							}
@@ -887,8 +861,7 @@
 										"rift:tyrannosaurus_adult",
 										"rift:tyrannosaurus_adult_wild",
 										"rift:tyrannosaurus_not_hunting",
-										"rift:variant_zero",
-										"rift:tyranno_can_attack"
+										"rift:variant_zero"
 									]
 								}
 							},
@@ -899,8 +872,7 @@
 										"rift:tyrannosaurus_adult",
 										"rift:tyrannosaurus_adult_wild",
 										"rift:tyrannosaurus_not_hunting",
-										"rift:variant_one",
-										"rift:tyranno_can_attack"
+										"rift:variant_one"
 									]
 								}
 							},
@@ -911,8 +883,7 @@
 										"rift:tyrannosaurus_adult",
 										"rift:tyrannosaurus_adult_wild",
 										"rift:tyrannosaurus_not_hunting",
-										"rift:variant_two",
-										"rift:tyranno_can_attack"
+										"rift:variant_two"
 									]
 								}
 							},
@@ -923,8 +894,7 @@
 										"rift:tyrannosaurus_adult",
 										"rift:tyrannosaurus_adult_wild",
 										"rift:tyrannosaurus_not_hunting",
-										"rift:variant_three",
-										"rift:tyranno_can_attack"
+										"rift:variant_three"
 									]
 								}
 							}
@@ -995,8 +965,7 @@
 						"rift:tyrannosaurus_baby",
 						"rift:tyrannosaurus_baby_tamed",
 						"rift:tyrannosaurus_sittable",
-						"rift:tyrannosaurus_tamed",
-						"rift:tyranno_can_attack"
+						"rift:tyrannosaurus_tamed"
 					]
 				}
 			},
@@ -1099,7 +1068,6 @@
 										"rift:tyrannosaurus_baby",
 										"rift:tyrannosaurus_baby_wild",
 										"rift:tyrannosaurus_hunting",
-										"rift:tyranno_can_attack",
 										"rift:variant_zero"
 									]
 								}
@@ -1111,7 +1079,6 @@
 										"rift:tyrannosaurus_baby",
 										"rift:tyrannosaurus_baby_wild",
 										"rift:tyrannosaurus_hunting",
-										"rift:tyranno_can_attack",
 										"rift:variant_one"
 									]
 								}
@@ -1123,7 +1090,6 @@
 										"rift:tyrannosaurus_baby",
 										"rift:tyrannosaurus_baby_wild",
 										"rift:tyrannosaurus_hunting",
-										"rift:tyranno_can_attack",
 										"rift:variant_two"
 									]
 								}
@@ -1135,7 +1101,6 @@
 										"rift:tyrannosaurus_baby",
 										"rift:tyrannosaurus_baby_wild",
 										"rift:tyrannosaurus_hunting",
-										"rift:tyranno_can_attack",
 										"rift:variant_three"
 									]
 								}
@@ -1152,7 +1117,6 @@
 										"rift:tyrannosaurus_baby",
 										"rift:tyrannosaurus_baby_wild",
 										"rift:tyrannosaurus_not_hunting",
-										"rift:tyranno_can_attack",
 										"rift:variant_zero"
 									]
 								}
@@ -1164,7 +1128,6 @@
 										"rift:tyrannosaurus_baby",
 										"rift:tyrannosaurus_baby_wild",
 										"rift:tyrannosaurus_not_hunting",
-										"rift:tyranno_can_attack",
 										"rift:variant_one"
 									]
 								}
@@ -1176,7 +1139,6 @@
 										"rift:tyrannosaurus_baby",
 										"rift:tyrannosaurus_baby_wild",
 										"rift:tyrannosaurus_not_hunting",
-										"rift:tyranno_can_attack",
 										"rift:variant_two"
 									]
 								}
@@ -1188,7 +1150,6 @@
 										"rift:tyrannosaurus_baby",
 										"rift:tyrannosaurus_baby_wild",
 										"rift:tyrannosaurus_not_hunting",
-										"rift:tyranno_can_attack",
 										"rift:variant_three"
 									]
 								}
@@ -1196,21 +1157,6 @@
 						]
 					}
 				]
-			},
-			"rift:on_low_health_in_wild": {
-				"add": {
-					"component_groups": [
-						"rift:wild_is_too_weak"
-					]
-				},
-				"remove": {
-					"component_groups": [
-						"rift:tyrannosaurus_not_hunting",
-						"rift:tyrannosaurus_hunting",
-						"rift:tyrannosaurus_angry",
-						"rift:tyranno_can_attack"
-					]
-				}
 			},
 			"rift:wild_roar": {
 				"add": {
@@ -1225,38 +1171,6 @@
 						"rift:roar_in_wild"
 					]
 				}
-			},
-			"rift:return_to_normal": {
-				"randomize": [
-					{
-						"weight": 50,
-						"add": {
-							"component_groups": [
-								"rift:tyrannosaurus_not_hunting",
-								"rift:tyranno_can_attack"
-							]
-						},
-						"remove": {
-							"component_groups": [
-								"rift:wild_is_too_weak"
-							]
-						}
-					},
-					{
-						"weight": 50,
-						"add": {
-							"component_groups": [
-								"rift:tyrannosaurus_hunting",
-								"rift:tyranno_can_attack"
-							]
-						},
-						"remove": {
-							"component_groups": [
-								"rift:wild_is_too_weak"
-							]
-						}
-					}
-				]
 			}
 		}
 	}
