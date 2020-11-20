@@ -84,6 +84,14 @@
 						{
 							"item": "rift:cooked_dodo_meat",
 							"growth": 0.25
+						},
+						{
+							"item": "rift:raw_hadrosaur_meat",
+							"growth": 0.2
+						},
+						{
+							"item": "rift:cooked_hadrosaur_meat",
+							"growth": 0.25
 						}
 					]
 				},
@@ -108,7 +116,9 @@
 						"rift:raw_exotic_meat",
 						"rift:cooked_exotic_meat",
 						"rift:raw_dodo_meat",
-						"rift:cooked_dodo_meat"
+						"rift:cooked_dodo_meat",
+						"rift:raw_hadrosaur_meat",
+						"rift:cooked_hadrosaur_meat"
 					]
 				},
 				"minecraft:attack": {
@@ -120,9 +130,6 @@
 					"value": 30
 				},
 				"minecraft:behavior.random_stroll": {},
-				"minecraft:movement": {
-					"value": 0.25
-				},
 				"minecraft:tameable": {
 					"probability": 0.25,
 					"tame_items": [
@@ -188,15 +195,8 @@
 					"value": 160
 				},
 				"minecraft:behavior.random_stroll": {},
-				"minecraft:movement": {
-					"value": 0.25
-				},
-				"minecraft:timer": {
-					"time": 2400,
-					"time_down_event": {
-						"event": "rift:despawn",
-						"target": "self"
-					}
+				"minecraft:despawn": {
+					"despawn_from_distance": {}
 				}
 			},
 			"rift:tyrannosaurus_adult_tamed": {
@@ -269,6 +269,20 @@
 							"effects": [
 								{
 									"name": "absorption",
+									"duration": 150
+								}
+							]
+						},
+						{
+							"item": "rift:raw_hadrosaur_meat",
+							"heal_amount": 20
+						},
+						{
+							"item": "rift:cooked_hadrosaur_meat",
+							"heal_amount": 25,
+							"effects": [
+								{
+									"name": "resistance",
 									"duration": 150
 								}
 							]
@@ -557,17 +571,6 @@
 						}
 					]
 				}
-			},
-			"rift:despawn": {
-				"minecraft:type_family": {
-					"family": [
-						"tyrannosaurus",
-						"mob",
-						"carnivore",
-						"dinosaur",
-						"despawn"
-					]
-				}
 			}
 		},
 		"components": {
@@ -702,22 +705,6 @@
 						"cause": "entity_attack"
 					}
 				]
-			},
-			"minecraft:despawn": {
-				"filters": {
-					"all_of": [
-						{
-							"test": "is_family",
-							"subject": "self",
-							"value": "despawn"
-						},
-						{
-							"test": "has_target",
-							"subject": "self",
-							"value": false
-						}
-					]
-				}
 			},
 			"minecraft:behavior.random_look_around": {},
 			"minecraft:environment_sensor": {
@@ -1046,13 +1033,6 @@
 				"remove": {
 					"component_groups": [
 						"rift:tyrannosaurus_chested"
-					]
-				}
-			},
-			"rift:despawn": {
-				"add": {
-					"component_groups": [
-						"rift:despawn"
 					]
 				}
 			},

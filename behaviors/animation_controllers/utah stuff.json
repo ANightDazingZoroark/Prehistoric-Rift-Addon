@@ -1,0 +1,65 @@
+{
+    "format_version": "1.10.0",
+    "animation_controllers": {
+        "controller.animation.wild_utahraptor_pack_buff": {
+            "initial_state": "default",
+            "states": {
+                "default": {
+                    "transitions": [
+                        {
+                            "find_friends": "query.has_target && !query.is_tamed"
+                        }
+                    ]
+                },
+                "find_friends": {
+                    "on_entry": [
+                        "v.x = 0.0; for_each(t.utahraptor, query.get_nearby_entities_except_self(16, 'rift:utahraptor'), { v.x = v.x + !(t.utahraptor -> query.is_tamed); });",
+                        "v.chance = Math.random_integer(0, 2);",
+                        "/say yeet"
+                    ],
+                    "transitions": [
+                        {
+                            "use_buff": "v.chance == 0 && v.x >= 3"
+                        },
+                        {
+                            "default": "!query.has_target"
+                        }
+                    ]
+                },
+                "use_buff": {
+                    "on_entry": [
+                        "/say hi",
+                        "@s rift:wild_utahraptor_buffing"
+                    ],
+                    "transitions": [
+                        {
+                            "default": "!query.has_target"
+                        }
+                    ]
+                }
+            }
+        },
+        "controller.animation.wild_utahraptor_remove_buffs": {
+            "initial_state": "default",
+            "states": {
+                "default": {
+                    "transitions": [
+                        {
+                            "buffs": "query.has_target"
+                        }
+                    ]
+                },
+                "buffs": {
+                    "on_exit": [
+                        "/effect @s clear"
+                    ],
+                    "transitions": [
+                        {
+                            "default": "!query.has_target"
+                        }
+                    ]
+                }
+            }
+        }
+    }
+}

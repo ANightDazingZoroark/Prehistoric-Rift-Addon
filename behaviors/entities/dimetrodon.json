@@ -72,7 +72,15 @@
 						{
 							"item": "rift:cooked_dodo_meat",
 							"growth": 0.25
-						}                        
+						},
+						{
+							"item": "rift:raw_hadrosaur_meat",
+							"growth": 0.2
+						},
+						{
+							"item": "rift:cooked_hadrosaur_meat",
+							"growth": 0.25
+						}
                     ]
                 },
                 "minecraft:scale_by_age": {
@@ -97,7 +105,9 @@
 						"rift:raw_exotic_meat",
 						"rift:cooked_exotic_meat",
 						"rift:raw_dodo_meat",
-						"rift:cooked_dodo_meat"                        
+						"rift:cooked_dodo_meat",
+						"rift:raw_hadrosaur_meat",
+						"rift:cooked_hadrosaur_meat"
                     ]
                 }
             },
@@ -157,13 +167,6 @@
 				"minecraft:health": {
                     "value": 40
                 },
-                "minecraft:timer": {
-                    "time": 2400,
-                    "time_down_event": {
-                        "event": "rift:despawn",
-                        "target": "self"
-                    }
-                },
                 "minecraft:behavior.random_stroll": {
 					"priority": 3
 				},
@@ -182,6 +185,9 @@
 							"sprint_speed_multiplier": 1.2
 					  	}
 					]
+				},
+				"minecraft:despawn": {
+					"despawn_from_distance": {}
 				}
 			},
 			"rift:dimetrodon_adult_calm": {
@@ -220,7 +226,7 @@
 				"minecraft:behavior.nearest_attackable_target": {
 					"priority": 1,
 					"reselect_targets": true,
-					"within_radius": 25.0,
+					"within_radius": 25,
 					"must_see": true,
 					"entity_types": [
 						{
@@ -830,6 +836,20 @@
 									"duration": 150
 								}
 							]
+						},
+						{
+							"item": "rift:raw_hadrosaur_meat",
+							"heal_amount": 20
+						},
+						{
+							"item": "rift:cooked_hadrosaur_meat",
+							"heal_amount": 25,
+							"effects": [
+								{
+									"name": "resistance",
+									"duration": 150
+								}
+							]
 						}
 					]
                 }
@@ -868,17 +888,6 @@
 			"rift:variant_four": {
 				"minecraft:variant": {
 					"value": 3
-				}
-			},
-			"rift:despawn": {
-				"minecraft:type_family": {
-					"family": [
-						"dimetrodon",
-						"mob",
-						"carnivore",
-						"dinosaur",
-						"despawn"
-					]
 				}
 			}
         },
@@ -1097,22 +1106,6 @@
 						"damage_multiplier": 5
 					}				
 				]
-			},
-			"minecraft:despawn": {
-				"filters": {
-					"all_of": [
-						{
-							"test": "is_family",
-							"subject": "self",
-							"value": "despawn"
-						},
-						{
-							"test": "has_target",
-							"subject": "self",
-							"value": false
-						}
-					]
-				}
 			}
         },
         "events": {
@@ -1223,13 +1216,6 @@
 				"remove": {
 					"component_groups": [
 						"rift:dimetrodon_baby_wild"
-					]
-				}
-			},
-			"rift:despawn": {
-				"add": {
-					"component_groups": [
-						"rift:despawn"
 					]
 				}
 			},
