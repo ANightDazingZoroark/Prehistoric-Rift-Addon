@@ -1,0 +1,174 @@
+{
+    "format_version": "1.16.0",
+    "minecraft:entity": {
+        "description": {
+            "identifier": "rift:cannon",
+            "is_spawnable": false,
+            "is_summonable": true,
+            "is_experimental": false
+        },
+        "component_groups": {
+            "rift:empty": {
+                "minecraft:interact": {
+                    "interactions": [
+                        {
+                            "on_interact": {
+                                "filters": {
+                                    "all_of": [
+                                        {
+                                            "test": "has_equipment",
+                                            "subject": "other",
+                                            "domain": "hand",
+                                            "value": "rift:cannonball"
+                                        },
+                                        {
+                                            "test": "is_sneaking",
+                                            "subject": "other",
+                                            "value": true
+                                        }
+                                    ]
+                                },
+                                "event": "rift:fill_cannon",
+                                "target": "self"
+                            },
+                            "interact_text": "action.interact.fillcannon",
+                            "use_item": true
+                        }
+                    ]
+                }
+            },
+            "rift:loaded": {
+                "minecraft:interact": {
+                    "interactions": [
+                        {
+                            "on_interact": {
+                                "filters": {
+                                    "all_of": [
+                                        {
+                                            "test": "has_equipment",
+                                            "subject": "other",
+                                            "domain": "hand",
+                                            "operator": "!=",
+                                            "value": "rift:cannonball"
+                                        },
+                                        {
+                                            "test": "is_sneaking",
+                                            "subject": "other",
+                                            "value": true
+                                        }
+                                    ]
+                                },
+                                "event": "rift:fire_cannon",
+                                "target": "self"
+                            },
+                            "particle_on_start": {
+                                "particle_type": "smoke",
+                                "particle_y_offset": 0.25,
+                                "particle_offset_towards_interactor": true
+                            },
+                            "interact_text": "action.interact.firecannon"
+                        }
+                    ]
+                }
+            },
+            "rift:fire_cannonball": {
+				"minecraft:spawn_entity": {
+					"entities": {
+						"spawn_entity": "rift:cannonball",
+						"single_use": true,
+						"min_wait_time": 0,
+						"max_wait_time": 0
+					}
+				},
+				"minecraft:timer": {
+					"time": 0.05,
+					"time_down_event":{
+						"event": "rift:stop_firing",
+						"target": "self"
+					}
+				}
+            }
+        },
+        "components": {
+            "minecraft:type_family": {
+				"family": [
+					"cannon",
+					"inanimate"
+				]
+            },
+            "minecraft:pushable": {
+                "is_pushable": false,
+                "is_pushable_by_piston": false
+            },
+            "minecraft:physics": {},
+            "minecraft:movement": {
+                "value": 0
+            },
+            "minecraft:scale": {
+                "value": 1.5
+            },
+            "minecraft:damage_sensor": {
+				"triggers": [
+					{
+						"on_damage": {
+                            "event": "rift:commit_disappear",
+                            "target": "self"
+						}
+					}
+				]
+			}
+        },
+        "events": {
+            "minecraft:entity_spawned": {
+                "add": {
+                    "component_groups": [
+                        "rift:empty"
+                    ]
+                }
+            },
+            "rift:fill_cannon": {
+                "add": {
+                    "component_groups": [
+                        "rift:loaded"
+                    ]
+                },
+                "remove": {
+                    "component_groups": [
+                        "rift:empty"
+                    ]
+                }
+            },
+            "rift:fire_cannon": {
+                "add": {
+                    "component_groups": [
+                        "rift:fire_cannonball"
+                    ]
+                },
+                "remove": {
+                    "component_groups": [
+                        "rift:loaded"
+                    ]
+                }
+            },
+            "rift:stop_firing": {
+                "add": {
+                    "component_groups": [
+                        "rift:empty"
+                    ]
+                },
+                "remove": {
+                    "component_groups": [
+                        "rift:fire_cannonball"
+                    ]
+                }
+            },
+            "rift:commit_disappear": {
+                "run_command": {
+                    "command": [
+                        "tp @s ~ ~-40 ~"
+                    ]
+                }
+            }
+        }
+    }
+}
