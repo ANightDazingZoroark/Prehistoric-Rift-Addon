@@ -323,3 +323,11 @@ fill ~-10 ~ ~-10 ~+10 ~+15 ~+10 air 0 replace crimson_slab 0
 fill ~-10 ~ ~-10 ~+10 ~+15 ~+10 air 0 replace crimson_slab 1
 fill ~-10 ~ ~-10 ~+10 ~+15 ~+10 air 0 replace warped_slab 0
 fill ~-10 ~ ~-10 ~+10 ~+15 ~+10 air 0 replace warped_slab 1
+fill ~-10 ~ ~-10 ~+10 ~+15 ~+10 air 0 replace rift:oak_thatch_block 0
+fill ~-10 ~ ~-10 ~+10 ~+15 ~+10 air 0 replace rift:spruce_thatch_block 0
+fill ~-10 ~ ~-10 ~+10 ~+15 ~+10 air 0 replace rift:birch_thatch_block 0
+fill ~-10 ~ ~-10 ~+10 ~+15 ~+10 air 0 replace rift:jungle_thatch_block 0
+fill ~-10 ~ ~-10 ~+10 ~+15 ~+10 air 0 replace rift:acacia_thatch_block 0
+fill ~-10 ~ ~-10 ~+10 ~+15 ~+10 air 0 replace rift:dark_oak_thatch_block 0
+fill ~-10 ~ ~-10 ~+10 ~+15 ~+10 air 0 replace rift:crimson_thatch_block 0
+fill ~-10 ~ ~-10 ~+10 ~+15 ~+10 air 0 replace rift:warped_thatch_block 0
