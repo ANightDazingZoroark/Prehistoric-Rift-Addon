@@ -100,6 +100,11 @@
 						"minecraft:muttoncooked",
 						"minecraft:rabbit",
 						"minecraft:cooked_rabbit",
+						"minecraft:cod",
+						"minecraft:cooked_cod",
+						"minecraft:salmon",
+						"minecraft:cooked_salmon",
+						"minecraft:tropical_fish",
 						"rift:flesh_treat",
 						"rift:fish_treat",
 						"rift:raw_exotic_meat",
@@ -161,7 +166,16 @@
                     "require_tame": true,
                     "inherit_tamed": false,
                     "breed_cooldown": 1200
-                }
+				},
+				"minecraft:buoyant": {
+					"apply_gravity": true,
+					"base_buoyancy": 0.4,
+					"simulate_waves": true,
+					"big_wave_probability": 0.03,
+					"big_wave_speed": 10.0,
+					"drag_down_on_buoyancy_removed": 0,
+					"liquid_blocks": ["water"]
+				}
             },
             "rift:dimetrodon_adult_wild": {
 				"minecraft:health": {
@@ -257,6 +271,12 @@
 										"value": "dimetrodon"
 									},
 									{
+										"test": "is_family",
+										"subject": "other",
+										"operator": "!=",
+										"value": "apatosaurus"
+									},
+									{
 										"any_of": [
 											{
 												"test": "is_family",
@@ -310,14 +330,6 @@
 				},
 				"minecraft:water_movement": {
 					"drag_factor": 1
-				},
-				"minecraft:navigation.walk": {
-					"is_amphibious": false,
-					"avoid_water": true,
-					"can_path_over_water": false,
-					"avoid_damage_blocks": true,
-					"can_path_over_lava": false,
-					"can_walk_in_lava": false
 				},
 				"minecraft:attack": {
 					"damage": 8
@@ -398,14 +410,6 @@
 				},
 				"minecraft:water_movement": {
 					"drag_factor": 1
-				},
-				"minecraft:navigation.walk": {
-					"is_amphibious": false,
-					"avoid_water": false,
-					"can_path_over_water": false,
-					"avoid_damage_blocks": true,
-					"can_path_over_lava": false,
-					"can_walk_in_lava": false
 				},
 				"minecraft:attack": {
 					"damage": 8
@@ -488,14 +492,6 @@
 				"minecraft:water_movement": {
 					"drag_factor": 1
 				},
-				"minecraft:navigation.walk": {
-					"is_amphibious": false,
-					"avoid_water": false,
-					"can_path_over_water": false,
-					"avoid_damage_blocks": true,
-					"can_path_over_lava": false,
-					"can_walk_in_lava": false
-				},
 				"minecraft:attack": {
 					"damage": 8
 				},
@@ -548,14 +544,6 @@
 				},
 				"minecraft:water_movement": {
 					"drag_factor": 1
-				},
-				"minecraft:navigation.walk": {
-					"is_amphibious": true,
-					"avoid_water": false,
-					"can_path_over_water": true,
-					"avoid_damage_blocks": false,
-					"can_path_over_lava": true,
-					"can_walk_in_lava": true
 				},
 				"minecraft:attack": {
 					"damage": 12
@@ -628,14 +616,6 @@
 				"minecraft:water_movement": {
 					"drag_factor": 1
 				},
-				"minecraft:navigation.walk": {
-					"is_amphibious": true,
-					"avoid_water": false,
-					"can_path_over_water": true,
-					"avoid_damage_blocks": false,
-					"can_path_over_lava": true,
-					"can_walk_in_lava": true
-				},
 				"minecraft:attack": {
 					"damage": 12
 				},
@@ -666,14 +646,6 @@
 				"minecraft:water_movement": {
 					"drag_factor": 1
 				},
-				"minecraft:navigation.walk": {
-					"is_amphibious": false,
-					"avoid_water": false,
-					"can_path_over_water": false,
-					"avoid_damage_blocks": true,
-					"can_path_over_lava": false,
-					"can_walk_in_lava": false
-				},
 				"minecraft:attack": {
 					"damage": 8
 				},
@@ -696,14 +668,6 @@
 				},
 				"minecraft:water_movement": {
 					"drag_factor": 1
-				},
-				"minecraft:navigation.walk": {
-					"is_amphibious": true,
-					"avoid_water": false,
-					"can_path_over_water": true,
-					"avoid_damage_blocks": false,
-					"can_path_over_lava": true,
-					"can_walk_in_lava": true
 				},
 				"minecraft:attack": {
 					"damage": 12
@@ -748,14 +712,6 @@
 				},
 				"minecraft:water_movement": {
 					"drag_factor": 1
-				},
-				"minecraft:navigation.walk": {
-					"is_amphibious": false,
-					"avoid_water": true,
-					"can_path_over_water": false,
-					"avoid_damage_blocks": true,
-					"can_path_over_lava": false,
-					"can_walk_in_lava": false
 				},
 				"minecraft:attack": {
 					"damage": 8
@@ -814,6 +770,26 @@
 						{
 							"item": "minecraft:cooked_rabbit",
 							"heal_amount": 8
+						},
+						{
+							"item": "minecraft:cod",
+							"heal_amount": 4
+						},
+						{
+							"item": "minecraft:cooked_cod",
+							"heal_amount": 8
+						},
+						{
+							"item": "minecraft:salmon",
+							"heal_amount": 4
+						},
+						{
+							"item": "minecraft:cooked_salmon",
+							"heal_amount": 8
+						},
+						{
+							"item": "minecraft:tropical_fish",
+							"heal_amount": 4
 						},
 						{
 							"item": "rift:raw_exotic_meat",
@@ -905,12 +881,21 @@
 			"minecraft:movement": {
 				"value": 0.175
 			},
+			"minecraft:navigation.walk": {
+				"is_amphibious": true,
+				"avoid_water": false,
+				"can_path_over_water": true,
+				"can_sink": false,
+				"avoid_damage_blocks": true,
+				"can_path_over_lava": true,
+				"can_walk_in_lava": true
+			},
 			"minecraft:movement.basic": {},
 			"minecraft:behavior.float": {},
 			"minecraft:behavior.move_to_land": {},
 			"minecraft:behavior.breed": {},
 			"minecraft:jump.static": {
-				"jump_power": 0.55
+				"jump_power": 0.65
 			},
 			"minecraft:behavior.delayed_attack": {
 				"priority": 1,

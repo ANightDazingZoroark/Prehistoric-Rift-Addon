@@ -357,11 +357,6 @@
 				"minecraft:behavior.player_ride_tamed": {}
             },
             "rift:parasaurolophus_tamed": {
-                "minecraft:behavior.follow_owner": {
-					"start_distance": 8,
-					"stop_distance": 40,
-					"priority": 1
-				},
                 "minecraft:is_tamed": {}
             },
             "rift:variant_one": {
@@ -470,7 +465,89 @@
                         "dinosaur"
                     ]
                 }
-            }
+			},
+			"rift:parasaurolophus_not_in_turret_mode": {
+                "minecraft:behavior.follow_owner": {
+					"start_distance": 8,
+					"stop_distance": 40,
+					"priority": 1
+				}
+			},
+			"rift:parasaurolophus_turret_mode": {
+				"minecraft:is_sheared": {},
+				"minecraft:movement": {
+					"value": 0
+				}
+			},
+			"rift:parasaur_turret_searching": {
+				"minecraft:entity_sensor": {
+					"sensor_range": 16,
+					"relative_range": false,
+					"minimum_count": 1,
+					"event_filters": {
+						"any_of": [
+							{
+								"test" :  "is_family", 
+								"subject" : "other", 
+								"value" :  "animal"
+							},
+							{
+								"test": "is_family",
+								"subject": "other",
+								"value": "utahraptor"
+							},
+							{
+								"test": "is_family",
+								"subject": "other",
+								"value": "dimetrodon"
+							},
+							{
+								"test": "is_family",
+								"subject": "other",
+								"value": "monster"
+							},
+							{
+								"test": "is_family",
+								"subject": "other",
+								"value": "arthropod"
+							}
+						]
+					},
+					"event": "rift:parasaur_turret_scarer"
+				}
+			},
+			"rift:parasaur_turret_scaring": {
+				"minecraft:type_family": {
+                    "family": [
+                        "parasaurolophus",
+                        "parasaurScary",
+                        "mob",
+                        "herbivore",
+                        "dinosaur"
+                    ]
+				},
+				"minecraft:timer": {
+					"time": 5,
+					"time_down_event": {
+						"event": "rift:parasaur_turret_start_cooldown",
+						"target": "self"
+					}
+				}
+			},
+			"rift:parasaur_turret_cooldown": {
+				"minecraft:timer": {
+					"time": 5,
+					"time_down_event": {
+						"event": "rift:parasaur_turret_end_cooldown",
+						"target": "self"
+					}
+				}
+			},
+			"rift:reset_movement": {
+				"minecraft:movement": {
+					"value": 0.25
+				}
+			}
         },
         "components": {
             "minecraft:type_family": {
@@ -554,6 +631,105 @@
 						},
 						"interact_text": "action.interact.attachchest",
 						"use_item": true
+					},
+					{
+						"on_interact": {
+							"filters": {
+								"all_of": [
+									{
+										"test": "has_equipment",
+										"subject": "other",
+										"domain": "hand",
+										"value": "rift:command_staff"
+									},
+									{
+										"test": "rider_count",
+										"subject": "self",
+										"operator": "==",
+										"value": 0
+									},
+									{
+										"test": "is_owner",
+										"subject": "other",
+										"value": true
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_baby",
+										"operator": "!="
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_tamed"
+									},
+									{
+										"test": "is_sneaking",
+										"subject": "other",
+										"value": true
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"operator": "!=",
+										"value": "minecraft:is_sheared"
+									}
+								]
+							},
+							"event": "rift:enable_turret_mode",
+							"target": "self"
+						},
+						"interact_text": "action.interact.turretmodeenable"
+					},
+					{
+						"on_interact": {
+							"filters": {
+								"all_of": [
+									{
+										"test": "has_equipment",
+										"subject": "other",
+										"domain": "hand",
+										"value": "rift:command_staff"
+									},
+									{
+										"test": "rider_count",
+										"subject": "self",
+										"operator": "==",
+										"value": 0
+									},
+									{
+										"test": "is_owner",
+										"subject": "other",
+										"value": true
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_baby",
+										"operator": "!="
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_tamed"
+									},
+									{
+										"test": "is_sneaking",
+										"subject": "other",
+										"value": true
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_sheared"
+									}
+								]
+							},
+							"event": "rift:disable_turret_mode",
+							"target": "self"
+						},
+						"interact_text": "action.interact.turretmodedisable"
 					}
 				]
 			},
@@ -937,7 +1113,8 @@
 					"component_groups": [
 						"rift:parasaurolophus_baby_tamed",
 						"rift:parasaurolophus_sittable",
-						"rift:parasaurolophus_tamed"
+						"rift:parasaurolophus_tamed",
+						"rift:parasaurolophus_not_in_turret_mode"
 					]
 				},
 				"remove": {
@@ -978,7 +1155,8 @@
 						"rift:parasaurolophus_adult_tamed",
 						"rift:parasaurolophus_sittable",
                         "rift:parasaurolophus_tamed",
-						"rift:is_rideable"
+						"rift:is_rideable",
+						"rift:parasaurolophus_not_in_turret_mode"
 					]
 				},
 				"remove": {
@@ -1222,6 +1400,94 @@
 						"function cmd.parasaur_harvest_rose_bush",
 						"function cmd.parasaur_harvest_sunflower",
 						"function cmd.parasaur_harvest_wither_rose"
+					]
+				}
+			},
+			"rift:enable_turret_mode": {
+				"add": {
+					"component_groups": [
+						"rift:parasaurolophus_turret_mode",
+						"rift:parasaur_turret_searching"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:parasaurolophus_sittable",
+						"rift:is_rideable",
+						"rift:parasaurolophus_not_in_turret_mode",
+						"rift:reset_movement"
+					]
+				},
+				"run_command": {
+					"command": [
+						"tellraw @p {\"rawtext\":[{\"text\":\"Turret Mode Enabled\"}]}"
+					]
+				}
+			},
+			"rift:disable_turret_mode": {
+				"add": {
+					"component_groups": [
+						"rift:parasaurolophus_sittable",
+						"rift:is_rideable",
+						"rift:parasaurolophus_not_in_turret_mode",
+						"rift:reset_movement"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:parasaurolophus_turret_mode",
+						"rift:parasaur_turret_searching",
+						"rift:parasaur_turret_scaring",
+						"rift:parasaur_turret_cooldown"
+					]
+				},
+				"run_command": {
+					"command": [
+						"tellraw @p {\"rawtext\":[{\"text\":\"Turret Mode Disabled\"}]}"
+					]
+				}
+			},
+			"rift:parasaur_turret_scarer": {
+				"add": {
+					"component_groups": [
+						"rift:parasaur_turret_scaring"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:parasaurolophus_reset_family",
+						"rift:parasaur_turret_searching"
+					]
+				},
+				"run_command": {
+					"command": [
+						"playanimation @s animation.parasaurolophus.call",
+						"playsound mob.parasaurolophus.calling @a[r=10]"
+					]
+				}
+			},
+			"rift:parasaur_turret_start_cooldown": {
+				"add": {
+					"component_groups": [
+						"rift:parasaurolophus_reset_family",
+						"rift:parasaur_turret_cooldown"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:parasaur_turret_scaring"
+					]
+				}
+			},
+			"rift:parasaur_turret_end_cooldown": {
+				"add": {
+					"component_groups": [
+						"rift:parasaur_turret_searching"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:parasaur_turret_cooldown"
 					]
 				}
 			}
