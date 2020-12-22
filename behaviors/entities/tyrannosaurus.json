@@ -551,14 +551,13 @@
 				}
 			},
 			"rift:roaring": {
-				"minecraft:is_sheared": {},
 				"minecraft:timer": {
 					"time": [
 						1.5,
 						1.5
 					],
 					"time_down_event": {
-						"event": "rift:stop_roaring",
+						"event": "rift:start_roaring_cooldown",
 						"target": "self"
 					}
 				},
@@ -572,6 +571,16 @@
 							"spawn_event": "minecraft:entity_spawned"
 						}
 					]
+				}
+			},
+			"rift:roaring_cooldown": {
+				"minecraft:is_sheared": {},
+				"minecraft:timer": {
+					"time": 10,
+					"time_down_event": {
+						"event": "rift:stop_roaring_cooldown",
+						"target": "self"
+					}
 				}
 			}
 		},
@@ -740,10 +749,55 @@
 									"test": "has_component",
 									"value": "minecraft:is_saddled",
 									"subject": "self"
+								},
+								{
+									"test": "has_component",
+									"value": "minecraft:is_sheared",
+									"operator": "!=",
+									"subject": "self"
 								}
 							]
 						},
 						"event": "rift:tyrannosaurus_roar"
+					},
+					{
+						"filters": {
+							"all_of": [
+								{
+									"test": "has_tag",
+									"value": "tyrannosaurusRoar",
+									"subject": "self"									
+								},
+								{
+									"test": "rider_count",
+									"operator": ">",
+									"value": 0,
+									"subject": "self"
+								},
+								{
+									"test": "has_component",
+									"value": "minecraft:is_tamed",
+									"subject": "self"
+								},
+								{
+									"test": "has_component",
+									"operator": "!=",
+									"value": "minecraft:is_baby",
+									"subject": "self"
+								},
+								{
+									"test": "has_component",
+									"value": "minecraft:is_saddled",
+									"subject": "self"
+								},
+								{
+									"test": "has_component",
+									"value": "minecraft:is_sheared",
+									"subject": "self"
+								}
+							]
+						},
+						"event": "rift:cannot_roar"
 					}
 				]
 			},
@@ -1011,12 +1065,41 @@
 					"component_groups": [
 						"rift:roaring"
 					]
+				},
+				"run_command": {
+					"command": [
+						"playanimation @s animation.tyrannosaurus.roar"
+					]
 				}
 			},
-			"rift:stop_roaring": {
+			"rift:start_roaring_cooldown": {
+				"add": {
+					"component_groups": [
+						"rift:roaring_cooldown"
+					]
+				},
 				"remove": {
 					"component_groups": [
 						"rift:roaring"
+					]
+				}
+			},
+			"rift:cannot_roar": {
+				"run_command": {
+					"command": [
+						"tellraw @p {\"rawtext\":[{\"text\":\"Cannot roar for another 10 seconds!\"}]}"
+					]
+				}
+			},
+			"rift:stop_roaring_cooldown": {
+				"remove": {
+					"component_groups": [
+						"rift:roaring_cooldown"
+					]
+				},
+				"run_command": {
+					"command": [
+						"tellraw @p {\"rawtext\":[{\"text\":\"Cooldown ended\"}]}"
 					]
 				}
 			},
