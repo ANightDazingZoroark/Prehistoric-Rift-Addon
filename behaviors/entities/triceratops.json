@@ -705,13 +705,110 @@
 					{
 						"on_damage": {
 							"filters": {
-								"test": "is_family",
-								"value": "stegosaurus",
-								"subject": "other"
+								"all_of": [
+									{
+										"test": "is_family",
+										"subject": "other",
+										"value": "stegosaurus"
+									},
+									{
+										"test": "has_component",
+										"subject": "other",
+										"operator": "!=",
+										"value": "minecraft:baby"
+									}
+								]
 							}
 						},
-						"damage_multiplier": 5,
-						"cause": "entity_attack"
+						"deals_damage": true,
+						"damage_multiplier": 5
+					},
+					{
+						"on_damage": {
+							"filters": {
+								"all_of": [
+									{
+										"test": "is_family",
+										"subject": "other",
+										"value": "utahraptorLeap"
+									},
+									{
+										"test": "random_chance",
+										"subject": "self",
+										"operator": "<",
+										"value": 9
+									},
+									{
+										"any_of": [
+											{
+												"test": "is_difficulty",
+												"operator": "==",
+												"value": "peaceful"
+											},
+											{
+												"test": "is_difficulty",
+												"operator": "==",
+												"value": "easy"
+											}
+										]
+									}
+								]
+							},
+							"event": "rift:on_pounced_by_utahraptor",
+							"target": "self"
+						}
+					},
+					{
+						"on_damage": {
+							"filters": {
+								"all_of": [
+									{
+										"test": "is_family",
+										"subject": "other",
+										"value": "utahraptorLeap"
+									},
+									{
+										"test": "random_chance",
+										"subject": "self",
+										"operator": "<",
+										"value": 6
+									},
+									{
+										"test": "is_difficulty",
+										"operator": "==",
+										"value": "normal"
+									}
+								]
+							},
+							"event": "rift:on_pounced_by_utahraptor",
+							"target": "self"
+						}
+					},
+					{
+						"on_damage": {
+							"filters": {
+								"all_of": [
+									{
+										"test": "is_family",
+										"subject": "other",
+										"value": "utahraptorLeap"
+									},
+									{
+										"test": "random_chance",
+										"subject": "self",
+										"operator": "<",
+										"value": 3
+									},
+									{
+										"test": "is_difficulty",
+										"operator": "==",
+										"value": "hard"
+									}
+								]
+							},
+							"event": "rift:on_pounced_by_utahraptor",
+							"target": "self"
+						}
 					}
 				]
 			},
@@ -1279,6 +1376,13 @@
 						"function cmd.trike_harvest_dark_oak_log",
 						"function cmd.trike_harvest_crimson_stem",
 						"function cmd.trike_harvest_warped_stem"
+					]
+				}
+			},
+			"rift:on_pounced_by_utahraptor": {
+				"run_command": {
+					"command": [
+						"ride @s evict_riders"
 					]
 				}
 			}

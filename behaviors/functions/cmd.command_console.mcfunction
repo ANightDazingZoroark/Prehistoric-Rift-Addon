@@ -1,2 +1,2 @@
-tag @e[type=rift:apatosaurus, c=1, r=5, scores={apatoCannonballs=!0}] add apatoCannonFire
-execute @e[type=rift:apatosaurus, c=1, r=5, scores={apatoCannonballs=0}] ~ ~ ~ tellraw @p[c=1] {"rawtext":[{"text":"No Cannonballs left in stock!"}]}
+tag @e[type=rift:apatosaurus, c=1, scores={apatoCannonballs=!0}] add apatoCannonFire
+execute @e[type=rift:apatosaurus, c=1, scores={apatoCannonballs=0}] ~ ~ ~ tellraw @p[c=1] {"rawtext":[{"text":"No Cannonballs left in stock!"}]}

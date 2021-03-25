@@ -265,6 +265,18 @@
 					"despawn_from_distance": {}
 				}
             },
+			"rift:utahraptor_adult_can_pounce": {
+				"minecraft:behavior.stalk_and_pounce_on_target": {
+					"priority": 2,
+					"stalk_speed": 1.2,
+					"max_stalk_dist": 12.0,
+					"leap_height": 0.9,
+					"leap_dist": 1.5,
+					"pounce_max_dist": 11,
+					"interest_time": 0,
+					"strike_dist": 8
+				}
+			},
             "rift:utahraptor_adult_wild_not_trusting": {
                 "minecraft:trusting": {
                     "probability": 0.25,
@@ -637,7 +649,17 @@
 				"minecraft:variant": {
 					"value": 3
 				}
-            },   
+            },
+			"rift:utahraptor_wild_leaping": {
+				"minecraft:type_family": {
+					"family": [
+						"utahraptorLeap",
+						"mob",
+						"carnivore",
+						"dinosaur"
+					]
+				}
+			},
 			"rift:utahraptor_unpounceable": {
 				"minecraft:type_family": {
 					"family": [
@@ -657,7 +679,7 @@
 					}
 				},
 				"minecraft:is_sheared": {}
-            }                                                                            
+            }
         },
         "components": {
 			"minecraft:type_family": {
@@ -999,6 +1021,44 @@
 						},
 						"event": "rift:deactivate_climbing",
 						"target": "self"
+					},
+					{
+						"filters": {
+							"all_of": [
+								{
+									"test": "on_ground",
+									"subject": "self",
+									"value": false
+								},
+								{
+									"test": "has_component",
+									"subject": "self",
+									"operator": "!=",
+									"value": "minecraft:is_tamed"
+								}
+							]
+						},
+						"event": "rift:wild_leap_attack",
+						"target": "self"
+					},
+					{
+						"filters": {
+							"all_of": [
+								{
+									"test": "on_ground",
+									"subject": "self",
+									"value": true
+								},
+								{
+									"test": "has_component",
+									"subject": "self",
+									"operator": "!=",
+									"value": "minecraft:is_tamed"
+								}
+							]
+						},
+						"event": "rift:stop_wild_leap_attack",
+						"target": "self"
 					}
                 ]
 			},
@@ -1057,7 +1117,8 @@
 								"rift:utahraptor_adult",
 								"rift:utahraptor_adult_wild",
 								"rift:variant_zero",
-                                "rift:utahraptor_adult_wild_not_trusting"
+                                "rift:utahraptor_adult_wild_not_trusting",
+								"rift:utahraptor_adult_can_pounce"
 							]
 						}
 					},
@@ -1068,7 +1129,8 @@
 								"rift:utahraptor_adult",
 								"rift:utahraptor_adult_wild",
 								"rift:variant_one",
-                                "rift:utahraptor_adult_wild_not_trusting"
+                                "rift:utahraptor_adult_wild_not_trusting",
+								"rift:utahraptor_adult_can_pounce"
 							]
 						}
 					},
@@ -1079,7 +1141,8 @@
 								"rift:utahraptor_adult",
 								"rift:utahraptor_adult_wild",
 								"rift:variant_two",
-                                "rift:utahraptor_adult_wild_not_trusting"
+                                "rift:utahraptor_adult_wild_not_trusting",
+								"rift:utahraptor_adult_can_pounce"
 							]
 						}
 					},
@@ -1090,7 +1153,8 @@
 								"rift:utahraptor_adult",
 								"rift:utahraptor_adult_wild",
 								"rift:variant_three",
-                                "rift:utahraptor_adult_wild_not_trusting"
+                                "rift:utahraptor_adult_wild_not_trusting",
+								"rift:utahraptor_adult_can_pounce"
 							]
 						}
 					}
@@ -1109,7 +1173,8 @@
 							"component_groups": [
 								"rift:utahraptor_adult",
 								"rift:utahraptor_adult_wild",
-								"rift:utahraptor_adult_wild_not_trusting"
+								"rift:utahraptor_adult_wild_not_trusting",
+								"rift:utahraptor_adult_can_pounce"
 							]
 						},
 						"remove": {
@@ -1432,6 +1497,30 @@
 				"run_command": {
 					"command": [
 						"tag @s remove climber"
+					]
+				}
+			},
+			"rift:wild_leap_attack": {
+				"add": {
+					"component_groups": [
+						"rift:utahraptor_wild_leaping"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:utahraptor_unpounceable"
+					]
+				}
+			},
+			"rift:stop_wild_leap_attack": {
+				"add": {
+					"component_groups": [
+						"rift:utahraptor_unpounceable"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:utahraptor_wild_leaping"
 					]
 				}
 			}

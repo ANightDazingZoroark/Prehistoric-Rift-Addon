@@ -455,14 +455,124 @@
       "minecraft:conditional_bandwidth_optimization": {
       },
       "minecraft:damage_sensor": {
-        "triggers": {
-          "cause": "all",
-          "deals_damage": true,
-          "on_damage": {
-            "filters": { "test": "in_caravan", "value": false },
-            "event": "minecraft:become_angry"
-          }
-        }
+        "triggers": [
+          {
+            "cause": "all",
+            "deals_damage": true,
+            "on_damage": {
+              "filters": { "test": "in_caravan", "value": false },
+              "event": "minecraft:become_angry"
+            }
+          },
+          {
+						"on_damage": {
+							"filters": {
+								"all_of": [
+									{
+										"test": "is_family",
+										"subject": "other",
+										"value": "stegosaurus"
+									},
+									{
+										"test": "has_component",
+										"subject": "other",
+										"operator": "!=",
+										"value": "minecraft:baby"
+									}
+								]
+							}
+						},
+						"deals_damage": true,
+						"damage_multiplier": 5
+					},
+					{
+						"on_damage": {
+							"filters": {
+								"all_of": [
+									{
+										"test": "is_family",
+										"subject": "other",
+										"value": "utahraptorLeap"
+									},
+									{
+										"test": "random_chance",
+										"subject": "self",
+										"operator": "<",
+										"value": 9
+									},
+									{
+										"any_of": [
+											{
+												"test": "is_difficulty",
+												"operator": "==",
+												"value": "peaceful"
+											},
+											{
+												"test": "is_difficulty",
+												"operator": "==",
+												"value": "easy"
+											}
+										]
+									}
+								]
+							},
+							"event": "rift:on_pounced_by_utahraptor",
+							"target": "self"
+						}
+					},
+					{
+						"on_damage": {
+							"filters": {
+								"all_of": [
+									{
+										"test": "is_family",
+										"subject": "other",
+										"value": "utahraptorLeap"
+									},
+									{
+										"test": "random_chance",
+										"subject": "self",
+										"operator": "<",
+										"value": 6
+									},
+									{
+										"test": "is_difficulty",
+										"operator": "==",
+										"value": "normal"
+									}
+								]
+							},
+							"event": "rift:on_pounced_by_utahraptor",
+							"target": "self"
+						}
+					},
+					{
+						"on_damage": {
+							"filters": {
+								"all_of": [
+									{
+										"test": "is_family",
+										"subject": "other",
+										"value": "utahraptorLeap"
+									},
+									{
+										"test": "random_chance",
+										"subject": "self",
+										"operator": "<",
+										"value": 3
+									},
+									{
+										"test": "is_difficulty",
+										"operator": "==",
+										"value": "hard"
+									}
+								]
+							},
+							"event": "rift:on_pounced_by_utahraptor",
+							"target": "self"
+						}
+					}
+        ]
       },
       "minecraft:behavior.nearest_attackable_target": {
         "priority": 2,
@@ -834,8 +944,14 @@
             "minecraft:llama_chested"
           ]
         }
-      }
-
+      },
+      "rift:on_pounced_by_utahraptor": {
+				"run_command": {
+					"command": [
+						"ride @s evict_riders"
+					]
+				}
+			}
     }
   }
 }
