@@ -290,7 +290,7 @@
                 },
 				"minecraft:behavior.nearest_attackable_target": {
 					"priority": 2,
-					"reselect_targets": true,
+					"reselect_targets": false,
 					"within_radius": 50,
 					"must_see": false,
 					"entity_types": [
@@ -814,7 +814,94 @@
 					{
 						"deals_damage": false,
 						"cause": "fall"
-					}				
+					},
+					{
+						"on_damage": {
+							"filters": {
+								"all_of": [
+									{
+										"test": "is_family",
+										"subject": "other",
+										"value": "utahraptorLeap"
+									},
+									{
+										"test": "random_chance",
+										"subject": "self",
+										"operator": "<",
+										"value": 7
+									},
+									{
+										"any_of": [
+											{
+												"test": "is_difficulty",
+												"operator": "==",
+												"value": "peaceful"
+											},
+											{
+												"test": "is_difficulty",
+												"operator": "==",
+												"value": "easy"
+											}
+										]
+									}
+								]
+							},
+							"event": "rift:on_pounced_by_utahraptor",
+							"target": "self"
+						}
+					},
+					{
+						"on_damage": {
+							"filters": {
+								"all_of": [
+									{
+										"test": "is_family",
+										"subject": "other",
+										"value": "utahraptorLeap"
+									},
+									{
+										"test": "random_chance",
+										"subject": "self",
+										"operator": "<",
+										"value": 4
+									},
+									{
+										"test": "is_difficulty",
+										"operator": "==",
+										"value": "normal"
+									}
+								]
+							},
+							"event": "rift:on_pounced_by_utahraptor",
+							"target": "self"
+						}
+					},
+					{
+						"on_damage": {
+							"filters": {
+								"all_of": [
+									{
+										"test": "is_family",
+										"subject": "other",
+										"value": "utahraptorLeap"
+									},
+									{
+										"test": "random_chance",
+										"subject": "self",
+										"operator": "<",
+										"value": 1
+									},
+									{
+										"test": "is_difficulty",
+										"operator": "==",
+										"value": "hard"
+									}
+								]
+							},
+							"event": "rift:on_pounced_by_utahraptor",
+							"target": "self"
+						}
+					}
 				]
 			},
 			"minecraft:behavior.random_look_around": {},
@@ -1521,6 +1608,13 @@
 				"remove": {
 					"component_groups": [
 						"rift:utahraptor_wild_leaping"
+					]
+				}
+			},
+			"rift:on_pounced_by_utahraptor": {
+				"run_command": {
+					"command": [
+						"ride @s evict_riders"
 					]
 				}
 			}
