@@ -1,38 +1,6 @@
 {
 	"format_version": "1.10.0",
 	"animation_controllers": {
-		"controller.animation.command_staff": {
-			"initial_state": "default",
-			"states": {
-				"default": {
-					"transitions": [
-						{
-							"has_staff": "query.get_equipped_item_name('main_hand') == 'command_staff' && query.is_riding"
-						}
-					]
-				},
-				"has_staff": {
-					"transitions": [
-						{
-							"use": "query.get_equipped_item_name('main_hand') == 'command_staff' && query.is_using_item"
-						},
-						{
-							"default": "!query.is_riding && query.get_equipped_item_name('main_hand') != 'command_staff'"
-						}
-					]
-				},
-				"use": {
-					"transitions": [
-						{
-							"has_staff": "!query.is_using_item"
-						}
-					],
-					"on_entry": [
-						"/function cmd.command_staff"
-					]
-				}
-			}
-		},
 		"controller.animation.harvest_staff": {
 			"initial_state": "default",
 			"states": {
@@ -93,6 +61,96 @@
 					],
 					"on_entry": [
 						"/function cmd.command_console"
+					]
+				}
+			}
+		},
+		"controller.animation.tyrannosaurus_command_staff": {
+			"initial_state": "default",
+			"states": {
+				"default": {
+					"transitions": [
+						{
+							"biteMode": "query.is_riding && (query.get_ride -> query.owner_identifier) == 'rift:tyrannosaurus'"
+						}
+					],
+					"on_exit": [
+						"/tellraw @s[c=1] {\"rawtext\":[{\"text\":\"Ability set to Bite Mode\"}]}"
+					]
+				},
+				"biteMode": {
+					"transitions": [
+						{
+							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:tyrannosaurus'"
+						},
+						{
+							"biteToRoar": "query.is_jumping && query.is_riding"
+						},
+						{
+							"useBiteMode": "query.get_equipped_item_name('main_hand') == 'command_staff' && query.is_using_item && (query.get_ride -> query.is_saddled)"
+						}
+					]
+				},
+				"useBiteMode": {
+					"transitions": [
+						{
+							"biteMode": "query.get_equipped_item_name('main_hand') != 'command_staff' || !query.is_using_item"
+						}
+					],
+					"on_entry": [
+						"/event entity @e[type=rift:tyrannosaurus, c=1] rift:use_forced_bite"
+					],
+					"on_exit": [
+						"/event entity @e[type=rift:tyrannosaurus, c=1] rift:stop_forced_bite"
+					]
+				},
+				"biteToRoar": {
+					"transitions": [
+						{
+							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:tyrannosaurus'"
+						},
+						{
+							"roarMode": "!query.is_jumping"
+						}
+					],
+					"on_exit": [
+						"/tellraw @s[c=1] {\"rawtext\":[{\"text\":\"Ability set to Roar Mode\"}]}"
+					]
+				},
+				"roarMode": {
+					"transitions": [
+						{
+							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:tyrannosaurus'"
+						},
+						{
+							"roarToBite": "query.is_jumping && query.is_riding"
+						},
+						{
+							"useRoarMode": "query.get_equipped_item_name('main_hand') == 'command_staff' && query.is_using_item"
+						}
+					]
+				},
+				"useRoarMode": {
+					"transitions": [
+						{
+							"roarMode": "query.get_equipped_item_name('main_hand') != 'command_staff' || !query.is_using_item"
+						}
+					],
+					"on_entry": [
+						"/tag @e[type=rift:tyrannosaurus, c=1] add tyrannosaurusRoar"
+					]
+				},
+				"roarToBite": {
+					"transitions": [
+						{
+							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:tyrannosaurus'"
+						},
+						{
+							"biteMode": "!query.is_jumping"
+						}
+					],
+					"on_exit": [
+						"/tellraw @s[c=1] {\"rawtext\":[{\"text\":\"Ability set to Bite Mode\"}]}"
 					]
 				}
 			}
