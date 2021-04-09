@@ -16,10 +16,38 @@
 				"knockback_strength": 0,
 				"knockback_range": 5,
 				"damage_filters": {
-                    "test": "has_component",
-                    "subject": "other",
-                    "operator": "!=",
-                    "value": "minecraft:is_tamed"
+					"any_of": [
+						{
+							"all_of": [
+								{
+									"test": "has_component",
+									"subject": "other",
+									"operator": "!=",
+									"value": "minecraft:is_tamed"
+								},
+								{
+									"test": "is_family",
+									"subject": "other",
+									"operator": "!=",
+									"value": "player"
+								}
+							]
+						},
+						{
+							"all_of": [
+								{
+									"test": "is_family",
+									"subject": "other",
+									"value": "player"
+								},
+								{
+									"test": "is_riding",
+									"subject": "other",
+									"value": false
+								}
+							]
+						}
+					]
                 }
 			},
 			"minecraft:projectile": {

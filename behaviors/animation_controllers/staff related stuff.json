@@ -279,6 +279,135 @@
 					]
 				}
 			}
+		},
+		"controller.animation.utahraptor_command_staff": {
+			"initial_state": "default",
+			"states": {
+				"default": {
+					"transitions": [
+						{
+							"slashMode": "(query.get_equipped_item_name('main_hand') == 'command_staff') && query.is_riding && (query.get_ride -> query.owner_identifier) == 'rift:utahraptor'"
+						}
+					],
+					"on_entry": [
+						"/event entity @e[type=rift:utahraptor, c=1] rift:enable_jump"
+					],
+					"on_exit": [
+						"/tellraw @s[c=1] {\"rawtext\":[{\"text\":\"Ability set to Slash Mode\"}]}",
+						"/event entity @e[type=rift:utahraptor, c=1] rift:disable_jump"
+					]
+				},
+				"slashMode": {
+					"transitions": [
+						{
+							"default": "(query.get_equipped_item_name('main_hand') != 'command_staff') || !query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:utahraptor'"
+						},
+						{
+							"slashToCall": "query.is_jumping && query.is_riding"
+						},
+						{
+							"useSlashMode": "query.is_using_item && (query.get_ride -> query.is_saddled)"
+						}
+					]
+				},
+				"useSlashMode": {
+					"transitions": [
+						{
+							"slashMode": "(query.get_equipped_item_name('main_hand') != 'command_staff') || !query.is_using_item"
+						}
+					],
+					"on_entry": [
+						"/event entity @e[type=rift:utahraptor, c=1] rift:use_forced_slash"
+					],
+					"on_exit": [
+						"/event entity @e[type=rift:utahraptor, c=1] rift:stop_forced_slash"
+					]
+				},
+				"slashToCall": {
+					"transitions": [
+						{
+							"default": "(query.get_equipped_item_name('main_hand') != 'command_staff') || !query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:utahraptor'"
+						},
+						{
+							"callMode": "!query.is_jumping"
+						}
+					],
+					"on_exit": [
+						"/tellraw @s[c=1] {\"rawtext\":[{\"text\":\"Ability set to Call Mode\"}]}"
+					]
+				},
+				"callMode": {
+					"transitions": [
+						{
+							"default": "(query.get_equipped_item_name('main_hand') != 'command_staff') || !query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:utahraptor'"
+						},
+						{
+							"callToSlash": "query.is_jumping && query.is_riding"
+						},
+						{
+							"useCallMode": "query.is_using_item"
+						}
+					]
+				},
+				"useCallMode": {
+					"transitions": [
+						{
+							"callMode": "(query.get_equipped_item_name('main_hand') != 'command_staff') || !query.is_using_item"
+						}
+					],
+					"on_entry": [
+						"/tag @e[type=rift:utahraptor, c=1] add utahBuff"
+					]
+				},
+				"callToSlash": {
+					"transitions": [
+						{
+							"default": "(query.get_equipped_item_name('main_hand') != 'command_staff') || !query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:utahraptor'"
+						},
+						{
+							"slashMode": "!query.is_jumping"
+						}
+					],
+					"on_exit": [
+						"/tellraw @s[c=1] {\"rawtext\":[{\"text\":\"Ability set to Slash Mode\"}]}"
+					]
+				}
+			}
+		},
+		"controller.animation.apatosaurus_command_staff": {
+			"initial_state": "default",
+			"states": {
+				"default": {
+					"transitions": [
+						{
+							"stompMode": "query.is_riding && (query.get_ride -> query.owner_identifier) == 'rift:apatosaurus'"
+						}
+					]
+				},
+				"stompMode": {
+					"transitions": [
+						{
+							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:apatosaurus'"
+						},
+						{
+							"useStompMode": "query.get_equipped_item_name('main_hand') == 'command_staff' && query.is_using_item && (query.get_ride -> query.is_saddled)"
+						}
+					]
+				},
+				"useStompMode": {
+					"transitions": [
+						{
+							"stompMode": "query.get_equipped_item_name('main_hand') != 'command_staff' || !query.is_using_item"
+						}
+					],
+					"on_entry": [
+						"/event entity @e[type=rift:apatosaurus, c=1] rift:use_forced_stomp"
+					],
+					"on_exit": [
+						"/event entity @e[type=rift:apatosaurus, c=1] rift:stop_forced_stomp"
+					]
+				}
+			}
 		}
 	}
 }

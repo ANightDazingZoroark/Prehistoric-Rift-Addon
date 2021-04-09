@@ -5,7 +5,16 @@
             "identifier": "rift:apatosaurus",
             "is_spawnable": true,
             "is_summonable": true,
-            "is_experimental": false
+            "is_experimental": false,
+			"animations": {
+				"contApatoUseStomp": "controller.animation.apato_forced_use_stomp",
+				"animForcedAttack": "animation.forced_attack_apatosaurus"
+			},
+			"scripts": {
+				"animate": [
+					"contApatoUseStomp"
+				]
+			}
         },
         "component_groups": {
             "rift:apatosaurus_baby": {
@@ -168,6 +177,10 @@
                 "minecraft:health": {
                     "value": 50,
                     "max": 60
+                },
+				"minecraft:scale_by_age": {
+                    "start_scale": 0.35,
+                    "end_scale": 1.25
                 }
             },
             "rift:apatosaurus_adult": {
@@ -608,7 +621,6 @@
 				}
             },
             "rift:apatosaurus_harvest": {
-				"minecraft:is_sheared": {},
 				"minecraft:timer": {
 					"time": 0.52,
 					"time_down_event": {
@@ -737,10 +749,35 @@
 					"width": 2.25
 				}
 			},
+			"rift:forced_stomp": {
+				"minecraft:is_sheared": {}
+			},
+			"rift:summon_forced_stomp_entity": {
+				"minecraft:spawn_entity": {
+					"entities": {
+						"spawn_entity": "rift:apatosaurus_smash",
+						"single_use": true,
+						"min_wait_time": 0,
+						"max_wait_time": 0
+					}
+				}
+			},
 			"rift:default_collision": {
 				"minecraft:collision_box": {
 					"height": 5.75,
 					"width": 2.25
+				}
+			},
+			"rift:pushable": {
+				"minecraft:pushable": {
+					"is_pushable": true,
+					"is_pushable_by_piston": true
+				}
+			},
+			"rift:unpushable": {
+				"minecraft:pushable": {
+					"is_pushable": false,
+					"is_pushable_by_piston": false
 				}
 			}
         },
@@ -767,13 +804,12 @@
 			},
 			"minecraft:behavior.delayed_attack": {
 				"priority": 0,
-				"attack_duration": 3.12,
+				"attack_duration": 2.08,
 				"hit_delay_pct": 1,
 				"track_target": true,
 				"reach_multiplier": 3
             },
             "minecraft:is_hidden_when_invisible": {},
-			"minecraft:pushable": {},
 			"minecraft:physics": {},
 			"minecraft:nameable": {},
 			"minecraft:breathable": {
@@ -1035,7 +1071,8 @@
 										"rift:apatosaurus_adult_wild",
 										"rift:apatosaurus_adult_calm",
 										"rift:default_collision",
-										"rift:variant_one"
+										"rift:variant_one",
+										"rift:pushable"
 									]
 								}
 							},
@@ -1047,7 +1084,8 @@
 										"rift:apatosaurus_adult_wild",
 										"rift:apatosaurus_adult_calm",
 										"rift:default_collision",
-										"rift:variant_two"
+										"rift:variant_two",
+										"rift:pushable"
 									]
 								}
 							},
@@ -1059,7 +1097,8 @@
 										"rift:apatosaurus_adult_wild",
 										"rift:apatosaurus_adult_calm",
 										"rift:default_collision",
-										"rift:variant_three"
+										"rift:variant_three",
+										"rift:pushable"
 									]
 								}
 							},
@@ -1071,7 +1110,8 @@
 										"rift:apatosaurus_adult_wild",
 										"rift:apatosaurus_adult_calm",
 										"rift:default_collision",
-										"rift:variant_four"
+										"rift:variant_four",
+										"rift:pushable"
 									]
 								}
 							}
@@ -1089,7 +1129,8 @@
                                         "rift:apatosaurus_baby_wild_untameable",
 										"rift:apatosaurus_baby_calm",
 										"rift:default_collision",
-										"rift:variant_one"
+										"rift:variant_one",
+										"rift:pushable"
 									]
 								}
 							},
@@ -1102,7 +1143,8 @@
                                         "rift:apatosaurus_baby_wild_untameable",
 										"rift:apatosaurus_baby_calm",
 										"rift:default_collision",
-										"rift:variant_two"
+										"rift:variant_two",
+										"rift:pushable"
 									]
 								}
 							},
@@ -1115,7 +1157,8 @@
                                         "rift:apatosaurus_baby_wild_untameable",
 										"rift:apatosaurus_baby_calm",
 										"rift:default_collision",
-										"rift:variant_three"
+										"rift:variant_three",
+										"rift:pushable"
 									]
 								}
 							},
@@ -1128,7 +1171,8 @@
                                         "rift:apatosaurus_baby_wild_untameable",
 										"rift:apatosaurus_baby_calm",
 										"rift:default_collision",
-										"rift:variant_four"
+										"rift:variant_four",
+										"rift:pushable"
 									]
 								}
 							}
@@ -1142,7 +1186,8 @@
 						"rift:apatosaurus_baby",
 						"rift:apatosaurus_baby_tamed",
 						"rift:apatosaurus_tamed",
-						"rift:apatosaurus_sittable"
+						"rift:apatosaurus_sittable",
+						"rift:pushable"
 					]
 				}
             },
@@ -1325,17 +1370,29 @@
 				}
 			},
             "rift:cannot_sit": {
+				"add": {
+					"component_groups": [
+						"rift:unpushable"
+					]
+				},
                 "remove": {
                     "component_groups": [
-                        "rift:apatosaurus_sittable"
+                        "rift:apatosaurus_sittable",
+						"rift:pushable"
                     ]
                 }
             },
             "rift:can_sit": {
                 "add": {
                     "component_groups": [
-                        "rift:apatosaurus_sittable"
+                        "rift:apatosaurus_sittable",
+						"rift:pushable"
                     ]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:unpushable"
+					]
 				},
 				"run_command": {
 					"command": [
@@ -1354,7 +1411,8 @@
                                 "rift:apatosaurus_baby_wild_tameable",
 								"rift:apatosaurus_baby_calm",
 								"rift:default_collision",
-                                "rift:variant_one"
+                                "rift:variant_one",
+								"rift:pushable"
                             ]
                         }
                     },
@@ -1367,7 +1425,8 @@
                                 "rift:apatosaurus_baby_wild_tameable",
 								"rift:apatosaurus_baby_calm",
 								"rift:default_collision",
-                                "rift:variant_two"
+                                "rift:variant_two",
+								"rift:pushable"
                             ]
                         }
                     },
@@ -1380,7 +1439,8 @@
                                 "rift:apatosaurus_baby_wild_tameable",
 								"rift:apatosaurus_baby_calm",
 								"rift:default_collision",
-                                "rift:variant_three"
+                                "rift:variant_three",
+								"rift:pushable"
                             ]
                         }
                     },
@@ -1393,7 +1453,8 @@
                                 "rift:apatosaurus_baby_wild_tameable",
 								"rift:apatosaurus_baby_calm",
 								"rift:default_collision",
-                                "rift:variant_four"
+                                "rift:variant_four",
+								"rift:pushable"
                             ]
                         }
                     }
@@ -1419,6 +1480,34 @@
 						"scoreboard players add @s[scores={apatoCannonballs=!24}] apatoCannonballs 1",
 						"execute @s[scores={apatoCannonballs=24}] ~ ~ ~ tellraw @a[c=1] {\"rawtext\":[{\"text\":\"Maximum amount of cannonballs that can be stored is 24\"}]}",
 						"execute @s[scores={apatoCannonballs=!24}] ~ ~ ~ playsound armor.equip_iron @p"
+					]
+				}
+			},
+			"rift:use_forced_stomp": {
+				"add": {
+					"component_groups": [
+						"rift:forced_stomp"
+					]
+				}
+			},
+			"rift:stop_forced_stomp": {
+				"remove": {
+					"component_groups": [
+						"rift:forced_stomp"
+					]
+				}
+			},
+			"rift:on_summon_forced_stomp_entity": {
+				"add": {
+					"component_groups": [
+						"rift:summon_forced_stomp_entity"
+					]
+				}
+			},
+			"rift:no_summon_forced_stomp_entity": {
+				"remove": {
+					"component_groups": [
+						"rift:summon_forced_stomp_entity"
 					]
 				}
 			}

@@ -8,12 +8,15 @@
 			"is_experimental": false,
 			"animations": {
 				"contPackBuff": "controller.animation.wild_utahraptor_pack_buff",
-				"contWildRemoveBuffs": "controller.animation.wild_utahraptor_remove_buffs"
+				"contWildRemoveBuffs": "controller.animation.wild_utahraptor_remove_buffs",
+				"contUtahUseSlash": "controller.animation.utah_forced_use_slash",
+				"animForcedAttack": "animation.forced_attack_utahraptor"
 			},
 			"scripts": {
 				"animate": [
 					"contPackBuff",
-					"contWildRemoveBuffs"
+					"contWildRemoveBuffs",
+					"contUtahUseSlash"
 				]
 			}
         },
@@ -247,6 +250,7 @@
 					"avoid_damage_blocks": true
 				},
 				"minecraft:behavior.avoid_mob_type": {
+					"priority": 1,
 					"entity_types": [
 					  {
 						"filters": {
@@ -542,15 +546,26 @@
 				"minecraft:behavior.stay_while_sitting": {}
             }, 
 			"rift:utahraptor_saddled": {
+				"minecraft:is_saddled": {},
+				"minecraft:input_ground_controlled": {}
+			},
+			"rift:utahraptor_can_jump": {
+				"minecraft:can_power_jump": {},
 				"minecraft:horse.jump_strength": {
 					"value": {
 						"range_min": 1.2,
 						"range_max": 1.6
 					}
-				},
+				}
+			},
+			"rift:utahraptor_cannot_jump": {
 				"minecraft:can_power_jump": {},
-				"minecraft:is_saddled": {},
-				"minecraft:input_ground_controlled": {}
+				"minecraft:horse.jump_strength": {
+					"value": {
+						"range_min": 0,
+						"range_max": 0
+					}
+				}
 			},
 			"rift:utahraptor_chested": {
 				"minecraft:is_chested": {}
@@ -630,6 +645,21 @@
 					}
 				}
             },
+			"rift:forced_slash": {
+				"minecraft:is_sheared": {}
+			},
+			"rift:summon_forced_slash_entity": {
+				"minecraft:spawn_entity": {
+					"entities": [
+						{
+							"spawn_entity": "rift:utahraptor_slash",
+							"single_use": true,
+							"min_wait_time": 0,
+							"max_wait_time": 0
+						}
+					]
+				}
+			},
 			"rift:variant_zero": {
 				"minecraft:variant": {
 					"value": 0
@@ -670,16 +700,18 @@
 					]
 				}
 			},
-			"rift:utahraptor_buffing": {
-				"minecraft:timer": {
-					"time": 1.5,
-					"time_down_event": {
-						"event": "rift:stop_buffing",
-						"target": "self"
-					}
-				},
-				"minecraft:is_sheared": {}
-            }
+			"rift:pushable": {
+				"minecraft:pushable": {
+					"is_pushable": true,
+					"is_pushable_by_piston": true
+				}
+			},
+			"rift:unpushable": {
+				"minecraft:pushable": {
+					"is_pushable": false,
+					"is_pushable_by_piston": false
+				}
+			}
         },
         "components": {
 			"minecraft:type_family": {
@@ -690,8 +722,12 @@
 					"dinosaur"
 				]
 			},
-			"minecraft:behavior.melee_attack": {
-				"priority": 3
+			"minecraft:behavior.delayed_attack": {
+				"priority": 3,
+				"attack_duration": 0.71,
+				"hit_delay_pct": 1,
+				"track_target": true,
+				"reach_multiplier": 2.5
 			},
 			"minecraft:can_climb": {},
 			"minecraft:scaffolding_climber": {},
@@ -702,11 +738,7 @@
 				"value": 0.35
 			},
 			"minecraft:jump.static": {},
-			"minecraft:is_hidden_when_invisible": {},
-			"minecraft:pushable": {
-				"is_pushable": true,
-				"is_pushable_by_piston": true
-            },        
+			"minecraft:is_hidden_when_invisible": {},      
 			"minecraft:physics": {
 				"has_collision": true,
 				"has_gravity": true
@@ -1205,7 +1237,8 @@
 								"rift:utahraptor_adult_wild",
 								"rift:variant_zero",
                                 "rift:utahraptor_adult_wild_not_trusting",
-								"rift:utahraptor_adult_can_pounce"
+								"rift:utahraptor_adult_can_pounce",
+								"rift:pushable"
 							]
 						}
 					},
@@ -1217,7 +1250,8 @@
 								"rift:utahraptor_adult_wild",
 								"rift:variant_one",
                                 "rift:utahraptor_adult_wild_not_trusting",
-								"rift:utahraptor_adult_can_pounce"
+								"rift:utahraptor_adult_can_pounce",
+								"rift:pushable"
 							]
 						}
 					},
@@ -1229,7 +1263,8 @@
 								"rift:utahraptor_adult_wild",
 								"rift:variant_two",
                                 "rift:utahraptor_adult_wild_not_trusting",
-								"rift:utahraptor_adult_can_pounce"
+								"rift:utahraptor_adult_can_pounce",
+								"rift:pushable"
 							]
 						}
 					},
@@ -1241,7 +1276,8 @@
 								"rift:utahraptor_adult_wild",
 								"rift:variant_three",
                                 "rift:utahraptor_adult_wild_not_trusting",
-								"rift:utahraptor_adult_can_pounce"
+								"rift:utahraptor_adult_can_pounce",
+								"rift:pushable"
 							]
 						}
 					}
@@ -1340,7 +1376,8 @@
 					"component_groups": [
 						"rift:utahraptor_baby",
 						"rift:utahraptor_baby_tamed",
-						"rift:utahraptor_sittable"
+						"rift:utahraptor_sittable",
+						"rift:pushable"
 					]
 				}
             },
@@ -1435,14 +1472,16 @@
 			"rift:attach_saddle": {
 				"add": {
 					"component_groups": [
-						"rift:utahraptor_saddled"
+						"rift:utahraptor_saddled",
+						"rift:utahraptor_can_jump"
 					]
 				}
 			},
 			"rift:remove_saddle": {
 				"remove": {
 					"component_groups": [
-						"rift:utahraptor_saddled"
+						"rift:utahraptor_saddled",
+						"rift:utahraptor_can_jump"
 					]
 				}
             },
@@ -1454,16 +1493,28 @@
 				}
 			},
 			"rift:cannot_sit": {
+				"add": {
+					"component_groups": [
+						"rift:unpushable"
+					]
+				},
 				"remove": {
 					"component_groups": [
-						"rift:utahraptor_sittable"
+						"rift:utahraptor_sittable",
+						"rift:pushable"
 					]
 				}
 			},
 			"rift:can_sit": {
 				"add": {
 					"component_groups": [
-						"rift:utahraptor_sittable"
+						"rift:utahraptor_sittable",
+						"rift:pushable"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:pushable"
 					]
 				}
 			},
@@ -1512,7 +1563,8 @@
 							"component_groups": [
 								"rift:utahraptor_baby",
 								"rift:utahraptor_baby_wild",
-								"rift:variant_zero"
+								"rift:variant_zero",
+								"rift:pushable"
 							]
 						}
 					},
@@ -1522,7 +1574,8 @@
 							"component_groups": [
 								"rift:utahraptor_baby",
 								"rift:utahraptor_baby_wild",
-								"rift:variant_one"
+								"rift:variant_one",
+								"rift:pushable"
 							]
 						}
 					},
@@ -1532,7 +1585,8 @@
 							"component_groups": [
 								"rift:utahraptor_baby",
 								"rift:utahraptor_baby_wild",
-								"rift:variant_two"
+								"rift:variant_two",
+								"rift:pushable"
 							]
 						}
 					},
@@ -1542,7 +1596,8 @@
 							"component_groups": [
 								"rift:utahraptor_baby",
 								"rift:utahraptor_baby_wild",
-								"rift:variant_three"
+								"rift:variant_three",
+								"rift:pushable"
 							]
 						}
 					}
@@ -1615,6 +1670,58 @@
 				"run_command": {
 					"command": [
 						"ride @s evict_riders"
+					]
+				}
+			},
+			"rift:disable_jump": {
+				"add": {
+					"component_groups": [
+						"rift:utahraptor_cannot_jump"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:utahraptor_can_jump"
+					]
+				}
+			},
+			"rift:enable_jump": {
+				"add": {
+					"component_groups": [
+						"rift:utahraptor_can_jump"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:utahraptor_cannot_jump"
+					]
+				}
+			},
+			"rift:use_forced_slash": {
+				"add": {
+					"component_groups": [
+						"rift:forced_slash"
+					]
+				}
+			},
+			"rift:stop_forced_slash": {
+				"remove": {
+					"component_groups": [
+						"rift:forced_slash"
+					]
+				}
+			},
+			"rift:on_summon_forced_slash_entity": {
+				"add": {
+					"component_groups": [
+						"rift:summon_forced_slash_entity"
+					]
+				}
+			},
+			"rift:no_summon_forced_slash_entity": {
+				"remove": {
+					"component_groups": [
+						"rift:summon_forced_slash_entity"
 					]
 				}
 			}
