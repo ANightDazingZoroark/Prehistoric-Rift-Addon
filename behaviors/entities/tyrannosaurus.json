@@ -506,6 +506,18 @@
 			"rift:forced_bite": {
 				"minecraft:is_charged": {}
 			},
+			"rift:summon_forced_bite_entity": {
+				"minecraft:spawn_entity": {
+					"entities": [
+						{
+							"spawn_entity": "rift:tyrannosaurus_bite",
+							"single_use": true,
+							"min_wait_time": 0,
+							"max_wait_time": 0
+						}
+					]
+				}
+			},
 			"rift:tyrannosaurus_sittable": {
 				"minecraft:sittable": {},
 				"minecraft:behavior.stay_while_sitting": {}
@@ -1096,13 +1108,7 @@
 			"rift:tyrannosaurus_roar": {
 				"add": {
 					"component_groups": [
-						"rift:roaring",
-						"rift:unpushable"
-					]
-				},
-				"remove": {
-					"component_groups": [
-						"rift:pushable"
+						"rift:roaring"
 					]
 				},
 				"run_command": {
@@ -1114,8 +1120,7 @@
 			"rift:start_roaring_cooldown": {
 				"add": {
 					"component_groups": [
-						"rift:roaring_cooldown",
-						"rift:pushable"
+						"rift:roaring_cooldown"
 					]
 				},
 				"remove": {
@@ -1145,16 +1150,28 @@
 				}
 			},
 			"rift:cannot_sit": {
+				"add": {
+					"component_groups": [
+						"rift:unpushable"
+					]
+				},
 				"remove": {
 					"component_groups": [
-						"rift:tyrannosaurus_sittable"
+						"rift:tyrannosaurus_sittable",
+						"rift:pushable"
 					]
 				}
 			},
 			"rift:can_sit": {
 				"add": {
 					"component_groups": [
-						"rift:tyrannosaurus_sittable"
+						"rift:tyrannosaurus_sittable",
+						"rift:pushable"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:unpushable"
 					]
 				}
 			},
@@ -1238,6 +1255,20 @@
 				"remove": {
 					"component_groups": [
 						"rift:forced_bite"
+					]
+				}
+			},
+			"rift:on_summon_forced_bite_entity": {
+				"add": {
+					"component_groups": [
+						"rift:summon_forced_bite_entity"
+					]
+				}
+			},
+			"rift:no_summon_forced_bite_entity": {
+				"remove": {
+					"component_groups": [
+						"rift:summon_forced_bite_entity"
 					]
 				}
 			}

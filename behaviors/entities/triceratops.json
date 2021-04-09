@@ -5,7 +5,16 @@
 			"identifier": "rift:triceratops",
 			"is_spawnable": true,
 			"is_summonable": true,
-			"is_experimental": false
+			"is_experimental": false,
+			"animations": {
+				"contTrikeUseStab": "controller.animation.trike_forced_use_stab",
+				"animForcedAttack": "animation.forced_attack_triceratops"
+			},
+			"scripts": {
+				"animate": [
+					"contTrikeUseStab"
+				]
+			}
 		},
 		"component_groups": {
 			"rift:triceratops_baby": {
@@ -424,7 +433,14 @@
 			},
 			"rift:triceratops_saddled": {
 				"minecraft:is_saddled": {},
-				"minecraft:input_ground_controlled": {}
+				"minecraft:input_ground_controlled": {},
+				"minecraft:can_power_jump": {},
+				"minecraft:horse.jump_strength": {
+					"value": {
+						"range_min": 0,
+						"range_max": 0
+					}
+				}
 			},
 			"rift:triceratops_chested": {
 				"minecraft:is_chested": {}
@@ -472,9 +488,19 @@
 					"damage_per_tick": 20,
 					"cause": "entity_attack",
 					"entity_filter": {
-						"test": "is_owner",
-						"subject": "other",
-						"operator": "!="
+						"all_of": [
+							{
+								"test": "is_owner",
+								"subject": "other",
+								"operator": "!="
+							},
+							{
+								"test": "has_component",
+								"subject": "other",
+								"operator": "!=",
+								"value": "minecraft:is_tamed"
+							}
+						]
 					}
 				},
 				"minecraft:timer": {
@@ -575,6 +601,33 @@
 						"target": "self"
 					}
 				}
+			},
+			"rift:forced_stab": {
+				"minecraft:is_ignited": {}
+			},
+			"rift:summon_forced_stab_entity": {
+				"minecraft:spawn_entity": {
+					"entities": [
+						{
+							"spawn_entity": "rift:triceratops_stab",
+							"single_use": true,
+							"min_wait_time": 0,
+							"max_wait_time": 0
+						}
+					]
+				}
+			},
+			"rift:pushable": {
+				"minecraft:pushable": {
+					"is_pushable": true,
+					"is_pushable_by_piston": true
+				}
+			},
+			"rift:unpushable": {
+				"minecraft:pushable": {
+					"is_pushable": false,
+					"is_pushable_by_piston": false
+				}
 			}
 		},
 		"components": {
@@ -598,10 +651,6 @@
 			"minecraft:physics": {
 				"has_collision": true,
 				"has_gravity": true
-			},
-			"minecraft:pushable": {
-				"is_pushable": true,
-				"is_pushable_by_piston": true
 			},
 			"minecraft:breathable": {
 				"total_supply": 15,
@@ -986,7 +1035,8 @@
 										"rift:triceratops_adult",
 										"rift:triceratops_adult_wild",
 										"rift:triceratops_adult_calm",
-										"rift:variant_zero"
+										"rift:variant_zero",
+										"rift:pushable"
 									]
 								}
 							},
@@ -997,7 +1047,8 @@
 										"rift:triceratops_adult",
 										"rift:triceratops_adult_wild",
 										"rift:triceratops_adult_calm",
-										"rift:variant_one"
+										"rift:variant_one",
+										"rift:pushable"
 									]
 								}
 							},
@@ -1008,7 +1059,8 @@
 										"rift:triceratops_adult",
 										"rift:triceratops_adult_wild",
 										"rift:triceratops_adult_calm",
-										"rift:variant_two"
+										"rift:variant_two",
+										"rift:pushable"
 									]
 								}
 							},
@@ -1019,7 +1071,8 @@
 										"rift:triceratops_adult",
 										"rift:triceratops_adult_wild",
 										"rift:triceratops_adult_calm",
-										"rift:variant_three"
+										"rift:variant_three",
+										"rift:pushable"
 									]
 								}
 							}
@@ -1035,7 +1088,8 @@
 										"rift:triceratops_baby",
 										"rift:triceratops_baby_wild",
 										"rift:triceratops_baby_calm",
-										"rift:variant_zero"
+										"rift:variant_zero",
+										"rift:pushable"
 									]
 								}
 							},
@@ -1046,7 +1100,8 @@
 										"rift:triceratops_baby",
 										"rift:triceratops_baby_wild",
 										"rift:triceratops_baby_calm",
-										"rift:variant_one"
+										"rift:variant_one",
+										"rift:pushable"
 									]
 								}
 							},
@@ -1057,7 +1112,8 @@
 										"rift:triceratops_baby",
 										"rift:triceratops_baby_wild",
 										"rift:triceratops_baby_calm",
-										"rift:variant_two"
+										"rift:variant_two",
+										"rift:pushable"
 									]
 								}
 							},
@@ -1068,7 +1124,8 @@
 										"rift:triceratops_baby",
 										"rift:triceratops_baby_wild",
 										"rift:triceratops_baby_calm",
-										"rift:variant_three"
+										"rift:variant_three",
+										"rift:pushable"
 									]
 								}
 							}
@@ -1081,7 +1138,8 @@
 					"component_groups": [
 						"rift:triceratops_baby",
 						"rift:triceratops_baby_tamed",
-						"rift:triceratops_tamed"
+						"rift:triceratops_tamed",
+						"rift:pushable"
 					]
 				}
 			},
@@ -1289,16 +1347,28 @@
 				}
 			},
 			"rift:cannot_sit": {
+				"add": {
+					"component_groups": [
+						"rift:unpushable"
+					]
+				},
 				"remove": {
 					"component_groups": [
-						"rift:triceratops_sittable"
+						"rift:triceratops_sittable",
+						"rift:pushable"
 					]
 				}
 			},
 			"rift:can_sit": {
 				"add": {
 					"component_groups": [
-						"rift:triceratops_sittable"
+						"rift:triceratops_sittable",
+						"rift:pushable"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:unpushable"
 					]
 				}
 			},
@@ -1318,7 +1388,8 @@
 								"rift:triceratops_baby",
 								"rift:triceratops_baby_wild",
 								"rift:triceratops_baby_calm",
-								"rift:variant_zero"
+								"rift:variant_zero",
+								"rift:pushable"
 							]
 						}
 					},
@@ -1329,7 +1400,8 @@
 								"rift:triceratops_baby",
 								"rift:triceratops_baby_wild",
 								"rift:triceratops_baby_calm",
-								"rift:variant_one"
+								"rift:variant_one",
+								"rift:pushable"
 							]
 						}
 					},
@@ -1340,7 +1412,8 @@
 								"rift:triceratops_baby",
 								"rift:triceratops_baby_wild",
 								"rift:triceratops_baby_calm",
-								"rift:variant_two"
+								"rift:variant_two",
+								"rift:pushable"
 							]
 						}
 					},
@@ -1351,7 +1424,8 @@
 								"rift:triceratops_baby",
 								"rift:triceratops_baby_wild",
 								"rift:triceratops_baby_calm",
-								"rift:variant_three"
+								"rift:variant_three",
+								"rift:pushable"
 							]
 						}
 					}
@@ -1383,6 +1457,34 @@
 				"run_command": {
 					"command": [
 						"ride @s evict_riders"
+					]
+				}
+			},
+			"rift:use_forced_stab": {
+				"add": {
+					"component_groups": [
+						"rift:forced_stab"
+					]
+				}
+			},
+			"rift:stop_forced_stab": {
+				"remove": {
+					"component_groups": [
+						"rift:forced_stab"
+					]
+				}
+			},
+			"rift:on_summon_forced_stab_entity": {
+				"add": {
+					"component_groups": [
+						"rift:summon_forced_stab_entity"
+					]
+				}
+			},
+			"rift:no_summon_forced_stab_entity": {
+				"remove": {
+					"component_groups": [
+						"rift:summon_forced_stab_entity"
 					]
 				}
 			}

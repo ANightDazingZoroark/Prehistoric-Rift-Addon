@@ -5,7 +5,16 @@
 			"identifier": "rift:stegosaurus",
 			"is_summonable": true,
 			"is_spawnable": true,
-			"is_experimental": false
+			"is_experimental": false,
+			"animations": {
+				"contStegoUseStab": "controller.animation.stego_forced_use_stab",
+				"animForcedAttack": "animation.forced_attack_stegosaurus"
+			},
+			"scripts": {
+				"animate": [
+					"contStegoUseStab"
+				]
+			}
 		},
 		"component_groups": {
 			"rift:stegosaurus_baby": {
@@ -387,6 +396,21 @@
 					]
 				}
 			},
+			"rift:forced_stab": {
+				"minecraft:is_charged": {}
+			},
+			"rift:summon_forced_stab_entity": {
+				"minecraft:spawn_entity": {
+					"entities": [
+						{
+							"spawn_entity": "rift:stegosaurus_stab",
+							"single_use": true,
+							"min_wait_time": 0,
+							"max_wait_time": 0
+						}
+					]
+				}
+			},
 			"rift:variant_zero": {
 				"minecraft:variant": {
 					"value": 0
@@ -410,6 +434,18 @@
 			"rift:stegosaurus_sittable": {
 				"minecraft:sittable": {},
 				"minecraft:behavior.stay_while_sitting": {}
+			},
+			"rift:pushable": {
+				"minecraft:pushable": {
+					"is_pushable": true,
+					"is_pushable_by_piston": true
+				}
+			},
+			"rift:unpushable": {
+				"minecraft:pushable": {
+					"is_pushable": false,
+					"is_pushable_by_piston": false
+				}
 			}
 		},
 		"components": {
@@ -437,7 +473,6 @@
 				"reach_multiplier": 3
 			},
 			"minecraft:is_hidden_when_invisible": {},
-			"minecraft:pushable": {},
 			"minecraft:physics": {},
 			"minecraft:nameable": {},
 			"minecraft:collision_box": {
@@ -592,7 +627,8 @@
 										"rift:stegosaurus_adult",
 										"rift:stegosaurus_adult_wild",
 										"rift:stegosaurus_adult_calm",
-										"rift:variant_zero"
+										"rift:variant_zero",
+										"rift:pushable"
 									]
 								}
 							},
@@ -603,7 +639,8 @@
 										"rift:stegosaurus_adult",
 										"rift:stegosaurus_adult_wild",
 										"rift:stegosaurus_adult_calm",
-										"rift:variant_one"
+										"rift:variant_one",
+										"rift:pushable"
 									]
 								}
 							},
@@ -614,7 +651,8 @@
 										"rift:stegosaurus_adult",
 										"rift:stegosaurus_adult_wild",
 										"rift:stegosaurus_adult_calm",
-										"rift:variant_two"
+										"rift:variant_two",
+										"rift:pushable"
 									]
 								}
 							},
@@ -625,7 +663,8 @@
 										"rift:stegosaurus_adult",
 										"rift:stegosaurus_adult_wild",
 										"rift:stegosaurus_adult_calm",
-										"rift:variant_three"
+										"rift:variant_three",
+										"rift:pushable"
 									]
 								}
 							}
@@ -641,7 +680,8 @@
 										"rift:stegosaurus_baby",
 										"rift:stegosaurus_baby_wild",
 										"rift:stegosaurus_baby_calm",
-										"rift:variant_zero"
+										"rift:variant_zero",
+										"rift:pushable"
 									]
 								}
 							},
@@ -652,7 +692,8 @@
 										"rift:stegosaurus_baby",
 										"rift:stegosaurus_baby_wild",
 										"rift:stegosaurus_baby_calm",
-										"rift:variant_one"
+										"rift:variant_one",
+										"rift:pushable"
 									]
 								}
 							},
@@ -663,7 +704,8 @@
 										"rift:stegosaurus_baby",
 										"rift:stegosaurus_baby_wild",
 										"rift:stegosaurus_baby_calm",
-										"rift:variant_two"
+										"rift:variant_two",
+										"rift:pushable"
 									]
 								}
 							},
@@ -674,7 +716,8 @@
 										"rift:stegosaurus_baby",
 										"rift:stegosaurus_baby_wild",
 										"rift:stegosaurus_baby_calm",
-										"rift:variant_three"
+										"rift:variant_three",
+										"rift:pushable"
 									]
 								}
 							}
@@ -688,7 +731,8 @@
 						"rift:stegosaurus_baby",
 						"rift:stegosaurus_baby_tamed",
 						"rift:stegosaurus_tamed",
-						"rift:stegosaurus_sittable"
+						"rift:stegosaurus_sittable",
+						"rift:pushable"
 					]
 				}
 			},
@@ -845,7 +889,8 @@
 								"rift:stegosaurus_baby",
 								"rift:stegosaurus_baby_wild",
 								"rift:stegosaurus_baby_calm",
-								"rift:variant_zero"
+								"rift:variant_zero",
+								"rift:pushable"
 							]
 						}
 					},
@@ -856,7 +901,8 @@
 								"rift:stegosaurus_baby",
 								"rift:stegosaurus_baby_wild",
 								"rift:stegosaurus_baby_calm",
-								"rift:variant_one"
+								"rift:variant_one",
+								"rift:pushable"
 							]
 						}
 					},
@@ -867,7 +913,8 @@
 								"rift:stegosaurus_baby",
 								"rift:stegosaurus_baby_wild",
 								"rift:stegosaurus_baby_calm",
-								"rift:variant_two"
+								"rift:variant_two",
+								"rift:pushable"
 							]
 						}
 					},
@@ -878,23 +925,36 @@
 								"rift:stegosaurus_baby",
 								"rift:stegosaurus_baby_wild",
 								"rift:stegosaurus_baby_calm",
-								"rift:variant_three"
+								"rift:variant_three",
+								"rift:pushable"
 							]
 						}
 					}
 				]
 			},
 			"rift:cannot_sit": {
+				"add": {
+					"component_groups": [
+						"rift:unpushable"
+					]
+				},
 				"remove": {
 					"component_groups": [
-						"rift:stegosaurus_sittable"
+						"rift:stegosaurus_sittable",
+						"rift:pushable"
 					]
 				}
 			},
 			"rift:can_sit": {
 				"add": {
 					"component_groups": [
-						"rift:stegosaurus_sittable"
+						"rift:stegosaurus_sittable",
+						"rift:pushable"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:unpushable"
 					]
 				}
 			},
@@ -903,6 +963,34 @@
 					"command": [
 						"function cmd.stego_harvest",
 						"playanimation @s animation.stegosaurus.harvesting"
+					]
+				}
+			},
+			"rift:use_forced_stab": {
+				"add": {
+					"component_groups": [
+						"rift:forced_stab"
+					]
+				}
+			},
+			"rift:stop_forced_stab": {
+				"remove": {
+					"component_groups": [
+						"rift:forced_stab"
+					]
+				}
+			},
+			"rift:on_summon_forced_stab_entity": {
+				"add": {
+					"component_groups": [
+						"rift:summon_forced_stab_entity"
+					]
+				}
+			},
+			"rift:no_summon_forced_stab_entity": {
+				"remove": {
+					"component_groups": [
+						"rift:summon_forced_stab_entity"
 					]
 				}
 			}

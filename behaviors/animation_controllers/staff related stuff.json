@@ -154,6 +154,131 @@
 					]
 				}
 			}
+		},
+		"controller.animation.stegosaurus_command_staff": {
+			"initial_state": "default",
+			"states": {
+				"default": {
+					"transitions": [
+						{
+							"stabMode": "query.is_riding && (query.get_ride -> query.owner_identifier) == 'rift:stegosaurus'"
+						}
+					]
+				},
+				"stabMode": {
+					"transitions": [
+						{
+							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:stegosaurus'"
+						},
+						{
+							"useStabMode": "query.get_equipped_item_name('main_hand') == 'command_staff' && query.is_using_item && (query.get_ride -> query.is_saddled)"
+						}
+					]
+				},
+				"useStabMode": {
+					"transitions": [
+						{
+							"stabMode": "query.get_equipped_item_name('main_hand') != 'command_staff' || !query.is_using_item"
+						}
+					],
+					"on_entry": [
+						"/event entity @e[type=rift:stegosaurus, c=1] rift:use_forced_stab"
+					],
+					"on_exit": [
+						"/event entity @e[type=rift:stegosaurus, c=1] rift:stop_forced_stab"
+					]
+				}
+			}
+		},
+		"controller.animation.triceratops_command_staff": {
+			"initial_state": "default",
+			"states": {
+				"default": {
+					"transitions": [
+						{
+							"stabMode": "query.is_riding && (query.get_ride -> query.owner_identifier) == 'rift:triceratops'"
+						}
+					],
+					"on_exit": [
+						"/tellraw @s[c=1] {\"rawtext\":[{\"text\":\"Ability set to Stab Mode\"}]}"
+					]
+				},
+				"stabMode": {
+					"transitions": [
+						{
+							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:triceratops'"
+						},
+						{
+							"stabToCharge": "query.is_jumping && query.is_riding"
+						},
+						{
+							"useStabMode": "query.get_equipped_item_name('main_hand') == 'command_staff' && query.is_using_item && (query.get_ride -> query.is_saddled)"
+						}
+					]
+				},
+				"useStabMode": {
+					"transitions": [
+						{
+							"stabMode": "query.get_equipped_item_name('main_hand') != 'command_staff' || !query.is_using_item"
+						}
+					],
+					"on_entry": [
+						"/event entity @e[type=rift:triceratops, c=1] rift:use_forced_stab"
+					],
+					"on_exit": [
+						"/event entity @e[type=rift:triceratops, c=1] rift:stop_forced_stab"
+					]
+				},
+				"stabToCharge": {
+					"transitions": [
+						{
+							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:triceratops'"
+						},
+						{
+							"chargeMode": "!query.is_jumping"
+						}
+					],
+					"on_exit": [
+						"/tellraw @s[c=1] {\"rawtext\":[{\"text\":\"Ability set to Charge Mode\"}]}"
+					]
+				},
+				"chargeMode": {
+					"transitions": [
+						{
+							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:triceratops'"
+						},
+						{
+							"chargeToStab": "query.is_jumping && query.is_riding"
+						},
+						{
+							"useChargeMode": "query.get_equipped_item_name('main_hand') == 'command_staff' && query.is_using_item"
+						}
+					]
+				},
+				"useChargeMode": {
+					"transitions": [
+						{
+							"chargeMode": "query.get_equipped_item_name('main_hand') != 'command_staff' || !query.is_using_item"
+						}
+					],
+					"on_entry": [
+						"/tag @e[type=rift:triceratops, c=1] add trikeCharge"
+					]
+				},
+				"chargeToStab": {
+					"transitions": [
+						{
+							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:triceratops'"
+						},
+						{
+							"stabMode": "!query.is_jumping"
+						}
+					],
+					"on_exit": [
+						"/tellraw @s[c=1] {\"rawtext\":[{\"text\":\"Ability set to Stab Mode\"}]}"
+					]
+				}
+			}
 		}
 	}
 }
