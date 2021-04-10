@@ -408,6 +408,93 @@
 					]
 				}
 			}
+		},
+		"controller.animation.parasaurolophus_command_staff": {
+			"initial_state": "default",
+			"states": {
+				"default": {
+					"transitions": [
+						{
+							"scareMode": "query.is_riding && (query.get_ride -> query.owner_identifier) == 'rift:parasaurolophus'"
+						}
+					],
+					"on_exit": [
+						"/tellraw @s[c=1] {\"rawtext\":[{\"text\":\"Ability set to Scare Mode\"}]}"
+					]
+				},
+				"scareMode": {
+					"transitions": [
+						{
+							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:parasaurolophus'"
+						},
+						{
+							"scareToAggravate": "query.is_jumping && query.is_riding"
+						},
+						{
+							"useScareMode": "query.get_equipped_item_name('main_hand') == 'command_staff' && query.is_using_item && (query.get_ride -> query.is_saddled)"
+						}
+					]
+				},
+				"useScareMode": {
+					"transitions": [
+						{
+							"scareMode": "query.get_equipped_item_name('main_hand') != 'command_staff' || !query.is_using_item"
+						}
+					],
+					"on_entry": [
+						"/tag @e[type=rift:parasaurolophus, c=1] add parasaurCallScare"
+					]
+				},
+				"scareToAggravate": {
+					"transitions": [
+						{
+							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:parasaurolophus'"
+						},
+						{
+							"aggravateMode": "!query.is_jumping"
+						}
+					],
+					"on_exit": [
+						"/tellraw @s[c=1] {\"rawtext\":[{\"text\":\"Ability set to Aggravate Mode\"}]}"
+					]
+				},
+				"aggravateMode": {
+					"transitions": [
+						{
+							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:parasaurolophus'"
+						},
+						{
+							"aggravateToScare": "query.is_jumping && query.is_riding"
+						},
+						{
+							"useAggravateMode": "query.get_equipped_item_name('main_hand') == 'command_staff' && query.is_using_item"
+						}
+					]
+				},
+				"useAggravateMode": {
+					"transitions": [
+						{
+							"aggravateMode": "query.get_equipped_item_name('main_hand') != 'command_staff' || !query.is_using_item"
+						}
+					],
+					"on_entry": [
+						"/tag @e[type=rift:parasaurolophus, c=1] add parasaurCallAggravate"
+					]
+				},
+				"aggravateToScare": {
+					"transitions": [
+						{
+							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:parasaurolophus'"
+						},
+						{
+							"biteMode": "!query.is_jumping"
+						}
+					],
+					"on_exit": [
+						"/tellraw @s[c=1] {\"rawtext\":[{\"text\":\"Ability set to Scare Mode\"}]}"
+					]
+				}
+			}
 		}
 	}
 }
