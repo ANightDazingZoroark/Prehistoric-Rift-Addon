@@ -1088,6 +1088,55 @@
 							"event": "rift:forced_neutral_mode"
 						},
 						"use_item": true
+					},
+					{
+						"on_interact": {
+							"filters": {
+								"all_of": [
+									{
+										"any_of": [
+											{
+												"test": "has_equipment",
+												"subject": "other",
+												"domain": "hand",
+												"value": "minecraft:potion:23"
+											},
+											{
+												"test": "has_equipment",
+												"subject": "other",
+												"domain": "hand",
+												"value": "minecraft:potion:24"
+											}
+										]
+									},
+									{
+										"test": "is_owner",
+										"subject": "other",
+										"value": true
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_baby",
+										"operator": "!="
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_tamed"
+									},
+									{
+										"test": "is_sneaking",
+										"subject": "other",
+										"value": true
+									}
+								]
+							},
+							"event": "rift:commit_suicide",
+							"target": "self"
+						},
+						"use_item": true,
+						"transform_to_item": "minecraft:glass_bottle"
 					}
 				]
             },
@@ -1102,7 +1151,26 @@
 							}
 						},
 						"damage_multiplier": 5
-					}				
+					},
+					{
+						"on_damage": {
+							"filters": {
+								"all_of": [
+									{
+										"test": "is_owner",
+										"subject": "other",
+										"value": true
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_tamed"
+									}
+								]
+							}
+						},
+						"deals_damage": false
+					}
 				]
 			}
         },
@@ -1575,6 +1643,13 @@
 				"run_command": {
 					"command": [
 						"replaceitem entity @s slot.weapon.mainhand 0 air"
+					]
+				}
+			},
+			"rift:commit_suicide": {
+				"run_command": {
+					"command": [
+						"kill @s"
 					]
 				}
 			}

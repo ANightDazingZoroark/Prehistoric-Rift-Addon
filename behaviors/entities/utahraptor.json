@@ -580,6 +580,7 @@
 					"family_types": [
 						"player"
 					],
+					"rider_can_interact": true,
 					"seats": [
 						{
 							"position": [
@@ -832,6 +833,55 @@
 							"target": "self"
 						},
 						"use_item": true
+					},
+					{
+						"on_interact": {
+							"filters": {
+								"all_of": [
+									{
+										"any_of": [
+											{
+												"test": "has_equipment",
+												"subject": "other",
+												"domain": "hand",
+												"value": "minecraft:potion:23"
+											},
+											{
+												"test": "has_equipment",
+												"subject": "other",
+												"domain": "hand",
+												"value": "minecraft:potion:24"
+											}
+										]
+									},
+									{
+										"test": "is_owner",
+										"subject": "other",
+										"value": true
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_baby",
+										"operator": "!="
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_tamed"
+									},
+									{
+										"test": "is_sneaking",
+										"subject": "other",
+										"value": true
+									}
+								]
+							},
+							"event": "rift:commit_suicide",
+							"target": "self"
+						},
+						"use_item": true,
+						"transform_to_item": "minecraft:glass_bottle"
 					}
 				]
             },
@@ -938,6 +988,25 @@
 							"event": "rift:on_pounced_by_utahraptor",
 							"target": "self"
 						}
+					},
+					{
+						"on_damage": {
+							"filters": {
+								"all_of": [
+									{
+										"test": "is_owner",
+										"subject": "other",
+										"value": true
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_tamed"
+									}
+								]
+							}
+						},
+						"deals_damage": false
 					}
 				]
 			},
@@ -1721,6 +1790,13 @@
 				"remove": {
 					"component_groups": [
 						"rift:summon_forced_slash_entity"
+					]
+				}
+			},
+			"rift:commit_suicide": {
+				"run_command": {
+					"command": [
+						"kill @s"
 					]
 				}
 			}
