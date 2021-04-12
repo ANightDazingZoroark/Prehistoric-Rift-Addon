@@ -1,4 +1,3 @@
-#bridge-file-version: #215
 fill ~-10 ~ ~-10 ~+10 ~+15 ~+10 air 0 replace planks 0
 fill ~-10 ~ ~-10 ~+10 ~+15 ~+10 air 0 replace planks 1
 fill ~-10 ~ ~-10 ~+10 ~+15 ~+10 air 0 replace planks 2

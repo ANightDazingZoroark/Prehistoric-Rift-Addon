@@ -5,7 +5,20 @@
             "identifier": "rift:parasaurolophus",
             "is_spawnable": true,
             "is_summonable": true,
-            "is_experimental": false
+            "is_experimental": false,
+			"animations": {
+				"contParasaurUseAttack": "controller.animation.parasaur_forced_use_attack",
+				"contTameTag": "controller.animation.add_tame_tag",
+				"contBabyTag": "controller.animation.add_baby_tag",
+				"animForcedAttack": "animation.forced_attack_parasaurolophus"
+			},
+			"scripts": {
+				"animate": [
+					"contParasaurUseAttack",
+					"contTameTag",
+					"contBabyTag"
+				]
+			}
         },
         "component_groups": {
             "rift:parasaurolophus_baby": {
@@ -299,6 +312,7 @@
 					"max": 75
 				},
 				"minecraft:healable": {
+					"force_use": true,
 					"items": [
 						{
 							"item": "minecraft:wheat",
@@ -311,6 +325,10 @@
 						{
 							"item": "minecraft:potato",
 							"heal_amount": 10
+						},
+						{
+							"item": "minecraft:baked_potato",
+							"heal_amount": 15
 						},
 						{
 							"item": "minecraft:beetroot",
@@ -327,6 +345,48 @@
 						{
 							"item": "rift:truffle",
 							"heal_amount": 15
+						},
+						{
+							"item": "minecraft:golden_apple",
+							"heal_amount": 20,
+							"effects": [
+								{
+									"name": "absorption",
+									"duration": 120,
+									"amplifier": 0
+								},
+								{
+									"name": "regeneration",
+									"duration": 5,
+									"amplifier": 1
+								}
+							]
+						},
+						{
+							"item": "minecraft:enchanted_golden_apple",
+							"heal_amount": 20,
+							"effects": [
+								{
+									"name": "absorption",
+									"duration": 120,
+									"amplifier": 3
+								},
+								{
+									"name": "regeneration",
+									"duration": 30,
+									"amplifier": 1
+								},
+								{
+									"name": "fire_resistance",
+									"duration": 300,
+									"amplifier": 0
+								},
+								{
+									"name": "resistance",
+									"duration": 300,
+									"amplifier": 0
+								}
+							]
 						}
 					]
 				},
@@ -456,6 +516,21 @@
                     }
                 }
             },
+			"rift:forced_attack": {
+				"minecraft:is_charged": {}
+			},
+			"rift:summon_forced_attack_entity": {
+				"minecraft:spawn_entity": {
+					"entities": [
+						{
+							"spawn_entity": "rift:parasaurolophus_attack",
+							"single_use": true,
+							"min_wait_time": 0,
+							"max_wait_time": 0
+						}
+					]
+				}
+			},
             "rift:parasaurolophus_reset_family": {
                 "minecraft:type_family": {
                     "family": [
@@ -547,6 +622,18 @@
 				"minecraft:movement": {
 					"value": 0.25
 				}
+			},
+			"rift:pushable": {
+				"minecraft:pushable": {
+					"is_pushable": true,
+					"is_pushable_by_piston": true
+				}
+			},
+			"rift:unpushable": {
+				"minecraft:pushable": {
+					"is_pushable": false,
+					"is_pushable_by_piston": false
+				}
 			}
         },
         "components": {
@@ -572,7 +659,6 @@
             "minecraft:behavior.move_to_land": {},
             "minecraft:behavior.float": {},
             "minecraft:is_hidden_when_invisible": {},
-			"minecraft:pushable": {},
 			"minecraft:physics": {},
 			"minecraft:nameable": {},
 			"minecraft:collision_box": {
@@ -1048,7 +1134,8 @@
 										"rift:parasaurolophus_adult_wild",
                                         "rift:parasaurolophus_adult_calm",
                                         "rift:is_quadrapedal",
-										"rift:variant_one"
+										"rift:variant_one",
+										"rift:pushable"
 									]
 								}
 							},
@@ -1060,7 +1147,8 @@
 										"rift:parasaurolophus_adult_wild",
                                         "rift:parasaurolophus_adult_calm",
                                         "rift:is_quadrapedal",
-										"rift:variant_two"
+										"rift:variant_two",
+										"rift:pushable"
 									]
 								}
 							},
@@ -1072,7 +1160,8 @@
 										"rift:parasaurolophus_adult_wild",
                                         "rift:parasaurolophus_adult_calm",
                                         "rift:is_quadrapedal",
-										"rift:variant_three"
+										"rift:variant_three",
+										"rift:pushable"
 									]
 								}
 							},
@@ -1084,7 +1173,8 @@
 										"rift:parasaurolophus_adult_wild",
                                         "rift:parasaurolophus_adult_calm",
                                         "rift:is_quadrapedal",
-										"rift:variant_four"
+										"rift:variant_four",
+										"rift:pushable"
 									]
 								}
 							}
@@ -1100,7 +1190,8 @@
 										"rift:parasaurolophus_baby",
 										"rift:parasaurolophus_baby_wild",
 										"rift:parasaurolophus_baby_calm",
-										"rift:variant_one"
+										"rift:variant_one",
+										"rift:pushable"
 									]
 								}
 							},
@@ -1111,7 +1202,8 @@
 										"rift:parasaurolophus_baby",
 										"rift:parasaurolophus_baby_wild",
 										"rift:parasaurolophus_baby_calm",
-										"rift:variant_two"
+										"rift:variant_two",
+										"rift:pushable"
 									]
 								}
 							},
@@ -1122,7 +1214,8 @@
 										"rift:parasaurolophus_baby",
 										"rift:parasaurolophus_baby_wild",
 										"rift:parasaurolophus_baby_calm",
-										"rift:variant_three"
+										"rift:variant_three",
+										"rift:pushable"
 									]
 								}
 							},
@@ -1133,7 +1226,8 @@
 										"rift:parasaurolophus_baby",
 										"rift:parasaurolophus_baby_wild",
 										"rift:parasaurolophus_baby_calm",
-										"rift:variant_four"
+										"rift:variant_four",
+										"rift:pushable"
 									]
 								}
 							}
@@ -1147,7 +1241,8 @@
 						"rift:parasaurolophus_baby",
 						"rift:parasaurolophus_baby_tamed",
 						"rift:parasaurolophus_tamed",
-						"rift:parasaurolophus_sittable"
+						"rift:parasaurolophus_sittable",
+						"rift:pushable"
 					]
 				}
             },
@@ -1320,7 +1415,8 @@
 								"rift:parasaurolophus_baby",
 								"rift:parasaurolophus_baby_wild",
 								"rift:parasaurolophus_baby_calm",
-								"rift:variant_one"
+								"rift:variant_one",
+								"rift:pushable"
 							]
 						}
 					},
@@ -1331,7 +1427,8 @@
 								"rift:parasaurolophus_baby",
 								"rift:parasaurolophus_baby_wild",
 								"rift:parasaurolophus_baby_calm",
-								"rift:variant_two"
+								"rift:variant_two",
+								"rift:pushable"
 							]
 						}
 					},
@@ -1342,7 +1439,8 @@
 								"rift:parasaurolophus_baby",
 								"rift:parasaurolophus_baby_wild",
 								"rift:parasaurolophus_baby_calm",
-								"rift:variant_three"
+								"rift:variant_three",
+								"rift:pushable"
 							]
 						}
 					},
@@ -1353,23 +1451,36 @@
 								"rift:parasaurolophus_baby",
 								"rift:parasaurolophus_baby_wild",
 								"rift:parasaurolophus_baby_calm",
-								"rift:variant_four"
+								"rift:variant_four",
+								"rift:pushable"
 							]
 						}
 					}
 				]
             },
             "rift:cannot_sit": {
+				"add": {
+					"component_groups": [
+						"rift:unpushable"
+					]
+				},
 				"remove": {
 					"component_groups": [
-						"rift:parasaurolophus_sittable"
+						"rift:parasaurolophus_sittable",
+						"rift:pushable"
 					]
 				}
 			},
 			"rift:can_sit": {
 				"add": {
 					"component_groups": [
-						"rift:parasaurolophus_sittable"
+						"rift:parasaurolophus_sittable",
+						"rift:pushable"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:unpushable"
 					]
 				}
             },
@@ -1582,6 +1693,34 @@
 				"run_command": {
 					"command": [
 						"ride @s evict_riders"
+					]
+				}
+			},
+			"rift:use_forced_attack": {
+				"add": {
+					"component_groups": [
+						"rift:forced_attack"
+					]
+				}
+			},
+			"rift:stop_forced_attack": {
+				"remove": {
+					"component_groups": [
+						"rift:forced_attack"
+					]
+				}
+			},
+			"rift:on_summon_forced_attack_entity": {
+				"add": {
+					"component_groups": [
+						"rift:summon_forced_attack_entity"
+					]
+				}
+			},
+			"rift:no_summon_forced_attack_entity": {
+				"remove": {
+					"component_groups": [
+						"rift:summon_forced_attack_entity"
 					]
 				}
 			}
