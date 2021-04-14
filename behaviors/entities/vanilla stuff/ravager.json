@@ -125,14 +125,32 @@
           "priority": 2,
           "entity_types": {
             "filters": {
-              "test": "is_family",
-              "subject": "other",
-              "operator": "!=",
-              "value": "illager"
+              "all_of": [
+                {
+                  "test": "is_family",
+                  "subject": "other",
+                  "operator": "!=",
+                  "value": "illager"
+                },
+                {
+                  "test": "is_family",
+                  "subject": "other",
+                  "operator": "!=",
+                  "value": "forcedAttack"
+                }
+              ]
             },
             "max_dist": 64
           }
         },
+        "minecraft:behavior.mount_pathing": {
+          "priority": 5,
+          "speed_multiplier": 1.25,
+          "target_dist": 0.0,
+          "track_target": true
+        }
+      },
+      "rift:default_targets": {
         "minecraft:behavior.nearest_attackable_target": {
           "priority": 3,
           "must_see": true,
@@ -174,12 +192,27 @@
               "max_dist": 16
             }
           ]
+        }
+      },
+      "rift:attack_forced_attack_entity": {
+        "minecraft:behavior.nearest_attackable_target": {
+          "priority": 3,
+          "must_see": true,
+          "within_radius": 16.0,
+          "entity_types": [
+            {
+              "filters": {
+                "test": "is_family",
+                "subject": "other",
+                "value": "isForcedAttacking"
+              },
+              "max_dist": 16
+            }
+          ]
         },
-        "minecraft:behavior.mount_pathing": {
-          "priority": 5,
-          "speed_multiplier": 1.25,
-          "target_dist": 0.0,
-          "track_target": true
+        "minecraft:on_target_escape": {
+          "event": "rift:no_force_attacked",
+          "target": "self"
         }
       },
       "stunned": {
@@ -441,6 +474,17 @@
 							"event": "rift:on_pounced_by_utahraptor",
 							"target": "self"
 						}
+					},
+          {
+						"on_damage": {
+							"filters": {
+                "test": "is_family",
+                "subject": "other",
+                "value": "forcedAttack"
+              },
+							"event": "rift:on_force_attacked",
+							"target": "self"
+						}
 					}
 				]
 			}
@@ -449,7 +493,8 @@
       "minecraft:entity_spawned": {
         "add": {
           "component_groups": [
-            "minecraft:hostile"
+            "minecraft:hostile",
+            "rift:default_targets"
           ]
         }
       },
@@ -457,7 +502,8 @@
         "add": {
           "component_groups": [
             "minecraft:hostile",
-            "minecraft:raid_configuration"
+            "minecraft:raid_configuration",
+            "rift:default_targets"
           ]
         }
       },
@@ -466,7 +512,8 @@
           "component_groups": [
             "minecraft:hostile",
             "minecraft:evoker_rider_for_raid",
-            "minecraft:raid_configuration"
+            "minecraft:raid_configuration",
+            "rift:default_targets"
           ]
         }
       },
@@ -475,7 +522,8 @@
           "component_groups": [
             "minecraft:hostile",
             "minecraft:pillager_rider_for_raid",
-            "minecraft:raid_configuration"
+            "minecraft:raid_configuration",
+            "rift:default_targets"
           ]
         }
       },
@@ -483,7 +531,8 @@
         "add": {
           "component_groups": [
             "minecraft:hostile",
-            "minecraft:pillager_rider"
+            "minecraft:pillager_rider",
+            "rift:default_targets"
           ]
         }
       },
@@ -491,7 +540,8 @@
         "add": {
           "component_groups": [
             "minecraft:hostile",
-            "minecraft:pillager_captain_rider"
+            "minecraft:pillager_captain_rider",
+            "rift:default_targets"
           ]
         }
       },
@@ -499,7 +549,8 @@
         "add": {
           "component_groups": [
             "minecraft:hostile",
-            "minecraft:vindicator_rider"
+            "minecraft:vindicator_rider",
+            "rift:default_targets"
           ]
         }
       },
@@ -507,7 +558,8 @@
         "add": {
           "component_groups": [
             "minecraft:hostile",
-            "minecraft:vindicator_captain_rider"
+            "minecraft:vindicator_captain_rider",
+            "rift:default_targets"
           ]
         }
       },
@@ -519,7 +571,8 @@
         },
         "remove": {
           "component_groups": [
-            "minecraft:hostile"
+            "minecraft:hostile",
+            "rift:default_targets"
           ]
         }
       },
@@ -538,7 +591,8 @@
       "minecraft:end_roar": {
         "add": {
           "component_groups": [
-            "minecraft:hostile"
+            "minecraft:hostile",
+            "rift:default_targets"
           ]
         },
         "remove": {
@@ -559,7 +613,31 @@
 						"ride @s evict_riders"
 					]
 				}
-			}
+			},
+      "rift:on_force_attacked": {
+        "add": {
+          "component_groups": [
+            "rift:attack_forced_attack_entity"
+          ]
+        },
+        "remove": {
+          "component_groups": [
+            "rift:default_targets"
+          ]
+        }
+      },
+      "rift:no_force_attacked": {
+        "add": {
+          "component_groups": [
+            "rift:default_targets"
+          ]
+        },
+        "remove": {
+          "component_groups": [
+            "rift:attack_forced_attack_entity"
+          ]
+        }
+      }
     }
   }
 }

@@ -175,7 +175,10 @@
                         ]
                     }
                 },
-                "minecraft:behavior.random_stroll": {}
+                "minecraft:behavior.random_stroll": {},
+				"minecraft:behavior.hurt_by_target": {
+					"priority": 3
+				}
             },
             "rift:utahraptor_baby_tamed": {
                 "minecraft:health": {
@@ -268,6 +271,9 @@
 						"sprint_speed_multiplier": 1.2
 					  }
 					]
+				},
+				"minecraft:behavior.hurt_by_target": {
+					"priority": 3
 				},
 				"minecraft:despawn": {
 					"despawn_from_distance": {}
@@ -580,7 +586,6 @@
 					"family_types": [
 						"player"
 					],
-					"rider_can_interact": true,
 					"seats": [
 						{
 							"position": [
@@ -716,6 +721,17 @@
 				"minecraft:pushable": {
 					"is_pushable": false,
 					"is_pushable_by_piston": false
+				}
+			},
+			"rift:forced_attack_family": {
+				"minecraft:type_family": {
+					"family": [
+						"utahraptor",
+						"mob",
+						"carnivore",
+						"dinosaur",
+						"isForcedAttacking"
+					]
 				}
 			}
         },
@@ -1143,6 +1159,12 @@
 								{
 									"test": "has_component",
 									"subject": "self",
+									"operator": "!=",
+									"value": "minecraft:is_sheared"
+								},
+								{
+									"test": "has_component",
+									"subject": "self",
 									"value": "minecraft:is_tamed"
 								},
 								{
@@ -1294,9 +1316,6 @@
 						"event": "rift:can_sit"
 					}
 				]
-			},
-			"minecraft:behavior.hurt_by_target": {
-				"priority": 0
 			},
             "minecraft:behavior.float": {}                                   
         },
@@ -1797,6 +1816,30 @@
 				"run_command": {
 					"command": [
 						"kill @s"
+					]
+				}
+			},
+			"rift:on_forced_attack_family": {
+				"add": {
+					"component_groups": [
+						"rift:forced_attack_family"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:utahraptor_unpounceable"
+					]
+				}
+			},
+			"rift:no_forced_attack_family": {
+				"add": {
+					"component_groups": [
+						"rift:utahraptor_unpounceable"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:forced_attack_family"
 					]
 				}
 			}

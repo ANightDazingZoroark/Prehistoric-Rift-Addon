@@ -96,7 +96,10 @@
 						"target": "self"
 					}
 				},
-				"minecraft:behavior.random_stroll": {}
+				"minecraft:behavior.random_stroll": {},
+				"minecraft:behavior.hurt_by_target": {
+					"priority": 3
+				}
 			},
 			"rift:triceratops_baby_calm": {
 				"minecraft:on_target_acquired": {
@@ -216,6 +219,9 @@
 				"minecraft:follow_range": {
 					"value": 48,
 					"max": 48
+				},
+				"minecraft:behavior.hurt_by_target": {
+					"priority": 3
 				},
 				"minecraft:despawn": {
 					"despawn_from_distance": {}
@@ -498,7 +504,6 @@
 			},
 			"rift:rideable": {
 				"minecraft:rideable": {
-					"rider_can_interact": true,
 					"seats": [
 						{
 							"position": [
@@ -680,6 +685,27 @@
 					"is_pushable": false,
 					"is_pushable_by_piston": false
 				}
+			},
+			"rift:default_family": {
+				"minecraft:type_family": {
+					"family": [
+						"triceratops",
+						"mob",
+						"herbivore",
+						"dinosaur"
+					]
+				}
+			},
+			"rift:forced_attack_family": {
+				"minecraft:type_family": {
+					"family": [
+						"triceratops",
+						"mob",
+						"herbivore",
+						"dinosaur",
+						"isForcedAttacking"
+					]
+				}
 			}
 		},
 		"components": {
@@ -712,9 +738,6 @@
 				"soft_distance": 4,
 				"hard_distance": 8,
 				"max_distance": 12
-			},
-			"minecraft:behavior.hurt_by_target": {
-				"priority": 3
 			},
 			"minecraft:interact": {
 				"interactions": [
@@ -1613,6 +1636,30 @@
 				"run_command": {
 					"command": [
 						"kill @s"
+					]
+				}
+			},
+			"rift:on_forced_attack_family": {
+				"add": {
+					"component_groups": [
+						"rift:forced_attack_family"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:default_family"
+					]
+				}
+			},
+			"rift:no_forced_attack_family": {
+				"add": {
+					"component_groups": [
+						"rift:default_family"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:forced_attack_family"
 					]
 				}
 			}
