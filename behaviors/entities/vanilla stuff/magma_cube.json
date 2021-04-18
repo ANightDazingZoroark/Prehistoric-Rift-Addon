@@ -75,6 +75,58 @@
         "minecraft:movement.jump": {
           "jump_delay": [ 0.667, 2.0 ]
         }
+      },
+
+      "rift:default_targets": {
+        "minecraft:behavior.nearest_attackable_target": {
+          "priority": 2,
+          "reselect_targets": true,
+          "entity_types": [
+            {
+              "filters": {
+                "all_of": [
+                  {
+                    "test": "is_family",
+                    "subject": "other",
+                    "value": "player"
+                  },
+                  {
+                    "test": "is_riding",
+                    "subject": "other",
+                    "value": false
+                  }
+                ]
+              },
+              "max_dist": 16
+            },
+            {
+              "filters": {
+                "test": "is_family",
+                "subject": "other",
+                "value": "parasaurAngerer"
+              },
+              "max_dist": 35
+            }
+          ],
+          "must_see": true
+        }
+      },
+      "rift:attack_forced_attack_entity": {
+        "minecraft:behavior.nearest_attackable_target": {
+          "priority": 2,
+          "reselect_targets": true,
+          "entity_types": [
+            {
+              "filters": {
+                "test": "is_family",
+                "subject": "other",
+                "value": "isForcedAttacking"
+              },
+              "max_dist": 16
+            }
+          ],
+          "must_see": true
+        }
       }
     },
 
@@ -96,10 +148,32 @@
       },
       "minecraft:burns_in_daylight": false,
       "minecraft:damage_sensor": {
-        "triggers": {
-          "cause": "fall",
-          "deals_damage": false
-        }
+        "triggers": [
+          {
+            "cause": "fall",
+            "deals_damage": false
+          },
+          {
+						"on_damage": {
+							"filters": {
+                "all_of": [
+                  {
+                    "test": "is_family",
+                    "subject": "other",
+                    "value": "forcedAttack"
+                  },
+                  {
+                    "test": "has_target",
+                    "subject": "self",
+                    "value": false
+                  }
+                ]
+              },
+							"event": "rift:on_force_attacked",
+							"target": "self"
+						}
+					}
+        ]
       },
       "minecraft:navigation.walk": {
         "can_path_over_water": true,
@@ -157,38 +231,6 @@
         "priority": 5,
         "speed_multiplier": 1.0
       },
-      "minecraft:behavior.nearest_attackable_target": {
-        "priority": 2,
-        "reselect_targets": true,
-        "entity_types": [
-          {
-            "filters": {
-              "all_of": [
-                {
-                  "test": "is_family",
-                  "subject": "other",
-                  "value": "player"
-                },
-                {
-                  "test": "is_riding",
-                  "subject": "other",
-                  "value": false
-                }
-              ]
-            },
-            "max_dist": 16
-          },
-          {
-            "filters": {
-              "test": "is_family",
-              "subject": "other",
-              "value": "parasaurAngerer"
-            },
-            "max_dist": 35
-          }
-        ],
-        "must_see": true
-      },
       "minecraft:physics": {
       },
       "minecraft:pushable": {
@@ -203,14 +245,21 @@
       "minecraft:entity_spawned": {
         "add": {
           "component_groups": [
-            "minecraft:slime_calm"
+            "minecraft:slime_calm",
+            "rift:default_targets"
           ]
         }
       },
       "minecraft:become_calm": {
         "add": {
           "component_groups": [
-            "minecraft:slime_calm"
+            "minecraft:slime_calm",
+            "rift:default_targets"
+          ]
+        },
+        "remove": {
+          "component_groups": [
+            "rift:attack_forced_attack_entity"
           ]
         }
       },
@@ -218,6 +267,18 @@
         "add": {
           "component_groups": [
             "minecraft:slime_aggressive"
+          ]
+        }
+      },
+      "rift:on_force_attacked": {
+        "add": {
+          "component_groups": [
+            "rift:attack_forced_attack_entity"
+          ]
+        },
+        "remove": {
+          "component_groups": [
+            "rift:default_targets"
           ]
         }
       }

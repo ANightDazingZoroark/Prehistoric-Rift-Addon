@@ -36,6 +36,70 @@
           "can_migrate": true,
           "first_founding_reward": 0
         }
+      },
+
+      "rift:default_targets": {
+        "minecraft:behavior.nearest_attackable_target": {
+          "priority": 3,
+          "entity_types": [
+            {
+              "filters": { 
+                  "all_of": [
+                    { "test" :  "is_family", "subject" : "other", "value" :  "monster"},
+                    { "test" :  "is_family", "subject" : "other", "operator": "!=", "value" :  "creeper"}
+                  ] 
+              },
+              "within_default": 30
+            },
+            {
+              "filters": { 
+                "all_of": [
+                  {
+                    "test": "has_component", "subject": "other", "operator": "!=", "value": "minecraft:is_tamed"
+                  },
+                  {
+                    "any_of": [
+                      { "test" :  "is_family", "subject" : "other", "value" :  "utahraptor"},
+                      {
+                        "all_of": [
+                          { "test": "is_family", "subject": "other", "value": "tyrannosaurus"},
+                          { "test": "has_component", "subject": "other", "value": "minecraft:behavior.nearest_attackable_target"},
+                          { "test": "has_component", "subject": "other", "operator": "!=", "value": "minecraft:is_tamed"}
+                        ]
+                      }
+                    ]
+                  }
+                ] 
+              },
+              "within_default": 30
+            }
+          ],
+          "must_see": true,
+          "must_reach": true,
+          "within_radius": 30
+        }
+      },
+      "rift:attack_forced_attack_entity": {
+        "minecraft:behavior.nearest_attackable_target": {
+          "priority": 3,
+          "entity_types": [
+            {
+              "filters": {
+                "test": "is_family",
+                "subject": "other",
+                "value": "isForcedAttacking"
+              },
+              "within_default": 30
+            }
+          ],
+          "must_see": true,
+          "must_reach": true,
+          "within_radius": 30
+        },
+        "minecraft:on_target_escape": {
+          "event": "rift:no_force_attacked",
+          "target": "self"
+        }
       }
     },
 
@@ -87,10 +151,32 @@
         }
       },
       "minecraft:damage_sensor": {
-        "triggers": {
-          "cause": "fall",
-          "deals_damage": false
-        }
+        "triggers": [
+          {
+            "cause": "fall",
+            "deals_damage": false
+          },
+          {
+						"on_damage": {
+							"filters": {
+                "all_of": [
+                  {
+                    "test": "is_family",
+                    "subject": "other",
+                    "value": "forcedAttack"
+                  },
+                  {
+                    "test": "has_target",
+                    "subject": "self",
+                    "value": false
+                  }
+                ]
+              },
+							"event": "rift:on_force_attacked",
+							"target": "self"
+						}
+					}
+        ]
       },
       "minecraft:knockback_resistance": {
         "value": 1.0
@@ -258,7 +344,8 @@
                     {
                       "all_of": [
                         { "test": "is_family", "subject": "other", "value": "tyrannosaurus"},
-                        { "test": "has_component", "subject": "other", "value": "minecraft:behavior.nearest_attackable_target"}
+                        { "test": "has_component", "subject": "other", "value": "minecraft:behavior.nearest_attackable_target"},
+                        { "test": "has_component", "subject": "other", "operator": "!=", "value": "minecraft:is_tamed"}
                       ]
                     }
                   ]
@@ -300,14 +387,40 @@
       "minecraft:from_player": {
         "add": {
           "component_groups": [
-            "minecraft:player_created"
+            "minecraft:player_created",
+            "rift:default_targets"
           ]
         }
       },
       "minecraft:from_village": {
         "add": {
           "component_groups": [
-            "minecraft:village_created"
+            "minecraft:village_created",
+            "rift:default_targets"
+          ]
+        }
+      },
+      "rift:on_force_attacked": {
+        "add": {
+          "component_groups": [
+            "rift:attack_forced_attack_entity"
+          ]
+        },
+        "remove": {
+          "component_groups": [
+            "rift:default_targets"
+          ]
+        }
+      },
+      "rift:no_force_attacked": {
+        "add": {
+          "component_groups": [
+            "rift:default_targets"
+          ]
+        },
+        "remove": {
+          "component_groups": [
+            "rift:attack_forced_attack_entity"
           ]
         }
       }

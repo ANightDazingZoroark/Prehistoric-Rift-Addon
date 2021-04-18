@@ -109,6 +109,89 @@
           "priority": 1,
           "within_radius": 16
         }
+      },
+
+      "rift:default_targets": {
+        "minecraft:behavior.nearest_attackable_target": {
+          "priority": 2,
+          "must_see": true,
+          "reselect_targets": true,
+          "within_radius": 25.0,
+          "entity_types": [
+            {
+              "filters": {
+                "any_of": [
+                  { 
+                    "all_of": [
+                      {
+                        "test": "is_family",
+                        "subject": "other",
+                        "value": "player"
+                      },
+                      {
+                        "test": "is_riding",
+                        "subject": "other",
+                        "value": false
+                      }
+                    ]
+                  },
+                  { "test": "is_family", "subject": "other", "value": "snowgolem" },
+                  { "test": "is_family", "subject": "other", "value": "irongolem" }
+                ]
+              },
+              "max_dist": 35
+            },
+            {
+              "filters": {
+                "any_of": [
+                  { "test": "is_family", "subject": "other", "value": "villager" },
+                  { "test": "is_family", "subject": "other", "value": "wandering_trader" }
+                ]
+              },
+              "max_dist": 35,
+              "must_see": false
+            },
+            {
+              "filters": {
+                "all_of": [
+                  { "test": "is_family", "subject": "other", "value": "baby_turtle" },
+                  { "test": "in_water", "subject": "other", "operator": "!=", "value": true }
+                ]
+              },
+              "max_dist": 35
+            },
+            {
+              "filters": {
+                "test": "is_family",
+                "subject": "other",
+                "value": "parasaurAngerer"
+              },
+              "max_dist": 35
+            }
+          ]
+        }
+      },
+      "rift:attack_forced_attack_entity": {
+        "minecraft:behavior.nearest_attackable_target": {
+          "priority": 2,
+          "must_see": true,
+          "reselect_targets": true,
+          "within_radius": 25.0,
+          "entity_types": [
+            {
+              "filters": {
+                "test": "is_family",
+                "subject": "other",
+                "value": "isForcedAttacking"
+              },
+              "max_dist": 35
+            }
+          ]
+        },
+        "minecraft:on_target_escape": {
+          "event": "rift:no_force_attacked",
+          "target": "self"
+        }
       }
     },
 
@@ -446,64 +529,6 @@
           }
         }
       },
-      "minecraft:behavior.nearest_attackable_target": {
-        "priority": 2,
-        "must_see": true,
-        "reselect_targets": true,
-        "within_radius": 25.0,
-        "entity_types": [
-          {
-            "filters": {
-              "any_of": [
-                { 
-                  "all_of": [
-                    {
-                      "test": "is_family",
-                      "subject": "other",
-                      "value": "player"
-                    },
-                    {
-                      "test": "is_riding",
-                      "subject": "other",
-                      "value": false
-                    }
-                  ]
-                },
-                { "test": "is_family", "subject": "other", "value": "snowgolem" },
-                { "test": "is_family", "subject": "other", "value": "irongolem" }
-              ]
-            },
-            "max_dist": 35
-          },
-          {
-            "filters": {
-              "any_of": [
-                { "test": "is_family", "subject": "other", "value": "villager" },
-                { "test": "is_family", "subject": "other", "value": "wandering_trader" }
-              ]
-            },
-            "max_dist": 35,
-            "must_see": false
-          },
-          {
-            "filters": {
-              "all_of": [
-                { "test": "is_family", "subject": "other", "value": "baby_turtle" },
-                { "test": "in_water", "subject": "other", "operator": "!=", "value": true }
-              ]
-            },
-            "max_dist": 35
-          },
-          {
-            "filters": {
-              "test": "is_family",
-              "subject": "other",
-              "value": "parasaurAngerer"
-            },
-            "max_dist": 35
-          }
-        ]
-      },
       "minecraft:physics": {
       },
       "minecraft:pushable": {
@@ -524,7 +549,31 @@
             "sprint_speed_multiplier": 1.2
           }
         ]
-       }
+       },
+       "minecraft:damage_sensor": {
+				"triggers": [
+          {
+						"on_damage": {
+							"filters": {
+                "all_of": [
+                  {
+                    "test": "is_family",
+                    "subject": "other",
+                    "value": "forcedAttack"
+                  },
+                  {
+                    "test": "has_target",
+                    "subject": "self",
+                    "value": false
+                  }
+                ]
+              },
+							"event": "rift:on_force_attacked",
+							"target": "self"
+						}
+					}
+				]
+			}
     },
 
     "events": {
@@ -536,7 +585,8 @@
             },
             "add": {
               "component_groups": [
-                "minecraft:zombie_husk_adult"
+                "minecraft:zombie_husk_adult",
+                "rift:default_targets"
               ]
             }
           },
@@ -546,7 +596,8 @@
             },
             "add": {
               "component_groups": [
-                "minecraft:zombie_husk_baby"
+                "minecraft:zombie_husk_baby",
+                "rift:default_targets"
               ]
 
             }
@@ -558,7 +609,8 @@
             "add": {
               "component_groups": [
                 "minecraft:zombie_husk_baby",
-                "minecraft:zombie_husk_jockey"
+                "minecraft:zombie_husk_jockey",
+                "rift:default_targets"
               ]
 
             }
@@ -615,6 +667,30 @@
             }
           }
         ]
+      },
+      "rift:on_force_attacked": {
+        "add": {
+          "component_groups": [
+            "rift:attack_forced_attack_entity"
+          ]
+        },
+        "remove": {
+          "component_groups": [
+            "rift:default_targets"
+          ]
+        }
+      },
+      "rift:no_force_attacked": {
+        "add": {
+          "component_groups": [
+            "rift:default_targets"
+          ]
+        },
+        "remove": {
+          "component_groups": [
+            "rift:attack_forced_attack_entity"
+          ]
+        }
       }
     }
   }
