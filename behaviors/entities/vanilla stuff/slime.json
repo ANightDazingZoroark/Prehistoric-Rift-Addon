@@ -71,6 +71,70 @@
         "minecraft:movement.jump": {
           "jump_delay": [ 0.16, 0.5 ]
         }
+      },
+
+      "rift:default_targets": {
+        "minecraft:behavior.nearest_attackable_target": {
+          "priority": 2,
+          "entity_types": [
+            {
+              "filters": {
+                "any_of": [
+                  {
+                    "all_of": [
+                      {
+                        "test": "is_family",
+                        "subject": "other",
+                        "value": "player"
+                      },
+                      {
+                        "test": "is_riding",
+                        "subject": "other",
+                        "value": false
+                      }
+                    ]
+                  },
+                  {
+                    "test": "is_family",
+                    "subject": "other",
+                    "value": "snowgolem"
+                  },
+                  {
+                    "test": "is_family",
+                    "subject": "other",
+                    "value": "irongolem"
+                  }
+                ]
+              },
+              "max_dist": 16
+            },
+            {
+              "filters": {
+                  "test" :  "is_family", 
+                  "subject" : "other", 
+                  "value" :  "parasaurAngerer"
+               },
+              "max_dist": 35
+            }
+          ],
+          "must_see": true
+        }
+      },
+      "rift:attack_forced_attack_entity": {
+        "minecraft:behavior.nearest_attackable_target": {
+          "priority": 2,
+          "entity_types": [
+            {
+              "filters": {
+                  "test": "is_family", 
+                  "subject": "other", 
+                  "value": "isForcedAttacking"
+               },
+              "max_dist": 35
+            }
+          ],
+          "must_see": true
+        }
       }
     },
 
@@ -151,51 +215,6 @@
           }
         ]
        },
-      "minecraft:behavior.nearest_attackable_target": {
-        "priority": 2,
-        "entity_types": [
-          {
-            "filters": {
-              "any_of": [
-                {
-                  "all_of": [
-                    {
-                      "test": "is_family",
-                      "subject": "other",
-                      "value": "player"
-                    },
-                    {
-                      "test": "is_riding",
-                      "subject": "other",
-                      "value": false
-                    }
-                  ]
-                },
-                {
-                  "test": "is_family",
-                  "subject": "other",
-                  "value": "snowgolem"
-                },
-                {
-                  "test": "is_family",
-                  "subject": "other",
-                  "value": "irongolem"
-                }
-              ]
-            },
-            "max_dist": 16
-          },
-          {
-            "filters": {
-                "test" :  "is_family", 
-                "subject" : "other", 
-                "value" :  "parasaurAngerer"
-             },
-            "max_dist": 35
-          }
-        ],
-        "must_see": true
-      },
       "minecraft:physics": {
       },
       "minecraft:pushable": {
@@ -203,6 +222,31 @@
         "is_pushable_by_piston": true
       },
       "minecraft:conditional_bandwidth_optimization": {
+      },
+
+      "minecraft:damage_sensor": {
+        "triggers": [
+          {
+            "on_damage": {
+              "filters": {
+                "all_of": [
+                  {
+                    "test": "is_family",
+                    "subject": "other",
+                    "value": "forcedAttack"
+                  },
+                  {
+                    "test": "has_target",
+                    "subject": "self",
+                    "value": false
+                  }
+                ]
+              },
+              "event": "rift:on_force_attacked",
+              "target": "self"
+            }
+          }
+        ]
       }
     },
 
@@ -210,14 +254,21 @@
       "minecraft:entity_spawned": {
         "add": {
           "component_groups": [
-            "minecraft:slime_calm"
+            "minecraft:slime_calm",
+            "rift:default_targets"
           ]
         }
       },
       "minecraft:become_calm": {
         "add": {
           "component_groups": [
-            "minecraft:slime_calm"
+            "minecraft:slime_calm",
+            "rift:default_targets"
+          ]
+        },
+        "remove": {
+          "component_groups": [
+            "rift:attack_forced_attack_entity"
           ]
         }
       },
@@ -225,6 +276,18 @@
         "add": {
           "component_groups": [
             "minecraft:slime_aggressive"
+          ]
+        }
+      },
+      "rift:on_force_attacked": {
+        "add": {
+          "component_groups": [
+            "rift:attack_forced_attack_entity"
+          ]
+        },
+        "remove": {
+          "component_groups": [
+            "rift:default_targets"
           ]
         }
       }

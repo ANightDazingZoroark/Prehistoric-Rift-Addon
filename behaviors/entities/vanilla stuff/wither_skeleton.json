@@ -8,6 +8,96 @@
       "is_experimental": false
     },
 
+    "component_groups": {
+      "rift:default_targets": {
+        "minecraft:behavior.nearest_attackable_target": {
+          "priority": 2,
+          "reselect_targets": true,
+          "must_see": true,
+          "entity_types": [
+            {
+              "filters": {
+                "test": "is_family",
+                "subject": "other",
+                "value": "player"
+              },
+              "max_dist": 16
+            },
+            {
+              "filters": {
+                "all_of": [
+                  {
+                    "test": "is_family",
+                    "subject": "other",
+                    "value": "piglin"
+                  },
+                  {
+                    "test": "is_difficulty",
+                    "operator": "!=",
+                    "value": "peaceful"
+                  }
+                ]
+              },
+              "max_dist": 16
+            },
+            {
+              "filters": {
+                "test": "is_family",
+                "subject": "other",
+                "value": "irongolem"
+              },
+              "max_dist": 16
+            },
+            {
+              "filters": {
+                "all_of": [
+                  {
+                    "test": "is_family",
+                    "subject": "other",
+                    "value": "baby_turtle"
+                  },
+                  {
+                    "test": "in_water",
+                    "subject": "other",
+                    "operator": "!=",
+                    "value": true
+                  }
+                ]
+              },
+              "max_dist": 16
+            },
+            {
+              "filters": {
+                  "test" :  "is_family", 
+                  "subject" : "other", 
+                  "value" :  "parasaurAngerer"
+               },
+              "max_dist": 35
+            }
+          ]
+        }
+      },
+      "rift:attack_forced_attack_entity": {
+        "minecraft:behavior.nearest_attackable_target": {
+          "priority": 2,
+          "entity_types": [
+            {
+              "filters": {
+                  "test": "is_family", 
+                  "subject": "other", 
+                  "value": "isForcedAttacking"
+               },
+              "max_dist": 16
+            }
+          ]
+        },
+        "minecraft:on_target_escape": {
+          "event": "rift:no_force_attacked",
+          "target": "self"
+        }
+      }
+    },
+
     "components": {
       "minecraft:experience_reward": {
         "on_death": "query.last_hit_by_player ? 5 + (query.equipment_count * Math.Random(1,3)) : 0"
@@ -425,72 +515,6 @@
           }
         }
       },
-      "minecraft:behavior.nearest_attackable_target": {
-        "priority": 2,
-        "reselect_targets": true,
-        "must_see": true,
-        "entity_types": [
-          {
-            "filters": {
-              "test": "is_family",
-              "subject": "other",
-              "value": "player"
-            },
-            "max_dist": 16
-          },
-          {
-            "filters": {
-              "all_of": [
-                {
-                  "test": "is_family",
-                  "subject": "other",
-                  "value": "piglin"
-                },
-                {
-                  "test": "is_difficulty",
-                  "operator": "!=",
-                  "value": "peaceful"
-                }
-              ]
-            },
-            "max_dist": 16
-          },
-          {
-            "filters": {
-              "test": "is_family",
-              "subject": "other",
-              "value": "irongolem"
-            },
-            "max_dist": 16
-          },
-          {
-            "filters": {
-              "all_of": [
-                {
-                  "test": "is_family",
-                  "subject": "other",
-                  "value": "baby_turtle"
-                },
-                {
-                  "test": "in_water",
-                  "subject": "other",
-                  "operator": "!=",
-                  "value": true
-                }
-              ]
-            },
-            "max_dist": 16
-          },
-          {
-            "filters": {
-                "test" :  "is_family", 
-                "subject" : "other", 
-                "value" :  "parasaurAngerer"
-             },
-            "max_dist": 35
-          }
-        ]
-      },
       "minecraft:behavior.equip_item": {
         "priority": 3
       },
@@ -543,12 +567,65 @@
         ]
        },
       "minecraft:conditional_bandwidth_optimization": {
+      },
+      "minecraft:damage_sensor": {
+        "triggers": [
+          {
+            "on_damage": {
+              "filters": {
+                "all_of": [
+                  {
+                    "test": "is_family",
+                    "subject": "other",
+                    "value": "forcedAttack"
+                  },
+                  {
+                    "test": "has_target",
+                    "subject": "self",
+                    "value": false
+                  }
+                ]
+              },
+              "event": "rift:on_force_attacked",
+              "target": "self"
+            }
+          }
+        ]
       }
     },
 
     "events": {
       "minecraft:entity_spawned": {
+        "add": {
+          "component_groups": [
+            "rift:default_targets"
+          ]
+        }
+      },
 
+      "rift:on_force_attacked": {
+        "add": {
+          "component_groups": [
+            "rift:attack_forced_attack_entity"
+          ]
+        },
+        "remove": {
+          "component_groups": [
+            "rift:default_targets"
+          ]
+        }
+      },
+      "rift:no_force_attacked": {
+        "add": {
+          "component_groups": [
+            "rift:default_targets"
+          ]
+        },
+        "remove": {
+          "component_groups": [
+            "rift:attack_forced_attack_entity"
+          ]
+        }
       }
     }
   }

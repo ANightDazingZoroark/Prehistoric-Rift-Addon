@@ -10,10 +10,32 @@
     "component_groups": {
       "minecraft:lightning_immune": {
         "minecraft:damage_sensor": {
-          "triggers": {
-            "on_damage": { "filters": { "other_with_families": "lightning" } },
-            "deals_damage": false
-          }
+          "triggers": [
+            {
+              "on_damage": { "filters": { "other_with_families": "lightning" } },
+              "deals_damage": false
+            },
+            {
+              "on_damage": {
+                "filters": {
+                  "all_of": [
+                    {
+                      "test": "is_family",
+                      "subject": "other",
+                      "value": "forcedAttack"
+                    },
+                    {
+                      "test": "has_target",
+                      "subject": "self",
+                      "value": false
+                    }
+                  ]
+                },
+                "event": "rift:on_force_attacked",
+                "target": "self"
+              }
+            }
+          ]
         }
       },
       "minecraft:ranged_attack": {
@@ -80,6 +102,86 @@
               "event": "minecraft:ranged_mode"
             }
           ]
+        }
+      },
+
+      "rift:default_targets": {
+        "minecraft:behavior.nearest_attackable_target": {
+          "priority": 2,
+          "must_see": true,
+          "reselect_targets": true,
+          "entity_types": [
+            {
+              "filters": {
+                "all_of": [
+                  {
+                    "test": "is_family",
+                    "subject": "other",
+                    "value": "player"
+                  },
+                  {
+                    "test": "is_riding",
+                    "subject": "other",
+                    "value": false
+                  }
+                ]
+              },
+              "max_dist": 16
+            },
+            {
+              "filters": {
+                "test": "is_family",
+                "subject": "other",
+                "value": "irongolem"
+              },
+              "max_dist": 16
+            },
+            {
+              "filters": {
+                "all_of": [
+                  {
+                    "test": "is_family",
+                    "subject": "other",
+                    "value": "baby_turtle"
+                  },
+                  {
+                    "test": "in_water",
+                    "subject": "other",
+                    "operator": "!=",
+                    "value": true
+                  }
+                ]
+              },
+              "max_dist": 16
+            },
+            {
+              "filters": {
+                  "test" :  "is_family", 
+                  "subject" : "other", 
+                  "value" :  "parasaurAngerer"
+               },
+              "max_dist": 35
+            }
+          ]
+        }
+      },
+      "rift:attack_forced_attack_entity": {
+        "minecraft:behavior.nearest_attackable_target": {
+          "priority": 2,
+          "entity_types": [
+            {
+              "filters": {
+                  "test": "is_family", 
+                  "subject": "other", 
+                  "value": "isForcedAttacking"
+               },
+              "max_dist": 16
+            }
+          ]
+        },
+        "minecraft:on_target_escape": {
+          "event": "rift:no_force_attacked",
+          "target": "self"
         }
       }
     },
@@ -400,64 +502,6 @@
           }
         }
       },
-      "minecraft:behavior.nearest_attackable_target": {
-        "priority": 2,
-        "must_see": true,
-        "reselect_targets": true,
-        "entity_types": [
-          {
-            "filters": {
-              "all_of": [
-                {
-                  "test": "is_family",
-                  "subject": "other",
-                  "value": "player"
-                },
-                {
-                  "test": "is_riding",
-                  "subject": "other",
-                  "value": false
-                }
-              ]
-            },
-            "max_dist": 16
-          },
-          {
-            "filters": {
-              "test": "is_family",
-              "subject": "other",
-              "value": "irongolem"
-            },
-            "max_dist": 16
-          },
-          {
-            "filters": {
-              "all_of": [
-                {
-                  "test": "is_family",
-                  "subject": "other",
-                  "value": "baby_turtle"
-                },
-                {
-                  "test": "in_water",
-                  "subject": "other",
-                  "operator": "!=",
-                  "value": true
-                }
-              ]
-            },
-            "max_dist": 16
-          },
-          {
-            "filters": {
-                "test" :  "is_family", 
-                "subject" : "other", 
-                "value" :  "parasaurAngerer"
-             },
-            "max_dist": 35
-          }
-        ]
-      },
       "minecraft:behavior.flee_sun": {
         "priority": 2,
         "speed_multiplier": 1
@@ -517,6 +561,30 @@
         "is_pushable_by_piston": true
       },
       "minecraft:conditional_bandwidth_optimization": {
+      },
+      "minecraft:damage_sensor": {
+        "triggers": [
+          {
+            "on_damage": {
+              "filters": {
+                "all_of": [
+                  {
+                    "test": "is_family",
+                    "subject": "other",
+                    "value": "forcedAttack"
+                  },
+                  {
+                    "test": "has_target",
+                    "subject": "self",
+                    "value": false
+                  }
+                ]
+              },
+              "event": "rift:on_force_attacked",
+              "target": "self"
+            }
+          }
+        ]
       }
     },
 
@@ -524,7 +592,8 @@
       "minecraft:entity_spawned": {
         "add": {
           "component_groups": [
-            "minecraft:ranged_attack"
+            "minecraft:ranged_attack",
+            "rift:default_targets"
           ]
         }
       },
@@ -539,6 +608,31 @@
       "minecraft:ranged_mode": {
         "remove": { "component_groups": [ "minecraft:melee_attack" ] },
         "add": { "component_groups": [ "minecraft:ranged_attack" ] }
+      },
+
+      "rift:on_force_attacked": {
+        "add": {
+          "component_groups": [
+            "rift:attack_forced_attack_entity"
+          ]
+        },
+        "remove": {
+          "component_groups": [
+            "rift:default_targets"
+          ]
+        }
+      },
+      "rift:no_force_attacked": {
+        "add": {
+          "component_groups": [
+            "rift:default_targets"
+          ]
+        },
+        "remove": {
+          "component_groups": [
+            "rift:attack_forced_attack_entity"
+          ]
+        }
       }
     }
   }

@@ -153,69 +153,6 @@
             "target": "self"
           }
         },
-
-        "minecraft:behavior.nearest_attackable_target": {
-          "priority": 2,
-          "reselect_targets": true,
-          "must_see": true,
-          "entity_types": [
-            {
-              "filters": {
-                "any_of": [
-                  { "test" :  "is_family", "subject" : "other", "value" :  "skeleton"},
-                  { "test" :  "is_family", "subject" : "other", "value" :  "sheep"},
-                  { "test" :  "is_family", "subject" : "other", "value" :  "rabbit"},
-                  { "test" :  "is_family", "subject" : "other", "value" :  "fox"}
-                ] 
-              },
-              "max_dist": 16
-            },
-            {
-              "filters": {
-                "all_of": [
-                  {
-                    "test": "is_family",
-                    "subject": "other",
-                    "value": "baby_turtle"
-                  },
-                  {
-                    "test": "in_water",
-                    "subject": "other",
-                    "operator": "!=",
-                    "value": true
-                  }
-                ]
-              },
-              "max_dist": 16
-            },
-            {
-              "filters": {
-                "all_of": [
-                  {
-                    "test": "is_family",
-                    "subject": "other",
-                    "value": "skeleton"
-                  },
-                  {
-                    "test": "is_underwater",
-                    "subject": "other",
-                    "operator": "!=",
-                    "value": true
-                  }
-                ]
-              },
-              "max_dist": 16
-            },
-            {
-              "filters": {
-                  "test" :  "is_family", 
-                  "subject" : "other", 
-                  "value" :  "parasaurAngerer"
-               },
-              "max_dist": 35
-            }
-          ]
-        },
         "minecraft:on_target_acquired": {
           "event": "minecraft:become_angry",
           "target": "self"
@@ -290,6 +227,90 @@
             "event": "minecraft:on_unleash",
             "target": "self"
           }
+        }
+      },
+
+      "rift:default_targets": {
+        "minecraft:behavior.nearest_attackable_target": {
+          "priority": 2,
+          "reselect_targets": true,
+          "must_see": true,
+          "entity_types": [
+            {
+              "filters": {
+                "any_of": [
+                  { "test" :  "is_family", "subject" : "other", "value" :  "skeleton"},
+                  { "test" :  "is_family", "subject" : "other", "value" :  "sheep"},
+                  { "test" :  "is_family", "subject" : "other", "value" :  "rabbit"},
+                  { "test" :  "is_family", "subject" : "other", "value" :  "fox"}
+                ] 
+              },
+              "max_dist": 16
+            },
+            {
+              "filters": {
+                "all_of": [
+                  {
+                    "test": "is_family",
+                    "subject": "other",
+                    "value": "baby_turtle"
+                  },
+                  {
+                    "test": "in_water",
+                    "subject": "other",
+                    "operator": "!=",
+                    "value": true
+                  }
+                ]
+              },
+              "max_dist": 16
+            },
+            {
+              "filters": {
+                "all_of": [
+                  {
+                    "test": "is_family",
+                    "subject": "other",
+                    "value": "skeleton"
+                  },
+                  {
+                    "test": "is_underwater",
+                    "subject": "other",
+                    "operator": "!=",
+                    "value": true
+                  }
+                ]
+              },
+              "max_dist": 16
+            },
+            {
+              "filters": {
+                  "test" :  "is_family", 
+                  "subject" : "other", 
+                  "value" :  "parasaurAngerer"
+               },
+              "max_dist": 35
+            }
+          ]
+        }
+      },
+      "rift:attack_forced_attack_entity": {
+        "minecraft:behavior.nearest_attackable_target": {
+          "priority": 2,
+          "entity_types": [
+            {
+              "filters": {
+                  "test": "is_family", 
+                  "subject": "other", 
+                  "value": "isForcedAttacking"
+               },
+              "max_dist": 16
+            }
+          ]
+        },
+        "minecraft:on_target_escape": {
+          "event": "rift:no_force_attacked",
+          "target": "self"
         }
       }
     },
@@ -471,6 +492,42 @@
         "is_pushable_by_piston": true
       },
       "minecraft:conditional_bandwidth_optimization": {
+      },
+      "minecraft:damage_sensor": {
+        "triggers": [
+          {
+            "on_damage": {
+              "filters": {
+                "all_of": [
+                  {
+                    "test": "is_family",
+                    "subject": "other",
+                    "value": "forcedAttack"
+                  },
+                  {
+                    "test": "has_target",
+                    "subject": "self",
+                    "value": false
+                  },
+                  {
+                    "test": "has_component",
+                    "subject": "self",
+                    "operator": "!=",
+                    "value": "minecraft:is_tamed"
+                  },
+                  {
+                    "test": "has_component",
+                    "subject": "self",
+                    "operator": "!=",
+                    "value": "minecraft:is_baby"
+                  }
+                ]
+              },
+              "event": "rift:on_force_attacked",
+              "target": "self"
+            }
+          }
+        ]
       }
     },
 
@@ -485,7 +542,8 @@
             "add": {
               "component_groups": [
                 "minecraft:wolf_adult",
-                "minecraft:wolf_wild"
+                "minecraft:wolf_wild",
+                "rift:default_targets"
               ]
             }
           },
@@ -523,7 +581,8 @@
         },
         "add": {
           "component_groups": [
-            "minecraft:wolf_adult"
+            "minecraft:wolf_adult",
+            "rift:default_targets"
           ]
         }
       },
@@ -531,7 +590,8 @@
       "minecraft:ageable_set_baby": {
         "remove": {
           "component_groups": [
-            "minecraft:wolf_adult"
+            "minecraft:wolf_adult",
+            "rift:default_targets"
           ]
         },
         "add": {
@@ -544,7 +604,8 @@
       "minecraft:on_tame": {
         "remove": {
           "component_groups": [
-            "minecraft:wolf_wild"
+            "minecraft:wolf_wild",
+            "rift:default_targets"
           ]
         },
         "add": {
@@ -574,6 +635,31 @@
         "add": {
           "component_groups": [
             "minecraft:wolf_wild"
+          ]
+        }
+      },
+
+      "rift:on_force_attacked": {
+        "add": {
+          "component_groups": [
+            "rift:attack_forced_attack_entity"
+          ]
+        },
+        "remove": {
+          "component_groups": [
+            "rift:default_targets"
+          ]
+        }
+      },
+      "rift:no_force_attacked": {
+        "add": {
+          "component_groups": [
+            "rift:default_targets"
+          ]
+        },
+        "remove": {
+          "component_groups": [
+            "rift:attack_forced_attack_entity"
           ]
         }
       }

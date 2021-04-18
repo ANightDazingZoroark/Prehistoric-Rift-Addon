@@ -55,6 +55,42 @@
         "minecraft:equipment": {
           "table": "loot_tables/entities/zombified_piglin_rider_gear.json"
         }
+      },
+
+      "rift:default_targets": {
+        "minecraft:behavior.nearest_attackable_target": {
+          "priority": 2,
+          "within_radius": 25.0,
+          "entity_types": [
+            {
+              "filters": {
+                  "test" :  "is_family", 
+                  "subject" : "other", 
+                  "value" :  "parasaurAngerer"
+               },
+              "max_dist": 35
+            }
+          ]
+        }
+      },
+      "rift:attack_forced_attack_entity": {
+        "minecraft:behavior.nearest_attackable_target": {
+          "priority": 2,
+          "entity_types": [
+            {
+              "filters": {
+                  "test": "is_family", 
+                  "subject": "other", 
+                  "value": "isForcedAttacking"
+               },
+              "max_dist": 16
+            }
+          ]
+        },
+        "minecraft:on_target_escape": {
+          "event": "rift:no_force_attacked",
+          "target": "self"
+        }
       }
     },
 
@@ -391,23 +427,31 @@
           }
         ]
        },
-       "minecraft:behavior.nearest_attackable_target": {
-        "priority": 2,
-        "reselect_targets": true,
-        "within_radius": 25.0,
-        "must_see": true,
-        "entity_types": [
+      "minecraft:conditional_bandwidth_optimization": {
+      },
+      "minecraft:damage_sensor": {
+        "triggers": [
           {
-            "filters": {
-                "test" :  "is_family", 
-                "subject" : "other", 
-                "value" :  "parasaurAngerer"
-             },
-            "max_dist": 35
+            "on_damage": {
+              "filters": {
+                "all_of": [
+                  {
+                    "test": "is_family",
+                    "subject": "other",
+                    "value": "forcedAttack"
+                  },
+                  {
+                    "test": "has_target",
+                    "subject": "self",
+                    "value": false
+                  }
+                ]
+              },
+              "event": "rift:on_force_attacked",
+              "target": "self"
+            }
           }
         ]
-      },
-      "minecraft:conditional_bandwidth_optimization": {
       }
     },
 
@@ -455,7 +499,8 @@
             "add": {
               "component_groups": [
                 "minecraft:pig_zombie_adult",
-                "minecraft:pig_zombie_calm"
+                "minecraft:pig_zombie_calm",
+                "rift:default_targets"
               ]
             }
           },
@@ -466,7 +511,8 @@
             "add": {
               "component_groups": [
                 "minecraft:pig_zombie_baby",
-                "minecraft:pig_zombie_calm"
+                "minecraft:pig_zombie_calm",
+                "rift:default_targets"
               ]
 
             }
@@ -501,6 +547,31 @@
         "add": {
           "component_groups": [
             "minecraft:strider_jockey"
+          ]
+        }
+      },
+
+      "rift:on_force_attacked": {
+        "add": {
+          "component_groups": [
+            "rift:attack_forced_attack_entity"
+          ]
+        },
+        "remove": {
+          "component_groups": [
+            "rift:default_targets"
+          ]
+        }
+      },
+      "rift:no_force_attacked": {
+        "add": {
+          "component_groups": [
+            "rift:default_targets"
+          ]
+        },
+        "remove": {
+          "component_groups": [
+            "rift:attack_forced_attack_entity"
           ]
         }
       }
