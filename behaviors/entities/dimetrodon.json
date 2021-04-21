@@ -212,26 +212,16 @@
 				},
 				"minecraft:despawn": {
 					"despawn_from_distance": {}
-				}
-			},
-			"rift:dimetrodon_adult_calm": {
-				"minecraft:on_target_acquired": {
-					"filters": {
-						"test": "is_family",
-						"subject": "other",
-						"operator": "!=",
-						"value": "dimetrodon"
-					},
-					"event": "rift:become_angry",
-					"target": "self"
-				}
-			},
-			"rift:dimetrodon_adult_angry": {
-				"minecraft:angry": {
-					"duration": 60,
-					"calm_event": {
-						"event": "rift:calm_down",
-						"target": "self"
+				},
+				"minecraft:behavior.hurt_by_target": {
+					"priority": 3,
+					"entity_types": {
+						"filters": {
+						  	"test": "is_family",
+						  	"subject": "other",
+						  	"operator": "!=",
+						  	"value": "forcedAttack"
+						}
 					}
 				}
 			},
@@ -246,7 +236,9 @@
 						"rift:flesh_treat",
 						"rift:fish_treat"
 					]
-				},
+				}
+			},
+			"rift:default_targets": {
 				"minecraft:behavior.nearest_attackable_target": {
 					"priority": 1,
 					"reselect_targets": true,
@@ -304,6 +296,25 @@
 							}
 						}
 					]
+				}
+			},
+			"rift:attack_forced_attack_entity": {
+				"minecraft:behavior.nearest_attackable_target": {
+				  	"priority": 1,
+				  	"entity_types": [
+						{
+					  		"filters": {
+								"test": "is_family",
+								"subject": "other",
+								"value": "isForcedAttacking"
+					  		},
+					  		"max_dist": 35
+						}
+				  	]
+				},
+				"minecraft:on_target_escape": {
+					"event": "rift:no_force_attacked",
+				  	"target": "self"
 				}
 			},
             "rift:dimetrodon_adult_trusting": {
@@ -932,9 +943,6 @@
 				"hard_distance": 8,
 				"max_distance": 12
 			},
-			"minecraft:behavior.hurt_by_target": {
-				"priority": 3
-			},
 			"minecraft:behavior.random_look_around": {},
 			"minecraft:interact": {
 				"interactions": [
@@ -1170,6 +1178,38 @@
 							}
 						},
 						"deals_damage": false
+					},
+					{
+						"on_damage": {
+							"filters": {
+								"all_of": [
+									{
+								  		"test": "is_family",
+								  		"subject": "other",
+								  		"value": "forcedAttack"
+									},
+									{
+								  		"test": "has_target",
+								  		"subject": "self",
+								  		"value": false
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"operator": "!=",
+										"value": "minecraft:is_baby"
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"operator": "!=",
+										"value": "minecraft:is_tamed"
+									}
+							  	]
+							},
+							"event": "rift:on_force_attacked",
+							"target": "self"
+						}
 					}
 				]
 			}
@@ -1183,7 +1223,7 @@
 							"component_groups": [
 								"rift:dimetrodon_adult",
 								"rift:dimetrodon_adult_wild",
-								"rift:dimetrodon_adult_calm",
+								"rift:default_targets",
 								"rift:dimetrodon_adult_not_trusting",
 								"rift:dimetrodon_default_temperature_mode",
 								"rift:variant_one"
@@ -1196,7 +1236,7 @@
 							"component_groups": [
 								"rift:dimetrodon_adult",
 								"rift:dimetrodon_adult_wild",
-								"rift:dimetrodon_adult_calm",
+								"rift:default_targets",
 								"rift:dimetrodon_adult_not_trusting",
 								"rift:dimetrodon_default_temperature_mode",
 								"rift:variant_two"
@@ -1209,7 +1249,7 @@
 							"component_groups": [
 								"rift:dimetrodon_adult",
 								"rift:dimetrodon_adult_wild",
-								"rift:dimetrodon_adult_calm",
+								"rift:default_targets",
 								"rift:dimetrodon_adult_not_trusting",
 								"rift:dimetrodon_default_temperature_mode",
 								"rift:variant_three"
@@ -1222,7 +1262,7 @@
 							"component_groups": [
 								"rift:dimetrodon_adult",
 								"rift:dimetrodon_adult_wild",
-								"rift:dimetrodon_adult_calm",
+								"rift:default_targets",
 								"rift:dimetrodon_adult_not_trusting",
 								"rift:dimetrodon_default_temperature_mode",
 								"rift:variant_four"
@@ -1238,7 +1278,7 @@
 							"component_groups": [
 								"rift:dimetrodon_adult",
 								"rift:dimetrodon_adult_wild",
-								"rift:dimetrodon_adult_calm",
+								"rift:default_targets",
 								"rift:dimetrodon_adult_not_trusting",
 								"rift:dimetrodon_default_temperature_mode"
 							]
@@ -1265,7 +1305,7 @@
 							"component_groups": [
 								"rift:dimetrodon_baby_tamed",
 								"rift:dimetrodon_adult_wild",
-								"rift:dimetrodon_adult_calm",
+								"rift:default_targets",
 								"rift:dimetrodon_adult_not_trusting"
 							]
 						}
@@ -1285,30 +1325,6 @@
 					]
 				}
 			},
-			"rift:become_angry": {
-				"add": {
-					"component_groups": [
-						"rift:dimetrodon_adult_angry"
-					]
-				},
-				"remove": {
-					"component_groups": [
-						"rift:dimetrodon_adult_calm"
-					]
-				}
-			},
-			"rift:calm_down": {
-				"add": {
-					"component_groups": [
-						"rift:dimetrodon_adult_calm"
-					]
-				},
-				"remove": {
-					"component_groups": [
-						"rift:dimetrodon_adult_angry"
-					]
-				}
-			},
 			"rift:on_trust": {
 				"add": {
 					"component_groups": [
@@ -1318,6 +1334,7 @@
 				},
 				"remove": {
 					"component_groups": [
+						"rift:default_targets",
 						"rift:dimetrodon_adult_not_trusting",
 						"rift:dimetrodon_adult_wild"
 					]
@@ -1651,6 +1668,30 @@
 					"command": [
 						"kill @s"
 					]
+				}
+			},
+			"rift:on_force_attacked": {
+				"add": {
+				  	"component_groups": [
+						"rift:attack_forced_attack_entity"
+				  	]
+				},
+				"remove": {
+				  	"component_groups": [
+						"rift:default_targets"
+				  	]
+				}
+			},
+			"rift:no_force_attacked": {
+				"add": {
+					"component_groups": [
+						"rift:default_targets"
+				  	]
+				},
+				"remove": {
+				  	"component_groups": [
+						"rift:attack_forced_attack_entity"
+				  	]
 				}
 			}
         }
