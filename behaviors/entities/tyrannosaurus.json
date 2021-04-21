@@ -146,6 +146,17 @@
 						"event": "rift:on_tame",
 						"target": "self"
 					}
+				},
+				"minecraft:behavior.hurt_by_target": {
+					"priority": 3,
+					"entity_types": {
+						"filters": {
+						  	"test": "is_family",
+						  	"subject": "other",
+						  	"operator": "!=",
+							"value": "forcedAttack"
+						}
+					}
 				}
 			},
 			"rift:tyrannosaurus_baby_tamed": {
@@ -207,6 +218,17 @@
 				"minecraft:behavior.random_stroll": {},
 				"minecraft:despawn": {
 					"despawn_from_distance": {}
+				},
+				"minecraft:behavior.hurt_by_target": {
+					"priority": 3,
+					"entity_types": {
+						"filters": {
+						  	"test": "is_family",
+						  	"subject": "other",
+						  	"operator": "!=",
+							"value": "forcedAttack"
+						}
+					}
 				}
 			},
 			"rift:tyrannosaurus_adult_tamed": {
@@ -347,24 +369,24 @@
 					"within_radius": 25.0,
 					"must_see": true,
 					"entity_types": [
-					  {
-						"filters": {
-							"all_of": [
-								{
-									"test" :  "is_family", 
-									"subject" : "other", 
-									"value" :  "parasaurAngerer"
-								},
-								{
-									"test": "is_family",
-									"subject": "other",
-									"operator": "!=",
-									"value": "tyrannosaurus"
-								}
-							]
-						},
-						"max_dist": 35
-					  }
+					  	{
+							"filters": {
+								"all_of": [
+									{
+										"test" :  "is_family", 
+										"subject" : "other", 
+										"value" :  "parasaurAngerer"
+									},
+									{
+										"test": "is_family",
+										"subject": "other",
+										"operator": "!=",
+										"value": "tyrannosaurus"
+									}
+								]
+							},
+							"max_dist": 35
+					  	}
 					]
 				}
 			},
@@ -449,6 +471,25 @@
 							}
 						}
 					]
+				}
+			},
+			"rift:attack_forced_attack_entity": {
+				"minecraft:behavior.nearest_attackable_target": {
+					"priority": 2,
+					"entity_types": [
+					  	{
+							"filters": {
+							  	"test": "is_family",
+							  	"subject": "other",
+							  	"value": "isForcedAttacking"
+							},
+							"max_dist": 35
+					  	}
+					]
+			  	},
+			  	"minecraft:on_target_escape": {
+				  	"event": "rift:no_force_attacked",
+					"target": "self"
 				}
 			},
 			"rift:roar_in_wild": {
@@ -686,9 +727,6 @@
 				"track_target": true,
 				"reach_multiplier": 2.5
 			},
-			"minecraft:behavior.hurt_by_target": {
-				"priority": 3
-			},
 			"minecraft:movement": {
 				"value": 0.20
 			},
@@ -847,6 +885,32 @@
 							}
 						},
 						"deals_damage": false
+					},
+					{
+						"on_damage": {
+							"filters": {
+								"all_of": [
+							  		{
+										"test": "is_family",
+										"subject": "other",
+										"value": "forcedAttack"
+							  		},
+							  		{
+										"test": "has_target",
+										"subject": "self",
+										"value": false
+							  		},
+							  		{
+										"test": "has_component",
+										"subject": "self",
+										"operator": "!=",
+										"value": "minecraft:is_tamed"
+							  		}
+								]
+						  	},
+						  	"event": "rift:on_force_attacked",
+						  	"target": "self"
+						}
 					}
 				]
 			},
@@ -1398,6 +1462,31 @@
 					"component_groups": [
 						"rift:forced_attack_family"
 					]
+				}
+			},
+			"rift:on_force_attacked": {
+				"add": {
+					"component_groups": [
+						"rift:attack_forced_attack_entity"
+				  	]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:tyrannosaurus_hunting",
+						"rift:tyrannosaurus_not_hunting"
+					]
+				}
+			},
+			"rift:no_force_attacked": {
+				"add": {
+					"component_groups": [
+						"rift:tyrannosaurus_not_hunting"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:attack_forced_attack_entity"
+				  	]
 				}
 			}
 		}

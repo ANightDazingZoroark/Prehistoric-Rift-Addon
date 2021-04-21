@@ -98,7 +98,15 @@
 				},
 				"minecraft:behavior.random_stroll": {},
 				"minecraft:behavior.hurt_by_target": {
-					"priority": 3
+					"priority": 3,
+					"entity_types": {
+						"filters": {
+						  	"test": "is_family",
+						  	"subject": "other",
+						  	"operator": "!=",
+							"value": "forcedAttack"
+						}
+					}
 				}
 			},
 			"rift:triceratops_baby_calm": {
@@ -112,6 +120,12 @@
 					"broadcast_anger": true,
 					"duration": 60,
 					"broadcast_range": 30,
+					"broadcast_filters": {
+						"test": "is_family",
+						"subject": "other",
+						"operator": "!=",
+						"value": "minecraft:is_tamed"
+					},
 					"broadcast_targets": [
 						"triceratops"
 					],
@@ -221,7 +235,15 @@
 					"max": 48
 				},
 				"minecraft:behavior.hurt_by_target": {
-					"priority": 3
+					"priority": 3,
+					"entity_types": {
+						"filters": {
+						  	"test": "is_family",
+						  	"subject": "other",
+						  	"operator": "!=",
+							"value": "forcedAttack"
+						}
+					}
 				},
 				"minecraft:despawn": {
 					"despawn_from_distance": {}
@@ -235,28 +257,18 @@
 				"minecraft:on_friendly_anger": {
 					"event": "rift:become_angry",
 					"target": "self"
-				},
-				"minecraft:behavior.nearest_attackable_target": {
-					"priority": 2,
-					"reselect_targets": true,
-					"within_radius": 25.0,
-					"must_see": true,
-					"entity_types": [
-					  {
-						"filters": {
-							"test" :  "is_family", 
-							"subject" : "other", 
-							"value" :  "parasaurAngerer"
-						 },
-						"max_dist": 35
-					  }
-					]
-				  }
+				}
 			},
 			"rift:triceratops_adult_angry": {
 				"minecraft:angry": {
 					"broadcast_anger": true,
 					"broadcast_range": 30,
+					"broadcast_filters": {
+						"test": "is_family",
+						"subject": "other",
+						"operator": "!=",
+						"value": "minecraft:is_tamed"
+					},
 					"broadcast_targets": [
 						"triceratops"
 					],
@@ -346,6 +358,43 @@
 						"rift:crimson_thatch_block",
 						"rift:warped_thatch_block"
 					]
+				}
+			},
+			"rift:default_targets": {
+				"minecraft:behavior.nearest_attackable_target": {
+					"priority": 2,
+					"reselect_targets": true,
+					"within_radius": 25.0,
+					"must_see": true,
+					"entity_types": [
+					  	{
+							"filters": {
+								"test":  "is_family", 
+								"subject": "other", 
+								"value":  "parasaurAngerer"
+						 	},
+							"max_dist": 35
+					  	}
+					]
+				}
+			},
+			"rift:attack_forced_attack_entity": {
+				"minecraft:behavior.nearest_attackable_target": {
+				  	"priority": 2,
+				  	"entity_types": [
+						{
+					  		"filters": {
+								"test": "is_family",
+								"subject": "other",
+								"value": "isForcedAttacking"
+					  		},
+					  		"max_dist": 35
+						}
+				  	]
+				},
+				"minecraft:on_target_escape": {
+					"event": "rift:no_force_attacked",
+				  	"target": "self"
 				}
 			},
 			"rift:triceratops_adult_tamed": {
@@ -1001,6 +1050,32 @@
 							}
 						},
 						"deals_damage": false
+					},
+					{
+						"on_damage": {
+							"filters": {
+								"all_of": [
+									{
+								  		"test": "is_family",
+								  		"subject": "other",
+								  		"value": "forcedAttack"
+									},
+									{
+								  		"test": "has_target",
+								  		"subject": "self",
+								  		"value": false
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"operator": "!=",
+										"value": "minecraft:is_tamed"
+									}
+							  	]
+							},
+							"event": "rift:on_force_attacked",
+							"target": "self"
+						}
 					}
 				]
 			},
@@ -1178,6 +1253,7 @@
 										"rift:triceratops_adult",
 										"rift:triceratops_adult_wild",
 										"rift:triceratops_adult_calm",
+										"rift:default_targets",
 										"rift:variant_zero",
 										"rift:pushable"
 									]
@@ -1190,6 +1266,7 @@
 										"rift:triceratops_adult",
 										"rift:triceratops_adult_wild",
 										"rift:triceratops_adult_calm",
+										"rift:default_targets",
 										"rift:variant_one",
 										"rift:pushable"
 									]
@@ -1202,6 +1279,7 @@
 										"rift:triceratops_adult",
 										"rift:triceratops_adult_wild",
 										"rift:triceratops_adult_calm",
+										"rift:default_targets",
 										"rift:variant_two",
 										"rift:pushable"
 									]
@@ -1214,6 +1292,7 @@
 										"rift:triceratops_adult",
 										"rift:triceratops_adult_wild",
 										"rift:triceratops_adult_calm",
+										"rift:default_targets",
 										"rift:variant_three",
 										"rift:pushable"
 									]
@@ -1293,7 +1372,8 @@
 							"component_groups": [
 								"rift:triceratops_adult",
 								"rift:triceratops_adult_wild",
-								"rift:triceratops_adult_calm"
+								"rift:triceratops_adult_calm",
+								"rift:default_targets"
 							]
 						},
 						"remove": {
@@ -1323,7 +1403,8 @@
 								"rift:triceratops_baby",
 								"rift:triceratops_baby_tamed",
 								"rift:triceratops_adult_wild",
-								"rift:triceratops_adult_calm"
+								"rift:triceratops_adult_calm",
+								"rift:default_targets"
 							]
 						}
 					}
@@ -1380,7 +1461,9 @@
 				"remove": {
 					"component_groups": [
 						"rift:triceratops_adult_wild",
-						"rift:triceratops_adult_calm"
+						"rift:triceratops_adult_calm",
+						"rift:default_targets",
+						"rift:attack_forced_attack_entity"
 					]
 				}
 			},
@@ -1662,6 +1745,41 @@
 						"rift:forced_attack_family"
 					]
 				}
+			},
+			"rift:on_force_attacked": {
+				"add": {
+					"component_groups": [
+						"rift:attack_forced_attack_entity"
+				  	]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:default_targets"
+					]
+				}
+			},
+			"rift:no_force_attacked": {
+				"sequence": [
+					{
+						"remove": {
+							"component_groups": [
+								"rift:attack_forced_attack_entity"
+							]
+						}
+					},
+					{
+						"filters": {
+							"test": "has_component",
+							"operator": "!=",
+							"value": "minecraft:is_baby"
+						},
+						"add": {
+							"component_groups": [
+								"rift:default_targets"
+							]
+						}
+					}
+				]
 			}
 		}
 	}

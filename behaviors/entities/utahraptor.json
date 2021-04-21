@@ -177,7 +177,15 @@
                 },
                 "minecraft:behavior.random_stroll": {},
 				"minecraft:behavior.hurt_by_target": {
-					"priority": 3
+					"priority": 3,
+					"entity_types": {
+						"filters": {
+						  	"test": "is_family",
+						  	"subject": "other",
+						  	"operator": "!=",
+							"value": "forcedAttack"
+						}
+					}
 				}
             },
             "rift:utahraptor_baby_tamed": {
@@ -273,7 +281,15 @@
 					]
 				},
 				"minecraft:behavior.hurt_by_target": {
-					"priority": 3
+					"priority": 3,
+					"entity_types": {
+						"filters": {
+						  	"test": "is_family",
+						  	"subject": "other",
+						  	"operator": "!=",
+							"value": "forcedAttack"
+						}
+					}
 				},
 				"minecraft:despawn": {
 					"despawn_from_distance": {}
@@ -291,17 +307,7 @@
 					"strike_dist": 8
 				}
 			},
-            "rift:utahraptor_adult_wild_not_trusting": {
-                "minecraft:trusting": {
-                    "probability": 0.25,
-                    "trust_event": {
-                        "event": "rift:on_trust",
-                        "target": "self"
-                    },
-                    "trust_items": [
-                        "rift:flesh_treat"
-                    ]
-                },
+			"rift:default_targets": {
 				"minecraft:behavior.nearest_attackable_target": {
 					"priority": 2,
 					"reselect_targets": false,
@@ -389,7 +395,38 @@
 							}
 						}
 					]
-				}                
+				}
+			},
+			"rift:attack_forced_attack_entity": {
+				"minecraft:behavior.nearest_attackable_target": {
+				  	"priority": 2,
+				  	"entity_types": [
+						{
+					  		"filters": {
+								"test": "is_family",
+								"subject": "other",
+								"value": "isForcedAttacking"
+					  		},
+					  		"max_dist": 25
+						}
+				  	]
+				},
+				"minecraft:on_target_escape": {
+					"event": "rift:no_force_attacked",
+				  	"target": "self"
+				}
+			},
+            "rift:utahraptor_adult_wild_not_trusting": {
+                "minecraft:trusting": {
+                    "probability": 0.25,
+                    "trust_event": {
+                        "event": "rift:on_trust",
+                        "target": "self"
+                    },
+                    "trust_items": [
+                        "rift:flesh_treat"
+                    ]
+                }            
             },
             "rift:utahraptor_adult_trusting": {
                 "minecraft:trust": {}                               
@@ -1023,6 +1060,32 @@
 							}
 						},
 						"deals_damage": false
+					},
+					{
+						"on_damage": {
+							"filters": {
+								"all_of": [
+							  		{
+										"test": "is_family",
+										"subject": "other",
+										"value": "forcedAttack"
+							  		},
+							  		{
+										"test": "has_target",
+										"subject": "self",
+										"value": false
+							  		},
+							  		{
+										"test": "has_component",
+										"subject": "self",
+										"operator": "!=",
+										"value": "minecraft:is_tamed"
+							  		}
+								]
+						  	},
+						  	"event": "rift:on_force_attacked",
+						  	"target": "self"
+						}
 					}
 				]
 			},
@@ -1328,6 +1391,7 @@
 							"component_groups": [
 								"rift:utahraptor_adult",
 								"rift:utahraptor_adult_wild",
+								"rift:default_targets",
 								"rift:variant_zero",
                                 "rift:utahraptor_adult_wild_not_trusting",
 								"rift:utahraptor_adult_can_pounce",
@@ -1341,6 +1405,7 @@
 							"component_groups": [
 								"rift:utahraptor_adult",
 								"rift:utahraptor_adult_wild",
+								"rift:default_targets",
 								"rift:variant_one",
                                 "rift:utahraptor_adult_wild_not_trusting",
 								"rift:utahraptor_adult_can_pounce",
@@ -1354,6 +1419,7 @@
 							"component_groups": [
 								"rift:utahraptor_adult",
 								"rift:utahraptor_adult_wild",
+								"rift:default_targets",
 								"rift:variant_two",
                                 "rift:utahraptor_adult_wild_not_trusting",
 								"rift:utahraptor_adult_can_pounce",
@@ -1367,6 +1433,7 @@
 							"component_groups": [
 								"rift:utahraptor_adult",
 								"rift:utahraptor_adult_wild",
+								"rift:default_targets",
 								"rift:variant_three",
                                 "rift:utahraptor_adult_wild_not_trusting",
 								"rift:utahraptor_adult_can_pounce",
@@ -1389,29 +1456,9 @@
 							"component_groups": [
 								"rift:utahraptor_adult",
 								"rift:utahraptor_adult_wild",
+								"rift:default_targets",
 								"rift:utahraptor_adult_wild_not_trusting",
 								"rift:utahraptor_adult_can_pounce"
-							]
-						},
-						"remove": {
-							"component_groups": [
-								"rift:utahraptor_baby",
-								"rift:utahraptor_baby_wild"
-							]
-						}
-					},
-					{
-						"filters": {
-							"test": "has_component",
-							"operator": "!=",
-							"subject": "self",
-							"value": "minecraft:is_tamed"
-						},
-						"add": {
-							"component_groups": [
-								"rift:utahraptor_adult",
-								"rift:utahraptor_adult_wild",
-								"rift:utahraptor_adult_wild_not_trusting"
 							]
 						},
 						"remove": {
@@ -1439,6 +1486,7 @@
 								"rift:utahraptor_baby",
 								"rift:utahraptor_baby_tamed",
 								"rift:utahraptor_adult_wild",
+								"rift:default_targets",
 								"rift:utahraptor_adult_wild_not_trusting"
 							]
 						}
@@ -1478,7 +1526,8 @@
 				},
 				"remove": {
 					"component_groups": [
-						"rift:utahraptor_adult_wild_not_trusting"
+						"rift:utahraptor_adult_wild_not_trusting",
+						"rift:default_targets"
 					]
 				},
 				"run_command": {
@@ -1842,6 +1891,41 @@
 						"rift:forced_attack_family"
 					]
 				}
+			},
+			"rift:on_force_attacked": {
+				"add": {
+					"component_groups": [
+						"rift:attack_forced_attack_entity"
+				  	]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:default_targets"
+					]
+				}
+			},
+			"rift:no_force_attacked": {
+				"sequence": [
+					{
+						"remove": {
+							"component_groups": [
+								"rift:attack_forced_attack_entity"
+							]
+						}
+					},
+					{
+						"filters": {
+							"test": "has_component",
+							"operator": "!=",
+							"value": "minecraft:is_baby"
+						},
+						"add": {
+							"component_groups": [
+								"rift:default_targets"
+							]
+						}
+					}
+				]
 			}
         }
     }

@@ -1535,19 +1535,34 @@
                 }
 			},
             "rift:adult_on_calm": {
-                "add": {
-					"component_groups": [
-                        "rift:parasaurolophus_adult_calm",
-                        "rift:is_quadrapedal",
-						"rift:default_targets"
-					]
-				},
-				"remove": {
-					"component_groups": [
-						"rift:parasaurolophus_adult_scared",
-						"rift:attack_forced_attack_entity"
-					]
-                }
+				"sequence": [
+					{
+						"add": {
+							"component_groups": [
+								"rift:parasaurolophus_adult_calm",
+								"rift:is_quadrapedal"
+							]
+						},
+						"remove": {
+							"component_groups": [
+								"rift:attack_forced_attack_entity",
+								"rift:parasaurolophus_adult_scared"
+							]
+						}
+					},
+					{
+						"filters": {
+							"test": "has_component",
+							"operator": "!=",
+							"value": "minecraft:is_baby"
+						},
+						"add": {
+							"component_groups": [
+								"rift:default_targets"
+							]
+						}
+					}
+				]
             },
             "rift:attach_saddle": {
 				"add": {
