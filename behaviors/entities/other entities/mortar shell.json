@@ -1,0 +1,77 @@
+{
+    "format_version": "1.16.0",
+    "minecraft:entity": {
+        "description": {
+            "identifier": "rift:mortar_shell",
+            "is_spawnable": false,
+            "is_summonable": true,
+            "is_experimental": false
+        },
+        "component_groups": {
+            "rift:explode": {
+                "minecraft:explode": {
+                    "fuse_length": 0,
+                    "fuse_lit": true,
+                    "power": 8
+                }
+            }
+        },
+        "components": {
+            "minecraft:physics": {},
+            "minecraft:pushable": {
+                "is_pushable": true,
+                "is_pushable_by_piston": true
+            },
+            "minecraft:environment_sensor": {
+                "triggers": [
+                    {
+                        "filters": {
+                            "test": "on_ground",
+                            "subject": "self",
+                            "value": true
+                        },
+                        "event": "rift:explode",
+                        "target": "self"
+                    }
+                ]
+            },
+            "minecraft:entity_sensor": {
+                "sensor_range": 1,
+                "minimum_count": 1,
+                "event_filters": {
+                    "any_of": [
+                        {
+                            "test": "is_family",
+                            "subject": "other",
+                            "value": "mob"
+                        }
+                    ]
+                },
+                "event": "rift:explode"
+            },
+            "minecraft:damage_sensor": {
+				"triggers": [
+					{
+						"on_damage": {
+						  	"event": "rift:explode",
+						  	"target": "self"
+						}
+					},
+                    {
+						"deals_damage": false,
+						"cause": "fall"
+					}
+				]
+			}
+        },
+        "events": {
+            "rift:explode": {
+                "add": {
+                    "component_groups": [
+                        "rift:explode"
+                    ]
+                }
+            }
+        }
+    }
+}
