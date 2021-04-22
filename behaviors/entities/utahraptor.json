@@ -412,7 +412,7 @@
 				  	]
 				},
 				"minecraft:on_target_escape": {
-					"event": "rift:no_force_attacked",
+					"event": "rift:no_force_attacked_adult",
 				  	"target": "self"
 				}
 			},
@@ -1080,10 +1080,16 @@
 										"subject": "self",
 										"operator": "!=",
 										"value": "minecraft:is_tamed"
+							  		},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"operator": "!=",
+										"value": "minecraft:is_baby"
 							  		}
 								]
 						  	},
-						  	"event": "rift:on_force_attacked",
+						  	"event": "rift:on_force_attacked_adult",
 						  	"target": "self"
 						}
 					}
@@ -1892,7 +1898,7 @@
 					]
 				}
 			},
-			"rift:on_force_attacked": {
+			"rift:on_force_attacked_adult": {
 				"add": {
 					"component_groups": [
 						"rift:attack_forced_attack_entity"
@@ -1904,28 +1910,17 @@
 					]
 				}
 			},
-			"rift:no_force_attacked": {
-				"sequence": [
-					{
-						"remove": {
-							"component_groups": [
-								"rift:attack_forced_attack_entity"
-							]
-						}
-					},
-					{
-						"filters": {
-							"test": "has_component",
-							"operator": "!=",
-							"value": "minecraft:is_baby"
-						},
-						"add": {
-							"component_groups": [
-								"rift:default_targets"
-							]
-						}
-					}
-				]
+			"rift:no_force_attacked_adult": {
+				"add": {
+					"component_groups": [
+						"rift:default_targets"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:attack_forced_attack_entity"
+					]
+				}
 			}
         }
     }

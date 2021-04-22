@@ -378,9 +378,10 @@
 					]
 				}
 			},
-			"rift:attack_forced_attack_entity": {
+			"rift:attack_forced_attack_entity_adult": {
 				"minecraft:behavior.nearest_attackable_target": {
 				  	"priority": 2,
+					"within_radius": 35,
 				  	"entity_types": [
 						{
 					  		"filters": {
@@ -393,7 +394,27 @@
 				  	]
 				},
 				"minecraft:on_target_escape": {
-					"event": "rift:no_force_attacked",
+					"event": "rift:no_force_attacked_adult",
+				  	"target": "self"
+				}
+			},
+			"rift:attack_forced_attack_entity_baby": {
+				"minecraft:behavior.nearest_attackable_target": {
+				  	"priority": 2,
+					"within_radius": 35,
+				  	"entity_types": [
+						{
+					  		"filters": {
+								"test": "is_family",
+								"subject": "other",
+								"value": "isForcedAttacking"
+					  		},
+					  		"max_dist": 35
+						}
+				  	]
+				},
+				"minecraft:on_target_escape": {
+					"event": "rift:no_force_attacked_baby",
 				  	"target": "self"
 				}
 			},
@@ -1070,10 +1091,47 @@
 										"subject": "self",
 										"operator": "!=",
 										"value": "minecraft:is_tamed"
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"operator": "!=",
+										"value": "minecraft:is_baby"
 									}
 							  	]
 							},
-							"event": "rift:on_force_attacked",
+							"event": "rift:on_force_attacked_adult",
+							"target": "self"
+						}
+					},
+					{
+						"on_damage": {
+							"filters": {
+								"all_of": [
+									{
+								  		"test": "is_family",
+								  		"subject": "other",
+								  		"value": "forcedAttack"
+									},
+									{
+								  		"test": "has_target",
+								  		"subject": "self",
+								  		"value": false
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"operator": "!=",
+										"value": "minecraft:is_tamed"
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_baby"
+									}
+							  	]
+							},
+							"event": "rift:on_force_attacked_baby",
 							"target": "self"
 						}
 					}
@@ -1463,7 +1521,7 @@
 						"rift:triceratops_adult_wild",
 						"rift:triceratops_adult_calm",
 						"rift:default_targets",
-						"rift:attack_forced_attack_entity"
+						"rift:attack_forced_attack_entity_adult"
 					]
 				}
 			},
@@ -1746,10 +1804,10 @@
 					]
 				}
 			},
-			"rift:on_force_attacked": {
+			"rift:on_force_attacked_adult": {
 				"add": {
 					"component_groups": [
-						"rift:attack_forced_attack_entity"
+						"rift:attack_forced_attack_entity_adult"
 				  	]
 				},
 				"remove": {
@@ -1758,28 +1816,31 @@
 					]
 				}
 			},
-			"rift:no_force_attacked": {
-				"sequence": [
-					{
-						"remove": {
-							"component_groups": [
-								"rift:attack_forced_attack_entity"
-							]
-						}
-					},
-					{
-						"filters": {
-							"test": "has_component",
-							"operator": "!=",
-							"value": "minecraft:is_baby"
-						},
-						"add": {
-							"component_groups": [
-								"rift:default_targets"
-							]
-						}
-					}
-				]
+			"rift:no_force_attacked_adult": {
+				"add": {
+					"component_groups": [
+						"rift:default_targets"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:attack_forced_attack_entity_adult"
+					]
+				}
+			},
+			"rift:on_force_attacked_baby": {
+				"add": {
+					"component_groups": [
+						"rift:attack_forced_attack_entity_baby"
+				  	]
+				}
+			},
+			"rift:no_force_attacked_baby": {
+				"remove": {
+					"component_groups": [
+						"rift:attack_forced_attack_entity_baby"
+					]
+				}
 			}
 		}
 	}
