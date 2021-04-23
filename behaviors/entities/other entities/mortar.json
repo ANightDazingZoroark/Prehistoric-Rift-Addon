@@ -55,10 +55,48 @@
                                             "test": "is_sneaking",
                                             "subject": "other",
                                             "value": true
+                                        },
+                                        {
+                                            "test": "is_underground",
+                                            "subject": "self",
+                                            "value": false
                                         }
                                     ]
                                 },
-                                "event": "rift:fire_cannon",
+                                "event": "rift:fire_cannon_not_underground",
+                                "target": "self"
+                            },
+                            "particle_on_start": {
+                                "particle_type": "smoke",
+                                "particle_y_offset": 0.25,
+                                "particle_offset_towards_interactor": true
+                            },
+                            "interact_text": "action.interact.firecannon"
+                        },
+                        {
+                            "on_interact": {
+                                "filters": {
+                                    "all_of": [
+                                        {
+                                            "test": "has_equipment",
+                                            "subject": "other",
+                                            "domain": "hand",
+                                            "operator": "!=",
+                                            "value": "rift:mortar_shell"
+                                        },
+                                        {
+                                            "test": "is_sneaking",
+                                            "subject": "other",
+                                            "value": true
+                                        },
+                                        {
+                                            "test": "is_underground",
+                                            "subject": "self",
+                                            "value": true
+                                        }
+                                    ]
+                                },
+                                "event": "rift:fire_cannon_underground",
                                 "target": "self"
                             },
                             "particle_on_start": {
@@ -71,11 +109,29 @@
                     ]
                 }
             },
-            "rift:fire_mortar_shell": {
+            "rift:fire_mortar_shell_not_underground": {
 				"minecraft:timer": {
 					"time": 0.05,
 					"time_down_event":{
-						"event": "rift:stop_firing",
+						"event": "rift:stop_firing_not_underground",
+						"target": "self"
+					}
+				}
+            },
+            "rift:fire_mortar_shell_underground": {
+                "minecraft:spawn_entity": {
+					"entities": {
+						"spawn_entity": "rift:mortar_shell",
+                        "spawn_event": "rift:spawned_while_underground",
+						"single_use": true,
+						"min_wait_time": 0,
+						"max_wait_time": 0
+					}
+                },
+                "minecraft:timer": {
+					"time": 0.05,
+					"time_down_event":{
+						"event": "rift:stop_firing_underground",
 						"target": "self"
 					}
 				}
@@ -146,10 +202,10 @@
                     ]
                 }
             },
-            "rift:fire_cannon": {
+            "rift:fire_cannon_not_underground": {
                 "add": {
                     "component_groups": [
-                        "rift:fire_mortar_shell"
+                        "rift:fire_mortar_shell_not_underground"
                     ]
                 },
                 "remove": {
@@ -159,11 +215,11 @@
                 },
                 "run_command": {
                     "command": [
-                        "execute @e[tag=!tamed, type=!player, type=!item, type=!rift:mortar, type=!rift:mortar_shell, c=1] ~ ~ ~ summon rift:mortar_shell ~ ~+30 ~"
+                        "execute @e[tag=!tamed, type=!player, type=!item, type=!rift:mortar, type=!rift:mortar_shell, type=!rift:egg, c=1, rm=16, r=64] ~ ~ ~ summon rift:mortar_shell ~ ~+30 ~"
                     ]
                 }
             },
-            "rift:stop_firing": {
+            "rift:stop_firing_not_underground": {
                 "add": {
                     "component_groups": [
                         "rift:empty"
@@ -171,7 +227,31 @@
                 },
                 "remove": {
                     "component_groups": [
-                        "rift:fire_mortar_shell"
+                        "rift:fire_mortar_shell_not_underground"
+                    ]
+                }
+            },
+            "rift:fire_cannon_underground": {
+                "add": {
+                    "component_groups": [
+                        "rift:fire_mortar_shell_underground"
+                    ]
+                },
+                "remove": {
+                    "component_groups": [
+                        "rift:loaded"
+                    ]
+                }
+            },
+            "rift:stop_firing_underground": {
+                "add": {
+                    "component_groups": [
+                        "rift:empty"
+                    ]
+                },
+                "remove": {
+                    "component_groups": [
+                        "rift:fire_mortar_shell_underground"
                     ]
                 }
             },

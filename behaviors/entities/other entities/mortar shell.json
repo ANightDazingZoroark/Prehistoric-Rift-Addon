@@ -5,9 +5,29 @@
             "identifier": "rift:mortar_shell",
             "is_spawnable": false,
             "is_summonable": true,
-            "is_experimental": false
+            "is_experimental": false,
+            "animations": {
+                "contMortarShell": "controller.animation.mortar_shell_underground"
+            },
+            "scripts": {
+                "animate": [
+                    "contMortarShell"
+                ]
+            }
         },
         "component_groups": {
+            "rift:underground_not_ready": {
+                "minecraft:timer": {
+                    "time": 0.1,
+                    "time_down_event": {
+                        "event": "rift:become_ready_underground",
+                        "target": "self"
+                    }
+                }
+            },
+            "rift:underground_ready": {
+                "minecraft:is_sheared": {}
+            },
             "rift:explode": {
                 "minecraft:explode": {
                     "fuse_length": 0,
@@ -32,6 +52,24 @@
                         },
                         "event": "rift:explode",
                         "target": "self"
+                    },
+                    {
+                        "filters": {
+                            "all_of": [
+                                {
+                                    "test": "is_moving",
+                                    "subject": "self",
+                                    "value": false
+                                },
+                                {
+                                    "test": "has_component",
+                                    "subject": "self",
+                                    "value": "minecraft:is_sheared"
+                                }
+                            ]
+                        },
+                        "event": "rift:explode",
+                        "target": "self"
                     }
                 ]
             },
@@ -39,11 +77,16 @@
                 "sensor_range": 1,
                 "minimum_count": 1,
                 "event_filters": {
-                    "any_of": [
+                    "all_of": [
                         {
                             "test": "is_family",
                             "subject": "other",
                             "value": "mob"
+                        },
+                        {
+                            "test": "is_underground",
+                            "subject": "self",
+                            "value": false
                         }
                     ]
                 },
@@ -65,6 +108,30 @@
 			}
         },
         "events": {
+            "rift:spawned_while_underground": {
+                "add": {
+                    "component_groups": [
+                        "rift:underground_not_ready"
+                    ]
+                },
+                "run_command": {
+                    "command": [
+                        "effect @s levitation 69420666 255 true"
+                    ]
+                }
+            },
+            "rift:become_ready_underground": {
+                "add": {
+                    "component_groups": [
+                        "rift:underground_ready"
+                    ]
+                },
+                "remove": {
+                    "component_groups": [
+                        "rift:underground_not_ready"
+                    ]
+                }
+            },
             "rift:explode": {
                 "add": {
                     "component_groups": [
