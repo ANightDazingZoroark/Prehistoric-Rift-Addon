@@ -701,7 +701,6 @@
             },
             "rift:apatosaurus_platformed": {
                 "minecraft:is_saddled": {},
-                "minecraft:is_chested": {},
 				"minecraft:input_ground_controlled": {},
 				"minecraft:can_power_jump": {},
 				"minecraft:horse.jump_strength": {
@@ -711,6 +710,24 @@
 					}
 				}
             },
+			"rift:apatosaurus_chested": {
+				"minecraft:is_chested": {}
+			},
+			"rift:apatosaurus_no_weapons": {
+				"minecraft:skin_id": {
+					"value": 0
+				}
+			},
+			"rift:apatosaurus_has_cannons": {
+				"minecraft:skin_id": {
+					"value": 1
+				}
+			},
+			"rift:apatosaurus_has_mortars": {
+				"minecraft:skin_id": {
+					"value": 2
+				}
+			},
             "rift:apatosaurus_harvest": {
 				"minecraft:timer": {
 					"time": 0.52,
@@ -1009,6 +1026,191 @@
 			},
 			"minecraft:interact": {
 				"interactions": [
+					{
+						"on_interact": {
+							"filters": {
+								"all_of": [
+									{
+										"test": "has_equipment",
+										"subject": "other",
+										"domain": "hand",
+										"value": "minecraft:chest"
+									},
+									{
+										"test": "is_owner",
+										"subject": "other",
+										"value": true
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_baby",
+										"operator": "!="
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_tamed"
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_saddled"
+									},
+									{
+										"test": "is_sneaking",
+										"subject": "other",
+										"value": true
+									}
+								]
+							},
+							"event": "rift:attach_chest",
+							"target": "self"
+						},
+						"interact_text": "action.interact.attachchest",
+						"use_item": true
+					},
+					{
+						"on_interact": {
+							"filters": {
+								"all_of": [
+									{
+										"test": "has_equipment",
+										"subject": "other",
+										"domain": "hand",
+										"value": "rift:cannon"
+									},
+									{
+										"test": "is_owner",
+										"subject": "other",
+										"value": true
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_baby",
+										"operator": "!="
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_tamed"
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_saddled"
+									},
+									{
+										"test": "is_skin_id",
+										"subject": "self",
+										"value": 0
+									},
+									{
+										"test": "is_sneaking",
+										"subject": "other",
+										"value": true
+									}
+								]
+							},
+							"event": "rift:attach_cannon",
+							"target": "self"
+						},
+						"interact_text": "action.interact.attachchest",
+						"use_item": true
+					},
+					{
+						"on_interact": {
+							"filters": {
+								"all_of": [
+									{
+										"test": "has_equipment",
+										"subject": "other",
+										"domain": "hand",
+										"value": "rift:mortar"
+									},
+									{
+										"test": "is_owner",
+										"subject": "other",
+										"value": true
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_baby",
+										"operator": "!="
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_tamed"
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_saddled"
+									},
+									{
+										"test": "is_skin_id",
+										"subject": "self",
+										"value": 0
+									},
+									{
+										"test": "is_sneaking",
+										"subject": "other",
+										"value": true
+									}
+								]
+							},
+							"event": "rift:attach_mortar",
+							"target": "self"
+						},
+						"interact_text": "action.interact.attachchest",
+						"use_item": true
+					},
+					{
+						"on_interact": {
+							"filters": {
+								"all_of": [
+									{
+										"test": "has_equipment",
+										"subject": "other",
+										"domain": "hand",
+										"value": "rift:wrench"
+									},
+									{
+										"test": "is_owner",
+										"subject": "other",
+										"value": true
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_baby",
+										"operator": "!="
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_tamed"
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_saddled"
+									},
+									{
+										"test": "is_sneaking",
+										"subject": "other",
+										"value": true
+									}
+								]
+							},
+							"event": "rift:remove_platform_weapons",
+							"target": "self"
+						},
+						"interact_text": "action.interact.attachchest"
+					},
 					{
 						"on_interact": {
 							"filters": {
@@ -1538,7 +1740,8 @@
             "rift:attach_saddle": {
                 "add": {
                     "component_groups": [
-                        "rift:apatosaurus_platformed"
+                        "rift:apatosaurus_platformed",
+						"rift:apatosaurus_no_weapons"
                     ]
                 },
 				"run_command": {
@@ -1548,9 +1751,17 @@
 				}
             },
             "rift:remove_saddle": {
+				"add": {
+					"component_groups": [
+						"rift:apatosaurus_no_weapons"
+					]
+				},
                 "remove": {
                     "component_groups": [
-                        "rift:apatosaurus_platformed"
+                        "rift:apatosaurus_platformed",
+						"rift:apatosaurus_chested",
+						"rift:apatosaurus_has_cannons",
+						"rift:apatosaurus_has_mortars"
                     ]
                 },
 				"run_command": {
@@ -1559,6 +1770,50 @@
 					]
 				}
             },
+			"rift:attach_chest": {
+				"add": {
+					"component_groups": [
+						"rift:apatosaurus_chested"
+					]
+				}
+			},
+			"rift:attach_cannon": {
+				"add": {
+					"component_groups": [
+						"rift:apatosaurus_has_cannons"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:apatosaurus_no_weapons"
+					]
+				}
+			},
+			"rift:attach_mortar": {
+				"add": {
+					"component_groups": [
+						"rift:apatosaurus_has_mortars"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:apatosaurus_no_weapons"
+					]
+				}
+			},
+			"rift:remove_platform_weapons": {
+				"add": {
+					"component_groups": [
+						"rift:apatosaurus_no_weapons"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:apatosaurus_has_cannons",
+						"rift:apatosaurus_has_mortars"
+					]
+				}
+			},
             "rift:apato_no_harvest": {
                 "remove": {
                     "component_groups": [
