@@ -1243,6 +1243,11 @@
 										"value": "minecraft:is_tamed"
 									},
 									{
+										"test": "is_skin_id",
+										"subject": "self",
+										"value": 1
+									},
+									{
 										"test": "is_sneaking",
 										"subject": "other",
 										"value": true
@@ -1250,6 +1255,55 @@
 								]
 							},
 							"event": "rift:attach_cannonball",
+							"target": "self"
+						},
+						"interact_text": "action.interact.insertcannon",
+						"use_item": true
+					},
+					{
+						"on_interact": {
+							"filters": {
+								"all_of": [
+									{
+										"test": "has_equipment",
+										"subject": "other",
+										"domain": "hand",
+										"value": "rift:mortar_shell"
+									},
+									{
+										"test": "is_owner",
+										"subject": "other",
+										"value": true
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_baby",
+										"operator": "!="
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_saddled"
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_tamed"
+									},
+									{
+										"test": "is_skin_id",
+										"subject": "self",
+										"value": 2
+									},
+									{
+										"test": "is_sneaking",
+										"subject": "other",
+										"value": true
+									}
+								]
+							},
+							"event": "rift:attach_mortar_shell",
 							"target": "self"
 						},
 						"interact_text": "action.interact.insertcannon",
@@ -1364,6 +1418,11 @@
 									"subject": "self"
 								},
 								{
+									"test": "is_skin_id",
+									"subject": "self",
+									"value": 1
+								},
+								{
 									"test": "has_component",
 									"operator": "!=",
 									"value": "minecraft:is_baby",
@@ -1377,6 +1436,96 @@
 							]
 						},
 						"event": "rift:apato_firing"
+					},
+					{
+						"filters": {
+							"all_of": [
+								{
+									"test": "has_tag",
+									"value": "apatoMortarFire",
+									"subject": "self",
+									"operator": "=="
+								},
+								{
+									"test": "rider_count",
+									"operator": ">",
+									"value": 0,
+									"subject": "self"
+								},
+								{
+									"test": "has_component",
+									"value": "minecraft:is_tamed",
+									"subject": "self"
+								},
+								{
+									"test": "is_skin_id",
+									"subject": "self",
+									"value": 2
+								},
+								{
+									"test": "is_underground",
+									"subject": "self",
+									"value": false
+								},
+								{
+									"test": "has_component",
+									"operator": "!=",
+									"value": "minecraft:is_baby",
+									"subject": "self"
+								},
+								{
+									"test": "has_component",
+									"value": "minecraft:is_saddled",
+									"subject": "self"
+								}
+							]
+						},
+						"event": "rift:apato_mortaring_not_underground"
+					},
+					{
+						"filters": {
+							"all_of": [
+								{
+									"test": "has_tag",
+									"value": "apatoMortarFire",
+									"subject": "self",
+									"operator": "=="
+								},
+								{
+									"test": "rider_count",
+									"operator": ">",
+									"value": 0,
+									"subject": "self"
+								},
+								{
+									"test": "has_component",
+									"value": "minecraft:is_tamed",
+									"subject": "self"
+								},
+								{
+									"test": "is_skin_id",
+									"subject": "self",
+									"value": 2
+								},
+								{
+									"test": "is_underground",
+									"subject": "self",
+									"value": true
+								},
+								{
+									"test": "has_component",
+									"operator": "!=",
+									"value": "minecraft:is_baby",
+									"subject": "self"
+								},
+								{
+									"test": "has_component",
+									"value": "minecraft:is_saddled",
+									"subject": "self"
+								}
+							]
+						},
+						"event": "rift:apato_mortaring_underground"
 					},
 					{
 						"filters": {
@@ -1743,32 +1892,75 @@
                         "rift:apatosaurus_platformed",
 						"rift:apatosaurus_no_weapons"
                     ]
-                },
-				"run_command": {
-					"command": [
-						"scoreboard players set @s apatoCannonballs 0"
-					]
-				}
+                }
             },
             "rift:remove_saddle": {
-				"add": {
-					"component_groups": [
-						"rift:apatosaurus_no_weapons"
-					]
-				},
-                "remove": {
-                    "component_groups": [
-                        "rift:apatosaurus_platformed",
-						"rift:apatosaurus_chested",
-						"rift:apatosaurus_has_cannons",
-						"rift:apatosaurus_has_mortars"
-                    ]
-                },
-				"run_command": {
-					"command": [
-						"scoreboard players set @s apatoCannonballs 0"
-					]
-				}
+				"sequence": [
+					{
+						"filters": {
+							"test": "has_component",
+							"subject": "self",
+							"value": "minecraft:is_chested"
+						},
+						"remove": {
+							"component_groups": [
+								"rift:apatosaurus_chested"
+							]
+						},
+						"run_command": {
+							"command": [
+								"summon rift:apato_drops_after_platform_removal ~ ~+3 ~ rift:chest_dropper"
+							]
+						}
+					},
+					{
+						"filters": {
+							"test": "is_skin_id",
+							"subject": "self",
+							"value": 1
+						},
+						"remove": {
+							"component_groups": [
+								"rift:apatosaurus_has_cannons"
+							]
+						},
+						"run_command": {
+							"command": [
+								"summon rift:apato_drops_after_platform_removal ~ ~+3 ~ rift:cannon_dropper"
+							]
+						}
+					},
+					{
+						"filters": {
+							"test": "is_skin_id",
+							"subject": "self",
+							"value": 2
+						},
+						"remove": {
+							"component_groups": [
+								"rift:apatosaurus_has_mortars"
+							]
+						},
+						"run_command": {
+							"command": [
+								"summon rift:apato_drops_after_platform_removal ~ ~+3 ~ rift:mortar_dropper"
+							]
+						}
+					},
+					{
+						"add": {
+							"component_groups": [
+								"rift:apatosaurus_no_weapons"
+							]
+						},
+						"run_command": {
+							"command": [
+								"scoreboard players set @s apatoCannonballs 0",
+								"scoreboard players set @s apatoMortarShell 0"
+							]
+						}
+					}
+				]
             },
 			"rift:attach_chest": {
 				"add": {
@@ -1787,6 +1979,11 @@
 					"component_groups": [
 						"rift:apatosaurus_no_weapons"
 					]
+				},
+				"run_command": {
+					"command": [
+						"scoreboard players set @s apatoCannonballs 0"
+					]
 				}
 			},
 			"rift:attach_mortar": {
@@ -1799,20 +1996,57 @@
 					"component_groups": [
 						"rift:apatosaurus_no_weapons"
 					]
+				},
+				"run_command": {
+					"command": [
+						"scoreboard players set @s apatoMortarShell 0"
+					]
 				}
 			},
 			"rift:remove_platform_weapons": {
-				"add": {
-					"component_groups": [
-						"rift:apatosaurus_no_weapons"
-					]
-				},
-				"remove": {
-					"component_groups": [
-						"rift:apatosaurus_has_cannons",
-						"rift:apatosaurus_has_mortars"
-					]
-				}
+				"sequence": [
+					{
+						"filters": {
+							"test": "is_skin_id",
+							"subject": "self",
+							"value": 1
+						},
+						"remove": {
+							"component_groups": [
+								"rift:apatosaurus_has_cannons"
+							]
+						},
+						"run_command": {
+							"command": [
+								"summon rift:apato_drops_after_platform_removal ~ ~+3 ~ rift:cannon_dropper"
+							]
+						}
+					},
+					{
+						"filters": {
+							"test": "is_skin_id",
+							"subject": "self",
+							"value": 2
+						},
+						"remove": {
+							"component_groups": [
+								"rift:apatosaurus_has_mortars"
+							]
+						},
+						"run_command": {
+							"command": [
+								"summon rift:apato_drops_after_platform_removal ~ ~+3 ~ rift:mortar_dropper"
+							]
+						}
+					},
+					{
+						"add": {
+							"component_groups": [
+								"rift:apatosaurus_no_weapons"
+							]
+						}
+					}
+				]
 			},
             "rift:apato_no_harvest": {
                 "remove": {
@@ -1841,7 +2075,26 @@
 				},
 				"run_command": {
 					"command": [
-						"scoreboard players remove @s[scores={apatoCannonballs=!0}] apatoCannonballs 1"
+						"scoreboard players remove @s[scores={apatoCannonballs=!0}] apatoCannonballs 1",
+						"execute @s[scores={apatoCannonballs=0}] ~ ~ ~ tellraw @p[c=1] {\"rawtext\":[{\"text\":\"No Cannonballs left in stock!\"}]}"
+					]
+				}
+			},
+			"rift:apato_mortaring_not_underground": {
+				"run_command": {
+					"command": [
+						"execute @s[scores={apatoMortarShell=!0}] ~ ~ ~ execute @e[tag=!tamed, type=!player, type=!item, type=!rift:mortar, type=!rift:mortar_shell, type=!rift:egg, c=1, rm=16, r=64] ~ ~ ~ summon rift:mortar_shell ~ ~+30 ~",
+						"scoreboard players remove @s[scores={apatoMortarShell=!0}] apatoMortarShell 1",
+						"execute @s[scores={apatoMortarShell=0}] ~ ~ ~ tellraw @p[c=1] {\"rawtext\":[{\"text\":\"No Mortar Shells left in stock!\"}]}"
+					]
+				}
+			},
+			"rift:apato_mortaring_underground": {
+				"run_command": {
+					"command": [
+						"execute @s[scores={apatoMortarShell=!0}] ~ ~ ~ summon rift:mortar_shell ~ ~ ~ rift:spawned_while_underground",
+						"scoreboard players remove @s[scores={apatoMortarShell=!0}] apatoMortarShell 1",
+						"execute @s[scores={apatoMortarShell=0}] ~ ~ ~ tellraw @p[c=1] {\"rawtext\":[{\"text\":\"No Mortar Shells left in stock!\"}]}"
 					]
 				}
 			},
@@ -1968,6 +2221,15 @@
 						"scoreboard players add @s[scores={apatoCannonballs=!24}] apatoCannonballs 1",
 						"execute @s[scores={apatoCannonballs=24}] ~ ~ ~ tellraw @a[c=1] {\"rawtext\":[{\"text\":\"Maximum amount of cannonballs that can be stored is 24\"}]}",
 						"execute @s[scores={apatoCannonballs=!24}] ~ ~ ~ playsound armor.equip_iron @p"
+					]
+				}
+			},
+			"rift:attach_mortar_shell": {
+				"run_command": {
+					"command": [
+						"scoreboard players add @s[scores={apatoMortarShell=!12}] apatoMortarShell 1",
+						"execute @s[scores={apatoMortarShell=12}] ~ ~ ~ tellraw @a[c=1] {\"rawtext\":[{\"text\":\"Maximum amount of mortar shells that can be stored is 12\"}]}",
+						"execute @s[scores={apatoMortarShell=!12}] ~ ~ ~ playsound armor.equip_iron @p"
 					]
 				}
 			},
