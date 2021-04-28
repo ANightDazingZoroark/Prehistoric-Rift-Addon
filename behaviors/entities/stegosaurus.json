@@ -501,7 +501,14 @@
 			},
 			"rift:stegosaurus_saddled": {
 				"minecraft:is_saddled": {},
-				"minecraft:input_ground_controlled": {}
+				"minecraft:input_ground_controlled": {},
+				"minecraft:can_power_jump": {},
+				"minecraft:horse.jump_strength": {
+					"value": {
+						"range_min": 0,
+						"range_max": 0
+					}
+				}
 			},
 			"rift:stegosaurus_chested": {
 				"minecraft:is_chested": {}
@@ -532,6 +539,51 @@
 							"max_wait_time": 0
 						}
 					]
+				}
+			},
+			"rift:charged_cooldown_one": {
+				"minecraft:timer": {
+					"time": 6.52,
+					"time_down_event": {
+						"event": "rift:stop_all_cooldowns",
+						"target": "self"
+					}
+				}
+			},
+			"rift:charged_cooldown_two": {
+				"minecraft:timer": {
+					"time": 11.52,
+					"time_down_event": {
+						"event": "rift:stop_all_cooldowns",
+						"target": "self"
+					}
+				}
+			},
+			"rift:charged_cooldown_three": {
+				"minecraft:timer": {
+					"time": 21.52,
+					"time_down_event": {
+						"event": "rift:stop_all_cooldowns",
+						"target": "self"
+					}
+				}
+			},
+			"rift:charged_cooldown_four": {
+				"minecraft:timer": {
+					"time": 31.52,
+					"time_down_event": {
+						"event": "rift:stop_all_cooldowns",
+						"target": "self"
+					}
+				}
+			},
+			"rift:charged_cooldown_five": {
+				"minecraft:timer": {
+					"time": 41.52,
+					"time_down_event": {
+						"event": "rift:stop_all_cooldowns",
+						"target": "self"
+					}
 				}
 			},
 			"rift:variant_zero": {
@@ -1343,6 +1395,89 @@
 				"remove": {
 					"component_groups": [
 						"rift:attack_forced_attack_entity_baby"
+					]
+				}
+			},
+			"rift:focused_stab_one": {
+				"add": {
+					"component_groups": [
+						"rift:charged_cooldown_one"
+					]
+				},
+				"run_command": {
+					"command": [
+						"playanimation @s animation.stegosaurus.focused_attack",
+						"summon rift:stegosaurus_focused_stab ~ ~ ~ rift:use_charge_one"
+					]
+				}
+			},
+			"rift:focused_stab_two": {
+				"add": {
+					"component_groups": [
+						"rift:charged_cooldown_two"
+					]
+				},
+				"run_command": {
+					"command": [
+						"playanimation @s animation.stegosaurus.focused_attack",
+						"summon rift:stegosaurus_focused_stab ~ ~ ~ rift:use_charge_two"
+					]
+				}
+			},
+			"rift:focused_stab_three": {
+				"add": {
+					"component_groups": [
+						"rift:charged_cooldown_three"
+					]
+				},
+				"run_command": {
+					"command": [
+						"playanimation @s animation.stegosaurus.focused_attack",
+						"summon rift:stegosaurus_focused_stab ~ ~ ~ rift:use_charge_three"
+					]
+				}
+			},
+			"rift:focused_stab_four": {
+				"add": {
+					"component_groups": [
+						"rift:charged_cooldown_four"
+					]
+				},
+				"run_command": {
+					"command": [
+						"playanimation @s animation.stegosaurus.focused_attack",
+						"summon rift:stegosaurus_focused_stab ~ ~ ~ rift:use_charge_four"
+					]
+				}
+			},
+			"rift:focused_stab_five": {
+				"add": {
+					"component_groups": [
+						"rift:charged_cooldown_five"
+					]
+				},
+				"run_command": {
+					"command": [
+						"playanimation @s animation.stegosaurus.focused_attack",
+						"summon rift:stegosaurus_focused_stab ~ ~ ~ rift:use_charge_five"
+					]
+				}
+			},
+			"rift:stop_all_cooldowns": {
+				"remove": {
+					"component_groups": [
+						"rift:charged_cooldown_one",
+						"rift:charged_cooldown_two",
+						"rift:charged_cooldown_three",
+						"rift:charged_cooldown_four",
+						"rift:charged_cooldown_five"
+					]
+				},
+				"run_command": {
+					"command": [
+						"tellraw @p {\"rawtext\":[{\"text\":\"Cooldown ended\"}]}",
+						"tag @s remove stegoCooldown",
+						"tag @p remove stegoFocusCooldown"
 					]
 				}
 			}
