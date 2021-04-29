@@ -236,7 +236,13 @@
 					"breed_cooldown": 1200,
 					"inherit_tamed": false
                 },
-                "minecraft:area_attack": {
+                "minecraft:movement": {
+                    "value": 0.10
+				},
+				"minecraft:knockback_resistance": {
+					"value": 100
+				},
+				"minecraft:area_attack": {
 					"damage_range": 0.85,
 					"damage_per_tick": 20,
 					"cause": "entity_attack",
@@ -252,64 +258,67 @@
 								"subject": "self",
 								"value": true
 							},
-                            {
-                                "any_of": [
-                                    {
-                                        "all_of": [
-                                            {
-                                                "test": "has_component",
-                                                "subject": "other",
-                                                "value": "minecraft:is_baby"
-                                            },
-                                            {
-                                                "test": "is_family",
-                                                "subject": "other",
-                                                "operator": "!=",
-                                                "value": "apatosaurus"
-                                            }
-                                        ]
-                                    },
-                                    {
-                                        "test": "is_family",
-                                        "subject": "other",
-                                        "value": "chicken"
-                                    },
-                                    {
-                                        "test": "is_family",
-                                        "subject": "other",
-                                        "value": "dodo"
-                                    },
-                                    {
-                                        "all_of": [
-                                            {
-                                                "test": "is_family",
-                                                "subject": "other",
-                                                "value": "parrot"
-                                            },
-                                            {
-                                                "test": "has_component",
-                                                "subject": "other",
-                                                "operator": "!=",
-                                                "value": "minecraft:is_tamed"
-                                            }
-                                        ]
-                                    },
+							{
+								"any_of": [
 									{
-										"test": "is_family",
+										"test": "is_target",
 										"subject": "other",
-										"value": "endermite"
+										"value": true
+									},
+									{
+										"any_of": [
+											{
+												"all_of": [
+													{
+														"test": "has_component",
+														"subject": "other",
+														"value": "minecraft:is_baby"
+													},
+													{
+														"test": "is_family",
+														"subject": "other",
+														"operator": "!=",
+														"value": "apatosaurus"
+													}
+												]
+											},
+											{
+												"test": "is_family",
+												"subject": "other",
+												"value": "chicken"
+											},
+											{
+												"test": "is_family",
+												"subject": "other",
+												"value": "dodo"
+											},
+											{
+												"all_of": [
+													{
+														"test": "is_family",
+														"subject": "other",
+														"value": "parrot"
+													},
+													{
+														"test": "has_component",
+														"subject": "other",
+														"operator": "!=",
+														"value": "minecraft:is_tamed"
+													}
+												]
+											},
+											{
+												"test": "is_family",
+												"subject": "other",
+												"value": "endermite"
+											}
+										]
 									}
-                                ]
-                            }
+								]
+							}
                         ]
 					}
-                },
-                "minecraft:movement": {
-                    "value": 0.10
-				},
-				"minecraft:knockback_resistance": {
-					"value": 100
-				}
+                }
             },
             "rift:apatosaurus_adult_wild": {
 				"minecraft:health": {
@@ -1872,7 +1881,12 @@
                     "component_groups": [
                         "rift:apatosaurus_adult_calm"
                     ]
-                }
+                },
+				"run_command": {
+					"command": [
+						"say angery"
+					]
+				}
             },
             "rift:adult_on_calm": {
                 "add": {
@@ -1884,7 +1898,12 @@
                     "component_groups": [
                         "rift:apatosaurus_adult_angry"
                     ]
-                }
+                },
+				"run_command": {
+					"command": [
+						"say kalm"
+					]
+				}
             },
             "rift:attach_saddle": {
                 "add": {
@@ -1951,6 +1970,11 @@
 						"add": {
 							"component_groups": [
 								"rift:apatosaurus_no_weapons"
+							]
+						},
+						"remove": {
+							"component_groups": [
+								"rift:apatosaurus_platformed"
 							]
 						},
 						"run_command": {
