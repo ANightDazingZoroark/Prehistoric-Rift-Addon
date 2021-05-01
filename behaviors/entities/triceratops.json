@@ -10,13 +10,15 @@
 				"contTrikeUseStab": "controller.animation.trike_forced_use_stab",
 				"contTameTag": "controller.animation.add_tame_tag",
 				"contBabyTag": "controller.animation.add_baby_tag",
-				"animForcedAttack": "animation.forced_attack_triceratops"
+				"animForcedAttack": "animation.forced_attack_triceratops",
+				"animTrikeShield": "animation.trike_shield_system"
 			},
 			"scripts": {
 				"animate": [
 					"contTrikeUseStab",
 					"contTameTag",
-					"contBabyTag"
+					"contBabyTag",
+					"animTrikeShield"
 				]
 			}
 		},
@@ -744,18 +746,6 @@
 					]
 				}
 			},
-			"rift:pushable": {
-				"minecraft:pushable": {
-					"is_pushable": true,
-					"is_pushable_by_piston": true
-				}
-			},
-			"rift:unpushable": {
-				"minecraft:pushable": {
-					"is_pushable": false,
-					"is_pushable_by_piston": false
-				}
-			},
 			"rift:default_family": {
 				"minecraft:type_family": {
 					"family": [
@@ -799,6 +789,10 @@
 			"minecraft:physics": {
 				"has_collision": true,
 				"has_gravity": true
+			},
+			"minecraft:pushable": {
+				"is_pushable": false,
+				"is_pushable_by_piston": true
 			},
 			"minecraft:breathable": {
 				"total_supply": 15,
@@ -939,7 +933,9 @@
 				"width": 1.5,
 				"height": 2
 			},
-			"minecraft:behavior.melee_attack": {},
+			"minecraft:behavior.melee_attack": {
+				"reach_multiplier": 2
+			},
 			"minecraft:movement": {
 				"value": 0.25
 			},
@@ -1339,8 +1335,12 @@
 										"rift:triceratops_adult_wild",
 										"rift:triceratops_adult_calm",
 										"rift:default_targets",
-										"rift:variant_zero",
-										"rift:pushable"
+										"rift:variant_zero"
+									]
+								},
+								"run_command": {
+									"command": [
+										"summon rift:trike_shield"
 									]
 								}
 							},
@@ -1352,8 +1352,12 @@
 										"rift:triceratops_adult_wild",
 										"rift:triceratops_adult_calm",
 										"rift:default_targets",
-										"rift:variant_one",
-										"rift:pushable"
+										"rift:variant_one"
+									]
+								},
+								"run_command": {
+									"command": [
+										"summon rift:trike_shield"
 									]
 								}
 							},
@@ -1365,8 +1369,12 @@
 										"rift:triceratops_adult_wild",
 										"rift:triceratops_adult_calm",
 										"rift:default_targets",
-										"rift:variant_two",
-										"rift:pushable"
+										"rift:variant_two"
+									]
+								},
+								"run_command": {
+									"command": [
+										"summon rift:trike_shield"
 									]
 								}
 							},
@@ -1378,8 +1386,12 @@
 										"rift:triceratops_adult_wild",
 										"rift:triceratops_adult_calm",
 										"rift:default_targets",
-										"rift:variant_three",
-										"rift:pushable"
+										"rift:variant_three"
+									]
+								},
+								"run_command": {
+									"command": [
+										"summon rift:trike_shield"
 									]
 								}
 							}
@@ -1395,8 +1407,7 @@
 										"rift:triceratops_baby",
 										"rift:triceratops_baby_wild",
 										"rift:triceratops_baby_calm",
-										"rift:variant_zero",
-										"rift:pushable"
+										"rift:variant_zero"
 									]
 								}
 							},
@@ -1407,8 +1418,7 @@
 										"rift:triceratops_baby",
 										"rift:triceratops_baby_wild",
 										"rift:triceratops_baby_calm",
-										"rift:variant_one",
-										"rift:pushable"
+										"rift:variant_one"
 									]
 								}
 							},
@@ -1419,8 +1429,7 @@
 										"rift:triceratops_baby",
 										"rift:triceratops_baby_wild",
 										"rift:triceratops_baby_calm",
-										"rift:variant_two",
-										"rift:pushable"
+										"rift:variant_two"
 									]
 								}
 							},
@@ -1431,8 +1440,7 @@
 										"rift:triceratops_baby",
 										"rift:triceratops_baby_wild",
 										"rift:triceratops_baby_calm",
-										"rift:variant_three",
-										"rift:pushable"
+										"rift:variant_three"
 									]
 								}
 							}
@@ -1445,8 +1453,7 @@
 					"component_groups": [
 						"rift:triceratops_baby",
 						"rift:triceratops_baby_tamed",
-						"rift:triceratops_tamed",
-						"rift:pushable"
+						"rift:triceratops_tamed"
 					]
 				}
 			},
@@ -1466,6 +1473,11 @@
 								"rift:triceratops_baby",
 								"rift:triceratops_baby_wild",
 								"rift:triceratops_baby_calm"
+							]
+						},
+						"run_command": {
+							"command": [
+								"summon rift:trike_shield"
 							]
 						}
 					},
@@ -1665,16 +1677,14 @@
 				},
 				"remove": {
 					"component_groups": [
-						"rift:triceratops_sittable",
-						"rift:pushable"
+						"rift:triceratops_sittable"
 					]
 				}
 			},
 			"rift:can_sit": {
 				"add": {
 					"component_groups": [
-						"rift:triceratops_sittable",
-						"rift:pushable"
+						"rift:triceratops_sittable"
 					]
 				},
 				"remove": {
@@ -1699,8 +1709,7 @@
 								"rift:triceratops_baby",
 								"rift:triceratops_baby_wild",
 								"rift:triceratops_baby_calm",
-								"rift:variant_zero",
-								"rift:pushable"
+								"rift:variant_zero"
 							]
 						}
 					},
@@ -1711,8 +1720,7 @@
 								"rift:triceratops_baby",
 								"rift:triceratops_baby_wild",
 								"rift:triceratops_baby_calm",
-								"rift:variant_one",
-								"rift:pushable"
+								"rift:variant_one"
 							]
 						}
 					},
@@ -1723,8 +1731,7 @@
 								"rift:triceratops_baby",
 								"rift:triceratops_baby_wild",
 								"rift:triceratops_baby_calm",
-								"rift:variant_two",
-								"rift:pushable"
+								"rift:variant_two"
 							]
 						}
 					},
@@ -1735,8 +1742,7 @@
 								"rift:triceratops_baby",
 								"rift:triceratops_baby_wild",
 								"rift:triceratops_baby_calm",
-								"rift:variant_three",
-								"rift:pushable"
+								"rift:variant_three"
 							]
 						}
 					}

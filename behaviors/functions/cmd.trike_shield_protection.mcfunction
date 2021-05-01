@@ -1,0 +1,1 @@
+execute @e[type=rift:trike_shield] ~ ~ ~ kill @e[r=3.5, type=arrow]
