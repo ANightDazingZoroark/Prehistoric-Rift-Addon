@@ -321,48 +321,6 @@
 									"amplifier": 3
 								}
 							]
-						},
-						{
-							"item": "rift:mixed_meat",
-							"heal_amount": 20,
-							"effects": [
-								{
-									"name": "absorption",
-									"duration": 120,
-									"amplifier": 0
-								},
-								{
-									"name": "regeneration",
-									"duration": 5,
-									"amplifier": 1
-								}
-							]
-						},
-						{
-							"item": "rift:enchanted_mixed_meat",
-							"heal_amount": 20,
-							"effects": [
-								{
-									"name": "absorption",
-									"duration": 120,
-									"amplifier": 3
-								},
-								{
-									"name": "regeneration",
-									"duration": 30,
-									"amplifier": 1
-								},
-								{
-									"name": "fire_resistance",
-									"duration": 300,
-									"amplifier": 0
-								},
-								{
-									"name": "resistance",
-									"duration": 300,
-									"amplifier": 0
-								}
-							]
 						}
 					]
 				},
@@ -535,9 +493,60 @@
 				}
 			},
 			"rift:roar_in_wild": {
-				"minecraft:timer": {
-					"time": 1.5,
-					"time_down_event": {
+				"minecraft:behavior.knockback_roar": {
+					"priority": 1,
+					"duration": 1.5,
+					"attack_time": 0.1,
+					"knockback_damage": 4,
+					"knockback_strength": 15,
+					"knockback_range": 25,
+					"knockback_filters": {
+						"all_of": [
+							{
+								"test": "is_family",
+								"subject": "other",
+								"operator": "!=",
+								"value": "tyrannosaurus"
+							},
+							{
+								"test": "is_family",
+								"subject": "other",
+								"operator": "!=",
+								"value": "apatosaurus"
+							}
+						]
+					},
+					"damage_filters": {
+						"all_of": [
+							{
+								"test": "is_family",
+								"subject": "other",
+								"operator": "!=",
+								"value": "tyrannosaurus"
+							},
+							{
+								"test": "is_family",
+								"subject": "other",
+								"operator": "!=",
+								"value": "apatosaurus"
+							},
+							{
+								"all_of": [
+									{
+										"test": "is_family",
+										"subject": "other",
+										"value": "player"
+									},
+									{
+										"test": "is_riding",
+										"subject": "other",
+										"value": false
+									}
+								]
+							}
+						]
+					},
+					"on_roar_end": {
 						"event": "rift:stop_wild_roaring",
 						"target": "self"
 					}
@@ -666,8 +675,7 @@
 						"tyrannosaurus",
 						"mob",
 						"carnivore",
-						"dinosaur",
-						"largeCarnivore"
+						"dinosaur"
 					]
 				}
 			},
@@ -678,7 +686,6 @@
 						"mob",
 						"carnivore",
 						"dinosaur",
-						"largeCarnivore",
 						"isForcedAttacking"
 					]
 				}
@@ -690,8 +697,7 @@
 					"tyrannosaurus",
 					"mob",
 					"carnivore",
-					"dinosaur",
-					"largeCarnivore"
+					"dinosaur"
 				]
 			},
 			"minecraft:navigation.walk": {
@@ -719,7 +725,7 @@
 				"attack_duration": 0.5,
 				"hit_delay_pct": 1,
 				"track_target": true,
-				"reach_multiplier": 2
+				"reach_multiplier": 2.5
 			},
 			"minecraft:movement": {
 				"value": 0.20
@@ -838,25 +844,6 @@
 							"filters": {
 								"all_of": [
 									{
-										"any_of": [
-											{
-												"test": "is_family",
-												"subject": "other",
-												"value": "mob"
-											},
-											{
-												"test": "is_family",
-												"subject": "other",
-												"value": "player"
-											},
-											{
-												"test": "is_family",
-												"subject": "other",
-												"value": "forcedAttack"
-											}
-										]
-									},
-									{
 										"test": "random_chance",
 										"value": 3,
 										"subject": "self"
@@ -877,7 +864,8 @@
 							},
 							"event": "rift:wild_roar",
 							"target": "self"
-						}
+						},
+						"cause": "entity_attack"
 					},
 					{
 						"on_damage": {
@@ -1406,32 +1394,14 @@
 			"rift:wild_roar": {
 				"add": {
 					"component_groups": [
-						"rift:roar_in_wild",
-						"rift:unpushable"
-					]
-				},
-				"remove": {
-					"component_groups": [
-						"rift:pushable"
-					]
-				},
-				"run_command": {
-					"command": [
-						"summon rift:tyrannosaurus_roar_wild",
-						"playanimation @s animation.tyrannosaurus.roar"
+						"rift:roar_in_wild"
 					]
 				}
 			},
 			"rift:stop_wild_roaring": {
-				"add": {
-					"component_groups": [
-						"rift:pushable"
-					]
-				},
 				"remove": {
 					"component_groups": [
-						"rift:roar_in_wild",
-						"rift:unpushable"
+						"rift:roar_in_wild"
 					]
 				}
 			},
