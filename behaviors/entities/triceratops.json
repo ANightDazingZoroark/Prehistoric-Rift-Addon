@@ -10,6 +10,7 @@
 				"contTrikeUseStab": "controller.animation.trike_forced_use_stab",
 				"contTameTag": "controller.animation.add_tame_tag",
 				"contBabyTag": "controller.animation.add_baby_tag",
+				"contIllagerCaptainTag": "controller.animation.add_illager_captain_tag",
 				"contRivalBuff": "controller.animation.trike_rival_buff",
 				"animForcedAttack": "animation.forced_attack_triceratops",
 				"animTestForRivals": "animation.test_for_rivals_triceratops",
@@ -20,6 +21,7 @@
 					"contTrikeUseStab",
 					"contTameTag",
 					"contBabyTag",
+					"contIllagerCaptainTag",
 					"contRivalBuff"
 				]
 			}
@@ -742,6 +744,116 @@
 					]
 				}
 			},
+			"rift:triceratops_buffed_tamed_charging": {
+				"minecraft:area_attack": {
+					"damage_range": 0.5,
+					"damage_per_tick": 70,
+					"cause": "entity_attack",
+					"entity_filter": {
+						"all_of": [
+							{
+								"test": "is_owner",
+								"subject": "other",
+								"operator": "!="
+							},
+							{
+								"test": "has_component",
+								"subject": "other",
+								"operator": "!=",
+								"value": "minecraft:is_tamed"
+							}
+						]
+					}
+				},
+				"minecraft:timer": {
+					"time": 5,
+					"time_down_event": {
+						"event": "rift:start_cooldown",
+						"target": "self"
+					}
+				},
+				"minecraft:is_charged": {},
+				"minecraft:break_blocks": {
+					"breakable_blocks": [
+						"minecraft:planks",
+						"minecraft:leaves",
+						"minecraft:leaves2",
+						"minecraft:log",
+						"minecraft:log2",
+						"minecraft:dirt",
+						"minecraft:grass",
+						"minecraft:double_plant",
+						"minecraft:glass",
+						"minecraft:stained_glass",
+						"minecraft:glass_pane",
+						"minecraft:stained_glass_pane",
+						"minecraft:wooden_slab",
+						"minecraft:double_wooden_slab",
+						"minecraft:wooden_door",
+						"minecraft:birch_door",
+						"minecraft:spruce_door",
+						"minecraft:acacia_door",
+						"minecraft:jungle_door",
+						"minecraft:dark_oak_door",
+						"minecraft:wood",
+						"minecraft:stripped_oak_log",
+						"minecraft:stripped_birch_log",
+						"minecraft:stripped_spruce_log",
+						"minecraft:stripped_jungle_log",
+						"minecraft:stripped_acacia_log",
+						"minecraft:stripped_dark_oak_log",
+						"minecraft:sand",
+						"minecraft:acacia_stairs",
+						"minecraft:birch_stairs",
+						"minecraft:dark_oak_stairs",
+						"minecraft:jungle_stairs",
+						"minecraft:oak_stairs",
+						"minecraft:spruce_stairs",
+						"minecraft:fence",
+						"minecraft:acacia_fence_gate",
+						"minecraft:birch_fence_gate",
+						"minecraft:dark_oak_fence_gate",
+						"minecraft:fence_gate",
+						"minecraft:jungle_fence_gate",
+						"minecraft:wool",
+						"minecraft:crimson_planks",
+						"minecraft:warped_planks",
+						"minecraft:crimson_stem",
+						"minecraft:warped_stem",
+						"minecraft:stripped_crimson_stem",
+						"minecraft:stripped_warped_stem",
+						"minecraft:crimson_hyphae",
+						"minecraft:warped_hyphae",
+						"minecraft:stripped_crimson_hyphae",
+						"minecraft:stripped_warped_hyphae",
+						"minecraft:nether_wart_block",
+						"minecraft:warped_wart_block",
+						"minecraft:netherrack",
+						"minecraft:crimson_nylium",
+						"minecraft:warped_nylium",
+						"minecraft:soul_sand",
+						"minecraft:soul_soil",
+						"minecraft:crimson_door",
+						"minecraft:warped_door",
+						"minecraft:crimson_stairs",
+						"minecraft:warped_stairs",
+						"minecraft:crimson_fence",
+						"minecraft:warped_fence",
+						"minecraft:crimson_fence_gate",
+						"minecraft:warped_fence_gate",
+						"minecraft:crimson_slab",
+						"minecraft:warped_slab",
+						"rift:oak_thatch_block",
+						"rift:spruce_thatch_block",
+						"rift:birch_thatch_block",
+						"rift:jungle_thatch_block",
+						"rift:dark_oak_thatch_block",
+						"rift:acacia_thatch_block",
+						"rift:crimson_thatch_block",
+						"rift:warped_thatch_block"
+					]
+				}
+			},
 			"rift:triceratops_charging_cooldown": {
 				"minecraft:is_sheared": {},
 				"minecraft:timer": {
@@ -760,6 +872,18 @@
 					"entities": [
 						{
 							"spawn_entity": "rift:triceratops_stab",
+							"single_use": true,
+							"min_wait_time": 0,
+							"max_wait_time": 0
+						}
+					]
+				}
+			},
+			"rift:summon_buffed_forced_stab_entity": {
+				"minecraft:spawn_entity": {
+					"entities": [
+						{
+							"spawn_entity": "rift:triceratops_buffed_stab",
 							"single_use": true,
 							"min_wait_time": 0,
 							"max_wait_time": 0
@@ -1214,6 +1338,12 @@
 								{
 									"test": "has_component",
 									"operator": "!=",
+									"value": "minecraft:is_illager_captain",
+									"subject": "self"
+								},
+								{
+									"test": "has_component",
+									"operator": "!=",
 									"value": "minecraft:is_baby",
 									"subject": "self"
 								},
@@ -1231,6 +1361,53 @@
 							]
 						},
 						"event": "rift:triceratops_charge"
+					},
+					{
+						"filters": {
+							"all_of": [
+								{
+									"test": "has_tag",
+									"value": "trikeCharge",
+									"subject": "self",
+									"operator": "=="
+								},
+								{
+									"test": "rider_count",
+									"operator": ">",
+									"value": 0,
+									"subject": "self"
+								},
+								{
+									"test": "has_component",
+									"value": "minecraft:is_tamed",
+									"subject": "self"
+								},
+								{
+									"test": "has_component",
+									"operator": "==",
+									"value": "minecraft:is_illager_captain",
+									"subject": "self"
+								},
+								{
+									"test": "has_component",
+									"operator": "!=",
+									"value": "minecraft:is_baby",
+									"subject": "self"
+								},
+								{
+									"test": "has_component",
+									"value": "minecraft:is_saddled",
+									"subject": "self"
+								},
+								{
+									"test": "has_component",
+									"value": "minecraft:is_sheared",
+									"operator": "!=",
+									"subject": "self"
+								}
+							]
+						},
+						"event": "rift:triceratops_buffed_charge"
 					},
 					{
 						"filters": {
@@ -1643,6 +1820,19 @@
 					]
 				}
 			},
+			"rift:triceratops_buffed_charge": {
+				"add": {
+					"component_groups": [
+						"rift:triceratops_buffed_tamed_charging"
+					]
+				},
+				"run_command": {
+					"command": [
+						"effect @s speed 5 3",
+						"tellraw @p {\"rawtext\":[{\"text\":\"Charge Mode Activated\"}]}"
+					]
+				}
+			},
 			"rift:start_cooldown": {
 				"add": {
 					"component_groups": [
@@ -1651,7 +1841,8 @@
 				},
 				"remove": {
 					"component_groups": [
-						"rift:triceratops_tamed_charging"
+						"rift:triceratops_tamed_charging",
+						"rift:triceratops_buffed_tamed_charging"
 					]
 				},
 				"run_command": {
@@ -1823,10 +2014,18 @@
 					]
 				}
 			},
+			"rift:on_summon_buffed_forced_stab_entity": {
+				"add": {
+					"component_groups": [
+						"rift:summon_buffed_forced_stab_entity"
+					]
+				}
+			},
 			"rift:no_summon_forced_stab_entity": {
 				"remove": {
 					"component_groups": [
-						"rift:summon_forced_stab_entity"
+						"rift:summon_forced_stab_entity",
+						"rift:summon_buffed_forced_stab_entity"
 					]
 				}
 			},

@@ -772,6 +772,18 @@
 					]
 				}
 			},
+			"rift:summon_buffed_forced_slash_entity": {
+				"minecraft:spawn_entity": {
+					"entities": [
+						{
+							"spawn_entity": "rift:utahraptor_buffed_slash",
+							"single_use": true,
+							"min_wait_time": 0,
+							"max_wait_time": 0
+						}
+					]
+				}
+			},
 			"rift:variant_zero": {
 				"minecraft:variant": {
 					"value": 0
@@ -1913,16 +1925,58 @@
 				}
 			},
 			"rift:on_summon_forced_slash_entity": {
-				"add": {
-					"component_groups": [
-						"rift:summon_forced_slash_entity"
-					]
-				}
+				"sequence": [
+					{
+						"filters": {
+							"any_of": [
+								{
+									"test": "has_mob_effect",
+									"subject": "self",
+									"operator": "!=",
+									"value": "strength"
+								},
+								{
+									"test": "has_mob_effect",
+									"subject": "self",
+									"operator": "!=",
+									"value": "speed"
+								}
+							]
+						},
+						"add": {
+							"component_groups": [
+								"rift:summon_forced_slash_entity"
+							]
+						}
+					},
+					{
+						"filters": {
+							"all_of": [
+								{
+									"test": "has_mob_effect",
+									"subject": "self",
+									"value": "strength"
+								},
+								{
+									"test": "has_mob_effect",
+									"subject": "self",
+									"value": "speed"
+								}
+							]
+						},
+						"add": {
+							"component_groups": [
+								"rift:summon_buffed_forced_slash_entity"
+							]
+						}
+					}
+				]
 			},
 			"rift:no_summon_forced_slash_entity": {
 				"remove": {
 					"component_groups": [
-						"rift:summon_forced_slash_entity"
+						"rift:summon_forced_slash_entity",
+						"rift:summon_buffed_forced_slash_entity"
 					]
 				}
 			},

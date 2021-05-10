@@ -1,0 +1,52 @@
+{
+    "format_version": "1.10.0",
+    "animation_controllers": {
+        "controller.animation.megapiranha_movement": {
+            "initial_state": "default",
+            "states": {
+                "default": {
+                    "animations": [
+                        "animMove"
+                    ],
+                    "transitions": [
+                        {
+                            "flopping": "!query.is_in_water || query.is_levitating"
+                        }
+                    ]
+                },
+                "flopping": {
+                    "animations": [
+                        "animFlop"
+                    ],
+                    "transitions": [
+                        {
+                            "default": "query.is_in_water && !query.is_levitating"
+                        }
+                    ]
+                }
+            }
+        },
+        "controller.animation.megapiranha_attack": {
+            "initial_state": "default",
+            "states": {
+                "default": {
+                    "transitions": [
+                        {
+                            "attacking": "variable.attack_time"
+                        }
+                    ]
+                },
+                "attacking": {
+                    "animations": [
+                        "animAttack"
+                    ],
+                    "transitions": [
+                        {
+                            "default": "!variable.attack_time"
+                        }
+                    ]
+                }
+            }
+        }
+    }
+}
