@@ -1,0 +1,78 @@
+{
+	"format_version": "1.10.0",
+	"animation_controllers": {
+		"controller.animation.sarcosuchus_movement": {
+			"initial_state": "default",
+			"states": {
+				"default": {
+					"animations": [
+						{
+							"animStandingLand": "query.ground_speed == 0"
+						},
+						{
+							"animWalk": "query.ground_speed > 0"
+						}
+					],
+					"transitions": [
+						{
+							"sitting": "query.is_sitting"
+						},
+                        {
+                            "waterMode": "query.is_in_water"
+                        }
+					]
+				},
+                "waterMode": {
+                    "animations": [
+                        {
+                            "animStandingWater": "query.ground_speed == 0"
+                        },
+                        {
+                            "animSwim": "query.ground_speed > 0"
+                        }
+                    ],
+                    "transitions": [
+						{
+							"sitting": "query.is_sitting"
+						},
+                        {
+                            "default": "!query.is_in_water"
+                        }
+					]
+                },
+				"sitting": {
+					"animations": [
+						"animSitting"
+					],
+					"transitions": [
+						{
+							"default": "!query.is_sitting"
+						}
+					]
+				}
+			}
+		},
+		"controller.animation.sarcosuchus_attack": {
+			"initial_state": "default",
+			"states": {
+				"default": {
+					"transitions": [
+						{
+							"attacking": "query.is_delayed_attacking"
+						}
+					]
+				},
+				"attacking": {
+					"animations": [
+						"animAttack"
+					],
+					"transitions": [
+						{
+							"default": "!query.is_delayed_attacking"
+						}
+					]
+				}
+			}
+		}
+	}
+}
