@@ -391,14 +391,14 @@
 				  	]
 				},
 				"minecraft:on_target_escape": {
-					"event": "rift:no_force_attacked_adult",
+					"event": "rift:no_force_attacked",
 				  	"target": "self"
 				}
 			},
             "rift:sarcosuchus_adult_trusting": {
                 "minecraft:trust": {}
             },
-            "rift:utahraptor_adult_waiting_for_tame": {
+            "rift:sarcosuchus_adult_waiting_for_tame": {
                 "minecraft:timer": {
 					"time": 10,
 					"time_down_event": {
@@ -407,10 +407,10 @@
 					}
 				}
             },
-			"rift:utahraptor_adult_chance_for_tame": {
+			"rift:sarcosuchus_adult_chance_for_tame": {
                 "minecraft:is_sheared": {}
             },
-			"rift:utahraptor_adult_tameable": {
+			"rift:sarcosuchus_adult_tameable": {
                 "minecraft:tameable": {
                     "probability": 1,
                     "tame_items": [
@@ -738,7 +738,7 @@
 				]
 			},
 			"minecraft:movement": {
-				"value": 0.175
+				"value": 0.1
 			},
             "minecraft:underwater_movement": {
                 "value": 0.2
@@ -789,6 +789,45 @@
 			"minecraft:behavior.random_look_around": {},
             "minecraft:interact": {
 				"interactions": [
+					{
+						"on_interact": {
+							"filters": {
+								"all_of": [
+									{
+										"test": "has_equipment",
+										"subject": "other",
+										"domain": "hand",
+										"value": "minecraft:chest"
+									},
+									{
+										"test": "is_owner",
+										"subject": "other",
+										"value": true
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_baby",
+										"operator": "!="
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_tamed"
+									},
+									{
+										"test": "is_sneaking",
+										"subject": "other",
+										"value": true
+									}
+								]
+							},
+							"event": "rift:attach_chest",
+							"target": "self"
+						},
+						"interact_text": "action.interact.attachchest",
+						"use_item": true
+					},
 					{
 						"on_interact": {
 							"filters": {
@@ -874,6 +913,46 @@
 					}
 				]
             },
+			"minecraft:scheduler": {
+				"scheduled_events": [
+					{
+						"filters": {
+							"all_of": [
+								{
+									"test": "rider_count",
+									"subject": "self",
+									"operator": ">",
+									"value": 0
+								},
+								{
+									"test": "has_component",
+									"subject": "self",
+									"value": "minecraft:is_tamed"
+								}
+							]
+						},
+						"event": "rift:cannot_sit"
+					},
+					{
+						"filters": {
+							"all_of": [
+								{
+									"test": "rider_count",
+									"subject": "self",
+									"operator": "==",
+									"value": 0
+								},
+								{
+									"test": "has_component",
+									"subject": "self",
+									"value": "minecraft:is_tamed"
+								}
+							]
+						},
+						"event": "rift:can_sit"
+					}
+				]
+			},
             "minecraft:damage_sensor": {
 				"triggers": [
 					{
@@ -986,7 +1065,273 @@
                         }
                     }
                 ]
-            }
+            },
+			"rift:baby_grow_up": {
+				"sequence": [
+					{
+						"add": {
+							"component_groups": [
+								"rift:sarcosuchus_adult",
+								"rift:sarcosuchus_adult_wild",
+								"rift:default_targets",
+								"rift:sarcosuchus_adult_not_trusting"
+							]
+						},
+						"remove": {
+							"component_groups": [
+								"rift:sarcosuchus_baby",
+								"rift:sarcosuchus_baby_wild"
+							]
+						}
+					},
+					{
+						"filters": {
+							"test": "has_component",
+							"subject": "self",
+							"value": "minecraft:is_tamed"
+						},
+						"add": {
+							"component_groups": [
+								"rift:sarcosuchus_adult_tamed",
+								"rift:rideable"
+							]
+						},
+						"remove": {
+							"component_groups": [
+								"rift:sarcosuchus_baby_tamed",
+								"rift:sarcosuchus_adult_wild",
+								"rift:default_targets",
+								"rift:sarcosuchus_adult_not_trusting"
+							]
+						}
+					}
+				]
+			},
+			"rift:on_tame": {
+				"add": {
+					"component_groups": [
+						"rift:sarcosuchus_baby_tamed",
+						"rift:sarcosuchus_tamed",
+						"rift:sarcosuchus_sittable"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:sarcosuchus_baby_wild"
+					]
+				}
+			},
+			"rift:on_trust": {
+				"add": {
+					"component_groups": [
+						"rift:sarcosuchus_adult_trusting",
+						"rift:sarcosuchus_adult_waiting_for_tame"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:sarcosuchus_adult_not_trusting",
+						"rift:default_targets"
+					]
+				},
+				"run_command": {
+					"command": [
+						"tellraw @p {\"rawtext\":[{\"text\":\"You made a wild Sarcosuchus trust you! Keep feeding it every once in a while to eventually tame it!\"}]}"
+					]
+				}
+			},
+			"rift:can_be_tamed_again": {
+				"randomize": [
+					{
+						"weight": 70,
+						"add": {
+							"component_groups": [
+								"rift:sarcosuchus_adult_chance_for_tame"
+							]
+						},
+						"remove": {
+							"component_groups": [
+								"rift:sarcosuchus_adult_waiting_for_tame"
+							]
+						}
+					},
+					{
+						"weight": 30,
+						"add": {
+							"component_groups": [
+								"rift:sarcosuchus_adult_tameable"
+							]
+						},
+						"remove": {
+							"component_groups": [
+								"rift:sarcosuchus_adult_waiting_for_tame"
+							]
+						}
+					}
+				]
+			},
+			"rift:adult_failed_tame": {
+				"add": {
+					"component_groups": [
+						"rift:sarcosuchus_adult_waiting_for_tame"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:sarcosuchus_adult_chance_for_tame"
+					]
+				},
+				"run_command": {
+					"command": [
+						"playsound random.eat @a[r=4]"
+					]
+				}
+			},
+			"rift:adult_on_tame": {
+				"add": {
+					"component_groups": [
+						"rift:sarcosuchus_adult_tamed",
+						"rift:sarcosuchus_tamed",
+						"rift:rideable"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:sarcosuchus_adult_tameable"
+					]
+				},
+				"run_command": {
+					"command": [
+						"tellraw @p {\"rawtext\":[{\"text\":\"You have succesfully tamed a Sarcosuchus!\"}]}"
+					]
+				}
+			},
+			"rift:attach_saddle": {
+				"add": {
+					"component_groups": [
+						"rift:sarcosuchus_saddled"
+					]
+				}
+			},
+			"rift:remove_saddle": {
+				"remove": {
+					"component_groups": [
+						"rift:sarcosuchus_saddled"
+					]
+				}
+			},
+			"rift:attach_chest": {
+				"add": {
+					"component_groups": [
+						"rift:sarcosuchus_chested"
+					]
+				}
+			},
+			"rift:cannot_sit": {
+				"add": {
+					"component_groups": [
+						"rift:unpushable"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:sarcosuchus_sittable",
+						"rift:pushable"
+					]
+				}
+			},
+			"rift:can_sit": {
+				"add": {
+					"component_groups": [
+						"rift:sarcosuchus_sittable",
+						"rift:pushable"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:pushable"
+					]
+				}
+			},
+			"rift:commit_suicide": {
+				"run_command": {
+					"command": [
+						"kill @s"
+					]
+				}
+			},
+			"rift:on_force_attacked": {
+				"add": {
+				  	"component_groups": [
+						"rift:attack_forced_attack_entity"
+				  	]
+				},
+				"remove": {
+				  	"component_groups": [
+						"rift:default_targets"
+				  	]
+				}
+			},
+			"rift:no_force_attacked": {
+				"add": {
+					"component_groups": [
+						"rift:default_targets"
+				  	]
+				},
+				"remove": {
+				  	"component_groups": [
+						"rift:attack_forced_attack_entity"
+				  	]
+				}
+			},
+			"rift:spawn_as_baby": {
+				"randomize": [
+                    {
+                        "weight": 25,
+                        "add": {
+                            "component_groups": [
+                                "rift:sarcosuchus_baby",
+                                "rift:sarcosuchus_baby_wild",
+                                "rift:pushable",
+                                "rift:variant_zero"
+                            ]
+                        }
+                    },
+                    {
+                        "weight": 25,
+                        "add": {
+                            "component_groups": [
+                                "rift:sarcosuchus_baby",
+                                "rift:sarcosuchus_baby_wild",
+                                "rift:pushable",
+                                "rift:variant_one"
+                            ]
+                        }
+                    },
+                    {
+                        "weight": 25,
+                        "add": {
+                            "component_groups": [
+                                "rift:sarcosuchus_baby",
+                                "rift:sarcosuchus_baby_wild",
+                                "rift:pushable",
+                                "rift:variant_two"
+                            ]
+                        }
+                    },
+                    {
+                        "weight": 25,
+                        "add": {
+                            "component_groups": [
+                                "rift:sarcosuchus_baby",
+                                "rift:sarcosuchus_baby_wild",
+                                "rift:pushable",
+                                "rift:variant_three"
+                            ]
+                        }
+                    }
+                ]
+			}
         }
     }
 }
