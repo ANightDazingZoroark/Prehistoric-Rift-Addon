@@ -1,17 +1,42 @@
 {
 	"format_version": "1.10.0",
 	"animation_controllers": {
-		"controller.animation.wild_sarco_use_spin_attack": {
+		"controller.animation.sarco_forced_use_attack": {
 			"initial_state": "default",
 			"states": {
 				"default": {
 					"transitions": [
 						{
-							"spinning": "query.is_powered && !query.is_tamed"
+							"stabbing": "query.is_ignited"
 						}
 					]
 				},
-				"spinning": {
+				"stabbing": {
+					"transitions": [
+						{
+							"default": "!query.is_ignited"
+						}
+					],
+					"animations": [
+						"animForcedAttack"
+					]
+				}
+			}
+		},
+		"controller.animation.sarco_use_spin_attack": {
+			"initial_state": "default",
+			"states": {
+				"default": {
+					"transitions": [
+						{
+							"spinningWild": "query.is_powered && !query.is_tamed"
+						},
+						{
+							"spinningTamed": "query.is_powered && query.is_tamed"
+						}
+					]
+				},
+				"spinningWild": {
 					"transitions": [
 						{
 							"default": "!query.is_powered"
@@ -22,6 +47,19 @@
 					],
 					"on_exit": [
 						"/event entity @s rift:return_to_bite_attack"
+					]
+				},
+				"spinningTamed": {
+					"transitions": [
+						{
+							"default": "!query.is_powered"
+						}
+					],
+					"animations": [
+						"animTamedSpinAttack"
+					],
+					"on_exit": [
+						"/event entity @s rift:forced_spin_attack_cooldown"
 					]
 				}
 			}

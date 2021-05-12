@@ -630,6 +630,100 @@
 					]
 				}
 			}
+		},
+		"controller.animation.sarcosuchus_command_staff": {
+			"initial_state": "default",
+			"states": {
+				"default": {
+					"transitions": [
+						{
+							"biteMode": "(query.get_equipped_item_name('main_hand') == 'command_staff') && query.is_riding && (query.get_ride -> query.owner_identifier) == 'rift:sarcosuchus'"
+						}
+					],
+					"on_entry": [
+						"/event entity @e[type=rift:sarcosuchus, c=1, tag=tamed, tag=!baby] rift:no_forced_attack_family"
+					],
+					"on_exit": [
+						"/tellraw @s {\"rawtext\":[{\"text\":\"Ability set to Bite Mode\"}]}"
+					]
+				},
+				"biteMode": {
+					"transitions": [
+						{
+							"default": "(query.get_equipped_item_name('main_hand') != 'command_staff') || !query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:sarcosuchus'"
+						},
+						{
+							"biteToSpin": "query.is_jumping && query.is_riding"
+						},
+						{
+							"useBiteMode": "query.is_using_item && (query.get_ride -> query.is_saddled)"
+						}
+					]
+				},
+				"useBiteMode": {
+					"transitions": [
+						{
+							"biteMode": "(query.get_equipped_item_name('main_hand') != 'command_staff') || !query.is_using_item"
+						}
+					],
+					"on_entry": [
+						"/event entity @e[type=rift:sarcosuchus, c=1, tag=tamed, tag=!baby] rift:use_forced_bite"
+					],
+					"on_exit": [
+						"/event entity @e[type=rift:sarcosuchus, c=1, tag=tamed, tag=!baby] rift:stop_forced_bite",
+						"/event entity @e[type=rift:sarcosuchus, c=1, tag=tamed, tag=!baby] rift:no_summon_forced_bite_entity"
+					]
+				},
+				"biteToSpin": {
+					"transitions": [
+						{
+							"default": "(query.get_equipped_item_name('main_hand') != 'command_staff') || !query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:sarcosuchus'"
+						},
+						{
+							"spinMode": "!query.is_jumping"
+						}
+					],
+					"on_exit": [
+						"/tellraw @s {\"rawtext\":[{\"text\":\"Ability set to Spin Mode\"}]}"
+					]
+				},
+				"spinMode": {
+					"transitions": [
+						{
+							"default": "(query.get_equipped_item_name('main_hand') != 'command_staff') || !query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:sarcosuchus'"
+						},
+						{
+							"spinToBite": "query.is_jumping && query.is_riding"
+						},
+						{
+							"useSpinMode": "query.is_using_item"
+						}
+					]
+				},
+				"useSpinMode": {
+					"transitions": [
+						{
+							"spinMode": "(query.get_equipped_item_name('main_hand') != 'command_staff') || !query.is_using_item"
+						}
+					],
+					"on_entry": [
+						"/tag @e[type=rift:sarcosuchus, c=1, tag=tamed, tag=!baby] add sarcoSpin"
+					]
+				},
+				"spinToBite": {
+					"transitions": [
+						{
+							"default": "(query.get_equipped_item_name('main_hand') != 'command_staff') || !query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:sarcosuchus'"
+						},
+						{
+							"biteMode": "!query.is_jumping"
+						}
+					],
+					"on_exit": [
+						"/tellraw @s {\"rawtext\":[{\"text\":\"Ability set to Bite Mode\"}]}"
+					]
+				}
+			}
 		}
 	}
 }

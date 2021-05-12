@@ -25,6 +25,7 @@
                 }
             },
             "rift:tamed": {
+                "minecraft:is_tamed": {},
                 "minecraft:behavior.knockback_roar": {
                     "priority": 1,
                     "duration": 0.52,
@@ -33,42 +34,24 @@
                     "knockback_strength": 0,
                     "knockback_range": 5,
                     "damage_filters": {
-                        "any_of": [
+                        "all_of": [
                             {
-                                "all_of": [
-                                    {
-                                        "test": "has_component",
-                                        "subject": "other",
-                                        "operator": "!=",
-                                        "value": "minecraft:is_tamed"
-                                    },
-                                    {
-                                        "test": "is_family",
-                                        "subject": "other",
-                                        "operator": "!=",
-                                        "value": "player"
-                                    },
-                                    {
-                                        "test": "is_family",
-                                        "subject": "other",
-                                        "operator": "!=",
-                                        "value": "sarcosuchus"
-                                    }
-                                ]
+                                "test": "has_component",
+                                "subject": "other",
+                                "operator": "!=",
+                                "value": "minecraft:is_tamed"
                             },
                             {
-                                "all_of": [
-                                    {
-                                        "test": "is_family",
-                                        "subject": "other",
-                                        "value": "player"
-                                    },
-                                    {
-                                        "test": "is_riding",
-                                        "subject": "other",
-                                        "value": false
-                                    }
-                                ]
+                                "test": "is_family",
+                                "subject": "other",
+                                "operator": "!=",
+                                "value": "player"
+                            },
+                            {
+                                "test": "is_family",
+                                "subject": "other",
+                                "operator": "!=",
+                                "value": "sarcosuchus"
                             }
                         ]
                     }
@@ -127,11 +110,36 @@
                 }
             },
 			"rift:die": {
-				"run_command": {
-					"command": [
-						"kill @s"
-					]
-				}
+                "sequence": [
+                    {
+                        "filters": {
+                            "test": "has_component",
+                            "subject": "self",
+                            "operator": "!=",
+                            "value": "minecraft:is_tamed"
+                        },
+                        "run_command": {
+                            "command": [
+                                "effect @e[r=2.5, type=!rift:sarco_spin_attack_hitter, type=!rift:sarcosuchus] slowness 30 2",
+                                "kill @s"
+                            ]
+                        }
+                    },
+                    {
+                        "filters": {
+                            "test": "has_component",
+                            "subject": "self",
+                            "operator": "==",
+                            "value": "minecraft:is_tamed"
+                        },
+                        "run_command": {
+                            "command": [
+                                "effect @e[r=2.5, type=!rift:sarcosuchus, type=!rift:sarco_spin_attack_hitter, type=!player, tag=!tamed] slowness 30 2",
+                                "kill @s"
+                            ]
+                        }
+                    }
+                ]
 			}
 		}
 	}

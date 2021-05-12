@@ -85,6 +85,90 @@
                     ]
                 }
             }
+        },
+        "controller.animation.swimming_mount_toggle_swim_mode": {
+            "initial_state": "default",
+            "states": {
+                "default": {
+                    "transitions": [
+                        {
+                            "float": "query.is_in_water && query.is_riding && query.get_equipped_item_name('main_hand') != 'command_staff' && (query.get_ride -> query.owner_identifier) == 'rift:sarcosuchus'"
+                        }
+                    ]
+                },
+                "float": {
+                    "transitions": [
+                        {
+                            "default": "!query.is_in_water || !query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:sarcosuchus'"
+                        },
+                        {
+                            "floatToSwim": "query.is_riding && query.is_jumping && query.get_equipped_item_name('main_hand') != 'command_staff'"
+                        }
+                    ],
+                    "on_entry": [
+                        "/event entity @e[c=1, family=waterMount] rift:swim_to_float"
+                    ]
+                },
+                "floatToSwim": {
+                    "transitions": [
+                        {
+                            "default": "!query.is_in_water || !query.is_riding || query.get_equipped_item_name('main_hand') == 'command_staff' || (query.get_ride -> query.owner_identifier) != 'rift:sarcosuchus'"
+                        },
+                        {
+                            "swim": "!query.is_jumping"
+                        }
+                    ]
+                },
+                "swim": {
+                    "transitions": [
+                        {
+                            "default": "!query.is_in_water || !query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:sarcosuchus'"
+                        },
+                        {
+                            "swimToFloat": "query.is_riding && query.is_jumping && query.get_equipped_item_name('main_hand') != 'command_staff'"
+                        }
+                    ],
+                    "on_entry": [
+                        "/tag @e[c=1, family=waterMount] add controllable",
+                        "/event entity @e[c=1, family=waterMount] rift:float_to_swim"
+                    ],
+                    "on_exit": [
+                        "/tag @e[c=1, family=waterMount] remove controllable"
+                    ]
+                },
+                "swimToFloat": {
+                    "transitions": [
+                        {
+                            "default": "!query.is_in_water || !query.is_riding || query.get_equipped_item_name('main_hand') == 'command_staff' || (query.get_ride -> query.owner_identifier) != 'rift:sarcosuchus'"
+                        },
+                        {
+                            "float": "!query.is_jumping"
+                        }
+                    ]
+                }
+            }
+        },
+        "controller.animation.swimming_mount_navigation": {
+            "initial_state": "default",
+            "states": {
+                "default": {
+                    "transitions": [
+                        {
+                            "swimming": "query.is_in_water && query.is_riding"
+                        }
+                    ]
+                },
+                "swimming": {
+                    "animations": [
+                        "animControlSarco"
+                    ],
+                    "transitions": [
+                        {
+                            "default": "!query.is_riding || !query.is_in_water"
+                        }
+                    ]
+                }
+            }
         }
 	}
 }

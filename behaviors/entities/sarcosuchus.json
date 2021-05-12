@@ -7,16 +7,20 @@
             "is_summonable": true,
             "is_experimental": false,
 			"animations": {
+				"contSarcoUseForcedAttack": "controller.animation.sarco_forced_use_attack",
 				"contTameTag": "controller.animation.add_tame_tag",
 				"contBabyTag": "controller.animation.add_baby_tag",
-				"contWildSpinAttack": "controller.animation.wild_sarco_use_spin_attack",
-				"animWildSpinAttack": "animation.sarco_spin_attack_wild"
+				"contSpinAttack": "controller.animation.sarco_use_spin_attack",
+				"animWildSpinAttack": "animation.sarco_spin_attack_wild",
+				"animTamedSpinAttack": "animation.sarco_spin_attack_tamed",
+				"animForcedAttack": "animation.forced_attack_sarcosuchus"
 			},
 			"scripts": {
 				"animate": [
+					"contSarcoUseForcedAttack",
 					"contTameTag",
 					"contBabyTag",
-					"contWildSpinAttack"
+					"contSpinAttack"
 				]
 			}
         },
@@ -222,10 +226,10 @@
                     "value": 120
                 },
                 "minecraft:behavior.random_stroll": {
-					"priority": 5
+					"priority": 7
 				},
                 "minecraft:behavior.random_swim": {
-                    "priority": 3,
+                    "priority": 5,
                     "interval": 10,
                     "xz_dist": 20,
                     "y_dist": 2,
@@ -384,7 +388,15 @@
                                     }
 								]
 							}
-						}
+						},
+						{
+							"filters": {
+								"test":  "is_family", 
+								"subject": "other", 
+								"value":  "parasaurAngerer"
+						 	},
+							"max_dist": 35
+					  	}
 					]
 				}
 			},
@@ -439,6 +451,9 @@
                     "value": 120,
                     "max": 150
                 },
+				"minecraft:attack": {
+					"damage": 15
+				},
 				"minecraft:healable": {
 					"force_use": true,
 					"items": [
@@ -735,8 +750,39 @@
             "rift:tamed_spin_attack": {
 				"minecraft:is_charged": {}
 			},
+			"rift:default_navigation": {
+				"minecraft:navigation.generic": {
+					"is_amphibious": true,
+					"can_path_over_water": false,
+					"can_swim": true,
+					"can_walk": true,
+					"can_breach": true,
+					"can_sink": false,
+					"avoid_damage_blocks": true
+				}
+			},
+			"rift:ridden_floating": {
+                "minecraft:navigation.generic": {
+                    "is_amphibious": false,
+                    "can_path_over_water": false,
+                    "can_swim": true,
+                    "can_walk": false,
+                    "can_breach": true,
+                    "can_sink": false
+                }
+			},
+			"rift:ridden_swimming": {
+				"minecraft:navigation.generic": {
+                    "is_amphibious": false,
+                    "can_path_over_water": true,
+                    "can_swim": true,
+                    "can_walk": false,
+                    "can_breach": false,
+                    "can_sink": true
+                }
+			},
             "rift:forced_bite": {
-				"minecraft:is_sheared": {}
+				"minecraft:is_ignited": {}
 			},
 			"rift:summon_forced_bite_entity": {
 				"minecraft:spawn_entity": {
@@ -788,7 +834,8 @@
 						"sarcosuchus",
 						"mob",
 						"carnivore",
-						"reptile"
+						"reptile",
+						"waterMount"
 					]
 				}
 			},
@@ -799,6 +846,7 @@
 						"mob",
 						"carnivore",
 						"reptile",
+						"waterMount",
 						"isForcedAttacking"
 					]
 				}
@@ -810,26 +858,18 @@
 					"sarcosuchus",
 					"mob",
 					"carnivore",
-					"reptile"
+					"reptile",
+					"waterMount"
 				]
 			},
 			"minecraft:movement": {
 				"value": 0.1
 			},
             "minecraft:underwater_movement": {
-                "value": 0.2
+                "value": 0.3
             },
             "minecraft:water_movement": {
                 "drag_factor": 0.75
-            },
-            "minecraft:navigation.generic": {
-                "is_amphibious": true,
-                "can_path_over_water": false,
-                "can_swim": true,
-                "can_walk": true,
-                "can_breach": true,
-                "can_sink": false,
-                "avoid_damage_blocks": true
             },
             "minecraft:movement.amphibious": {},
             "minecraft:behavior.breed": {},
@@ -982,6 +1022,89 @@
 					}
 				]
             },
+			"minecraft:environment_sensor": {
+				"triggers": [
+					{
+						"filters": {
+							"all_of": [
+								{
+									"test": "has_tag",
+									"value": "sarcoSpin",
+									"subject": "self"									
+								},
+								{
+									"test": "rider_count",
+									"operator": ">",
+									"value": 0,
+									"subject": "self"
+								},
+								{
+									"test": "has_component",
+									"value": "minecraft:is_tamed",
+									"subject": "self"
+								},
+								{
+									"test": "has_component",
+									"operator": "!=",
+									"value": "minecraft:is_baby",
+									"subject": "self"
+								},
+								{
+									"test": "has_component",
+									"value": "minecraft:is_saddled",
+									"subject": "self"
+								},
+								{
+									"test": "has_component",
+									"value": "minecraft:is_illager_captain",
+									"operator": "!=",
+									"subject": "self"
+								}
+							]
+						},
+						"event": "rift:sarcosuchus_forced_spin"
+					},
+					{
+						"filters": {
+							"all_of": [
+								{
+									"test": "has_tag",
+									"value": "sarcoSpin",
+									"subject": "self"									
+								},
+								{
+									"test": "rider_count",
+									"operator": ">",
+									"value": 0,
+									"subject": "self"
+								},
+								{
+									"test": "has_component",
+									"value": "minecraft:is_tamed",
+									"subject": "self"
+								},
+								{
+									"test": "has_component",
+									"operator": "!=",
+									"value": "minecraft:is_baby",
+									"subject": "self"
+								},
+								{
+									"test": "has_component",
+									"value": "minecraft:is_saddled",
+									"subject": "self"
+								},
+								{
+									"test": "has_component",
+									"value": "minecraft:is_illager_captain",
+									"subject": "self"
+								}
+							]
+						},
+						"event": "rift:cannot_spin"
+					}
+				]
+			},
 			"minecraft:scheduler": {
 				"scheduled_events": [
 					{
@@ -1024,6 +1147,10 @@
 			},
             "minecraft:damage_sensor": {
 				"triggers": [
+					{
+						"deals_damage": false,
+						"cause": "fall"
+					},
 					{
 						"on_damage": {
 							"filters": {
@@ -1204,6 +1331,7 @@
                                 "rift:sarcosuchus_adult_not_trusting",
 								"rift:can_bite_attack",
                                 "rift:default_targets",
+								"rift:default_navigation",
                                 "rift:pushable",
                                 "rift:variant_zero"
                             ]
@@ -1218,6 +1346,7 @@
                                 "rift:sarcosuchus_adult_not_trusting",
 								"rift:can_bite_attack",
                                 "rift:default_targets",
+								"rift:default_navigation",
                                 "rift:pushable",
                                 "rift:variant_one"
                             ]
@@ -1232,6 +1361,7 @@
                                 "rift:sarcosuchus_adult_not_trusting",
 								"rift:can_bite_attack",
                                 "rift:default_targets",
+								"rift:default_navigation",
                                 "rift:pushable",
                                 "rift:variant_two"
                             ]
@@ -1246,6 +1376,7 @@
                                 "rift:sarcosuchus_adult_not_trusting",
 								"rift:can_bite_attack",
                                 "rift:default_targets",
+								"rift:default_navigation",
                                 "rift:pushable",
                                 "rift:variant_three"
                             ]
@@ -1417,13 +1548,20 @@
 			"rift:cannot_sit": {
 				"add": {
 					"component_groups": [
-						"rift:unpushable"
+						"rift:unpushable",
+						"rift:ridden_floating"
 					]
 				},
 				"remove": {
 					"component_groups": [
 						"rift:sarcosuchus_sittable",
-						"rift:pushable"
+						"rift:pushable",
+						"rift:default_navigation"
+					]
+				},
+				"run_command": {
+					"command": [
+						"tag @s add sarcoHasRider"
 					]
 				}
 			},
@@ -1431,12 +1569,44 @@
 				"add": {
 					"component_groups": [
 						"rift:sarcosuchus_sittable",
-						"rift:pushable"
+						"rift:pushable",
+						"rift:default_navigation"
 					]
 				},
 				"remove": {
 					"component_groups": [
-						"rift:pushable"
+						"rift:pushable",
+						"rift:ridden_floating",
+						"rift:ridden_swimming"
+					]
+				},
+				"run_command": {
+					"command": [
+						"tag @s remove sarcoHasRider"
+					]
+				}
+			},
+			"rift:float_to_swim": {
+				"add": {
+					"component_groups": [
+						"rift:ridden_swimming"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:ridden_floating"
+					]
+				}
+			},
+			"rift:swim_to_float": {
+				"add": {
+					"component_groups": [
+						"rift:ridden_floating"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:ridden_swimming"
 					]
 				}
 			},
@@ -1480,6 +1650,7 @@
                                 "rift:sarcosuchus_baby",
                                 "rift:sarcosuchus_baby_wild",
 								"rift:can_bite_attack",
+								"rift:default_navigation",
                                 "rift:pushable",
                                 "rift:variant_zero"
                             ]
@@ -1492,6 +1663,7 @@
                                 "rift:sarcosuchus_baby",
                                 "rift:sarcosuchus_baby_wild",
 								"rift:can_bite_attack",
+								"rift:default_navigation",
                                 "rift:pushable",
                                 "rift:variant_one"
                             ]
@@ -1504,6 +1676,7 @@
                                 "rift:sarcosuchus_baby",
                                 "rift:sarcosuchus_baby_wild",
 								"rift:can_bite_attack",
+								"rift:default_navigation",
                                 "rift:pushable",
                                 "rift:variant_two"
                             ]
@@ -1516,6 +1689,7 @@
                                 "rift:sarcosuchus_baby",
                                 "rift:sarcosuchus_baby_wild",
 								"rift:can_bite_attack",
+								"rift:default_navigation",
                                 "rift:pushable",
                                 "rift:variant_three"
                             ]
@@ -1548,17 +1722,111 @@
 					]
 				}
 			},
-			"rift:can_spin_attack_again": {
-				"remove": {
+			"rift:forced_spin_attack_cooldown": {
+				"add": {
 					"component_groups": [
 						"rift:spin_cooldown"
 					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:tamed_spin_attack"
+					]
 				}
+			},
+			"rift:can_spin_attack_again": {
+				"sequence": [
+					{
+						"remove": {
+							"component_groups": [
+								"rift:spin_cooldown"
+							]
+						}
+					},
+					{
+						"filters": {
+							"test": "has_component",
+							"subject": "self",
+							"value": "minecraft:is_tamed"
+						},
+						"run_command": {
+							"command": [
+								"tellraw @p {\"rawtext\":[{\"text\":\"Cooldown ended\"}]}"
+							]
+						}
+					}
+				]
 			},
 			"rift:on_pounced_by_utahraptor": {
 				"run_command": {
 					"command": [
 						"ride @s evict_riders"
+					]
+				}
+			},
+			"rift:use_forced_bite": {
+				"add": {
+					"component_groups": [
+						"rift:forced_bite"
+					]
+				}
+			},
+			"rift:stop_forced_bite": {
+				"remove": {
+					"component_groups": [
+						"rift:forced_bite"
+					]
+				}
+			},
+			"rift:on_summon_forced_bite": {
+				"add": {
+					"component_groups": [
+						"rift:summon_forced_bite_entity"
+					]
+				}
+			},
+			"rift:no_summon_forced_bite": {
+				"remove": {
+					"component_groups": [
+						"rift:summon_forced_bite_entity"
+					]
+				}
+			},
+			"rift:on_forced_attack_family": {
+				"add": {
+					"component_groups": [
+						"rift:forced_attack_family"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:default_family"
+					]
+				}
+			},
+			"rift:no_forced_attack_family": {
+				"add": {
+					"component_groups": [
+						"rift:default_family"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:forced_attack_family"
+					]
+				}
+			},
+			"rift:sarcosuchus_forced_spin": {
+				"add": {
+					"component_groups": [
+						"rift:tamed_spin_attack"
+					]
+				}
+			},
+			"rift:cannot_spin": {
+				"run_command": {
+					"command": [
+						"tellraw @p {\"rawtext\":[{\"text\":\"Cannot spin for another 10 seconds!\"}]}"
 					]
 				}
 			}
