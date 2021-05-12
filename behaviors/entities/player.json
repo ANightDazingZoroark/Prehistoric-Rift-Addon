@@ -249,13 +249,24 @@
 					{
 						"on_damage": {
 							"filters": {
-								"test": "is_family",
+								"test": "has_component",
 								"subject": "self",
 								"value": "minecraft:is_charged"
 							}
 						},
 						"damage_multiplier": 0.25,
 						"cause": "entity_attack"
+					},
+					{
+						"on_damage": {
+							"filters": {
+								"test": "is_family",
+								"subject": "other",
+								"value": "sarcoSpinAttack"
+							},
+							"event": "rift:hit_by_sarco_spin",
+							"target": "self"
+						}
 					}
 				]
 			}			
@@ -319,6 +330,13 @@
 				"remove": {
 					"component_groups": [
 						"rift:is_riding_stegosaurus"
+					]
+				}
+			},
+			"rift:hit_by_sarco_spin": {
+				"run_command": {
+					"command": [
+						"effect @s slowness 30 2"
 					]
 				}
 			}

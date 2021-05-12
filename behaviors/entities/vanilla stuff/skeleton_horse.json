@@ -66,16 +66,154 @@
 
       "minecraft:lightning_immune": {
         "minecraft:damage_sensor": {
-          "triggers": {
-            "on_damage": {
-              "filters": {
-                "test": "is_family",
-                "subject": "other",
-                "value": "lightning"
+          "triggers": 
+          [
+            {
+              "on_damage": {
+                "filters": {
+                  "test": "is_family",
+                  "subject": "other",
+                  "value": "lightning"
+                }
+              },
+              "deals_damage": false
+            },
+            {
+              "on_damage": {
+                "filters": {
+                  "all_of": [
+                    {
+                      "test": "is_family",
+                      "subject": "other",
+                      "value": "stegosaurus"
+                    },
+                    {
+                      "test": "has_component",
+                      "subject": "other",
+                      "operator": "!=",
+                      "value": "minecraft:baby"
+                    }
+                  ]
+                }
+              },
+              "deals_damage": true,
+              "damage_multiplier": 5
+            },
+            {
+              "on_damage": {
+                "filters": {
+                  "all_of": [
+                    {
+                      "all_of": [
+                        {
+                          "test": "is_family",
+                          "subject": "other",
+                          "value": "utahraptor"
+                        },
+                        {
+                          "test": "on_ground",
+                          "subject": "other",
+                          "value": false
+                        }
+                      ]
+                    },
+                    {
+                      "test": "random_chance",
+                      "subject": "self",
+                      "operator": "<",
+                      "value": 7
+                    },
+                    {
+                      "any_of": [
+                        {
+                          "test": "is_difficulty",
+                          "operator": "==",
+                          "value": "peaceful"
+                        },
+                        {
+                          "test": "is_difficulty",
+                          "operator": "==",
+                          "value": "easy"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "event": "rift:on_pounced_by_utahraptor",
+                "target": "self"
               }
             },
-            "deals_damage": false
-          }
+            {
+              "on_damage": {
+                "filters": {
+                  "all_of": [
+                    {
+                      "all_of": [
+                        {
+                          "test": "is_family",
+                          "subject": "other",
+                          "value": "utahraptor"
+                        },
+                        {
+                          "test": "on_ground",
+                          "subject": "other",
+                          "value": false
+                        }
+                      ]
+                    },
+                    {
+                      "test": "random_chance",
+                      "subject": "self",
+                      "operator": "<",
+                      "value": 4
+                    },
+                    {
+                      "test": "is_difficulty",
+                      "operator": "==",
+                      "value": "normal"
+                    }
+                  ]
+                },
+                "event": "rift:on_pounced_by_utahraptor",
+                "target": "self"
+              }
+            },
+            {
+              "on_damage": {
+                "filters": {
+                  "all_of": [
+                    {
+                      "all_of": [
+                        {
+                          "test": "is_family",
+                          "subject": "other",
+                          "value": "utahraptor"
+                        },
+                        {
+                          "test": "on_ground",
+                          "subject": "other",
+                          "value": false
+                        }
+                      ]
+                    },
+                    {
+                      "test": "random_chance",
+                      "subject": "self",
+                      "operator": "<",
+                      "value": 1
+                    },
+                    {
+                      "test": "is_difficulty",
+                      "operator": "==",
+                      "value": "hard"
+                    }
+                  ]
+                },
+                "event": "rift:on_pounced_by_utahraptor",
+                "target": "self"
+              }
+            }
+          ]
         }
       }
     },

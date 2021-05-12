@@ -21,16 +21,29 @@
         "hud_range": 55
       },
       "minecraft:damage_sensor": {
-        "triggers": {
+        "triggers": [
+          {
+            "on_damage": {
+              "filters": {
+                "test": "is_family",
+                "subject": "other",
+                "value": "undead"
+              }
+            },
+          "deals_damage": false
+        },
+        {
           "on_damage": {
             "filters": {
               "test": "is_family",
               "subject": "other",
-              "value": "undead"
-            }
-          },
-          "deals_damage": false
+              "value": "sarcoSpinAttack"
+            },
+            "event": "rift:hit_by_sarco_spin",
+            "target": "self"
+          }
         }
+      ]
       },
       "minecraft:health": {
         "value": 600,
@@ -136,7 +149,14 @@
     "events": {
       "minecraft:entity_spawned": {
 
-      }
+      },
+      "rift:hit_by_sarco_spin": {
+				"run_command": {
+					"command": [
+						"effect @s slowness 30 2"
+					]
+				}
+			}
     }
   }
 }

@@ -8,12 +8,15 @@
             "is_experimental": false,
 			"animations": {
 				"contTameTag": "controller.animation.add_tame_tag",
-				"contBabyTag": "controller.animation.add_baby_tag"
+				"contBabyTag": "controller.animation.add_baby_tag",
+				"contWildSpinAttack": "controller.animation.wild_sarco_use_spin_attack",
+				"animWildSpinAttack": "animation.sarco_spin_attack_wild"
 			},
 			"scripts": {
 				"animate": [
 					"contTameTag",
-					"contBabyTag"
+					"contBabyTag",
+					"contWildSpinAttack"
 				]
 			}
         },
@@ -349,9 +352,18 @@
 							"filters": {
 								"all_of": [
 									{
-										"test": "is_family",
-										"subject": "other",
-										"value": "mob"
+										"any_of": [
+											{
+												"test": "is_family",
+												"subject": "other",
+												"value": "mob"
+											},
+											{
+												"test": "is_family",
+												"subject": "other",
+												"value": "fish"
+											}
+										]
 									},
                                     {
 										"test": "is_family",
@@ -657,8 +669,72 @@
 					"interact_text": "action.interact.mount"
 				}
             },
-            "rift:wild_spin_attack": {},
-            "rift:tamed_spin_attack": {},
+			"rift:can_bite_attack": {
+				"minecraft:behavior.delayed_attack": {
+					"priority": 2,
+					"attack_duration": 0.52,
+					"hit_delay_pct": 1,
+					"track_target": true,
+					"reach_multiplier": 3
+				},
+				"minecraft:behavior.stalk_and_pounce_on_target": {
+					"priority": 1,
+					"stalk_speed": 1.2,
+					"max_stalk_dist": 12.0,
+					"leap_height": 0.3,
+					"leap_dist": 2,
+					"pounce_max_dist": 11,
+					"interest_time": 0,
+					"strike_dist": 8
+				},
+				"minecraft:entity_sensor": {
+					"sensor_range": 1.5,
+					"event_filters": {
+						"all_of": [
+							{
+								"test": "is_target",
+								"subject": "other",
+								"value": true
+							},
+							{
+								"test": "is_family",
+								"subject": "other",
+								"operator": "!=",
+								"value": "fish"
+							},
+							{
+								"test": "has_component",
+								"subject": "self",
+								"operator": "!=",
+								"value": "minecraft:is_illager_captain"
+							},
+							{
+								"test": "has_component",
+								"subject": "self",
+								"operator": "!=",
+								"value": "minecraft:is_baby"
+							}
+						]
+					},
+					"event": "rift:can_wild_spin_attack"
+				}
+			},
+			"rift:spin_cooldown": {
+				"minecraft:is_illager_captain": {},
+				"minecraft:timer": {
+					"time": 10,
+					"time_down_event": {
+						"event": "rift:can_spin_attack_again",
+						"target":"self"
+					}
+				}
+			},
+            "rift:wild_spin_attack": {
+				"minecraft:is_charged": {}
+			},
+            "rift:tamed_spin_attack": {
+				"minecraft:is_charged": {}
+			},
             "rift:forced_bite": {
 				"minecraft:is_sheared": {}
 			},
@@ -759,13 +835,6 @@
             "minecraft:behavior.breed": {},
             "minecraft:jump.static": {
 				"jump_power": 0.65
-			},
-            "minecraft:behavior.delayed_attack": {
-				"priority": 1,
-				"attack_duration": 0.52,
-				"hit_delay_pct": 1,
-				"track_target": true,
-				"reach_multiplier": 3
 			},
 			"minecraft:is_hidden_when_invisible": {},
 			"minecraft:pushable": {},
@@ -1005,6 +1074,120 @@
 							"event": "rift:on_force_attacked",
 							"target": "self"
 						}
+					},
+					{
+						"on_damage": {
+							"filters": {
+								"all_of": [
+									{
+										"all_of": [
+											{
+												"test": "is_family",
+												"subject": "other",
+												"value": "utahraptor"
+											},
+											{
+												"test": "on_ground",
+												"subject": "other",
+												"value": false
+											}
+										]
+									},
+									{
+										"test": "random_chance",
+										"subject": "self",
+										"operator": "<",
+										"value": 7
+									},
+									{
+										"any_of": [
+											{
+												"test": "is_difficulty",
+												"operator": "==",
+												"value": "peaceful"
+											},
+											{
+												"test": "is_difficulty",
+												"operator": "==",
+												"value": "easy"
+											}
+										]
+									}
+								]
+							},
+							"event": "rift:on_pounced_by_utahraptor",
+							"target": "self"
+						}
+					},
+					{
+						"on_damage": {
+							"filters": {
+								"all_of": [
+									{
+										"all_of": [
+											{
+												"test": "is_family",
+												"subject": "other",
+												"value": "utahraptor"
+											},
+											{
+												"test": "on_ground",
+												"subject": "other",
+												"value": false
+											}
+										]
+									},
+									{
+										"test": "random_chance",
+										"subject": "self",
+										"operator": "<",
+										"value": 4
+									},
+									{
+										"test": "is_difficulty",
+										"operator": "==",
+										"value": "normal"
+									}
+								]
+							},
+							"event": "rift:on_pounced_by_utahraptor",
+							"target": "self"
+						}
+					},
+					{
+						"on_damage": {
+							"filters": {
+								"all_of": [
+									{
+										"all_of": [
+											{
+												"test": "is_family",
+												"subject": "other",
+												"value": "utahraptor"
+											},
+											{
+												"test": "on_ground",
+												"subject": "other",
+												"value": false
+											}
+										]
+									},
+									{
+										"test": "random_chance",
+										"subject": "self",
+										"operator": "<",
+										"value": 1
+									},
+									{
+										"test": "is_difficulty",
+										"operator": "==",
+										"value": "hard"
+									}
+								]
+							},
+							"event": "rift:on_pounced_by_utahraptor",
+							"target": "self"
+						}
 					}
 				]
 			}
@@ -1019,6 +1202,7 @@
                                 "rift:sarcosuchus_adult",
                                 "rift:sarcosuchus_adult_wild",
                                 "rift:sarcosuchus_adult_not_trusting",
+								"rift:can_bite_attack",
                                 "rift:default_targets",
                                 "rift:pushable",
                                 "rift:variant_zero"
@@ -1032,6 +1216,7 @@
                                 "rift:sarcosuchus_adult",
                                 "rift:sarcosuchus_adult_wild",
                                 "rift:sarcosuchus_adult_not_trusting",
+								"rift:can_bite_attack",
                                 "rift:default_targets",
                                 "rift:pushable",
                                 "rift:variant_one"
@@ -1045,6 +1230,7 @@
                                 "rift:sarcosuchus_adult",
                                 "rift:sarcosuchus_adult_wild",
                                 "rift:sarcosuchus_adult_not_trusting",
+								"rift:can_bite_attack",
                                 "rift:default_targets",
                                 "rift:pushable",
                                 "rift:variant_two"
@@ -1058,6 +1244,7 @@
                                 "rift:sarcosuchus_adult",
                                 "rift:sarcosuchus_adult_wild",
                                 "rift:sarcosuchus_adult_not_trusting",
+								"rift:can_bite_attack",
                                 "rift:default_targets",
                                 "rift:pushable",
                                 "rift:variant_three"
@@ -1292,6 +1479,7 @@
                             "component_groups": [
                                 "rift:sarcosuchus_baby",
                                 "rift:sarcosuchus_baby_wild",
+								"rift:can_bite_attack",
                                 "rift:pushable",
                                 "rift:variant_zero"
                             ]
@@ -1303,6 +1491,7 @@
                             "component_groups": [
                                 "rift:sarcosuchus_baby",
                                 "rift:sarcosuchus_baby_wild",
+								"rift:can_bite_attack",
                                 "rift:pushable",
                                 "rift:variant_one"
                             ]
@@ -1314,6 +1503,7 @@
                             "component_groups": [
                                 "rift:sarcosuchus_baby",
                                 "rift:sarcosuchus_baby_wild",
+								"rift:can_bite_attack",
                                 "rift:pushable",
                                 "rift:variant_two"
                             ]
@@ -1325,12 +1515,52 @@
                             "component_groups": [
                                 "rift:sarcosuchus_baby",
                                 "rift:sarcosuchus_baby_wild",
+								"rift:can_bite_attack",
                                 "rift:pushable",
                                 "rift:variant_three"
                             ]
                         }
                     }
                 ]
+			},
+			"rift:can_wild_spin_attack": {
+				"add": {
+					"component_groups": [
+						"rift:wild_spin_attack"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:can_bite_attack"
+					]
+				}
+			},
+			"rift:return_to_bite_attack": {
+				"add": {
+					"component_groups": [
+						"rift:can_bite_attack",
+						"rift:spin_cooldown"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:wild_spin_attack"
+					]
+				}
+			},
+			"rift:can_spin_attack_again": {
+				"remove": {
+					"component_groups": [
+						"rift:spin_cooldown"
+					]
+				}
+			},
+			"rift:on_pounced_by_utahraptor": {
+				"run_command": {
+					"command": [
+						"ride @s evict_riders"
+					]
+				}
 			}
         }
     }
