@@ -1,0 +1,42 @@
+{
+	"format_version": "1.10.0",
+	"animation_controllers": {
+		"controller.animation.anomalocaris_movement": {
+			"initial_state": "default",
+			"states": {
+				"default": {
+					"animations": [
+						{
+							"animIdle": "query.ground_speed == 0"
+						},
+						{
+							"animSwim": "query.ground_speed > 0"
+						}
+					]
+				}
+			}
+		},
+		"controller.animation.anomalocaris_attack": {
+			"initial_state": "default",
+			"states": {
+				"default": {
+					"transitions": [
+						{
+							"attacking": "query.is_delayed_attacking"
+						}
+					]
+				},
+				"attacking": {
+					"animations": [
+						"animAttack"
+					],
+					"transitions": [
+						{
+							"default": "!query.is_delayed_attacking"
+						}
+					]
+				}
+			}
+		}
+	}
+}

@@ -92,14 +92,14 @@
                 "default": {
                     "transitions": [
                         {
-                            "float": "query.is_in_water && query.is_riding && query.get_equipped_item_name('main_hand') != 'command_staff' && (query.get_ride -> query.owner_identifier) == 'rift:sarcosuchus'"
+                            "float": "query.is_in_water && query.is_riding && query.get_equipped_item_name('main_hand') != 'command_staff' && ((query.get_ride -> query.owner_identifier) == 'rift:sarcosuchus' || (query.get_ride -> query.owner_identifier) == 'rift:anomalocaris')"
                         }
                     ]
                 },
                 "float": {
                     "transitions": [
                         {
-                            "default": "!query.is_in_water || !query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:sarcosuchus'"
+                            "default": "!query.is_in_water || !query.is_riding || ((query.get_ride -> query.owner_identifier) != 'rift:sarcosuchus' && (query.get_ride -> query.owner_identifier) != 'rift:anomalocaris')"
                         },
                         {
                             "floatToSwim": "query.is_riding && query.is_jumping && query.get_equipped_item_name('main_hand') != 'command_staff'"
@@ -112,7 +112,7 @@
                 "floatToSwim": {
                     "transitions": [
                         {
-                            "default": "!query.is_in_water || !query.is_riding || query.get_equipped_item_name('main_hand') == 'command_staff' || (query.get_ride -> query.owner_identifier) != 'rift:sarcosuchus'"
+                            "default": "!query.is_in_water || !query.is_riding || query.get_equipped_item_name('main_hand') == 'command_staff' || ((query.get_ride -> query.owner_identifier) != 'rift:sarcosuchus' && (query.get_ride -> query.owner_identifier) != 'rift:anomalocaris')"
                         },
                         {
                             "swim": "!query.is_jumping"
@@ -122,7 +122,7 @@
                 "swim": {
                     "transitions": [
                         {
-                            "default": "!query.is_in_water || !query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:sarcosuchus'"
+                            "default": "!query.is_in_water || !query.is_riding || ((query.get_ride -> query.owner_identifier) != 'rift:sarcosuchus' && (query.get_ride -> query.owner_identifier) != 'rift:anomalocaris')"
                         },
                         {
                             "swimToFloat": "query.is_riding && query.is_jumping && query.get_equipped_item_name('main_hand') != 'command_staff'"
@@ -139,7 +139,7 @@
                 "swimToFloat": {
                     "transitions": [
                         {
-                            "default": "!query.is_in_water || !query.is_riding || query.get_equipped_item_name('main_hand') == 'command_staff' || (query.get_ride -> query.owner_identifier) != 'rift:sarcosuchus'"
+                            "default": "!query.is_in_water || !query.is_riding || query.get_equipped_item_name('main_hand') == 'command_staff' || ((query.get_ride -> query.owner_identifier) != 'rift:sarcosuchus' && (query.get_ride -> query.owner_identifier) != 'rift:anomalocaris')"
                         },
                         {
                             "float": "!query.is_jumping"
@@ -160,7 +160,8 @@
                 },
                 "swimming": {
                     "animations": [
-                        "animControlSarco"
+                        "animControlSarco",
+                        "animControlAnomalo"
                     ],
                     "transitions": [
                         {
