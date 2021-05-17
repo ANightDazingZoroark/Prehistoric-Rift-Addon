@@ -7,13 +7,19 @@
             "is_summonable": true,
             "is_experimental": false,
 			"animations": {
+				"contAnomaloUseSlash": "controller.animation.anomalo_forced_use_attack",
 				"contTameTag": "controller.animation.add_tame_tag",
-				"contBabyTag": "controller.animation.add_baby_tag"
+				"contBabyTag": "controller.animation.add_baby_tag",
+				"contInvisibility": "controller.animation.anomalocaris_invisibility",
+				"animInvisibility": "animation.invisibility",
+				"animForcedAttack": "animation.forced_attack_anomalocaris"
 			},
 			"scripts": {
 				"animate": [
+					"contAnomaloUseSlash",
 					"contTameTag",
-					"contBabyTag"
+					"contBabyTag",
+					"contInvisibility"
 				]
 			}
         },
@@ -250,6 +256,15 @@
 			},
 			"rift:anomalocaris_invisible": {
 				"minecraft:is_ignited": {}
+			},
+			"rift:no_invisibility_wild": {
+				"minecraft:timer": {
+					"time": 7.5,
+					"time_down_event": {
+						"event": "rift:return_invisibility_wild",
+						"target": "self"
+					}
+				}
 			},
 			"rift:anomalocaris_adult_not_trusting": {
                 "minecraft:trusting": {
@@ -674,6 +689,21 @@
                     "can_sink": true
                 }
 			},
+			"rift:forced_slash": {
+				"minecraft:is_charged": {}
+			},
+			"rift:summon_forced_slash_entity": {
+				"minecraft:spawn_entity": {
+					"entities": [
+						{
+							"spawn_entity": "rift:anomalocaris_slash",
+							"single_use": true,
+							"min_wait_time": 0,
+							"max_wait_time": 0
+						}
+					]
+				}
+			},
 			"rift:variant_zero": {
 				"minecraft:variant": {
 					"value": 0
@@ -907,6 +937,89 @@
 					}
 				]
             },
+			"minecraft:environment_sensor": {
+				"triggers": [
+					{
+						"filters": {
+							"all_of": [
+								{
+									"test": "has_tag",
+									"value": "anomaloInvisible",
+									"subject": "self"									
+								},
+								{
+									"test": "rider_count",
+									"operator": ">",
+									"value": 0,
+									"subject": "self"
+								},
+								{
+									"test": "has_component",
+									"value": "minecraft:is_tamed",
+									"subject": "self"
+								},
+								{
+									"test": "has_component",
+									"operator": "!=",
+									"value": "minecraft:is_baby",
+									"subject": "self"
+								},
+								{
+									"test": "has_component",
+									"value": "minecraft:is_saddled",
+									"subject": "self"
+								},
+								{
+									"test": "has_component",
+									"value": "minecraft:is_ignited",
+									"operator": "!=",
+									"subject": "self"
+								}
+							]
+						},
+						"event": "rift:anomalocaris_forced_invisibility"
+					},
+					{
+						"filters": {
+							"all_of": [
+								{
+									"test": "has_tag",
+									"value": "anomaloInvisible",
+									"subject": "self"									
+								},
+								{
+									"test": "rider_count",
+									"operator": ">",
+									"value": 0,
+									"subject": "self"
+								},
+								{
+									"test": "has_component",
+									"value": "minecraft:is_tamed",
+									"subject": "self"
+								},
+								{
+									"test": "has_component",
+									"operator": "!=",
+									"value": "minecraft:is_baby",
+									"subject": "self"
+								},
+								{
+									"test": "has_component",
+									"value": "minecraft:is_saddled",
+									"subject": "self"
+								},
+								{
+									"test": "has_component",
+									"value": "minecraft:is_ignited",
+									"subject": "self"
+								}
+							]
+						},
+						"event": "rift:anomalocaris_no_forced_invisibility"
+					}
+				]
+			},
 			"minecraft:scheduler": {
 				"scheduled_events": [
 					{
@@ -949,6 +1062,33 @@
 			},
 			"minecraft:damage_sensor": {
 				"triggers": [
+					{
+						"on_damage": {
+							"filters": {
+								"all_of": [
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_ignited"
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"operator": "!=",
+										"value": "minecraft:is_baby"
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"operator": "!=",
+										"value": "minecraft:is_tamed"
+									}
+								]
+							},
+							"event": "rift:remove_invisibility_tamed",
+							"target": "self"
+						}
+					},
 					{
 						"on_damage": {
 							"filters": {
@@ -1187,30 +1327,17 @@
 					{
 						"add": {
 							"component_groups": [
-								"rift:anomalocaris_adult"
+								"rift:anomalocaris_adult",
+								"rift:anomalocaris_adult_wild",
+								"rift:default_targets",
+								"rift:anomalocaris_adult_not_trusting",
+								"rift:anomalocaris_invisible"
 							]
 						},
 						"remove": {
-							"components": [
-								"rift:anomalocaris_baby",
-								"rift:anomalocaris_baby_wild",
-								"rift:anomalocaris_baby_tamed"
-							]
-						}
-					},
-					{
-						"filters": {
-							"test": "has_component",
-							"subject": "self",
-							"operator": "!=",
-							"value": "minecraft:is_tamed"
-						},
-						"add": {
 							"component_groups": [
-								"rift:anomalocaris_adult_wild",
-								"rift:anomalocaris_adult_not_trusting",
-								"rift:anomalocaris_invisible",
-								"rift:default_targets"
+								"rift:anomalocaris_baby",
+								"rift:anomalocaris_baby_wild"
 							]
 						}
 					},
@@ -1224,6 +1351,15 @@
 							"component_groups": [
 								"rift:anomalocaris_adult_tamed",
 								"rift:rideable"
+							]
+						},
+						"remove": {
+							"component_groups": [
+								"rift:anomalocaris_baby_tamed",
+								"rift:anomalocaris_adult_wild",
+								"rift:default_targets",
+								"rift:anomalocaris_adult_not_trusting",
+								"rift:anomalocaris_invisible"
 							]
 						}
 					}
@@ -1253,6 +1389,8 @@
 				"remove": {
 					"component_groups": [
 						"rift:anomalocaris_adult_not_trusting",
+						"rift:anomalocaris_invisible",
+						"rift:no_invisibility_wild",
 						"rift:default_targets"
 					]
 				},
@@ -1382,7 +1520,8 @@
 					"component_groups": [
 						"rift:pushable",
 						"rift:ridden_floating",
-						"rift:ridden_swimming"
+						"rift:ridden_swimming",
+						"rift:anomalocaris_invisible"
 					]
 				},
 				"run_command": {
@@ -1412,6 +1551,58 @@
 				"remove": {
 					"component_groups": [
 						"rift:ridden_swimming"
+					]
+				}
+			},
+			"rift:use_forced_slash": {
+				"add": {
+					"component_groups": [
+						"rift:forced_slash"
+					]
+				}
+			},
+			"rift:stop_forced_slash": {
+				"remove": {
+					"component_groups": [
+						"rift:forced_slash"
+					]
+				}
+			},
+			"rift:on_summon_forced_slash": {
+				"add": {
+					"component_groups": [
+						"rift:summon_forced_slash_entity"
+					]
+				}
+			},
+			"rift:no_summon_forced_slash": {
+				"remove": {
+					"component_groups": [
+						"rift:summon_forced_slash_entity"
+					]
+				}
+			},
+			"rift:on_forced_attack_family": {
+				"add": {
+					"component_groups": [
+						"rift:forced_attack_family"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:default_family"
+					]
+				}
+			},
+			"rift:no_forced_attack_family": {
+				"add": {
+					"component_groups": [
+						"rift:default_family"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:forced_attack_family"
 					]
 				}
 			},
@@ -1497,6 +1688,44 @@
                         }
                     }
                 ]
+			},
+			"rift:remove_invisibility_tamed": {
+				"add": {
+					"component_groups": [
+						"rift:no_invisibility_wild"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:anomalocaris_invisible"
+					]
+				}
+			},
+			"rift:return_invisibility_wild": {
+				"add": {
+					"component_groups": [
+						"rift:anomalocaris_invisible"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:no_invisibility_wild"
+					]
+				}
+			},
+			"rift:anomalocaris_forced_invisibility": {
+				"add": {
+					"component_groups": [
+						"rift:anomalocaris_invisible"
+					]
+				}
+			},
+			"rift:anomalocaris_no_forced_invisibility": {
+				"remove": {
+					"component_groups": [
+						"rift:anomalocaris_invisible"
+					]
+				}
 			}
 		}
     }

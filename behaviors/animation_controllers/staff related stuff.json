@@ -724,6 +724,137 @@
 					]
 				}
 			}
+		},
+		"controller.animation.anomalocaris_command_staff": {
+			"initial_state": "default",
+			"states": {
+				"default": {
+					"transitions": [
+						{
+							"slashMode": "(query.get_equipped_item_name('main_hand') == 'command_staff') && query.is_riding && (query.get_ride -> query.owner_identifier) == 'rift:anomalocaris'"
+						}
+					],
+					"on_entry": [
+						"/event entity @e[type=rift:anomalocaris, c=1, tag=tamed, tag=!baby] rift:no_forced_attack_family"
+					],
+					"on_exit": [
+						"/tellraw @s {\"rawtext\":[{\"text\":\"Ability set to Slash Mode\"}]}"
+					]
+				},
+				"slashMode": {
+					"transitions": [
+						{
+							"default": "(query.get_equipped_item_name('main_hand') != 'command_staff') || !query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:anomalocaris'"
+						},
+						{
+							"slashToCarry": "query.is_jumping && query.is_riding"
+						},
+						{
+							"useSlashMode": "query.is_using_item && (query.get_ride -> query.is_saddled)"
+						}
+					]
+				},
+				"useSlashMode": {
+					"transitions": [
+						{
+							"slashMode": "(query.get_equipped_item_name('main_hand') != 'command_staff') || !query.is_using_item"
+						}
+					],
+					"on_entry": [
+						"/event entity @e[type=rift:anomalocaris, c=1, tag=tamed, tag=!baby] rift:use_forced_slash"
+					],
+					"on_exit": [
+						"/event entity @e[type=rift:anomalocaris, c=1, tag=tamed, tag=!baby] rift:stop_forced_slash",
+						"/event entity @e[type=rift:anomalocaris, c=1, tag=tamed, tag=!baby] rift:no_summon_forced_slash"
+					]
+				},
+				"slashToCarry": {
+					"transitions": [
+						{
+							"default": "(query.get_equipped_item_name('main_hand') != 'command_staff') || !query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:anomalocaris'"
+						},
+						{
+							"carryMode": "!query.is_jumping"
+						}
+					],
+					"on_exit": [
+						"/tellraw @s {\"rawtext\":[{\"text\":\"Ability set to Carry Mode\"}]}"
+					]
+				},
+				"carryMode": {
+					"transitions": [
+						{
+							"default": "(query.get_equipped_item_name('main_hand') != 'command_staff') || !query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:anomalocaris'"
+						},
+						{
+							"carryToInvisibility": "query.is_jumping && query.is_riding"
+						},
+						{
+							"useCarryMode": "query.is_using_item"
+						}
+					]
+				},
+				"useCarryMode": {
+					"transitions": [
+						{
+							"carryMode": "(query.get_equipped_item_name('main_hand') != 'command_staff') || !query.is_using_item"
+						}
+					],
+					"on_entry": [
+						"/say coming soon"
+					]
+				},
+				"carryToInvisibility": {
+					"transitions": [
+						{
+							"default": "(query.get_equipped_item_name('main_hand') != 'command_staff') || !query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:anomalocaris'"
+						},
+						{
+							"invisibilityMode": "!query.is_jumping"
+						}
+					],
+					"on_exit": [
+						"/tellraw @s {\"rawtext\":[{\"text\":\"Ability set to Invisibility Mode\"}]}"
+					]
+				},
+
+				"invisibilityMode": {
+					"transitions": [
+						{
+							"default": "(query.get_equipped_item_name('main_hand') != 'command_staff') || !query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:anomalocaris'"
+						},
+						{
+							"invisibilityToSlash": "query.is_jumping && query.is_riding"
+						},
+						{
+							"useInvisibilityMode": "query.is_using_item"
+						}
+					]
+				},
+				"useInvisibilityMode": {
+					"transitions": [
+						{
+							"invisibilityMode": "(query.get_equipped_item_name('main_hand') != 'command_staff') || !query.is_using_item"
+						}
+					],
+					"on_entry": [
+						"/tag @e[type=rift:anomalocaris, c=1, tag=tamed, tag=!baby] add anomaloInvisible"
+					]
+				},
+				"invisibilityToSlash": {
+					"transitions": [
+						{
+							"default": "(query.get_equipped_item_name('main_hand') != 'command_staff') || !query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:anomalocaris'"
+						},
+						{
+							"slashMode": "!query.is_jumping"
+						}
+					],
+					"on_exit": [
+						"/tellraw @s {\"rawtext\":[{\"text\":\"Ability set to Slash Mode\"}]}"
+					]
+				}
+			}
 		}
 	}
 }
