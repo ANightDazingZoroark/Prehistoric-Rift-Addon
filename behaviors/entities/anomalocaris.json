@@ -10,16 +10,19 @@
 				"contAnomaloUseSlash": "controller.animation.anomalo_forced_use_attack",
 				"contTameTag": "controller.animation.add_tame_tag",
 				"contBabyTag": "controller.animation.add_baby_tag",
+				"contCarry": "controller.animation.anomalocaris_carrying",
 				"contInvisibility": "controller.animation.anomalocaris_invisibility",
 				"animInvisibility": "animation.invisibility",
-				"animForcedAttack": "animation.forced_attack_anomalocaris"
+				"animForcedAttack": "animation.forced_attack_anomalocaris",
+				"animCarry": "animation.anomalo_carry"
 			},
 			"scripts": {
 				"animate": [
 					"contAnomaloUseSlash",
 					"contTameTag",
 					"contBabyTag",
-					"contInvisibility"
+					"contInvisibility",
+					"contCarry"
 				]
 			}
         },
@@ -704,6 +707,9 @@
 					]
 				}
 			},
+			"rift:carry_mob": {
+				"minecraft:is_illager_captain": {}
+			},
 			"rift:variant_zero": {
 				"minecraft:variant": {
 					"value": 0
@@ -1017,6 +1023,86 @@
 							]
 						},
 						"event": "rift:anomalocaris_no_forced_invisibility"
+					},
+
+					{
+						"filters": {
+							"all_of": [
+								{
+									"test": "has_tag",
+									"value": "carrying",
+									"subject": "self"									
+								},
+								{
+									"test": "rider_count",
+									"operator": ">",
+									"value": 0,
+									"subject": "self"
+								},
+								{
+									"test": "has_component",
+									"value": "minecraft:is_tamed",
+									"subject": "self"
+								},
+								{
+									"test": "has_component",
+									"operator": "!=",
+									"value": "minecraft:is_baby",
+									"subject": "self"
+								},
+								{
+									"test": "has_component",
+									"value": "minecraft:is_saddled",
+									"subject": "self"
+								},
+								{
+									"test": "has_component",
+									"value": "minecraft:is_illager_captain",
+									"operator": "!=",
+									"subject": "self"
+								}
+							]
+						},
+						"event": "rift:anomalocaris_start_carrying"
+					},
+					{
+						"filters": {
+							"all_of": [
+								{
+									"test": "has_tag",
+									"value": "carrying",
+									"subject": "self"									
+								},
+								{
+									"test": "rider_count",
+									"operator": ">",
+									"value": 0,
+									"subject": "self"
+								},
+								{
+									"test": "has_component",
+									"value": "minecraft:is_tamed",
+									"subject": "self"
+								},
+								{
+									"test": "has_component",
+									"operator": "!=",
+									"value": "minecraft:is_baby",
+									"subject": "self"
+								},
+								{
+									"test": "has_component",
+									"value": "minecraft:is_saddled",
+									"subject": "self"
+								},
+								{
+									"test": "has_component",
+									"value": "minecraft:is_illager_captain",
+									"subject": "self"
+								}
+							]
+						},
+						"event": "rift:anomalocaris_stop_carrying"
 					}
 				]
 			},
@@ -1521,12 +1607,14 @@
 						"rift:pushable",
 						"rift:ridden_floating",
 						"rift:ridden_swimming",
-						"rift:anomalocaris_invisible"
+						"rift:anomalocaris_invisible",
+						"rift:carry_mob"
 					]
 				},
 				"run_command": {
 					"command": [
-						"tag @s remove anomaloHasRider"
+						"tag @s remove anomaloHasRider",
+						"kill @e[type=rift:anomalo_carry_stuff, c=1]"
 					]
 				}
 			},
@@ -1724,6 +1812,25 @@
 				"remove": {
 					"component_groups": [
 						"rift:anomalocaris_invisible"
+					]
+				}
+			},
+			"rift:anomalocaris_start_carrying": {
+				"add": {
+					"component_groups": [
+						"rift:carry_mob"
+					]
+				},
+				"run_command": {
+					"command": [
+						"summon rift:anomalo_carry_stuff ~ ~ ~"
+					]
+				}
+			},
+			"rift:anomalocaris_stop_carrying": {
+				"remove": {
+					"component_groups": [
+						"rift:carry_mob"
 					]
 				}
 			}
