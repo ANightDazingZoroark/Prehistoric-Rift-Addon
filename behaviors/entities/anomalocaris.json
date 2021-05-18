@@ -361,6 +361,16 @@
 									{
 										"test": "is_family",
 										"subject": "other",
+										"value": "turtle"
+									},
+									{
+										"test": "is_family",
+										"subject": "other",
+										"value": "dolphin"
+									},
+									{
+										"test": "is_family",
+										"subject": "other",
 										"value": "guardian"
 									},
 									{
@@ -530,15 +540,15 @@
 							]
 						},
 						{
-							"item": "minecraft:raw_coelacanth",
+							"item": "rift:raw_coelacanth",
 							"heal_amount": 3
 						},
                         {
-							"item": "minecraft:raw_megapiranha",
+							"item": "rift:raw_megapiranha",
 							"heal_amount": 3
 						},
 						{
-							"item": "minecraft:cooked_megapiranha",
+							"item": "rift:cooked_megapiranha",
 							"heal_amount": 6
 						},
 						{
@@ -777,19 +787,13 @@
 				]
 			},
 			"minecraft:movement": {
-                "value": 0
+                "value": 0.005
             },
             "minecraft:underwater_movement": {
                 "value": 0.25
             },
-            "minecraft:water_movement": {
-                "drag_factor": 0.75
-            },
 			"minecraft:movement.generic": {},
             "minecraft:behavior.breed": {},
-            "minecraft:jump.static": {
-				"jump_power": 0.65
-			},
 			"minecraft:behavior.delayed_attack": {
 				"priority": 1,
 				"attack_duration": 0.52,
@@ -1167,6 +1171,32 @@
 										"test": "has_component",
 										"subject": "self",
 										"operator": "!=",
+										"value": "minecraft:is_tamed"
+									}
+								]
+							},
+							"event": "rift:remove_invisibility_wild",
+							"target": "self"
+						}
+					},
+					{
+						"on_damage": {
+							"filters": {
+								"all_of": [
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_ignited"
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"operator": "!=",
+										"value": "minecraft:is_baby"
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
 										"value": "minecraft:is_tamed"
 									}
 								]
@@ -1777,7 +1807,7 @@
                     }
                 ]
 			},
-			"rift:remove_invisibility_tamed": {
+			"rift:remove_invisibility_wild": {
 				"add": {
 					"component_groups": [
 						"rift:no_invisibility_wild"
@@ -1798,6 +1828,13 @@
 				"remove": {
 					"component_groups": [
 						"rift:no_invisibility_wild"
+					]
+				}
+			},
+			"rift:remove_invisibility_tamed": {
+				"remove": {
+					"component_groups": [
+						"rift:anomalocaris_invisible"
 					]
 				}
 			},
@@ -1823,7 +1860,7 @@
 				},
 				"run_command": {
 					"command": [
-						"summon rift:anomalo_carry_stuff ~ ~ ~"
+						"ride @e[c=1, r=5, type=!rift:anomalocaris, type=!player] summon_ride rift:anomalo_carry_stuff"
 					]
 				}
 			},
@@ -1831,6 +1868,11 @@
 				"remove": {
 					"component_groups": [
 						"rift:carry_mob"
+					]
+				},
+				"run_command": {
+					"command": [
+						"kill @e[type=rift:anomalo_carry_stuff, c=1]"
 					]
 				}
 			}
