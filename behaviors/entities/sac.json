@@ -1,0 +1,199 @@
+{
+    "format_version": "1.16.0",
+    "minecraft:entity": {
+        "description": {
+            "identifier": "rift:sac",
+            "is_spawnable": false,
+            "is_summonable": true,
+            "is_experimental": false
+        },
+        "component_groups": {
+            "rift:sac_death_timer": {
+                "minecraft:timer": {
+                    "time": 5,
+                    "time_down_event": {
+                        "event": "rift:commit_die",
+                        "target": "self"
+                    }
+                }
+            },
+            //anomalo sac
+            "rift:anomalocaris_sac": {
+                "minecraft:variant": {
+                    "value": 0
+                },
+                "minecraft:interact": {
+                    "interactions": [
+                        {
+                            "on_interact": {
+                                "filters": {
+                                    "test": "is_sneaking",
+                                    "subject": "other",
+                                    "value": true
+                                },
+                                "event": "rift:anomalo_sac_commit_disappear",
+                                "target": "self"
+                            },
+                            "spawn_items": {
+                                "table": "loot_tables/sacs/anomalocaris sac.loot.json"
+                            }
+                        }
+                    ]
+                }
+            },
+            "rift:anomalocaris_sac_not_hatching": {
+                "minecraft:environment_sensor": {
+                    "triggers": [
+                        {
+                            "filters": {
+                                "test": "is_underwater",
+                                "subject": "self",
+                                "value": true
+                            },
+                            "event": "rift:anomalocaris_sac_start_hatching",
+                            "target": "self"
+                        },
+                        {
+                            "filters": {
+                                "test": "is_underwater",
+                                "subject": "self",
+                                "value": false
+                            },
+                            "event": "rift:sac_countdown_until_death",
+                            "target": "self"
+                        }
+                    ]
+                }
+            },
+            "rift:anomalocaris_sac_hatching": {
+                "minecraft:is_sheared": {},
+                "minecraft:environment_sensor": {
+                    "triggers": [
+                        {
+                            "filters": {
+                                "test": "is_underwater",
+                                "subject": "self",
+                                "value": false
+                            },
+                            "event": "rift:anomalocaris_sac_stop_hatching",
+                            "target": "self"
+                        }
+                    ]
+                },
+                "minecraft:timer": {
+                    "time": 300,
+                    "time_down_event": {
+                        "event": "rift:anomalocaris_sac_hatched",
+                        "target": "self"
+                    }
+                }
+            },
+            "rift:anomalocaris_sac_hatched": {
+                "minecraft:transformation": {
+                    "into": "rift:anomalocaris<rift:spawn_as_baby>"
+                }
+            }
+        },
+        "components": {
+            "minecraft:health": {
+                "value": 1
+            },
+            "minecraft:physics": {
+                "has_collision": true,
+                "has_gravity": true
+            },
+            "minecraft:pushable": {
+                "is_pushable": true,
+                "is_pushable_by_piston": true
+            },
+            "minecraft:damage_sensor": {
+				"triggers": [
+					{
+						"on_damage": {
+                            "filters": {
+                                "test": "has_damage",
+                                "subject": "self",
+                                "operator": "!=",
+                                "value": "magic"
+                            },
+                            "event": "rift:commit_die",
+                            "target": "self"
+						}
+					}
+				]
+			}
+        },
+        "events": {
+            "minecraft:entity_spawned": {
+                "add": {
+                    "component_groups": [
+                        "rift:anomalocaris",
+                        "rift:anomalocaris_not_hatching"
+                    ]
+                }
+            },
+            "rift:sac_countdown_until_death": {
+                "add": {
+                    "component_groups": [
+                        "rift:sac_death_timer"
+                    ]
+                }
+            },
+            "rift:commit_die": {
+                "run_command": {
+                    "command": [
+                        "tp @s ~ -40 ~"
+                    ]
+                }
+            },
+            //anomalo sac
+            "rift:summon_anomalocaris_sac": {
+                "add": {
+                    "component_groups": [
+                        "rift:anomalocaris_sac",
+                        "rift:anomalocaris_sac_not_hatching"
+                    ]
+                }
+            },
+            "rift:anomalocaris_sac_start_hatching": {
+                "add": {
+                    "component_groups": [
+                        "rift:anomalocaris_sac_hatching"
+                    ]
+                },
+                "remove": {
+                    "component_groups": [
+                        "rift:anomalocaris_sac_not_hatching",
+                        "rift:sac_death_timer"
+                    ]
+                }
+            },
+            "rift:anomalocaris_sac_stop_hatching": {
+                "add": {
+                    "component_groups": [
+                        "rift:anomalocaris_sac_not_hatching"
+                    ]
+                },
+                "remove": {
+                    "component_groups": [
+                        "rift:anomalocaris_sac_hatching"
+                    ]
+                }
+            },
+            "rift:anomalocaris_sac_hatched": {
+                "add": {
+                    "component_groups": [
+                        "rift:anomalocaris_sac_hatched"
+                    ]
+                }
+            },
+            "rift:anomalo_sac_commit_disappear": {
+                "run_command": {
+                    "command": [
+                        "tp @s ~ -40 ~"
+                    ]
+                }
+            }
+        }
+    }
+}
