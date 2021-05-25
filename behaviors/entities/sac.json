@@ -8,15 +8,6 @@
             "is_experimental": false
         },
         "component_groups": {
-            "rift:sac_death_timer": {
-                "minecraft:timer": {
-                    "time": 5,
-                    "time_down_event": {
-                        "event": "rift:commit_die",
-                        "target": "self"
-                    }
-                }
-            },
             //anomalo sac
             "rift:anomalocaris_sac": {
                 "minecraft:variant": {
@@ -59,7 +50,7 @@
                                 "subject": "self",
                                 "value": false
                             },
-                            "event": "rift:sac_countdown_until_death",
+                            "event": "rift:anomalo_sac_countdown_until_death",
                             "target": "self"
                         }
                     ]
@@ -91,6 +82,28 @@
             "rift:anomalocaris_sac_hatched": {
                 "minecraft:transformation": {
                     "into": "rift:anomalocaris<rift:spawn_as_baby>"
+                }
+            },
+            "rift:anomalocaris_sac_death_timer": {
+                "minecraft:environment_sensor": {
+                    "triggers": [
+                        {
+                            "filters": {
+                                "test": "is_underwater",
+                                "subject": "self",
+                                "value": true
+                            },
+                            "event": "rift:anomalocaris_sac_stop_death",
+                            "target": "self"
+                        }
+                    ]
+                },
+                "minecraft:timer": {
+                    "time": 5,
+                    "time_down_event": {
+                        "event": "rift:commit_die",
+                        "target": "self"
+                    }
                 }
             }
         },
@@ -127,7 +140,7 @@
             "minecraft:entity_spawned": {
                 "add": {
                     "component_groups": [
-                        "rift:anomalocaris",
+                        "rift:anomalocaris_sac",
                         "rift:anomalocaris_not_hatching"
                     ]
                 }
@@ -184,6 +197,30 @@
                 "add": {
                     "component_groups": [
                         "rift:anomalocaris_sac_hatched"
+                    ]
+                }
+            },
+            "rift:anomalo_sac_countdown_until_death": {
+                "add": {
+                    "component_groups": [
+                        "rift:anomalocaris_sac_death_timer"
+                    ]
+                },
+                "remove": {
+                    "component_groups": [
+                        "rift:anomalocaris_sac_not_hatching"
+                    ]
+                }
+            },
+            "rift:anomalocaris_sac_stop_death": {
+                "add": {
+                    "component_groups": [
+                        "rift:anomalocaris_sac_not_hatching"
+                    ]
+                },
+                "remove": {
+                    "component_groups": [
+                        "rift:anomalocaris_sac_death_timer"
                     ]
                 }
             },

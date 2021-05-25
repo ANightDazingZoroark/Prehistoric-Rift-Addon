@@ -749,34 +749,44 @@
                             "filters": {
                                 "any_of": [
                                     {
-                                        "any_of": [
+                                        
+                                        "all_of": [
                                             {
-                                                "test": "in_water_or_rain",
-                                                "value": true
+                                                "test": "is_altitude",
+                                                "operator": "<",
+                                                "value": 128
                                             },
                                             {
-                                                "test": "has_biome_tag",
-                                                "value": "cold"
-                                            },
-                                            {
-                                                "test": "has_biome_tag",
-                                                "value": "frozen"
-                                            },
-                                            {
-                                                "test": "has_biome_tag",
-                                                "value": "taiga"
-                                            },
-                                            {
-                                                "test": "is_snow_covered",
-                                                "value": true
-                                            },
-                                            {
-                                                "test": "has_biome_tag",
-                                                "value": "the_end"
-                                            },
-                                            {
-                                                "test": "has_biome_tag",
-                                                "value": "ocean"
+                                                "any_of": [
+                                                    {
+                                                        "test": "in_water_or_rain",
+                                                        "value": true
+                                                    },
+                                                    {
+                                                        "test": "has_biome_tag",
+                                                        "value": "cold"
+                                                    },
+                                                    {
+                                                        "test": "has_biome_tag",
+                                                        "value": "frozen"
+                                                    },
+                                                    {
+                                                        "test": "has_biome_tag",
+                                                        "value": "taiga"
+                                                    },
+                                                    {
+                                                        "test": "is_snow_covered",
+                                                        "value": true
+                                                    },
+                                                    {
+                                                        "test": "has_biome_tag",
+                                                        "value": "the_end"
+                                                    },
+                                                    {
+                                                        "test": "has_biome_tag",
+                                                        "value": "ocean"
+                                                    }
+                                                ]
                                             }
                                         ]
                                     },
@@ -811,38 +821,47 @@
                                     {
                                         "all_of": [
                                             {
-                                                "test": "has_biome_tag",
-                                                "operator": "!=",
-                                                "value": "cold"
+                                                "test": "is_altitude",
+                                                "operator": "<",
+                                                "value": 128
                                             },
                                             {
-                                                "test": "has_biome_tag",
-                                                "operator": "!=",
-                                                "value": "frozen"
-                                            },
-                                            {
-                                                "test": "has_biome_tag",
-                                                "operator": "!=",
-                                                "value": "taiga"
-                                            },
-                                            {
-                                                "test": "in_water_or_rain",
-                                                "value": false
-                                            },
-                                            {
-                                                "test": "has_biome_tag",
-                                                "operator": "!=",
-                                                "value": "the_end"
-                                            },
-                                            {
-                                                "test": "has_biome_tag",
-                                                "operator": "!=",
-                                                "value": "ocean"
+                                                "all_of": [
+                                                    {
+                                                        "test": "has_biome_tag",
+                                                        "operator": "!=",
+                                                        "value": "cold"
+                                                    },
+                                                    {
+                                                        "test": "has_biome_tag",
+                                                        "operator": "!=",
+                                                        "value": "frozen"
+                                                    },
+                                                    {
+                                                        "test": "has_biome_tag",
+                                                        "operator": "!=",
+                                                        "value": "taiga"
+                                                    },
+                                                    {
+                                                        "test": "in_water_or_rain",
+                                                        "value": false
+                                                    },
+                                                    {
+                                                        "test": "has_biome_tag",
+                                                        "operator": "!=",
+                                                        "value": "the_end"
+                                                    },
+                                                    {
+                                                        "test": "has_biome_tag",
+                                                        "operator": "!=",
+                                                        "value": "ocean"
+                                                    }
+                                                ]
                                             }
                                         ]
                                     },
                                     {
-                                        "any_of": [
+                                        "all_of": [
                                             {
                                                 "test": "is_altitude",
                                                 "operator": "<",
@@ -851,6 +870,10 @@
                                             {
                                                 "test": "is_underground",
                                                 "value": true
+                                            },
+                                            {
+                                                "test": "in_water_or_rain",
+                                                "value": false
                                             }
                                         ]
                                     }
@@ -1678,7 +1701,199 @@
                 "minecraft:transformation": {
                     "into": "rift:dimetrodon<rift:spawn_as_baby>"
                 }
-            }    
+            },
+            //sarco egg
+            "rift:sarcosuchus_egg": {
+                "minecraft:variant": {
+                    "value": 8
+                },
+                "minecraft:interact": {
+                    "interactions": [
+                        {
+                            "on_interact": {
+                                "filters": {
+                                    "test": "is_sneaking",
+                                    "subject": "other",
+                                    "value": true
+                                },
+                                "event": "rift:sarco_egg_commit_disappear",
+                                "target": "self"
+                            },
+                            "spawn_items": {
+                                "table": "loot_tables/eggs/sarcosuchus egg.loot.json"
+                            }
+                        }
+                    ]
+                },
+                "minecraft:scale": {
+                    "value": 0.5
+                }
+            },
+            "rift:sarcosuchus_egg_not_hatching": {
+                "minecraft:environment_sensor": {
+                    "triggers": [
+                        {
+                            "filters": {
+                                "any_of": [
+                                    {
+                                        
+                                        "all_of": [
+                                            {
+                                                "test": "is_altitude",
+                                                "operator": "<",
+                                                "value": 128
+                                            },
+                                            {
+                                                "any_of": [
+                                                    {
+                                                        "test": "in_water_or_rain",
+                                                        "value": true
+                                                    },
+                                                    {
+                                                        "test": "has_biome_tag",
+                                                        "value": "cold"
+                                                    },
+                                                    {
+                                                        "test": "has_biome_tag",
+                                                        "value": "frozen"
+                                                    },
+                                                    {
+                                                        "test": "has_biome_tag",
+                                                        "value": "taiga"
+                                                    },
+                                                    {
+                                                        "test": "is_snow_covered",
+                                                        "value": true
+                                                    },
+                                                    {
+                                                        "test": "has_biome_tag",
+                                                        "value": "the_end"
+                                                    },
+                                                    {
+                                                        "test": "has_biome_tag",
+                                                        "value": "ocean"
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "all_of": [
+                                            {
+                                                "test": "is_altitude",
+                                                "operator": ">=",
+                                                "value": 128
+                                            },
+                                            {
+                                                "test": "is_underground",
+                                                "value": false
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            "event": "rift:sarcosuchus_egg_start_hatching",
+                            "target": "self"
+                        }
+                    ]
+                }
+            },
+            "rift:sarcosuchus_egg_hatching": {
+                "minecraft:is_sheared": {},
+                "minecraft:environment_sensor": {
+                    "triggers": [
+                        {
+                            "filters": {
+                                "any_of": [
+                                    {
+                                        "all_of": [
+                                            {
+                                                "test": "is_altitude",
+                                                "operator": "<",
+                                                "value": 128
+                                            },
+                                            {
+                                                "all_of": [
+                                                    {
+                                                        "test": "has_biome_tag",
+                                                        "operator": "!=",
+                                                        "value": "cold"
+                                                    },
+                                                    {
+                                                        "test": "has_biome_tag",
+                                                        "operator": "!=",
+                                                        "value": "frozen"
+                                                    },
+                                                    {
+                                                        "test": "has_biome_tag",
+                                                        "operator": "!=",
+                                                        "value": "taiga"
+                                                    },
+                                                    {
+                                                        "test": "in_water_or_rain",
+                                                        "value": false
+                                                    },
+                                                    {
+                                                        "test": "has_biome_tag",
+                                                        "operator": "!=",
+                                                        "value": "the_end"
+                                                    },
+                                                    {
+                                                        "test": "has_biome_tag",
+                                                        "operator": "!=",
+                                                        "value": "ocean"
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "all_of": [
+                                            {
+                                                "test": "is_altitude",
+                                                "operator": "<",
+                                                "value": 128
+                                            },
+                                            {
+                                                "test": "is_underground",
+                                                "value": true
+                                            },
+                                            {
+                                                "test": "in_water_or_rain",
+                                                "value": false
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            "event": "rift:sarcosuchus_egg_stop_hatching",
+                            "target": "self"
+                        }
+                    ]
+                },
+                "minecraft:timer": {
+                    "time": 450,
+                    "time_down_event": {
+                        "event": "rift:sarcosuchus_egg_hatched",
+                        "target": "self"
+                    }
+                }
+            },
+            "rift:sarcosuchus_egg_boosted_hatching": {
+                "minecraft:is_sheared": {},
+                "minecraft:timer": {
+                    "time": 225,
+                    "time_down_event": {
+                        "event": "rift:sarcosuchus_egg_hatched",
+                        "target": "self"
+                    }
+                }
+            },
+            "rift:sarcosuchus_egg_hatched": {
+                "minecraft:transformation": {
+                    "into": "rift:sarcosuchus<rift:spawn_as_baby>"
+                }
+            }
         },
         "components": {
             "minecraft:health": {
@@ -2295,6 +2510,78 @@
                 }
             },
             "rift:dimetro_egg_commit_disappear": {
+                "run_command": {
+                    "command": [
+                        "tp @s ~ -40 ~"
+                    ]
+                }
+            },
+            //sarco egg
+            "rift:summon_sarcosuchus_egg": {
+                "add": {
+                    "component_groups": [
+                        "rift:sarcosuchus_egg",
+                        "rift:sarcosuchus_egg_not_hatching"
+                    ]
+                }
+            },
+            "rift:sarcosuchus_egg_start_hatching": {
+                "add": {
+                    "component_groups": [
+                        "rift:sarcosuchus_egg_hatching"
+                    ]
+                },
+                "remove": {
+                    "component_groups": [
+                        "rift:sarcosuchus_egg_not_hatching"
+                    ]
+                }
+            },
+            "rift:sarcosuchus_egg_start_boosted_hatching": {
+                "add": {
+                    "component_groups": [
+                        "rift:sarcosuchus_egg_boosted_hatching"
+                    ]
+                },
+                "remove": {
+                    "component_groups": [
+                        "rift:sarcosuchus_egg_hatching",
+                        "rift:sarcosuchus_egg_not_hatching"
+                    ]
+                }
+            },
+            "rift:sarcosuchus_egg_stop_hatching": {
+                "add": {
+                    "component_groups": [
+                        "rift:sarcosuchus_egg_not_hatching"
+                    ]
+                },
+                "remove": {
+                    "component_groups": [
+                        "rift:sarcosuchus_egg_hatching"
+                    ]
+                }
+            },
+            "rift:sarcosuchus_egg_stop_boosted_hatching": {
+                "add": {
+                    "component_groups": [
+                        "rift:sarcosuchus_egg_not_hatching"
+                    ]
+                },
+                "remove": {
+                    "component_groups": [
+                        "rift:sarcosuchus_egg_boosted_hatching"
+                    ]
+                }
+            },
+            "rift:sarcosuchus_egg_hatched": {
+                "add": {
+                    "component_groups": [
+                        "rift:sarcosuchus_egg_hatched"
+                    ]
+                }
+            },
+            "rift:sarco_egg_commit_disappear": {
                 "run_command": {
                     "command": [
                         "tp @s ~ -40 ~"
