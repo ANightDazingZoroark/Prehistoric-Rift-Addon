@@ -1,0 +1,453 @@
+{
+    "format_version": "1.16.100",
+    "minecraft:block": {
+        "description": {
+            "identifier": "rift:furniture_bench",
+            "properties": {
+                "rift:blueprint": [
+                    0,
+                    1,
+                    2
+                ],
+                "rift:facing_direction": [
+                    0,
+                    1,
+                    2,
+                    3
+                ]
+            }
+        },
+        "permutations": [
+            {
+                "condition": "query.block_property('rift:facing_direction') == 0",
+                "components": {
+                    "minecraft:rotation": [
+                        0,
+                        180,
+                        0
+                    ]
+                }
+            },
+            {
+                "condition": "query.block_property('rift:facing_direction') == 1",
+                "components": {
+                    "minecraft:rotation": [
+                        0,
+                        0,
+                        0
+                    ]
+                }
+            },
+            {
+                "condition": "query.block_property('rift:facing_direction') == 2",
+                "components": {
+                    "minecraft:rotation": [
+                        0,
+                        270,
+                        0
+                    ]
+                }
+            },
+            {
+                "condition": "query.block_property('rift:facing_direction') == 3",
+                "components": {
+                    "minecraft:rotation": [
+                        0,
+                        90,
+                        0
+                    ]
+                }
+            },
+            {
+                "condition": "query.block_property('rift:blueprint') == 0",
+                "components": {
+                    "minecraft:material_instances": {
+                        "*": {
+                            "texture": "furniture_bench",
+                            "render_method": "alpha_test"
+                        }
+                    },
+                    "minecraft:geometry": "geometry.furniture_bench",
+                    "minecraft:on_interact": {
+                        "event": "has_blueprint"
+                    },
+                    "minecraft:loot": "loot_tables/blocks/furniture_bench.loot.json"
+                }
+            },
+            {
+                "condition": "query.block_property('rift:blueprint') == 1",
+                "components": {
+                    "minecraft:material_instances": {
+                        "*": {
+                            "texture": "furniture_bench_has_blueprint",
+                            "render_method": "alpha_test"
+                        }
+                    },
+                    "minecraft:geometry": "geometry.furniture_bench",
+                    "minecraft:on_interact": {
+                        "event": "make_chair"
+                    },
+                    "minecraft:loot": "loot_tables/blocks/furniture_bench_with_chair.loot.json"
+                }
+            },
+            {
+                "condition": "query.block_property('rift:blueprint') == 2",
+                "components": {
+                    "minecraft:material_instances": {
+                        "*": {
+                            "texture": "furniture_bench_has_blueprint",
+                            "render_method": "alpha_test"
+                        }
+                    },
+                    "minecraft:geometry": "geometry.furniture_bench",
+                    "minecraft:on_interact": {
+                        "event": "make_table"
+                    },
+                    "minecraft:loot": "loot_tables/blocks/furniture_bench_with_table.loot.json"
+                }
+            }
+        ],
+        "components": {
+            "minecraft:entity_collision": {
+                "origin": [
+                    -8,
+                    0,
+                    -8
+                ],
+                "size": [
+                    16,
+                    17,
+                    16
+                ]
+            },
+            "minecraft:pick_collision": {
+                "origin": [
+                    -8,
+                    0,
+                    -8
+                ],
+                "size": [
+                    16,
+                    17,
+                    16
+                ]
+            },
+            "minecraft:on_player_placing": {
+                "event": "set_bench"
+            },
+            "minecraft:destroy_time": 0.8,
+            "minecraft:friction": 0.6,
+            "minecraft:map_color": "#000000",
+            "minecraft:block_light_absorption": 0.0,
+            "minecraft:flammable": {
+                "burn_odds": 10,
+                "flame_odds": 10
+            },
+            "tag:rift_acacia_wooden_table": {}
+        },
+        "events": {
+            "set_bench": {
+                "sequence": [
+                    {
+                        "set_block_property": {
+                            "rift:blueprint": 0
+                        }
+                    },
+                    {
+                        "set_block_property": {
+                            "rift:facing_direction": "query.cardinal_facing_2d - 2"
+                        }
+                    }
+                ]
+            },
+            "has_blueprint": {
+                "sequence": [
+                    {
+                        "condition": "query.get_equipped_item_name('main_hand') == 'chair_blueprint'",
+                        "trigger": {
+                            "event": "has_chair_blueprint",
+                            "target": "self"
+                        }
+                    },
+                    {
+                        "condition": "query.get_equipped_item_name('main_hand') == 'table_blueprint'",
+                        "trigger": {
+                            "event": "has_table_blueprint",
+                            "target": "self"
+                        }
+                    }
+                ]
+            },
+            "has_chair_blueprint": {
+                "sequence": [
+                    {
+                        "set_block_property": {
+                            "rift:blueprint": 1
+                        }
+                    },
+                    {
+                        "decrement_stack": {}
+                    }
+                ]
+            },
+            "has_table_blueprint": {
+                "sequence": [
+                    {
+                        "set_block_property": {
+                            "rift:blueprint": 2
+                        }
+                    },
+                    {
+                        "decrement_stack": {}
+                    }
+                ]
+            },
+            "make_chair": {
+                "sequence": [
+                    {
+                        "condition": "query.variant == 0 && query.get_equipped_item_name('main_hand') != 'crimson_planks' && query.get_equipped_item_name('main_hand') != 'warped_planks' && query.get_equipped_item_name('main_hand') != 'plastic_frame'",
+                        "run_command": {
+                            "command": [
+                                "summon rift:furniture_bench_results ~ ~+2 ~ rift:chair_blueprint_dropper"
+                            ]
+                        },
+                        "set_block_property": {
+                            "rift:blueprint": 0
+                        }
+                    },
+                    {
+                        "condition": "query.variant == 1",
+                        "run_command": {
+                            "command": [
+                                "summon rift:furniture_bench_results ~ ~+2 ~ rift:wooden_chair_oak_dropper"
+                            ]
+                        },
+                        "set_block_property": {
+                            "rift:blueprint": 0
+                        },
+                        "decrement_stack": {}
+                    },
+                    {
+                        "condition": "query.variant == 2",
+                        "run_command": {
+                            "command": [
+                                "summon rift:furniture_bench_results ~ ~+2 ~ rift:wooden_chair_spruce_dropper"
+                            ]
+                        },
+                        "set_block_property": {
+                            "rift:blueprint": 0
+                        },
+                        "decrement_stack": {}
+                    },
+                    {
+                        "condition": "query.variant == 3",
+                        "run_command": {
+                            "command": [
+                                "summon rift:furniture_bench_results ~ ~+2 ~ rift:wooden_chair_birch_dropper"
+                            ]
+                        },
+                        "set_block_property": {
+                            "rift:blueprint": 0
+                        },
+                        "decrement_stack": {}
+                    },
+                    {
+                        "condition": "query.variant == 4",
+                        "run_command": {
+                            "command": [
+                                "summon rift:furniture_bench_results ~ ~+2 ~ rift:wooden_chair_jungle_dropper"
+                            ]
+                        },
+                        "set_block_property": {
+                            "rift:blueprint": 0
+                        },
+                        "decrement_stack": {}
+                    },
+                    {
+                        "condition": "query.variant == 5",
+                        "run_command": {
+                            "command": [
+                                "summon rift:furniture_bench_results ~ ~+2 ~ rift:wooden_chair_acacia_dropper"
+                            ]
+                        },
+                        "set_block_property": {
+                            "rift:blueprint": 0
+                        },
+                        "decrement_stack": {}
+                    },
+                    {
+                        "condition": "query.variant == 6",
+                        "run_command": {
+                            "command": [
+                                "summon rift:furniture_bench_results ~ ~+2 ~ rift:wooden_chair_dark_oak_dropper"
+                            ]
+                        },
+                        "set_block_property": {
+                            "rift:blueprint": 0
+                        },
+                        "decrement_stack": {}
+                    },
+                    {
+                        "condition": "query.get_equipped_item_name('main_hand') == 'crimson_planks'",
+                        "run_command": {
+                            "command": [
+                                "summon rift:furniture_bench_results ~ ~+2 ~ rift:wooden_chair_crimson_dropper"
+                            ]
+                        },
+                        "set_block_property": {
+                            "rift:blueprint": 0
+                        },
+                        "decrement_stack": {}
+                    },
+                    {
+                        "condition": "query.get_equipped_item_name('main_hand') == 'warped_planks'",
+                        "run_command": {
+                            "command": [
+                                "summon rift:furniture_bench_results ~ ~+2 ~ rift:wooden_chair_warped_dropper"
+                            ]
+                        },
+                        "set_block_property": {
+                            "rift:blueprint": 0
+                        },
+                        "decrement_stack": {}
+                    },
+                    {
+                        "condition": "query.get_equipped_item_name('main_hand') == 'plastic_frame'",
+                        "run_command": {
+                            "command": [
+                                "summon rift:furniture_bench_results ~ ~+2 ~ rift:plastic_chair_dropper"
+                            ]
+                        },
+                        "set_block_property": {
+                            "rift:blueprint": 0
+                        },
+                        "decrement_stack": {}
+                    }
+                ]
+            },
+            "make_table": {
+                "sequence": [
+                    {
+                        "condition": "query.variant == 0 && query.get_equipped_item_name('main_hand') != 'crimson_planks' && query.get_equipped_item_name('main_hand') != 'warped_planks' && query.get_equipped_item_name('main_hand') != 'plastic_frame'",
+                        "run_command": {
+                            "command": [
+                                "summon rift:furniture_bench_results ~ ~+2 ~ rift:table_blueprint_dropper"
+                            ]
+                        },
+                        "set_block_property": {
+                            "rift:blueprint": 0
+                        }
+                    },
+                    {
+                        "condition": "query.variant == 1",
+                        "run_command": {
+                            "command": [
+                                "summon rift:furniture_bench_results ~ ~+2 ~ rift:wooden_table_oak_dropper"
+                            ]
+                        },
+                        "set_block_property": {
+                            "rift:blueprint": 0
+                        },
+                        "decrement_stack": {}
+                    },
+                    {
+                        "condition": "query.variant == 2",
+                        "run_command": {
+                            "command": [
+                                "summon rift:furniture_bench_results ~ ~+2 ~ rift:wooden_table_spruce_dropper"
+                            ]
+                        },
+                        "set_block_property": {
+                            "rift:blueprint": 0
+                        },
+                        "decrement_stack": {}
+                    },
+                    {
+                        "condition": "query.variant == 3",
+                        "run_command": {
+                            "command": [
+                                "summon rift:furniture_bench_results ~ ~+2 ~ rift:wooden_table_birch_dropper"
+                            ]
+                        },
+                        "set_block_property": {
+                            "rift:blueprint": 0
+                        },
+                        "decrement_stack": {}
+                    },
+                    {
+                        "condition": "query.variant == 4",
+                        "run_command": {
+                            "command": [
+                                "summon rift:furniture_bench_results ~ ~+2 ~ rift:wooden_table_jungle_dropper"
+                            ]
+                        },
+                        "set_block_property": {
+                            "rift:blueprint": 0
+                        },
+                        "decrement_stack": {}
+                    },
+                    {
+                        "condition": "query.variant == 5",
+                        "run_command": {
+                            "command": [
+                                "summon rift:furniture_bench_results ~ ~+2 ~ rift:wooden_table_acacia_dropper"
+                            ]
+                        },
+                        "set_block_property": {
+                            "rift:blueprint": 0
+                        },
+                        "decrement_stack": {}
+                    },
+                    {
+                        "condition": "query.variant == 6",
+                        "run_command": {
+                            "command": [
+                                "summon rift:furniture_bench_results ~ ~+2 ~ rift:wooden_table_dark_oak_dropper"
+                            ]
+                        },
+                        "set_block_property": {
+                            "rift:blueprint": 0
+                        },
+                        "decrement_stack": {}
+                    },
+                    {
+                        "condition": "query.get_equipped_item_name('main_hand') == 'crimson_planks'",
+                        "run_command": {
+                            "command": [
+                                "summon rift:furniture_bench_results ~ ~+2 ~ rift:wooden_table_crimson_dropper"
+                            ]
+                        },
+                        "set_block_property": {
+                            "rift:blueprint": 0
+                        },
+                        "decrement_stack": {}
+                    },
+                    {
+                        "condition": "query.get_equipped_item_name('main_hand') == 'warped_planks'",
+                        "run_command": {
+                            "command": [
+                                "summon rift:furniture_bench_results ~ ~+2 ~ rift:wooden_table_warped_dropper"
+                            ]
+                        },
+                        "set_block_property": {
+                            "rift:blueprint": 0
+                        },
+                        "decrement_stack": {}
+                    },
+                    {
+                        "condition": "query.get_equipped_item_name('main_hand') == 'plastic_frame'",
+                        "run_command": {
+                            "command": [
+                                "summon rift:furniture_bench_results ~ ~+2 ~ rift:plastic_table_dropper"
+                            ]
+                        },
+                        "set_block_property": {
+                            "rift:blueprint": 0
+                        },
+                        "decrement_stack": {}
+                    }
+                ]
+            }
+        }
+    }
+}
