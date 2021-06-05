@@ -1,0 +1,95 @@
+{
+    "format_version": "1.16.0",
+    "minecraft:entity": {
+        "description": {
+            "identifier": "rift:loot_sack",
+            "is_spawnable": false,
+            "is_summonable": true,
+            "is_experimental": false
+        },
+        "component_groups": {
+            "rift:common": {
+				"minecraft:loot": {
+					"table": "loot_tables/loot sacks/common drops.json"
+				}
+			},
+            "rift:uncommon": {
+				"minecraft:loot": {
+					"table": "loot_tables/loot sacks/uncommon drops.json"
+				}
+			},
+            "rift:rare": {
+				"minecraft:loot": {
+					"table": "loot_tables/loot sacks/rare drops.json"
+				}
+			},
+            "rift:super_rare": {
+				"minecraft:loot": {
+					"table": "loot_tables/loot sacks/super rare drops.json"
+				}
+			}
+        },
+		"components": {
+			"minecraft:physics": {
+				"has_collision": false,
+				"has_gravity": true
+			},
+			"minecraft:fire_immune": true,
+			"minecraft:timer": {
+				"time": 0.3,
+				"time_down_event": {
+					"event": "rift:commit_die",
+					"target": "self"
+				}
+			},
+			"minecraft:pushable": {
+				"is_pushable": false,
+				"is_pushable_by_piston": false
+			},
+			"minecraft:movement": {
+				"value": 0
+			},
+			"minecraft:collision_box": {
+				"width": 0,
+				"height": 0
+			}
+        },
+        "events": {
+			"rift:commit_die": {
+				"run_command": {
+					"command": [
+						"kill @s"
+					]
+				}
+            },
+            "rift:summon_loot_sack_common": {
+                "add": {
+                    "component_groups": [
+                        "rift:common"
+                    ]
+                }
+			},
+            "rift:summon_loot_sack_uncommon": {
+                "add": {
+                    "component_groups": [
+                        "rift:uncommon"
+                    ]
+                }
+			},
+            "rift:summon_loot_sack_rare": {
+                "add": {
+                    "component_groups": [
+                        "rift:rare"
+                    ]
+                }
+			},
+            "rift:summon_loot_sack_super_rare": {
+                "add": {
+                    "component_groups": [
+                        "rift:super_rare"
+                    ]
+                }
+			}
+        }        
+    }
+}
