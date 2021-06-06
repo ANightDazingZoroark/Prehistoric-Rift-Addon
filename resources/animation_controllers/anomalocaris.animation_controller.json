@@ -59,6 +59,44 @@
 					]
 				}
 			}
+		},
+		"controller.animation.anomalocaris_taming_progress": {
+			"initial_state": "default",
+			"states": {
+				"default": {
+					"transitions": [
+						{
+							"wait": "!query.is_tamed && query.skin_id == 1"
+						}
+					]
+				},
+				"wait": {
+					"animations": [
+						"animClock"
+					],
+					"transitions": [
+						{
+							"default": "query.is_tamed"
+						},
+						{
+							"feedAgain": "query.skin_id == 0 && !query.is_tamed"
+						}
+					]
+				},
+				"feedAgain": {
+					"animations": [
+						"animAlert"
+					],
+					"transitions": [
+						{
+							"default": "query.is_tamed"
+						},
+						{
+							"wait": "query.skin_id == 1 && !query.is_tamed"
+						}
+					]
+				}
+			}
 		}
 	}
 }

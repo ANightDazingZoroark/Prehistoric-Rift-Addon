@@ -109,6 +109,44 @@
                     ]
                 }
             }
-        }
+        },
+		"controller.animation.dimetrodon_taming_progress": {
+			"initial_state": "default",
+			"states": {
+				"default": {
+					"transitions": [
+						{
+							"wait": "!query.is_tamed && query.is_illager_captain"
+						}
+					]
+				},
+				"wait": {
+					"animations": [
+						"animClock"
+					],
+					"transitions": [
+						{
+							"default": "query.is_tamed"
+						},
+						{
+							"feedAgain": "!query.is_illager_captain && !query.is_tamed"
+						}
+					]
+				},
+				"feedAgain": {
+					"animations": [
+						"animAlert"
+					],
+					"transitions": [
+						{
+							"default": "query.is_tamed"
+						},
+						{
+							"wait": "query.is_illager_captain && !query.is_tamed"
+						}
+					]
+				}
+			}
+		}
     }
 }
