@@ -676,7 +676,7 @@
             },
             "rift:apatosaurus_tamed": {
 				"minecraft:behavior.owner_hurt_by_target": {
-					"priority": 1,
+					"priority": 2,
 					"entity_types": [
 						{
 							"filters": {
@@ -689,7 +689,7 @@
 					]
 				},
 				"minecraft:behavior.owner_hurt_target": {
-					"priority": 1,
+					"priority": 2,
 					"entity_types": [
 						{
 							"filters": {
@@ -704,7 +704,7 @@
 				"minecraft:behavior.follow_owner": {
 					"start_distance": 8,
 					"stop_distance": 40,
-					"priority": 1
+					"priority": 3
 				},
 				"minecraft:is_tamed": {}
             },
@@ -1029,6 +1029,17 @@
 							},
 							"event": "rift:on_force_attacked",
 							"target": "self"
+						}
+					},
+					{
+						"on_damage": {
+						  	"filters": {
+								"test": "has_equipment",
+								"subject": "other",
+								"value": "rift:dimetrodon_frost_attack"
+						  	},
+						  	"event": "rift:hit_by_frost_dimetrodon",
+						  	"target": "self"
 						}
 					}
 				]
@@ -2317,6 +2328,14 @@
 				"remove": {
 					"component_groups": [
 						"rift:attack_forced_attack_entity"
+				  	]
+				}
+			},
+			"rift:hit_by_frost_dimetrodon": {
+				"run_command": {
+					"command": [
+						"effect @s weakness 20 2",
+						"effect @s slowness 20 2"
 				  	]
 				}
 			}

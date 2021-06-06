@@ -307,10 +307,166 @@
 
       "minecraft:in_caravan": {
         "minecraft:damage_sensor": {
-          "triggers": {
-            "cause": "all",
-            "deals_damage": true
-          }
+          "triggers": [
+            {
+              "cause": "all",
+              "deals_damage": true
+            },
+            {
+              "cause": "all",
+              "deals_damage": true,
+              "on_damage": {
+                "filters": { "test": "in_caravan", "value": false },
+                "event": "minecraft:become_angry"
+              }
+            },
+            {
+              "on_damage": {
+                "filters": {
+                  "all_of": [
+                    {
+                      "test": "is_family",
+                      "subject": "other",
+                      "value": "stegosaurus"
+                    },
+                    {
+                      "test": "has_component",
+                      "subject": "other",
+                      "operator": "!=",
+                      "value": "minecraft:baby"
+                    }
+                  ]
+                }
+              },
+              "deals_damage": true,
+              "damage_multiplier": 5
+            },
+            {
+              "on_damage": {
+                "filters": {
+                  "all_of": [
+                    {
+                      "all_of": [
+                        {
+                          "test": "is_family",
+                          "subject": "other",
+                          "value": "utahraptor"
+                        },
+                        {
+                          "test": "on_ground",
+                          "subject": "other",
+                          "value": false
+                        }
+                      ]
+                    },
+                    {
+                      "test": "random_chance",
+                      "subject": "self",
+                      "operator": "<",
+                      "value": 7
+                    },
+                    {
+                      "any_of": [
+                        {
+                          "test": "is_difficulty",
+                          "operator": "==",
+                          "value": "peaceful"
+                        },
+                        {
+                          "test": "is_difficulty",
+                          "operator": "==",
+                          "value": "easy"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "event": "rift:on_pounced_by_utahraptor",
+                "target": "self"
+              }
+            },
+            {
+              "on_damage": {
+                "filters": {
+                  "all_of": [
+                    {
+                      "all_of": [
+                        {
+                          "test": "is_family",
+                          "subject": "other",
+                          "value": "utahraptor"
+                        },
+                        {
+                          "test": "on_ground",
+                          "subject": "other",
+                          "value": false
+                        }
+                      ]
+                    },
+                    {
+                      "test": "random_chance",
+                      "subject": "self",
+                      "operator": "<",
+                      "value": 4
+                    },
+                    {
+                      "test": "is_difficulty",
+                      "operator": "==",
+                      "value": "normal"
+                    }
+                  ]
+                },
+                "event": "rift:on_pounced_by_utahraptor",
+                "target": "self"
+              }
+            },
+            {
+              "on_damage": {
+                "filters": {
+                  "all_of": [
+                    {
+                      "all_of": [
+                        {
+                          "test": "is_family",
+                          "subject": "other",
+                          "value": "utahraptor"
+                        },
+                        {
+                          "test": "on_ground",
+                          "subject": "other",
+                          "value": false
+                        }
+                      ]
+                    },
+                    {
+                      "test": "random_chance",
+                      "subject": "self",
+                      "operator": "<",
+                      "value": 1
+                    },
+                    {
+                      "test": "is_difficulty",
+                      "operator": "==",
+                      "value": "hard"
+                    }
+                  ]
+                },
+                "event": "rift:on_pounced_by_utahraptor",
+                "target": "self"
+              }
+            },
+            {
+              "on_damage": {
+                  "filters": {
+                  "test": "has_equipment",
+                  "subject": "other",
+                  "value": "rift:dimetrodon_frost_attack"
+                  },
+                  "event": "rift:hit_by_frost_dimetrodon",
+                  "target": "self"
+              }
+            }
+          ]
         }
       }
 
@@ -605,6 +761,17 @@
 							},
 							"event": "rift:on_pounced_by_utahraptor",
 							"target": "self"
+						}
+					},
+					{
+						"on_damage": {
+						  	"filters": {
+								"test": "has_equipment",
+								"subject": "other",
+								"value": "rift:dimetrodon_frost_attack"
+						  	},
+						  	"event": "rift:hit_by_frost_dimetrodon",
+						  	"target": "self"
 						}
 					}
         ]
@@ -985,6 +1152,14 @@
 					"command": [
 						"ride @s evict_riders"
 					]
+				}
+			},
+			"rift:hit_by_frost_dimetrodon": {
+				"run_command": {
+					"command": [
+						"effect @s weakness 20 2",
+						"effect @s slowness 20 2"
+				  	]
 				}
 			}
     }

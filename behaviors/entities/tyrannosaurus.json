@@ -160,7 +160,6 @@
 				}
 			},
 			"rift:tyrannosaurus_baby_tamed": {
-				"minecraft:is_tamed": {},
 				"minecraft:health": {
 					"value": 30,
 					"max": 35
@@ -201,11 +200,12 @@
 				}
 			},
 			"rift:tyrannosaurus_tamed": {
+				"minecraft:is_tamed": {},
 				"minecraft:behavior.owner_hurt_by_target": {
-					"priority": 3
+					"priority": 2
 				},
 				"minecraft:behavior.owner_hurt_target": {
-					"priority": 3
+					"priority": 2
 				},
 				"minecraft:behavior.follow_owner": {
 					"priority": 3
@@ -236,7 +236,6 @@
 					"value": 160,
 					"max": 175
 				},
-				"minecraft:is_tamed": {},
 				"minecraft:healable": {
 					"force_use": true,
 					"items": [
@@ -934,6 +933,17 @@
 							"event": "rift:hit_by_sarco_spin",
 							"target": "self"
 						}
+					},
+					{
+						"on_damage": {
+						  	"filters": {
+								"test": "has_equipment",
+								"subject": "other",
+								"value": "rift:dimetrodon_frost_attack"
+						  	},
+						  	"event": "rift:hit_by_frost_dimetrodon",
+						  	"target": "self"
+						}
 					}
 				]
 			},
@@ -1233,17 +1243,6 @@
 					]
 				}
 			},
-			"minecraft:entity_born": {
-				"add": {
-					"component_groups": [
-						"rift:tyrannosaurus_baby",
-						"rift:tyrannosaurus_baby_tamed",
-						"rift:tyrannosaurus_sittable",
-						"rift:tyrannosaurus_tamed",
-						"rift:pushable"
-					]
-				}
-			},
 			"rift:attach_saddle": {
 				"add": {
 					"component_groups": [
@@ -1535,6 +1534,14 @@
 					"command": [
 						"effect @s slowness 30 2"
 					]
+				}
+			},
+			"rift:hit_by_frost_dimetrodon": {
+				"run_command": {
+					"command": [
+						"effect @s weakness 20 2",
+						"effect @s slowness 20 2"
+				  	]
 				}
 			}
 		}

@@ -212,9 +212,18 @@
                 "entity_types": [
                     {
                         "filters": {
-                            "test": "is_family",
-                            "subject": "other",
-                            "value": "sarcosuchus"
+                            "any_of": [
+                                {
+                                    "test": "is_family",
+                                    "subject": "other",
+                                    "value": "sarcosuchus"
+                                },
+                                {
+                                    "test": "is_family",
+                                    "subject": "other",
+                                    "value": "anomalocaris"
+                                }
+                            ]
                         },
                         "max_dist": 6,
                         "walk_speed_multiplier": 1.5,
@@ -222,7 +231,22 @@
                     }
                 ]
             },
-            "minecraft:nameable": {}
+            "minecraft:nameable": {},
+            "minecraft:damage_sensor": {
+				"triggers": [
+					{
+						"on_damage": {
+						  	"filters": {
+								"test": "has_equipment",
+								"subject": "other",
+								"value": "rift:dimetrodon_frost_attack"
+						  	},
+						  	"event": "rift:hit_by_frost_dimetrodon",
+						  	"target": "self"
+						}
+					}
+				]
+			}
         },
         "events": {
             "minecraft:entity_spawned": {
@@ -316,7 +340,15 @@
                         "rift:has_target"
                     ]
                 }
-            }
+            },
+			"rift:hit_by_frost_dimetrodon": {
+				"run_command": {
+					"command": [
+						"effect @s weakness 20 2",
+						"effect @s slowness 20 2"
+				  	]
+				}
+			}
         }
     }
 }

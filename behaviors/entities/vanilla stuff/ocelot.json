@@ -200,10 +200,23 @@
       "minecraft:can_climb": {
       },
       "minecraft:damage_sensor": {
-        "triggers": {
-          "cause": "fall",
-          "deals_damage": false
-        }
+        "triggers": [
+          {
+            "cause": "fall",
+            "deals_damage": false
+          },
+					{
+						"on_damage": {
+						  	"filters": {
+								"test": "has_equipment",
+								"subject": "other",
+								"value": "rift:dimetrodon_frost_attack"
+						  	},
+						  	"event": "rift:hit_by_frost_dimetrodon",
+						  	"target": "self"
+						}
+					}
+      ]
       },
       "minecraft:despawn": {
         "despawn_from_distance": {}
@@ -413,7 +426,15 @@
             "minecraft:ocelot_leashed"
           ]
         }
-      }
+      },
+			"rift:hit_by_frost_dimetrodon": {
+				"run_command": {
+					"command": [
+						"effect @s weakness 20 2",
+						"effect @s slowness 20 2"
+				  	]
+				}
+			}
     }
   }
 }

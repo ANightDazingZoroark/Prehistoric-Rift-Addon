@@ -631,10 +631,10 @@
 					"priority": 3
 				},
 				"minecraft:behavior.owner_hurt_by_target": {
-					"priority": 3
+					"priority": 2
 				},
 				"minecraft:behavior.owner_hurt_target": {
-					"priority": 3
+					"priority": 2
 				}
 			},
 			"rift:anomalocaris_sittable": {
@@ -1369,6 +1369,17 @@
 							"event": "rift:on_pounced_by_utahraptor",
 							"target": "self"
 						}
+					},
+					{
+						"on_damage": {
+						  	"filters": {
+								"test": "has_equipment",
+								"subject": "other",
+								"value": "rift:dimetrodon_frost_attack"
+						  	},
+						  	"event": "rift:hit_by_frost_dimetrodon",
+						  	"target": "self"
+						}
 					}
 				]
 			}
@@ -1874,6 +1885,14 @@
 					"command": [
 						"kill @e[type=rift:anomalo_carry_stuff, c=1]"
 					]
+				}
+			},
+			"rift:hit_by_frost_dimetrodon": {
+				"run_command": {
+					"command": [
+						"effect @s weakness 20 2",
+						"effect @s slowness 20 2"
+				  	]
 				}
 			}
 		}
