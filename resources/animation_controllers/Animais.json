@@ -1,0 +1,99 @@
+{
+	"format_version": "1.10.0",
+	"animation_controllers": {
+		"controller.animation.dinos.general": {
+			"initial_state": "default",
+			"states": {
+				"default": {
+					"animations": [
+						"default",
+						{
+							"move": "query.modified_move_speed"
+						},
+						{
+							"attack": "query.is_delayed_attacking"
+						},
+						"look_at_target"
+					],
+					"transitions": [
+	                    { "drink": "query.is_grazing" },
+						{ "roar": "query.is_roaring" },
+						{ "attack": "query.is_delayed_attacking" },
+						{ "casting": "query.is_casting" },
+						{ "sitting": "query.is_sitting" }
+					],
+					"blend_transition": 1
+        },
+        "drink": {
+          "animations": [
+            "drink",
+            {
+              "default": "!query.is_grazing"
+            }
+          ],
+          "transitions": [
+            { "default": "!query.is_in_water" }
+          ],
+          "blend_transition": 1
+        },
+				"roar": {
+					"animations": [
+						"roar",
+						{
+							"roar_move": "query.modified_move_speed"
+						}
+					],
+					"transitions": [
+						{ "default": "!query.is_roaring" }
+					],
+					"blend_transition": 0.2
+				},
+				"attack": {
+					"animations": [
+						"attack",
+						{
+							"move": "query.modified_move_speed"
+						}
+					],
+					"transitions": [
+						{ "default": "!query.is_delayed_attacking" }
+					],
+					"blend_transition": 0.2
+				},
+				"casting": {
+					"animations": [
+						"casting",
+						{
+							"default" : "!query.is_casting"
+						}
+					],
+					"transitions": [
+						{ "default": "!query.is_casting" }
+					],
+					"blend_transition": 0.2
+				},
+				"sitting": {
+					"animations": [
+						"sitting",
+						"look_at_target"
+					],
+					"transitions": [
+						{ "sitting_roar": "query.is_roaring" },
+						{ "default": "!query.is_sitting" }
+					],
+					"blend_transition": 3
+				},
+				"sitting_roar": {
+					"animations": [
+						"sitting",
+						"roar"
+					],
+					"transitions": [
+						{ "sitting": "!query.is_roaring" }
+					],
+					"blend_transition": 0.2
+				}
+			}
+		}
+	}
+}
