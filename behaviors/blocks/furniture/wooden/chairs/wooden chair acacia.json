@@ -98,12 +98,24 @@
                 "burn_odds": 10,
                 "flame_odds": 10
             },
+            "minecraft:on_interact": {
+                "condition": "!query.is_riding && query.is_sneaking",
+                "event": "sit_down"
+            },
             "tag:rift_acacia_wooden_chair": {}
         },
         "events": {
             "set_placing_rotation": {
                 "set_block_property": {
                     "rift:facing_direction": "query.cardinal_facing_2d - 2"
+                }
+            },
+            "sit_down": {
+                "run_command": {
+                    "command": [
+                        "summon rift:chair ~ ~ ~",
+                        "event entity @a[c=1] rift:sit_on_chair"
+                    ]
                 }
             }
         }
