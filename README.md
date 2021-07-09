@@ -12,7 +12,7 @@ This addon was also made with the following software:
 # Credits and More
 The addon itself and the assets used are under the Creative Commons Zero v1.0 Universal License. 
 
-The following assets are excempt from the MIT License, with credits to their original creators listed
+The following assets are excempt from the Creative Commons Zero v1.0 Universal License, with credits to their original creators listed
 * Vivek (various tribute items, new exotic meats, new command staff)
 * Professor Squiggles (Utahraptor Claw, Harvest Staff, various journal drawings)
 * Koda Soda (apatosaurus platform, various journal drawings)
