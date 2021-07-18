@@ -17,3 +17,4 @@ And there you go. Only problem is that doing so may give you a buggy version not
 * Don't make the title too vague
 * Don't delete issues. It's pointless anyway, just close them instead
 * (note to self only) if there's a bug that can be easily fixed then don't put it here cause that's pointless
+* You're not automatically a developer of this addon even if you added something, you're just a contributor
