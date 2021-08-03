@@ -1,0 +1,54 @@
+{
+    "format_version": "1.16.0",
+    "minecraft:entity": {
+        "description": {
+            "identifier": "rift:catapult_boulder",
+            "is_spawnable": false,
+            "is_summonable": true,
+            "is_experimental": false,
+            "runtime_identifier": "minecraft:snowball"
+        },
+        "component_groups": {
+            "rift:despawn": {
+                "minecraft:instant_despawn": {}
+            }
+        },
+        "components": {
+            "minecraft:projectile": {
+                "on_hit": {
+                    "definition_event": {
+                        "affect_projectile": true,
+                        "event_trigger": {
+                            "event": "rift:despawn",
+                            "target": "self"
+                        }
+                    },
+                    "mob_effect": {
+                        "effect": "slowness",
+                        "durationeasy": 30,
+                        "durationnormal": 30,
+                        "durationhard": 30,
+                        "amplifier": 255
+                    }
+                },
+                "power": 6,
+                "gravity": 0.1,
+                "angle_offset": 30
+            },
+            "minecraft:physics": {},
+            "minecraft:pushable": {
+                "is_pushable": true,
+                "is_pushable_by_piston": true
+            }
+        },
+        "events": {
+            "rift:despawn": {
+                "add": {
+                    "component_groups": [
+                        "rift:despawn"
+                    ]
+                }
+            }
+        }
+    }
+}

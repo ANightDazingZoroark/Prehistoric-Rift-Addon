@@ -1,0 +1,185 @@
+{
+    "format_version": "1.16.0",
+    "minecraft:entity": {
+        "description": {
+            "identifier": "rift:catapult",
+            "is_spawnable": false,
+            "is_summonable": true,
+            "is_experimental": false
+        },
+        "component_groups": {
+            "rift:empty": {
+                "minecraft:interact": {
+                    "interactions": [
+                        {
+                            "on_interact": {
+                                "filters": {
+                                    "all_of": [
+                                        {
+                                            "test": "has_equipment",
+                                            "subject": "other",
+                                            "domain": "hand",
+                                            "value": "rift:catapult_boulder"
+                                        },
+                                        {
+                                            "test": "is_sneaking",
+                                            "subject": "other",
+                                            "value": true
+                                        }
+                                    ]
+                                },
+                                "event": "rift:fill_catapult",
+                                "target": "self"
+                            },
+                            "interact_text": "action.interact.fillcatapult",
+                            "use_item": true
+                        }
+                    ]
+                }
+            },
+            "rift:loaded": {
+                "minecraft:interact": {
+                    "interactions": [
+                        {
+                            "on_interact": {
+                                "filters": {
+                                    "all_of": [
+                                        {
+                                            "test": "has_equipment",
+                                            "subject": "other",
+                                            "domain": "hand",
+                                            "operator": "!=",
+                                            "value": "rift:catapult_boulder"
+                                        },
+                                        {
+                                            "test": "is_sneaking",
+                                            "subject": "other",
+                                            "value": true
+                                        }
+                                    ]
+                                },
+                                "event": "rift:fire_catapult",
+                                "target": "self"
+                            },
+                            "interact_text": "action.interact.firecatapult"
+                        }
+                    ]
+                }
+            },
+            "rift:fire_catapult_boulder": {
+				"minecraft:spawn_entity": {
+					"entities": {
+						"spawn_entity": "rift:catapult_boulder",
+						"single_use": true,
+						"min_wait_time": 0,
+						"max_wait_time": 0
+					}
+				},
+				"minecraft:timer": {
+					"time": 0.05,
+					"time_down_event":{
+						"event": "rift:stop_firing",
+						"target": "self"
+					}
+				}
+            },
+            "rift:commit_disappear": {
+                "minecraft:spawn_entity": {
+					"entities": {
+						"spawn_item": "rift:catapult",
+						"single_use": true,
+						"min_wait_time": 0,
+						"max_wait_time": 0
+					}
+                },
+                "minecraft:instant_despawn": {}
+            }
+        },
+        "components": {
+            "minecraft:type_family": {
+				"family": [
+					"catapult",
+					"inanimate"
+				]
+            },
+            "minecraft:pushable": {
+                "is_pushable": false,
+                "is_pushable_by_piston": false
+            },
+            "minecraft:physics": {},
+            "minecraft:movement": {
+                "value": 0
+            },
+            "minecraft:scale": {
+                "value": 1.5
+            },
+            "minecraft:damage_sensor": {
+				"triggers": [
+					{
+						"on_damage": {
+                            "event": "rift:commit_disappear",
+                            "target": "self"
+						}
+					}
+				]
+			}
+        },
+        "events": {
+            "minecraft:entity_spawned": {
+                "add": {
+                    "component_groups": [
+                        "rift:empty"
+                    ]
+                }
+            },
+            "rift:fill_catapult": {
+                "add": {
+                    "component_groups": [
+                        "rift:loaded"
+                    ]
+                },
+                "remove": {
+                    "component_groups": [
+                        "rift:empty"
+                    ]
+                },
+                "run_command": {
+                    "command": [
+                        "playsound armor.equip_iron @p"
+                    ]
+                }
+            },
+            "rift:fire_catapult": {
+                "add": {
+                    "component_groups": [
+                        "rift:fire_catapult_boulder"
+                    ]
+                },
+                "remove": {
+                    "component_groups": [
+                        "rift:loaded"
+                    ]
+                }
+            },
+            "rift:stop_firing": {
+                "add": {
+                    "component_groups": [
+                        "rift:empty"
+                    ]
+                },
+                "remove": {
+                    "component_groups": [
+                        "rift:fire_catapult_boulder"
+                    ]
+                }
+            },
+            "rift:commit_disappear": {
+                "add": {
+                    "component_groups": [
+                        "rift:commit_disappear"
+                    ]
+                }
+            }
+        }
+    }
+}
