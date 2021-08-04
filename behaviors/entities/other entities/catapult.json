@@ -38,6 +38,7 @@
                 }
             },
             "rift:loaded": {
+                "minecraft:is_sheared": {},
                 "minecraft:interact": {
                     "interactions": [
                         {
@@ -58,12 +59,22 @@
                                         }
                                     ]
                                 },
-                                "event": "rift:fire_catapult",
+                                "event": "rift:start_firing",
                                 "target": "self"
                             },
                             "interact_text": "action.interact.firecatapult"
                         }
                     ]
+                }
+            },
+            "rift:fire_catapult_animation": {
+                "minecraft:timer": {
+                    "time": 0.52,
+                    "looping": false,
+                    "time_down_event": {
+                        "event": "rift:fire_catapult",
+                        "target": "self"
+                    }
                 }
             },
             "rift:fire_catapult_boulder": {
@@ -149,6 +160,23 @@
                     ]
                 }
             },
+            "rift:start_firing": {
+                "add": {
+                    "component_groups": [
+                        "rift:fire_catapult_animation"
+                    ]
+                },
+                "remove": {
+                    "component_groups": [
+                        "rift:loaded"
+                    ]
+                },
+                "run_command": {
+                    "command": [
+                        "playanimation @s animation.catapult.firing"
+                    ]
+                }
+            },
             "rift:fire_catapult": {
                 "add": {
                     "component_groups": [
@@ -157,7 +185,7 @@
                 },
                 "remove": {
                     "component_groups": [
-                        "rift:loaded"
+                        "rift:fire_catapult_animation"
                     ]
                 }
             },
