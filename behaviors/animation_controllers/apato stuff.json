@@ -22,6 +22,81 @@
 					]
 				}
 			}
+		},
+		"controller.animation.apato_detect_stationary_weapon": {
+			"initial_state": "default",
+			"states": {
+				"default": {
+					"transitions": [
+						{
+							"cannon": "query.skin_id == 1"
+						},
+						{
+							"mortar": "query.skin_id == 2"
+						},
+						{
+							"catapult": "query.skin_id == 3"
+						}
+					]
+				},
+				"cannon": {
+					"transitions": [
+						{
+							"default": "query.skin_id == 0"
+						},
+						{
+							"mortar": "query.skin_id == 2"
+						},
+						{
+							"catapult": "query.skin_id == 3"
+						}
+					],
+					"on_entry": [
+						"/tag @s add apatoCannon"
+					],
+					"on_exit": [
+						"/tag @s remove apatoCannon"
+					]
+				},
+				"mortar": {
+					"transitions": [
+						{
+							"default": "query.skin_id == 0"
+						},
+						{
+							"cannon": "query.skin_id == 1"
+						},
+						{
+							"catapult": "query.skin_id == 3"
+						}
+					],
+					"on_entry": [
+						"/tag @s add apatoMortar"
+					],
+					"on_exit": [
+						"/tag @s remove apatoMortar"
+					]
+				},
+				"catapult": {
+					"transitions": [
+						{
+							"default": "query.skin_id == 0"
+						},
+						{
+							"cannon": "query.skin_id == 1"
+						},
+						{
+							"mortar": "query.skin_id == 2"
+						}
+					],
+					"on_entry": [
+						"/tag @s add apatoCatapult"
+					],
+					"on_exit": [
+						"/tag @s remove apatoCatapult"
+					]
+				}
+			}
 		}
 	}
 }

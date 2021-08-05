@@ -10,13 +10,15 @@
 				"contApatoUseStomp": "controller.animation.apato_forced_use_stomp",
 				"contTameTag": "controller.animation.add_tame_tag",
 				"contBabyTag": "controller.animation.add_baby_tag",
+				"contDetectWeapon": "controller.animation.apato_detect_stationary_weapon",
 				"animForcedAttack": "animation.forced_attack_apatosaurus"
 			},
 			"scripts": {
 				"animate": [
 					"contApatoUseStomp",
 					"contTameTag",
-					"contBabyTag"
+					"contBabyTag",
+					"contDetectWeapon"
 				]
 			}
         },
@@ -872,6 +874,16 @@
 					"width": 2.25
 				}
 			},
+			"rift:apatosaurus_play_catapult_animation": {
+				"minecraft:timer": {
+					"time": 0.12,
+					"looping": false,
+					"time_down_event":{
+						"event": "rift:apato_catapult_launch",
+						"target": "self"
+					}
+				}
+			},
 			"rift:apatosaurus_launch_catapult": {
 				"minecraft:spawn_entity": {
 					"entities": {
@@ -882,7 +894,8 @@
 					}
 				},
 				"minecraft:timer": {
-					"time": 0.05,
+					"time": 0.40,
+					"looping": false,
 					"time_down_event":{
 						"event": "rift:stop_launching",
 						"target": "self"
@@ -1580,7 +1593,7 @@
 								}
 							]
 						},
-						"event": "rift:apato_firing"
+						"event": "rift:apato_check_if_can_fire"
 					},
 					{
 						"filters": {
@@ -1625,7 +1638,7 @@
 								}
 							]
 						},
-						"event": "rift:apato_mortaring_not_underground"
+						"event": "rift:apato_check_if_can_mortar_not_underground"
 					},
 					{
 						"filters": {
@@ -1670,7 +1683,7 @@
 								}
 							]
 						},
-						"event": "rift:apato_mortaring_underground"
+						"event": "rift:apato_check_if_can_mortar_is_underground"
 					},
 					{
 						"filters": {
@@ -1710,7 +1723,7 @@
 								}
 							]
 						},
-						"event": "rift:apato_catapult_launch"
+						"event": "rift:apato_check_if_can_catapult"
 					},
 					{
 						"filters": {
@@ -2286,6 +2299,14 @@
                     ]
                 }
 			},
+			"rift:apato_check_if_can_fire": {
+				"run_command": {
+					"command": [
+						"execute @s[scores={apatoCannonballs=0}] ~ ~ ~ tellraw @p[c=1] {\"rawtext\":[{\"text\":\"No Cannonballs left in stock!\"}]}",
+						"event entity @s[scores={apatoCannonballs=!0}] rift:apato_firing"
+					]
+				}
+			},
 			"rift:apato_firing": {
 				"add": {
 					"component_groups": [
@@ -2299,17 +2320,31 @@
 				},
 				"run_command": {
 					"command": [
-						"scoreboard players remove @s[scores={apatoCannonballs=!0}] apatoCannonballs 1",
-						"execute @s[scores={apatoCannonballs=0}] ~ ~ ~ tellraw @p[c=1] {\"rawtext\":[{\"text\":\"No Cannonballs left in stock!\"}]}"
+						"scoreboard players remove @s[scores={apatoCannonballs=!0}] apatoCannonballs 1"
+					]
+				}
+			},
+			"rift:apato_check_if_can_mortar_not_underground": {
+				"run_command": {
+					"command": [
+						"execute @s[scores={apatoMortarShell=0}] ~ ~ ~ tellraw @p[c=1] {\"rawtext\":[{\"text\":\"No Mortar Shells left in stock!\"}]}",
+						"event entity @s[scores={apatoMortarShell=!0}] rift:apato_mortaring_not_underground"
 					]
 				}
 			},
 			"rift:apato_mortaring_not_underground": {
 				"run_command": {
 					"command": [
-						"execute @s[scores={apatoMortarShell=!0}] ~ ~ ~ execute @e[tag=!tamed, type=!player, type=!item, type=!rift:mortar, type=!rift:mortar_shell, type=!rift:egg, c=1, rm=16, r=64] ~ ~ ~ summon rift:mortar_shell ~ ~+30 ~",
 						"scoreboard players remove @s[scores={apatoMortarShell=!0}] apatoMortarShell 1",
-						"execute @s[scores={apatoMortarShell=0}] ~ ~ ~ tellraw @p[c=1] {\"rawtext\":[{\"text\":\"No Mortar Shells left in stock!\"}]}"
+						"execute @s[scores={apatoMortarShell=!0}] ~ ~ ~ execute @e[tag=!tamed, type=!player, type=!item, type=!rift:mortar, type=!rift:mortar_shell, type=!rift:egg, c=1, rm=16, r=64] ~ ~ ~ summon rift:mortar_shell ~ ~+30 ~"
+					]
+				}
+			},
+			"rift:apato_check_if_can_mortar_is_underground": {
+				"run_command": {
+					"command": [
+						"execute @s[scores={apatoMortarShell=0}] ~ ~ ~ tellraw @p[c=1] {\"rawtext\":[{\"text\":\"No Mortar Shells left in stock!\"}]}",
+						"event entity @s[scores={apatoMortarShell=!0}] rift:apato_mortaring_underground"
 					]
 				}
 			},
@@ -2317,8 +2352,7 @@
 				"run_command": {
 					"command": [
 						"execute @s[scores={apatoMortarShell=!0}] ~ ~ ~ summon rift:mortar_shell ~ ~ ~ rift:spawned_while_underground",
-						"scoreboard players remove @s[scores={apatoMortarShell=!0}] apatoMortarShell 1",
-						"execute @s[scores={apatoMortarShell=0}] ~ ~ ~ tellraw @p[c=1] {\"rawtext\":[{\"text\":\"No Mortar Shells left in stock!\"}]}"
+						"scoreboard players remove @s[scores={apatoMortarShell=!0}] apatoMortarShell 1"
 					]
 				}
 			},
@@ -2334,6 +2368,26 @@
 					]
 				}
 			},
+			"rift:apato_check_if_can_catapult": {
+				"run_command": {
+					"command": [
+						"execute @s[scores={apatoCatapultBld=0}] ~ ~ ~ tellraw @p[c=1] {\"rawtext\":[{\"text\":\"No Catapult Boulders left in stock!\"}]}",
+						"event entity @s[scores={apatoCatapultBld=!0}] rift:apato_play_catapult_anim"
+					]
+				}
+			},
+			"rift:apato_play_catapult_anim": {
+				"add": {
+					"component_groups": [
+						"rift:apatosaurus_play_catapult_animation"
+					]
+				},
+				"run_command": {
+					"command": [
+						"playanimation @s animation.apatosaurus.use_catapult"
+					]
+				}
+			},
 			"rift:apato_catapult_launch": {
 				"add": {
 					"component_groups": [
@@ -2342,13 +2396,13 @@
 				},
 				"remove": {
 					"component_groups": [
-						"rift:default_collision"
+						"rift:default_collision",
+						"rift:apatosaurus_play_catapult_animation"
 					]
 				},
 				"run_command": {
 					"command": [
-						"scoreboard players remove @s[scores={apatoCatapultBld=!0}] apatoCatapultBld 1",
-						"execute @s[scores={apatoCatapultBld=0}] ~ ~ ~ tellraw @p[c=1] {\"rawtext\":[{\"text\":\"No Catapult Boulders left in stock!\"}]}"
+						"scoreboard players remove @s[scores={apatoCatapultBld=!0}] apatoCatapultBld 1"
 					]
 				}
 			},
