@@ -738,6 +738,11 @@
 					"value": 2
 				}
 			},
+			"rift:apatosaurus_has_catapults": {
+				"minecraft:skin_id": {
+					"value": 3
+				}
+			},
             "rift:apatosaurus_harvest": {
 				"minecraft:timer": {
 					"time": 0.52,
@@ -859,6 +864,27 @@
 					"time": 0.05,
 					"time_down_event":{
 						"event": "rift:stop_firing",
+						"target": "self"
+					}
+				},
+				"minecraft:collision_box": {
+					"height": 0.5,
+					"width": 2.25
+				}
+			},
+			"rift:apatosaurus_launch_catapult": {
+				"minecraft:spawn_entity": {
+					"entities": {
+						"spawn_entity": "rift:catapult_boulder",
+						"single_use": true,
+						"min_wait_time": 0,
+						"max_wait_time": 0
+					}
+				},
+				"minecraft:timer": {
+					"time": 0.05,
+					"time_down_event":{
+						"event": "rift:stop_launching",
 						"target": "self"
 					}
 				},
@@ -1197,6 +1223,55 @@
 										"test": "has_equipment",
 										"subject": "other",
 										"domain": "hand",
+										"value": "rift:catapult"
+									},
+									{
+										"test": "is_owner",
+										"subject": "other",
+										"value": true
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_baby",
+										"operator": "!="
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_tamed"
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_saddled"
+									},
+									{
+										"test": "is_skin_id",
+										"subject": "self",
+										"value": 0
+									},
+									{
+										"test": "is_sneaking",
+										"subject": "other",
+										"value": true
+									}
+								]
+							},
+							"event": "rift:attach_catapult",
+							"target": "self"
+						},
+						"interact_text": "action.interact.attachchest",
+						"use_item": true
+					},
+					{
+						"on_interact": {
+							"filters": {
+								"all_of": [
+									{
+										"test": "has_equipment",
+										"subject": "other",
+										"domain": "hand",
 										"value": "rift:wrench"
 									},
 									{
@@ -1325,6 +1400,55 @@
 								]
 							},
 							"event": "rift:attach_mortar_shell",
+							"target": "self"
+						},
+						"interact_text": "action.interact.insertcannon",
+						"use_item": true
+					},
+					{
+						"on_interact": {
+							"filters": {
+								"all_of": [
+									{
+										"test": "has_equipment",
+										"subject": "other",
+										"domain": "hand",
+										"value": "rift:catapult_boulder"
+									},
+									{
+										"test": "is_owner",
+										"subject": "other",
+										"value": true
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_baby",
+										"operator": "!="
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_saddled"
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_tamed"
+									},
+									{
+										"test": "is_skin_id",
+										"subject": "self",
+										"value": 3
+									},
+									{
+										"test": "is_sneaking",
+										"subject": "other",
+										"value": true
+									}
+								]
+							},
+							"event": "rift:attach_catapult_boulder",
 							"target": "self"
 						},
 						"interact_text": "action.interact.insertcannon",
@@ -1547,6 +1671,46 @@
 							]
 						},
 						"event": "rift:apato_mortaring_underground"
+					},
+					{
+						"filters": {
+							"all_of": [
+								{
+									"test": "has_tag",
+									"value": "apatoCatapultLaunch",
+									"subject": "self",
+									"operator": "=="
+								},
+								{
+									"test": "rider_count",
+									"operator": ">",
+									"value": 0,
+									"subject": "self"
+								},
+								{
+									"test": "has_component",
+									"value": "minecraft:is_tamed",
+									"subject": "self"
+								},
+								{
+									"test": "is_skin_id",
+									"subject": "self",
+									"value": 3
+								},
+								{
+									"test": "has_component",
+									"operator": "!=",
+									"value": "minecraft:is_baby",
+									"subject": "self"
+								},
+								{
+									"test": "has_component",
+									"value": "minecraft:is_saddled",
+									"subject": "self"
+								}
+							]
+						},
+						"event": "rift:apato_catapult_launch"
 					},
 					{
 						"filters": {
@@ -2029,6 +2193,23 @@
 					]
 				}
 			},
+			"rift:attach_catapult": {
+				"add": {
+					"component_groups": [
+						"rift:apatosaurus_has_catapults"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:apatosaurus_no_weapons"
+					]
+				},
+				"run_command": {
+					"command": [
+						"scoreboard players set @s apatoCatapultBld 0"
+					]
+				}
+			},
 			"rift:remove_platform_weapons": {
 				"sequence": [
 					{
@@ -2062,6 +2243,23 @@
 						"run_command": {
 							"command": [
 								"summon rift:apato_drops_after_platform_removal ~ ~+3 ~ rift:mortar_dropper"
+							]
+						}
+					},
+					{
+						"filters": {
+							"test": "is_skin_id",
+							"subject": "self",
+							"value": 3
+						},
+						"remove": {
+							"component_groups": [
+								"rift:apatosaurus_has_catapults"
+							]
+						},
+						"run_command": {
+							"command": [
+								"summon rift:apato_drops_after_platform_removal ~ ~+3 ~ rift:catapult_dropper"
 							]
 						}
 					},
@@ -2133,6 +2331,36 @@
 				"remove": {
 					"component_groups": [
 						"rift:apatosaurus_fire_cannon"
+					]
+				}
+			},
+			"rift:apato_catapult_launch": {
+				"add": {
+					"component_groups": [
+						"rift:apatosaurus_launch_catapult"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:default_collision"
+					]
+				},
+				"run_command": {
+					"command": [
+						"scoreboard players remove @s[scores={apatoCatapultBld=!0}] apatoCatapultBld 1",
+						"execute @s[scores={apatoCatapultBld=0}] ~ ~ ~ tellraw @p[c=1] {\"rawtext\":[{\"text\":\"No Catapult Boulders left in stock!\"}]}"
+					]
+				}
+			},
+			"rift:stop_launching": {
+				"add": {
+					"component_groups": [
+						"rift:default_collision"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:apatosaurus_launch_catapult"
 					]
 				}
 			},
@@ -2256,6 +2484,15 @@
 						"scoreboard players add @s[scores={apatoMortarShell=!12}] apatoMortarShell 1",
 						"execute @s[scores={apatoMortarShell=12}] ~ ~ ~ tellraw @a[c=1] {\"rawtext\":[{\"text\":\"Maximum amount of mortar shells that can be stored is 12\"}]}",
 						"execute @s[scores={apatoMortarShell=!12}] ~ ~ ~ playsound armor.equip_iron @p"
+					]
+				}
+			},
+			"rift:attach_catapult_boulder": {
+				"run_command": {
+					"command": [
+						"scoreboard players add @s[scores={apatoCatapultBld=!24}] apatoCatapultBld 1",
+						"execute @s[scores={apatoCatapultBld=24}] ~ ~ ~ tellraw @a[c=1] {\"rawtext\":[{\"text\":\"Maximum amount of catapult boulders that can be stored is 24\"}]}",
+						"execute @s[scores={apatoCatapultBld=!24}] ~ ~ ~ playsound armor.equip_iron @p"
 					]
 				}
 			},
