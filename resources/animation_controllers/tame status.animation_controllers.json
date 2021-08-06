@@ -1,0 +1,74 @@
+{
+    "format_version": "1.10.0",
+    "animation_controllers": {
+        "controller.animation.tame_status": {
+			"initial_state": "default",
+			"states": {
+				"default": {
+                    "transitions": [
+                        {
+                            "monitoringBaby": "query.is_tamed && !query.has_rider && query.is_baby"
+                        },
+                        {
+                            "monitoring": "query.is_tamed && !query.has_rider && !query.is_baby"
+                        }
+                    ]
+				},
+                "monitoringBaby": {
+                    "animations": [
+                        {
+                            "animStatusBabyStandingGood": "!query.is_sitting && (query.health <= query.max_health) && (query.health > (query.max_health * 0.66))"
+                        },
+                        {
+                            "animStatusBabyStandingOk": "!query.is_sitting && (query.health <= (query.max_health * 0.66)) && (query.health > (query.max_health * 0.33))"
+                        },
+                        {
+                            "animStatusBabyStandingBad": "!query.is_sitting && (query.health <= (query.max_health * 0.33)) && (query.health > 0)"
+                        },
+                        {
+                            "animStatusBabySittingGood": "query.is_sitting && (query.health <= query.max_health) && (query.health > (query.max_health * 0.66))"
+                        },
+                        {
+                            "animStatusBabySittingOk": "query.is_sitting && (query.health <= (query.max_health * 0.66)) && (query.health > (query.max_health * 0.33))"
+                        },
+                        {
+                            "animStatusBabySittingBad": "query.is_sitting && (query.health <= (query.max_health * 0.33)) && (query.health > 0)"
+                        }
+                    ],
+                    "transitions": [
+                        {
+                            "default": "!query.is_tamed || query.has_rider || !query.is_baby"
+                        }
+                    ]
+                },
+                "monitoring": {
+                    "animations": [
+                        {
+                            "animStatusStandingGood": "!query.is_sitting && (query.health <= query.max_health) && (query.health > (query.max_health * 0.66))"
+                        },
+                        {
+                            "animStatusStandingOk": "!query.is_sitting && (query.health <= (query.max_health * 0.66)) && (query.health > (query.max_health * 0.33))"
+                        },
+                        {
+                            "animStatusStandingBad": "!query.is_sitting && (query.health <= (query.max_health * 0.33)) && (query.health > 0)"
+                        },
+                        {
+                            "animStatusSittingGood": "query.is_sitting && (query.health <= query.max_health) && (query.health > (query.max_health * 0.66))"
+                        },
+                        {
+                            "animStatusSittingOk": "query.is_sitting && (query.health <= (query.max_health * 0.66)) && (query.health > (query.max_health * 0.33))"
+                        },
+                        {
+                            "animStatusSittingBad": "query.is_sitting && (query.health <= (query.max_health * 0.33)) && (query.health > 0)"
+                        }
+                    ],
+                    "transitions": [
+                        {
+                            "default": "!query.is_tamed || query.has_rider || query.is_baby"
+                        }
+                    ]
+                }
+			}
+		}
+    }
+}

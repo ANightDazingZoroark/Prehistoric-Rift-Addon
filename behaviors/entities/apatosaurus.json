@@ -91,9 +91,11 @@
 				"minecraft:health": {
 					"value": 50
                 },
-                "minecraft:behavior.random_stroll": {},
+                "minecraft:behavior.random_stroll": {
+					"priority": 6
+				},
                 "minecraft:behavior.follow_parent": {
-					"priority": 3
+					"priority": 5
                 },
                 "minecraft:group_size": {
 					"radius": 10,
@@ -114,7 +116,7 @@
 					}
 				},
 				"minecraft:behavior.hurt_by_target": {
-					"priority": 3,
+					"priority": 2,
 					"entity_types": {
 						"filters": {
 						  	"test": "is_family",
@@ -264,58 +266,49 @@
 							{
 								"any_of": [
 									{
-										"test": "is_target",
-										"subject": "other",
-										"value": true
-									},
-									{
-										"any_of": [
+										"all_of": [
 											{
-												"all_of": [
-													{
-														"test": "has_component",
-														"subject": "other",
-														"value": "minecraft:is_baby"
-													},
-													{
-														"test": "is_family",
-														"subject": "other",
-														"operator": "!=",
-														"value": "apatosaurus"
-													}
-												]
+												"test": "has_component",
+												"subject": "other",
+												"value": "minecraft:is_baby"
 											},
 											{
 												"test": "is_family",
 												"subject": "other",
-												"value": "chicken"
-											},
-											{
-												"test": "is_family",
-												"subject": "other",
-												"value": "dodo"
-											},
-											{
-												"all_of": [
-													{
-														"test": "is_family",
-														"subject": "other",
-														"value": "parrot"
-													},
-													{
-														"test": "has_component",
-														"subject": "other",
-														"operator": "!=",
-														"value": "minecraft:is_tamed"
-													}
-												]
-											},
-											{
-												"test": "is_family",
-												"subject": "other",
-												"value": "endermite"
+												"operator": "!=",
+												"value": "apatosaurus"
 											}
 										]
+									},
+									{
+										"test": "is_family",
+										"subject": "other",
+										"value": "chicken"
+									},
+									{
+										"test": "is_family",
+										"subject": "other",
+										"value": "dodo"
+									},
+									{
+										"all_of": [
+											{
+												"test": "is_family",
+												"subject": "other",
+												"value": "parrot"
+											},
+											{
+												"test": "has_component",
+												"subject": "other",
+												"operator": "!=",
+												"value": "minecraft:is_tamed"
+											}
+										]
+									},
+									{
+										"test": "is_family",
+										"subject": "other",
+										"value": "endermite"
 									}
 								]
 							}
@@ -327,7 +320,9 @@
 				"minecraft:health": {
 					"value": 200
                 },
-                "minecraft:behavior.random_stroll": {},
+                "minecraft:behavior.random_stroll": {
+					"priority": 5
+				},
 				"minecraft:group_size": {
 					"radius": 10,
 					"filters": {
@@ -350,7 +345,7 @@
 					"despawn_from_distance": {}
 				},
 				"minecraft:behavior.hurt_by_target": {
-					"priority": 1,
+					"priority": 2,
 					"entity_types": {
 						"filters": {
 						  	"test": "is_family",
@@ -692,7 +687,7 @@
 					]
 				},
 				"minecraft:behavior.owner_hurt_target": {
-					"priority": 2,
+					"priority": 3,
 					"entity_types": [
 						{
 							"filters": {
@@ -707,7 +702,7 @@
 				"minecraft:behavior.follow_owner": {
 					"start_distance": 8,
 					"stop_distance": 40,
-					"priority": 3
+					"priority": 5
 				},
 				"minecraft:is_tamed": {}
             },
@@ -851,7 +846,9 @@
             },
             "rift:apatosaurus_sittable": {
 				"minecraft:sittable": {},
-				"minecraft:behavior.stay_while_sitting": {}
+				"minecraft:behavior.stay_while_sitting": {
+					"priority": 0
+				}
 			},
 			"rift:apatosaurus_fire_cannon": {
 				"minecraft:spawn_entity": {
@@ -960,7 +957,7 @@
 			},
 			"rift:attack_forced_attack_entity": {
 				"minecraft:behavior.nearest_attackable_target": {
-					"priority": 2,
+					"priority": 3,
 					"entity_types": [
 					  	{
 							"filters": {
@@ -992,7 +989,9 @@
 				"avoid_damage_blocks": true
 			},
 			"minecraft:movement.basic": {},
-			"minecraft:behavior.breed": {},
+			"minecraft:behavior.breed": {
+				"priority": 1
+			},
 			"minecraft:jump.static": {},
 			"minecraft:behavior.move_to_land": {},
 			"minecraft:collision_box": {
@@ -1000,7 +999,7 @@
 				"width": 2.25
 			},
 			"minecraft:behavior.delayed_attack": {
-				"priority": 0,
+				"priority": 4,
 				"attack_duration": 3,
 				"hit_delay_pct": 1,
 				"track_target": true,

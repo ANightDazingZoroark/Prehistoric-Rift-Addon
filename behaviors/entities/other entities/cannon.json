@@ -33,6 +33,59 @@
                             },
                             "interact_text": "action.interact.fillcannon",
                             "use_item": true
+                        },
+                        {
+                            "on_interact": {
+                                "filters": {
+                                    "all_of": [
+                                        {
+                                            "test": "has_equipment",
+                                            "subject": "other",
+                                            "domain": "hand",
+                                            "value": "rift:wrench"
+                                        },
+                                        {
+                                            "test": "has_component",
+                                            "subject": "self",
+                                            "operator": "!=",
+                                            "value": "minecraft:behavior.look_at_player"
+                                        },
+                                        {
+                                            "test": "is_sneaking",
+                                            "subject": "other",
+                                            "value": true
+                                        }
+                                    ]
+                                },
+                                "event": "rift:start_rotating",
+                                "target": "self"
+                            }
+                        },
+                        {
+                            "on_interact": {
+                                "filters": {
+                                    "all_of": [
+                                        {
+                                            "test": "has_equipment",
+                                            "subject": "other",
+                                            "domain": "hand",
+                                            "value": "rift:wrench"
+                                        },
+                                        {
+                                            "test": "has_component",
+                                            "subject": "self",
+                                            "value": "minecraft:behavior.look_at_player"
+                                        },
+                                        {
+                                            "test": "is_sneaking",
+                                            "subject": "other",
+                                            "value": true
+                                        }
+                                    ]
+                                },
+                                "event": "rift:stop_rotating",
+                                "target": "self"
+                            }
                         }
                     ]
                 }
@@ -67,6 +120,59 @@
                                 "particle_offset_towards_interactor": true
                             },
                             "interact_text": "action.interact.firecannon"
+                        },
+                        {
+                            "on_interact": {
+                                "filters": {
+                                    "all_of": [
+                                        {
+                                            "test": "has_equipment",
+                                            "subject": "other",
+                                            "domain": "hand",
+                                            "value": "rift:wrench"
+                                        },
+                                        {
+                                            "test": "has_component",
+                                            "subject": "self",
+                                            "operator": "!=",
+                                            "value": "minecraft:behavior.look_at_player"
+                                        },
+                                        {
+                                            "test": "is_sneaking",
+                                            "subject": "other",
+                                            "value": true
+                                        }
+                                    ]
+                                },
+                                "event": "rift:start_rotating",
+                                "target": "self"
+                            }
+                        },
+                        {
+                            "on_interact": {
+                                "filters": {
+                                    "all_of": [
+                                        {
+                                            "test": "has_equipment",
+                                            "subject": "other",
+                                            "domain": "hand",
+                                            "value": "rift:wrench"
+                                        },
+                                        {
+                                            "test": "has_component",
+                                            "subject": "self",
+                                            "value": "minecraft:behavior.look_at_player"
+                                        },
+                                        {
+                                            "test": "is_sneaking",
+                                            "subject": "other",
+                                            "value": true
+                                        }
+                                    ]
+                                },
+                                "event": "rift:stop_rotating",
+                                "target": "self"
+                            }
                         }
                     ]
                 }
@@ -98,6 +204,16 @@
 					}
                 },
                 "minecraft:instant_despawn": {}
+            },
+            "rift:rotating": {
+                "minecraft:behavior.look_at_player": {
+                    "priority": 0,
+                    "probability": 1.00,
+                    "look_time": [
+                        69420616,
+                        69420666
+                    ]
+                }
             }
         },
         "components": {
@@ -182,6 +298,20 @@
                 "add": {
                     "component_groups": [
                         "rift:commit_disappear"
+                    ]
+                }
+            },
+            "rift:start_rotating": {
+                "add": {
+                    "component_groups": [
+                        "rift:rotating"
+                    ]
+                }
+            },
+            "rift:stop_rotating": {
+                "remove": {
+                    "component_groups": [
+                        "rift:rotating"
                     ]
                 }
             }
