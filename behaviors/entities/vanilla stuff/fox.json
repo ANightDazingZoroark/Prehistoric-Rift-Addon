@@ -444,6 +444,11 @@
           "value": 80,
           "range": 160
         }
+      },     
+      "rift:drop_experience_from_forced_attack": {
+        "minecraft:experience_reward": {
+          "on_death": "Math.Random(1,3)"
+        }
       }
     },
 
@@ -540,6 +545,37 @@
             },
             "deals_damage": false
           },
+          {
+            "on_damage": {
+              "filters": {
+                "all_of": [
+                  {
+                    "test": "is_family",
+                    "subject": "other",
+                    "value": "forcedAttack"
+                  },
+                  {
+                    "test": "has_damage",
+                    "subject": "self",
+                    "value": "fatal"
+                  }
+                ]
+              },
+              "event": "rift:on_force_attacked_death",
+              "target": "self"
+            }
+          },
+          {
+						"on_damage": {
+							"filters": {
+								"test": "is_family",
+								"subject": "other",
+								"value": "sarcoSpinAttack"
+							},
+							"event": "rift:hit_by_sarco_spin",
+							"target": "self"
+						}
+					},
 					{
 						"on_damage": {
 						  	"filters": {
@@ -907,6 +943,13 @@
           ]
         }
       },
+      "rift:hit_by_sarco_spin": {
+				"run_command": {
+					"command": [
+						"effect @s slowness 30 2"
+					]
+				}
+			},
 			"rift:hit_by_frost_dimetrodon": {
 				"run_command": {
 					"command": [
@@ -914,7 +957,14 @@
 						"effect @s slowness 20 2"
 				  	]
 				}
-			}
+			},
+      "rift:on_force_attacked_death": {
+        "add": {
+          "component_groups": [
+            "rift:drop_experience_from_forced_attack"
+          ]
+        }
+      }
     }
   }
 }

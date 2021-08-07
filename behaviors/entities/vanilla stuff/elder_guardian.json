@@ -7,6 +7,13 @@
       "is_summonable": true,
       "is_experimental": false
     },
+    "component_groups": {
+      "rift:drop_experience_from_forced_attack": {
+        "minecraft:experience_reward": {
+          "on_death": "10"
+        }
+      }
+    },
     "components": {
       "minecraft:experience_reward": {
         "on_death": "query.last_hit_by_player ? 10 : 0"
@@ -34,6 +41,52 @@
       "minecraft:health": {
         "value": 80,
         "max": 80
+      },
+      "minecraft:damage_sensor": {
+        "triggers": [
+          {
+            "on_damage": {
+              "filters": {
+                "all_of": [
+                  {
+                    "test": "is_family",
+                    "subject": "other",
+                    "value": "forcedAttack"
+                  },
+                  {
+                    "test": "has_damage",
+                    "subject": "self",
+                    "value": "fatal"
+                  }
+                ]
+              },
+              "event": "rift:on_force_attacked_death",
+              "target": "self"
+            }
+          },
+          {
+						"on_damage": {
+							"filters": {
+								"test": "is_family",
+								"subject": "other",
+								"value": "sarcoSpinAttack"
+							},
+							"event": "rift:hit_by_sarco_spin",
+							"target": "self"
+						}
+					},
+					{
+						"on_damage": {
+						  	"filters": {
+								"test": "has_equipment",
+								"subject": "other",
+								"value": "rift:dimetrodon_frost_attack"
+						  	},
+						  	"event": "rift:hit_by_frost_dimetrodon",
+						  	"target": "self"
+						}
+					}
+        ]
       },
       "minecraft:hurt_on_condition": {
         "damage_conditions": [
@@ -69,7 +122,8 @@
           {
             "filters": {  
                 "any_of": [
-                  { "test" :  "is_family", "subject" : "other", "value" :  "squid"}
+                  { "test" :  "is_family", "subject" : "other", "value" :  "squid"},
+                  { "test" :  "is_family", "subject" : "other", "value" :  "axolotl"}
                 ] 
             },
             "max_dist": 16
@@ -136,6 +190,30 @@
             "sprint_speed_multiplier": 1
           }
         ]
+      }
+    },
+    "events": {
+      "rift:hit_by_sarco_spin": {
+				"run_command": {
+					"command": [
+						"effect @s slowness 30 2"
+					]
+				}
+			},
+			"rift:hit_by_frost_dimetrodon": {
+				"run_command": {
+					"command": [
+						"effect @s weakness 20 2",
+						"effect @s slowness 20 2"
+				  	]
+				}
+			},
+      "rift:on_force_attacked_death": {
+        "add": {
+          "component_groups": [
+            "rift:drop_experience_from_forced_attack"
+          ]
+        }
       }
     }
   }
