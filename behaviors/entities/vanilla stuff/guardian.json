@@ -82,6 +82,11 @@
             }
           ]
         }
+      },     
+      "rift:drop_experience_from_forced_attack": {
+        "minecraft:experience_reward": {
+          "on_death": "10"
+        }
       }
     },
 
@@ -177,6 +182,52 @@
         "attack_interval_min": 1.0,
         "must_see": true
       },
+      "minecraft:damage_sensor": {
+        "triggers": [
+          {
+            "on_damage": {
+              "filters": {
+                "all_of": [
+                  {
+                    "test": "is_family",
+                    "subject": "other",
+                    "value": "forcedAttack"
+                  },
+                  {
+                    "test": "has_damage",
+                    "subject": "self",
+                    "value": "fatal"
+                  }
+                ]
+              },
+              "event": "rift:on_force_attacked_death",
+              "target": "self"
+            }
+          },
+          {
+						"on_damage": {
+							"filters": {
+								"test": "is_family",
+								"subject": "other",
+								"value": "sarcoSpinAttack"
+							},
+							"event": "rift:hit_by_sarco_spin",
+							"target": "self"
+						}
+					},
+					{
+						"on_damage": {
+						  	"filters": {
+								"test": "has_equipment",
+								"subject": "other",
+								"value": "rift:dimetrodon_frost_attack"
+						  	},
+						  	"event": "rift:hit_by_frost_dimetrodon",
+						  	"target": "self"
+						}
+					}
+        ]
+      },
       "minecraft:target_nearby_sensor": {
         "inside_range": 3.0,
         "outside_range": 4.0,
@@ -252,6 +303,28 @@
         "add": {
           "component_groups": [
             "minecraft:guardian_aggressive"
+          ]
+        }
+      },
+      "rift:hit_by_sarco_spin": {
+				"run_command": {
+					"command": [
+						"effect @s slowness 30 2"
+					]
+				}
+			},
+			"rift:hit_by_frost_dimetrodon": {
+				"run_command": {
+					"command": [
+						"effect @s weakness 20 2",
+						"effect @s slowness 20 2"
+				  ]
+				}
+			},
+      "rift:on_force_attacked_death": {
+        "add": {
+          "component_groups": [
+            "rift:drop_experience_from_forced_attack"
           ]
         }
       }

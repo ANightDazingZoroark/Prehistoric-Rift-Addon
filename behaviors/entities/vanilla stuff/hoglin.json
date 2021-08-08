@@ -305,6 +305,11 @@
           "event": "rift:no_force_attacked",
           "target": "self"
         }
+      },     
+      "rift:drop_experience_from_forced_attack": {
+        "minecraft:experience_reward": {
+          "on_death": "5"
+        }
       }
     },
 
@@ -466,6 +471,12 @@
                     "subject": "self",
                     "operator": "!=",
                     "value": "minecraft:is_baby"
+                  },
+                  {
+                    "test": "has_damage",
+                    "subject": "self",
+                    "operator": "!=",
+                    "value": "fatal"
                   }
                 ]
               },
@@ -473,6 +484,26 @@
 							"target": "self"
 						}
 					},
+          {
+            "on_damage": {
+              "filters": {
+                "all_of": [
+                  {
+                    "test": "is_family",
+                    "subject": "other",
+                    "value": "forcedAttack"
+                  },
+                  {
+                    "test": "has_damage",
+                    "subject": "self",
+                    "value": "fatal"
+                  }
+                ]
+              },
+              "event": "rift:on_force_attacked_death",
+              "target": "self"
+            }
+          },
           {
 						"on_damage": {
 							"filters": {
@@ -659,7 +690,14 @@
 						"effect @s slowness 20 2"
 				  	]
 				}
-			}
+			},
+      "rift:on_force_attacked_death": {
+        "add": {
+          "component_groups": [
+            "rift:drop_experience_from_forced_attack"
+          ]
+        }
+      }
     }  
   }
 }
