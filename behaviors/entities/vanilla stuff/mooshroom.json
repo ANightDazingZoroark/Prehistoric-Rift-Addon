@@ -402,6 +402,11 @@
         "minecraft:variant": {
           "value": 1
         }
+      },     
+      "rift:drop_experience_from_forced_attack": {
+        "minecraft:experience_reward": {
+          "on_death": "Math.Random(1,3)"
+        }
       }
     },
 
@@ -590,6 +595,32 @@
             },
             "deals_damage": false,
             "on_damage_sound_event": "convert_mooshroom"
+          },
+          {
+            "on_damage": {
+              "filters": {
+                "all_of": [
+                  {
+                    "test": "is_family",
+                    "subject": "other",
+                    "value": "forcedAttack"
+                  },
+                  {
+                    "test": "has_damage",
+                    "subject": "self",
+                    "value": "fatal"
+                  },
+                  {
+                    "test": "has_component",
+                    "subject": "other",
+                    "operator": "!=",
+                    "value": "minecraft:is_baby"
+                  }
+                ]
+              },
+              "event": "rift:on_force_attacked_death",
+              "target": "self"
+            }
           },
           {
 						"on_damage": {
@@ -836,7 +867,14 @@
 						"effect @s slowness 20 2"
 				  	]
 				}
-			}
+			},
+      "rift:on_force_attacked_death": {
+        "add": {
+          "component_groups": [
+            "rift:drop_experience_from_forced_attack"
+          ]
+        }
+      }
     }
   }
 }

@@ -95,6 +95,11 @@
           "event": "rift:no_force_attacked",
           "target": "self"
         }
+      },     
+      "rift:drop_experience_from_forced_attack": {
+        "minecraft:experience_reward": {
+          "on_death": "5 + (query.equipment_count * Math.Random(1,3))"
+        }
       }
     },
 
@@ -583,10 +588,36 @@
                     "test": "has_target",
                     "subject": "self",
                     "value": false
+                  },
+                  {
+                    "test": "has_damage",
+                    "subject": "self",
+                    "operator": "!=",
+                    "value": "fatal"
                   }
                 ]
               },
               "event": "rift:on_force_attacked",
+              "target": "self"
+            }
+          },
+          {
+            "on_damage": {
+              "filters": {
+                "all_of": [
+                  {
+                    "test": "is_family",
+                    "subject": "other",
+                    "value": "forcedAttack"
+                  },
+                  {
+                    "test": "has_damage",
+                    "subject": "self",
+                    "value": "fatal"
+                  }
+                ]
+              },
+              "event": "rift:on_force_attacked_death",
               "target": "self"
             }
           },
@@ -663,7 +694,14 @@
 						"effect @s slowness 20 2"
 				  	]
 				}
-			}
+			},
+      "rift:on_force_attacked_death": {
+        "add": {
+          "component_groups": [
+            "rift:drop_experience_from_forced_attack"
+          ]
+        }
+      }
     }
   }
 }
