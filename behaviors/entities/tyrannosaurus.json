@@ -11,14 +11,21 @@
 				"contTyrannoUseBite": "controller.animation.tyranno_forced_use_bite",
 				"contTameTag": "controller.animation.add_tame_tag",
 				"contBabyTag": "controller.animation.add_baby_tag",
-				"animForcedAttack": "animation.forced_attack_tyrannosaurus"
+				"contTyrannoEndRoarCooldown": "controller.animation.tyranno_end_roar_cooldown",
+				"contIntimidate": "controller.animation.tyranno_intimidate",
+				"animForcedAttack": "animation.forced_attack_tyrannosaurus",
+				"animTyrannoRoarCooldown": "animation.tyranno_roar_cooldown",
+				"animIntimidateWild": "animation.apex_predator_intimidate_wild",
+				"animIntimidateTamed": "animation.apex_predator_intimidate_tamed"
 			},
 			"scripts": {
 				"animate": [
 					"contRoarBreak",
 					"contTyrannoUseBite",
 					"contTameTag",
-					"contBabyTag"
+					"contBabyTag",
+					"contTyrannoEndRoarCooldown",
+					"contIntimidate"
 				]
 			}
 		},
@@ -497,9 +504,18 @@
 									{
 										"any_of": [
 											{
-												"test": "is_family",
-												"subject": "other",
-												"value": "player"
+												"all_of": [
+													{
+														"test": "is_family",
+														"subject": "other",
+														"value": "player"
+													},
+													{
+														"test": "is_riding",
+														"subject": "other",
+														"value": false
+													}
+												]
 											},
 											{
 												"test": "is_family",
@@ -648,6 +664,7 @@
 				"minecraft:is_sheared": {},
 				"minecraft:timer": {
 					"time": 10,
+					"looping": false,
 					"time_down_event": {
 						"event": "rift:stop_roaring_cooldown",
 						"target": "self"

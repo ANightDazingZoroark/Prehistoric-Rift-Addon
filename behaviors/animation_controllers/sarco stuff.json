@@ -29,37 +29,91 @@
 				"default": {
 					"transitions": [
 						{
-							"spinningWild": "query.is_powered && !query.is_tamed"
+							"spinningWildWater": "query.is_in_water && query.is_powered && !query.is_tamed"
 						},
 						{
-							"spinningTamed": "query.is_powered && query.is_tamed"
+							"spinningTamedWater": "query.is_in_water && query.is_powered && query.is_tamed"
+						},
+						{
+							"spinningWildLand": "!query.is_in_water && query.is_powered && !query.is_tamed"
+						},
+						{
+							"spinningTamedLand": "!query.is_in_water && query.is_powered && query.is_tamed"
 						}
 					]
 				},
-				"spinningWild": {
+				"spinningWildWater": {
 					"transitions": [
 						{
 							"default": "!query.is_powered"
 						}
 					],
 					"animations": [
-						"animWildSpinAttack"
+						"animWildSpinAttackWater"
 					],
 					"on_exit": [
 						"/event entity @s rift:return_to_bite_attack"
 					]
 				},
-				"spinningTamed": {
+				"spinningTamedWater": {
 					"transitions": [
 						{
 							"default": "!query.is_powered"
 						}
 					],
 					"animations": [
-						"animTamedSpinAttack"
+						"animTamedSpinAttackWater"
 					],
 					"on_exit": [
 						"/event entity @s rift:forced_spin_attack_cooldown"
+					]
+				},
+				"spinningWildLand": {
+					"transitions": [
+						{
+							"default": "!query.is_powered"
+						}
+					],
+					"animations": [
+						"animWildSpinAttackLand"
+					],
+					"on_exit": [
+						"/event entity @s rift:return_to_bite_attack"
+					]
+				},
+				"spinningTamedLand": {
+					"transitions": [
+						{
+							"default": "!query.is_powered"
+						}
+					],
+					"animations": [
+						"animTamedSpinAttackLand"
+					],
+					"on_exit": [
+						"/event entity @s rift:forced_spin_attack_cooldown"
+					]
+				}
+			}
+		},
+		"controller.animation.sarco_end_spin_cooldown": {
+			"initial_state": "default",
+			"states": {
+				"default": {
+					"transitions": [
+						{
+							"coolingDown": "query.is_illager_captain"
+						}
+					]
+				},
+				"coolingDown": {
+					"transitions": [
+						{
+							"default": "!query.is_illager_captain"
+						}
+					],
+					"animations": [
+						"animSarcoSpinCooldown"
 					]
 				}
 			}

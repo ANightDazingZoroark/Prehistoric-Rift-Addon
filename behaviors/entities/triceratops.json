@@ -12,9 +12,11 @@
 				"contBabyTag": "controller.animation.add_baby_tag",
 				"contIllagerCaptainTag": "controller.animation.add_illager_captain_tag",
 				"contRivalBuff": "controller.animation.trike_rival_buff",
+				"contTrikeEndChargeCooldown": "controller.animation.trike_end_charge_cooldown",
 				"animForcedAttack": "animation.forced_attack_triceratops",
 				"animTestForRivals": "animation.test_for_rivals_triceratops",
-				"animRivalBuffEffects": "animation.trike_rival_buff_effects"
+				"animRivalBuffEffects": "animation.trike_rival_buff_effects",
+				"animTrikeChargeCooldown": "animation.trike_charge_cooldown"
 			},
 			"scripts": {
 				"animate": [
@@ -22,12 +24,16 @@
 					"contTameTag",
 					"contBabyTag",
 					"contIllagerCaptainTag",
-					"contRivalBuff"
+					"contRivalBuff",
+					"contTrikeEndChargeCooldown"
 				]
 			}
 		},
 		"component_groups": {
 			"rift:triceratops_baby": {
+				"minecraft:movement": {
+					"value": 0.25
+				},
 				"minecraft:is_baby": {},
 				"minecraft:ageable": {
 					"duration": 1200,
@@ -156,6 +162,9 @@
 				},
 				"minecraft:attack": {
 					"damage": 25
+				},
+				"minecraft:movement": {
+					"value": 0.175
 				},
 				"minecraft:experience_reward": {
 					"on_bred": "Math.Random(6,9)",
@@ -331,6 +340,7 @@
 						"minecraft:dark_oak_fence_gate",
 						"minecraft:fence_gate",
 						"minecraft:jungle_fence_gate",
+						"minecraft:spruce_fence_gate",
 						"minecraft:wool",
 						"minecraft:crimson_planks",
 						"minecraft:warped_planks",
@@ -359,6 +369,8 @@
 						"minecraft:warped_fence_gate",
 						"minecraft:crimson_slab",
 						"minecraft:warped_slab",
+						"minecraft:azalea_leaves",
+						"minecraft:azalea_leaves_flowered",
 						"rift:oak_thatch_block",
 						"rift:spruce_thatch_block",
 						"rift:birch_thatch_block",
@@ -366,7 +378,23 @@
 						"rift:dark_oak_thatch_block",
 						"rift:acacia_thatch_block",
 						"rift:crimson_thatch_block",
-						"rift:warped_thatch_block"
+						"rift:warped_thatch_block",
+						"rift:wooden_chair_acacia",
+						"rift:wooden_chair_birch",
+						"rift:wooden_chair_crimson",
+						"rift:wooden_chair_dark_oak",
+						"rift:wooden_chair_jungle",
+						"rift:wooden_chair_oak",
+						"rift:wooden_chair_spruce",
+						"rift:wooden_chair_warped",
+						"rift:wooden_table_acacia",
+						"rift:wooden_table_birch",
+						"rift:wooden_table_crimson",
+						"rift:wooden_table_dark_oak",
+						"rift:wooden_table_jungle",
+						"rift:wooden_table_oak",
+						"rift:wooden_table_spruce",
+						"rift:wooden_table_warped"
 					]
 				}
 			},
@@ -387,16 +415,26 @@
 					  	},
 						{
 							"filters": {
-								"any_of": [
+								"all_of": [
 									{
-										"test": "is_family", 
-										"subject": "other", 
-										"value": "largeCarnivore"
+										"any_of": [
+											{
+												"test": "is_family", 
+												"subject": "other", 
+												"value": "largeCarnivore"
+											},
+											{
+												"test": "is_family", 
+												"subject": "other", 
+												"value": "boss"
+											}
+										]
 									},
 									{
-										"test": "is_family", 
-										"subject": "other", 
-										"value": "boss"
+										"test": "has_component",
+										"subject": "other",
+										"operator": "!=",
+										"value": "minecraft:is_tamed"
 									}
 								]
 							}
@@ -663,6 +701,7 @@
 				},
 				"minecraft:timer": {
 					"time": 5,
+					"looping": false,
 					"time_down_event": {
 						"event": "rift:start_cooldown",
 						"target": "self"
@@ -711,6 +750,7 @@
 						"minecraft:dark_oak_fence_gate",
 						"minecraft:fence_gate",
 						"minecraft:jungle_fence_gate",
+						"minecraft:spruce_fence_gate",
 						"minecraft:wool",
 						"minecraft:crimson_planks",
 						"minecraft:warped_planks",
@@ -739,6 +779,8 @@
 						"minecraft:warped_fence_gate",
 						"minecraft:crimson_slab",
 						"minecraft:warped_slab",
+						"minecraft:azalea_leaves",
+						"minecraft:azalea_leaves_flowered",
 						"rift:oak_thatch_block",
 						"rift:spruce_thatch_block",
 						"rift:birch_thatch_block",
@@ -746,7 +788,23 @@
 						"rift:dark_oak_thatch_block",
 						"rift:acacia_thatch_block",
 						"rift:crimson_thatch_block",
-						"rift:warped_thatch_block"
+						"rift:warped_thatch_block",
+						"rift:wooden_chair_acacia",
+						"rift:wooden_chair_birch",
+						"rift:wooden_chair_crimson",
+						"rift:wooden_chair_dark_oak",
+						"rift:wooden_chair_jungle",
+						"rift:wooden_chair_oak",
+						"rift:wooden_chair_spruce",
+						"rift:wooden_chair_warped",
+						"rift:wooden_table_acacia",
+						"rift:wooden_table_birch",
+						"rift:wooden_table_crimson",
+						"rift:wooden_table_dark_oak",
+						"rift:wooden_table_jungle",
+						"rift:wooden_table_oak",
+						"rift:wooden_table_spruce",
+						"rift:wooden_table_warped"
 					]
 				}
 			},
@@ -773,6 +831,7 @@
 				},
 				"minecraft:timer": {
 					"time": 5,
+					"looping": false,
 					"time_down_event": {
 						"event": "rift:start_cooldown",
 						"target": "self"
@@ -821,6 +880,7 @@
 						"minecraft:dark_oak_fence_gate",
 						"minecraft:fence_gate",
 						"minecraft:jungle_fence_gate",
+						"minecraft:spruce_fence_gate",
 						"minecraft:wool",
 						"minecraft:crimson_planks",
 						"minecraft:warped_planks",
@@ -849,6 +909,8 @@
 						"minecraft:warped_fence_gate",
 						"minecraft:crimson_slab",
 						"minecraft:warped_slab",
+						"minecraft:azalea_leaves",
+						"minecraft:azalea_leaves_flowered",
 						"rift:oak_thatch_block",
 						"rift:spruce_thatch_block",
 						"rift:birch_thatch_block",
@@ -856,7 +918,23 @@
 						"rift:dark_oak_thatch_block",
 						"rift:acacia_thatch_block",
 						"rift:crimson_thatch_block",
-						"rift:warped_thatch_block"
+						"rift:warped_thatch_block",
+						"rift:wooden_chair_acacia",
+						"rift:wooden_chair_birch",
+						"rift:wooden_chair_crimson",
+						"rift:wooden_chair_dark_oak",
+						"rift:wooden_chair_jungle",
+						"rift:wooden_chair_oak",
+						"rift:wooden_chair_spruce",
+						"rift:wooden_chair_warped",
+						"rift:wooden_table_acacia",
+						"rift:wooden_table_birch",
+						"rift:wooden_table_crimson",
+						"rift:wooden_table_dark_oak",
+						"rift:wooden_table_jungle",
+						"rift:wooden_table_oak",
+						"rift:wooden_table_spruce",
+						"rift:wooden_table_warped"
 					]
 				}
 			},
@@ -864,6 +942,7 @@
 				"minecraft:is_sheared": {},
 				"minecraft:timer": {
 					"time": 10,
+					"looping": false,
 					"time_down_event": {
 						"event": "rift:stop_charging_cooldown",
 						"target": "self"
@@ -1104,9 +1183,6 @@
 			"minecraft:behavior.melee_attack": {
 				"priority": 4,
 				"reach_multiplier": 2
-			},
-			"minecraft:movement": {
-				"value": 0.25
 			},
 			"minecraft:damage_sensor": {
 				"triggers": [
@@ -2050,6 +2126,7 @@
 						"function cmd.trike_harvest_jungle_leaves",
 						"function cmd.trike_harvest_dark_oak_leaves",
 						"function cmd.trike_harvest_acacia_leaves",
+						"function cmd.trike_harvest_azalea_leaves",
 						"function cmd.trike_harvest_nether_wart_block",
 						"function cmd.trike_harvest_warped_wart_block",
 						"function cmd.trike_harvest_oak_log",

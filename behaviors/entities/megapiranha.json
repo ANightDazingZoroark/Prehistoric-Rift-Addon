@@ -11,7 +11,7 @@
         "component_groups": {
             "rift:in_water": {
                 "minecraft:behavior.melee_attack": {
-                    "priority": 1,
+                    "priority": 4,
                     "track_target": true,
                     "reach_multiplier": 2
                 },
@@ -66,19 +66,19 @@
             },
             "rift:no_target": {
                 "minecraft:behavior.swim_idle": {
-                    "priority": 5,
+                    "priority": 6,
                     "idle_time": 5.0,
                     "success_rate": 0.1
                 },
                 "minecraft:behavior.random_swim": {
-                    "priority": 3,
+                    "priority": 7,
                     "speed_multiplier": 1.0,
                     "xz_dist": 16,
                     "y_dist": 4,
                     "interval": 0
                 },
                 "minecraft:behavior.swim_wander": {
-                    "priority": 4,
+                    "priority": 5,
                     "interval": 0.1,
                     "look_ahead": 2.0,
                     "speed_multiplier": 1.0,
@@ -147,7 +147,7 @@
                 "damage": 4
             },
             "minecraft:behavior.nearest_attackable_target": {
-                "priority": 1,
+                "priority": 3,
                 "reselect_targets": true,
                 "within_radius": 32,
                 "must_see": true,
@@ -165,6 +165,12 @@
                                     "subject": "other", 
                                     "operator": "!=",
                                     "value": "megapiranha"
+                                },
+                                {
+                                    "test": "is_family", 
+                                    "subject": "other", 
+                                    "operator": "!=",
+                                    "value": "player"
                                 }
                             ]
                         },
@@ -175,6 +181,23 @@
                             "test": "is_family", 
                             "subject": "other",
                             "value": "boat"
+                        },
+                        "max_dist": 32
+                    },
+                    {
+                        "filters": {
+                            "all_of": [
+                                {
+                                    "test": "is_family", 
+                                    "subject": "other",
+                                    "value": "player"
+                                },
+                                {
+                                    "test": "is_riding",
+                                    "subject": "other",
+                                    "value": false
+                                }
+                            ]
                         },
                         "max_dist": 32
                     }
@@ -221,7 +244,7 @@
                 }
             },
             "minecraft:behavior.avoid_mob_type": {
-                "priority": 0,
+                "priority": 2,
                 "entity_types": [
                     {
                         "filters": {

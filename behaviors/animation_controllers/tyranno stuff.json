@@ -44,6 +44,63 @@
 					]
 				}
 			}
+		},
+		"controller.animation.tyranno_end_roar_cooldown": {
+			"initial_state": "default",
+			"states": {
+				"default": {
+					"transitions": [
+						{
+							"coolingDown": "query.is_sheared"
+						}
+					]
+				},
+				"coolingDown": {
+					"transitions": [
+						{
+							"default": "!query.is_sheared"
+						}
+					],
+					"animations": [
+						"animTyrannoRoarCooldown"
+					]
+				}
+			}
+		},
+		"controller.animation.tyranno_intimidate": {
+			"initial_state": "default",
+			"states": {
+				"default": {
+					"transitions": [
+						{
+							"wild": "!query.is_tamed && !query.is_baby"
+						},
+						{
+							"tamed": "query.is_tamed && !query.is_baby"
+						}
+					]
+				},
+				"wild": {
+					"transitions": [
+						{
+							"default": "query.is_tamed || query.is_baby"
+						}
+					],
+					"animations": [
+						"animIntimidateWild"
+					]
+				},
+				"tamed": {
+					"transitions": [
+						{
+							"default": "!query.is_tamed || query.is_baby"
+						}
+					],
+					"animations": [
+						"animIntimidateTamed"
+					]
+				}
+			}
 		}
 	}
 }

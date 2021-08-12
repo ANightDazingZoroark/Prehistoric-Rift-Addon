@@ -10,13 +10,20 @@
 				"contStegoUseStab": "controller.animation.stego_forced_use_stab",
 				"contTameTag": "controller.animation.add_tame_tag",
 				"contBabyTag": "controller.animation.add_baby_tag",
-				"animForcedAttack": "animation.forced_attack_stegosaurus"
+				"contStegoEndFocusedStabCooldown": "controller.animation.stego_end_focus_stab_cooldown",
+				"animForcedAttack": "animation.forced_attack_stegosaurus",
+				"animStegoFocusStabCooldownOne": "animation.stego_focused_stab_cooldown_one",
+				"animStegoFocusStabCooldownTwo": "animation.stego_focused_stab_cooldown_two",
+				"animStegoFocusStabCooldownThree": "animation.stego_focused_stab_cooldown_three",
+				"animStegoFocusStabCooldownFour": "animation.stego_focused_stab_cooldown_four",
+				"animStegoFocusStabCooldownFive": "animation.stego_focused_stab_cooldown_five"
 			},
 			"scripts": {
 				"animate": [
 					"contStegoUseStab",
 					"contTameTag",
-					"contBabyTag"
+					"contBabyTag",
+					"contStegoEndFocusedStabCooldown"
 				]
 			}
 		},
@@ -220,7 +227,7 @@
 					"priority": 6
 				},
 				"minecraft:movement": {
-					"value": 0.25
+					"value": 0.15
 				},
 				"minecraft:group_size": {
 					"radius": 10,
@@ -525,9 +532,18 @@
 					]
 				}
 			},
+			"rift:no_charged_cooldown": {
+				"minecraft:skin_id": {
+					"value": 0
+				}
+			},
 			"rift:charged_cooldown_one": {
+				"minecraft:skin_id": {
+					"value": 1
+				},
 				"minecraft:timer": {
 					"time": 6.52,
+					"looping": false,
 					"time_down_event": {
 						"event": "rift:stop_all_cooldowns",
 						"target": "self"
@@ -535,8 +551,12 @@
 				}
 			},
 			"rift:charged_cooldown_two": {
+				"minecraft:skin_id": {
+					"value": 2
+				},
 				"minecraft:timer": {
 					"time": 11.52,
+					"looping": false,
 					"time_down_event": {
 						"event": "rift:stop_all_cooldowns",
 						"target": "self"
@@ -544,8 +564,12 @@
 				}
 			},
 			"rift:charged_cooldown_three": {
+				"minecraft:skin_id": {
+					"value": 3
+				},
 				"minecraft:timer": {
 					"time": 21.52,
+					"looping": false,
 					"time_down_event": {
 						"event": "rift:stop_all_cooldowns",
 						"target": "self"
@@ -553,8 +577,12 @@
 				}
 			},
 			"rift:charged_cooldown_four": {
+				"minecraft:skin_id": {
+					"value": 4
+				},
 				"minecraft:timer": {
 					"time": 31.52,
+					"looping": false,
 					"time_down_event": {
 						"event": "rift:stop_all_cooldowns",
 						"target": "self"
@@ -562,8 +590,12 @@
 				}
 			},
 			"rift:charged_cooldown_five": {
+				"minecraft:skin_id": {
+					"value": 5
+				},
 				"minecraft:timer": {
 					"time": 41.52,
+					"looping": false,
 					"time_down_event": {
 						"event": "rift:stop_all_cooldowns",
 						"target": "self"
@@ -1518,6 +1550,11 @@
 				}
 			},
 			"rift:stop_all_cooldowns": {
+				"add": {
+					"component_groups": [
+						"rift:no_charged_cooldown"
+					]
+				},
 				"remove": {
 					"component_groups": [
 						"rift:charged_cooldown_one",
