@@ -202,6 +202,17 @@
         "minecraft:experience_reward": {
           "on_death": "12 + (query.equipment_count * Math.Random(1,3))"
         }
+      },
+      "rift:drop_more_meat_from_tyrannosaurus": {
+        "minecraft:spawn_entity": {
+          "entities": {
+              "min_wait_time": 0,
+              "max_wait_time": 0,
+              "spawn_item": "rotten_flesh",
+              "num_to_spawn": 5,
+              "single_use": true
+          }
+        }
       }
     },
 
@@ -639,6 +650,26 @@
               "target": "self"
             }
           },
+					{
+						"on_damage": {
+							"filters": {
+                "all_of": [
+                  {
+                    "test": "is_family",
+                    "subject": "other",
+                    "value": "tyrannosaurus"
+                  },
+                  {
+                    "test": "has_damage",
+                    "subject": "self",
+                    "value": "fatal"
+                  }
+                ]
+							},
+							"event": "rift:drop_more_rotten_flesh_from_tyrannosaurus",
+							"target": "self"
+						}
+					},
           {
 						"on_damage": {
 							"filters": {
@@ -797,16 +828,65 @@
 				}
 			},
       "rift:on_force_attacked_death_adult": {
-        "add": {
-          "component_groups": [
-            "rift:adult_drop_experience_from_forced_attack"
-          ]
-        }
+        "sequence": [
+          {
+            "add": {
+              "component_groups": [
+                "rift:adult_drop_experience_from_forced_attack"
+              ]
+            }
+          },
+          {
+            "filters": {
+              "all_of": [
+                {
+                  "test": "is_family",
+                  "subject": "other",
+                  "value": "tyrannosaurusForcedAttack"
+                },
+                {
+                  "test": "has_component",
+                  "subject": "self",
+                  "operator": "!=",
+                  "value": "minecraft:is_baby"
+                }
+              ]
+            },
+            "add": {
+              "component_groups": [
+                "rift:drop_more_meat_from_tyrannosaurus"
+              ]
+            }
+          }
+        ]
       },
       "rift:on_force_attacked_death_baby": {
+        "sequence": [
+          {
+            "add": {
+              "component_groups": [
+                "rift:baby_drop_experience_from_forced_attack"
+              ]
+            }
+          },
+          {
+            "filters": {
+              "test": "is_family",
+              "subject": "other",
+              "value": "tyrannosaurusForcedAttack"
+            },
+            "add": {
+              "component_groups": [
+                "rift:drop_more_meat_from_tyrannosaurus"
+              ]
+            }
+          }
+        ]
+      },
+      "rift:drop_more_rotten_flesh_from_tyrannosaurus": {
         "add": {
           "component_groups": [
-            "rift:baby_drop_experience_from_forced_attack"
+            "rift:drop_more_meat_from_tyrannosaurus"
           ]
         }
       }

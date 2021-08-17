@@ -119,6 +119,17 @@
         "minecraft:experience_reward": {
           "on_death": "5"
         }
+      },
+      "rift:drop_more_meat_from_tyrannosaurus": {
+        "minecraft:spawn_entity": {
+          "entities": {
+              "min_wait_time": 0,
+              "max_wait_time": 0,
+              "spawn_item": "rotten_flesh",
+              "num_to_spawn": 5,
+              "single_use": true
+          }
+        }
       }
     },
 
@@ -280,6 +291,26 @@
               "target": "self"
             }
           },
+					{
+						"on_damage": {
+							"filters": {
+                "all_of": [
+                  {
+                    "test": "is_family",
+                    "subject": "other",
+                    "value": "tyrannosaurus"
+                  },
+                  {
+                    "test": "has_damage",
+                    "subject": "self",
+                    "value": "fatal"
+                  }
+                ]
+							},
+							"event": "rift:drop_more_rotten_flesh_from_tyrannosaurus",
+							"target": "self"
+						}
+					},
           {
             "on_damage": {
               "filters": {
@@ -417,9 +448,32 @@
 				}
 			},
       "rift:on_force_attacked_death": {
+        "sequence": [
+          {
+            "add": {
+              "component_groups": [
+                "rift:drop_experience_from_forced_attack"
+              ]
+            }
+          },
+          {
+            "filters": {
+              "test": "is_family",
+              "subject": "other",
+              "value": "tyrannosaurusForcedAttack"
+            },
+            "add": {
+              "component_groups": [
+                "rift:drop_more_meat_from_tyrannosaurus"
+              ]
+            }
+          }
+        ]
+      },
+      "rift:drop_more_rotten_flesh_from_tyrannosaurus": {
         "add": {
           "component_groups": [
-            "rift:drop_experience_from_forced_attack"
+            "rift:drop_more_meat_from_tyrannosaurus"
           ]
         }
       }
