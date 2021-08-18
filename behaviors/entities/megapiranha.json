@@ -121,7 +121,29 @@
 			  	"minecraft:experience_reward": {
 					"on_death": "Math.Random(1,3)"
 			  	}
-			}
+			},
+            "rift:drop_more_meat_from_sarcosuchus": {
+                "minecraft:spawn_entity": {
+                    "entities": {
+                        "min_wait_time": 0,
+                        "max_wait_time": 0,
+                        "spawn_item": "rift:raw_megapiranha",
+                        "num_to_spawn": 2,
+                        "single_use": true
+                    }
+                }
+            },
+            "rift:drop_more_meat_from_anomalocaris": {
+                "minecraft:spawn_entity": {
+                    "entities": {
+                        "min_wait_time": 0,
+                        "max_wait_time": 0,
+                        "spawn_item": "rift:raw_megapiranha",
+                        "num_to_spawn": 2,
+                        "single_use": true
+                    }
+                }
+            }
         },
         "components": {
             "minecraft:experience_reward": {
@@ -291,6 +313,58 @@
 					  	}
 					},
 					{
+						"on_damage": {
+							"filters": {
+                                "all_of": [
+                                    {
+                                        "test": "is_family",
+                                        "subject": "other",
+                                        "value": "sarcosuchus"
+                                    },
+                                    {
+                                        "test": "has_component",
+                                        "subject": "self",
+                                        "operator": "!=",
+                                        "value": "minecraft:is_baby"
+                                    },
+                                    {
+                                        "test": "has_damage",
+                                        "subject": "self",
+                                        "value": "fatal"
+                                    }
+                                ]
+							},
+							"event": "rift:drop_more_raw_megapiranha_from_sarcosuchus",
+							"target": "self"
+						}
+					},
+					{
+						"on_damage": {
+							"filters": {
+                                "all_of": [
+                                    {
+                                        "test": "is_family",
+                                        "subject": "other",
+                                        "value": "anomalocaris"
+                                    },
+                                    {
+                                        "test": "has_component",
+                                        "subject": "self",
+                                        "operator": "!=",
+                                        "value": "minecraft:is_baby"
+                                    },
+                                    {
+                                        "test": "has_damage",
+                                        "subject": "self",
+                                        "value": "fatal"
+                                    }
+                                ]
+							},
+							"event": "rift:drop_more_raw_megapiranha_from_anomalocaris",
+							"target": "self"
+						}
+					},
+					{
 					  	"on_damage": {
 							"filters": {
 						  		"test": "is_family",
@@ -424,12 +498,74 @@
 				}
 			},
 			"rift:on_force_attacked_death": {
-			  	"add": {
-					"component_groups": [
-				  		"rift:drop_experience_from_forced_attack"
-					]
-			  	}
-			}
+                "sequence": [
+                    {
+                        "add": {
+                            "component_groups": [
+                                "rift:drop_experience_from_forced_attack"
+                            ]
+                        }
+                    },
+                    {
+                        "filters": {
+                            "all_of": [
+                                {
+                                    "test": "is_family",
+                                    "subject": "other",
+                                    "value": "sarcosuchusForcedAttack"
+                                },
+                                {
+                                    "test": "has_component",
+                                    "subject": "self",
+                                    "operator": "!=",
+                                    "value": "minecraft:is_baby"
+                                }
+                            ]
+                        },
+                        "add": {
+                            "component_groups": [
+                                "rift:drop_more_meat_from_sarcosuchus"
+                            ]
+                        }
+                    },
+                    {
+                        "filters": {
+                            "all_of": [
+                                {
+                                    "test": "is_family",
+                                    "subject": "other",
+                                    "value": "anomalocarisForcedAttack"
+                                },
+                                {
+                                    "test": "has_component",
+                                    "subject": "self",
+                                    "operator": "!=",
+                                    "value": "minecraft:is_baby"
+                                }
+                            ]
+                        },
+                        "add": {
+                            "component_groups": [
+                                "rift:drop_more_meat_from_anomalocaris"
+                            ]
+                        }
+                    }
+                ]
+			},
+            "rift:drop_more_raw_megapiranha_from_sarcosuchus": {
+                "add": {
+                    "component_groups": [
+                        "rift:drop_more_meat_from_sarcosuchus"
+                    ]
+                }
+            },
+            "rift:drop_more_raw_megapiranha_from_anomalocaris": {
+                "add": {
+                    "component_groups": [
+                        "rift:drop_more_meat_from_anomalocaris"
+                    ]
+                }
+            }
         }
     }
 }
