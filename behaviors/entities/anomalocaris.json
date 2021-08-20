@@ -170,7 +170,12 @@
                         "rift:raw_megapiranha",
                         "rift:cooked_megapiranha"
                     ]
-                }
+                },
+				"minecraft:behavior.melee_attack": {
+					"priority": 4,
+					"track_target": true,
+					"reach_multiplier": 1.5
+				}
 			},
 			"rift:anomalocaris_baby_wild": {
 				"minecraft:health": {
@@ -232,6 +237,10 @@
                     "require_tame": true,
                     "inherit_tamed": false,
                     "breed_cooldown": 1200
+				},
+				"minecraft:on_target_escape": {
+					"event": "rift:no_more_target",
+				  	"target": "self"
 				}
 			},
 			"rift:anomalocaris_adult_wild": {
@@ -257,6 +266,15 @@
 						  	"operator": "!=",
 						  	"value": "forcedAttack"
 						}
+					}
+				},
+				"minecraft:behavior.melee_attack": {
+					"priority": 4,
+					"track_target": true,
+					"reach_multiplier": 1.5,
+					"on_attack": {
+						"event": "rift:anomalocaris_unridden_wild_start_carrying",
+						"target": "self"
 					}
 				}
 			},
@@ -401,10 +419,6 @@
 					  		"max_dist": 25
 						}
 				  	]
-				},
-				"minecraft:on_target_escape": {
-					"event": "rift:no_force_attacked",
-				  	"target": "self"
 				}
 			},
             "rift:anomalocaris_adult_trusting": {
@@ -634,7 +648,16 @@
 						}
 					]
 				},
-				"minecraft:behavior.player_ride_tamed": {}
+				"minecraft:behavior.player_ride_tamed": {},
+				"minecraft:behavior.melee_attack": {
+					"priority": 4,
+					"track_target": true,
+					"reach_multiplier": 1.5,
+					"on_attack": {
+						"event": "rift:anomalocaris_unridden_tamed_start_carrying",
+						"target": "self"
+					}
+				}
 			},
 			"rift:anomalocaris_tamed": {
 				"minecraft:is_tamed": {},
@@ -667,7 +690,7 @@
 					}
                 }
             },
-			"rift:sarcosuchus_chested": {
+			"rift:anomalocaris_chested": {
                 "minecraft:is_chested": {}
             },
 			"rift:rideable": {
@@ -819,15 +842,7 @@
             "minecraft:behavior.breed": {
 				"priority": 1
 			},
-			"minecraft:behavior.delayed_attack": {
-				"priority": 4,
-				"attack_duration": 0.52,
-				"hit_delay_pct": 0.46,
-				"track_target": true,
-				"reach_multiplier": 3
-			},
 			"minecraft:is_hidden_when_invisible": {},
-			"minecraft:pushable": {},
 			"minecraft:physics": {},
 			"minecraft:nameable": {},
 			"minecraft:collision_box": {
@@ -1183,6 +1198,12 @@
 						"on_damage": {
 							"filters": {
 								"all_of": [
+									{
+										"test": "is_family",
+										"subject": "other",
+										"operator": "!=",
+										"value": "forcedGrab"
+									},
 									{
 										"test": "has_component",
 										"subject": "self",
@@ -1685,7 +1706,7 @@
 			"rift:attach_chest": {
 				"add": {
 					"component_groups": [
-						"rift:sarcosuchus_chested"
+						"rift:anomalocaris_chested"
 					]
 				}
 			},
@@ -1827,17 +1848,40 @@
 				  	]
 				}
 			},
-			"rift:no_force_attacked": {
-				"add": {
-					"component_groups": [
-						"rift:default_targets"
-				  	]
-				},
-				"remove": {
-				  	"component_groups": [
-						"rift:attack_forced_attack_entity"
-				  	]
-				}
+			"rift:no_more_target": {
+				"sequence": [
+					{
+						"add": {
+							"component_groups": [
+								"rift:default_targets"
+							  ]
+						},
+						"remove": {
+							  "component_groups": [
+								"rift:attack_forced_attack_entity",
+								"rift:carry_mob"
+							  ]
+						}
+					},
+					{
+						"filters": {
+							"test": "rider_count",
+							"subject": "self",
+							"operator": "==",
+							"value": 0
+						},
+						"add": {
+							"component_groups": [
+								"rift:pushable"
+							]
+						},
+						"remove": {
+							"component_groups": [
+								"rift:unpushable"
+							]
+						}
+					}
+				]
 			},
 			"rift:spawn_as_baby": {
 				"randomize": [
@@ -1933,6 +1977,44 @@
 				"remove": {
 					"component_groups": [
 						"rift:anomalocaris_invisible"
+					]
+				}
+			},
+			"rift:anomalocaris_unridden_wild_start_carrying": {
+				"add": {
+					"component_groups": [
+						"rift:carry_mob",
+						"rift:unpushable"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:pushable"
+					]
+				},
+				"run_command": {
+					"command": [
+						"effect @s instant_health 1 0",
+						"ride @e[c=1, r=5, type=!rift:anomalocaris] summon_ride rift:anomalo_carry_stuff"
+					]
+				}
+			},
+			"rift:anomalocaris_unridden_tamed_start_carrying": {
+				"add": {
+					"component_groups": [
+						"rift:carry_mob",
+						"rift:unpushable"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:pushable"
+					]
+				},
+				"run_command": {
+					"command": [
+						"effect @s instant_health 1 0",
+						"ride @e[c=1, r=5, type=!rift:anomalocaris, type=!player] summon_ride rift:anomalo_carry_stuff"
 					]
 				}
 			},

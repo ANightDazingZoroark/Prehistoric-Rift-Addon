@@ -97,6 +97,33 @@
 					]
 				}
 			}
+		},
+		"controller.animation.wild_low_on_health": {
+			"initial_state": "default",
+			"states": {
+				"default": {
+					"transitions": [
+						{
+							"lowHealth": "(query.health <= query.max_health * 0.25) && !query.is_tamed && !query.is_baby"
+						}
+					]
+				},
+				"lowHealth": {
+					"transitions": [
+						{
+							"default": "(query.health > query.max_health * 0.25) || query.is_tamed || query.is_baby"
+						}
+					],
+					"on_entry": [
+						"/say low health",
+						"@s rift:low_health_mode"
+					],
+					"on_exit": [
+						"/say back to good health",
+						"@s rift:exit_low_health_mode"
+					]
+				}
+			}
 		}
 	}
 }
