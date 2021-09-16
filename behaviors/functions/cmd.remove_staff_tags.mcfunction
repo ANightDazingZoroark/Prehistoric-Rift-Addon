@@ -13,6 +13,7 @@ tag @e remove apatoMortarFire
 tag @e remove apatoCatapultLaunch
 tag @e remove apatoAddRiders
 tag @e remove apatoRemoveRiders
+tag @e remove apatoTailWhip
 tag @e remove parasaurHarvest
 tag @e remove parasaurCallScare
 tag @e remove parasaurCallAggravate

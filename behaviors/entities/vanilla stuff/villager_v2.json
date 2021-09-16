@@ -1505,6 +1505,69 @@
         "triggers": [
           {
             "on_damage": {
+              "filters": {
+                "all_of": [
+                  {
+                    "test": "is_family",
+                    "subject": "other",
+                    "value": "forcedAttack"
+                  },
+                  {
+                    "test": "has_damage",
+                    "subject": "self",
+                    "operator": "!=",
+                    "value": "fatal"
+                  }
+                ]
+              },
+              "event": "rift:on_force_attacked",
+              "target": "self"
+            }
+          },
+					{
+						"on_damage": {
+							"filters": {
+						  		"all_of": [
+									{
+							  			"test": "is_family",
+							  			"subject": "other",
+							  			"value": "forcedAttack"
+									},
+									{
+							  			"test": "has_damage",
+							  			"subject": "self",
+							  			"value": "fatal"
+									}
+						  		]
+							  },
+							  "event": "rift:on_force_attacked_death",
+							  "target": "self"
+					  	}
+					},
+					{
+            "on_damage": {
+            "filters": {
+                "test": "is_family",
+                "subject": "other",
+                "value": "sarcoSpinAttack"
+            },
+            "event": "rift:hit_by_sarco_spin",
+            "target": "self"
+            }
+        },
+        {
+          "on_damage": {
+              "filters": {
+              "test": "has_equipment",
+              "subject": "other",
+              "value": "rift:dimetrodon_frost_attack"
+              },
+              "event": "rift:hit_by_frost_dimetrodon",
+              "target": "self"
+          }
+        },
+          {
+            "on_damage": {
               "filters": [
                 {
                   "test": "is_family",
@@ -2564,6 +2627,66 @@
       "minecraft:resupply_trades": {
         "add": { "component_groups": [ "trade_resupply_component_group" ] }
       },
+
+      "rift:on_force_attacked": {
+        "sequence": [
+          {
+
+          },
+          {
+            "filters": {
+              "test": "is_family",
+              "subject": "other",
+              "value": "anomalocarisForcedAttack"
+            },
+            "run_command": {
+              "command": [
+                "effect @e[type=rift:anomalocaris, tag=tamed, tag=ridden, c=1] instant_health 5 0"
+              ]
+            }
+          }
+        ]
+      },
+      "rift:on_force_attacked_death": {
+        "sequence": [
+          {
+            
+          },
+          {
+            "filters": {
+              "test": "is_family",
+              "subject": "other",
+              "value": "anomalocarisForcedAttack"
+            },
+            "add": {
+              "component_groups": [
+                "rift:drop_more_meat_from_anomalocaris"
+              ]
+            },
+            "run_command": {
+              "command": [
+                "effect @e[type=rift:anomalocaris, tag=tamed, tag=ridden, c=1] instant_health 5 2"
+              ]
+            }
+          }
+        ]
+			},
+      "rift:hit_by_sarco_spin": {
+				"run_command": {
+					"command": [
+						"effect @s slowness 30 2"
+					]
+				}
+			},
+			"rift:hit_by_frost_dimetrodon": {
+				"run_command": {
+					"command": [
+						"effect @s weakness 20 2",
+						"effect @s slowness 20 2"
+				  	]
+				}
+			},
+
       "borgy:become_headcrab_zombie": {
         "add": { "component_groups": [ "borgy:become_headcrab_zombie" ] },
         "run_command": { "command": [ "event entity @e[type=borgy:headcrab, c=1] borgy:into_headcrab_zombie" ] }

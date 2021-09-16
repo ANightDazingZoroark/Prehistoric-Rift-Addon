@@ -5,13 +5,22 @@
 			"identifier": "rift:tyrannosaurus_roar",
 			"is_spawnable": false,
 			"is_summonable": true,
-			"is_experimental": false
+			"is_experimental": false,
+			"animations": {
+				"contPlayRoarSound": "controller.animation.tyranno_play_roar_sound",
+				"animTyrannoRoarSound": "animation.tyranno_play_roar_sound"
+			},
+			"scripts": {
+				"animate": [
+					"contPlayRoarSound"
+				]
+			}
 		},
 		"components": {
 			"minecraft:behavior.knockback_roar": {
 				"priority": 1,
-				"duration": 0.1,
-				"attack_time": 0.1,
+				"duration": 2.08,
+				"attack_time": 0.64,
 				"knockback_damage": 4,
 				"knockback_strength": 15,
 				"knockback_range": 25,
@@ -38,24 +47,34 @@
 					]
 				},
 				"damage_filters": {
-					"all_of": [
+					"any_of": [
 						{
-							"test": "is_family",
-							"subject": "other",
-							"operator": "!=",
-							"value": "tyrannosaurus"
-						},
-						{
-							"test": "is_family",
-							"subject": "other",
-							"operator": "!=",
-							"value": "apatosaurus"
-						},
-						{
-							"test": "has_component",
-							"subject": "other",
-							"operator": "!=",
-							"value": "minecraft:is_tamed"
+							"all_of": [
+								{
+									"test": "is_family",
+									"subject": "other",
+									"operator": "!=",
+									"value": "tyrannosaurus"
+								},
+								{
+									"test": "is_family",
+									"subject": "other",
+									"operator": "!=",
+									"value": "apatosaurus"
+								},
+								{
+									"test": "is_family",
+									"subject": "other",
+									"operator": "!=",
+									"value": "player"
+								},
+								{
+									"test": "has_component",
+									"subject": "other",
+									"operator": "!=",
+									"value": "minecraft:is_tamed"
+								}
+							]
 						},
 						{
 							"all_of": [
@@ -84,23 +103,13 @@
 				"is_pushable_by_piston": true
 			},
 			"minecraft:timer": {
-				"time": [
-					0.5,
-					0.5
-				],
+				"time": 2.12,
 				"time_down_event": {
 					"event": "rift:die"
 				}
 			}
 		},
 		"events": {
-			"minecraft:entity_spawned": {
-				"run_command": {
-					"command": [
-						"function cmd.roar_break_stuff"
-					]
-				}
-			},
 			"rift:die": {
 				"run_command": {
 					"command": [

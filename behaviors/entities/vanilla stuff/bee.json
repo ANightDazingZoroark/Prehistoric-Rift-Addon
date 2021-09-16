@@ -84,6 +84,21 @@
                     }
                 }
             },
+            "rift:attack_forced_attack_entity": {
+                "minecraft:behavior.nearest_attackable_target": {
+                    "priority": 2,
+                    "entity_types": [
+                        {
+                            "filters": {
+                              "test": "is_family",
+                              "subject": "other",
+                              "value": "isForcedAttacking"
+                            },
+                            "max_dist": 10
+                        }
+                    ]
+                }
+            },
             "angry_bee": {
                 "minecraft:angry": {
                     "duration": 25,
@@ -454,6 +469,38 @@
                         "cause": "fall",
                         "deals_damage": false
                     },
+					{
+						"on_damage": {
+							"filters": {
+								"all_of": [
+									{
+								  		"test": "is_family",
+								  		"subject": "other",
+								  		"value": "forcedAttack"
+									},
+									{
+								  		"test": "has_target",
+								  		"subject": "self",
+								  		"value": false
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"operator": "!=",
+										"value": "minecraft:is_baby"
+									},
+									{
+							  			"test": "has_damage",
+							  			"subject": "self",
+										"operator": "!=",
+							  			"value": "fatal"
+									}
+							  	]
+							},
+							"event": "rift:on_force_attacked",
+							"target": "self"
+						}
+					},
                     {
                         "on_damage": {
                             "filters": {
@@ -902,7 +949,8 @@
                         "angry_bee",
                         "hive_full",
                         "find_hive",
-                        "escape_fire"
+                        "escape_fire",
+                        "rift:attack_forced_attack_entity"
                     ]
                 },
                 "add": {
@@ -933,12 +981,51 @@
                     ]
                 }
             },
+            "rift:on_force_attacked": {
+                "sequence": [
+                    {
+                        "add": {
+                            "component_groups": [
+                                "rift:attack_forced_attack_entity"
+                            ]
+                        }
+                    },
+                    {
+                        "filters": {
+                            "test": "is_family",
+                            "subject": "other",
+                            "value": "anomalocarisForcedAttack"
+                        },
+                        "run_command": {
+                            "command": [
+                                "effect @e[type=rift:anomalocaris, tag=tamed, tag=ridden, c=1] instant_health 5 0"
+                            ]
+                        }
+                    }
+                ]
+            },
             "rift:on_force_attacked_death": {
-                "add": {
-                    "component_groups": [
-                        "rift:drop_experience_from_forced_attack"
-                    ]
-                }
+                "sequence": [
+                    {
+                        "add": {
+                            "component_groups": [
+                                "rift:drop_experience_from_forced_attack"
+                            ]
+                        }
+                    },
+                    {
+                        "filters": {
+                            "test": "is_family",
+                            "subject": "other",
+                            "value": "anomalocarisForcedAttack"
+                        },
+                        "run_command": {
+                            "command": [
+                                "effect @e[type=rift:anomalocaris, tag=tamed, tag=ridden, c=1] instant_health 5 2"
+                            ]
+                        }
+                    }
+                ]
             }
         }
     }

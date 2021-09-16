@@ -546,6 +546,38 @@
 						}
 					},
           {
+						"on_damage": {
+							"filters": {
+                "all_of": [
+                  {
+                    "test": "is_family",
+                    "subject": "other",
+                    "value": "forcedAttack"
+                  },
+                  {
+                    "test": "has_target",
+                    "subject": "self",
+                    "value": false
+                  },
+                  {
+                    "test": "has_damage",
+                    "subject": "self",
+                    "operator": "!=",
+                    "value": "fatal"
+                  },
+                  {
+                    "test": "has_component",
+                    "subject": "self",
+                    "operator": "!=",
+                    "value": "minecraft:is_baby"
+                  }
+                ]
+              },
+							"event": "rift:on_force_attacked",
+							"target": "self"
+						}
+					},
+          {
             "on_damage": {
               "filters": {
                 "all_of": [
@@ -561,7 +593,7 @@
                   },
                   {
                     "test": "has_component",
-                    "subject": "other",
+                    "subject": "self",
                     "operator": "!=",
                     "value": "minecraft:is_baby"
                   }
@@ -705,12 +737,47 @@
 				  	]
 				}
 			},
+      "rift:on_force_attacked": {
+        "sequence": [
+          {
+
+          },
+          {
+            "filters": {
+              "test": "is_family",
+              "subject": "other",
+              "value": "anomalocarisForcedAttack"
+            },
+            "run_command": {
+              "command": [
+                "effect @e[type=rift:anomalocaris, tag=tamed, tag=ridden, c=1] instant_health 5 0"
+              ]
+            }
+          }
+        ]
+      },
       "rift:on_force_attacked_death": {
-        "add": {
-          "component_groups": [
-            "rift:drop_experience_from_forced_attack"
-          ]
-        }
+        "sequence": [
+          {
+            "add": {
+              "component_groups": [
+                "rift:drop_experience_from_forced_attack"
+              ]
+            }
+          },
+          {
+            "filters": {
+              "test": "is_family",
+              "subject": "other",
+              "value": "anomalocarisForcedAttack"
+            },
+            "run_command": {
+              "command": [
+                "effect @e[type=rift:anomalocaris, tag=tamed, tag=ridden, c=1] instant_health 5 2"
+              ]
+            }
+          }
+        ]
       }
     }
   }

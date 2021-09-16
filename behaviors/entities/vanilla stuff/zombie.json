@@ -801,16 +801,32 @@
         ]
       },
       "rift:on_force_attacked": {
-        "add": {
-          "component_groups": [
-            "rift:attack_forced_attack_entity"
-          ]
-        },
-        "remove": {
-          "component_groups": [
-            "rift:default_targets"
-          ]
-        }
+        "sequence": [
+          {
+            "add": {
+              "component_groups": [
+                "rift:attack_forced_attack_entity"
+              ]
+            },
+            "remove": {
+              "component_groups": [
+                "rift:default_targets"
+              ]
+            }
+          },
+          {
+            "filters": {
+              "test": "is_family",
+              "subject": "other",
+              "value": "anomalocarisForcedAttack"
+            },
+            "run_command": {
+              "command": [
+                "effect @e[type=rift:anomalocaris, tag=tamed, tag=ridden, c=1] instant_health 5 0"
+              ]
+            }
+          }
+        ]
       },
       "rift:no_force_attacked": {
         "add": {
@@ -869,6 +885,18 @@
                 "rift:drop_more_meat_from_tyrannosaurus"
               ]
             }
+          },
+          {
+            "filters": {
+              "test": "is_family",
+              "subject": "other",
+              "value": "anomalocarisForcedAttack"
+            },
+            "run_command": {
+              "command": [
+                "effect @e[type=rift:anomalocaris, tag=tamed, tag=ridden, c=1] instant_health 5 2"
+              ]
+            }
           }
         ]
       },
@@ -890,6 +918,18 @@
             "add": {
               "component_groups": [
                 "rift:drop_more_meat_from_tyrannosaurus"
+              ]
+            }
+          },
+          {
+            "filters": {
+              "test": "is_family",
+              "subject": "other",
+              "value": "anomalocarisForcedAttack"
+            },
+            "run_command": {
+              "command": [
+                "effect @e[type=rift:anomalocaris, tag=tamed, tag=ridden, c=1] instant_health 5 2"
               ]
             }
           }

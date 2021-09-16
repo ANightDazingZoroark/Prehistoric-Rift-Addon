@@ -1080,16 +1080,32 @@
         "remove": { "component_groups": [ "minecraft:melee_attack", "minecraft:ranged_attack", "rift:attack_forced_attack_entity_is_captain" ] }
       },
       "rift:on_force_attacked_not_captain": {
-        "add": {
-          "component_groups": [
-            "rift:attack_forced_attack_entity_is_captain"
-          ]
-        },
-        "remove": {
-          "component_groups": [
-            "rift:default_targets"
-          ]
-        }
+        "sequence": [
+          {
+            "add": {
+              "component_groups": [
+                "rift:attack_forced_attack_entity_is_captain"
+              ]
+            },
+            "remove": {
+              "component_groups": [
+                "rift:default_targets"
+              ]
+            }
+          },
+          {
+            "filters": {
+              "test": "is_family",
+              "subject": "other",
+              "value": "anomalocarisForcedAttack"
+            },
+            "run_command": {
+              "command": [
+                "effect @e[type=rift:anomalocaris, tag=tamed, tag=ridden, c=1] instant_health 5 0"
+              ]
+            }
+          }
+        ]
       },
       "rift:no_force_attacked_not_captain": {
         "add": {
@@ -1104,16 +1120,32 @@
         }
       },
       "rift:on_force_attacked_captain": {
-        "add": {
-          "component_groups": [
-            "rift:attack_forced_attack_entity_is_captain"
-          ]
-        },
-        "remove": {
-          "component_groups": [
-            "rift:default_targets"
-          ]
-        }
+        "sequence": [
+          {
+            "add": {
+              "component_groups": [
+                "rift:attack_forced_attack_entity_is_captain"
+              ]
+            },
+            "remove": {
+              "component_groups": [
+                "rift:default_targets"
+              ]
+            }
+          },
+          {
+            "filters": {
+              "test": "is_family",
+              "subject": "other",
+              "value": "anomalocarisForcedAttack"
+            },
+            "run_command": {
+              "command": [
+                "effect @e[type=rift:anomalocaris, tag=tamed, tag=ridden, c=1] instant_health 5 0"
+              ]
+            }
+          }
+        ]
       },
       "rift:hit_by_sarco_spin": {
 				"run_command": {
@@ -1131,11 +1163,27 @@
 				}
 			},
       "rift:on_force_attacked_death": {
-        "add": {
-          "component_groups": [
-            "rift:drop_experience_from_forced_attack"
-          ]
-        }
+        "sequence": [
+          {
+            "add": {
+              "component_groups": [
+                "rift:drop_experience_from_forced_attack"
+              ]
+            }
+          },
+          {
+            "filters": {
+              "test": "is_family",
+              "subject": "other",
+              "value": "anomalocarisForcedAttack"
+            },
+            "run_command": {
+              "command": [
+                "effect @e[type=rift:anomalocaris, tag=tamed, tag=ridden, c=1] instant_health 5 2"
+              ]
+            }
+          }
+        ]
       },
       "borgy:become_headcrab_zombie": {
         "add": { "component_groups": [ "borgy:become_headcrab_zombie" ] },

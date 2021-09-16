@@ -7,28 +7,54 @@
 				"default": {
 					"transitions": [
 						{
-							"has_staff": "query.get_equipped_item_name('main_hand') == 'harvest_staff' && query.is_riding"
-						}
-					]
-				},
-				"has_staff": {
-					"transitions": [
-						{
-							"use": "query.get_equipped_item_name('main_hand') == 'harvest_staff' && query.is_using_item"
+							"hasStaffGeneral": "query.get_equipped_item_name('main_hand') == 'harvest_staff' && query.is_riding && (query.get_ride -> query.owner_identifier) != 'rift:apatosaurus'"
 						},
 						{
-							"default": "!query.is_riding || query.get_equipped_item_name('main_hand') != 'harvest_staff'"
+							"hasStaffApatosaurus": "query.get_equipped_item_name('main_hand') == 'harvest_staff' && query.is_riding && (query.get_ride -> query.owner_identifier) == 'rift:apatosaurus'"
 						}
 					]
 				},
-				"use": {
+				"hasStaffGeneral": {
 					"transitions": [
 						{
-							"has_staff": "!query.is_using_item"
+							"useGeneral": "query.get_equipped_item_name('main_hand') == 'harvest_staff' && query.is_using_item && (query.get_ride -> query.is_saddled)"
+						},
+						{
+							"default": "!query.is_riding || query.get_equipped_item_name('main_hand') != 'harvest_staff' || (query.get_ride -> query.owner_identifier) == 'rift:apatosaurus'"
+						}
+					]
+				},
+				"useGeneral": {
+					"transitions": [
+						{
+							"hasStaffGeneral": "!query.is_using_item"
 						}
 					],
 					"on_entry": [
 						"/function cmd.harvest_staff"
+					]
+				},
+				"hasStaffApatosaurus": {
+					"transitions": [
+						{
+							"useApatosaurus": "query.get_equipped_item_name('main_hand') == 'harvest_staff' && query.is_using_item && (query.get_ride -> query.is_saddled)"
+						},
+						{
+							"default": "!query.is_riding || query.get_equipped_item_name('main_hand') != 'harvest_staff' || (query.get_ride -> query.owner_identifier) != 'rift:apatosaurus'"
+						}
+					]
+				},
+				"useApatosaurus": {
+					"transitions": [
+						{
+							"hasStaffApatosaurus": "!query.is_using_item"
+						}
+					],
+					"on_entry": [
+						"/event entity @e[type=rift:apatosaurus, c=1, tag=tamed, tag=!baby] rift:activate_tamed_harvest"
+					],
+					"on_exit": [
+						"/event entity @e[type=rift:apatosaurus, c=1, tag=tamed, tag=!baby] rift:deactivate_tamed_harvest"
 					]
 				}
 			}
@@ -202,7 +228,7 @@
 					],
 					"on_exit": [
 						"/event entity @e[type=rift:stegosaurus, c=1, tag=tamed, tag=!baby] rift:stop_forced_stab",
-						"/event entity @e[type=rift:apatosaurus, c=1, tag=tamed, tag=!baby] rift:no_summon_forced_stab_entity"
+						"/event entity @e[type=rift:stegosaurus, c=1, tag=tamed, tag=!baby] rift:no_summon_forced_stab_entity"
 					]
 				},
 				"stabToFocus": {
@@ -468,27 +494,33 @@
 				"default": {
 					"transitions": [
 						{
-							"stompMode": "query.is_riding && (query.get_ride -> query.owner_identifier) == 'rift:apatosaurus'"
+							"stompMode": "(query.get_equipped_item_name('main_hand') == 'command_staff') && query.is_riding && (query.get_ride -> query.owner_identifier) == 'rift:apatosaurus'"
 						}
 					],
 					"on_entry": [
 						"/event entity @e[type=rift:apatosaurus, c=1, tag=tamed, tag=!baby] rift:no_forced_attack_family"
+					],
+					"on_exit": [
+						"/tellraw @s {\"rawtext\":[{\"text\":\"Ability set to Stomp Mode\"}]}"
 					]
 				},
 				"stompMode": {
 					"transitions": [
 						{
-							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:apatosaurus'"
+							"default": "(query.get_equipped_item_name('main_hand') != 'command_staff') || !query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:apatosaurus'"
 						},
 						{
-							"useStompMode": "query.get_equipped_item_name('main_hand') == 'command_staff' && query.is_using_item && (query.get_ride -> query.is_saddled)"
+							"stompToTailWhip": "query.is_jumping && query.is_riding"
+						},
+						{
+							"useStompMode": "query.is_using_item && (query.get_ride -> query.is_saddled)"
 						}
 					]
 				},
 				"useStompMode": {
 					"transitions": [
 						{
-							"stompMode": "query.get_equipped_item_name('main_hand') != 'command_staff' || !query.is_using_item"
+							"stompMode": "(query.get_equipped_item_name('main_hand') != 'command_staff') || !query.is_using_item"
 						}
 					],
 					"on_entry": [
@@ -497,6 +529,94 @@
 					"on_exit": [
 						"/event entity @e[type=rift:apatosaurus, c=1, tag=tamed, tag=!baby] rift:stop_forced_stomp",
 						"/event entity @e[type=rift:apatosaurus, c=1, tag=tamed, tag=!baby] rift:no_summon_forced_stomp_entity"
+					]
+				},
+				"stompToTailWhip": {
+					"transitions": [
+						{
+							"default": "(query.get_equipped_item_name('main_hand') != 'command_staff') || !query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:apatosaurus'"
+						},
+						{
+							"tailWhipMode": "!query.is_jumping"
+						}
+					],
+					"on_exit": [
+						"/tellraw @s {\"rawtext\":[{\"text\":\"Ability set to Tail Whip Mode\"}]}"
+					]
+				},
+				"tailWhipMode": {
+					"transitions": [
+						{
+							"default": "(query.get_equipped_item_name('main_hand') != 'command_staff') || !query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:apatosaurus'"
+						},
+						{
+							"tailWhipToBulldoze": "query.is_jumping && query.is_riding"
+						},
+						{
+							"useTailWhipMode": "query.is_using_item && (query.get_ride -> query.is_saddled)"
+						}
+					]
+				},
+				"useTailWhipMode": {
+					"transitions": [
+						{
+							"tailWhipMode": "(query.get_equipped_item_name('main_hand') != 'command_staff') || !query.is_using_item"
+						}
+					],
+					"on_entry": [
+						"/tag @e[type=rift:apatosaurus, c=1, tag=tamed, tag=!baby] add apatoTailWhip"
+					]
+				},
+				"tailWhipToBulldoze": {
+					"transitions": [
+						{
+							"default": "(query.get_equipped_item_name('main_hand') != 'command_staff') || !query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:apatosaurus'"
+						},
+						{
+							"bulldozeMode": "!query.is_jumping"
+						}
+					],
+					"on_exit": [
+						"/tellraw @s {\"rawtext\":[{\"text\":\"Ability set to Bulldoze Mode\"}]}"
+					]
+				},
+				"bulldozeMode": {
+					"transitions": [
+						{
+							"default": "(query.get_equipped_item_name('main_hand') != 'command_staff') || !query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:apatosaurus'"
+						},
+						{
+							"bulldozeToStomp": "query.is_jumping && query.is_riding"
+						},
+						{
+							"useBulldozeMode": "query.is_using_item && (query.get_ride -> query.is_saddled)"
+						}
+					]
+				},
+				"useBulldozeMode": {
+					"transitions": [
+						{
+							"bulldozeMode": "(query.get_equipped_item_name('main_hand') != 'command_staff') || !query.is_using_item"
+						}
+					],
+					"on_entry": [
+						"/event entity @e[type=rift:apatosaurus, c=1, tag=tamed, tag=!baby] rift:activate_tamed_break_stuff"
+					],
+					"on_exit": [
+						"/event entity @e[type=rift:apatosaurus, c=1, tag=tamed, tag=!baby] rift:deactivate_tamed_break_stuff"
+					]
+				},
+				"bulldozeToStomp": {
+					"transitions": [
+						{
+							"default": "(query.get_equipped_item_name('main_hand') != 'command_staff') || !query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:apatosaurus'"
+						},
+						{
+							"stompMode": "!query.is_jumping"
+						}
+					],
+					"on_exit": [
+						"/tellraw @s {\"rawtext\":[{\"text\":\"Ability set to Stomp Mode\"}]}"
 					]
 				}
 			}

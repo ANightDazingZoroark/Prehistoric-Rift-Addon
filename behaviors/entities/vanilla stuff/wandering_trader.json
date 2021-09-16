@@ -165,8 +165,15 @@
             "cause": "entity_attack",
             "deals_damage": true,
             "on_damage": {
-              "filters": { 
-                "test": "is_family", "subject": "other", "operator": "!=", "value": "headcrabGeneral" 
+              "filters": {
+                "all_of": [
+                  { 
+                    "test": "is_family", "subject": "other", "operator": "!=", "value": "headcrabGeneral" 
+                  },
+                  {
+                    "test": "has_damage", "subject": "self", "operator": "!=", "value": "fatal"
+                  }
+                ]
               },
               "event": "minecraft:become_scared"
             }
@@ -183,6 +190,26 @@
             "deals_damage": true,
             "on_damage": {
               "event": "minecraft:become_scared"
+            }
+          },
+          {
+            "on_damage": {
+              "filters": {
+                "all_of": [
+                  {
+                    "test": "is_family",
+                    "subject": "other",
+                    "value": "forcedAttack"
+                  },
+                  {
+                    "test": "has_damage",
+                    "subject": "self",
+                    "value": "fatal"
+                  }
+                ]
+              },
+              "event": "rift:on_force_attacked_death",
+              "target": "self"
             }
           },
           {
@@ -410,11 +437,27 @@
         }
       },
       "minecraft:become_scared": {
-        "add": {
-          "component_groups": [
-            "minecraft:scared"
-          ]
-        }
+        "sequence": [
+          {
+            "add": {
+              "component_groups": [
+                "minecraft:scared"
+              ]
+            }
+          },
+          {
+            "filters": {
+              "test": "is_family",
+              "subject": "other",
+              "value": "anomalocarisForcedAttack"
+            },
+            "run_command": {
+              "command": [
+                "effect @e[type=rift:anomalocaris, tag=tamed, tag=ridden, c=1] instant_health 5 0"
+              ]
+            }
+          }
+        ]
       },
       "minecraft:become_calm": {
         "remove": {
@@ -422,6 +465,25 @@
             "minecraft:scared"
           ]
         }
+      },
+      "rift:on_force_attacked_death": {
+        "sequence": [
+          {
+
+          },
+          {
+            "filters": {
+              "test": "is_family",
+              "subject": "other",
+              "value": "anomalocarisForcedAttack"
+            },
+            "run_command": {
+              "command": [
+                "effect @e[type=rift:anomalocaris, tag=tamed, tag=ridden, c=1] instant_health 5 2"
+              ]
+            }
+          }
+        ]
       },
       "borgy:become_headcrab_zombie": {
         "add": { "component_groups": [ "borgy:become_headcrab_zombie" ] },

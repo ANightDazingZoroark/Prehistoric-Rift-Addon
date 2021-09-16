@@ -199,6 +199,27 @@
       },
       "minecraft:damage_sensor": {
 				"triggers": [
+          {
+						"on_damage": {
+							"filters": {
+                "all_of": [
+                  {
+                    "test": "is_family",
+                    "subject": "other",
+                    "value": "forcedAttack"
+                  },
+                  {
+                    "test": "has_damage",
+                    "subject": "self",
+                    "operator": "!=",
+                    "value": "fatal"
+                  }
+                ]
+              },
+							"event": "rift:on_force_attacked",
+							"target": "self"
+						}
+					},
 					{
 						"on_damage": {
 							"filters": {
@@ -335,6 +356,25 @@
 				  	]
 				}
 			},
+      "rift:on_force_attacked": {
+        "sequence": [
+          {
+
+          },
+          {
+            "filters": {
+              "test": "is_family",
+              "subject": "other",
+              "value": "anomalocarisForcedAttack"
+            },
+            "run_command": {
+              "command": [
+                "effect @e[type=rift:anomalocaris, tag=tamed, tag=ridden, c=1] instant_health 5 0"
+              ]
+            }
+          }
+        ]
+      },
 			"rift:on_force_attacked_death": {
         "sequence": [
           {
@@ -346,19 +386,9 @@
           },
           {
             "filters": {
-              "all_of": [
-                {
-                  "test": "is_family",
-                  "subject": "other",
-                  "value": "sarcosuchusForcedAttack"
-                },
-                {
-                  "test": "has_component",
-                  "subject": "self",
-                  "operator": "!=",
-                  "value": "minecraft:is_baby"
-                }
-              ]
+              "test": "is_family",
+              "subject": "other",
+              "value": "sarcosuchusForcedAttack"
             },
             "add": {
               "component_groups": [
@@ -368,23 +398,18 @@
           },
           {
             "filters": {
-              "all_of": [
-                {
-                  "test": "is_family",
-                  "subject": "other",
-                  "value": "anomalocarisForcedAttack"
-                },
-                {
-                  "test": "has_component",
-                  "subject": "self",
-                  "operator": "!=",
-                  "value": "minecraft:is_baby"
-                }
-              ]
+              "test": "is_family",
+              "subject": "other",
+              "value": "anomalocarisForcedAttack"
             },
             "add": {
               "component_groups": [
                 "rift:drop_more_meat_from_anomalocaris"
+              ]
+            },
+            "run_command": {
+              "command": [
+                "effect @e[type=rift:anomalocaris, tag=tamed, tag=ridden, c=1] instant_health 5 2"
               ]
             }
           }

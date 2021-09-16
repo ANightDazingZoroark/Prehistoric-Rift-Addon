@@ -98,7 +98,7 @@
 				}
 			}
 		},
-		"controller.animation.wild_low_on_health": {
+		"controller.animation.apato_wild_low_on_health": {
 			"initial_state": "default",
 			"states": {
 				"default": {
@@ -115,12 +115,54 @@
 						}
 					],
 					"on_entry": [
-						"/say low health",
 						"@s rift:low_health_mode"
 					],
 					"on_exit": [
-						"/say back to good health",
 						"@s rift:exit_low_health_mode"
+					]
+				}
+			}
+		},
+		"controller.animation.apato_wild_can_break_blocks": {
+			"initial_state": "default",
+			"states": {
+				"default": {
+					"transitions": [
+						{
+							"canBreak": "!query.is_tamed && (query.is_angry || query.is_avoiding_mobs)"
+						}
+					]
+				},
+				"canBreak": {
+					"transitions": [
+						{
+							"default": "query.is_tamed || !query.is_angry || !query.is_avoiding_mobs"
+						}
+					],
+					"animations": [
+						"animBreakStuff"
+					]
+				}
+			}
+		},
+		"controller.animation.apato_tamed_can_break_blocks": {
+			"initial_state": "default",
+			"states": {
+				"default": {
+					"transitions": [
+						{
+							"canBreak": "query.is_tamed && query.is_ignited"
+						}
+					]
+				},
+				"canBreak": {
+					"transitions": [
+						{
+							"default": "!query.is_tamed || !query.is_ignited"
+						}
+					],
+					"animations": [
+						"animBreakStuff"
 					]
 				}
 			}
