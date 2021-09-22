@@ -3,12 +3,6 @@ A Minecraft Bedrock Addon that aims to add dinosaurs and expand upon gameplay. A
 
 Feel free to join the addon's Discord server as well: https://discord.gg/qVWaKRMCRc
 
-This addon was also made with the following software:
-* [Blockbench](https://blockbench.net/)
-* [.bridge](https://github.com/bridge-core/bridge.)
-* [Piskel](https://www.piskelapp.com/)
-* [Notepad++](https://notepad-plus-plus.org/)
-
 # Credits and More
 The addon itself and the assets used are under the Creative Commons Zero v1.0 Universal License. 
 
