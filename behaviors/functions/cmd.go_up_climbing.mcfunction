@@ -1,4 +1,3 @@
-#for blocks found naturally
 ##north
 execute @e[tag=climber, c=1, ry=45, rym=-45] ~ ~ ~ detect ~ ~ ~+1 dirt 0 effect @s levitation 1 5 false
 execute @e[tag=climber, c=1, ry=45, rym=-45] ~ ~ ~ detect ~ ~ ~+1 dirt 1 effect @s levitation 1 5 false
@@ -112,6 +111,23 @@ execute @e[tag=climber, c=1, ry=45, rym=-45] ~ ~ ~ detect ~ ~ ~+1 basalt 0 effec
 execute @e[tag=climber, c=1, ry=45, rym=-45] ~ ~ ~ detect ~ ~ ~+1 obsidian 0 effect @s levitation 1 5 false
 execute @e[tag=climber, c=1, ry=45, rym=-45] ~ ~ ~ detect ~ ~ ~+1 crying_obsidian 0 effect @s levitation 1 5 false
 execute @e[tag=climber, c=1, ry=45, rym=-45] ~ ~ ~ detect ~ ~ ~+1 end_stone 0 effect @s levitation 1 5 false
+execute @e[tag=climber, c=1, ry=45, rym=-45] ~ ~ ~ detect ~ ~ ~+1 rift:plastic_block 0 effect @s levitation 1 5 false
+execute @e[tag=climber, c=1, ry=45, rym=-45] ~ ~ ~ detect ~ ~ ~+1 rift:black_plastic_block 0 effect @s levitation 1 5 false
+execute @e[tag=climber, c=1, ry=45, rym=-45] ~ ~ ~ detect ~ ~ ~+1 rift:blue_plastic_block 0 effect @s levitation 1 5 false
+execute @e[tag=climber, c=1, ry=45, rym=-45] ~ ~ ~ detect ~ ~ ~+1 rift:brown_plastic_block 0 effect @s levitation 1 5 false
+execute @e[tag=climber, c=1, ry=45, rym=-45] ~ ~ ~ detect ~ ~ ~+1 rift:cyan_plastic_block 0 effect @s levitation 1 5 false
+execute @e[tag=climber, c=1, ry=45, rym=-45] ~ ~ ~ detect ~ ~ ~+1 rift:gray_plastic_block 0 effect @s levitation 1 5 false
+execute @e[tag=climber, c=1, ry=45, rym=-45] ~ ~ ~ detect ~ ~ ~+1 rift:green_plastic_block 0 effect @s levitation 1 5 false
+execute @e[tag=climber, c=1, ry=45, rym=-45] ~ ~ ~ detect ~ ~ ~+1 rift:light_blue_plastic_block 0 effect @s levitation 1 5 false
+execute @e[tag=climber, c=1, ry=45, rym=-45] ~ ~ ~ detect ~ ~ ~+1 rift:light_gray_plastic_block 0 effect @s levitation 1 5 false
+execute @e[tag=climber, c=1, ry=45, rym=-45] ~ ~ ~ detect ~ ~ ~+1 rift:lime_plastic_block 0 effect @s levitation 1 5 false
+execute @e[tag=climber, c=1, ry=45, rym=-45] ~ ~ ~ detect ~ ~ ~+1 rift:magenta_plastic_block 0 effect @s levitation 1 5 false
+execute @e[tag=climber, c=1, ry=45, rym=-45] ~ ~ ~ detect ~ ~ ~+1 rift:orange_plastic_block 0 effect @s levitation 1 5 false
+execute @e[tag=climber, c=1, ry=45, rym=-45] ~ ~ ~ detect ~ ~ ~+1 rift:pink_plastic_block 0 effect @s levitation 1 5 false
+execute @e[tag=climber, c=1, ry=45, rym=-45] ~ ~ ~ detect ~ ~ ~+1 rift:purple_plastic_block 0 effect @s levitation 1 5 false
+execute @e[tag=climber, c=1, ry=45, rym=-45] ~ ~ ~ detect ~ ~ ~+1 rift:red_plastic_block 0 effect @s levitation 1 5 false
+execute @e[tag=climber, c=1, ry=45, rym=-45] ~ ~ ~ detect ~ ~ ~+1 rift:white_plastic_block 0 effect @s levitation 1 5 false
+execute @e[tag=climber, c=1, ry=45, rym=-45] ~ ~ ~ detect ~ ~ ~+1 rift:yellow_plastic_block 0 effect @s levitation 1 5 false
 ##east
 execute @e[tag=climber, c=1, ry=-45, rym=-135] ~ ~ ~ detect ~+1 ~ ~ dirt 0 effect @s levitation 1 5 false
 execute @e[tag=climber, c=1, ry=-45, rym=-135] ~ ~ ~ detect ~+1 ~ ~ dirt 1 effect @s levitation 1 5 false
@@ -225,6 +241,23 @@ execute @e[tag=climber, c=1, ry=-45, rym=-135] ~ ~ ~ detect ~+1 ~ ~ basalt 0 eff
 execute @e[tag=climber, c=1, ry=-45, rym=-135] ~ ~ ~ detect ~+1 ~ ~ obsidian 0 effect @s levitation 1 5 false
 execute @e[tag=climber, c=1, ry=-45, rym=-135] ~ ~ ~ detect ~+1 ~ ~ crying_obsidian 0 effect @s levitation 1 5 false
 execute @e[tag=climber, c=1, ry=-45, rym=-135] ~ ~ ~ detect ~+1 ~ ~ end_stone 0 effect @s levitation 1 5 false
+execute @e[tag=climber, c=1, ry=-45, rym=-135] ~ ~ ~ detect ~+1 ~ ~ rift:plastic_block 0 effect @s levitation 1 5 false
+execute @e[tag=climber, c=1, ry=-45, rym=-135] ~ ~ ~ detect ~+1 ~ ~ rift:black_plastic_block 0 effect @s levitation 1 5 false
+execute @e[tag=climber, c=1, ry=-45, rym=-135] ~ ~ ~ detect ~+1 ~ ~ rift:blue_plastic_block 0 effect @s levitation 1 5 false
+execute @e[tag=climber, c=1, ry=-45, rym=-135] ~ ~ ~ detect ~+1 ~ ~ rift:brown_plastic_block 0 effect @s levitation 1 5 false
+execute @e[tag=climber, c=1, ry=-45, rym=-135] ~ ~ ~ detect ~+1 ~ ~ rift:cyan_plastic_block 0 effect @s levitation 1 5 false
+execute @e[tag=climber, c=1, ry=-45, rym=-135] ~ ~ ~ detect ~+1 ~ ~ rift:gray_plastic_block 0 effect @s levitation 1 5 false
+execute @e[tag=climber, c=1, ry=-45, rym=-135] ~ ~ ~ detect ~+1 ~ ~ rift:green_plastic_block 0 effect @s levitation 1 5 false
+execute @e[tag=climber, c=1, ry=-45, rym=-135] ~ ~ ~ detect ~+1 ~ ~ rift:light_blue_plastic_block 0 effect @s levitation 1 5 false
+execute @e[tag=climber, c=1, ry=-45, rym=-135] ~ ~ ~ detect ~+1 ~ ~ rift:light_gray_plastic_block 0 effect @s levitation 1 5 false
+execute @e[tag=climber, c=1, ry=-45, rym=-135] ~ ~ ~ detect ~+1 ~ ~ rift:lime_plastic_block 0 effect @s levitation 1 5 false
+execute @e[tag=climber, c=1, ry=-45, rym=-135] ~ ~ ~ detect ~+1 ~ ~ rift:magenta_plastic_block 0 effect @s levitation 1 5 false
+execute @e[tag=climber, c=1, ry=-45, rym=-135] ~ ~ ~ detect ~+1 ~ ~ rift:orange_plastic_block 0 effect @s levitation 1 5 false
+execute @e[tag=climber, c=1, ry=-45, rym=-135] ~ ~ ~ detect ~+1 ~ ~ rift:pink_plastic_block 0 effect @s levitation 1 5 false
+execute @e[tag=climber, c=1, ry=-45, rym=-135] ~ ~ ~ detect ~+1 ~ ~ rift:purple_plastic_block 0 effect @s levitation 1 5 false
+execute @e[tag=climber, c=1, ry=-45, rym=-135] ~ ~ ~ detect ~+1 ~ ~ rift:red_plastic_block 0 effect @s levitation 1 5 false
+execute @e[tag=climber, c=1, ry=-45, rym=-135] ~ ~ ~ detect ~+1 ~ ~ rift:white_plastic_block 0 effect @s levitation 1 5 false
+execute @e[tag=climber, c=1, ry=-45, rym=-135] ~ ~ ~ detect ~+1 ~ ~ rift:yellow_plastic_block 0 effect @s levitation 1 5 false
 ##south one
 execute @e[tag=climber, c=1, ry=180, rym=135] ~ ~ ~ detect ~ ~ ~-1 dirt 0 effect @s levitation 1 5 false
 execute @e[tag=climber, c=1, ry=180, rym=135] ~ ~ ~ detect ~ ~ ~-1 dirt 1 effect @s levitation 1 5 false
@@ -338,6 +371,23 @@ execute @e[tag=climber, c=1, ry=180, rym=135] ~ ~ ~ detect ~ ~ ~-1 basalt 0 effe
 execute @e[tag=climber, c=1, ry=180, rym=135] ~ ~ ~ detect ~ ~ ~-1 obsidian 0 effect @s levitation 1 5 false
 execute @e[tag=climber, c=1, ry=180, rym=135] ~ ~ ~ detect ~ ~ ~-1 crying_obsidian 0 effect @s levitation 1 5 false
 execute @e[tag=climber, c=1, ry=180, rym=135] ~ ~ ~ detect ~ ~ ~-1 end_stone 0 effect @s levitation 1 5 false
+execute @e[tag=climber, c=1, ry=180, rym=135] ~ ~ ~ detect ~ ~ ~-1 rift:plastic_block 0 effect @s levitation 1 5 false
+execute @e[tag=climber, c=1, ry=180, rym=135] ~ ~ ~ detect ~ ~ ~-1 rift:black_plastic_block 0 effect @s levitation 1 5 false
+execute @e[tag=climber, c=1, ry=180, rym=135] ~ ~ ~ detect ~ ~ ~-1 rift:blue_plastic_block 0 effect @s levitation 1 5 false
+execute @e[tag=climber, c=1, ry=180, rym=135] ~ ~ ~ detect ~ ~ ~-1 rift:brown_plastic_block 0 effect @s levitation 1 5 false
+execute @e[tag=climber, c=1, ry=180, rym=135] ~ ~ ~ detect ~ ~ ~-1 rift:cyan_plastic_block 0 effect @s levitation 1 5 false
+execute @e[tag=climber, c=1, ry=180, rym=135] ~ ~ ~ detect ~ ~ ~-1 rift:gray_plastic_block 0 effect @s levitation 1 5 false
+execute @e[tag=climber, c=1, ry=180, rym=135] ~ ~ ~ detect ~ ~ ~-1 rift:green_plastic_block 0 effect @s levitation 1 5 false
+execute @e[tag=climber, c=1, ry=180, rym=135] ~ ~ ~ detect ~ ~ ~-1 rift:light_blue_plastic_block 0 effect @s levitation 1 5 false
+execute @e[tag=climber, c=1, ry=180, rym=135] ~ ~ ~ detect ~ ~ ~-1 rift:light_gray_plastic_block 0 effect @s levitation 1 5 false
+execute @e[tag=climber, c=1, ry=180, rym=135] ~ ~ ~ detect ~ ~ ~-1 rift:lime_plastic_block 0 effect @s levitation 1 5 false
+execute @e[tag=climber, c=1, ry=180, rym=135] ~ ~ ~ detect ~ ~ ~-1 rift:magenta_plastic_block 0 effect @s levitation 1 5 false
+execute @e[tag=climber, c=1, ry=180, rym=135] ~ ~ ~ detect ~ ~ ~-1 rift:orange_plastic_block 0 effect @s levitation 1 5 false
+execute @e[tag=climber, c=1, ry=180, rym=135] ~ ~ ~ detect ~ ~ ~-1 rift:pink_plastic_block 0 effect @s levitation 1 5 false
+execute @e[tag=climber, c=1, ry=180, rym=135] ~ ~ ~ detect ~ ~ ~-1 rift:purple_plastic_block 0 effect @s levitation 1 5 false
+execute @e[tag=climber, c=1, ry=180, rym=135] ~ ~ ~ detect ~ ~ ~-1 rift:red_plastic_block 0 effect @s levitation 1 5 false
+execute @e[tag=climber, c=1, ry=180, rym=135] ~ ~ ~ detect ~ ~ ~-1 rift:white_plastic_block 0 effect @s levitation 1 5 false
+execute @e[tag=climber, c=1, ry=180, rym=135] ~ ~ ~ detect ~ ~ ~-1 rift:yellow_plastic_block 0 effect @s levitation 1 5 false
 ##south two
 execute @e[tag=climber, c=1, ry=-135, rym=-180] ~ ~ ~ detect ~ ~ ~-1 dirt 0 effect @s levitation 1 5 false
 execute @e[tag=climber, c=1, ry=-135, rym=-180] ~ ~ ~ detect ~ ~ ~-1 dirt 1 effect @s levitation 1 5 false
@@ -451,7 +501,24 @@ execute @e[tag=climber, c=1, ry=-135, rym=-180] ~ ~ ~ detect ~ ~ ~-1 basalt 0 ef
 execute @e[tag=climber, c=1, ry=-135, rym=-180] ~ ~ ~ detect ~ ~ ~-1 obsidian 0 effect @s levitation 1 5 false
 execute @e[tag=climber, c=1, ry=-135, rym=-180] ~ ~ ~ detect ~ ~ ~-1 crying_obsidian 0 effect @s levitation 1 5 false
 execute @e[tag=climber, c=1, ry=-135, rym=-180] ~ ~ ~ detect ~ ~ ~-1 end_stone 0 effect @s levitation 1 5 false
-#for blocks usually placed by players or generated in structures
+execute @e[tag=climber, c=1, ry=-135, rym=-180] ~ ~ ~ detect ~ ~ ~-1 rift:plastic_block 0 effect @s levitation 1 5 false
+execute @e[tag=climber, c=1, ry=-135, rym=-180] ~ ~ ~ detect ~ ~ ~-1 rift:black_plastic_block 0 effect @s levitation 1 5 false
+execute @e[tag=climber, c=1, ry=-135, rym=-180] ~ ~ ~ detect ~ ~ ~-1 rift:blue_plastic_block 0 effect @s levitation 1 5 false
+execute @e[tag=climber, c=1, ry=-135, rym=-180] ~ ~ ~ detect ~ ~ ~-1 rift:brown_plastic_block 0 effect @s levitation 1 5 false
+execute @e[tag=climber, c=1, ry=-135, rym=-180] ~ ~ ~ detect ~ ~ ~-1 rift:cyan_plastic_block 0 effect @s levitation 1 5 false
+execute @e[tag=climber, c=1, ry=-135, rym=-180] ~ ~ ~ detect ~ ~ ~-1 rift:gray_plastic_block 0 effect @s levitation 1 5 false
+execute @e[tag=climber, c=1, ry=-135, rym=-180] ~ ~ ~ detect ~ ~ ~-1 rift:green_plastic_block 0 effect @s levitation 1 5 false
+execute @e[tag=climber, c=1, ry=-135, rym=-180] ~ ~ ~ detect ~ ~ ~-1 rift:light_blue_plastic_block 0 effect @s levitation 1 5 false
+execute @e[tag=climber, c=1, ry=-135, rym=-180] ~ ~ ~ detect ~ ~ ~-1 rift:light_gray_plastic_block 0 effect @s levitation 1 5 false
+execute @e[tag=climber, c=1, ry=-135, rym=-180] ~ ~ ~ detect ~ ~ ~-1 rift:lime_plastic_block 0 effect @s levitation 1 5 false
+execute @e[tag=climber, c=1, ry=-135, rym=-180] ~ ~ ~ detect ~ ~ ~-1 rift:magenta_plastic_block 0 effect @s levitation 1 5 false
+execute @e[tag=climber, c=1, ry=-135, rym=-180] ~ ~ ~ detect ~ ~ ~-1 rift:orange_plastic_block 0 effect @s levitation 1 5 false
+execute @e[tag=climber, c=1, ry=-135, rym=-180] ~ ~ ~ detect ~ ~ ~-1 rift:pink_plastic_block 0 effect @s levitation 1 5 false
+execute @e[tag=climber, c=1, ry=-135, rym=-180] ~ ~ ~ detect ~ ~ ~-1 rift:purple_plastic_block 0 effect @s levitation 1 5 false
+execute @e[tag=climber, c=1, ry=-135, rym=-180] ~ ~ ~ detect ~ ~ ~-1 rift:red_plastic_block 0 effect @s levitation 1 5 false
+execute @e[tag=climber, c=1, ry=-135, rym=-180] ~ ~ ~ detect ~ ~ ~-1 rift:white_plastic_block 0 effect @s levitation 1 5 false
+execute @e[tag=climber, c=1, ry=-135, rym=-180] ~ ~ ~ detect ~ ~ ~-1 rift:yellow_plastic_block 0 effect @s levitation 1 5 false
+
 ##north
 execute @e[tag=climber, c=1, ry=45, rym=-45] ~ ~ ~ detect ~ ~ ~+1 planks 0 effect @s levitation 1 5 false
 execute @e[tag=climber, c=1, ry=45, rym=-45] ~ ~ ~ detect ~ ~ ~+1 planks 1 effect @s levitation 1 5 false

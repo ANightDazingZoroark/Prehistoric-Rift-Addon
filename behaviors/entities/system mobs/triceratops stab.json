@@ -13,7 +13,7 @@
 				"duration": 0.76,
 				"attack_time": 0.48,
 				"knockback_damage": 25,
-				"knockback_strength": 0,
+				"knockback_strength": 1,
 				"knockback_range": 5,
 				"damage_filters": {
 					"any_of": [
@@ -48,11 +48,45 @@
 							]
 						}
 					]
-                }
+                },
+				"knockback_filters": {
+					"any_of": [
+						{
+							"all_of": [
+								{
+									"test": "has_component",
+									"subject": "other",
+									"operator": "!=",
+									"value": "minecraft:is_tamed"
+								},
+								{
+									"test": "is_family",
+									"subject": "other",
+									"operator": "!=",
+									"value": "player"
+								}
+							]
+						},
+						{
+							"all_of": [
+								{
+									"test": "is_family",
+									"subject": "other",
+									"value": "player"
+								},
+								{
+									"test": "is_riding",
+									"subject": "other",
+									"value": false
+								}
+							]
+						}
+					]
+				}
 			},
-			"minecraft:projectile": {
-				"knockback": false,
-				"power": 0
+			"minecraft:collision_box": {
+				"width": 0,
+				"height": 0
 			},
 			"minecraft:physics": {
 				"has_collision": false,

@@ -1,0 +1,237 @@
+{
+    "format_version": "1.16.0",
+    "minecraft:entity": {
+        "description": {
+            "identifier": "rift:water_zapper",
+            "is_spawnable": false,
+            "is_summonable": true,
+            "is_experimental": false
+        },
+        "component_groups": {
+            "rift:pushable": {
+                "minecraft:pushable": {
+                    "is_pushable": true,
+                    "is_pushable_by_piston": true
+                },
+                "minecraft:timer": {
+                    "time": 3,
+                    "time_down_event": {
+                        "event": "rift:become_unpushable",
+                        "target": "self"
+                    }
+                }
+            },
+            "rift:unpushable": {
+                "minecraft:pushable": {
+                    "is_pushable": false,
+                    "is_pushable_by_piston": false
+                }
+            },
+            "rift:inactive": {
+                "minecraft:interact": {
+                    "interactions": [
+                        {
+                            "on_interact": {
+                                "filters": {
+                                    "all_of": [
+                                        {
+                                            "test": "has_equipment",
+                                            "subject": "other",
+                                            "domain": "hand",
+                                            "value": "rift:command_console"
+                                        },
+                                        {
+                                            "test": "is_sneaking",
+                                            "subject": "other",
+                                            "value": true
+                                        }
+                                    ]
+                                },
+                                "event": "rift:activate",
+                                "target": "self"
+                            }
+                        }
+                    ]
+                }
+            },
+            "rift:active": {
+                "minecraft:interact": {
+                    "interactions": [
+                        {
+                            "on_interact": {
+                                "filters": {
+                                    "all_of": [
+                                        {
+                                            "test": "has_equipment",
+                                            "subject": "other",
+                                            "domain": "hand",
+                                            "value": "rift:command_console"
+                                        },
+                                        {
+                                            "test": "is_sneaking",
+                                            "subject": "other",
+                                            "value": true
+                                        }
+                                    ]
+                                },
+                                "event": "rift:deactivate",
+                                "target": "self"
+                            }
+                        }
+                    ]
+                },
+				"minecraft:area_attack": {
+					"damage_range": 3,
+					"damage_per_tick": 3,
+					"entity_filter": {
+						"all_of": [
+                            {
+                                "test": "in_water",
+                                "subject": "other",
+                                "value": true
+                            },
+                            {
+                                "test": "in_water",
+                                "subject": "self",
+                                "value": true
+                            },
+							{
+								"test": "has_component",
+								"subject": "other",
+								"operator": "!=",
+								"value": "minecraft:is_tamed"
+							},
+                            {
+								"test": "is_family",
+								"subject": "other",
+								"operator": "!=",
+								"value": "player"
+							},
+                            {
+								"test": "is_family",
+								"subject": "other",
+								"operator": "!=",
+								"value": "waterZapper"
+							}
+						]
+					}
+				}
+            },
+            "rift:commit_disappear": {
+                "minecraft:spawn_entity": {
+					"entities": {
+						"spawn_item": "rift:water_zapper",
+						"single_use": true,
+						"min_wait_time": 0,
+						"max_wait_time": 0
+					}
+                },
+                "minecraft:instant_despawn": {}
+            }
+        },
+        "components": {
+            "minecraft:type_family": {
+				"family": [
+					"waterZapper",
+					"inanimate"
+				]
+            },
+            "minecraft:physics": {},
+            "minecraft:movement": {
+                "value": 0
+            },
+            "minecraft:scale": {
+                "value": 1
+            },
+            "minecraft:damage_sensor": {
+				"triggers": [
+					{
+						"on_damage": {            
+                            "filters": {
+                                "test": "is_family",
+                                "subject": "other",
+                                "operator": "!=",
+                                "value": "player"
+                            }
+						},
+                        "deals_damage": false
+					},
+					{
+						"on_damage": {            
+                            "filters": {
+                                "test": "is_family",
+                                "subject": "other",
+                                "value": "player"
+                            },
+                            "event": "rift:commit_disappear",
+                            "target": "self"
+						}
+					}
+				]
+			}
+        },
+        "events": {
+            "minecraft:entity_spawned": {
+                "add": {
+                    "component_groups": [
+                        "rift:inactive",
+                        "rift:pushable"
+                    ]
+                }
+            },
+            "rift:become_unpushable": {
+                "add": {
+                    "component_groups": [
+                        "rift:unpushable"
+                    ]
+                },
+                "remove": {
+                    "component_groups": [
+                        "rift:pushable"
+                    ]
+                }
+            },
+            "rift:activate": {
+                "add": {
+                    "component_groups": [
+                        "rift:active"
+                    ]
+                },
+                "remove": {
+                    "component_groups": [
+                        "rift:inactive"
+                    ]
+                },
+                "run_command": {
+                    "command": [
+						"tellraw @p {\"rawtext\":[{\"text\":\"Water Zapper Activated\"}]}"
+                    ]
+                }
+            },
+            "rift:deactivate": {
+                "add": {
+                    "component_groups": [
+                        "rift:inactive"
+                    ]
+                },
+                "remove": {
+                    "component_groups": [
+                        "rift:active"
+                    ]
+                },
+                "run_command": {
+                    "command": [
+						"tellraw @p {\"rawtext\":[{\"text\":\"Water Zapper Deactivated\"}]}"
+                    ]
+                }
+            },
+            "rift:commit_disappear": {
+                "add": {
+                    "component_groups": [
+                        "rift:commit_disappear"
+                    ]
+                }
+            }
+        }
+    }
+}
