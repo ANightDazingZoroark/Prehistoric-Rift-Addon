@@ -538,11 +538,41 @@
       "rift:on_force_attacked_death": {
         "sequence": [
           {
-            "add": {
-              "component_groups": [
-                "rift:drop_experience_from_forced_attack"
-              ]
-            }
+
+          },
+          {
+              "filters": {
+                  "test": "is_family",
+                  "subject": "other",
+                  "operator": "!=",
+                  "value": "sarcoSpinAttack"
+              },
+              "add": {
+                  "component_groups": [
+                      "rift:drop_experience_from_forced_attack"
+                  ]
+              }
+          },
+          {
+              "filters": {
+                  "all_of": [
+                      {
+                          "test": "is_family",
+                          "subject": "other",
+                          "value": "sarcoSpinAttack"
+                      },
+                      {
+                          "test": "has_component",
+                          "subject": "other",
+                          "value": "minecraft:is_tamed"
+                      }
+                  ]
+              },
+              "add": {
+                  "component_groups": [
+                      "rift:drop_experience_from_forced_attack"
+                  ]
+              }
           },
           {
             "filters": {
