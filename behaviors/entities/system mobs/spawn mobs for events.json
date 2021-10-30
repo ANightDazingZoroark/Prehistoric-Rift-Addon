@@ -43,6 +43,27 @@
                     }
                 }
             },
+            "rift:do_piranha_swarm": {
+                "minecraft:spawn_entity": {
+					"entities": [
+						{
+							"spawn_entity": "rift:megapiranha",
+                            "spawn_event": "minecraft:entity_spawned",
+							"single_use": true,
+                            "num_to_spawn": 3,
+							"min_wait_time": 0,
+							"max_wait_time": 0
+						}
+					]
+                },
+                "minecraft:timer": {
+                    "time": 0.5,
+                    "time_down_event": {
+                        "event": "rift:die",
+                        "target": "self"
+                    }
+                }
+            },
             "rift:despawn": {
                 "minecraft:instant_despawn": {}
             }
@@ -75,6 +96,19 @@
                 "remove": {
                     "component_groups": [
                         "rift:not_on_ground_raptor_raid"
+                    ]
+                }
+            },
+            "rift:piranha_swarm": {
+                "add": {
+                    "component_groups": [
+                        "rift:do_piranha_swarm"
+                    ]
+                },
+                "run_command": {
+                    "command": [
+                        "fill ~+1 ~ ~+1 ~-1 ~ ~-1 flowing_water",
+                        "setblock ~ ~-1 ~ flowing_water"
                     ]
                 }
             },

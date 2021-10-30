@@ -201,9 +201,6 @@
                         {
                             "limbo": "variable.choose_number >= 1"
                         }
-                    ],
-                    "on_entry": [
-                        "/say noontime"
                     ]
                 },
                 "mobEvents": {
@@ -226,7 +223,8 @@
                         }
                     ],
                     "on_entry": [
-                        "/say raptors",
+                        "/tellraw @a {\"rawtext\":[{\"text\":\"Raptor Raid event has started!\"}]}",
+                        "/playsound raid.horn @a",
                         "/title @a title Raptor Raid!",
                         "/title @a subtitle Utahraptors are on the hunt, and you are the prey!"
                     ],
@@ -235,15 +233,19 @@
                     ]
                 },
                 "piranhaSwarm": {
+                    "animations": [
+                        "animPiranhaSwarm"
+                    ],
                     "transitions": [
                         {
-                            "limbo": "(1.0)"
+                            "limbo": "query.all_animations_finished"
                         }
                     ],
                     "on_entry": [
-                        "/say piranhas",
+                        "/tellraw @a {\"rawtext\":[{\"text\":\"Piranha Swarm event has started!\"}]}",
+                        "/playsound raid.horn @a",
                         "/title @a title Piranha Swarm!",
-                        "/title @a subtitle Piranhas are rising from the aquifers below!"
+                        "/title @a subtitle Megapiranhas are rising from the aquifers below!"
                     ],
                     "on_exit": [
                         "/tellraw @a {\"rawtext\":[{\"text\":\"Piranha Swarm is no longer spawning mobs!\"}]}"
@@ -254,9 +256,6 @@
                         {
                             "default": "query.time_of_day < 0.49 || query.time_of_day >= 0.51"
                         }
-                    ],
-                    "on_entry": [
-                        "/say limbo"
                     ]
                 }
             }
