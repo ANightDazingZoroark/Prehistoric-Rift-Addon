@@ -3023,6 +3023,46 @@
 						"use_item": true,
 						"play_sounds": "random.drink",
 						"transform_to_item": "minecraft:glass_bottle"
+					},
+					{
+						"on_interact": {
+							"filters": {
+								"all_of": [
+									{
+										"test": "has_equipment",
+										"subject": "other",
+										"domain": "hand",
+										"value": "minecraft:milk_bucket"
+									},
+									{
+										"test": "is_owner",
+										"subject": "other",
+										"value": true
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_baby",
+										"operator": "!="
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_tamed"
+									},
+									{
+										"test": "is_sneaking",
+										"subject": "other",
+										"value": true
+									}
+								]
+							},
+							"event": "rift:drink_milk",
+							"target": "self"
+						},
+						"use_item": true,
+						"play_sounds": "random.drink",
+						"transform_to_item": "minecraft:bucket"
 					}
 				]
             },
@@ -3151,6 +3191,26 @@
 			},
             "minecraft:damage_sensor": {
 				"triggers": [
+					{
+						"on_damage": {
+							"filters": {
+								"all_of": [
+									{
+										"test": "is_family",
+										"subject": "other",
+										"value": "sarcosuchus"
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_tamed"
+									}
+								]
+							}
+						},
+						"damage_multiplier": 0.5,
+						"cause": "attack"
+					},
 					{
 						"deals_damage": false,
 						"cause": "fall"
@@ -4482,6 +4542,13 @@
 				"run_command": {
 					"command": [
 						"effect @s slow_falling 240"
+					]
+				}
+			},
+			"rift:drink_milk": {
+				"run_command": {
+					"command": [
+						"effect @s clear"
 					]
 				}
 			}
