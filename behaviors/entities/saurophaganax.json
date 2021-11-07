@@ -111,6 +111,11 @@
 				"minecraft:behavior.random_stroll": {
 					"priority": 10
 				},
+				"minecraft:despawn": {
+					"despawn_from_distance": {}
+				}
+			},
+			"rift:saurophaganax_baby_tameable": {
 				"minecraft:tameable": {
 					"probability": 0.25,
 					"tame_items": [
@@ -121,9 +126,6 @@
 						"event": "rift:on_tame",
 						"target": "self"
 					}
-				},
-				"minecraft:despawn": {
-					"despawn_from_distance": {}
 				}
 			},
             "rift:saurophaganax_baby_tamed": {
@@ -177,8 +179,8 @@
 			},
             "rift:saurophaganax_adult_wild": {
 				"minecraft:health": {
-					"value": 160,
-					"max": 160
+					"value": 100,
+					"max": 100
 				},
 				"minecraft:behavior.random_stroll": {
 					"priority": 10
@@ -246,7 +248,7 @@
 					]
 				}
 			},
-			"rift:attack_forced_attack_entity_adult": {
+			"rift:attack_forced_attack_entity": {
 				"minecraft:behavior.nearest_attackable_target": {
 				  	"priority": 7,
 				  	"entity_types": [
@@ -265,10 +267,52 @@
 				  	"target": "self"
 				}
 			},
+            "rift:saurophaganax_adult_wild_not_trusting": {
+                "minecraft:trusting": {
+                    "probability": 0.25,
+                    "trust_event": {
+                        "event": "rift:on_trust",
+                        "target": "self"
+                    },
+                    "trust_items": [
+						"rift:bug_treat",
+                        "rift:carrion_treat"
+                    ]
+                }            
+            },
+            "rift:saurophaganax_adult_trusting": {
+                "minecraft:trust": {}
+			},
+			"rift:saurophaganax_adult_waiting_for_tame": {
+				"minecraft:is_ignited": {},
+				"minecraft:timer": {
+					"time": 10,
+					"time_down_event": {
+						"event": "rift:can_be_tamed_again",
+						"target": "self"
+					}
+				}
+			},
+			"rift:saurophaganax_adult_chance_for_tame": {
+				"minecraft:is_charged": {}
+			},
+			"rift:saurophaganax_adult_tameable": {
+				"minecraft:tameable": {
+                    "probability": 1,
+                    "tame_items": [
+						"rift:bug_treat",
+                        "rift:carrion_treat"
+                    ],
+                    "tame_event": {
+                        "event": "rift:adult_on_tame",
+                        "target": "self"
+                    }
+                }
+			},
             "rift:saurophaganax_adult_tamed": {
 				"minecraft:health": {
-					"value": 160,
-					"max": 160
+					"value": 100,
+					"max": 100
 				},
 				"minecraft:healable": {
 					"force_use": true,
@@ -537,6 +581,44 @@
 						"isForcedAttacking"
 					]
 				}
+			},
+			"rift:drop_experience_from_forced_attack": {
+			  	"minecraft:experience_reward": {
+					"on_death": "Math.Random(7,12)"
+			  	}
+			},
+			"rift:drop_more_meat_from_utahraptor": {
+				"minecraft:spawn_entity": {
+					"entities": {
+						"min_wait_time": 0,
+						"max_wait_time": 0,
+						"spawn_item": "rift:raw_exotic_meat",
+						"num_to_spawn": 2,
+						"single_use": true
+					}
+			 	}
+			},
+			"rift:drop_more_meat_from_tyrannosaurus": {
+			  	"minecraft:spawn_entity": {
+					"entities": {
+						"min_wait_time": 0,
+						"max_wait_time": 0,
+						"spawn_item": "rift:raw_exotic_meat",
+						"num_to_spawn": 5,
+						"single_use": true
+					}
+			  	}
+			},
+			"rift:drop_more_meat_from_sarcosuchus": {
+				"minecraft:spawn_entity": {
+					"entities": {
+						"min_wait_time": 0,
+						"max_wait_time": 0,
+						"spawn_item": "rift:raw_exotic_meat",
+						"num_to_spawn": 1,
+						"single_use": true
+					}
+			 	}
 			}
         },
         "components": {
@@ -615,6 +697,50 @@
 							"target": "self"
 						},
 						"interact_text": "action.interact.attachchest",
+						"use_item": true
+					},
+					{
+						"on_interact": {
+							"filters": {
+								"all_of": [
+									{
+										"test": "has_component",
+										"subject": "self",
+										"operator": "!=",
+										"value": "minecraft:is_tamed"
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"operator": "!=",
+										"value": "minecraft:is_baby"
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_charged"
+									},
+									{
+										"any_of": [
+											{
+												"test": "has_equipment",
+												"subject": "other",
+												"domain": "hand",
+												"value": "rift:bug_treat"
+											},
+											{
+												"test": "has_equipment",
+												"subject": "other",
+												"domain": "hand",
+												"value": "rift:carrion_treat"
+											}
+										]
+									}
+								]
+							},
+							"event": "rift:adult_failed_tame",
+							"target": "self"
+						},
 						"use_item": true
 					},
 					{
@@ -2449,10 +2575,16 @@
 										"subject": "self",
 										"operator": "!=",
 										"value": "fatal"
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"operator": "!=",
+										"value": "minecraft:is_baby"
 									}
 								]
 						  	},
-						  	"event": "rift:on_force_attacked",
+						  	"event": "rift:on_force_attacked_adult",
 						  	"target": "self"
 						}
 					},
@@ -2515,7 +2647,7 @@
                   					{
                     					"test": "is_family",
                     					"subject": "other",
-                    					"value": "saurophaganax"
+                    					"value": "tyrannosaurus"
                   					},
                   					{
                     					"test": "has_component",
@@ -2530,7 +2662,7 @@
                   					}
                 				]
 							},
-							"event": "rift:drop_more_raw_exotic_meat_from_saurophaganax",
+							"event": "rift:drop_more_raw_exotic_meat_from_tyrannosaurus",
 							"target": "self"
 						}
 					},
@@ -2596,31 +2728,18 @@
 									"value": "minecraft:is_baby"
 								},
 								{
-								  	"test": "has_target",
-								  	"subject": "self",
-								  	"value": false
+									"test": "is_daytime",
+									"value": true
 								},
 								{
-									"any_of": [
-										{
-											"test": "is_daytime",
-											"value": true
-										},
-										{
-											"all_of": [
-												{
-													"test": "is_underground",
-													"subject": "self",
-													"value": true
-												},
-												{
-													"test": "is_altitude",
-													"operator": "<",
-													"value": 64
-												}
-											]
-										}
-									]
+									"test": "is_underground",
+									"subject": "self",
+									"value": false
+								},
+								{
+									"test": "is_altitude",
+									"operator": "<",
+									"value": 64
 								}
 							]
 						},
@@ -2636,26 +2755,86 @@
 									"value": "minecraft:is_baby"
 								},
 								{
-									"any_of": [
-										{
-											"test": "is_daytime",
-											"value": false
-										},
-										{
-											"all_of": [
-												{
-													"test": "is_underground",
-													"subject": "self",
-													"value": false
-												},
-												{
-													"test": "is_altitude",
-													"operator": ">=",
-													"value": 64
-												}
-											]
-										}
-									]
+									"test": "is_daytime",
+									"value": true
+								},
+								{
+									"test": "is_altitude",
+									"operator": ">=",
+									"value": 64
+								}
+							]
+						},
+						"event": "rift:become_weakened_adult"
+					},
+					{
+						"filters": {
+							"all_of": [
+								{
+									"test": "has_component",
+									"subject": "self",
+									"operator": "!=",
+									"value": "minecraft:is_baby"
+								},
+								{
+									"test": "is_daytime",
+									"value": false
+								},
+								{
+									"test": "is_altitude",
+									"operator": ">=",
+									"value": 64
+								}
+							]
+						},
+						"event": "rift:become_prime_adult"
+					},
+					{
+						"filters": {
+							"all_of": [
+								{
+									"test": "has_component",
+									"subject": "self",
+									"operator": "!=",
+									"value": "minecraft:is_baby"
+								},
+								{
+									"test": "is_underground",
+									"subject": "self",
+									"value": true
+								},
+								{
+									"test": "is_altitude",
+									"operator": "<",
+									"value": 64
+								}
+							]
+						},
+						"event": "rift:become_prime_adult"
+					},
+					{
+						"filters": {
+							"all_of": [
+								{
+									"test": "has_component",
+									"subject": "self",
+									"operator": "!=",
+									"value": "minecraft:is_baby"
+								},
+								{
+									"test": "is_daytime",
+									"subject": "self",
+									"value": false
+								},
+								{
+									"test": "is_underground",
+									"subject": "self",
+									"value": false
+								},
+								{
+									"test": "is_altitude",
+									"operator": "<",
+									"value": 64
 								}
 							]
 						},
@@ -2670,31 +2849,18 @@
 									"value": "minecraft:is_baby"
 								},
 								{
-								  	"test": "has_target",
-								  	"subject": "self",
-								  	"value": false
+									"test": "is_daytime",
+									"value": true
 								},
 								{
-									"any_of": [
-										{
-											"test": "is_daytime",
-											"value": true
-										},
-										{
-											"all_of": [
-												{
-													"test": "is_underground",
-													"subject": "self",
-													"value": true
-												},
-												{
-													"test": "is_altitude",
-													"operator": "<",
-													"value": 64
-												}
-											]
-										}
-									]
+									"test": "is_underground",
+									"subject": "self",
+									"value": false
+								},
+								{
+									"test": "is_altitude",
+									"operator": "<",
+									"value": 64
 								}
 							]
 						},
@@ -2709,26 +2875,83 @@
 									"value": "minecraft:is_baby"
 								},
 								{
-									"any_of": [
-										{
-											"test": "is_daytime",
-											"value": false
-										},
-										{
-											"all_of": [
-												{
-													"test": "is_underground",
-													"subject": "self",
-													"value": false
-												},
-												{
-													"test": "is_altitude",
-													"operator": ">=",
-													"value": 64
-												}
-											]
-										}
-									]
+									"test": "is_daytime",
+									"value": true
+								},
+								{
+									"test": "is_altitude",
+									"operator": ">=",
+									"value": 64
+								}
+							]
+						},
+						"event": "rift:become_weakened_baby"
+					},
+					{
+						"filters": {
+							"all_of": [
+								{
+									"test": "has_component",
+									"subject": "self",
+									"value": "minecraft:is_baby"
+								},
+								{
+									"test": "is_daytime",
+									"value": false
+								},
+								{
+									"test": "is_altitude",
+									"operator": ">=",
+									"value": 64
+								}
+							]
+						},
+						"event": "rift:become_prime_baby"
+					},
+					{
+						"filters": {
+							"all_of": [
+								{
+									"test": "has_component",
+									"subject": "self",
+									"value": "minecraft:is_baby"
+								},
+								{
+									"test": "is_underground",
+									"subject": "self",
+									"value": true
+								},
+								{
+									"test": "is_altitude",
+									"operator": "<",
+									"value": 64
+								}
+							]
+						},
+						"event": "rift:become_prime_baby"
+					},
+					{
+						"filters": {
+							"all_of": [
+								{
+									"test": "has_component",
+									"subject": "self",
+									"value": "minecraft:is_baby"
+								},
+								{
+									"test": "is_daytime",
+									"subject": "self",
+									"value": false
+								},
+								{
+									"test": "is_underground",
+									"subject": "self",
+									"value": false
+								},
+								{
+									"test": "is_altitude",
+									"operator": "<",
+									"value": 64
 								}
 							]
 						},
@@ -2782,6 +3005,7 @@
 							"component_groups": [
 								"rift:saurophaganax_adult",
 								"rift:saurophaganax_adult_wild",
+								"rift:saurophaganax_adult_wild_not_trusting",
 								"rift:default_targets",
 								"rift:variant_zero",
 								"rift:pushable"
@@ -2794,6 +3018,7 @@
 							"component_groups": [
 								"rift:saurophaganax_adult",
 								"rift:saurophaganax_adult_wild",
+								"rift:saurophaganax_adult_wild_not_trusting",
 								"rift:default_targets",
 								"rift:variant_one",
 								"rift:pushable"
@@ -2806,6 +3031,7 @@
 							"component_groups": [
 								"rift:saurophaganax_adult",
 								"rift:saurophaganax_adult_wild",
+								"rift:saurophaganax_adult_wild_not_trusting",
 								"rift:default_targets",
 								"rift:variant_two",
 								"rift:pushable"
@@ -2818,6 +3044,7 @@
 							"component_groups": [
 								"rift:saurophaganax_adult",
 								"rift:saurophaganax_adult_wild",
+								"rift:saurophaganax_adult_wild_not_trusting",
 								"rift:default_targets",
 								"rift:variant_three",
 								"rift:pushable"
@@ -2834,21 +3061,39 @@
 				},
 				"remove": {
 					"component_groups": [
-						"rift:saurophaganax_baby_prime"
+						"rift:saurophaganax_baby_prime",
+						"rift:saurophaganax_baby_tameable"
 					]
 				}
 			},
 			"rift:become_prime_baby": {
-				"add": {
-					"component_groups": [
-						"rift:saurophaganax_baby_prime"
-					]
-				},
-				"remove": {
-					"component_groups": [
-						"rift:saurophaganax_baby_weakened"
-					]
-				}
+				"sequence": [
+					{
+						"add": {
+							"component_groups": [
+								"rift:saurophaganax_baby_prime"
+							]
+						},
+						"remove": {
+							"component_groups": [
+								"rift:saurophaganax_baby_weakened"
+							]
+						}
+					},
+					{
+						"filters": {
+							"test": "has_component",
+							"subject": "self",
+							"operator": "!=",
+							"value": "minecraft:is_tamed"
+						},
+						"add": {
+							"component_groups": [
+								"rift:saurophaganax_baby_tameable"
+							]
+						}
+					}
+				]
 			},
 			"rift:become_weakened_adult": {
 				"add": {
@@ -2858,21 +3103,478 @@
 				},
 				"remove": {
 					"component_groups": [
-						"rift:saurophaganax_adult_prime"
+						"rift:saurophaganax_adult_prime",
+						"rift:default_targets",
+						"rift:attack_forced_attack_entity",
+						"rift:rideable"
 					]
 				}
 			},
 			"rift:become_prime_adult": {
+				"sequence": [
+					{
+						"add": {
+							"component_groups": [
+								"rift:saurophaganax_adult_prime",
+								"rift:default_targets"
+							]
+						},
+						"remove": {
+							"component_groups": [
+								"rift:saurophaganax_adult_weakened"
+							]
+						}
+					},
+					{
+						"filters": {
+							"test": "has_component",
+							"subject": "self",
+							"value": "minecraft:is_tamed"
+						},
+						"add": {
+							"component_groups": [
+								"rift:rideable"
+							]
+						}
+					}
+				]
+			},
+			"rift:baby_grow_up": {
+				"sequence": [
+					{
+						"add": {
+							"component_groups": [
+								"rift:saurophaganax_adult",
+								"rift:saurophaganax_adult_wild",
+								"rift:saurophaganax_adult_wild_not_trusting"
+							]
+						},
+						"remove": {
+							"component_groups": [
+								"rift:saurophaganax_baby",
+								"rift:saurophaganax_baby_wild",
+								"rift:saurophaganax_baby_prime",
+								"rift:saurophaganax_baby_weakened",
+								"rift:saurophaganax_baby_tameable"
+							]
+						}
+					},
+					{
+						"filters": {
+							"all_of": [
+								{
+									"test": "has_component",
+									"subject": "self",
+									"value": "minecraft:is_tamed"
+								}
+							]
+						},
+						"add": {
+							"component_groups": [
+								"rift:saurophaganax_adult_tamed",
+								"rift:rideable"
+							]
+						},
+						"remove": {
+							"component_groups": [
+								"rift:saurophaganax_adult_wild"
+							]
+						}
+					}
+				]
+			},
+			"rift:on_tame": {
 				"add": {
 					"component_groups": [
-						"rift:saurophaganax_adult_prime"
+						"rift:saurophaganax_baby_tamed",
+						"rift:saurophaganax_tamed",
+						"rift:saurophaganax_sittable"
 					]
 				},
 				"remove": {
 					"component_groups": [
-						"rift:saurophaganax_adult_weakened"
+						"rift:saurophaganax_baby_wild",
+						"rift:saurophaganax_baby_tameable"
 					]
 				}
+			},
+			"rift:on_force_attacked_adult": {
+				"add": {
+					"component_groups": [
+						"rift:attack_forced_attack_entity"
+				  	]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:default_targets"
+					]
+				}
+			},
+			"rift:no_force_attacked_adult": {
+				"add": {
+					"component_groups": [
+						"rift:default_targets"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:attack_forced_attack_entity"
+					]
+				}
+			},
+			"rift:on_trust": {
+				"add": {
+					"component_groups": [
+						"rift:saurophaganax_adult_trusting",
+						"rift:saurophaganax_adult_waiting_for_tame"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:saurophaganax_adult_wild_not_trusting",
+						"rift:default_targets",
+						"rift:attack_forced_attack_entity"
+					]
+				},
+				"run_command": {
+					"command": [
+						"tellraw @p {\"rawtext\":[{\"text\":\"You made a wild Saurophaganax trust you! Keep feeding it every once in a while to eventually tame it!\"}]}"
+					]
+				}
+			},
+			"rift:can_be_tamed_again": {
+				"randomize": [
+					{
+						"weight": 70,
+						"add": {
+							"component_groups": [
+								"rift:saurophaganax_adult_chance_for_tame"
+							]
+						},
+						"remove": {
+							"component_groups": [
+								"rift:saurophaganax_adult_waiting_for_tame"
+							]
+						}
+					},
+					{
+						"weight": 30,
+						"add": {
+							"component_groups": [
+								"rift:saurophaganax_adult_tameable"
+							]
+						},
+						"remove": {
+							"component_groups": [
+								"rift:saurophaganax_adult_waiting_for_tame"
+							]
+						}
+					}
+				]
+			},
+			"rift:adult_failed_tame": {
+				"add": {
+					"component_groups": [
+						"rift:saurophaganax_adult_waiting_for_tame"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:saurophaganax_adult_chance_for_tame"
+					]
+				},
+				"run_command": {
+					"command": [
+						"playsound random.eat @a[r=4]"
+					]
+				}
+			},
+			"rift:adult_on_tame": {
+				"add": {
+					"component_groups": [
+						"rift:saurophaganax_tamed",
+						"rift:saurophaganax_adult_tamed",
+						"rift:saurophaganax_sittable",
+						"rift:rideable"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:saurophaganax_adult_wild",
+						"rift:saurophaganax_adult_waiting_for_tame",
+						"rift:saurophaganax_adult_tameable",
+						"rift:saurophaganax_adult_chance_for_tame",
+						"rift:saurophaganax_adult_trusting"
+					]
+				},
+				"run_command": {
+					"command": [
+						"tellraw @p {\"rawtext\":[{\"text\":\"You have succesfully tamed a Utahraptor!\"}]}"
+					]
+				}
+			},
+			"rift:attach_saddle": {
+				"add": {
+					"component_groups": [
+						"rift:saurophaganax_saddled"
+					]
+				}
+			},
+			"rift:remove_saddle": {
+				"remove": {
+					"component_groups": [
+						"rift:saurophaganax_saddled"
+					]
+				}
+			},
+			"rift:attach_chest": {
+				"add": {
+					"component_groups": [
+						"rift:saurophaganax_chested"
+					]
+				}
+			},
+			"rift:cannot_sit": {
+				"add": {
+					"component_groups": [
+						"rift:unpushable"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:saurophaganax_sittable",
+						"rift:pushable"
+					]
+				}
+			},
+			"rift:can_sit": {
+				"add": {
+					"component_groups": [
+						"rift:saurophaganax_sittable",
+						"rift:pushable"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:pushable"
+					]
+				}
+			},
+			"rift:commit_suicide": {
+				"run_command": {
+					"command": [
+						"kill @s"
+					]
+				}
+			},
+			"rift:hit_by_sarco_spin": {
+				"run_command": {
+					"command": [
+						"effect @s slowness 30 2"
+					]
+				}
+			},
+			"rift:hit_by_frost_dimetrodon": {
+				"run_command": {
+					"command": [
+						"effect @s weakness 20 2",
+						"effect @s slowness 20 2"
+				  	]
+				}
+			},
+			"rift:on_force_attacked_death": {
+				"sequence": [
+					{},
+					{
+						"filters": {
+							"all_of": [
+								{
+									"test": "is_family",
+									"subject": "other",
+									"operator": "!=",
+									"value": "sarcoSpinAttack"
+								},
+								{
+								  	"test": "has_component",
+								  	"subject": "self",
+								  	"operator": "!=",
+								  	"value": "minecraft:is_baby"
+								}
+							]
+						},
+						"add": {
+							"component_groups": [
+								"rift:drop_experience_from_forced_attack"
+							]
+						}
+					},
+					{
+						"filters": {
+							"all_of": [
+								{
+									"test": "is_family",
+									"subject": "other",
+									"value": "sarcoSpinAttack"
+								},
+								{
+									"test": "has_component",
+									"subject": "other",
+									"value": "minecraft:is_tamed"
+								},
+								{
+								  	"test": "has_component",
+								  	"subject": "self",
+								  	"operator": "!=",
+								  	"value": "minecraft:is_baby"
+								}
+							]
+						},
+						"add": {
+							"component_groups": [
+								"rift:drop_experience_from_forced_attack"
+							]
+						}
+					},
+					{
+					  	"filters": {
+							"all_of": [
+						  		{
+									"test": "is_family",
+									"subject": "other",
+									"value": "utahraptorForcedAttack"
+						  		},
+						  		{
+									"test": "has_component",
+									"subject": "self",
+									"operator": "!=",
+									"value": "minecraft:is_baby"
+						  		}
+							]
+					  	},
+					  	"add": {
+							"component_groups": [
+						  		"rift:drop_more_meat_from_utahraptor"
+							]
+					  	}
+					},
+					{
+					  	"filters": {
+							"all_of": [
+						  		{
+									"test": "is_family",
+									"subject": "other",
+									"value": "tyrannosaurusForcedAttack"
+						  		},
+						  		{
+									"test": "has_component",
+									"subject": "self",
+									"operator": "!=",
+									"value": "minecraft:is_baby"
+						  		}
+							]
+					  	},
+					  	"add": {
+							"component_groups": [
+						  		"rift:drop_more_meat_from_tyrannosaurus"
+							]
+					  	}
+					},
+					{
+					  	"filters": {
+							"all_of": [
+						  		{
+									"test": "is_family",
+									"subject": "other",
+									"value": "sarcosuchusForcedAttack"
+						  		},
+						  		{
+									"test": "has_component",
+									"subject": "self",
+									"operator": "!=",
+									"value": "minecraft:is_baby"
+						  		}
+							]
+					  	},
+					  	"add": {
+							"component_groups": [
+						  		"rift:drop_more_meat_from_sarcosuchus"
+							]
+					  	}
+					}
+				]
+			},
+			"rift:drop_more_raw_exotic_meat_from_utahraptor": {
+			  	"add": {
+					"component_groups": [
+				  		"rift:drop_more_meat_from_utahraptor"
+					]
+			  	}
+			},
+			"rift:drop_more_raw_exotic_meat_from_tyrannosaurus": {
+			  	"add": {
+					"component_groups": [
+				  		"rift:drop_more_meat_from_tyrannosaurus"
+					]
+			  	}
+			},
+			"rift:drop_more_raw_exotic_meat_from_sarcosuchus": {
+			  	"add": {
+					"component_groups": [
+				  		"rift:drop_more_meat_from_sarcosuchus"
+					]
+			  	}
+			},
+			"rift:spawn_as_baby": {
+				"randomize": [
+					{
+						"weight": 1,
+						"add": {
+							"component_groups": [
+								"rift:saurophaganax_baby",
+								"rift:saurophaganax_baby_wild",
+								"rift:saurophaganax_baby_tameable",
+								"rift:variant_zero",
+								"rift:pushable"
+							]
+						}
+					},
+					{
+						"weight": 1,
+						"add": {
+							"component_groups": [
+								"rift:saurophaganax_baby",
+								"rift:saurophaganax_baby_wild",
+								"rift:saurophaganax_baby_tameable",
+								"rift:variant_one",
+								"rift:pushable"
+							]
+						}
+					},
+					{
+						"weight": 1,
+						"add": {
+							"component_groups": [
+								"rift:saurophaganax_baby",
+								"rift:saurophaganax_baby_wild",
+								"rift:saurophaganax_baby_tameable",
+								"rift:variant_two",
+								"rift:pushable"
+							]
+						}
+					},
+					{
+						"weight": 1,
+						"add": {
+							"component_groups": [
+								"rift:saurophaganax_baby",
+								"rift:saurophaganax_baby_wild",
+								"rift:saurophaganax_baby_tameable",
+								"rift:variant_three",
+								"rift:pushable"
+							]
+						}
+					}
+				]
 			}
 		}
     }
