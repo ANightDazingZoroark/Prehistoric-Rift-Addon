@@ -112,6 +112,17 @@
               "single_use": true
           }
         }
+      },
+      "rift:drop_more_meat_from_saurophaganax": {
+        "minecraft:spawn_entity": {
+          "entities": {
+              "min_wait_time": 0,
+              "max_wait_time": 0,
+              "spawn_item": "rotten_flesh",
+              "num_to_spawn": 5,
+              "single_use": true
+          }
+        }
       }
     },
 
@@ -549,6 +560,26 @@
 							"target": "self"
 						}
 					},
+					{
+						"on_damage": {
+							"filters": {
+                "all_of": [
+                  {
+                    "test": "is_family",
+                    "subject": "other",
+                    "value": "saurophaganax"
+                  },
+                  {
+                    "test": "has_damage",
+                    "subject": "self",
+                    "value": "fatal"
+                  }
+                ]
+							},
+							"event": "rift:drop_more_rotten_flesh_from_saurophaganax",
+							"target": "self"
+						}
+					},
           {
             "on_damage": {
               "filters": {
@@ -781,6 +812,23 @@
             "filters": {
               "test": "is_family",
               "subject": "other",
+              "value": "saurophaganaxForcedAttack"
+            },
+            "add": {
+              "component_groups": [
+                "rift:drop_more_meat_from_saurophaganax"
+              ]
+            },
+            "run_command": {
+              "command": [
+                "scoreboard players add @e[type=rift:saurophaganax, c=1, scores={saurophLightBlst=!10}] saurophLightBlst 1"
+              ]
+            }
+          },
+          {
+            "filters": {
+              "test": "is_family",
+              "subject": "other",
               "value": "anomalocarisForcedAttack"
             },
             "run_command": {
@@ -846,6 +894,23 @@
             "filters": {
               "test": "is_family",
               "subject": "other",
+              "value": "saurophaganaxForcedAttack"
+            },
+            "add": {
+              "component_groups": [
+                "rift:drop_more_meat_from_saurophaganax"
+              ]
+            },
+            "run_command": {
+              "command": [
+                "scoreboard players add @e[type=rift:saurophaganax, c=1, scores={saurophLightBlst=!10}] saurophLightBlst 1"
+              ]
+            }
+          },
+          {
+            "filters": {
+              "test": "is_family",
+              "subject": "other",
               "value": "anomalocarisForcedAttack"
             },
             "run_command": {
@@ -860,6 +925,18 @@
         "add": {
           "component_groups": [
             "rift:drop_more_meat_from_tyrannosaurus"
+          ]
+        }
+      },
+      "rift:drop_more_rotten_flesh_from_saurophaganax": {
+        "add": {
+          "component_groups": [
+            "rift:drop_more_meat_from_saurophaganax"
+          ]
+        },
+        "run_command": {
+          "command": [
+						"scoreboard players add @e[type=rift:saurophaganax, c=1, scores={saurophLightBlst=!10}] saurophLightBlst 1"
           ]
         }
       }

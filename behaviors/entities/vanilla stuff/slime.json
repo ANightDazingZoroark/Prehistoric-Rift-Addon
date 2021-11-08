@@ -136,6 +136,17 @@
           "must_see": true
         }
       },
+      "rift:drop_more_slime_from_saurophaganax": {
+        "minecraft:spawn_entity": {
+          "entities": {
+              "min_wait_time": 0,
+              "max_wait_time": 0,
+              "spawn_item": "slime_ball",
+              "num_to_spawn": 5,
+              "single_use": true
+          }
+        }
+      },
       "rift:drop_experience_from_forced_attack": {
         "minecraft:experience_reward": {
           "on_death": "query.variant"
@@ -298,6 +309,26 @@
 						  	"event": "rift:hit_by_frost_dimetrodon",
 						  	"target": "self"
 						}
+					},
+					{
+						"on_damage": {
+							"filters": {
+                "all_of": [
+                  {
+                    "test": "is_family",
+                    "subject": "other",
+                    "value": "saurophaganax"
+                  },
+                  {
+                    "test": "has_damage",
+                    "subject": "self",
+                    "value": "fatal"
+                  }
+                ]
+							},
+							"event": "rift:drop_more_slime_from_saurophaganax",
+							"target": "self"
+						}
 					}
         ]
       }
@@ -418,6 +449,23 @@
             "filters": {
               "test": "is_family",
               "subject": "other",
+              "value": "saurophaganaxForcedAttack"
+            },
+            "add": {
+              "component_groups": [
+                "rift:drop_more_slime_from_saurophaganax"
+              ]
+            },
+            "run_command": {
+              "command": [
+                "scoreboard players add @e[type=rift:saurophaganax, c=1, scores={saurophLightBlst=!10}] saurophLightBlst 1"
+              ]
+            }
+          },
+          {
+            "filters": {
+              "test": "is_family",
+              "subject": "other",
               "value": "anomalocarisForcedAttack"
             },
             "run_command": {
@@ -427,6 +475,18 @@
             }
           }
         ]
+      },
+      "rift:drop_more_slime_from_saurophaganax": {
+        "add": {
+          "component_groups": [
+            "rift:drop_more_slime_from_saurophaganax"
+          ]
+        },
+        "run_command": {
+          "command": [
+						"scoreboard players add @e[type=rift:saurophaganax, c=1, scores={saurophLightBlst=!10}] saurophLightBlst 1"
+          ]
+        }
       }
     }
   }

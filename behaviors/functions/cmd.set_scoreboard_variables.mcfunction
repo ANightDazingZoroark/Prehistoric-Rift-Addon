@@ -2,3 +2,4 @@ scoreboard objectives add apatoCannonballs dummy
 scoreboard objectives add apatoMortarShell dummy
 scoreboard objectives add apatoCatapultBld dummy
 scoreboard objectives add stegoFocusCharge dummy
+scoreboard objectives add saurophLightBlst dummy

@@ -84,7 +84,7 @@
 					"end_scale": 0.75
 				},
 				"minecraft:behavior.tempt": {
-					"priority": 9,
+					"priority": 10,
 					"items": [
                         "minecraft:rotten_flesh",
                         "minecraft:bone",
@@ -109,7 +109,7 @@
 					"value": 30
 				},
 				"minecraft:behavior.random_stroll": {
-					"priority": 10
+					"priority": 11
 				},
 				"minecraft:despawn": {
 					"despawn_from_distance": {}
@@ -183,7 +183,7 @@
 					"max": 100
 				},
 				"minecraft:behavior.random_stroll": {
-					"priority": 10
+					"priority": 11
 				},
 				"minecraft:despawn": {
 					"despawn_from_distance": {}
@@ -197,6 +197,89 @@
 						  	"operator": "!=",
 							"value": "forcedAttack"
 						}
+					}
+				}
+			},
+			"rift:saurophaganax_light_blast_wild": {
+				"minecraft:behavior.knockback_roar": {
+					"priority": 8,
+					"duration": 2.08,
+					"attack_time": 1.04,
+					"knockback_damage": 30,
+					"knockback_strength": 1,
+					"knockback_range": 12,
+					"damage_filters": {
+						"any_of": [
+							{
+								"all_of": [
+									{
+										"test":  "is_family", 
+										"subject": "other", 
+										"value":  "monster"
+									},
+									{
+										"test":  "is_family", 
+										"subject": "other",
+										"operator": "!=", 
+										"value":  "pillager"
+									},
+									{
+										"test":  "is_family", 
+										"subject": "other",
+										"operator": "!=", 
+										"value":  "witch"
+									}
+								]
+							},
+							{
+								"test":  "is_family", 
+								"subject": "other", 
+								"value":  "undead"
+							},
+							{
+								"test":  "is_target", 
+								"subject": "other", 
+								"value":  true
+							}
+						]
+					},
+					"knockback_filters": {
+						"any_of": [
+							{
+								"all_of": [
+									{
+										"test":  "is_family", 
+										"subject": "other", 
+										"value":  "monster"
+									},
+									{
+										"test":  "is_family", 
+										"subject": "other",
+										"operator": "!=", 
+										"value":  "pillager"
+									},
+									{
+										"test":  "is_family", 
+										"subject": "other",
+										"operator": "!=", 
+										"value":  "witch"
+									}
+								]
+							},
+							{
+								"test":  "is_family", 
+								"subject": "other", 
+								"value":  "undead"
+							},
+							{
+								"test":  "is_target", 
+								"subject": "other", 
+								"value":  true
+							}
+						]
+					},
+					"on_roar_end": {
+						"event": "rift:end_wild_light_blast"
 					}
 				}
 			},
@@ -485,7 +568,7 @@
 					"priority": 7
 				},
 				"minecraft:behavior.follow_owner": {
-					"priority": 10
+					"priority": 11
 				}
 			},
 			"rift:saurophaganax_sittable": {
@@ -652,7 +735,7 @@
 				"max_distance": 15
 			},
 			"minecraft:behavior.delayed_attack": {
-				"priority": 8,
+				"priority": 9,
 				"attack_duration": 0.5,
 				"hit_delay_pct": 1,
 				"track_target": true,
@@ -2554,6 +2637,93 @@
 						"on_damage": {
 							"filters": {
 								"all_of": [
+									{
+										"test": "is_family",
+										"subject": "other",
+										"value": "utahraptorLeap"
+									},
+									{
+										"test": "random_chance",
+										"subject": "self",
+										"operator": "<",
+										"value": 7
+									},
+									{
+										"any_of": [
+											{
+												"test": "is_difficulty",
+												"operator": "==",
+												"value": "peaceful"
+											},
+											{
+												"test": "is_difficulty",
+												"operator": "==",
+												"value": "easy"
+											}
+										]
+									}
+								]
+							},
+							"event": "rift:on_pounced_by_utahraptor",
+							"target": "self"
+						}
+					},
+					{
+						"on_damage": {
+							"filters": {
+								"all_of": [
+									{
+										"test": "is_family",
+										"subject": "other",
+										"value": "utahraptorLeap"
+									},
+									{
+										"test": "random_chance",
+										"subject": "self",
+										"operator": "<",
+										"value": 4
+									},
+									{
+										"test": "is_difficulty",
+										"operator": "==",
+										"value": "normal"
+									}
+								]
+							},
+							"event": "rift:on_pounced_by_utahraptor",
+							"target": "self"
+						}
+					},
+					{
+						"on_damage": {
+							"filters": {
+								"all_of": [
+									{
+										"test": "is_family",
+										"subject": "other",
+										"value": "utahraptorLeap"
+									},
+									{
+										"test": "random_chance",
+										"subject": "self",
+										"operator": "<",
+										"value": 1
+									},
+									{
+										"test": "is_difficulty",
+										"operator": "==",
+										"value": "hard"
+									}
+								]
+							},
+							"event": "rift:on_pounced_by_utahraptor",
+							"target": "self"
+						}
+					},
+					{
+						"on_damage": {
+							"filters": {
+								"all_of": [
 							  		{
 										"test": "is_family",
 										"subject": "other",
@@ -3010,6 +3180,11 @@
 								"rift:variant_zero",
 								"rift:pushable"
 							]
+						},
+						"run_command": {
+							"command": [
+								"scoreboard players set @s saurophLightBlst 0"
+							]
 						}
 					},
 					{
@@ -3022,6 +3197,11 @@
 								"rift:default_targets",
 								"rift:variant_one",
 								"rift:pushable"
+							]
+						},
+						"run_command": {
+							"command": [
+								"scoreboard players set @s saurophLightBlst 0"
 							]
 						}
 					},
@@ -3036,6 +3216,11 @@
 								"rift:variant_two",
 								"rift:pushable"
 							]
+						},
+						"run_command": {
+							"command": [
+								"scoreboard players set @s saurophLightBlst 0"
+							]
 						}
 					},
 					{
@@ -3048,6 +3233,11 @@
 								"rift:default_targets",
 								"rift:variant_three",
 								"rift:pushable"
+							]
+						},
+						"run_command": {
+							"command": [
+								"scoreboard players set @s saurophLightBlst 0"
 							]
 						}
 					}
@@ -3108,6 +3298,11 @@
 						"rift:attack_forced_attack_entity",
 						"rift:rideable"
 					]
+				},
+				"run_command": {
+					"command": [
+						"scoreboard players set @s saurophLightBlst 0"
+					]
 				}
 			},
 			"rift:become_prime_adult": {
@@ -3156,6 +3351,11 @@
 								"rift:saurophaganax_baby_prime",
 								"rift:saurophaganax_baby_weakened",
 								"rift:saurophaganax_baby_tameable"
+							]
+						},
+						"run_command": {
+							"command": [
+								"scoreboard players set @s saurophLightBlst 0"
 							]
 						}
 					},
@@ -3367,6 +3567,13 @@
 					]
 				}
 			},
+			"rift:on_pounced_by_utahraptor": {
+				"run_command": {
+					"command": [
+						"ride @s evict_riders"
+					]
+				}
+			},
 			"rift:hit_by_sarco_spin": {
 				"run_command": {
 					"command": [
@@ -3380,6 +3587,14 @@
 						"effect @s weakness 20 2",
 						"effect @s slowness 20 2"
 				  	]
+				}
+			},
+			"rift:increase_light_blast_charge": {},
+			"rift:end_wild_light_blast": {
+				"remove": {
+					"component_groups": [
+						"rift:saurophaganax_light_blast_wild"
+					]
 				}
 			},
 			"rift:on_force_attacked_death": {
@@ -3575,6 +3790,276 @@
 						}
 					}
 				]
+			},
+			//for potion effects
+			"rift:drink_night_vision_potion_one": {
+				"run_command": {
+					"command": [
+						"effect @s night_vision 180"
+					]
+				}
+			},
+			"rift:drink_night_vision_potion_two": {
+				"run_command": {
+					"command": [
+						"effect @s night_vision 480"
+					]
+				}
+			},
+			"rift:drink_invisibility_potion_one": {
+				"run_command": {
+					"command": [
+						"effect @s invisibility 180"
+					]
+				}
+			},
+			"rift:drink_invisibility_potion_two": {
+				"run_command": {
+					"command": [
+						"effect @s invisibility 480"
+					]
+				}
+			},
+			"rift:drink_leaping_potion_one": {
+				"run_command": {
+					"command": [
+						"effect @s jump_boost 180"
+					]
+				}
+			},
+			"rift:drink_leaping_potion_two": {
+				"run_command": {
+					"command": [
+						"effect @s jump_boost 480"
+					]
+				}
+			},
+			"rift:drink_leaping_potion_three": {
+				"run_command": {
+					"command": [
+						"effect @s jump_boost 90 1"
+					]
+				}
+			},
+			"rift:drink_fire_resistance_potion_one": {
+				"run_command": {
+					"command": [
+						"effect @s fire_resistance 180"
+					]
+				}
+			},
+			"rift:drink_fire_resistance_potion_two": {
+				"run_command": {
+					"command": [
+						"effect @s fire_resistance 480"
+					]
+				}
+			},
+			"rift:drink_swiftness_potion_one": {
+				"run_command": {
+					"command": [
+						"effect @s speed 180"
+					]
+				}
+			},
+			"rift:drink_swiftness_potion_two": {
+				"run_command": {
+					"command": [
+						"effect @s speed 480"
+					]
+				}
+			},
+			"rift:drink_swiftness_potion_three": {
+				"run_command": {
+					"command": [
+						"effect @s speed 90 1"
+					]
+				}
+			},
+			"rift:drink_slowness_potion_one": {
+				"run_command": {
+					"command": [
+						"effect @s slowness 90"
+					]
+				}
+			},
+			"rift:drink_slowness_potion_two": {
+				"run_command": {
+					"command": [
+						"effect @s slowness 240"
+					]
+				}
+			},
+			"rift:drink_water_breathing_potion_one": {
+				"run_command": {
+					"command": [
+						"effect @s water_breathing 180"
+					]
+				}
+			},
+			"rift:drink_water_breathing_potion_two": {
+				"run_command": {
+					"command": [
+						"effect @s water_breathing 480"
+					]
+				}
+			},
+			"rift:drink_healing_potion_one": {
+				"run_command": {
+					"command": [
+						"effect @s instant_health 1"
+					]
+				}
+			},
+			"rift:drink_healing_potion_two": {
+				"run_command": {
+					"command": [
+						"effect @s instant_health 1 1"
+					]
+				}
+			},
+			"rift:drink_harming_potion_one": {
+				"run_command": {
+					"command": [
+						"effect @s instant_damage 1"
+					]
+				}
+			},
+			"rift:drink_harming_potion_two": {
+				"run_command": {
+					"command": [
+						"effect @s instant_damage 1 1"
+					]
+				}
+			},
+			"rift:drink_poison_potion_one": {
+				"run_command": {
+					"command": [
+						"effect @s poison 45"
+					]
+				}
+			},
+			"rift:drink_poison_potion_two": {
+				"run_command": {
+					"command": [
+						"effect @s poison 120"
+					]
+				}
+			},
+			"rift:drink_poison_potion_three": {
+				"run_command": {
+					"command": [
+						"effect @s poison 22 1"
+					]
+				}
+			},
+			"rift:drink_regeneration_potion_one": {
+				"run_command": {
+					"command": [
+						"effect @s regeneration 45"
+					]
+				}
+			},
+			"rift:drink_regeneration_potion_two": {
+				"run_command": {
+					"command": [
+						"effect @s regeneration 120"
+					]
+				}
+			},
+			"rift:drink_regeneration_potion_three": {
+				"run_command": {
+					"command": [
+						"effect @s regeneration 22 1"
+					]
+				}
+			},
+			"rift:drink_strength_potion_one": {
+				"run_command": {
+					"command": [
+						"effect @s strength 180"
+					]
+				}
+			},
+			"rift:drink_strength_potion_two": {
+				"run_command": {
+					"command": [
+						"effect @s strength 480"
+					]
+				}
+			},
+			"rift:drink_strength_potion_three": {
+				"run_command": {
+					"command": [
+						"effect @s strength 90 1"
+					]
+				}
+			},
+			"rift:drink_weakness_potion_one": {
+				"run_command": {
+					"command": [
+						"effect @s weakness 90"
+					]
+				}
+			},
+			"rift:drink_weakness_potion_two": {
+				"run_command": {
+					"command": [
+						"effect @s weakness 240"
+					]
+				}
+			},
+			"rift:drink_decay_potion": {
+				"run_command": {
+					"command": [
+						"effect @s wither 40 1"
+					]
+				}
+			},
+			"rift:drink_turtle_master_potion_one": {
+				"run_command": {
+					"command": [
+						"effect @s slowness 20 3",
+						"effect @s resistance 20 2"
+					]
+				}
+			},
+			"rift:drink_turtle_master_potion_two": {
+				"run_command": {
+					"command": [
+						"effect @s slowness 40 3",
+						"effect @s resistance 40 2"
+					]
+				}
+			},
+			"rift:drink_turtle_master_potion_three": {
+				"run_command": {
+					"command": [
+						"effect @s slowness 20 5",
+						"effect @s resistance 20 3"
+					]
+				}
+			},
+			"rift:drink_slow_falling_potion_one": {
+				"run_command": {
+					"command": [
+						"effect @s slow_falling 90"
+					]
+				}
+			},
+			"rift:drink_slow_falling_potion_two": {
+				"run_command": {
+					"command": [
+						"effect @s slow_falling 240"
+					]
+				}
+			},
+			"rift:drink_milk": {
+				"run_command": {
+					"command": [
+						"effect @s clear"
+					]
+				}
 			}
 		}
     }
