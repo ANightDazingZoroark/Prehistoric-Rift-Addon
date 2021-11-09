@@ -9,13 +9,23 @@
 			"animations": {
 				"contTameTag": "controller.animation.add_tame_tag",
 				"contBabyTag": "controller.animation.add_baby_tag",
-				"contRiddenTag": "controller.animation.add_ridden_tag"
+				"contRiddenTag": "controller.animation.add_ridden_tag",
+				"contRoaringTag": "controller.animation.add_roaring_tag",
+				"contSleepingTag": "controller.animation.add_sleeping_tag",
+				"contHasTargetTag": "controller.animation.add_has_target_tag",
+				"contShearedTag": "controller.animation.add_sheared_tag",
+				"animUnriddenLightBlast": "animation.saurophaganax_activate_light_blast"
 			},
 			"scripts": {
 				"animate": [
 					"contTameTag",
 					"contBabyTag",
-					"contRiddenTag"
+					"contRiddenTag",
+					"contRoaringTag",
+					"contSleepingTag",
+					"contHasTargetTag",
+					"contShearedTag",
+					"animUnriddenLightBlast"
 				]
 			}
         },
@@ -51,6 +61,10 @@
 						},
 						{
 							"item": "minecraft:slime_ball",
+							"growth": 0.05
+						},
+						{
+							"item": "minecraft:phantom_membrane",
 							"growth": 0.05
 						},
 						{
@@ -92,6 +106,7 @@
                         "minecraft:spider_eye",
                         "minecraft:ender_pearl",
                         "minecraft:slime_ball",
+						"minecraft:phantom_membrane",
                         "minecraft:ghast_tear",
                         "minecraft:blaze_rod",
                         "minecraft:blaze_powder",
@@ -179,8 +194,8 @@
 			},
             "rift:saurophaganax_adult_wild": {
 				"minecraft:health": {
-					"value": 100,
-					"max": 100
+					"value": 160,
+					"max": 160
 				},
 				"minecraft:behavior.random_stroll": {
 					"priority": 11
@@ -200,7 +215,7 @@
 					}
 				}
 			},
-			"rift:saurophaganax_light_blast_wild": {
+			"rift:saurophaganax_light_blast": {
 				"minecraft:behavior.knockback_roar": {
 					"priority": 8,
 					"duration": 2.08,
@@ -221,7 +236,7 @@
 										"test":  "is_family", 
 										"subject": "other",
 										"operator": "!=", 
-										"value":  "pillager"
+										"value":  "illager"
 									},
 									{
 										"test":  "is_family", 
@@ -256,7 +271,7 @@
 										"test":  "is_family", 
 										"subject": "other",
 										"operator": "!=", 
-										"value":  "pillager"
+										"value":  "illager"
 									},
 									{
 										"test":  "is_family", 
@@ -279,7 +294,7 @@
 						]
 					},
 					"on_roar_end": {
-						"event": "rift:end_wild_light_blast"
+						"event": "rift:end_light_blast"
 					}
 				}
 			},
@@ -300,7 +315,7 @@
 										"test":  "is_family", 
 										"subject": "other",
 										"operator": "!=", 
-										"value":  "pillager"
+										"value":  "illager"
 									},
 									{
 										"test":  "is_family", 
@@ -394,8 +409,8 @@
 			},
             "rift:saurophaganax_adult_tamed": {
 				"minecraft:health": {
-					"value": 100,
-					"max": 100
+					"value": 160,
+					"max": 160
 				},
 				"minecraft:healable": {
 					"force_use": true,
@@ -422,6 +437,10 @@
 						},
 						{
 							"item": "minecraft:slime_ball",
+							"heal_amount": 16
+						},
+						{
+							"item": "minecraft:phantom_membrane",
 							"heal_amount": 16
 						},
 						{
@@ -553,7 +572,7 @@
 			},
 			"rift:saurophaganax_adult_prime": {
 				"minecraft:attack": {
-					"damage": 70
+					"damage": 100
 				},
 				"minecraft:movement": {
 					"value": 0.25
@@ -3589,11 +3608,15 @@
 				  	]
 				}
 			},
-			"rift:increase_light_blast_charge": {},
-			"rift:end_wild_light_blast": {
+			"rift:end_light_blast": {
 				"remove": {
 					"component_groups": [
-						"rift:saurophaganax_light_blast_wild"
+						"rift:saurophaganax_light_blast"
+					]
+				},
+				"run_command": {
+					"command": [
+						"scoreboard players set @s saurophLightBlst 0"
 					]
 				}
 			},
@@ -3717,6 +3740,18 @@
 					  	}
 					}
 				]
+			},
+			"rift:activate_light_blast": {
+				"add": {
+					"component_groups": [
+						"rift:saurophaganax_light_blast"
+					]
+				},
+				"run_command": {
+					"command": [
+						"scoreboard players set @s saurophLightBlst 11"
+					]
+				}
 			},
 			"rift:drop_more_raw_exotic_meat_from_utahraptor": {
 			  	"add": {

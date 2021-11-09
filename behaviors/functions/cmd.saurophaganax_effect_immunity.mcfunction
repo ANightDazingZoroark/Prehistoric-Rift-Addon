@@ -1,5 +1,5 @@
-effect @e[type=rift:saurophaganax] wither 0
-effect @e[type=rift:saurophaganax] poison 0
-effect @e[type=rift:saurophaganax] fatal_poison 0
-effect @e[type=rift:saurophaganax] slowness 0
-effect @e[type=rift:saurophaganax] weakness 0
+effect @e[type=rift:saurophaganax, tag=!sleeping] wither 0
+effect @e[type=rift:saurophaganax, tag=!sleeping] poison 0
+effect @e[type=rift:saurophaganax, tag=!sleeping] fatal_poison 0
+effect @e[type=rift:saurophaganax, tag=!sleeping] slowness 0
+effect @e[type=rift:saurophaganax, tag=!sleeping] weakness 0

@@ -2,102 +2,24 @@
   "format_version": "1.16.0",
   "minecraft:entity": {
     "description": {
-      "identifier": "minecraft:magma_cube",
+      "identifier": "minecraft:ghast",
       "is_spawnable": true,
       "is_summonable": true,
       "is_experimental": false
     },
 
     "component_groups": {
-      "minecraft:slime_large": {
-        "minecraft:collision_box": {
-          "width": 2.08,
-          "height": 2.08
-        },
-        "minecraft:health": {
-          "value": 16,
-          "max": 16
-        },
-        "minecraft:movement": {
-          "value": 0.75
-        },
-        "minecraft:attack": {
-          "damage": 6
-        },
-        "minecraft:loot": {
-          "table": "loot_tables/entities/magma_cube.json"
-        }
-      },
-
-      "minecraft:slime_medium": {
-        "minecraft:collision_box": {
-          "width": 0.78,
-          "height": 0.78
-        },
-        "minecraft:health": {
-          "value": 4,
-          "max": 4
-        },
-        "minecraft:movement": {
-          "value": 0.66
-        },
-        "minecraft:attack": {
-          "damage": 4
-        },
-        "minecraft:loot": {
-          "table": "loot_tables/entities/magma_cube.json"
-        }
-      },
-
-      "minecraft:slime_small": {
-        "minecraft:collision_box": {
-          "width": 0.52,
-          "height": 0.52
-        },
-        "minecraft:health": {
-          "value": 1,
-          "max": 1
-        },
-        "minecraft:movement": {
-          "value": 0.6
-        },
-        "minecraft:attack": {
-          "damage": 2
-        }
-      },
-
-      "minecraft:slime_calm": {
-        "minecraft:movement.jump": {
-          "jump_delay": [ 2.0, 6.0 ]
-        }
-      },
-      "minecraft:slime_aggressive": {
-        "minecraft:movement.jump": {
-          "jump_delay": [ 0.667, 2.0 ]
-        }
-      },
-
       "rift:default_targets": {
         "minecraft:behavior.nearest_attackable_target": {
           "priority": 2,
-          "reselect_targets": true,
           "entity_types": [
             {
               "filters": {
-                "all_of": [
-                  {
-                    "test": "is_family",
-                    "subject": "other",
-                    "value": "player"
-                  },
-                  {
-                    "test": "is_riding",
-                    "subject": "other",
-                    "value": false
-                  }
-                ]
+                "test": "is_family",
+                "subject": "other",
+                "value": "player"
               },
-              "max_dist": 16
+              "max_dist": 28
             },
             {
               "filters": {
@@ -105,7 +27,7 @@
                 "subject": "other",
                 "value": "parasaurAngerer"
               },
-              "max_dist": 35
+              "max_dist": 28
             }
           ],
           "must_see": true
@@ -114,7 +36,6 @@
       "rift:attack_forced_attack_entity": {
         "minecraft:behavior.nearest_attackable_target": {
           "priority": 2,
-          "reselect_targets": true,
           "entity_types": [
             {
               "filters": {
@@ -122,47 +43,77 @@
                 "subject": "other",
                 "value": "isForcedAttacking"
               },
-              "max_dist": 16
+              "max_dist": 48.0
             }
           ],
           "must_see": true
+        },
+        "minecraft:on_target_escape": {
+          "event": "rift:no_force_attacked",
+          "target": "self"
         }
       },
-      "rift:drop_more_magma_cream_from_saurophaganax": {
-        "minecraft:spawn_entity": {
-          "entities": {
-              "min_wait_time": 0,
-              "max_wait_time": 0,
-              "spawn_item": "magma_cream",
-              "num_to_spawn": 5,
-              "single_use": true
-          }
-        }
-      },
-      "rift:drop_experience_from_forced_attack": {
-        "minecraft:experience_reward": {
-          "on_death": "query.variant"
-        }
-      }
+			"rift:drop_experience_from_forced_attack": {
+			  	"minecraft:experience_reward": {
+					"on_death": "5 + (query.equipment_count * Math.Random(1,3))"
+			  	}
+			},
+			"rift:drop_more_ghast_tear_from_saurophaganax": {
+				"minecraft:spawn_entity": {
+					"entities": {
+						"min_wait_time": 0,
+						"max_wait_time": 0,
+						"spawn_item": "ghast_tear",
+						"num_to_spawn": 5,
+						"single_use": true
+					}
+			 	}
+			}
     },
 
     "components": {
-      "minecraft:experience_reward": {
-        "on_death": "query.last_hit_by_player ? query.variant : 0"
+      "minecraft:is_hidden_when_invisible": {
       },
-      "minecraft:type_family": {
-        "family": [ "magmacube", "monster", "mob" ]
+      "minecraft:experience_reward": {
+        "on_death": "query.last_hit_by_player ? 5 + (query.equipment_count * Math.Random(1,3)) : 0"
       },
       "minecraft:breathable": {
         "total_supply": 15,
-        "suffocate_time": 0,
-        "breathes_lava": true
-      },
-      "minecraft:nameable": {
+        "suffocate_time": 0
       },
       "minecraft:fire_immune": {
       },
-      "minecraft:burns_in_daylight": false,
+      "minecraft:nameable": {
+      },
+      "minecraft:health": {
+        "value": 10,
+        "max": 10
+      },
+      "minecraft:collision_box": {
+        "width": 4,
+        "height": 4
+      },
+      "minecraft:movement": {
+        "value": 0.03
+      },
+      "minecraft:navigation.float": {
+        "can_path_over_water": true
+      },
+      "minecraft:behavior.float_wander": {
+        "priority": 2,
+        "must_reach": true
+      },
+      "minecraft:can_fly": {
+      },
+      "minecraft:loot": {
+        "table": "loot_tables/entities/ghast.json"
+      },
+      "minecraft:shooter": {
+        "def": "minecraft:fireball"
+      },
+      "minecraft:type_family": {
+        "family": [ "ghast", "monster", "mob" ]
+      },
       "minecraft:damage_sensor": {
         "triggers": [
           {
@@ -215,6 +166,26 @@
               "target": "self"
             }
           },
+					{
+						"on_damage": {
+							"filters": {
+                "all_of": [
+                  {
+                    "test": "is_family",
+                    "subject": "other",
+                    "value": "saurophaganax"
+                  },
+                  {
+                    "test": "has_damage",
+                    "subject": "self",
+                    "value": "fatal"
+                  }
+                ]
+							},
+							"event": "rift:drop_more_ghast_tear_from_saurophaganax",
+							"target": "self"
+						}
+					},
           {
 						"on_damage": {
 							"filters": {
@@ -236,84 +207,29 @@
 						  	"event": "rift:hit_by_frost_dimetrodon",
 						  	"target": "self"
 						}
-					},
-					{
-						"on_damage": {
-							"filters": {
-                "all_of": [
-                  {
-                    "test": "is_family",
-                    "subject": "other",
-                    "value": "saurophaganax"
-                  },
-                  {
-                    "test": "has_damage",
-                    "subject": "self",
-                    "value": "fatal"
-                  }
-                ]
-							},
-							"event": "rift:drop_more_magma_cream_from_saurophaganax",
-							"target": "self"
-						}
 					}
         ]
       },
-      "minecraft:navigation.walk": {
-        "can_path_over_water": true,
-        "avoid_water": true
-      },
       "minecraft:jump.static": {
-      },
-      "minecraft:movement.jump": {
-        "jump_delay": [ 2.0, 6.0 ]
-      },
-      "minecraft:can_climb": {
-      },
-      "minecraft:on_target_acquired": {
-        "event": "minecraft:become_aggressive",
-        "target": "self"
-      },
-      "minecraft:on_target_escape": {
-        "event": "minecraft:become_calm",
-        "target": "self"
       },
       "minecraft:despawn": {
         "despawn_from_distance": {}
       },
-      "minecraft:behavior.avoid_mob_type": {
-        "priority": 0,
-        "entity_types": [
-          {
-            "filters": {
-              "test": "is_family",
-              "value": "parasaurScary",
-              "subject": "other"
-            },
-            "max_dist": 12,
-            "must_see": true,
-            "walk_speed_multiplier": 1.2,
-            "sprint_speed_multiplier": 1.2
-          }
-        ]
-       },
-      "minecraft:behavior.slime_float": {
+      "minecraft:behavior.float": {
+        "priority": 0
+      },
+      "minecraft:behavior.ranged_attack": {
         "priority": 1,
-        "jump_chance_percentage": 0.8,
-        "speed_multiplier": 1.2
+        "attack_radius": 64,
+        "charge_shoot_trigger": 2,
+        "charge_charged_trigger": 1
       },
-      "minecraft:behavior.slime_attack": {
-        "priority": 3
+      "minecraft:follow_range": {
+        "value": 64,
+        "max": 64
       },
-      "minecraft:behavior.slime_random_direction": {
-        "priority": 4,
-        "add_random_time_range": 3,
-        "turn_range": 360,
-        "min_change_direction_time": 2.0
-      },
-      "minecraft:behavior.slime_keep_on_jumping": {
-        "priority": 5,
-        "speed_multiplier": 1.0
+      "minecraft:behavior.hurt_by_target": {
+        "priority": 1
       },
       "minecraft:physics": {
       },
@@ -324,33 +240,11 @@
       "minecraft:conditional_bandwidth_optimization": {
       }
     },
-
     "events": {
       "minecraft:entity_spawned": {
         "add": {
           "component_groups": [
-            "minecraft:slime_calm",
             "rift:default_targets"
-          ]
-        }
-      },
-      "minecraft:become_calm": {
-        "add": {
-          "component_groups": [
-            "minecraft:slime_calm",
-            "rift:default_targets"
-          ]
-        },
-        "remove": {
-          "component_groups": [
-            "rift:attack_forced_attack_entity"
-          ]
-        }
-      },
-      "minecraft:become_aggressive": {
-        "add": {
-          "component_groups": [
-            "minecraft:slime_aggressive"
           ]
         }
       },
@@ -381,6 +275,18 @@
             }
           }
         ]
+      },
+      "rift:no_force_attacked": {
+        "add": {
+          "component_groups": [
+            "rift:default_targets"
+          ]
+        },
+        "remove": {
+          "component_groups": [
+            "rift:attack_forced_attack_entity"
+          ]
+        }
       },
       "rift:hit_by_sarco_spin": {
 				"run_command": {
@@ -444,7 +350,7 @@
             },
             "add": {
               "component_groups": [
-                "rift:drop_more_magma_cream_from_saurophaganax"
+                "rift:drop_more_ghast_tear_from_saurophaganax"
               ]
             },
             "run_command": {
@@ -467,10 +373,10 @@
           }
         ]
       },
-      "rift:drop_more_magma_cream_from_saurophaganax": {
+      "rift:drop_more_ghast_tear_from_saurophaganax": {
         "add": {
           "component_groups": [
-            "rift:drop_more_magma_cream_from_saurophaganax"
+            "rift:drop_more_ghast_tear_from_saurophaganax"
           ]
         },
         "run_command": {
