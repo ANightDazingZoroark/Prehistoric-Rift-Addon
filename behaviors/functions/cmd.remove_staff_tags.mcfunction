@@ -20,3 +20,4 @@ tag @e remove parasaurCallAggravate
 tag @e remove sarcoSpin
 tag @e remove anomaloInvisible
 tag @e remove carrying
+tag @e remove saurophaganaxLightBlast

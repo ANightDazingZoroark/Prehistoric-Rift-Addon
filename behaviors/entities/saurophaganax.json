@@ -7,6 +7,8 @@
             "is_summonable": true,
             "is_experimental": false,
 			"animations": {
+				"contSauroUseBite": "controller.animation.sauro_forced_use_bite",
+				"contResetLightBlastChargeWhenWeakened": "controller.animation.sauro_reset_light_blast_charge_when_weakened",
 				"contTameTag": "controller.animation.add_tame_tag",
 				"contBabyTag": "controller.animation.add_baby_tag",
 				"contRiddenTag": "controller.animation.add_ridden_tag",
@@ -14,10 +16,15 @@
 				"contSleepingTag": "controller.animation.add_sleeping_tag",
 				"contHasTargetTag": "controller.animation.add_has_target_tag",
 				"contShearedTag": "controller.animation.add_sheared_tag",
+				"contUnsittableWhenRidden": "controller.animation.become_unsittable_when_ridden",
+				"animResetLightBlastCharge": "animation.reset_saurophaganax_light_blast_charge",
+				"animForcedAttack": "animation.forced_attack_saurophaganax",
 				"animUnriddenLightBlast": "animation.saurophaganax_activate_light_blast"
 			},
 			"scripts": {
 				"animate": [
+					"contSauroUseBite",
+					"contResetLightBlastChargeWhenWeakened",
 					"contTameTag",
 					"contBabyTag",
 					"contRiddenTag",
@@ -25,6 +32,7 @@
 					"contSleepingTag",
 					"contHasTargetTag",
 					"contShearedTag",
+					"contUnsittableWhenRidden",
 					"animUnriddenLightBlast"
 				]
 			}
@@ -164,6 +172,23 @@
 				},
 				"minecraft:movement": {
 					"value": 0.25
+				}
+			},
+			"rift:saurophaganax_baby_forced_awake": {
+				"minecraft:timer": {
+					"time": 60,
+					"time_down_event": {
+						"event": "rift:baby_return_to_sleep",
+						"target": "self"
+					}
+				},
+				"minecraft:is_sheared": {},
+				"minecraft:out_of_control": {},
+				"minecraft:attack": {
+					"damage": 1
+				},
+				"minecraft:movement": {
+					"value": 0.15
 				}
 			},
             "rift:saurophaganax_adult": {
@@ -578,6 +603,23 @@
 					"value": 0.25
 				}
 			},
+			"rift:saurophaganax_adult_forced_awake": {
+				"minecraft:timer": {
+					"time": 60,
+					"time_down_event": {
+						"event": "rift:adult_return_to_sleep",
+						"target": "self"
+					}
+				},
+				"minecraft:is_sheared": {},
+				"minecraft:out_of_control": {},
+				"minecraft:attack": {
+					"damage": 5
+				},
+				"minecraft:movement": {
+					"value": 0.05
+				}
+			},
 			"rift:saurophaganax_tamed": {
 				"minecraft:is_tamed": {},
 				"minecraft:behavior.owner_hurt_by_target": {
@@ -588,6 +630,33 @@
 				},
 				"minecraft:behavior.follow_owner": {
 					"priority": 11
+				}
+			},
+			"rift:forced_bite": {
+				"minecraft:is_illager_captain": {}
+			},
+			"rift:summon_forced_bite_entity_weakened": {
+				"minecraft:spawn_entity": {
+					"entities": [
+						{
+							"spawn_entity": "rift:saurophaganax_bite_weakened",
+							"single_use": true,
+							"min_wait_time": 0,
+							"max_wait_time": 0
+						}
+					]
+				}
+			},
+			"rift:summon_forced_bite_entity_prime": {
+				"minecraft:spawn_entity": {
+					"entities": [
+						{
+							"spawn_entity": "rift:saurophaganax_bite_prime",
+							"single_use": true,
+							"min_wait_time": 0,
+							"max_wait_time": 0
+						}
+					]
 				}
 			},
 			"rift:saurophaganax_sittable": {
@@ -647,6 +716,34 @@
 			"rift:variant_three": {
 				"minecraft:variant": {
 					"value": 3
+				}
+			},
+			"rift:reset_skin_id": {
+				"minecraft:skin_id": {
+					"value": 0
+				}
+			},
+			"rift:tamed_light_blasting": {
+				"minecraft:skin_id": {
+					"value": 1
+				},
+				"minecraft:timer": {
+					"time": 2.08,
+					"time_down_event": {
+						"event": "rift:stop_tamed_light_blast",
+						"target": "self"
+					}
+				},
+				"minecraft:spawn_entity": {
+					"entities": [
+						{
+							"spawn_entity": "rift:saurophaganax_light_blast",
+							"single_use": true,
+							"min_wait_time": 0,
+							"max_wait_time": 0,
+							"spawn_event": "minecraft:entity_spawned"
+						}
+					]
 				}
 			},
 			"rift:pushable": {
@@ -770,6 +867,50 @@
 										"test": "has_equipment",
 										"subject": "other",
 										"domain": "hand",
+										"value": "rift:desnoozer_stimulant"
+									},
+									{
+										"test": "is_owner",
+										"subject": "other",
+										"value": true
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_baby",
+										"operator": "!="
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_tamed"
+									},
+									{
+										"test": "is_sneaking",
+										"subject": "other",
+										"value": true
+									},
+									{
+										"test": "is_sleeping",
+										"subject": "self",
+										"value": true
+									}
+								]
+							},
+							"event": "rift:adult_force_wake_up",
+							"target": "self"
+						},
+						"use_item": true,
+						"transform_to_item": "minecraft:bowl"
+					},
+					{
+						"on_interact": {
+							"filters": {
+								"all_of": [
+									{
+										"test": "has_equipment",
+										"subject": "other",
+										"domain": "hand",
 										"value": "minecraft:chest"
 									},
 									{
@@ -798,8 +939,8 @@
 							"event": "rift:attach_chest",
 							"target": "self"
 						},
-						"interact_text": "action.interact.attachchest",
-						"use_item": true
+						"use_item": true,
+						"transform_to_item": "minecraft:bowl"
 					},
 					{
 						"on_interact": {
@@ -2905,6 +3046,44 @@
 					}
 				]
 			},
+			"minecraft:environment_sensor": {
+				"triggers": [
+					{
+						"filters": {
+							"all_of": [
+								{
+									"test": "has_tag",
+									"value": "saurophaganaxLightBlast",
+									"subject": "self"									
+								},
+								{
+									"test": "rider_count",
+									"operator": ">",
+									"value": 0,
+									"subject": "self"
+								},
+								{
+									"test": "has_component",
+									"value": "minecraft:is_tamed",
+									"subject": "self"
+								},
+								{
+									"test": "has_component",
+									"operator": "!=",
+									"value": "minecraft:is_baby",
+									"subject": "self"
+								},
+								{
+									"test": "has_component",
+									"value": "minecraft:is_saddled",
+									"subject": "self"
+								}
+							]
+						},
+						"event": "rift:saurophaganax_tamed_light_blast"
+					}
+				]
+			},
 			"minecraft:scheduler": {
 				"scheduled_events": [
 					{
@@ -3329,13 +3508,26 @@
 					{
 						"add": {
 							"component_groups": [
-								"rift:saurophaganax_adult_prime",
-								"rift:default_targets"
+								"rift:saurophaganax_adult_prime"
 							]
 						},
 						"remove": {
 							"component_groups": [
-								"rift:saurophaganax_adult_weakened"
+								"rift:saurophaganax_adult_weakened",
+								"rift:saurophaganax_adult_forced_awake"
+							]
+						}
+					},
+					{
+						"filters": {
+							"test": "has_component",
+							"subject": "self",
+							"operator": "!=",
+							"value": "minecraft:is_tamed"
+						},
+						"add": {
+							"component_groups": [
+								"rift:default_targets"
 							]
 						}
 					},
@@ -3396,7 +3588,8 @@
 						},
 						"remove": {
 							"component_groups": [
-								"rift:saurophaganax_adult_wild"
+								"rift:saurophaganax_adult_wild",
+								"rift:default_targets"
 							]
 						}
 					}
@@ -3553,6 +3746,32 @@
 					]
 				}
 			},
+			"rift:adult_force_wake_up": {
+				"add": {
+					"component_groups": [
+						"rift:saurophaganax_adult_forced_awake",
+						"rift:rideable"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:saurophaganax_adult_weakened"
+					]
+				}
+			},
+			"rift:adult_return_to_sleep": {
+				"add": {
+					"component_groups": [
+						"rift:saurophaganax_adult_weakened"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:saurophaganax_adult_forced_awake",
+						"rift:rideable"
+					]
+				}
+			},
 			"rift:cannot_sit": {
 				"add": {
 					"component_groups": [
@@ -3575,7 +3794,83 @@
 				},
 				"remove": {
 					"component_groups": [
-						"rift:pushable"
+						"rift:unpushable"
+					]
+				}
+			},
+			"rift:use_forced_bite": {
+				"add": {
+					"component_groups": [
+						"rift:forced_bite"
+					]
+				}
+			},
+			"rift:stop_forced_bite": {
+				"remove": {
+					"component_groups": [
+						"rift:forced_bite"
+					]
+				}
+			},
+			"rift:on_summon_forced_bite_entity": {
+				"sequence": [
+					{},
+					{
+						"filters": {
+							"test": "has_component",
+							"subject": "self",
+							"operator": "!=",
+							"value": "minecraft:is_sheared"
+						},
+						"add": {
+							"component_groups": [
+								"rift:summon_forced_bite_entity_prime"
+							]
+						}
+					},
+					{
+						"filters": {
+							"test": "has_component",
+							"subject": "self",
+							"value": "minecraft:is_sheared"
+						},
+						"add": {
+							"component_groups": [
+								"rift:summon_forced_bite_entity_weakened"
+							]
+						}
+					}
+				]
+			},
+			"rift:no_summon_forced_bite_entity": {
+				"remove": {
+					"component_groups": [
+						"rift:summon_forced_bite_entity_weakened",
+						"rift:summon_forced_bite_entity_prime"
+					]
+				}
+			},
+			"rift:on_forced_attack_family": {
+				"add": {
+					"component_groups": [
+						"rift:forced_attack_family"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:default_family"
+					]
+				}
+			},
+			"rift:no_forced_attack_family": {
+				"add": {
+					"component_groups": [
+						"rift:default_family"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:forced_attack_family"
 					]
 				}
 			},
@@ -3750,6 +4045,40 @@
 				"run_command": {
 					"command": [
 						"scoreboard players set @s saurophLightBlst 11"
+					]
+				}
+			},
+			"rift:saurophaganax_tamed_light_blast": {
+				"add": {
+					"component_groups": [
+						"rift:tamed_light_blasting"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:reset_skin_id"
+					]
+				},
+				"run_command": {
+					"command": [
+						"playanimation @s animation.saurophaganax.light_blast"
+					]
+				}
+			},
+			"rift:stop_tamed_light_blast": {
+				"add": {
+					"component_groups": [
+						"rift:reset_skin_id"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:tamed_light_blasting"
+					]
+				},
+				"run_command": {
+					"command": [
+						"scoreboard players set @s saurophLightBlst 0"
 					]
 				}
 			},

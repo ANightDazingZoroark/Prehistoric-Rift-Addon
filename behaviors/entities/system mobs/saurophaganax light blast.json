@@ -1,0 +1,115 @@
+{
+	"format_version": "1.14.0",
+	"minecraft:entity": {
+		"description": {
+			"identifier": "rift:saurophaganax_light_blast",
+			"is_spawnable": false,
+			"is_summonable": true,
+			"is_experimental": false
+		},
+		"components": {
+			"minecraft:behavior.knockback_roar": {
+				"priority": 1,
+				"duration": 2.08,
+				"attack_time": 1.04,
+				"knockback_damage": 30,
+				"knockback_strength": 1,
+				"knockback_range": 12,
+				"damage_filters": {
+					"any_of": [
+						{
+							"all_of": [
+								{
+									"test":  "is_family", 
+									"subject": "other", 
+									"value":  "monster"
+								},
+								{
+									"test":  "is_family", 
+									"subject": "other",
+									"operator": "!=", 
+									"value":  "illager"
+								},
+								{
+									"test":  "is_family", 
+									"subject": "other",
+									"operator": "!=", 
+									"value":  "witch"
+								}
+							]
+						},
+						{
+							"test":  "is_family", 
+							"subject": "other", 
+							"value":  "undead"
+						},
+						{
+							"test":  "is_target", 
+							"subject": "other", 
+							"value":  true
+						}
+					]
+				},
+				"knockback_filters": {
+					"any_of": [
+						{
+							"all_of": [
+								{
+									"test":  "is_family", 
+									"subject": "other", 
+									"value":  "monster"
+								},
+								{
+									"test":  "is_family", 
+									"subject": "other",
+									"operator": "!=", 
+									"value":  "illager"
+								},
+								{
+									"test":  "is_family", 
+									"subject": "other",
+									"operator": "!=", 
+									"value":  "witch"
+								}
+							]
+						},
+						{
+							"test":  "is_family", 
+							"subject": "other", 
+							"value":  "undead"
+						},
+						{
+							"test":  "is_target", 
+							"subject": "other", 
+							"value":  true
+						}
+					]
+				}
+			},
+			"minecraft:physics": {
+				"has_collision": false,
+				"has_gravity": false
+			},
+			"minecraft:fire_immune": true,
+			"minecraft:pushable": {
+				"is_pushable": true,
+				"is_pushable_by_piston": true
+			},
+			"minecraft:timer": {
+				"time": 2.12,
+				"time_down_event": {
+					"event": "rift:die"
+				}
+			}
+		},
+		"events": {
+			"rift:die": {
+				"run_command": {
+					"command": [
+						"kill @s"
+					]
+				}
+			}
+		}
+	}
+}
