@@ -164,6 +164,28 @@
 				},
 				"minecraft:movement": {
 					"value": 0.15
+				},
+				"minecraft:behavior.nap": {
+					"priority": 3,
+					"can_nap_filters": {
+						"all_of": [
+							{
+								"test": "has_target",
+								"subject": "self",
+								"value": false
+							},
+							{
+								"test": "in_water",
+								"subject": "self",
+								"value": false
+							},
+							{
+								"test": "on_ground",
+								"subject": "self",
+								"value": true
+							}
+						]
+					}
 				}
 			},
 			"rift:saurophaganax_baby_prime": {
@@ -877,6 +899,49 @@
 									{
 										"test": "has_component",
 										"subject": "self",
+										"value": "minecraft:is_baby"
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_tamed"
+									},
+									{
+										"test": "is_sneaking",
+										"subject": "other",
+										"value": true
+									},
+									{
+										"test": "is_sleeping",
+										"subject": "self",
+										"value": true
+									}
+								]
+							},
+							"event": "rift:baby_force_wake_up",
+							"target": "self"
+						},
+						"use_item": true,
+						"transform_to_item": "minecraft:bowl"
+					},
+					{
+						"on_interact": {
+							"filters": {
+								"all_of": [
+									{
+										"test": "has_equipment",
+										"subject": "other",
+										"domain": "hand",
+										"value": "rift:desnoozer_stimulant"
+									},
+									{
+										"test": "is_owner",
+										"subject": "other",
+										"value": true
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
 										"value": "minecraft:is_baby",
 										"operator": "!="
 									},
@@ -962,6 +1027,11 @@
 										"test": "has_component",
 										"subject": "self",
 										"value": "minecraft:is_charged"
+									},
+									{
+										"test": "is_sleeping",
+										"subject": "self",
+										"value": false
 									},
 									{
 										"any_of": [
@@ -3464,7 +3534,8 @@
 						},
 						"remove": {
 							"component_groups": [
-								"rift:saurophaganax_baby_weakened"
+								"rift:saurophaganax_baby_weakened",
+								"rift:saurophaganax_baby_forced_awake"
 							]
 						}
 					},
@@ -3494,6 +3565,7 @@
 						"rift:saurophaganax_adult_prime",
 						"rift:default_targets",
 						"rift:attack_forced_attack_entity",
+						"rift:saurophaganax_adult_wild_not_trusting",
 						"rift:rideable"
 					]
 				},
@@ -3514,7 +3586,8 @@
 						"remove": {
 							"component_groups": [
 								"rift:saurophaganax_adult_weakened",
-								"rift:saurophaganax_adult_forced_awake"
+								"rift:saurophaganax_adult_forced_awake",
+								"rift:saurophaganax_adult_tameable"
 							]
 						}
 					},
@@ -3527,7 +3600,8 @@
 						},
 						"add": {
 							"component_groups": [
-								"rift:default_targets"
+								"rift:default_targets",
+								"rift:saurophaganax_adult_wild_not_trusting"
 							]
 						}
 					},
@@ -3743,6 +3817,30 @@
 				"add": {
 					"component_groups": [
 						"rift:saurophaganax_chested"
+					]
+				}
+			},
+			"rift:baby_force_wake_up": {
+				"add": {
+					"component_groups": [
+						"rift:saurophaganax_baby_forced_awake"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:saurophaganax_baby_weakened"
+					]
+				}
+			},
+			"rift:baby_return_to_sleep": {
+				"add": {
+					"component_groups": [
+						"rift:saurophaganax_baby_weakened"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:saurophaganax_baby_forced_awake"
 					]
 				}
 			},
