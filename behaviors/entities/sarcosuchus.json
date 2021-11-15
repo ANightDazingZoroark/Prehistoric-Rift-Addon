@@ -191,9 +191,6 @@
                         "target": "self"
                     }
 				},
-				"minecraft:behavior.random_stroll": {
-					"priority": 7
-				},
 				"minecraft:despawn": {
 					"despawn_from_distance": {}
 				}
@@ -239,12 +236,6 @@
                 "minecraft:health": {
                     "value": 80,
                     "max": 80
-                },
-                "minecraft:behavior.random_swim": {
-                    "priority": 6,
-                    "xz_dist": 20,
-                    "y_dist": 2,
-                    "speed_multiplier": 0.2
                 },
 				"minecraft:behavior.avoid_mob_type": {
 					"priority": 2,
@@ -429,6 +420,24 @@
 					"event": "rift:no_force_attacked",
 				  	"target": "self"
 				}
+			},
+			"rift:sarcosuchus_wild_not_in_water": {
+				"minecraft:behavior.random_stroll": {
+					"priority": 8
+				},
+				"minecraft:behavior.move_to_water": {
+					"priority": 7,
+					"search_range": 64,
+					"search_height": 5
+				}
+			},
+			"rift:sarcosuchus_wild_in_water": {
+                "minecraft:behavior.random_swim": {
+                    "priority": 6,
+                    "xz_dist": 20,
+                    "y_dist": 2,
+                    "speed_multiplier": 0.2
+                }
 			},
             "rift:sarcosuchus_adult_trusting": {
                 "minecraft:trust": {}
@@ -964,7 +973,7 @@
 				"max_distance": 12
 			},
 			"minecraft:behavior.random_look_around": {
-				"priority": 8
+				"priority": 9
 			},
             "minecraft:interact": {
 				"interactions": [
@@ -3188,6 +3197,42 @@
 							]
 						},
 						"event": "rift:can_sit"
+					},
+					{
+						"filters": {
+							"all_of": [
+								{
+									"test": "in_water",
+									"subject": "self",
+									"value": true
+								},
+								{
+									"test": "has_component",
+									"subject": "self",
+									"operator": "!=",
+									"value": "minecraft:is_tamed"
+								}
+							]
+						},
+						"event": "rift:sarcosuchus_wild_in_water_mode"
+					},
+					{
+						"filters": {
+							"all_of": [
+								{
+									"test": "in_water",
+									"subject": "self",
+									"value": false
+								},
+								{
+									"test": "has_component",
+									"subject": "self",
+									"operator": "!=",
+									"value": "minecraft:is_tamed"
+								}
+							]
+						},
+						"event": "rift:sarcosuchus_wild_not_in_water_mode"
 					}
 				]
 			},
@@ -3582,6 +3627,30 @@
                     }
                 ]
             },
+			"rift:sarcosuchus_wild_in_water_mode": {
+				"add": {
+					"component_groups": [
+						"rift:sarcosuchus_wild_in_water"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:sarcosuchus_wild_not_in_water"
+					]
+				}
+			},
+			"rift:sarcosuchus_wild_not_in_water_mode": {
+				"add": {
+					"component_groups": [
+						"rift:sarcosuchus_wild_not_in_water"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:sarcosuchus_wild_in_water"
+					]
+				}
+			},
 			"rift:baby_grow_up": {
 				"sequence": [
 					{
@@ -3633,7 +3702,9 @@
 				},
 				"remove": {
 					"component_groups": [
-						"rift:sarcosuchus_baby_wild"
+						"rift:sarcosuchus_baby_wild",
+						"rift:sarcosuchus_wild_in_water",
+						"rift:sarcosuchus_wild_not_in_water"
 					]
 				}
 			},
@@ -3717,7 +3788,9 @@
 						"rift:sarcosuchus_adult_waiting_for_tame",
 						"rift:sarcosuchus_adult_chance_for_tame",
 						"rift:sarcosuchus_adult_trusting",
-						"rift:sarcosuchus_adult_wild"
+						"rift:sarcosuchus_adult_wild",
+						"rift:sarcosuchus_wild_in_water",
+						"rift:sarcosuchus_wild_not_in_water"
 					]
 				},
 				"run_command": {
