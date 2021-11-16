@@ -250,7 +250,7 @@
 							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:stegosaurus'"
 						},
 						{
-							"focusToStab": "query.is_jumping && query.is_riding"
+							"focusToPlateFling": "query.is_jumping && query.is_riding"
 						},
 						{
 							"useFocusMode": "query.get_equipped_item_name('main_hand') == 'command_staff' && query.is_using_item"
@@ -283,7 +283,43 @@
 						"/tag @s add stegoFocusCooldown"
 					]
 				},
-				"focusToStab": {
+				"focusToPlateFling": {
+					"transitions": [
+						{
+							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:stegosaurus'"
+						},
+						{
+							"plateFlingMode": "!query.is_jumping"
+						}
+					],
+					"on_exit": [
+						"/tellraw @s {\"rawtext\":[{\"text\":\"Ability set to Plate Fling Mode\"}]}"
+					]
+				},
+				"plateFlingMode": {
+					"transitions": [
+						{
+							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:stegosaurus'"
+						},
+						{
+							"plateFlingToStab": "query.is_jumping && query.is_riding"
+						},
+						{
+							"usePlateFlingMode": "query.get_equipped_item_name('main_hand') == 'command_staff' && query.is_using_item"
+						}
+					]
+				},
+				"usePlateFlingMode": {
+					"transitions": [
+						{
+							"plateFlingMode": "query.all_animations_finished"
+						}
+					],
+					"animations": [
+						"animStegoPlateFling"
+					]
+				},
+				"plateFlingToStab": {
 					"transitions": [
 						{
 							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:stegosaurus'"

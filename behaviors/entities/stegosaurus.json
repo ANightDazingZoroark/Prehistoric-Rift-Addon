@@ -34,6 +34,13 @@
 		"component_groups": {
 			"rift:stegosaurus_baby": {
 				"minecraft:is_baby": {},
+				"minecraft:behavior.delayed_attack": {
+					"priority": 5,
+					"attack_duration": 2,
+					"hit_delay_pct": 0.5,
+					"track_target": true,
+					"reach_multiplier": 3
+				},
 				"minecraft:ageable": {
 					"duration": 1200,
 					"feed_items": [
@@ -72,7 +79,7 @@
 					"end_scale": 2.75
 				},
 				"minecraft:behavior.tempt": {
-					"priority": 5,
+					"priority": 6,
 					"within_radius": 16,
 					"speed_multiplier": 0.75,
 					"items": [
@@ -93,7 +100,7 @@
 					"value": 30
 				},
 				"minecraft:behavior.follow_parent": {
-					"priority": 6
+					"priority": 7
 				},
 				"minecraft:tameable": {
 					"probability": 0.25,
@@ -108,7 +115,7 @@
 					}
 				},
 				"minecraft:behavior.random_stroll": {
-					"priority": 7
+					"priority": 8
 				},
 				"minecraft:movement": {
 					"value": 0.25
@@ -195,6 +202,23 @@
 				"minecraft:loot": {
 					"table": "loot_tables/entities/stegosaurus.loot.json"
 				},
+				"minecraft:target_nearby_sensor": {
+				  	"inside_range": 10,
+				  	"outside_range": 12,
+				  	"must_see": true,
+				  	"on_inside_range": {
+						"event": "rift:melee_attack_mode",
+						"target": "self"
+				  	},
+				  	"on_outside_range": {
+						"event": "rift:ranged_attack_mode",
+						"target": "self"
+				  	},
+				  	"on_vision_lost_inside_range": {
+						"event": "rift:ranged_attack_mode",
+					  	"target": "self"
+				  	}
+				},
 				"minecraft:breedable": {
 					"breeds_with": {
 						"mate_type": "rift:stegosaurus",
@@ -232,7 +256,7 @@
 					}
 				},
 				"minecraft:behavior.random_stroll": {
-					"priority": 6
+					"priority": 7
 				},
 				"minecraft:movement": {
 					"value": 0.15
@@ -302,6 +326,30 @@
 						"event": "rift:adult_on_calm",
 						"target": "self"
 					}
+				}
+			},
+			"rift:stegosaurus_adult_ranged": {
+				"minecraft:behavior.ranged_attack": {
+					"priority": 4,
+					"burst_shots": 3,
+					"burst_interval": 0.3,
+					"charge_charged_trigger": 0.36,
+					"charge_shoot_trigger": 0.52,
+					"attack_interval_min": 3,
+					"attack_interval_max": 5,
+					"attack_radius": 64
+				},
+				"minecraft:shooter": {
+					"def": "rift:thrown_stegosaurus_plate"
+				}				
+			},
+			"rift:stegosaurus_adult_melee": {
+				"minecraft:behavior.delayed_attack": {
+					"priority": 5,
+					"attack_duration": 2,
+					"hit_delay_pct": 0.5,
+					"track_target": true,
+					"reach_multiplier": 3
 				}
 			},
 			"rift:default_targets": {
@@ -494,7 +542,7 @@
 				"minecraft:behavior.follow_owner": {
 					"start_distance": 8,
 					"stop_distance": 40,
-					"priority": 5
+					"priority": 6
 				},
 				"minecraft:is_tamed": {}
 			},
@@ -540,6 +588,19 @@
 					]
 				}
 			},
+			"rift:summon_thrown_plates": {
+				"minecraft:spawn_entity": {
+					"entities": [
+						{
+							"spawn_entity": "rift:thrown_stegosaurus_plate",
+							"single_use": true,
+							"min_wait_time": 0,
+							"max_wait_time": 0,
+							"spawn_event": "minecraft:entity_spawned"
+						}
+					]
+				}
+			},
 			"rift:no_charged_cooldown": {
 				"minecraft:skin_id": {
 					"value": 0
@@ -548,66 +609,26 @@
 			"rift:charged_cooldown_one": {
 				"minecraft:skin_id": {
 					"value": 1
-				},
-				"minecraft:timer": {
-					"time": 6.52,
-					"looping": false,
-					"time_down_event": {
-						"event": "rift:stop_all_cooldowns",
-						"target": "self"
-					}
 				}
 			},
 			"rift:charged_cooldown_two": {
 				"minecraft:skin_id": {
 					"value": 2
-				},
-				"minecraft:timer": {
-					"time": 11.52,
-					"looping": false,
-					"time_down_event": {
-						"event": "rift:stop_all_cooldowns",
-						"target": "self"
-					}
 				}
 			},
 			"rift:charged_cooldown_three": {
 				"minecraft:skin_id": {
 					"value": 3
-				},
-				"minecraft:timer": {
-					"time": 21.52,
-					"looping": false,
-					"time_down_event": {
-						"event": "rift:stop_all_cooldowns",
-						"target": "self"
-					}
 				}
 			},
 			"rift:charged_cooldown_four": {
 				"minecraft:skin_id": {
 					"value": 4
-				},
-				"minecraft:timer": {
-					"time": 31.52,
-					"looping": false,
-					"time_down_event": {
-						"event": "rift:stop_all_cooldowns",
-						"target": "self"
-					}
 				}
 			},
 			"rift:charged_cooldown_five": {
 				"minecraft:skin_id": {
 					"value": 5
-				},
-				"minecraft:timer": {
-					"time": 41.52,
-					"looping": false,
-					"time_down_event": {
-						"event": "rift:stop_all_cooldowns",
-						"target": "self"
-					}
 				}
 			},
 			"rift:variant_zero": {
@@ -727,13 +748,6 @@
 				"priority": 1
 			},
 			"minecraft:jump.static": {},
-			"minecraft:behavior.delayed_attack": {
-				"priority": 4,
-				"attack_duration": 2,
-				"hit_delay_pct": 0.5,
-				"track_target": true,
-				"reach_multiplier": 3
-			},
 			"minecraft:is_hidden_when_invisible": {},
 			"minecraft:physics": {},
 			"minecraft:nameable": {},
@@ -3078,6 +3092,30 @@
 					]
 				}
 			},
+			"rift:melee_attack_mode": {
+				"add": {
+					"component_groups": [
+						"rift:stegosaurus_adult_melee"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:stegosaurus_adult_ranged"
+					]
+				}
+			},
+			"rift:ranged_attack_mode": {
+				"add": {
+					"component_groups": [
+						"rift:stegosaurus_adult_ranged"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:stegosaurus_adult_melee"
+					]
+				}
+			},
 			"rift:adult_on_tame": {
 				"add": {
 					"component_groups": [
@@ -3201,7 +3239,9 @@
 				"remove": {
 					"component_groups": [
 						"rift:stegosaurus_sittable",
-						"rift:pushable"
+						"rift:pushable",
+						"rift:stegosaurus_adult_ranged",
+						"rift:stegosaurus_adult_melee"
 					]
 				}
 			},
@@ -3408,6 +3448,20 @@
 						"tellraw @p {\"rawtext\":[{\"text\":\"Cooldown ended\"}]}",
 						"tag @s remove stegoCooldown",
 						"tag @p remove stegoFocusCooldown"
+					]
+				}
+			},
+			"rift:activate_plate_fling": {
+				"add": {
+					"component_groups": [
+						"rift:summon_thrown_plates"
+					]
+				}
+			},
+			"rift:deactivate_plate_fling": {
+				"remove": {
+					"component_groups": [
+						"rift:summon_thrown_plates"
 					]
 				}
 			},
