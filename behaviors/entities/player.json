@@ -124,6 +124,21 @@
 					"remove_effects": "bad_omen"
 				}
 			},
+			"rift:default_family": {
+				"minecraft:type_family": {
+					"family": [
+						"player"
+					]
+				}
+			},
+			"rift:is_riding_general": {
+				"minecraft:type_family": {
+					"family": [
+						"player",
+						"playerRiding"
+					]
+				}
+			},
 			"rift:is_riding_climber": {
 				"minecraft:is_sheared": {}
 			},
@@ -300,6 +315,22 @@
 							]
 						},
 						"event": "minecraft:trigger_raid"
+					},
+					{
+						"filters": {
+							"test": "is_riding",
+							"subject": "self",
+							"value": true
+						},
+						"event": "rift:on_riding"
+					},
+					{
+						"filters": {
+							"test": "is_riding",
+							"subject": "self",
+							"value": false
+						},
+						"event": "rift:on_not_riding"
 					},
 					{
 						"filters": {
@@ -515,6 +546,30 @@
 						},
 						"deals_damage": true,
 						"damage_multiplier": 2
+					},
+					{
+						"on_damage": {
+							"filters": {
+								"any_of": [
+									{
+										"test": "is_family",
+										"subject": "other",
+										"value": "playerRiding"
+									},
+									{
+										"test": "has_component",
+										"subject": "other",
+										"value": "minecraft:is_tamed"
+									},
+									{
+										"test": "is_family",
+										"subject": "other",
+										"value": "forcedAttack"
+									}
+								]
+							}
+						},
+						"deals_damage": false
 					},
 					{
 						"on_damage": {
@@ -1345,10 +1400,27 @@
 					]
 				}
 			},
-			"rift:noon_test": {
-				"run_command": {
-					"command": [
-						"say hello"
+			"rift:on_riding": {
+				"add": {
+					"component_groups": [
+						"rift:is_riding_general"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:default_family"
+					]
+				}
+			},
+			"rift:on_not_riding": {
+				"add": {
+					"component_groups": [
+						"rift:default_family"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:is_riding_general"
 					]
 				}
 			},

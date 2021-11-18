@@ -576,6 +576,9 @@
 			"rift:forced_stab": {
 				"minecraft:is_charged": {}
 			},
+			"rift:forced_plate_fling_pose": {
+				"minecraft:is_illager_captain": {}
+			},
 			"rift:summon_forced_stab_entity": {
 				"minecraft:spawn_entity": {
 					"entities": [
@@ -785,6 +788,26 @@
 						},
 						"damage_multiplier": 0.5,
 						"cause": "attack"
+					},
+					{
+						"on_damage": {
+							"filters": {
+								"all_of": [
+									{
+										"test": "is_family",
+										"subject": "other",
+										"value": "stegosaurus"
+									},
+									{
+										"test": "has_component",
+										"subject": "other",
+										"operator": "!=",
+										"value": "minecraft:is_tamed"
+									}
+								]
+							}
+						},
+						"deals_damage": false
 					},
 					{
 						"on_damage": {
@@ -3254,7 +3277,8 @@
 				},
 				"remove": {
 					"component_groups": [
-						"rift:unpushable"
+						"rift:unpushable",
+						"rift:forced_plate_fling_pose"
 					]
 				}
 			},
@@ -3291,6 +3315,20 @@
 				"remove": {
 					"component_groups": [
 						"rift:summon_forced_stab_entity"
+					]
+				}
+			},
+			"rift:activate_forced_plate_fling_pose": {
+				"add": {
+					"component_groups": [
+						"rift:forced_plate_fling_pose"
+					]
+				}
+			},
+			"rift:deactivate_forced_plate_fling_pose": {
+				"remove": {
+					"component_groups": [
+						"rift:forced_plate_fling_pose"
 					]
 				}
 			},
