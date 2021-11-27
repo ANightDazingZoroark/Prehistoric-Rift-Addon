@@ -1,0 +1,380 @@
+{
+    "format_version": "1.16.0",
+    "minecraft:entity": {
+        "description": {
+            "identifier": "rift:taxidermy_stand",
+            "is_spawnable": false,
+            "is_summonable": true,
+            "is_experimental": false
+        },
+        "component_groups": {
+            "rift:is_phantom": {
+                "minecraft:variant": {
+                    "value": 0
+                },
+                "minecraft:mark_variant": {
+                    "value": 0
+                },
+                "minecraft:interact": {
+                    "interactions": [
+                        {
+                            "on_interact": {
+                                "filters": {
+                                    "any_of": [
+                                        {
+                                            "test": "has_equipment",
+                                            "subject": "other",
+                                            "domain": "hand",
+                                            "value": "minecraft:planks"
+                                        },
+                                        {
+                                            "test": "has_equipment",
+                                            "subject": "other",
+                                            "domain": "hand",
+                                            "value": "minecraft:crimson_planks"
+                                        },
+                                        {
+                                            "test": "has_equipment",
+                                            "subject": "other",
+                                            "domain": "hand",
+                                            "value": "minecraft:warped_planks"
+                                        }
+                                    ]
+                                },
+                                "event": "rift:build_taxidermy_stand",
+                                "target": "self"
+                            },
+                            "use_item": true
+                        }
+                    ]
+                }
+            },
+            "rift:is_built": {
+                "minecraft:mark_variant": {
+                    "value": 0
+                },
+                "minecraft:is_sheared": {}
+            },
+            "rift:made_of_oak": {
+                "minecraft:variant": {
+                    "value": 1
+                }
+            },
+            "rift:made_of_spruce": {
+                "minecraft:variant": {
+                    "value": 2
+                }
+            },
+            "rift:made_of_birch": {
+                "minecraft:variant": {
+                    "value": 3
+                }
+            },
+            "rift:made_of_jungle": {
+                "minecraft:variant": {
+                    "value": 4
+                }
+            },
+            "rift:made_of_acacia": {
+                "minecraft:variant": {
+                    "value": 5
+                }
+            },
+            "rift:made_of_dark_oak": {
+                "minecraft:variant": {
+                    "value": 6
+                }
+            },
+            "rift:made_of_crimson": {
+                "minecraft:variant": {
+                    "value": 7
+                }
+            },
+            "rift:made_of_warped": {
+                "minecraft:variant": {
+                    "value": 8
+                }
+            },
+            "rift:drop_delay": {
+				"minecraft:spawn_entity": {
+					"entities": {
+						"min_wait_time": 0,
+						"max_wait_time": 0,
+						"spawn_item": "minecraft:warped_planks",
+						"num_to_spawn": 1,
+						"single_use": true
+					}
+			 	},
+                "minecraft:timer": {
+                    "time": 0.05,
+                    "time_down_event": {
+                        "event": "rift:go_commit_disappear",
+                        "target": "self"
+                    }
+                }
+			},
+            "rift:commit_disappear": {
+                "minecraft:instant_despawn": {}
+            }
+        },
+        "components": {
+			"minecraft:pushable": {
+                "is_pushable": false,
+                "is_pushable_by_piston": false
+            },
+			"minecraft:physics": {},
+            "minecraft:collision_box": {
+                "width": 0.00001,
+                "height": 0.00001
+            },
+            "minecraft:custom_hit_test": {
+                "hitboxes": [
+                    {
+                        "pivot": [
+                            0, 
+                            0,
+                            0
+                        ],
+                        "width": 4,
+                        "height": 1
+                    }
+                ]
+            },
+            "minecraft:damage_sensor": {
+				"triggers": [
+                    {
+                        "on_damage": {
+                            "filters": {
+                                "all_of": [
+                                    {
+                                        "test": "is_family",
+                                        "subject": "other",
+                                        "value": "player"
+                                    },
+                                    {
+                                        "test": "is_sneaking",
+                                        "subject": "other",
+                                        "value": false
+                                    }
+                                ]
+                            }
+                        },
+						"deals_damage": false
+					},
+                    {
+                        "on_damage": {
+                            "filters": {
+                                "all_of": [
+                                    {
+                                        "test": "is_family",
+                                        "subject": "other",
+                                        "value": "player"
+                                    },
+                                    {
+                                        "test": "is_sneaking",
+                                        "subject": "other",
+                                        "value": true
+                                    }
+                                ]
+                            },
+                            "event": "rift:on_destroyed",
+                            "target": "self"
+                        },
+						"deals_damage": false
+					}
+				]
+			}
+        },
+        "events": {
+            "minecraft:entity_spawned": {
+                "add": {
+                    "component_groups": [
+                        "rift:is_phantom"
+                    ]
+                }
+            },
+            "rift:build_taxidermy_stand": {
+                "sequence": [
+                    {
+                        "add": {
+                            "component_groups": [
+                                "rift:is_built"
+                            ]
+                        },
+                        "remove": {
+                            "component_groups": [
+                                "rift:is_phantom"
+                            ]
+                        },
+                        "run_command": {
+                            "command": [
+                                "playsound block.hammer_sounds @a[r=2]"
+                            ]
+                        }
+                    },
+                    {
+                        "filters": {
+                            "test": "has_equipment",
+                            "subject": "other",
+                            "domain": "hand",
+                            "value": "minecraft:planks:0"
+                        },
+                        "add": {
+                            "component_groups": [
+                                "rift:made_of_oak"
+                            ]
+                        },
+                        "run_command": {
+                            "command": [
+                                "say oak"
+                            ]
+                        }
+                    },
+                    {
+                        "filters": {
+                            "test": "has_equipment",
+                            "subject": "other",
+                            "domain": "hand",
+                            "value": "minecraft:planks:1"
+                        },
+                        "add": {
+                            "component_groups": [
+                                "rift:made_of_spruce"
+                            ]
+                        },
+                        "run_command": {
+                            "command": [
+                                "say spruce"
+                            ]
+                        }
+                    }
+                ]
+            },
+            "rift:on_destroyed": {
+                "sequence": [
+                    {},
+                    {
+                        "filters": {
+                            "test": "is_variant",
+                            "subject": "self",
+                            "value": 0
+                        },
+                        "add": {
+                            "component_groups": [
+                                "rift:drop_delay"
+                            ]
+                        }
+                    },
+                    {
+                        "filters": {
+                            "test": "is_variant",
+                            "subject": "self",
+                            "value": 1
+                        },
+                        "add": {
+                            "component_groups": [
+                                "rift:drop_delay"
+                            ]
+                        }
+                    },
+                    {
+                        "filters": {
+                            "test": "is_variant",
+                            "subject": "self",
+                            "value": 2
+                        },
+                        "add": {
+                            "component_groups": [
+                                "rift:drop_delay"
+                            ]
+                        }
+                    },
+                    {
+                        "filters": {
+                            "test": "is_variant",
+                            "subject": "self",
+                            "value": 3
+                        },
+                        "add": {
+                            "component_groups": [
+                                "rift:drop_delay"
+                            ]
+                        }
+                    },
+                    {
+                        "filters": {
+                            "test": "is_variant",
+                            "subject": "self",
+                            "value": 4
+                        },
+                        "add": {
+                            "component_groups": [
+                                "rift:drop_delay"
+                            ]
+                        }
+                    },
+                    {
+                        "filters": {
+                            "test": "is_variant",
+                            "subject": "self",
+                            "value": 5
+                        },
+                        "add": {
+                            "component_groups": [
+                                "rift:drop_delay"
+                            ]
+                        }
+                    },
+                    {
+                        "filters": {
+                            "test": "is_variant",
+                            "subject": "self",
+                            "value": 6
+                        },
+                        "add": {
+                            "component_groups": [
+                                "rift:drop_delay"
+                            ]
+                        }
+                    },
+                    {
+                        "filters": {
+                            "test": "is_variant",
+                            "subject": "self",
+                            "value": 7
+                        },
+                        "add": {
+                            "component_groups": [
+                                "rift:drop_delay"
+                            ]
+                        }
+                    },
+                    {
+                        "filters": {
+                            "test": "is_variant",
+                            "subject": "self",
+                            "value": 8
+                        },
+                        "add": {
+                            "component_groups": [
+                                "rift:drop_delay"
+                            ]
+                        }
+                    }
+                ]
+            },
+            "rift:go_commit_disappear": {
+                "add": {
+                    "component_groups": [
+                        "rift:commit_disappear"
+                    ]
+                },
+                "remove": {
+                    "component_groups": [
+                        "rift:drop_delay"
+                    ]
+                }
+            }
+        }
+    }
+}
