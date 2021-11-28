@@ -12,9 +12,6 @@
                 "minecraft:variant": {
                     "value": 0
                 },
-                "minecraft:mark_variant": {
-                    "value": 0
-                },
                 "minecraft:interact": {
                     "interactions": [
                         {
@@ -50,10 +47,101 @@
                 }
             },
             "rift:is_built": {
-                "minecraft:mark_variant": {
-                    "value": 0
-                },
-                "minecraft:is_sheared": {}
+                "minecraft:is_sheared": {},
+                "minecraft:interact": {
+                    "interactions": [
+                        {
+                            "on_interact": {
+                                "filters": {
+                                    "all_of": [
+                                        {
+                                            "test": "has_equipment",
+                                            "subject": "other",
+                                            "domain": "hand",
+                                            "value": "rift:furniture_tool"
+                                        },
+                                        {
+                                            "test": "is_sneaking",
+                                            "subject": "other",
+                                            "value": true
+                                        }
+                                    ]
+                                },
+                                "event": "rift:change_taxidermy_pose",
+                                "target": "self"
+                            }
+                        },
+                        //stego
+                        {
+                            "on_interact": {
+                                "filters": {
+                                    "all_of": [
+                                        {
+                                            "test": "is_mark_variant",
+                                            "subject": "self",
+                                            "value": 0
+                                        },
+                                        {
+                                            "test": "has_equipment",
+                                            "subject": "other",
+                                            "domain": "hand",
+                                            "value": "rift:stegosaurus_plate"
+                                        }
+                                    ]
+                                },
+                                "event": "rift:do_stegosaurus_taxidermy",
+                                "target": "self"
+                            },
+                            "use_item": true
+                        },
+                        {
+                            "on_interact": {
+                                "filters": {
+                                    "all_of": [
+                                        {
+                                            "test": "has_equipment",
+                                            "subject": "other",
+                                            "domain": "hand",
+                                            "value": "rift:furniture_tool"
+                                        },
+                                        {
+                                            "test": "is_sneaking",
+                                            "subject": "other",
+                                            "value": false
+                                        },
+                                        {
+                                            "any_of": [
+                                                {
+                                                    "test": "is_mark_variant",
+                                                    "subject": "self",
+                                                    "value": 1
+                                                },
+                                                {
+                                                    "test": "is_mark_variant",
+                                                    "subject": "self",
+                                                    "value": 2
+                                                },
+                                                {
+                                                    "test": "is_mark_variant",
+                                                    "subject": "self",
+                                                    "value": 3
+                                                },
+                                                {
+                                                    "test": "is_mark_variant",
+                                                    "subject": "self",
+                                                    "value": 4
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                "event": "rift:change_stegosaurus_pose",
+                                "target": "self"
+                            },
+                            "use_item": true
+                        }
+                    ]
+                }
             },
             "rift:made_of_oak": {
                 "minecraft:variant": {
@@ -95,16 +183,752 @@
                     "value": 8
                 }
             },
-            "rift:drop_delay": {
-				"minecraft:spawn_entity": {
-					"entities": {
-						"min_wait_time": 0,
-						"max_wait_time": 0,
-						"spawn_item": "minecraft:warped_planks",
-						"num_to_spawn": 1,
-						"single_use": true
-					}
-			 	},
+            "rift:no_taxidermy": {
+                "minecraft:mark_variant": {
+                    "value": 0
+                }
+            },
+            //stego
+            "rift:stegosaurus_taxidermy_variant_one": {
+                "minecraft:mark_variant": {
+                    "value": 1
+                }
+            },
+            "rift:stegosaurus_taxidermy_variant_two": {
+                "minecraft:mark_variant": {
+                    "value": 2
+                }
+            },
+            "rift:stegosaurus_taxidermy_variant_three": {
+                "minecraft:mark_variant": {
+                    "value": 3
+                }
+            },
+            "rift:stegosaurus_taxidermy_variant_four": {
+                "minecraft:mark_variant": {
+                    "value": 4
+                }
+            },
+            "rift:drop_stegosaurus_plate": {
+                "minecraft:spawn_entity": {
+                    "entities": [
+                        {
+                            "spawn_item": "rift:stegosaurus_plate",
+                            "min_wait_time": 0,
+                            "max_wait_time": 0,
+                            "single_use": true,
+                            "num_to_spawn": 1
+                        }
+                    ]
+                },
+                "minecraft:timer": {
+                    "time": 0.05,
+                    "time_down_event": {
+                        "event": "rift:remove_taxidermy_phase_two",
+                        "target": "self"
+                    }
+                }
+			},
+            //tyranno
+            "rift:tyrannosaurus_taxidermy_variant_one": {
+                "minecraft:mark_variant": {
+                    "value": 5
+                }
+            },
+            "rift:tyrannosaurus_taxidermy_variant_two": {
+                "minecraft:mark_variant": {
+                    "value": 6
+                }
+            },
+            "rift:tyrannosaurus_taxidermy_variant_three": {
+                "minecraft:mark_variant": {
+                    "value": 7
+                }
+            },
+            "rift:tyrannosaurus_taxidermy_variant_four": {
+                "minecraft:mark_variant": {
+                    "value": 8
+                }
+            },
+            "rift:dodo_taxidermy_variant_one": {
+                "minecraft:mark_variant": {
+                    "value": 9
+                }
+            },
+            "rift:dodo_taxidermy_variant_two": {
+                "minecraft:mark_variant": {
+                    "value": 10
+                }
+            },
+            "rift:dodo_taxidermy_variant_three": {
+                "minecraft:mark_variant": {
+                    "value": 11
+                }
+            },
+            "rift:dodo_taxidermy_variant_four": {
+                "minecraft:mark_variant": {
+                    "value": 12
+                }
+            },
+            "rift:triceratops_taxidermy_variant_one": {
+                "minecraft:mark_variant": {
+                    "value": 13
+                }
+            },
+            "rift:triceratops_taxidermy_variant_two": {
+                "minecraft:mark_variant": {
+                    "value": 14
+                }
+            },
+            "rift:triceratops_taxidermy_variant_three": {
+                "minecraft:mark_variant": {
+                    "value": 15
+                }
+            },
+            "rift:triceratops_taxidermy_variant_four": {
+                "minecraft:mark_variant": {
+                    "value": 16
+                }
+            },
+            "rift:utahraptor_taxidermy_variant_one": {
+                "minecraft:mark_variant": {
+                    "value": 17
+                }
+            },
+            "rift:utahraptor_taxidermy_variant_two": {
+                "minecraft:mark_variant": {
+                    "value": 18
+                }
+            },
+            "rift:utahraptor_taxidermy_variant_three": {
+                "minecraft:mark_variant": {
+                    "value": 19
+                }
+            },
+            "rift:utahraptor_taxidermy_variant_four": {
+                "minecraft:mark_variant": {
+                    "value": 20
+                }
+            },
+            "rift:apatosaurus_taxidermy_variant_one": {
+                "minecraft:mark_variant": {
+                    "value": 21
+                }
+            },
+            "rift:apatosaurus_taxidermy_variant_two": {
+                "minecraft:mark_variant": {
+                    "value": 22
+                }
+            },
+            "rift:apatosaurus_taxidermy_variant_three": {
+                "minecraft:mark_variant": {
+                    "value": 23
+                }
+            },
+            "rift:apatosaurus_taxidermy_variant_four": {
+                "minecraft:mark_variant": {
+                    "value": 24
+                }
+            },
+            "rift:parasaurolophus_taxidermy_variant_one": {
+                "minecraft:mark_variant": {
+                    "value": 25
+                }
+            },
+            "rift:parasaurolophus_taxidermy_variant_two": {
+                "minecraft:mark_variant": {
+                    "value": 26
+                }
+            },
+            "rift:parasaurolophus_taxidermy_variant_three": {
+                "minecraft:mark_variant": {
+                    "value": 27
+                }
+            },
+            "rift:parasaurolophus_taxidermy_variant_four": {
+                "minecraft:mark_variant": {
+                    "value": 28
+                }
+            },
+            "rift:dimetrodon_taxidermy_variant_one": {
+                "minecraft:mark_variant": {
+                    "value": 29
+                }
+            },
+            "rift:dimetrodon_taxidermy_variant_two": {
+                "minecraft:mark_variant": {
+                    "value": 30
+                }
+            },
+            "rift:dimetrodon_taxidermy_variant_three": {
+                "minecraft:mark_variant": {
+                    "value": 31
+                }
+            },
+            "rift:dimetrodon_taxidermy_variant_four": {
+                "minecraft:mark_variant": {
+                    "value": 32
+                }
+            },
+            "rift:coelacanth_taxidermy_variant_one": {
+                "minecraft:mark_variant": {
+                    "value": 33
+                }
+            },
+            "rift:coelacanth_taxidermy_variant_two": {
+                "minecraft:mark_variant": {
+                    "value": 34
+                }
+            },
+            "rift:coelacanth_taxidermy_variant_three": {
+                "minecraft:mark_variant": {
+                    "value": 35
+                }
+            },
+            "rift:coelacanth_taxidermy_variant_four": {
+                "minecraft:mark_variant": {
+                    "value": 36
+                }
+            },
+            "rift:megapiranha_taxidermy_variant_one": {
+                "minecraft:mark_variant": {
+                    "value": 37
+                }
+            },
+            "rift:megapiranha_taxidermy_variant_two": {
+                "minecraft:mark_variant": {
+                    "value": 38
+                }
+            },
+            "rift:megapiranha_taxidermy_variant_three": {
+                "minecraft:mark_variant": {
+                    "value": 39
+                }
+            },
+            "rift:megapiranha_taxidermy_variant_four": {
+                "minecraft:mark_variant": {
+                    "value": 40
+                }
+            },
+            "rift:sarcosuchus_taxidermy_variant_one": {
+                "minecraft:mark_variant": {
+                    "value": 41
+                }
+            },
+            "rift:sarcosuchus_taxidermy_variant_two": {
+                "minecraft:mark_variant": {
+                    "value": 42
+                }
+            },
+            "rift:sarcosuchus_taxidermy_variant_three": {
+                "minecraft:mark_variant": {
+                    "value": 43
+                }
+            },
+            "rift:sarcosuchus_taxidermy_variant_four": {
+                "minecraft:mark_variant": {
+                    "value": 44
+                }
+            },
+            "rift:anomalocaris_taxidermy_variant_one": {
+                "minecraft:mark_variant": {
+                    "value": 45
+                }
+            },
+            "rift:anomalocaris_taxidermy_variant_two": {
+                "minecraft:mark_variant": {
+                    "value": 46
+                }
+            },
+            "rift:anomalocaris_taxidermy_variant_three": {
+                "minecraft:mark_variant": {
+                    "value": 47
+                }
+            },
+            "rift:anomalocaris_taxidermy_variant_four": {
+                "minecraft:mark_variant": {
+                    "value": 48
+                }
+            },
+            "rift:saurophaganax_taxidermy_variant_one": {
+                "minecraft:mark_variant": {
+                    "value": 49
+                }
+            },
+            "rift:saurophaganax_taxidermy_variant_two": {
+                "minecraft:mark_variant": {
+                    "value": 50
+                }
+            },
+            "rift:saurophaganax_taxidermy_variant_three": {
+                "minecraft:mark_variant": {
+                    "value": 51
+                }
+            },
+            "rift:saurophaganax_taxidermy_variant_four": {
+                "minecraft:mark_variant": {
+                    "value": 52
+                }
+            },
+            "rift:pose_zero": {
+                "minecraft:skin_id": {
+                    "value": 0
+                }
+            },
+            "rift:pose_one": {
+                "minecraft:skin_id": {
+                    "value": 1
+                }
+            },
+            "rift:pose_two": {
+                "minecraft:skin_id": {
+                    "value": 2
+                }
+            },
+            "rift:pose_three": {
+                "minecraft:skin_id": {
+                    "value": 3
+                }
+            },
+            "rift:rotation_mode": {
+                "minecraft:is_charged": {},
+                "minecraft:behavior.look_at_player": {
+                    "priority": 0,
+                    "look_time": [
+                        69420666,
+                        69420667
+                    ]
+                }
+            },
+            "rift:drop_blueprint": {
+                "minecraft:spawn_entity": {
+                    "entities": [
+                        {
+                            "spawn_entity": "rift:taxidermy_stand_dropper",
+                            "spawn_event": "rift:taxidermy_stand_blueprint_dropper",
+                            "min_wait_time": 0,
+                            "max_wait_time": 0,
+                            "single_use": true,
+                            "num_to_spawn": 1
+                        }
+                    ]
+                },
+                "minecraft:timer": {
+                    "time": 0.05,
+                    "time_down_event": {
+                        "event": "rift:go_commit_disappear",
+                        "target": "self"
+                    }
+                }
+			},
+            "rift:drop_oak_planks": {
+                "minecraft:spawn_entity": {
+                    "entities": [
+                        {
+                            "spawn_entity": "rift:taxidermy_stand_dropper",
+                            "spawn_event": "rift:drop_oak_wood_dropper",
+                            "min_wait_time": 0,
+                            "max_wait_time": 0,
+                            "single_use": true,
+                            "num_to_spawn": 1
+                        },
+                        {                            
+                            "filters": {
+                                "any_of": [
+                                    {
+                                        "test": "is_mark_variant",
+                                        "subject": "self",
+                                        "value": 1
+                                    },
+                                    {
+                                        "test": "is_mark_variant",
+                                        "subject": "self",
+                                        "value": 2
+                                    },
+                                    {
+                                        "test": "is_mark_variant",
+                                        "subject": "self",
+                                        "value": 3
+                                    },
+                                    {
+                                        "test": "is_mark_variant",
+                                        "subject": "self",
+                                        "value": 4
+                                    }
+                                ]
+                            },
+                            "spawn_item": "rift:stegosaurus_plate",
+                            "min_wait_time": 0,
+                            "max_wait_time": 0,
+                            "single_use": true,
+                            "num_to_spawn": 1
+                        }
+                    ]
+                },
+                "minecraft:timer": {
+                    "time": 0.05,
+                    "time_down_event": {
+                        "event": "rift:go_commit_disappear",
+                        "target": "self"
+                    }
+                }
+			},
+            "rift:drop_spruce_planks": {
+                "minecraft:spawn_entity": {
+                    "entities": [
+                        {
+                            "spawn_entity": "rift:taxidermy_stand_dropper",
+                            "spawn_event": "rift:drop_spruce_wood_dropper",
+                            "min_wait_time": 0,
+                            "max_wait_time": 0,
+                            "single_use": true,
+                            "num_to_spawn": 1
+                        },
+                        {                            
+                            "filters": {
+                                "any_of": [
+                                    {
+                                        "test": "is_mark_variant",
+                                        "subject": "self",
+                                        "value": 1
+                                    },
+                                    {
+                                        "test": "is_mark_variant",
+                                        "subject": "self",
+                                        "value": 2
+                                    },
+                                    {
+                                        "test": "is_mark_variant",
+                                        "subject": "self",
+                                        "value": 3
+                                    },
+                                    {
+                                        "test": "is_mark_variant",
+                                        "subject": "self",
+                                        "value": 4
+                                    }
+                                ]
+                            },
+                            "spawn_item": "rift:stegosaurus_plate",
+                            "min_wait_time": 0,
+                            "max_wait_time": 0,
+                            "single_use": true,
+                            "num_to_spawn": 1
+                        }
+                    ]
+                },
+                "minecraft:timer": {
+                    "time": 0.05,
+                    "time_down_event": {
+                        "event": "rift:go_commit_disappear",
+                        "target": "self"
+                    }
+                }
+			},
+            "rift:drop_birch_planks": {
+                "minecraft:spawn_entity": {
+                    "entities": [
+                        {
+                            "spawn_entity": "rift:taxidermy_stand_dropper",
+                            "spawn_event": "rift:drop_birch_wood_dropper",
+                            "min_wait_time": 0,
+                            "max_wait_time": 0,
+                            "single_use": true,
+                            "num_to_spawn": 1
+                        },
+                        {                            
+                            "filters": {
+                                "any_of": [
+                                    {
+                                        "test": "is_mark_variant",
+                                        "subject": "self",
+                                        "value": 1
+                                    },
+                                    {
+                                        "test": "is_mark_variant",
+                                        "subject": "self",
+                                        "value": 2
+                                    },
+                                    {
+                                        "test": "is_mark_variant",
+                                        "subject": "self",
+                                        "value": 3
+                                    },
+                                    {
+                                        "test": "is_mark_variant",
+                                        "subject": "self",
+                                        "value": 4
+                                    }
+                                ]
+                            },
+                            "spawn_item": "rift:stegosaurus_plate",
+                            "min_wait_time": 0,
+                            "max_wait_time": 0,
+                            "single_use": true,
+                            "num_to_spawn": 1
+                        }
+                    ]
+                },
+                "minecraft:timer": {
+                    "time": 0.05,
+                    "time_down_event": {
+                        "event": "rift:go_commit_disappear",
+                        "target": "self"
+                    }
+                }
+			},
+            "rift:drop_jungle_planks": {
+                "minecraft:spawn_entity": {
+                    "entities": [
+                        {
+                            "spawn_entity": "rift:taxidermy_stand_dropper",
+                            "spawn_event": "rift:drop_jungle_wood_dropper",
+                            "min_wait_time": 0,
+                            "max_wait_time": 0,
+                            "single_use": true,
+                            "num_to_spawn": 1
+                        },
+                        {                            
+                            "filters": {
+                                "any_of": [
+                                    {
+                                        "test": "is_mark_variant",
+                                        "subject": "self",
+                                        "value": 1
+                                    },
+                                    {
+                                        "test": "is_mark_variant",
+                                        "subject": "self",
+                                        "value": 2
+                                    },
+                                    {
+                                        "test": "is_mark_variant",
+                                        "subject": "self",
+                                        "value": 3
+                                    },
+                                    {
+                                        "test": "is_mark_variant",
+                                        "subject": "self",
+                                        "value": 4
+                                    }
+                                ]
+                            },
+                            "spawn_item": "rift:stegosaurus_plate",
+                            "min_wait_time": 0,
+                            "max_wait_time": 0,
+                            "single_use": true,
+                            "num_to_spawn": 1
+                        }
+                    ]
+                },
+                "minecraft:timer": {
+                    "time": 0.05,
+                    "time_down_event": {
+                        "event": "rift:go_commit_disappear",
+                        "target": "self"
+                    }
+                }
+			},
+            "rift:drop_acacia_planks": {
+                "minecraft:spawn_entity": {
+                    "entities": [
+                        {
+                            "spawn_entity": "rift:taxidermy_stand_dropper",
+                            "spawn_event": "rift:drop_acacia_wood_dropper",
+                            "min_wait_time": 0,
+                            "max_wait_time": 0,
+                            "single_use": true,
+                            "num_to_spawn": 1
+                        },
+                        {                            
+                            "filters": {
+                                "any_of": [
+                                    {
+                                        "test": "is_mark_variant",
+                                        "subject": "self",
+                                        "value": 1
+                                    },
+                                    {
+                                        "test": "is_mark_variant",
+                                        "subject": "self",
+                                        "value": 2
+                                    },
+                                    {
+                                        "test": "is_mark_variant",
+                                        "subject": "self",
+                                        "value": 3
+                                    },
+                                    {
+                                        "test": "is_mark_variant",
+                                        "subject": "self",
+                                        "value": 4
+                                    }
+                                ]
+                            },
+                            "spawn_item": "rift:stegosaurus_plate",
+                            "min_wait_time": 0,
+                            "max_wait_time": 0,
+                            "single_use": true,
+                            "num_to_spawn": 1
+                        }
+                    ]
+                },
+                "minecraft:timer": {
+                    "time": 0.05,
+                    "time_down_event": {
+                        "event": "rift:go_commit_disappear",
+                        "target": "self"
+                    }
+                }
+			},
+            "rift:drop_dark_oak_planks": {
+                "minecraft:spawn_entity": {
+                    "entities": [
+                        {
+                            "spawn_entity": "rift:taxidermy_stand_dropper",
+                            "spawn_event": "rift:drop_dark_oak_wood_dropper",
+                            "min_wait_time": 0,
+                            "max_wait_time": 0,
+                            "single_use": true,
+                            "num_to_spawn": 1
+                        },
+                        {                            
+                            "filters": {
+                                "any_of": [
+                                    {
+                                        "test": "is_mark_variant",
+                                        "subject": "self",
+                                        "value": 1
+                                    },
+                                    {
+                                        "test": "is_mark_variant",
+                                        "subject": "self",
+                                        "value": 2
+                                    },
+                                    {
+                                        "test": "is_mark_variant",
+                                        "subject": "self",
+                                        "value": 3
+                                    },
+                                    {
+                                        "test": "is_mark_variant",
+                                        "subject": "self",
+                                        "value": 4
+                                    }
+                                ]
+                            },
+                            "spawn_item": "rift:stegosaurus_plate",
+                            "min_wait_time": 0,
+                            "max_wait_time": 0,
+                            "single_use": true,
+                            "num_to_spawn": 1
+                        }
+                    ]
+                },
+                "minecraft:timer": {
+                    "time": 0.05,
+                    "time_down_event": {
+                        "event": "rift:go_commit_disappear",
+                        "target": "self"
+                    }
+                }
+			},
+            "rift:drop_crimson_planks": {
+                "minecraft:spawn_entity": {
+                    "entities": [
+                        {
+                            "spawn_entity": "rift:taxidermy_stand_dropper",
+                            "spawn_event": "rift:drop_crimson_wood_dropper",
+                            "min_wait_time": 0,
+                            "max_wait_time": 0,
+                            "single_use": true,
+                            "num_to_spawn": 1
+                        },
+                        {                            
+                            "filters": {
+                                "any_of": [
+                                    {
+                                        "test": "is_mark_variant",
+                                        "subject": "self",
+                                        "value": 1
+                                    },
+                                    {
+                                        "test": "is_mark_variant",
+                                        "subject": "self",
+                                        "value": 2
+                                    },
+                                    {
+                                        "test": "is_mark_variant",
+                                        "subject": "self",
+                                        "value": 3
+                                    },
+                                    {
+                                        "test": "is_mark_variant",
+                                        "subject": "self",
+                                        "value": 4
+                                    }
+                                ]
+                            },
+                            "spawn_item": "rift:stegosaurus_plate",
+                            "min_wait_time": 0,
+                            "max_wait_time": 0,
+                            "single_use": true,
+                            "num_to_spawn": 1
+                        }
+                    ]
+                },
+                "minecraft:timer": {
+                    "time": 0.05,
+                    "time_down_event": {
+                        "event": "rift:go_commit_disappear",
+                        "target": "self"
+                    }
+                }
+			},
+            "rift:drop_warped_planks": {
+                "minecraft:spawn_entity": {
+                    "entities": [
+                        {
+                            "spawn_entity": "rift:taxidermy_stand_dropper",
+                            "spawn_event": "rift:drop_warped_wood_dropper",
+                            "min_wait_time": 0,
+                            "max_wait_time": 0,
+                            "single_use": true,
+                            "num_to_spawn": 1
+                        },
+                        {                            
+                            "filters": {
+                                "any_of": [
+                                    {
+                                        "test": "is_mark_variant",
+                                        "subject": "self",
+                                        "value": 1
+                                    },
+                                    {
+                                        "test": "is_mark_variant",
+                                        "subject": "self",
+                                        "value": 2
+                                    },
+                                    {
+                                        "test": "is_mark_variant",
+                                        "subject": "self",
+                                        "value": 3
+                                    },
+                                    {
+                                        "test": "is_mark_variant",
+                                        "subject": "self",
+                                        "value": 4
+                                    }
+                                ]
+                            },
+                            "spawn_item": "rift:stegosaurus_plate",
+                            "min_wait_time": 0,
+                            "max_wait_time": 0,
+                            "single_use": true,
+                            "num_to_spawn": 1
+                        }
+                    ]
+                },
                 "minecraft:timer": {
                     "time": 0.05,
                     "time_down_event": {
@@ -118,7 +942,7 @@
             }
         },
         "components": {
-			"minecraft:pushable": {
+            "minecraft:pushable": {
                 "is_pushable": false,
                 "is_pushable_by_piston": false
             },
@@ -155,6 +979,13 @@
                                         "test": "is_sneaking",
                                         "subject": "other",
                                         "value": false
+                                    },
+                                    {
+                                        "test": "has_equipment",
+                                        "subject": "other",
+                                        "domain": "hand",
+                                        "operator": "!=",
+                                        "value": "rift:furniture_tool"
                                     }
                                 ]
                             }
@@ -174,10 +1005,109 @@
                                         "test": "is_sneaking",
                                         "subject": "other",
                                         "value": true
+                                    },
+                                    {
+                                        "test": "has_equipment",
+                                        "subject": "other",
+                                        "domain": "hand",
+                                        "operator": "!=",
+                                        "value": "rift:furniture_tool"
                                     }
                                 ]
                             },
                             "event": "rift:on_destroyed",
+                            "target": "self"
+                        },
+						"deals_damage": false
+					},
+                    {
+                        "on_damage": {
+                            "filters": {
+                                "all_of": [
+                                    {
+                                        "test": "is_family",
+                                        "subject": "other",
+                                        "value": "player"
+                                    },
+                                    {
+                                        "test": "is_sneaking",
+                                        "subject": "other",
+                                        "value": false
+                                    },
+                                    {
+                                        "test": "has_equipment",
+                                        "subject": "other",
+                                        "domain": "hand",
+                                        "value": "rift:furniture_tool"
+                                    },
+                                    {
+                                        "test": "has_component",
+                                        "subject": "self",
+                                        "operator": "!=",
+                                        "value": "minecraft:is_charged"
+                                    }
+                                ]
+                            },
+                            "event": "rift:start_rotating",
+                            "target": "self"
+                        },
+						"deals_damage": false
+					},
+                    {
+                        "on_damage": {
+                            "filters": {
+                                "all_of": [
+                                    {
+                                        "test": "is_family",
+                                        "subject": "other",
+                                        "value": "player"
+                                    },
+                                    {
+                                        "test": "is_sneaking",
+                                        "subject": "other",
+                                        "value": false
+                                    },
+                                    {
+                                        "test": "has_equipment",
+                                        "subject": "other",
+                                        "domain": "hand",
+                                        "value": "rift:furniture_tool"
+                                    },
+                                    {
+                                        "test": "has_component",
+                                        "subject": "self",
+                                        "value": "minecraft:is_charged"
+                                    }
+                                ]
+                            },
+                            "event": "rift:stop_rotating",
+                            "target": "self"
+                        },
+						"deals_damage": false
+					},
+                    {
+                        "on_damage": {
+                            "filters": {
+                                "all_of": [
+                                    {
+                                        "test": "is_family",
+                                        "subject": "other",
+                                        "value": "player"
+                                    },
+                                    {
+                                        "test": "is_sneaking",
+                                        "subject": "other",
+                                        "value": true
+                                    },
+                                    {
+                                        "test": "has_equipment",
+                                        "subject": "other",
+                                        "domain": "hand",
+                                        "value": "rift:furniture_tool"
+                                    }
+                                ]
+                            },
+                            "event": "rift:remove_taxidermy_phase_one",
                             "target": "self"
                         },
 						"deals_damage": false
@@ -198,7 +1128,8 @@
                     {
                         "add": {
                             "component_groups": [
-                                "rift:is_built"
+                                "rift:is_built",
+                                "rift:no_taxidermy"
                             ]
                         },
                         "remove": {
@@ -223,11 +1154,6 @@
                             "component_groups": [
                                 "rift:made_of_oak"
                             ]
-                        },
-                        "run_command": {
-                            "command": [
-                                "say oak"
-                            ]
                         }
                     },
                     {
@@ -241,10 +1167,83 @@
                             "component_groups": [
                                 "rift:made_of_spruce"
                             ]
+                        }
+                    },
+                    {
+                        "filters": {
+                            "test": "has_equipment",
+                            "subject": "other",
+                            "domain": "hand",
+                            "value": "minecraft:planks:2"
                         },
-                        "run_command": {
-                            "command": [
-                                "say spruce"
+                        "add": {
+                            "component_groups": [
+                                "rift:made_of_birch"
+                            ]
+                        }
+                    },
+                    {
+                        "filters": {
+                            "test": "has_equipment",
+                            "subject": "other",
+                            "domain": "hand",
+                            "value": "minecraft:planks:3"
+                        },
+                        "add": {
+                            "component_groups": [
+                                "rift:made_of_jungle"
+                            ]
+                        }
+                    },
+                    {
+                        "filters": {
+                            "test": "has_equipment",
+                            "subject": "other",
+                            "domain": "hand",
+                            "value": "minecraft:planks:4"
+                        },
+                        "add": {
+                            "component_groups": [
+                                "rift:made_of_acacia"
+                            ]
+                        }
+                    },
+                    {
+                        "filters": {
+                            "test": "has_equipment",
+                            "subject": "other",
+                            "domain": "hand",
+                            "value": "minecraft:planks:5"
+                        },
+                        "add": {
+                            "component_groups": [
+                                "rift:made_of_dark_oak"
+                            ]
+                        }
+                    },
+                    {
+                        "filters": {
+                            "test": "has_equipment",
+                            "subject": "other",
+                            "domain": "hand",
+                            "value": "minecraft:crimson_planks"
+                        },
+                        "add": {
+                            "component_groups": [
+                                "rift:made_of_crimson"
+                            ]
+                        }
+                    },
+                    {
+                        "filters": {
+                            "test": "has_equipment",
+                            "subject": "other",
+                            "domain": "hand",
+                            "value": "minecraft:warped_planks"
+                        },
+                        "add": {
+                            "component_groups": [
+                                "rift:made_of_warped"
                             ]
                         }
                     }
@@ -261,7 +1260,7 @@
                         },
                         "add": {
                             "component_groups": [
-                                "rift:drop_delay"
+                                "rift:drop_blueprint"
                             ]
                         }
                     },
@@ -273,7 +1272,7 @@
                         },
                         "add": {
                             "component_groups": [
-                                "rift:drop_delay"
+                                "rift:drop_oak_planks"
                             ]
                         }
                     },
@@ -285,7 +1284,7 @@
                         },
                         "add": {
                             "component_groups": [
-                                "rift:drop_delay"
+                                "rift:drop_spruce_planks"
                             ]
                         }
                     },
@@ -297,7 +1296,7 @@
                         },
                         "add": {
                             "component_groups": [
-                                "rift:drop_delay"
+                                "rift:drop_birch_planks"
                             ]
                         }
                     },
@@ -309,7 +1308,7 @@
                         },
                         "add": {
                             "component_groups": [
-                                "rift:drop_delay"
+                                "rift:drop_jungle_planks"
                             ]
                         }
                     },
@@ -321,7 +1320,7 @@
                         },
                         "add": {
                             "component_groups": [
-                                "rift:drop_delay"
+                                "rift:drop_acacia_planks"
                             ]
                         }
                     },
@@ -333,7 +1332,7 @@
                         },
                         "add": {
                             "component_groups": [
-                                "rift:drop_delay"
+                                "rift:drop_dark_oak_planks"
                             ]
                         }
                     },
@@ -345,7 +1344,7 @@
                         },
                         "add": {
                             "component_groups": [
-                                "rift:drop_delay"
+                                "rift:drop_crimson_planks"
                             ]
                         }
                     },
@@ -357,23 +1356,297 @@
                         },
                         "add": {
                             "component_groups": [
-                                "rift:drop_delay"
+                                "rift:drop_warped_planks"
                             ]
                         }
                     }
                 ]
             },
             "rift:go_commit_disappear": {
+                "sequence": [
+                    {},
+                    {
+                        "add": {
+                            "component_groups": [
+                                "rift:commit_disappear"
+                            ]
+                        },
+                        "remove": {
+                            "component_groups": [
+                                "rift:drop_blueprint",
+                                "rift:drop_oak_planks",
+                                "rift:drop_spruce_planks",
+                                "rift:drop_birch_planks",
+                                "rift:drop_jungle_planks",
+                                "rift:drop_acacia_planks",
+                                "rift:drop_dark_oak_planks",
+                                "rift:drop_crimson_planks",
+                                "rift:drop_warped_planks"
+                            ]
+                        }
+                    }
+                ]
+            },
+            "rift:start_rotating": {
                 "add": {
                     "component_groups": [
-                        "rift:commit_disappear"
+                        "rift:rotation_mode"
+                    ]
+                },
+                "run_command": {
+                    "command": [
+                        "tellraw @p {\"rawtext\":[{\"text\":\"Rotation Mode Activated\"}]}"
+                    ]
+                }
+            },
+            "rift:stop_rotating": {
+                "remove": {
+                    "component_groups": [
+                        "rift:rotation_mode"
+                    ]
+                },
+                "run_command": {
+                    "command": [
+                        "tellraw @p {\"rawtext\":[{\"text\":\"Rotation Mode Dectivated\"}]}"
+                    ]
+                }
+            },
+            "rift:remove_taxidermy_phase_one": {
+                "sequence": [
+                    {},
+                    {
+                        "filters": {
+                            "any_of": [
+                                {
+                                    "test": "is_mark_variant",
+                                    "subject": "self",
+                                    "value": 1
+                                },
+                                {
+                                    "test": "is_mark_variant",
+                                    "subject": "self",
+                                    "value": 2
+                                },
+                                {
+                                    "test": "is_mark_variant",
+                                    "subject": "self",
+                                    "value": 3
+                                },
+                                {
+                                    "test": "is_mark_variant",
+                                    "subject": "self",
+                                    "value": 4
+                                }
+                            ]
+                        },
+                        "add": {
+                            "component_groups": [
+                                "rift:drop_stegosaurus_plate"
+                            ]
+                        },
+                        "remove": {
+                            "component_groups": [
+                                "rift:stegosaurus_taxidermy_variant_one",
+                                "rift:stegosaurus_taxidermy_variant_two",
+                                "rift:stegosaurus_taxidermy_variant_three",
+                                "rift:stegosaurus_taxidermy_variant_four"
+                            ]
+                        }
+                    }
+                ]
+            },
+            "rift:remove_taxidermy_phase_two": {
+                "add": {
+                    "component_groups": [
+                        "rift:no_taxidermy"
                     ]
                 },
                 "remove": {
                     "component_groups": [
-                        "rift:drop_delay"
+                        "rift:rotation_mode",
+                        "rift:pose_zero",
+                        "rift:pose_one",
+                        "rift:pose_two",
+                        "rift:pose_three",
+                        "rift:drop_stegosaurus_plate"
                     ]
                 }
+            },
+            "rift:change_taxidermy_pose": {
+                "sequence": [
+                    {},
+                    {
+                        "filters": {
+                            "test": "is_skin_id",
+                            "subject": "self",
+                            "value": 0
+                        },
+                        "add": {
+                            "component_groups": [
+                                "rift:pose_one"
+                            ]
+                        },
+                        "remove": {
+                            "component_groups": [
+                                "rift:pose_zero",
+                                "rift:pose_two",
+                                "rift:pose_three"
+                            ]
+                        }
+                    },
+                    {
+                        "filters": {
+                            "test": "is_skin_id",
+                            "subject": "self",
+                            "value": 1
+                        },
+                        "add": {
+                            "component_groups": [
+                                "rift:pose_two"
+                            ]
+                        },
+                        "remove": {
+                            "component_groups": [
+                                "rift:pose_zero",
+                                "rift:pose_one",
+                                "rift:pose_three"
+                            ]
+                        }
+                    },
+                    {
+                        "filters": {
+                            "test": "is_skin_id",
+                            "subject": "self",
+                            "value": 2
+                        },
+                        "add": {
+                            "component_groups": [
+                                "rift:pose_three"
+                            ]
+                        },
+                        "remove": {
+                            "component_groups": [
+                                "rift:pose_zero",
+                                "rift:pose_one",
+                                "rift:pose_two"
+                            ]
+                        }
+                    },
+                    {
+                        "filters": {
+                            "test": "is_skin_id",
+                            "subject": "self",
+                            "value": 3
+                        },
+                        "add": {
+                            "component_groups": [
+                                "rift:pose_zero"
+                            ]
+                        },
+                        "remove": {
+                            "component_groups": [
+                                "rift:pose_one",
+                                "rift:pose_two",
+                                "rift:pose_three"
+                            ]
+                        }
+                    }
+                ]
+            },
+            //stego
+            "rift:do_stegosaurus_taxidermy": {
+                "add": {
+                    "component_groups": [
+                        "rift:stegosaurus_taxidermy_variant_one",
+                        "rift:pose_zero"
+                    ]
+                },
+                "remove": {
+                    "component_groups": [
+                        "rift:no_taxidermy"
+                    ]
+                }
+            },
+            "rift:change_stegosaurus_pose": {
+                "sequence": [
+                    {},
+                    {
+                        "filters": {
+                            "test": "is_mark_variant",
+                            "subject": "self",
+                            "value": 1
+                        },
+                        "add": {
+                            "component_groups": [
+                                "rift:stegosaurus_taxidermy_variant_two"
+                            ]
+                        },
+                        "remove": {
+                            "component_groups": [
+                                "rift:stegosaurus_taxidermy_variant_one",
+                                "rift:stegosaurus_taxidermy_variant_three",
+                                "rift:stegosaurus_taxidermy_variant_four"
+                            ]
+                        }
+                    },
+                    {
+                        "filters": {
+                            "test": "is_mark_variant",
+                            "subject": "self",
+                            "value": 2
+                        },
+                        "add": {
+                            "component_groups": [
+                                "rift:stegosaurus_taxidermy_variant_three"
+                            ]
+                        },
+                        "remove": {
+                            "component_groups": [
+                                "rift:stegosaurus_taxidermy_variant_one",
+                                "rift:stegosaurus_taxidermy_variant_two",
+                                "rift:stegosaurus_taxidermy_variant_four"
+                            ]
+                        }
+                    },
+                    {
+                        "filters": {
+                            "test": "is_mark_variant",
+                            "subject": "self",
+                            "value": 3
+                        },
+                        "add": {
+                            "component_groups": [
+                                "rift:stegosaurus_taxidermy_variant_four"
+                            ]
+                        },
+                        "remove": {
+                            "component_groups": [
+                                "rift:stegosaurus_taxidermy_variant_one",
+                                "rift:stegosaurus_taxidermy_variant_two",
+                                "rift:stegosaurus_taxidermy_variant_three"
+                            ]
+                        }
+                    },
+                    {
+                        "filters": {
+                            "test": "is_mark_variant",
+                            "subject": "self",
+                            "value": 4
+                        },
+                        "add": {
+                            "component_groups": [
+                                "rift:stegosaurus_taxidermy_variant_one"
+                            ]
+                        },
+                        "remove": {
+                            "component_groups": [
+                                "rift:stegosaurus_taxidermy_variant_two",
+                                "rift:stegosaurus_taxidermy_variant_three",
+                                "rift:stegosaurus_taxidermy_variant_four"
+                            ]
+                        }
+                    }
+                ]
             }
         }
     }

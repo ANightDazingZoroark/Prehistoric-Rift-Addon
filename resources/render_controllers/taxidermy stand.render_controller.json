@@ -2,6 +2,7 @@
     "format_version": "1.8.0",
     "render_controllers": {
         "controller.render.taxidermy_stand": {
+            "geometry": "Geometry.default",
             "textures": [
                 "query.is_sheared ? Texture.defaultTaxidermyStand : Texture.phantomTaxidermyStand"
             ],
@@ -9,8 +10,36 @@
                 {
                     "*": "query.is_sheared ? Material.defaultMaterials : Material.phantomMaterials"
                 }
+            ]
+        },
+        "controller.render.taxidermy_stand_stegosaurus": {
+            "geometry": "Geometry.stegoModel",
+			"arrays": {
+				"textures": {
+					"Array.variants": [
+						"Texture.stegoVariant1",
+						"Texture.stegoVariant2",
+						"Texture.stegoVariant3",
+						"Texture.stegoVariant4"
+					]
+				}
+			},
+            "textures": [
+                "Array.variants[query.mark_variant - 1]"
             ],
-            "geometry": "Geometry.default"
+            "materials": [
+                {
+                    "*": "Material.defaultMaterials"
+                }
+            ],
+			"part_visibility": [
+				{
+					"saddle*": "query.is_saddled",
+					"neckSaddle*": "query.is_saddled",
+					"headSaddle*": "query.is_saddled",
+					"chest*": "query.is_chested"
+				}
+			]
         }
     }
 }
