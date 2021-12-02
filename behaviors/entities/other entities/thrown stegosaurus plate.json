@@ -28,6 +28,9 @@
                 "minecraft:variant": {
                     "value": 3
                 }
+            },
+            "rift:go_commit_disappear": {
+                "minecraft:instant_despawn": {}
             }
         },
         "components": {
@@ -46,10 +49,20 @@
                 "gravity": 0.03,
                 "angle_offset": 0.0
             },
-            "minecraft:physics": {},
+            "minecraft:physics": {
+                "has_collision": true,
+                "has_gravity": true
+            },
             "minecraft:pushable": {
                 "is_pushable": true,
                 "is_pushable_by_piston": true
+            },
+            "minecraft:timer": {
+                "time": 3,
+                "time_down_event": {
+                    "event": "rift:commit_disappear",
+                    "target": "self"
+                }
             }
         },
         "events": {
@@ -105,6 +118,13 @@
                         }
                     }
                 ]
+            },
+            "rift:commit_disappear": {
+                "add": {
+                    "component_groups": [
+                        "rift:go_commit_disappear"
+                    ]
+                }
             }
         }
     }

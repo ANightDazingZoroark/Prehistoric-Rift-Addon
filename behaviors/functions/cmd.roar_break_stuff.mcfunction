@@ -80,3 +80,5 @@ fill ~-10 ~ ~-10 ~+10 ~+15 ~+10 air 0 replace rift:crimson_thatch_block
 fill ~-10 ~ ~-10 ~+10 ~+15 ~+10 air 0 replace rift:warped_thatch_block
 fill ~-10 ~ ~-10 ~+10 ~+15 ~+10 air 0 replace rift:wooden_chair
 fill ~-10 ~ ~-10 ~+10 ~+15 ~+10 air 0 replace rift:wooden_table
+fill ~-10 ~ ~-10 ~+10 ~+15 ~+10 air 0 replace rift:sofa
+fill ~-10 ~ ~-10 ~+10 ~+15 ~+10 air 0 replace rift:wooden_bench
