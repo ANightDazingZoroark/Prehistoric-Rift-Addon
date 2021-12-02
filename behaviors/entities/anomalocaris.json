@@ -146,7 +146,7 @@
                     "end_scale": 1
                 },
                 "minecraft:behavior.tempt": {
-                    "priority": 2,
+                    "priority": 6,
                     "items": [
                         "minecraft:beef",
 						"minecraft:cooked_beef",
@@ -176,7 +176,7 @@
                     ]
                 },
 				"minecraft:behavior.melee_attack": {
-					"priority": 4,
+					"priority": 5,
 					"track_target": true,
 					"reach_multiplier": 1.5
 				}
@@ -196,7 +196,7 @@
                     }
 				},
                 "minecraft:behavior.random_swim": {
-                    "priority": 5,
+                    "priority": 8,
                     "interval": 0,
                     "xz_dist": 20,
                     "y_dist": 2,
@@ -253,7 +253,7 @@
                     "max": 50
                 },
                 "minecraft:behavior.random_swim": {
-                    "priority": 5,
+                    "priority": 8,
                     "interval": 10,
                     "xz_dist": 20,
                     "y_dist": 2,
@@ -274,7 +274,7 @@
 					}
 				},
 				"minecraft:behavior.melee_attack": {
-					"priority": 4,
+					"priority": 5,
 					"track_target": true,
 					"reach_multiplier": 1.5,
 					"on_attack": {
@@ -309,7 +309,7 @@
             },
             "rift:default_targets": {
 				"minecraft:behavior.nearest_attackable_target": {
-					"priority": 3,
+					"priority": 4,
 					"reselect_targets": false,
 					"within_radius": 50,
 					"must_see": false,
@@ -413,7 +413,7 @@
 			},
 			"rift:attack_forced_attack_entity": {
 				"minecraft:behavior.nearest_attackable_target": {
-				  	"priority": 3,
+				  	"priority": 4,
 				  	"entity_types": [
 						{
 					  		"filters": {
@@ -422,6 +422,38 @@
 								"value": "isForcedAttacking"
 					  		},
 					  		"max_dist": 25
+						}
+				  	]
+				}
+			},
+			"rift:aggravating_horn_attack": {
+				"minecraft:behavior.nearest_attackable_target": {
+				  	"priority": 4,
+					"within_radius": 48,
+				  	"entity_types": [
+						{
+					  		"filters": {
+								"all_of": [
+									{
+										"test": "in_water",
+										"subject": "other",
+										"value": true
+									},
+									{
+										"test": "has_component",
+										"subject": "other",
+										"operator": "!=",
+										"value": "minecraft:is_tamed"
+									},
+									{
+										"test": "is_family",
+										"subject": "other",
+										"operator": "!=",
+										"value": "player"
+									}
+								]
+					  		},
+					  		"max_dist": 35
 						}
 				  	]
 				}
@@ -653,23 +685,14 @@
 						}
 					]
 				},
-				"minecraft:behavior.player_ride_tamed": {},
-				"minecraft:behavior.melee_attack": {
-					"priority": 4,
-					"track_target": true,
-					"reach_multiplier": 1.5,
-					"on_attack": {
-						"event": "rift:anomalocaris_unridden_tamed_start_carrying",
-						"target": "self"
-					}
-				}
+				"minecraft:behavior.player_ride_tamed": {}
 			},
 			"rift:anomalocaris_tamed": {
 				"minecraft:is_tamed": {},
 				"minecraft:behavior.follow_owner": {
-					"start_distance": 8,
+					"start_distance": 4,
 					"stop_distance": 40,
-					"priority": 5
+					"priority": 7
 				},
 				"minecraft:behavior.owner_hurt_by_target": {
 					"priority": 3
@@ -819,7 +842,18 @@
 						"isForcedAttacking"
 					]
 				}
-			},     
+			},
+			"rift:can_attack": {
+				"minecraft:behavior.melee_attack": {
+					"priority": 5,
+					"track_target": true,
+					"reach_multiplier": 1.5,
+					"on_attack": {
+						"event": "rift:anomalocaris_unridden_tamed_start_carrying",
+						"target": "self"
+					}
+				}
+			},
 			"rift:drop_experience_from_forced_attack": {
 			  	"minecraft:experience_reward": {
 					"on_death": "Math.random(5, 9)"
@@ -866,7 +900,7 @@
 				"max_distance": 12
 			},
 			"minecraft:behavior.random_look_around": {
-				"priority": 6
+				"priority": 9
 			},
 			"minecraft:interact": {
 				"interactions": [
@@ -3293,6 +3327,7 @@
 						"add": {
 							"component_groups": [
 								"rift:anomalocaris_adult_tamed",
+								"rift:can_attack",
 								"rift:rideable"
 							]
 						},
@@ -3445,7 +3480,9 @@
 					"component_groups": [
 						"rift:anomalocaris_sittable",
 						"rift:pushable",
-						"rift:default_navigation"
+						"rift:default_navigation",
+						"rift:can_attack",
+						"rift:aggravating_horn_attack"
 					]
 				},
 				"run_command": {
@@ -3459,7 +3496,8 @@
 					"component_groups": [
 						"rift:anomalocaris_sittable",
 						"rift:pushable",
-						"rift:default_navigation"
+						"rift:default_navigation",
+						"rift:can_attack"
 					]
 				},
 				"remove": {
@@ -3584,7 +3622,8 @@
 						"remove": {
 							  "component_groups": [
 								"rift:attack_forced_attack_entity",
-								"rift:carry_mob"
+								"rift:carry_mob",
+								"rift:aggravating_horn_attack"
 							  ]
 						}
 					},
@@ -3820,6 +3859,18 @@
 						}
 					}
 				]
+			},
+			"rift:aggravated_via_aggravating_horn": {
+				"add": {
+					"component_groups": [
+						"rift:aggravating_horn_attack"
+					]
+				},
+				"run_command": {
+					"command": [
+						"say test"
+					]
+				}
 			},
 			//for potion effects
 			"rift:drink_night_vision_potion_one": {

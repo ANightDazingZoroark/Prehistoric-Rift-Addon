@@ -563,6 +563,43 @@
 					"target": "self"
 				}
 			},
+			"rift:aggravating_horn_attack": {
+				"minecraft:behavior.nearest_attackable_target": {
+					"priority": 3,
+					"must_see": false,
+					"within_radius": 50,
+					"persist_time": 25,
+					"entity_types": [
+					  	{
+							"filters": {
+								"all_of": [
+									{
+										"test": "in_water",
+										"subject": "other",
+										"value": false
+									},
+									{
+										"test": "has_component",
+										"subject": "other",
+										"operator": "!=",
+										"value": "minecraft:is_tamed"
+									},
+									{
+										"test": "is_family",
+										"subject": "other",
+										"operator": "!=",
+										"value": "player"
+									}
+								]
+					  		}
+					  	}
+					]
+				},
+				"minecraft:on_target_escape": {
+					"event": "rift:stop_being_aggravated",
+				  	"target": "self"
+				}
+			},
 			"rift:roar_in_wild": {
 				"minecraft:timer": {
 					"time": 2.08,
@@ -733,6 +770,15 @@
 					]
 				}
 			},
+			"rift:can_attack": {
+				"minecraft:behavior.delayed_attack": {
+					"priority": 4,
+					"attack_duration": 0.5,
+					"hit_delay_pct": 1,
+					"track_target": true,
+					"reach_multiplier": 2
+				}
+			},
 			"rift:drop_experience_from_forced_attack": {
 			  	"minecraft:experience_reward": {
 					"on_death": "Math.Random(7,12)"
@@ -803,13 +849,6 @@
 				"soft_distance": 4,
 				"hard_distance": 10,
 				"max_distance": 15
-			},
-			"minecraft:behavior.delayed_attack": {
-				"priority": 4,
-				"attack_duration": 0.5,
-				"hit_delay_pct": 1,
-				"track_target": true,
-				"reach_multiplier": 2
 			},
 			"minecraft:movement": {
 				"value": 0.20
@@ -3291,7 +3330,8 @@
 										"rift:tyrannosaurus_adult_wild",
 										"rift:tyrannosaurus_hunting",
 										"rift:variant_zero",
-										"rift:pushable"
+										"rift:pushable",
+										"rift:can_attack"
 									]
 								}
 							},
@@ -3303,7 +3343,8 @@
 										"rift:tyrannosaurus_adult_wild",
 										"rift:tyrannosaurus_hunting",
 										"rift:variant_one",
-										"rift:pushable"
+										"rift:pushable",
+										"rift:can_attack"
 									]
 								}
 							},
@@ -3315,7 +3356,8 @@
 										"rift:tyrannosaurus_adult_wild",
 										"rift:tyrannosaurus_hunting",
 										"rift:variant_two",
-										"rift:pushable"
+										"rift:pushable",
+										"rift:can_attack"
 									]
 								}
 							},
@@ -3327,7 +3369,8 @@
 										"rift:tyrannosaurus_adult_wild",
 										"rift:tyrannosaurus_hunting",
 										"rift:variant_three",
-										"rift:pushable"
+										"rift:pushable",
+										"rift:can_attack"
 									]
 								}
 							}
@@ -3344,7 +3387,8 @@
 										"rift:tyrannosaurus_adult_wild",
 										"rift:tyrannosaurus_not_hunting",
 										"rift:variant_zero",
-										"rift:pushable"
+										"rift:pushable",
+										"rift:can_attack"
 									]
 								}
 							},
@@ -3356,7 +3400,8 @@
 										"rift:tyrannosaurus_adult_wild",
 										"rift:tyrannosaurus_not_hunting",
 										"rift:variant_one",
-										"rift:pushable"
+										"rift:pushable",
+										"rift:can_attack"
 									]
 								}
 							},
@@ -3368,7 +3413,8 @@
 										"rift:tyrannosaurus_adult_wild",
 										"rift:tyrannosaurus_not_hunting",
 										"rift:variant_two",
-										"rift:pushable"
+										"rift:pushable",
+										"rift:can_attack"
 									]
 								}
 							},
@@ -3380,7 +3426,8 @@
 										"rift:tyrannosaurus_adult_wild",
 										"rift:tyrannosaurus_not_hunting",
 										"rift:variant_three",
-										"rift:pushable"
+										"rift:pushable",
+										"rift:can_attack"
 									]
 								}
 							}
@@ -3546,7 +3593,9 @@
 				"remove": {
 					"component_groups": [
 						"rift:tyrannosaurus_sittable",
-						"rift:pushable"
+						"rift:pushable",
+						"rift:can_attack",
+						"rift:aggravating_horn_attack"
 					]
 				}
 			},
@@ -3554,7 +3603,8 @@
 				"add": {
 					"component_groups": [
 						"rift:tyrannosaurus_sittable",
-						"rift:pushable"
+						"rift:pushable",
+						"rift:can_attack"
 					]
 				},
 				"remove": {
@@ -3579,7 +3629,8 @@
 								"rift:tyrannosaurus_baby",
 								"rift:tyrannosaurus_baby_wild",
 								"rift:variant_zero",
-								"rift:pushable"
+								"rift:pushable",
+								"rift:can_attack"
 							]
 						}
 					},
@@ -3590,7 +3641,8 @@
 								"rift:tyrannosaurus_baby",
 								"rift:tyrannosaurus_baby_wild",
 								"rift:variant_one",
-								"rift:pushable"
+								"rift:pushable",
+								"rift:can_attack"
 							]
 						}
 					},
@@ -3601,7 +3653,8 @@
 								"rift:tyrannosaurus_baby",
 								"rift:tyrannosaurus_baby_wild",
 								"rift:variant_two",
-								"rift:pushable"
+								"rift:pushable",
+								"rift:can_attack"
 							]
 						}
 					},
@@ -3612,7 +3665,8 @@
 								"rift:tyrannosaurus_baby",
 								"rift:tyrannosaurus_baby_wild",
 								"rift:variant_three",
-								"rift:pushable"
+								"rift:pushable",
+								"rift:can_attack"
 							]
 						}
 					}
@@ -3984,6 +4038,20 @@
 				"remove": {
 					"component_groups": [
 						"rift:variant_seven"
+					]
+				}
+			},
+			"rift:aggravated_via_aggravating_horn": {
+				"add": {
+					"component_groups": [
+						"rift:aggravating_horn_attack"
+					]
+				}
+			},
+			"rift:stop_being_aggravated": {
+				"remove": {
+					"component_groups": [
+						"rift:aggravating_horn_attack"
 					]
 				}
 			},

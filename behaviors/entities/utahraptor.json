@@ -467,6 +467,41 @@
 				  	"target": "self"
 				}
 			},
+			"rift:aggravating_horn_attack": {
+				"minecraft:behavior.nearest_attackable_target": {
+					"priority": 4,
+					"within_radius": 50,
+					"entity_types": [
+						{
+							"filters": {
+								"all_of": [
+									{
+										"test": "in_water",
+										"subject": "other",
+										"value": false
+									},
+									{
+										"test": "has_component",
+										"subject": "other",
+										"operator": "!=",
+										"value": "minecraft:is_tamed"
+									},
+									{
+										"test": "is_family",
+										"subject": "other",
+										"operator": "!=",
+										"value": "player"
+									}
+								]
+					  		}
+						}
+					]
+				},
+				"minecraft:on_target_escape": {
+					"event": "rift:stop_being_aggravated",
+				  	"target": "self"
+				}
+			},
             "rift:utahraptor_adult_wild_not_trusting": {
                 "minecraft:trusting": {
                     "probability": 0.25,
@@ -874,6 +909,16 @@
 					]
 				}
 			},
+			"rift:can_attack": {
+				"minecraft:behavior.delayed_attack": {
+					"priority": 6,
+					"attack_duration": 0.28,
+					"hit_delay_pct": 1,
+					"track_target": true,
+					"reach_multiplier": 2.5,
+					"speed_multiplier": 1.5
+				}
+			},
 			"rift:drop_experience_from_forced_attack": {
 			  	"minecraft:experience_reward": {
 					"on_death": "Math.Random(5,9)"
@@ -921,14 +966,6 @@
 					"carnivore",
 					"dinosaur"
 				]
-			},
-			"minecraft:behavior.delayed_attack": {
-				"priority": 6,
-				"attack_duration": 0.28,
-				"hit_delay_pct": 1,
-				"track_target": true,
-				"reach_multiplier": 2.5,
-				"speed_multiplier": 1.5
 			},
 			"minecraft:can_climb": {},
 			"minecraft:scaffolding_climber": {},
@@ -3649,7 +3686,8 @@
 								"rift:variant_zero",
                                 "rift:utahraptor_adult_wild_not_trusting",
 								"rift:utahraptor_adult_can_pounce",
-								"rift:pushable"
+								"rift:pushable",
+								"rift:can_attack"
 							]
 						}
 					},
@@ -3664,7 +3702,8 @@
 								"rift:variant_one",
                                 "rift:utahraptor_adult_wild_not_trusting",
 								"rift:utahraptor_adult_can_pounce",
-								"rift:pushable"
+								"rift:pushable",
+								"rift:can_attack"
 							]
 						}
 					},
@@ -3679,7 +3718,8 @@
 								"rift:variant_two",
                                 "rift:utahraptor_adult_wild_not_trusting",
 								"rift:utahraptor_adult_can_pounce",
-								"rift:pushable"
+								"rift:pushable",
+								"rift:can_attack"
 							]
 						}
 					},
@@ -3694,7 +3734,8 @@
 								"rift:variant_three",
                                 "rift:utahraptor_adult_wild_not_trusting",
 								"rift:utahraptor_adult_can_pounce",
-								"rift:pushable"
+								"rift:pushable",
+								"rift:can_attack"
 							]
 						}
 					}
@@ -3906,7 +3947,9 @@
 				"remove": {
 					"component_groups": [
 						"rift:utahraptor_sittable",
-						"rift:pushable"
+						"rift:pushable",
+						"rift:can_attack",
+						"rift:aggravating_horn_attack"
 					]
 				},
 				"run_command": {
@@ -3919,7 +3962,8 @@
 				"add": {
 					"component_groups": [
 						"rift:utahraptor_sittable",
-						"rift:pushable"
+						"rift:pushable",
+						"rift:can_attack"
 					]
 				},
 				"remove": {
@@ -3965,7 +4009,8 @@
 								"rift:utahraptor_baby_wild",
 								"rift:utahraptor_baby_calm",
 								"rift:variant_zero",
-								"rift:pushable"
+								"rift:pushable",
+								"rift:can_attack"
 							]
 						}
 					},
@@ -3977,7 +4022,8 @@
 								"rift:utahraptor_baby_wild",
 								"rift:utahraptor_baby_calm",
 								"rift:variant_one",
-								"rift:pushable"
+								"rift:pushable",
+								"rift:can_attack"
 							]
 						}
 					},
@@ -3989,7 +4035,8 @@
 								"rift:utahraptor_baby_wild",
 								"rift:utahraptor_baby_calm",
 								"rift:variant_two",
-								"rift:pushable"
+								"rift:pushable",
+								"rift:can_attack"
 							]
 						}
 					},
@@ -4001,7 +4048,8 @@
 								"rift:utahraptor_baby_wild",
 								"rift:utahraptor_baby_calm",
 								"rift:variant_three",
-								"rift:pushable"
+								"rift:pushable",
+								"rift:can_attack"
 							]
 						}
 					}
@@ -4486,6 +4534,20 @@
 				"remove": {
 					"component_groups": [
 						"rift:variant_seven"
+					]
+				}
+			},
+			"rift:aggravated_via_aggravating_horn": {
+				"add": {
+					"component_groups": [
+						"rift:aggravating_horn_attack"
+					]
+				}
+			},
+			"rift:stop_being_aggravated": {
+				"remove": {
+					"component_groups": [
+						"rift:aggravating_horn_attack"
 					]
 				}
 			},

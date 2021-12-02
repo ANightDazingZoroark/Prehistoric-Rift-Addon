@@ -91,6 +91,38 @@
 				}
 			}
 		},
+		"controller.animation.aggravating_horn": {
+			"initial_state": "default",
+			"states": {
+				"default": {
+					"transitions": [
+						{
+							"has_horn": "query.get_equipped_item_name('main_hand') == 'aggravating_horn'"
+						}
+					]
+				},
+				"has_horn": {
+					"transitions": [
+						{
+							"use": "query.get_equipped_item_name('main_hand') == 'aggravating_horn' && query.is_using_item"
+						},
+						{
+							"default": "query.get_equipped_item_name('main_hand') != 'aggravating_horn'"
+						}
+					]
+				},
+				"use": {
+					"transitions": [
+						{
+							"has_horn": "!query.is_using_item"
+						}
+					],
+					"on_entry": [
+						"/function cmd.aggravating_horn"
+					]
+				}
+			}
+		},
 		"controller.animation.tyrannosaurus_command_staff": {
 			"initial_state": "default",
 			"states": {

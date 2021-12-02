@@ -976,6 +976,15 @@
 					]
 				}
 			},
+			"rift:can_attack": {
+				"minecraft:behavior.delayed_attack": {
+					"priority": 4,
+					"attack_duration": 3,
+					"hit_delay_pct": 1,
+					"track_target": true,
+					"reach_multiplier": 3
+				}
+			},
 			"rift:attack_forced_attack_entity": {
 				"minecraft:behavior.nearest_attackable_target": {
 					"priority": 3,
@@ -994,7 +1003,43 @@
 					"event": "rift:no_force_attacked",
 					"target": "self"
 				}
-			},     
+			},
+			"rift:aggravating_horn_attack": {
+				"minecraft:behavior.nearest_attackable_target": {
+				  	"priority": 3,
+					"within_radius": 48,
+				  	"entity_types": [
+						{
+					  		"filters": {
+								"all_of": [
+									{
+										"test": "in_water",
+										"subject": "other",
+										"value": false
+									},
+									{
+										"test": "has_component",
+										"subject": "other",
+										"operator": "!=",
+										"value": "minecraft:is_tamed"
+									},
+									{
+										"test": "is_family",
+										"subject": "other",
+										"operator": "!=",
+										"value": "player"
+									}
+								]
+					  		},
+					  		"max_dist": 35
+						}
+				  	]
+				},
+				"minecraft:on_target_escape": {
+					"event": "rift:stop_being_aggravated",
+				  	"target": "self"
+				}
+			},
 			"rift:baby_drop_experience_from_forced_attack": {
 			  	"minecraft:experience_reward": {
 					"on_death": "Math.Random(8,12)"
@@ -1062,13 +1107,6 @@
 				"height": 5.75,
 				"width": 2.25
 			},
-			"minecraft:behavior.delayed_attack": {
-				"priority": 4,
-				"attack_duration": 3,
-				"hit_delay_pct": 1,
-				"track_target": true,
-				"reach_multiplier": 3
-            },
             "minecraft:is_hidden_when_invisible": {},
 			"minecraft:physics": {},
 			"minecraft:nameable": {},
@@ -3787,7 +3825,8 @@
 										"rift:apatosaurus_adult_calm",
 										"rift:default_collision",
 										"rift:variant_one",
-										"rift:pushable"
+										"rift:pushable",
+										"rift:can_attack"
 									]
 								}
 							},
@@ -3800,7 +3839,8 @@
 										"rift:apatosaurus_adult_calm",
 										"rift:default_collision",
 										"rift:variant_two",
-										"rift:pushable"
+										"rift:pushable",
+										"rift:can_attack"
 									]
 								}
 							},
@@ -3813,7 +3853,8 @@
 										"rift:apatosaurus_adult_calm",
 										"rift:default_collision",
 										"rift:variant_three",
-										"rift:pushable"
+										"rift:pushable",
+										"rift:can_attack"
 									]
 								}
 							},
@@ -3826,7 +3867,8 @@
 										"rift:apatosaurus_adult_calm",
 										"rift:default_collision",
 										"rift:variant_four",
-										"rift:pushable"
+										"rift:pushable",
+										"rift:can_attack"
 									]
 								}
 							}
@@ -3845,7 +3887,8 @@
 										"rift:apatosaurus_baby_calm",
 										"rift:default_collision",
 										"rift:variant_one",
-										"rift:pushable"
+										"rift:pushable",
+										"rift:can_attack"
 									]
 								}
 							},
@@ -3859,7 +3902,8 @@
 										"rift:apatosaurus_baby_calm",
 										"rift:default_collision",
 										"rift:variant_two",
-										"rift:pushable"
+										"rift:pushable",
+										"rift:can_attack"
 									]
 								}
 							},
@@ -3873,7 +3917,8 @@
 										"rift:apatosaurus_baby_calm",
 										"rift:default_collision",
 										"rift:variant_three",
-										"rift:pushable"
+										"rift:pushable",
+										"rift:can_attack"
 									]
 								}
 							},
@@ -3887,7 +3932,8 @@
 										"rift:apatosaurus_baby_calm",
 										"rift:default_collision",
 										"rift:variant_four",
-										"rift:pushable"
+										"rift:pushable",
+										"rift:can_attack"
 									]
 								}
 							}
@@ -4351,7 +4397,9 @@
                 "remove": {
                     "component_groups": [
                         "rift:apatosaurus_sittable",
-						"rift:pushable"
+						"rift:pushable",
+						"rift:aggravating_horn_attack",
+						"rift:can_attack"
                     ]
                 }
             },
@@ -4359,7 +4407,8 @@
                 "add": {
                     "component_groups": [
                         "rift:apatosaurus_sittable",
-						"rift:pushable"
+						"rift:pushable",
+						"rift:can_attack"
                     ]
 				},
 				"remove": {
@@ -4386,7 +4435,8 @@
 								"rift:apatosaurus_baby_calm",
 								"rift:default_collision",
                                 "rift:variant_one",
-								"rift:pushable"
+								"rift:pushable",
+								"rift:can_attack"
                             ]
                         }
                     },
@@ -4400,7 +4450,8 @@
 								"rift:apatosaurus_baby_calm",
 								"rift:default_collision",
                                 "rift:variant_two",
-								"rift:pushable"
+								"rift:pushable",
+								"rift:can_attack"
                             ]
                         }
                     },
@@ -4414,7 +4465,8 @@
 								"rift:apatosaurus_baby_calm",
 								"rift:default_collision",
                                 "rift:variant_three",
-								"rift:pushable"
+								"rift:pushable",
+								"rift:can_attack"
                             ]
                         }
                     },
@@ -4428,7 +4480,8 @@
 								"rift:apatosaurus_baby_calm",
 								"rift:default_collision",
                                 "rift:variant_four",
-								"rift:pushable"
+								"rift:pushable",
+								"rift:can_attack"
                             ]
                         }
                     }
@@ -4895,6 +4948,20 @@
 				"remove": {
 					"component_groups": [
 						"rift:apatosaurus_tamed_can_harvest"
+					]
+				}
+			},
+			"rift:aggravated_via_aggravating_horn": {
+				"add": {
+					"component_groups": [
+						"rift:aggravating_horn_attack"
+					]
+				}
+			},
+			"rift:stop_being_aggravated": {
+				"remove": {
+					"component_groups": [
+						"rift:aggravating_horn_attack"
 					]
 				}
 			},

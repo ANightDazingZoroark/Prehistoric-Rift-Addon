@@ -421,6 +421,37 @@
 				  	"target": "self"
 				}
 			},
+			"rift:aggravating_horn_attack": {
+				"minecraft:behavior.nearest_attackable_target": {
+				  	"priority": 4,
+					"within_radius": 35,
+				  	"entity_types": [
+						{
+					  		"filters": {
+								"all_of": [
+									{
+										"test": "has_component",
+										"subject": "other",
+										"operator": "!=",
+										"value": "minecraft:is_tamed"
+									},
+									{
+										"test": "is_family",
+										"subject": "other",
+										"operator": "!=",
+										"value": "player"
+									}
+								]
+					  		},
+					  		"max_dist": 25
+						}
+				  	]
+				},
+				"minecraft:on_target_escape": {
+					"event": "rift:stop_being_aggravated",
+				  	"target": "self"
+				}
+			},
 			"rift:sarcosuchus_wild_not_in_water": {
 				"minecraft:behavior.random_stroll": {
 					"priority": 8
@@ -3830,7 +3861,9 @@
 					"component_groups": [
 						"rift:sarcosuchus_sittable",
 						"rift:pushable",
-						"rift:default_navigation"
+						"rift:default_navigation",
+						"rift:can_bite_attack",
+						"rift:aggravating_horn_attack"
 					]
 				},
 				"run_command": {
@@ -3844,7 +3877,8 @@
 					"component_groups": [
 						"rift:sarcosuchus_sittable",
 						"rift:pushable",
-						"rift:default_navigation"
+						"rift:default_navigation",
+						"rift:can_bite_attack"
 					]
 				},
 				"remove": {
@@ -4354,6 +4388,20 @@
 				"remove": {
 					"component_groups": [
 						"rift:variant_seven"
+					]
+				}
+			},
+			"rift:aggravated_via_aggravating_horn": {
+				"add": {
+					"component_groups": [
+						"rift:aggravating_horn_attack"
+					]
+				}
+			},
+			"rift:stop_being_aggravated": {
+				"remove": {
+					"component_groups": [
+						"rift:aggravating_horn_attack"
 					]
 				}
 			},

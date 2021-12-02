@@ -414,6 +414,42 @@
 				  	"target": "self"
 				}
 			},
+			"rift:aggravating_horn_attack": {
+				"minecraft:behavior.nearest_attackable_target": {
+				  	"priority": 7,
+					"within_radius": 35,
+				  	"entity_types": [
+						{
+					  		"filters": {
+								"all_of": [
+									{
+										"test": "in_water",
+										"subject": "other",
+										"value": false
+									},
+									{
+										"test": "has_component",
+										"subject": "other",
+										"operator": "!=",
+										"value": "minecraft:is_tamed"
+									},
+									{
+										"test": "is_family",
+										"subject": "other",
+										"operator": "!=",
+										"value": "player"
+									}
+								]
+					  		},
+					  		"max_dist": 35
+						}
+				  	]
+				},
+				"minecraft:on_target_escape": {
+					"event": "rift:stop_being_aggravated",
+				  	"target": "self"
+				}
+			},
             "rift:saurophaganax_adult_wild_not_trusting": {
                 "minecraft:trusting": {
                     "probability": 0.25,
@@ -805,6 +841,15 @@
 					]
 				}
 			},
+			"rift:can_attack": {
+				"minecraft:behavior.delayed_attack": {
+					"priority": 9,
+					"attack_duration": 0.5,
+					"hit_delay_pct": 1,
+					"track_target": true,
+					"reach_multiplier": 2
+				}
+			},
 			"rift:drop_experience_from_forced_attack": {
 			  	"minecraft:experience_reward": {
 					"on_death": "Math.Random(7,12)"
@@ -873,13 +918,6 @@
 				"soft_distance": 4,
 				"hard_distance": 10,
 				"max_distance": 15
-			},
-			"minecraft:behavior.delayed_attack": {
-				"priority": 9,
-				"attack_duration": 0.5,
-				"hit_delay_pct": 1,
-				"track_target": true,
-				"reach_multiplier": 2
 			},
 			"minecraft:interact": {
 				"interactions": [
@@ -3448,7 +3486,8 @@
 								"rift:saurophaganax_adult_wild_not_trusting",
 								"rift:default_targets",
 								"rift:variant_zero",
-								"rift:pushable"
+								"rift:pushable",
+								"rift:can_attack"
 							]
 						},
 						"run_command": {
@@ -3466,7 +3505,8 @@
 								"rift:saurophaganax_adult_wild_not_trusting",
 								"rift:default_targets",
 								"rift:variant_one",
-								"rift:pushable"
+								"rift:pushable",
+								"rift:can_attack"
 							]
 						},
 						"run_command": {
@@ -3484,7 +3524,8 @@
 								"rift:saurophaganax_adult_wild_not_trusting",
 								"rift:default_targets",
 								"rift:variant_two",
-								"rift:pushable"
+								"rift:pushable",
+								"rift:can_attack"
 							]
 						},
 						"run_command": {
@@ -3502,7 +3543,8 @@
 								"rift:saurophaganax_adult_wild_not_trusting",
 								"rift:default_targets",
 								"rift:variant_three",
-								"rift:pushable"
+								"rift:pushable",
+								"rift:can_attack"
 							]
 						},
 						"run_command": {
@@ -3568,7 +3610,8 @@
 						"rift:default_targets",
 						"rift:attack_forced_attack_entity",
 						"rift:saurophaganax_adult_wild_not_trusting",
-						"rift:rideable"
+						"rift:rideable",
+						"rift:aggravating_horn_attack"
 					]
 				},
 				"run_command": {
@@ -3881,7 +3924,9 @@
 				"remove": {
 					"component_groups": [
 						"rift:saurophaganax_sittable",
-						"rift:pushable"
+						"rift:pushable",
+						"rift:can_attack",
+						"rift:aggravating_horn_attack"
 					]
 				}
 			},
@@ -3889,7 +3934,8 @@
 				"add": {
 					"component_groups": [
 						"rift:saurophaganax_sittable",
-						"rift:pushable"
+						"rift:pushable",
+						"rift:can_attack"
 					]
 				},
 				"remove": {
@@ -4213,7 +4259,8 @@
 								"rift:saurophaganax_baby_wild",
 								"rift:saurophaganax_baby_tameable",
 								"rift:variant_zero",
-								"rift:pushable"
+								"rift:pushable",
+								"rift:can_attack"
 							]
 						}
 					},
@@ -4225,7 +4272,8 @@
 								"rift:saurophaganax_baby_wild",
 								"rift:saurophaganax_baby_tameable",
 								"rift:variant_one",
-								"rift:pushable"
+								"rift:pushable",
+								"rift:can_attack"
 							]
 						}
 					},
@@ -4237,7 +4285,8 @@
 								"rift:saurophaganax_baby_wild",
 								"rift:saurophaganax_baby_tameable",
 								"rift:variant_two",
-								"rift:pushable"
+								"rift:pushable",
+								"rift:can_attack"
 							]
 						}
 					},
@@ -4249,11 +4298,26 @@
 								"rift:saurophaganax_baby_wild",
 								"rift:saurophaganax_baby_tameable",
 								"rift:variant_three",
-								"rift:pushable"
+								"rift:pushable",
+								"rift:can_attack"
 							]
 						}
 					}
 				]
+			},
+			"rift:aggravated_via_aggravating_horn": {
+				"add": {
+					"component_groups": [
+						"rift:aggravating_horn_attack"
+					]
+				}
+			},
+			"rift:stop_being_aggravated": {
+				"remove": {
+					"component_groups": [
+						"rift:aggravating_horn_attack"
+					]
+				}
 			},
 			//for potion effects
 			"rift:drink_night_vision_potion_one": {

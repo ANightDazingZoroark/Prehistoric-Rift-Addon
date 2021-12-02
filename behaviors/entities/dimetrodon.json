@@ -317,12 +317,29 @@
 			"rift:attack_forced_attack_entity": {
 				"minecraft:behavior.nearest_attackable_target": {
 				  	"priority": 4,
+					"within_radius": 25,
 				  	"entity_types": [
 						{
 					  		"filters": {
-								"test": "is_family",
-								"subject": "other",
-								"value": "isForcedAttacking"
+								"all_of": [
+									{
+										"test": "in_water",
+										"subject": "other",
+										"value": false
+									},
+									{
+										"test": "has_component",
+										"subject": "other",
+										"operator": "!=",
+										"value": "minecraft:is_tamed"
+									},
+									{
+										"test": "is_family",
+										"subject": "other",
+										"operator": "!=",
+										"value": "player"
+									}
+								]
 					  		},
 					  		"max_dist": 35
 						}
@@ -330,6 +347,42 @@
 				},
 				"minecraft:on_target_escape": {
 					"event": "rift:no_force_attacked",
+				  	"target": "self"
+				}
+			},
+			"rift:aggravating_horn_attack": {
+				"minecraft:behavior.nearest_attackable_target": {
+				  	"priority": 4,
+					"within_radius": 35,
+				  	"entity_types": [
+						{
+					  		"filters": {
+								"all_of": [
+									{
+										"test": "in_water",
+										"subject": "other",
+										"value": false
+									},
+									{
+										"test": "has_component",
+										"subject": "other",
+										"operator": "!=",
+										"value": "minecraft:is_tamed"
+									},
+									{
+										"test": "is_family",
+										"subject": "other",
+										"operator": "!=",
+										"value": "player"
+									}
+								]
+					  		},
+					  		"max_dist": 35
+						}
+				  	]
+				},
+				"minecraft:on_target_escape": {
+					"event": "rift:stop_being_aggravated",
 				  	"target": "self"
 				}
 			},
@@ -452,6 +505,9 @@
 				"minecraft:attack": {
 					"damage": 8
 				},
+				"minecraft:equipment": {
+					"table": "loot_tables/entities/dimetrodon fire weapon.json"
+				},
 				"minecraft:environment_sensor": {
 					"triggers": [
 						{
@@ -529,6 +585,9 @@
 				},
 				"minecraft:attack": {
 					"damage": 8
+				},
+				"minecraft:equipment": {
+					"table": "loot_tables/entities/dimetrodon fire weapon.json"
 				},
 				"minecraft:environment_sensor": {
 					"triggers": [
@@ -674,6 +733,9 @@
 				},
 				"minecraft:attack": {
 					"damage": 8
+				},
+				"minecraft:equipment": {
+					"table": "loot_tables/entities/dimetrodon fire weapon.json"
 				},
 				"minecraft:fire_immune": {},
 				"minecraft:timer": {
@@ -3434,8 +3496,6 @@
 					]
 				}
 			},
-			"rift:flame_mode_grace_loop": {
-			},
 			"rift:stop_flame_mode": {
 				"add": {
 					"component_groups": [
@@ -3445,6 +3505,11 @@
 				"remove": {
 					"component_groups": [
 						"rift:dimetrodon_flame_mode_grace_period"
+					]
+				},
+				"run_command": {
+					"command": [
+						"replaceitem entity @s slot.weapon.mainhand 0 air"
 					]
 				}
 			},
@@ -3473,6 +3538,11 @@
 				"remove": {
 					"component_groups": [
 						"rift:dimetrodon_forced_flame_mode"
+					]
+				},
+				"run_command": {
+					"command": [
+						"replaceitem entity @s slot.weapon.mainhand 0 air"
 					]
 				}
 			},
@@ -3722,6 +3792,20 @@
 				  		"rift:drop_more_meat_from_sarcosuchus"
 					]
 			  	}
+			},
+			"rift:aggravated_via_aggravating_horn": {
+				"add": {
+					"component_groups": [
+						"rift:aggravating_horn_attack"
+					]
+				}
+			},
+			"rift:stop_being_aggravated": {
+				"remove": {
+					"component_groups": [
+						"rift:aggravating_horn_attack"
+					]
+				}
 			},
 			//for potion effects
 			"rift:drink_night_vision_potion_one": {
