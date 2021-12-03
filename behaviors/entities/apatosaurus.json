@@ -1363,6 +1363,45 @@
 							"filters": {
 								"all_of": [
 									{
+										"any_of": [
+											{
+												"test": "has_equipment",
+												"subject": "other",
+												"domain": "hand",
+												"value": "rift:berry_treat"
+											},
+											{
+												"test": "has_equipment",
+												"subject": "other",
+												"domain": "hand",
+												"value": "rift:grassy_treat"
+											},
+											{
+												"test": "has_equipment",
+												"subject": "other",
+												"domain": "hand",
+												"value": "rift:leafy_treat"
+											}
+										]
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"operator": "!=",
+										"value": "minecraft:is_tamed"
+									}
+								]
+							},
+							"event": "rift:lol",
+							"target": "self"
+						},
+						"interact_text": "action.interact.tame"
+					},
+					{
+						"on_interact": {
+							"filters": {
+								"all_of": [
+									{
 										"test": "has_equipment",
 										"subject": "other",
 										"domain": "hand",
@@ -4307,11 +4346,11 @@
 				"run_command": {
 					"command": [
 						"scoreboard players remove @s[scores={apatoMortarShell=!0}] apatoMortarShell 1",
-						"execute @s[scores={apatoMortarShell=!0}, ry=45, rym=-45] ~ ~ ~ execute @e[tag=!tamed, type=!player, type=!item, type=!rift:mortar, type=!rift:mortar_shell, type=!rift:egg, c=1, x=~-32, dx=64, y=~-8, dy=64, z=~+16, dz=64] ~ ~ ~ summon rift:mortar_shell ~ ~+30 ~",
-						"execute @s[scores={apatoMortarShell=!0}, ry=135, rym=45] ~ ~ ~ execute @e[tag=!tamed, type=!player, type=!item, type=!rift:mortar, type=!rift:mortar_shell, type=!rift:egg, c=1, x=~-16, dx=-64, y=~-8, dy=64, z=~32, dz=-64] ~ ~ ~ summon rift:mortar_shell ~ ~+30 ~",
-						"execute @s[scores={apatoMortarShell=!0}, ry=180, rym=135] ~ ~ ~ execute @e[tag=!tamed, type=!player, type=!item, type=!rift:mortar, type=!rift:mortar_shell, type=!rift:egg, c=1, x=~-32, dx=64, y=~-8, dy=64, z=~-16, dz=-64] ~ ~ ~ summon rift:mortar_shell ~ ~+30 ~",
-						"execute @s[scores={apatoMortarShell=!0}, ry=-135, rym=-180] ~ ~ ~ execute @e[tag=!tamed, type=!player, type=!item, type=!rift:mortar, type=!rift:mortar_shell, type=!rift:egg, c=1, x=~-32, dx=64, y=~-8, dy=64, z=~-16, dz=-64] ~ ~ ~ summon rift:mortar_shell ~ ~+30 ~",
-						"execute @s[scores={apatoMortarShell=!0}, ry=-45, rym=-135] ~ ~ ~ execute @e[tag=!tamed, type=!player, type=!item, type=!rift:mortar, type=!rift:mortar_shell, type=!rift:egg, c=1, x=~16, dx=64, y=~-8, dy=64, z=~-32, dz=64] ~ ~ ~ summon rift:mortar_shell ~ ~+30 ~"
+						"execute @s[scores={apatoMortarShell=!0}, ry=45, rym=-45] ~ ~ ~ execute @e[tag=!tamed, type=!player, type=!item, type=!rift:mortar, type=!rift:mortar_shell, type=!rift:egg,  family=!inanimate, c=1, x=~-32, dx=64, y=~-8, dy=64, z=~+16, dz=64] ~ ~ ~ summon rift:mortar_shell ~ ~+30 ~",
+						"execute @s[scores={apatoMortarShell=!0}, ry=135, rym=45] ~ ~ ~ execute @e[tag=!tamed, type=!player, type=!item, type=!rift:mortar, type=!rift:mortar_shell, type=!rift:egg,  family=!inanimate, c=1, x=~-16, dx=-64, y=~-8, dy=64, z=~32, dz=-64] ~ ~ ~ summon rift:mortar_shell ~ ~+30 ~",
+						"execute @s[scores={apatoMortarShell=!0}, ry=180, rym=135] ~ ~ ~ execute @e[tag=!tamed, type=!player, type=!item, type=!rift:mortar, type=!rift:mortar_shell, type=!rift:egg,  family=!inanimate, c=1, x=~-32, dx=64, y=~-8, dy=64, z=~-16, dz=-64] ~ ~ ~ summon rift:mortar_shell ~ ~+30 ~",
+						"execute @s[scores={apatoMortarShell=!0}, ry=-135, rym=-180] ~ ~ ~ execute @e[tag=!tamed, type=!player, type=!item, type=!rift:mortar, type=!rift:mortar_shell, type=!rift:egg,  family=!inanimate, c=1, x=~-32, dx=64, y=~-8, dy=64, z=~-16, dz=-64] ~ ~ ~ summon rift:mortar_shell ~ ~+30 ~",
+						"execute @s[scores={apatoMortarShell=!0}, ry=-45, rym=-135] ~ ~ ~ execute @e[tag=!tamed, type=!player, type=!item, type=!rift:mortar, type=!rift:mortar_shell, type=!rift:egg,  family=!inanimate, c=1, x=~16, dx=64, y=~-8, dy=64, z=~-32, dz=64] ~ ~ ~ summon rift:mortar_shell ~ ~+30 ~"
 					]
 				}
 			},
@@ -5237,6 +5276,13 @@
 				"run_command": {
 					"command": [
 						"effect @s clear"
+					]
+				}
+			},
+			"rift:lol": {
+				"run_command": {
+					"command": [
+						"tellraw @p {\"rawtext\":[{\"text\":\"Tier 3 Creatures cannot be tamed this way, you need to kill them for a chance to get their eggs before taming them!\"}]}"
 					]
 				}
 			}
