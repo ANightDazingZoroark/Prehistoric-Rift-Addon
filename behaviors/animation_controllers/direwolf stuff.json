@@ -1,7 +1,7 @@
 {
     "format_version": "1.10.0",
     "animation_controllers": {
-        "controller.animation.wild_utahraptor_pack_buff": {
+        "controller.animation.wild_direwolf_pack_buff": {
             "initial_state": "default",
             "states": {
                 "default": {
@@ -13,7 +13,7 @@
                 },
                 "find_friends": {
                     "on_entry": [
-                        "v.x = 0.0; for_each(t.utahraptor, query.get_nearby_entities_except_self(16, 'rift:utahraptor'), { v.x = v.x + !(t.utahraptor -> query.is_tamed); });",
+                        "v.x = 0.0; for_each(t.direwolf, query.get_nearby_entities_except_self(16, 'rift:direwolf'), { v.x = v.x + !(t.direwolf -> query.is_tamed); }); for_each(t.direwolf_werewolf, query.get_nearby_entities_except_self(16, 'rift:direwolf_werewolf'), { v.x = v.x + !(t.direwolf_werewolf -> query.is_tamed); });",
                         "v.chance = Math.random_integer(0, 2);"
                     ],
                     "transitions": [
@@ -27,7 +27,7 @@
                 },
                 "use_buff": {
                     "on_entry": [
-                        "@s rift:wild_utahraptor_buffing"
+                        "@s rift:wild_direwolf_buffing"
                     ],
                     "transitions": [
                         {
@@ -37,7 +37,7 @@
                 }
             }
         },
-        "controller.animation.wild_utahraptor_remove_buffs": {
+        "controller.animation.wild_direwolf_remove_buffs": {
             "initial_state": "default",
             "states": {
                 "default": {
@@ -54,33 +54,11 @@
                     ],
                     "transitions": [
                         {
-                            "default": "!query.has_target || !query.is_tamed"
+                            "default": "!query.has_target || query.is_tamed"
                         }
                     ]
                 }
             }
-        },
-        "controller.animation.utah_forced_use_slash": {
-			"initial_state": "default",
-			"states": {
-				"default": {
-					"transitions": [
-						{
-							"slashing": "query.is_sheared"
-						}
-					]
-				},
-				"slashing": {
-					"transitions": [
-						{
-							"default": "!query.is_sheared"
-						}
-					],
-					"animations": [
-						"animForcedAttack"
-					]
-				}
-			}
-		}
+        }
     }
 }
