@@ -44,7 +44,22 @@
                     }
                 }
             },
-            "rift:do_piranha_swarm": {
+            "rift:not_on_ground_piranha_swarm": {
+                "minecraft:environment_sensor": {
+                    "triggers": [
+                        {
+                            "filters": {
+                                "test": "on_ground",
+                                "subject": "self",
+                                "value": true
+                            },
+                            "event": "rift:execute_piranha_swarm",
+                            "target": "self"
+                        }
+                    ]
+                }
+            },
+            "rift:on_ground_piranha_swarm": {
                 "minecraft:spawn_entity": {
 					"entities": [
 						{
@@ -103,7 +118,19 @@
             "rift:piranha_swarm": {
                 "add": {
                     "component_groups": [
-                        "rift:do_piranha_swarm"
+                        "rift:not_on_ground_piranha_swarm"
+                    ]
+                }
+            },
+            "rift:execute_piranha_swarm": {
+                "add": {
+                    "component_groups": [
+                        "rift:on_ground_piranha_swarm"
+                    ]
+                },
+                "remove": {
+                    "component_groups": [
+                        "rift:not_on_ground_piranha_swarm"
                     ]
                 },
                 "run_command": {
