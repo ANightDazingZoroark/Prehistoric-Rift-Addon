@@ -93,6 +93,111 @@
 					]
 				}
 			}
+		},
+        "controller.animation.direwolf_werewolf_movement": {
+			"initial_state": "default",
+			"states": {
+				"default": {
+					"animations": [
+						{
+							"animStanding": "query.ground_speed == 0"
+						},
+						{
+							"animWalk": "query.ground_speed > 0"
+						}
+					]
+				}
+			}
+        },
+        "controller.animation.direwolf_werewolf_attack": {
+			"initial_state": "default",
+			"states": {
+				"default": {
+					"transitions": [
+						{
+							"attacking": "query.is_delayed_attacking"
+						}
+					]
+				},
+				"attacking": {
+					"transitions": [
+						{
+							"default": "!query.is_delayed_attacking"
+						},
+						{
+							"bite": "query.mark_variant == 0"
+						},
+						{
+							"clawLimbo": "query.mark_variant == 1"
+						}
+					]
+				},
+				"bite": {
+					"animations": [
+						"animBite"
+					],
+					"transitions": [
+						{
+							"default": "!query.is_delayed_attacking"
+						}
+					]
+				},
+				"clawLimbo": {
+					"transitions": [
+						{
+							"default": "!query.is_delayed_attacking"
+						},
+						{
+							"clawOne": "v.scratchMode = (math.floor(math.random(0,2))); return v.scratchMode == 0;"
+						},
+						{
+							"clawTwo": "v.scratchMode == 1"
+						}
+					]
+				},
+				"clawOne": {
+					"animations": [
+						"animScratchOne"
+					],
+					"transitions": [
+						{
+							"default": "!query.is_delayed_attacking"
+						}
+					]
+				},
+				"clawTwo": {
+					"animations": [
+						"animScratchTwo"
+					],
+					"transitions": [
+						{
+							"default": "!query.is_delayed_attacking"
+						}
+					]
+				}
+			}
+        },
+		"controller.animation.direwolf_werewolf_boulder_throw": {
+			"initial_state": "default",
+			"states": {
+				"default": {
+					"transitions": [
+						{
+							"throwing": "query.facing_target_to_range_attack"
+						}
+					]
+				},
+				"throwing": {
+					"animations": [
+						"animBoulderHurl"
+					],
+					"transitions": [
+						{
+							"default": "!query.is_charged"
+						}
+					]
+				}
+			}
 		}
     }
 }

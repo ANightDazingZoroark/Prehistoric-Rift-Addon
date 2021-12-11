@@ -59,6 +59,190 @@
                     ]
                 }
             }
+        },
+        "controller.animation.direwolf_transform": {
+            "initial_state": "default",
+            "states": {
+                "default": {
+                    "transitions": [
+                        {
+                            "transform_variant_zero": "query.is_tamed && query.variant == 0 && ((query.time_of_day >= 0.75) || (query.time_of_day < 0.25))"
+                        },
+                        {
+                            "transform_variant_one": "query.is_tamed && query.variant == 1 && ((query.time_of_day >= 0.75) || (query.time_of_day < 0.25))"
+                        },
+                        {
+                            "transform_variant_two": "query.is_tamed && query.variant == 2 && ((query.time_of_day >= 0.75) || (query.time_of_day < 0.25))"
+                        },
+                        {
+                            "transform_variant_three": "query.is_tamed && query.variant == 3 && ((query.time_of_day >= 0.75) || (query.time_of_day < 0.25))"
+                        }
+                    ]
+                },
+                "transform_variant_zero": {
+                    "on_entry": [
+                        "@s rift:direwolf_tamed_into_werewolf_variant_zero"
+                    ]
+                },
+                "transform_variant_one": {
+                    "on_entry": [
+                        "@s rift:direwolf_tamed_into_werewolf_variant_one"
+                    ]
+                },
+                "transform_variant_two": {
+                    "on_entry": [
+                        "@s rift:direwolf_tamed_into_werewolf_variant_two"
+                    ]
+                },
+                "transform_variant_three": {
+                    "on_entry": [
+                        "@s rift:direwolf_tamed_into_werewolf_variant_three"
+                    ]
+                }
+            }
+        },
+        "controller.animation.direwolf_werewolf_switch_between_melee_attacks": {
+            "initial_state": "default",
+            "states": {
+                "default": {
+                    "transitions": [
+                        {
+                            "chooseAttack": "query.has_target && query.out_of_control"
+                        }
+                    ]
+                },
+                "chooseAttack": {
+                    "transitions": [
+                        {
+                            "bite": "v.attackMode = (math.floor(math.random(0,2))); return v.attackMode == 0;"
+                        },
+                        {
+                            "claw": "v.attackMode == 1"
+                        }
+                    ]
+                },
+                "bite": {
+                    "transitions": [
+                        {
+                            "biteLimbo": "query.is_delayed_attacking"
+                        },
+                        {
+                            "default": "!query.has_target || !query.out_of_control"
+                        }
+                    ],
+                    "on_entry": [
+                        "@s rift:can_use_bite"
+                    ]
+                },
+                "biteLimbo": {
+                    "transitions": [
+                        {
+                            "bite": "v.attackMode = (math.floor(math.random(0,2))); return !query.is_delayed_attacking && v.attackMode == 0;"
+                        },
+                        {
+                            "claw": "!query.is_delayed_attacking && v.attackMode == 1"
+                        },
+                        {
+                            "default": "!query.has_target || !query.out_of_control"
+                        }
+                    ],
+                    "on_exit": [
+                        "@s rift:cannot_use_bite"
+                    ]
+                },
+                "claw": {
+                    "transitions": [
+                        {
+                            "clawLimbo": "query.is_delayed_attacking"
+                        },
+                        {
+                            "default": "!query.has_target || !query.out_of_control"
+                        }
+                    ],
+                    "on_entry": [
+                        "@s rift:can_use_claw"
+                    ]
+                },
+                "clawLimbo": {
+                    "transitions": [
+                        {
+                            "bite": "v.attackMode = (math.floor(math.random(0,2))); return !query.is_delayed_attacking && v.attackMode == 0;"
+                        },
+                        {
+                            "claw": "!query.is_delayed_attacking && v.attackMode == 1"
+                        },
+                        {
+                            "default": "!query.has_target || !query.out_of_control"
+                        }
+                    ],
+                    "on_exit": [
+                        "@s rift:cannot_use_claw"
+                    ]
+                }
+            }
+        },
+        "controller.animation.direwolf_werewolf_throw_boulder": {
+            "initial_state": "default",
+            "states": {
+                "default": {
+                    "transitions": [
+                        {
+                            "attacking": "query.has_target && query.is_ignited"
+                        }
+                    ]
+                },
+                "attacking": {
+                    "animations": [
+                        "animBoulderThrow"
+                    ],
+                    "transitions": [
+                        {
+                            "default": "!query.has_target || !query.is_ignited"
+                        }
+                    ]
+                }
+            }
+        },
+        "controller.animation.direwolf_werewolf_transform": {
+            "initial_state": "default",
+            "states": {
+                "default": {
+                    "transitions": [
+                        {
+                            "transform_variant_zero": "query.is_tamed && query.variant == 0 && (query.time_of_day < 0.75) && (query.time_of_day >= 0.25)"
+                        },
+                        {
+                            "transform_variant_one": "query.is_tamed && query.variant == 1 && (query.time_of_day < 0.75) && (query.time_of_day >= 0.25)"
+                        },
+                        {
+                            "transform_variant_two": "query.is_tamed && query.variant == 2 && (query.time_of_day < 0.75) && (query.time_of_day >= 0.25)"
+                        },
+                        {
+                            "transform_variant_three": "query.is_tamed && query.variant == 3 && (query.time_of_day < 0.75) && (query.time_of_day >= 0.25)"
+                        }
+                    ]
+                },
+                "transform_variant_zero": {
+                    "on_entry": [
+                        "@s rift:direwolf_tamed_into_normal_variant_zero"
+                    ]
+                },
+                "transform_variant_one": {
+                    "on_entry": [
+                        "@s rift:direwolf_tamed_into_normal_variant_one"
+                    ]
+                },
+                "transform_variant_two": {
+                    "on_entry": [
+                        "@s rift:direwolf_tamed_into_normal_variant_two"
+                    ]
+                },
+                "transform_variant_three": {
+                    "on_entry": [
+                        "@s rift:direwolf_tamed_into_normal_variant_three"
+                    ]
+                }
+            }
         }
     }
 }
