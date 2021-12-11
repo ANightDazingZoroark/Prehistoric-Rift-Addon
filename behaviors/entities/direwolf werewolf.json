@@ -6,9 +6,18 @@
             "is_spawnable": true,
             "is_summonable": true,
             "is_experimental": false,
+			"properties": {
+                "rift:was_ridden":{
+                    "values": [
+                        false,
+						true
+                    ]
+                }
+			},
 			"animations": {
 				"contSwitchBetweenMeleeAttacks": "controller.animation.direwolf_werewolf_switch_between_melee_attacks",
 				"contForcedTransform": "controller.animation.direwolf_werewolf_transform",
+				"contRideableAfterTransformation": "controller.animation.direwolf_rideable_after_transformation",
 				"contPackBuff": "controller.animation.wild_direwolf_pack_buff",
 				"contWildRemoveBuffs": "controller.animation.wild_direwolf_remove_buffs",
 				"contTameTag": "controller.animation.add_tame_tag",
@@ -20,6 +29,7 @@
 				"animate": [
 					"contSwitchBetweenMeleeAttacks",
 					"contForcedTransform",
+					"contRideableAfterTransformation",
 					"contPackBuff",
 					"contWildRemoveBuffs",
 					"contTameTag",
@@ -30,6 +40,9 @@
         },
         "component_groups": {
             "rift:direwolf_werewolf_wild": {
+				"minecraft:movement": {
+					"value": 0.25
+				},
 				"minecraft:navigation.climb": {
 					"avoid_water": true,
 					"avoid_damage_blocks": true
@@ -241,20 +254,134 @@
 			},
             "rift:direwolf_werewolf_tamed": {
 				"minecraft:is_tamed": {},
-				"minecraft:behavior.follow_owner": {
-					"start_distance": 8,
-					"stop_distance": 40,
-					"priority": 7
-				},
-				"minecraft:behavior.owner_hurt_by_target": {
-					"priority": 1
-				},
-				"minecraft:behavior.owner_hurt_target": {
-					"priority": 2
-				},
                 "minecraft:navigation.walk": {
                     "avoid_water": true,
                     "avoid_damage_blocks": true
+                },
+				"minecraft:healable": {
+					"force_use": true,
+					"items": [
+						{
+							"item": "minecraft:beef",
+							"heal_amount": 3
+						},
+						{
+							"item": "minecraft:cooked_beef",
+							"heal_amount": 6
+						},
+						{
+							"item": "minecraft:porkchop",
+							"heal_amount": 3
+						},
+						{
+							"item": "minecraft:cooked_porkchop",
+							"heal_amount": 6
+						},
+						{
+							"item": "minecraft:chicken",
+							"heal_amount": 3
+						},
+						{
+							"item": "minecraft:cooked_chicken",
+							"heal_amount": 6
+						},
+						{
+							"item": "minecraft:muttonraw",
+							"heal_amount": 3
+						},
+						{
+							"item": "minecraft:muttoncooked",
+							"heal_amount": 6
+						},
+						{
+							"item": "minecraft:rabbit",
+							"heal_amount": 3
+						},
+						{
+							"item": "minecraft:cooked_rabbit",
+							"heal_amount": 6
+						},
+						{
+							"item": "rift:raw_exotic_meat",
+							"heal_amount": 3
+						},
+						{
+							"item": "rift:cooked_exotic_meat",
+							"heal_amount": 6
+						},
+						{
+							"item": "rift:raw_dodo_meat",
+							"heal_amount": 3
+						},
+						{
+							"item": "rift:cooked_dodo_meat",
+							"heal_amount": 6,
+							"effects": [
+								{
+									"name": "absorption",
+									"duration": 30,
+									"amplifier": 3
+								}
+							]
+						},
+						{
+							"item": "rift:raw_hadrosaur_meat",
+							"heal_amount": 3
+						},
+						{
+							"item": "rift:cooked_hadrosaur_meat",
+							"heal_amount": 6,
+							"effects": [
+								{
+									"name": "resistance",
+									"duration": 60,
+									"amplifier": 3
+								}
+							]
+						},
+						{
+							"item": "rift:mixed_meat",
+							"heal_amount": 20,
+							"effects": [
+								{
+									"name": "absorption",
+									"duration": 120,
+									"amplifier": 0
+								},
+								{
+									"name": "regeneration",
+									"duration": 5,
+									"amplifier": 1
+								}
+							]
+						},
+						{
+							"item": "rift:enchanted_mixed_meat",
+							"heal_amount": 20,
+							"effects": [
+								{
+									"name": "absorption",
+									"duration": 120,
+									"amplifier": 3
+								},
+								{
+									"name": "regeneration",
+									"duration": 30,
+									"amplifier": 1
+								},
+								{
+									"name": "fire_resistance",
+									"duration": 300,
+									"amplifier": 0
+								},
+								{
+									"name": "resistance",
+									"duration": 300,
+									"amplifier": 0
+								}
+							]
+						}
+					]
                 }
             },
             "rift:direwolf_werewolf_rideable": {
@@ -283,11 +410,47 @@
 				}
             },
             "rift:direwolf_werewolf_sittable": {
-				"minecraft:sittable": {},
+				"minecraft:sittable": {
+					"sit_event": {
+						"event": "rift:go_sit",
+						"target": "self"
+					},
+					"stand_event": {
+						"event": "rift:go_stand",
+						"target": "self"
+					}
+				},
 				"minecraft:behavior.stay_while_sitting": {
 					"priority": 0
 				}
             },
+			"rift:direwolf_werewolf_standing": {
+				"minecraft:skin_id": {
+					"value": 0
+				},
+				"minecraft:behavior.follow_owner": {
+					"start_distance": 8,
+					"stop_distance": 40,
+					"priority": 7
+				},
+				"minecraft:behavior.owner_hurt_by_target": {
+					"priority": 1
+				},
+				"minecraft:behavior.owner_hurt_target": {
+					"priority": 2
+				},
+				"minecraft:movement": {
+					"value": 0.25
+				}
+			},
+			"rift:direwolf_werewolf_sitting": {
+				"minecraft:skin_id": {
+					"value": 1
+				},
+				"minecraft:movement": {
+					"value": 0
+				}
+			},
             "rift:forced_bite": {
 				"minecraft:is_sheared": {}
 			},
@@ -402,27 +565,75 @@
 					"into": "rift:direwolf<rift:from_wild_forced_variant_three>"
 				}
 			},
-			"rift:direwolf_tamed_into_normal_variant_zero": {
+			"rift:direwolf_tamed_into_sitting_normal_variant_zero": {
 				"minecraft:transformation": {
-					"into": "rift:direwolf<rift:from_tamed_variant_zero>",
+					"into": "rift:direwolf<rift:from_tamed_sitting_variant_zero>",
 					"keep_owner": true
 				}
 			},
-			"rift:direwolf_tamed_into_normal_variant_one": {
+			"rift:direwolf_tamed_into_sitting_normal_variant_one": {
 				"minecraft:transformation": {
-					"into": "rift:direwolf<rift:from_tamed_variant_one>",
+					"into": "rift:direwolf<rift:from_tamed_sitting_variant_one>",
 					"keep_owner": true
 				}
 			},
-			"rift:direwolf_tamed_into_normal_variant_two": {
+			"rift:direwolf_tamed_into_sitting_normal_variant_two": {
 				"minecraft:transformation": {
-					"into": "rift:direwolf<rift:from_tamed_variant_two>",
+					"into": "rift:direwolf<rift:from_tamed_sitting_variant_two>",
 					"keep_owner": true
 				}
 			},
-			"rift:direwolf_tamed_into_normal_variant_three": {
+			"rift:direwolf_tamed_into_sitting_normal_variant_three": {
 				"minecraft:transformation": {
-					"into": "rift:direwolf<rift:from_tamed_variant_three>",
+					"into": "rift:direwolf<rift:from_tamed_sitting_variant_three>",
+					"keep_owner": true
+				}
+			},
+			"rift:direwolf_tamed_into_standing_normal_variant_zero": {
+				"minecraft:transformation": {
+					"into": "rift:direwolf<rift:from_tamed_standing_variant_zero>",
+					"keep_owner": true
+				}
+			},
+			"rift:direwolf_tamed_into_standing_normal_variant_one": {
+				"minecraft:transformation": {
+					"into": "rift:direwolf<rift:from_tamed_standing_variant_one>",
+					"keep_owner": true
+				}
+			},
+			"rift:direwolf_tamed_into_standing_normal_variant_two": {
+				"minecraft:transformation": {
+					"into": "rift:direwolf<rift:from_tamed_standing_variant_two>",
+					"keep_owner": true
+				}
+			},
+			"rift:direwolf_tamed_into_standing_normal_variant_three": {
+				"minecraft:transformation": {
+					"into": "rift:direwolf<rift:from_tamed_standing_variant_three>",
+					"keep_owner": true
+				}
+			},
+			"rift:direwolf_tamed_into_standing_normal_variant_zero_with_rider": {
+				"minecraft:transformation": {
+					"into": "rift:direwolf<rift:from_tamed_standing_variant_zero_with_rider>",
+					"keep_owner": true
+				}
+			},
+			"rift:direwolf_tamed_into_standing_normal_variant_one_with_rider": {
+				"minecraft:transformation": {
+					"into": "rift:direwolf<rift:from_tamed_standing_variant_one_with_rider>",
+					"keep_owner": true
+				}
+			},
+			"rift:direwolf_tamed_into_standing_normal_variant_two_with_rider": {
+				"minecraft:transformation": {
+					"into": "rift:direwolf<rift:from_tamed_standing_variant_two_with_rider>",
+					"keep_owner": true
+				}
+			},
+			"rift:direwolf_tamed_into_standing_normal_variant_three_with_rider": {
+				"minecraft:transformation": {
+					"into": "rift:direwolf<rift:from_tamed_standing_variant_three_with_rider>",
 					"keep_owner": true
 				}
 			},
@@ -578,9 +789,6 @@
                 ]
             },
 			"minecraft:movement.generic": {},
-			"minecraft:movement": {
-				"value": 0.25
-			},
 			"minecraft:behavior.stalk_and_pounce_on_target": {
 				"priority": 4,
 				"stalk_speed": 1.2,
@@ -659,7 +867,7 @@
 								"subject": "self",
 								"value": "fatal"
 							},
-						  	"event": "rift:forced_return_wild",
+						  	"event": "rift:forced_return",
 						  	"target": "self"
 						}
 					},
@@ -920,6 +1128,12 @@
 						"filters": {
 							"all_of": [
 								{
+									"test": "has_component",
+									"subject": "self",
+									"operator": "!=",
+									"value": "minecraft:is_tamed"
+								},
+								{
 									"test": "is_daytime",
 									"value": true
 								},
@@ -1025,52 +1239,194 @@
 					]
 				}
 			},
-			"rift:from_tamed_variant_zero": {
+			"rift:from_tamed_sitting_variant_zero": {
 				"add": {
 					"component_groups": [
 						"rift:direwolf_werewolf_tamed",
 						"rift:direwolf_werewolf_rideable",
 						"rift:direwolf_werewolf_sittable",
+						"rift:direwolf_werewolf_sitting",
 						"rift:pushable",
 						"rift:can_attack",
 						"rift:variant_zero"
 					]
 				}
 			},
-			"rift:from_tamed_variant_one": {
+			"rift:from_tamed_sitting_variant_one": {
 				"add": {
 					"component_groups": [
 						"rift:direwolf_werewolf_tamed",
 						"rift:direwolf_werewolf_rideable",
 						"rift:direwolf_werewolf_sittable",
+						"rift:direwolf_werewolf_sitting",
 						"rift:pushable",
 						"rift:can_attack",
 						"rift:variant_one"
 					]
 				}
 			},
-			"rift:from_tamed_variant_two": {
+			"rift:from_tamed_sitting_variant_two": {
 				"add": {
 					"component_groups": [
 						"rift:direwolf_werewolf_tamed",
 						"rift:direwolf_werewolf_rideable",
 						"rift:direwolf_werewolf_sittable",
+						"rift:direwolf_werewolf_sitting",
 						"rift:pushable",
 						"rift:can_attack",
 						"rift:variant_two"
 					]
 				}
 			},
-			"rift:from_tamed_variant_three": {
+			"rift:from_tamed_sitting_variant_three": {
 				"add": {
 					"component_groups": [
 						"rift:direwolf_werewolf_tamed",
 						"rift:direwolf_werewolf_rideable",
 						"rift:direwolf_werewolf_sittable",
+						"rift:direwolf_werewolf_sitting",
 						"rift:pushable",
 						"rift:can_attack",
 						"rift:variant_three"
 					]
+				}
+			},
+			"rift:from_tamed_standing_variant_zero": {
+				"add": {
+					"component_groups": [
+						"rift:direwolf_werewolf_tamed",
+						"rift:direwolf_werewolf_rideable",
+						"rift:direwolf_werewolf_sittable",
+						"rift:direwolf_werewolf_standing",
+						"rift:pushable",
+						"rift:can_attack",
+						"rift:variant_zero"
+					]
+				},
+				"set_actor_property": {
+					"rift:was_ridden": false
+				}
+			},
+			"rift:from_tamed_standing_variant_one": {
+				"add": {
+					"component_groups": [
+						"rift:direwolf_werewolf_tamed",
+						"rift:direwolf_werewolf_rideable",
+						"rift:direwolf_werewolf_sittable",
+						"rift:direwolf_werewolf_standing",
+						"rift:pushable",
+						"rift:can_attack",
+						"rift:variant_one"
+					]
+				},
+				"set_actor_property": {
+					"rift:was_ridden": false
+				}
+			},
+			"rift:from_tamed_standing_variant_two": {
+				"add": {
+					"component_groups": [
+						"rift:direwolf_werewolf_tamed",
+						"rift:direwolf_werewolf_rideable",
+						"rift:direwolf_werewolf_sittable",
+						"rift:direwolf_werewolf_standing",
+						"rift:pushable",
+						"rift:can_attack",
+						"rift:variant_two"
+					]
+				},
+				"set_actor_property": {
+					"rift:was_ridden": false
+				}
+			},
+			"rift:from_tamed_standing_variant_three": {
+				"add": {
+					"component_groups": [
+						"rift:direwolf_werewolf_tamed",
+						"rift:direwolf_werewolf_rideable",
+						"rift:direwolf_werewolf_sittable",
+						"rift:direwolf_werewolf_standing",
+						"rift:pushable",
+						"rift:can_attack",
+						"rift:variant_three"
+					]
+				},
+				"set_actor_property": {
+					"rift:was_ridden": false
+				}
+			},
+			"rift:from_tamed_standing_variant_zero_with_rider": {
+				"add": {
+					"component_groups": [
+						"rift:direwolf_werewolf_tamed",
+						"rift:direwolf_werewolf_rideable",
+						"rift:direwolf_werewolf_sittable",
+						"rift:direwolf_werewolf_standing",
+						"rift:pushable",
+						"rift:can_attack",
+						"rift:variant_zero"
+					]
+				},
+				"set_actor_property": {
+					"rift:was_ridden": true
+				}
+			},
+			"rift:from_tamed_standing_variant_one_with_rider": {
+				"add": {
+					"component_groups": [
+						"rift:direwolf_werewolf_tamed",
+						"rift:direwolf_werewolf_rideable",
+						"rift:direwolf_werewolf_sittable",
+						"rift:direwolf_werewolf_standing",
+						"rift:pushable",
+						"rift:can_attack",
+						"rift:variant_one"
+					]
+				},
+				"set_actor_property": {
+					"rift:was_ridden": true
+				}
+			},
+			"rift:from_tamed_standing_variant_two_with_rider": {
+				"add": {
+					"component_groups": [
+						"rift:direwolf_werewolf_tamed",
+						"rift:direwolf_werewolf_rideable",
+						"rift:direwolf_werewolf_sittable",
+						"rift:direwolf_werewolf_standing",
+						"rift:pushable",
+						"rift:can_attack",
+						"rift:variant_two"
+					]
+				},
+				"set_actor_property": {
+					"rift:was_ridden": true
+				}
+			},
+			"rift:from_tamed_standing_variant_three_with_rider": {
+				"add": {
+					"component_groups": [
+						"rift:direwolf_werewolf_tamed",
+						"rift:direwolf_werewolf_rideable",
+						"rift:direwolf_werewolf_sittable",
+						"rift:direwolf_werewolf_standing",
+						"rift:pushable",
+						"rift:can_attack",
+						"rift:variant_three"
+					]
+				},
+				"set_actor_property": {
+					"rift:was_ridden": true
+				}
+			},
+			"rift:make_rider_ride_again": {
+                "run_command": {
+                    "command": [
+                        "ride @a start_riding @s teleport_rider"
+                    ]
+                },
+				"set_actor_property": {
+					"rift:was_ridden": false
 				}
 			},
 			"rift:transform_into_normal": {
@@ -1078,19 +1434,9 @@
 					{},
 					{
 						"filters": {
-							"all_of": [
-								{
-									"test": "is_variant",
-									"subject": "self",
-									"value": 0		
-								},
-								{
-									"test": "has_component",
-									"subject": "self",
-									"operator": "!=",
-									"value": "minecraft:is_tamed"
-								}
-							]
+							"test": "is_variant",
+							"subject": "self",
+							"value": 0
 						},
 						"add": {
 							"component_groups": [
@@ -1100,19 +1446,9 @@
 					},
 					{
 						"filters": {
-							"all_of": [
-								{
-									"test": "is_variant",
-									"subject": "self",
-									"value": 1
-								},
-								{
-									"test": "has_component",
-									"subject": "self",
-									"operator": "!=",
-									"value": "minecraft:is_tamed"
-								}
-							]
+							"test": "is_variant",
+							"subject": "self",
+							"value": 1
 						},
 						"add": {
 							"component_groups": [
@@ -1122,19 +1458,9 @@
 					},
 					{
 						"filters": {
-							"all_of": [
-								{
-									"test": "is_variant",
-									"subject": "self",
-									"value": 2
-								},
-								{
-									"test": "has_component",
-									"subject": "self",
-									"operator": "!=",
-									"value": "minecraft:is_tamed"
-								}
-							]
+							"test": "is_variant",
+							"subject": "self",
+							"value": 2
 						},
 						"add": {
 							"component_groups": [
@@ -1144,113 +1470,19 @@
 					},
 					{
 						"filters": {
-							"all_of": [
-								{
-									"test": "is_variant",
-									"subject": "self",
-									"value": 3
-								},
-								{
-									"test": "has_component",
-									"subject": "self",
-									"operator": "!=",
-									"value": "minecraft:is_tamed"
-								}
-							]
+							"test": "is_variant",
+							"subject": "self",
+							"value": 3
 						},
 						"add": {
 							"component_groups": [
 								"rift:direwolf_wild_into_normal_variant_three"
 							]
 						}
-					},
-					{
-						"filters": {
-							"all_of": [
-								{
-									"test": "is_variant",
-									"subject": "self",
-									"value": 0		
-								},
-								{
-									"test": "has_component",
-									"subject": "self",
-									"value": "minecraft:is_tamed"
-								}
-							]
-						},
-						"add": {
-							"component_groups": [
-								"rift:direwolf_tamed_into_normal_variant_zero"
-							]
-						}
-					},
-					{
-						"filters": {
-							"all_of": [
-								{
-									"test": "is_variant",
-									"subject": "self",
-									"value": 1
-								},
-								{
-									"test": "has_component",
-									"subject": "self",
-									"value": "minecraft:is_tamed"
-								}
-							]
-						},
-						"add": {
-							"component_groups": [
-								"rift:direwolf_tamed_into_normal_variant_one"
-							]
-						}
-					},
-					{
-						"filters": {
-							"all_of": [
-								{
-									"test": "is_variant",
-									"subject": "self",
-									"value": 2
-								},
-								{
-									"test": "has_component",
-									"subject": "self",
-									"value": "minecraft:is_tamed"
-								}
-							]
-						},
-						"add": {
-							"component_groups": [
-								"rift:direwolf_tamed_into_normal_variant_two"
-							]
-						}
-					},
-					{
-						"filters": {
-							"all_of": [
-								{
-									"test": "is_variant",
-									"subject": "self",
-									"value": 3
-								},
-								{
-									"test": "has_component",
-									"subject": "self",
-									"value": "minecraft:is_tamed"
-								}
-							]
-						},
-						"add": {
-							"component_groups": [
-								"rift:direwolf_tamed_into_normal_variant_three"
-							]
-						}
 					}
 				]
 			},
-			"rift:forced_return_wild": {
+			"rift:forced_return": {
 				"sequence": [
 					{},
 					{
@@ -1427,31 +1659,87 @@
 					}
 				]
 			},
-			"rift:direwolf_tamed_into_normal_variant_zero": {
+			"rift:direwolf_tamed_into_sitting_normal_variant_zero": {
 				"add": {
 					"component_groups": [
-						"rift:direwolf_tamed_into_normal_variant_zero"
+						"rift:direwolf_tamed_into_sitting_normal_variant_zero"
 					]
 				}
 			},
-			"rift:direwolf_tamed_into_normal_variant_one": {
+			"rift:direwolf_tamed_into_sitting_normal_variant_one": {
 				"add": {
 					"component_groups": [
-						"rift:direwolf_tamed_into_normal_variant_one"
+						"rift:direwolf_tamed_into_sitting_normal_variant_one"
 					]
 				}
 			},
-			"rift:direwolf_tamed_into_normal_variant_two": {
+			"rift:direwolf_tamed_into_sitting_normal_variant_two": {
 				"add": {
 					"component_groups": [
-						"rift:direwolf_tamed_into_normal_variant_two"
+						"rift:direwolf_tamed_into_sitting_normal_variant_two"
 					]
 				}
 			},
-			"rift:direwolf_tamed_into_normal_variant_three": {
+			"rift:direwolf_tamed_into_sitting_normal_variant_three": {
 				"add": {
 					"component_groups": [
-						"rift:direwolf_tamed_into_normal_variant_three"
+						"rift:direwolf_tamed_into_sitting_normal_variant_three"
+					]
+				}
+			},
+			"rift:direwolf_tamed_into_standing_normal_variant_zero": {
+				"add": {
+					"component_groups": [
+						"rift:direwolf_tamed_into_standing_normal_variant_zero"
+					]
+				}
+			},
+			"rift:direwolf_tamed_into_standing_normal_variant_one": {
+				"add": {
+					"component_groups": [
+						"rift:direwolf_tamed_into_standing_normal_variant_one"
+					]
+				}
+			},
+			"rift:direwolf_tamed_into_standing_normal_variant_two": {
+				"add": {
+					"component_groups": [
+						"rift:direwolf_tamed_into_standing_normal_variant_two"
+					]
+				}
+			},
+			"rift:direwolf_tamed_into_standing_normal_variant_three": {
+				"add": {
+					"component_groups": [
+						"rift:direwolf_tamed_into_standing_normal_variant_three"
+					]
+				}
+			},
+			"rift:direwolf_tamed_into_standing_normal_variant_zero_with_rider": {
+				"add": {
+					"component_groups": [
+						"rift:direwolf_tamed_into_standing_normal_variant_zero_with_rider"
+					]
+				}
+			},
+			"rift:direwolf_tamed_into_standing_normal_variant_one_with_rider": {
+				"add": {
+					"component_groups": [
+						"rift:direwolf_tamed_into_standing_normal_variant_one_with_rider"
+					]
+				}
+			},
+			"rift:direwolf_tamed_into_standing_normal_variant_two_with_rider": {
+				"add": {
+					"component_groups": [
+						"rift:direwolf_tamed_into_standing_normal_variant_two_with_rider"
+					]
+				}
+			},
+			"rift:direwolf_tamed_into_standing_normal_variant_three_with_rider": {
+				"add": {
+					"component_groups": [
+						"rift:direwolf_tamed_into_standing_normal_variant_three_with_rider"
 					]
 				}
 			},
@@ -1556,12 +1844,14 @@
 			"rift:cannot_sit": {
 				"add": {
 					"component_groups": [
-						"rift:unpushable"
+						"rift:unpushable",
+						"rift:direwolf_werewolf_standing"
 					]
 				},
 				"remove": {
 					"component_groups": [
 						"rift:direwolf_werewolf_sittable",
+						"rift:direwolf_werewolf_sitting",
 						"rift:pushable",
 						"rift:can_attack",
 						"rift:aggravating_horn_attack"
@@ -1579,6 +1869,30 @@
 				"remove": {
 					"component_groups": [
 						"rift:unpushable"
+					]
+				}
+			},
+			"rift:go_sit": {
+				"add": {
+					"component_groups": [
+						"rift:direwolf_werewolf_sitting"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:direwolf_werewolf_standing"
+					]
+				}
+			},
+			"rift:go_stand": {
+				"add": {
+					"component_groups": [
+						"rift:direwolf_werewolf_standing"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:direwolf_werewolf_sitting"
 					]
 				}
 			},
