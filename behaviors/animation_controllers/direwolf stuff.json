@@ -209,6 +209,28 @@
                 }
             }
         },
+        "controller.animation.direwolf_forced_use_bite": {
+			"initial_state": "default",
+			"states": {
+				"default": {
+					"transitions": [
+						{
+							"biting": "query.is_sheared"
+						}
+					]
+				},
+				"biting": {
+					"transitions": [
+						{
+							"default": "!query.is_sheared"
+						}
+					],
+					"animations": [
+						"animForcedAttack"
+					]
+				}
+			}
+		},
         "controller.animation.direwolf_werewolf_switch_between_melee_attacks": {
             "initial_state": "default",
             "states": {
@@ -415,6 +437,70 @@
                     ]
                 }
             }
-        }
+        },
+        "controller.animation.direwolf_werewolf_forced_use_bite": {
+			"initial_state": "default",
+			"states": {
+				"default": {
+					"transitions": [
+						{
+							"biting": "query.is_sheared"
+						}
+					]
+				},
+				"biting": {
+					"transitions": [
+						{
+							"default": "!query.is_sheared"
+						}
+					],
+					"animations": [
+						"animForcedAttackBite"
+					]
+				}
+			}
+		},
+        "controller.animation.direwolf_werewolf_forced_use_slash": {
+			"initial_state": "default",
+			"states": {
+				"default": {
+					"transitions": [
+						{
+							"chooseSlash": "query.is_powered"
+						}
+					]
+				},
+                "chooseSlash": {
+					"transitions": [
+						{
+							"slashingOne": "v.scratchMode = (math.floor(math.random(0,2))); return v.scratchMode == 0;"
+						},
+						{
+							"slashingTwo": "v.scratchMode == 1"
+						}
+					]
+                },
+				"slashingOne": {
+					"transitions": [
+						{
+							"default": "!query.is_powered"
+						}
+					],
+					"animations": [
+						"animForcedAttackSlashOne"
+					]
+				},
+				"slashingTwo": {
+					"transitions": [
+						{
+							"default": "!query.is_powered"
+						}
+					],
+					"animations": [
+						"animForcedAttackSlashTwo"
+					]
+				}
+			}
+		}
     }
 }

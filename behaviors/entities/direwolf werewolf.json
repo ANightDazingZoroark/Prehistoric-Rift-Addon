@@ -3,7 +3,7 @@
     "minecraft:entity": {
         "description": {
             "identifier": "rift:direwolf_werewolf",
-            "is_spawnable": true,
+            "is_spawnable": false,
             "is_summonable": true,
             "is_experimental": false,
 			"properties": {
@@ -20,9 +20,14 @@
 				"contRideableAfterTransformation": "controller.animation.direwolf_rideable_after_transformation",
 				"contPackBuff": "controller.animation.wild_direwolf_pack_buff",
 				"contWildRemoveBuffs": "controller.animation.wild_direwolf_remove_buffs",
+				"contDirewolfWerewolfUseBite": "controller.animation.direwolf_werewolf_forced_use_bite",
+				"contDirewolfWerewolfUseSlash": "controller.animation.direwolf_werewolf_forced_use_slash",
 				"contTameTag": "controller.animation.add_tame_tag",
 				"contRiddenTag": "controller.animation.add_ridden_tag",
 				"contSittingTag": "controller.animation.add_sitting_tag",
+				"animForcedAttackBite": "animation.forced_attack_direwolf_werewolf_bite",
+				"animForcedAttackSlashOne": "animation.forced_attack_direwolf_werewolf_slash_one",
+				"animForcedAttackSlashTwo": "animation.forced_attack_direwolf_werewolf_slash_two",
 				"animBoulderThrow": "animation.direwolf_werewolf_throw_boulder"
 			},
 			"scripts": {
@@ -32,6 +37,8 @@
 					"contRideableAfterTransformation",
 					"contPackBuff",
 					"contWildRemoveBuffs",
+					"contDirewolfWerewolfUseBite",
+					"contDirewolfWerewolfUseSlash",
 					"contTameTag",
                     "contRiddenTag",
 					"contSittingTag"
@@ -155,14 +162,6 @@
 										"value": false
 									}
 								]
-							},
-							"max_dist": 128
-						},
-						{
-							"filters": {
-								"test": "is_family",
-								"subject": "other",
-								"value": "ravager"
 							},
 							"max_dist": 128
 						},
@@ -401,14 +400,66 @@
 					"interact_text": "action.interact.mount"
 				},
 				"minecraft:input_ground_controlled": {},
-				"minecraft:can_power_jump": {},
+				"minecraft:can_power_jump": {}
+            },
+			"rift:direwolf_tamed_pounceable": {
+				"minecraft:area_attack": {
+					"damage_range": 0.75,
+					"damage_per_tick": 12,
+					"cause": "entity_attack",
+					"entity_filter": {
+						"all_of": [
+							{
+								"test": "is_owner",
+								"subject": "other",
+								"value": false
+							},
+							{
+								"test": "is_riding",
+								"subject": "self",
+								"value": false
+							}
+						]
+					}
+				}
+			},
+			"rift:direwolf_tamed_buff_pounceable": {
+				"minecraft:area_attack": {
+					"damage_range": 0.75,
+					"damage_per_tick": 30,
+					"cause": "entity_attack",
+					"entity_filter": {
+						"all_of": [
+							{
+								"test": "is_owner",
+								"subject": "other",
+								"value": false
+							},
+							{
+								"test": "is_riding",
+								"subject": "self",
+								"value": false
+							}
+						]
+					}
+				}
+            },
+			"rift:direwolf_can_jump": {
 				"minecraft:horse.jump_strength": {
 					"value": {
 						"range_min": 1.2,
 						"range_max": 1.6
 					}
 				}
-            },
+			},
+			"rift:direwolf_cannot_jump": {
+				"minecraft:horse.jump_strength": {
+					"value": {
+						"range_min": 0,
+						"range_max": 0
+					}
+				}
+			},
             "rift:direwolf_werewolf_sittable": {
 				"minecraft:sittable": {
 					"sit_event": {
@@ -454,7 +505,7 @@
             "rift:forced_bite": {
 				"minecraft:is_sheared": {}
 			},
-			"rift:forced_claw": {
+			"rift:forced_slash": {
 				"minecraft:is_charged": {}
 			},
             "rift:summon_forced_bite_entity": {
@@ -481,11 +532,11 @@
 					]
 				}
 			},
-            "rift:summon_forced_claw_entity": {
+            "rift:summon_forced_slash_entity": {
 				"minecraft:spawn_entity": {
 					"entities": [
 						{
-							"spawn_entity": "rift:direwolf_werewolf_claw",
+							"spawn_entity": "rift:direwolf_werewolf_slash",
 							"single_use": true,
 							"min_wait_time": 0,
 							"max_wait_time": 0
@@ -493,17 +544,28 @@
 					]
 				}
 			},
-            "rift:summon_buffed_forced_claw_entity": {
+            "rift:summon_buffed_forced_slash_entity": {
 				"minecraft:spawn_entity": {
 					"entities": [
 						{
-							"spawn_entity": "rift:direwolf_werewolf_buffed_claw",
+							"spawn_entity": "rift:direwolf_werewolf_buffed_slash",
 							"single_use": true,
 							"min_wait_time": 0,
 							"max_wait_time": 0
 						}
 					]
 				}
+			},
+            "rift:throwing_boulder": {
+				"minecraft:spawn_entity": {
+					"entities": {
+						"spawn_entity": "rift:direwolf_werewolf_boulder",
+						"min_wait_time": 0,
+						"max_wait_time": 0,
+						"num_to_spawn": 1,
+						"single_use": true
+					}
+			 	}
 			},
             "rift:variant_zero": {
 				"minecraft:variant": {
@@ -761,17 +823,6 @@
 				"minecraft:shooter": {
 					"def": "rift:direwolf_werewolf_boulder"
 				}
-			},
-            "rift:throwing_boulder": {
-				"minecraft:spawn_entity": {
-					"entities": {
-						"spawn_entity": "rift:direwolf_werewolf_boulder",
-						"min_wait_time": 0,
-						"max_wait_time": 0,
-						"num_to_spawn": 1,
-						"single_use": true
-					}
-			 	}
 			}
         },
         "components": {
@@ -1121,7 +1172,134 @@
 					}
 				]
 			},
-			"minecraft:environment_sensor": {},
+			"minecraft:environment_sensor": {
+				"triggers": [
+					{
+						"filters": {
+							"all_of": [
+								{
+									"test": "on_ground",
+									"subject": "self",
+									"value": false
+								},
+								{
+									"test": "has_component",
+									"subject": "self",
+									"value": "minecraft:is_tamed"
+								},
+								{
+									"test": "rider_count",
+									"subject": "self",
+									"operator": ">",
+									"value": 0
+								},
+								{
+									"test": "has_mob_effect",
+									"subject": "self",
+									"operator": "!=",
+									"value": "speed"
+								},
+								{
+									"test": "has_mob_effect",
+									"subject": "self",
+									"operator": "!=",
+									"value": "strength"
+								}
+							]
+						},
+						"event": "rift:leap_ability"
+					},
+					{
+						"filters": {
+							"all_of": [
+								{
+									"test": "on_ground",
+									"subject": "self",
+									"value": false
+								},
+								{
+									"test": "has_component",
+									"subject": "self",
+									"value": "minecraft:is_tamed"
+								},
+								{
+									"test": "rider_count",
+									"subject": "self",
+									"operator": ">",
+									"value": 0
+								},
+								{
+									"test": "has_mob_effect",
+									"subject": "self",
+									"operator": "==",
+									"value": "speed"
+								},
+								{
+									"test": "has_mob_effect",
+									"subject": "self",
+									"operator": "==",
+									"value": "strength"
+								}
+							]
+						},
+						"event": "rift:buffed_leap_ability"
+					},
+					{
+						"filters": {
+							"all_of": [
+								{
+									"test": "on_ground",
+									"subject": "self",
+									"value": true
+								},
+								{
+									"test": "has_component",
+									"subject": "self",
+									"value": "minecraft:is_tamed"
+								},
+								{
+									"test": "rider_count",
+									"subject": "self",
+									"operator": ">",
+									"value": 0
+								}
+							]
+						},
+						"event": "rift:disable_leap",
+						"target": "self"
+					},
+                    {
+                        "filters": {
+                            "all_of": [
+                                {
+                                    "test": "has_tag",
+                                    "subject": "self",
+                                    "value": "direwolfBuff"
+                                },
+								{
+									"test": "rider_count",
+									"operator": ">",
+									"value": 0,
+									"subject": "self"
+								},
+								{
+									"test": "has_component",
+									"value": "minecraft:is_tamed",
+									"subject": "self"
+								},
+								{
+									"test": "has_component",
+									"operator": "!=",
+									"value": "minecraft:is_baby",
+									"subject": "self"
+								}
+                            ]
+                        },
+                        "event": "rift:buffing",
+                        "target": "self"
+					}
+				]
+			},
 			"minecraft:scheduler": {
 				"scheduled_events": [
 					{
@@ -1248,6 +1426,7 @@
 						"rift:direwolf_werewolf_sitting",
 						"rift:pushable",
 						"rift:can_attack",
+						"rift:direwolf_can_jump",
 						"rift:variant_zero"
 					]
 				}
@@ -1261,6 +1440,7 @@
 						"rift:direwolf_werewolf_sitting",
 						"rift:pushable",
 						"rift:can_attack",
+						"rift:direwolf_can_jump",
 						"rift:variant_one"
 					]
 				}
@@ -1274,6 +1454,7 @@
 						"rift:direwolf_werewolf_sitting",
 						"rift:pushable",
 						"rift:can_attack",
+						"rift:direwolf_can_jump",
 						"rift:variant_two"
 					]
 				}
@@ -1287,6 +1468,7 @@
 						"rift:direwolf_werewolf_sitting",
 						"rift:pushable",
 						"rift:can_attack",
+						"rift:direwolf_can_jump",
 						"rift:variant_three"
 					]
 				}
@@ -1300,6 +1482,7 @@
 						"rift:direwolf_werewolf_standing",
 						"rift:pushable",
 						"rift:can_attack",
+						"rift:direwolf_can_jump",
 						"rift:variant_zero"
 					]
 				},
@@ -1316,6 +1499,7 @@
 						"rift:direwolf_werewolf_standing",
 						"rift:pushable",
 						"rift:can_attack",
+						"rift:direwolf_can_jump",
 						"rift:variant_one"
 					]
 				},
@@ -1332,6 +1516,7 @@
 						"rift:direwolf_werewolf_standing",
 						"rift:pushable",
 						"rift:can_attack",
+						"rift:direwolf_can_jump",
 						"rift:variant_two"
 					]
 				},
@@ -1348,6 +1533,7 @@
 						"rift:direwolf_werewolf_standing",
 						"rift:pushable",
 						"rift:can_attack",
+						"rift:direwolf_can_jump",
 						"rift:variant_three"
 					]
 				},
@@ -1364,6 +1550,7 @@
 						"rift:direwolf_werewolf_standing",
 						"rift:pushable",
 						"rift:can_attack",
+						"rift:direwolf_can_jump",
 						"rift:variant_zero"
 					]
 				},
@@ -1380,6 +1567,7 @@
 						"rift:direwolf_werewolf_standing",
 						"rift:pushable",
 						"rift:can_attack",
+						"rift:direwolf_can_jump",
 						"rift:variant_one"
 					]
 				},
@@ -1396,6 +1584,7 @@
 						"rift:direwolf_werewolf_standing",
 						"rift:pushable",
 						"rift:can_attack",
+						"rift:direwolf_can_jump",
 						"rift:variant_two"
 					]
 				},
@@ -1412,6 +1601,7 @@
 						"rift:direwolf_werewolf_standing",
 						"rift:pushable",
 						"rift:can_attack",
+						"rift:direwolf_can_jump",
 						"rift:variant_three"
 					]
 				},
@@ -1805,6 +1995,30 @@
 					]
 				}
 			},
+			"rift:disable_jump": {
+				"add": {
+					"component_groups": [
+						"rift:direwolf_cannot_jump"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:direwolf_can_jump"
+					]
+				}
+			},
+			"rift:enable_jump": {
+				"add": {
+					"component_groups": [
+						"rift:direwolf_can_jump"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:direwolf_cannot_jump"
+					]
+				}
+			},
 			"rift:on_forced_attack_family": {
 				"add": {
 					"component_groups": [
@@ -1814,6 +2028,172 @@
 				"remove": {
 					"component_groups": [
 						"rift:default_family"
+					]
+				}
+			},
+			"rift:no_forced_attack_family": {
+				"add": {
+					"component_groups": [
+						"rift:default_family"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:forced_attack_family"
+					]
+				}
+			},
+			"rift:use_forced_bite": {
+				"add": {
+					"component_groups": [
+						"rift:forced_bite"
+					]
+				}
+			},
+			"rift:stop_forced_bite": {
+				"remove": {
+					"component_groups": [
+						"rift:forced_bite"
+					]
+				}
+			},
+			"rift:on_summon_forced_bite_entity": {
+				"sequence": [
+					{
+						"filters": {
+							"any_of": [
+								{
+									"test": "has_mob_effect",
+									"subject": "self",
+									"operator": "!=",
+									"value": "strength"
+								},
+								{
+									"test": "has_mob_effect",
+									"subject": "self",
+									"operator": "!=",
+									"value": "speed"
+								}
+							]
+						},
+						"add": {
+							"component_groups": [
+								"rift:summon_forced_bite_entity"
+							]
+						}
+					},
+					{
+						"filters": {
+							"all_of": [
+								{
+									"test": "has_mob_effect",
+									"subject": "self",
+									"value": "strength"
+								},
+								{
+									"test": "has_mob_effect",
+									"subject": "self",
+									"value": "speed"
+								}
+							]
+						},
+						"add": {
+							"component_groups": [
+								"rift:summon_buffed_forced_bite_entity"
+							]
+						}
+					}
+				]
+			},
+			"rift:no_summon_forced_bite_entity": {
+				"remove": {
+					"component_groups": [
+						"rift:summon_forced_bite_entity",
+						"rift:summon_buffed_forced_bite_entity"
+					]
+				}
+			},
+			"rift:use_forced_slash": {
+				"add": {
+					"component_groups": [
+						"rift:forced_slash"
+					]
+				}
+			},
+			"rift:stop_forced_slash": {
+				"remove": {
+					"component_groups": [
+						"rift:forced_slash"
+					]
+				}
+			},
+			"rift:on_summon_forced_slash_entity": {
+				"sequence": [
+					{
+						"filters": {
+							"any_of": [
+								{
+									"test": "has_mob_effect",
+									"subject": "self",
+									"operator": "!=",
+									"value": "strength"
+								},
+								{
+									"test": "has_mob_effect",
+									"subject": "self",
+									"operator": "!=",
+									"value": "speed"
+								}
+							]
+						},
+						"add": {
+							"component_groups": [
+								"rift:summon_forced_slash_entity"
+							]
+						}
+					},
+					{
+						"filters": {
+							"all_of": [
+								{
+									"test": "has_mob_effect",
+									"subject": "self",
+									"value": "strength"
+								},
+								{
+									"test": "has_mob_effect",
+									"subject": "self",
+									"value": "speed"
+								}
+							]
+						},
+						"add": {
+							"component_groups": [
+								"rift:summon_buffed_forced_slash_entity"
+							]
+						}
+					}
+				]
+			},
+			"rift:no_summon_forced_slash_entity": {
+				"remove": {
+					"component_groups": [
+						"rift:summon_forced_slash_entity",
+						"rift:summon_buffed_forced_slash_entity"
+					]
+				}
+			},
+			"rift:start_throwing_boulder": {
+				"add": {
+					"component_groups": [
+						"rift:throwing_boulder"
+					]
+				}
+			},
+			"rift:stop_throwing_boulder": {
+				"remove": {
+					"component_groups": [
+						"rift:throwing_boulder"
 					]
 				}
 			},
@@ -1896,20 +2276,28 @@
 					]
 				}
 			},
-			"rift:start_throwing_boulder": {
+			"rift:leap_ability": {
 				"add": {
 					"component_groups": [
-						"rift:throwing_boulder"
+						"rift:direwolf_tamed_pounceable"
+					]
+				}
+            },
+			"rift:buffed_leap_ability": {
+				"add": {
+					"component_groups": [
+						"rift:direwolf_tamed_buff_pounceable"
 					]
 				}
 			},
-			"rift:stop_throwing_boulder": {
+			"rift:disable_leap": {
 				"remove": {
 					"component_groups": [
-						"rift:throwing_boulder"
+						"rift:direwolf_tamed_pounceable",
+						"rift:direwolf_tamed_buff_pounceable"
 					]
 				}
-			},
+            },
 			"rift:commit_suicide": {
 				"run_command": {
 					"command": [
@@ -1963,6 +2351,14 @@
 						"effect @s weakness 20 2",
 						"effect @s slowness 20 2"
 				  	]
+				}
+			},
+			"rift:buffing": {
+				"run_command": {
+					"command": [
+						"playanimation @s animation.direwolf_werewolf.howl",
+						"function cmd.direwolf_pack_buff"
+					]
 				}
 			},
 			"rift:wild_direwolf_buffing": {

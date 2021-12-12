@@ -20,10 +20,12 @@
 				"contCanTransformAgain": "controller.animation.direwolf_can_transform_again",
 				"contRideableAfterTransformation": "controller.animation.direwolf_rideable_after_transformation",
 				"contWildRemoveBuffs": "controller.animation.wild_direwolf_remove_buffs",
+				"contDirewolfUseBite": "controller.animation.direwolf_forced_use_bite",
 				"contTameTag": "controller.animation.add_tame_tag",
 				"contBabyTag": "controller.animation.add_baby_tag",
 				"contRiddenTag": "controller.animation.add_ridden_tag",
-				"contSittingTag": "controller.animation.add_sitting_tag"
+				"contSittingTag": "controller.animation.add_sitting_tag",
+				"animForcedAttack": "animation.forced_attack_direwolf"
 			},
 			"scripts": {
 				"animate": [
@@ -32,6 +34,7 @@
 					"contCanTransformAgain",
 					"contRideableAfterTransformation",
 					"contWildRemoveBuffs",
+					"contDirewolfUseBite",
 					"contTameTag",
 					"contBabyTag",
                     "contRiddenTag",
@@ -3169,7 +3172,40 @@
 					}
 				]
 			},
-			"minecraft:environment_sensor": {},
+			"minecraft:environment_sensor": {
+                "triggers":[
+                    {
+                        "filters": {
+                            "all_of": [
+                                {
+                                    "test": "has_tag",
+                                    "subject": "self",
+                                    "value": "direwolfBuff"
+                                },
+								{
+									"test": "rider_count",
+									"operator": ">",
+									"value": 0,
+									"subject": "self"
+								},
+								{
+									"test": "has_component",
+									"value": "minecraft:is_tamed",
+									"subject": "self"
+								},
+								{
+									"test": "has_component",
+									"operator": "!=",
+									"value": "minecraft:is_baby",
+									"subject": "self"
+								}
+                            ]
+                        },
+                        "event": "rift:buffing",
+                        "target": "self"
+					}
+				]
+			},
 			"minecraft:scheduler": {
 				"scheduled_events": [
 					{
@@ -4200,9 +4236,10 @@
 			},
 			"rift:on_summon_forced_bite_entity": {
 				"sequence": [
+					{},
 					{
 						"filters": {
-							"any_of": [
+							"all_of": [
 								{
 									"test": "has_mob_effect",
 									"subject": "self",
@@ -4263,6 +4300,18 @@
 				"remove": {
 					"component_groups": [
 						"rift:default_family"
+					]
+				}
+			},
+			"rift:no_forced_attack_family": {
+				"add": {
+					"component_groups": [
+						"rift:default_family"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:forced_attack_family"
 					]
 				}
 			},
@@ -4540,6 +4589,14 @@
 				"add": {
 					"component_groups": [
 						"rift:aggravating_horn_attack"
+					]
+				}
+			},
+			"rift:buffing": {
+				"run_command": {
+					"command": [
+						"playanimation @s animation.direwolf.howl",
+						"function cmd.direwolf_pack_buff"
 					]
 				}
 			},
