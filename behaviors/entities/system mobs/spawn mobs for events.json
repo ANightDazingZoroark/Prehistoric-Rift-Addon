@@ -153,6 +153,50 @@
                     }
                 }
             },
+            "rift:not_on_ground_herbivore_stampede": {
+                "minecraft:environment_sensor": {
+                    "triggers": [
+                        {
+                            "filters": {
+                                "test": "on_ground",
+                                "subject": "self",
+                                "value": true
+                            },
+                            "event": "rift:execute_herbivore_stampede",
+                            "target": "self"
+                        }
+                    ]
+                }
+            },
+            "rift:on_ground_herbivore_stampede": {
+                "minecraft:spawn_entity": {
+					"entities": [
+						{
+							"spawn_entity": "rift:stegosaurus",
+                            "spawn_event": "rift:spawn_for_herbivore_stampede",
+							"single_use": true,
+                            "num_to_spawn": 2,
+							"min_wait_time": 0,
+							"max_wait_time": 0
+						},
+						{
+							"spawn_entity": "rift:triceratops",
+                            "spawn_event": "rift:spawn_for_herbivore_stampede",
+							"single_use": true,
+                            "num_to_spawn": 2,
+							"min_wait_time": 0,
+							"max_wait_time": 0
+						}
+					]
+                },
+                "minecraft:timer": {
+                    "time": 0.5,
+                    "time_down_event": {
+                        "event": "rift:die",
+                        "target": "self"
+                    }
+                }
+            },
             "rift:despawn": {
                 "minecraft:instant_despawn": {}
             }
@@ -250,6 +294,25 @@
                         }
                     }
                 ]
+            },
+            "rift:herbivore_stampede": {
+                "add": {
+                    "component_groups": [
+                        "rift:not_on_ground_herbivore_stampede"
+                    ]
+                }
+            },
+            "rift:execute_herbivore_stampede": {
+                "add": {
+                    "component_groups": [
+                        "rift:on_ground_herbivore_stampede"
+                    ]
+                },
+                "remove": {
+                    "component_groups": [
+                        "rift:not_on_ground_herbivore_stampede"
+                    ]
+                }
             },
             "rift:die": {
                 "add": {

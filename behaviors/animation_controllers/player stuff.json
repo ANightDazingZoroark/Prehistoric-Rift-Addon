@@ -196,7 +196,7 @@
                 "noon": {
                     "transitions": [
                         {
-                            "mobEvents": "variable.choose_number = (math.floor(math.random(0,16))); return variable.choose_number == 0;"
+                            "mobEvents": "variable.choose_number = (math.floor(math.random(0,1))); return variable.choose_number == 0;"
                         },
                         {
                             "limbo": "variable.choose_number >= 1"
@@ -206,13 +206,16 @@
                 "mobEvents": {
                     "transitions": [
                         {
-                            "raptorAttack": "variable.choose_event = (math.floor(math.random(0,3))); return variable.choose_event == 0;"
+                            "raptorAttack": "variable.choose_event = (math.floor(math.random(0,4))); return variable.choose_event == 0;"
                         },
                         {
                             "piranhaSwarm": "variable.choose_event == 1"
                         },
                         {
                             "wolfHunt": "variable.choose_event == 2"
+                        },
+                        {
+                            "herbivoreStampede": "variable.choose_event == 3"
                         }
                     ]
                 },
@@ -271,6 +274,25 @@
                     ],
                     "on_exit": [
                         "/tellraw @a {\"rawtext\":[{\"text\":\"Wolf Hunt is no longer spawning mobs!\"}]}"
+                    ]
+                },
+                "herbivoreStampede": {
+                    "animations": [
+                        "animHerbivoreStampede"
+                    ],
+                    "transitions": [
+                        {
+                            "limbo": "query.all_animations_finished"
+                        }
+                    ],
+                    "on_entry": [
+                        "/tellraw @a {\"rawtext\":[{\"text\":\"Herbivore Stampede event has started!\"}]}",
+                        "/playsound raid.horn @a",
+                        "/title @a title Herbivore Stampede!",
+                        "/titleraw @a subtitle {\"rawtext\": [{\"text\": \"Enraged herbivores are out \nto take their anger out on something!\"}]}"
+                    ],
+                    "on_exit": [
+                        "/tellraw @a {\"rawtext\":[{\"text\":\"Herbivore Stampede is no longer spawning mobs!\"}]}"
                     ]
                 },
                 "limbo": {
