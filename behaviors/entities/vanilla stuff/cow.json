@@ -109,6 +109,17 @@
               "single_use": true
           }
         }      
+      },
+      "rift:drop_more_meat_from_direwolf": {
+        "minecraft:spawn_entity": {
+          "entities": {
+              "min_wait_time": 0,
+              "max_wait_time": 0,
+              "spawn_item": "beef",
+              "num_to_spawn": 2,
+              "single_use": true
+          }
+        }      
       }
     },
 
@@ -405,6 +416,32 @@
 							"target": "self"
 						}
 					},
+					{
+						"on_damage": {
+							"filters": {
+                "all_of": [
+                  {
+                    "test": "is_family",
+                    "subject": "other",
+                    "value": "direwolf"
+                  },
+                  {
+                    "test": "has_component",
+                    "subject": "self",
+                    "operator": "!=",
+                    "value": "minecraft:is_baby"
+                  },
+                  {
+                    "test": "has_damage",
+                    "subject": "self",
+                    "value": "fatal"
+                  }
+                ]
+							},
+							"event": "rift:drop_more_beef_from_direwolf",
+							"target": "self"
+						}
+					},
           {
 						"on_damage": {
 							"filters": {
@@ -624,6 +661,28 @@
           },
           {
             "filters": {
+              "all_of": [
+                {
+                  "test": "is_family",
+                  "subject": "other",
+                  "value": "direwolfForcedAttack"
+                },
+                {
+                  "test": "has_component",
+                  "subject": "self",
+                  "operator": "!=",
+                  "value": "minecraft:is_baby"
+                }
+              ]
+            },
+            "add": {
+              "component_groups": [
+                "rift:drop_more_meat_from_direwolf"
+              ]
+            }
+          },
+          {
+            "filters": {
               "test": "is_family",
               "subject": "other",
               "value": "anomalocarisForcedAttack"
@@ -654,6 +713,13 @@
         "add": {
           "component_groups": [
             "rift:drop_more_meat_from_sarcosuchus"
+          ]
+        }
+      },
+      "rift:drop_more_beef_from_direwolf": {
+        "add": {
+          "component_groups": [
+            "rift:drop_more_meat_from_direwolf"
           ]
         }
       }

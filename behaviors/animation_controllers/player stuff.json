@@ -206,10 +206,13 @@
                 "mobEvents": {
                     "transitions": [
                         {
-                            "raptorAttack": "variable.choose_event = (math.floor(math.random(0,2))); return variable.choose_event == 0;"
+                            "raptorAttack": "variable.choose_event = (math.floor(math.random(0,3))); return variable.choose_event == 0;"
                         },
                         {
                             "piranhaSwarm": "variable.choose_event == 1"
+                        },
+                        {
+                            "wolfHunt": "variable.choose_event == 2"
                         }
                     ]
                 },
@@ -249,6 +252,25 @@
                     ],
                     "on_exit": [
                         "/tellraw @a {\"rawtext\":[{\"text\":\"Piranha Swarm is no longer spawning mobs!\"}]}"
+                    ]
+                },
+                "wolfHunt": {
+                    "animations": [
+                        "animWolfHunt"
+                    ],
+                    "transitions": [
+                        {
+                            "limbo": "query.all_animations_finished"
+                        }
+                    ],
+                    "on_entry": [
+                        "/tellraw @a {\"rawtext\":[{\"text\":\"Wolf Hunt event has started!\"}]}",
+                        "/playsound raid.horn @a",
+                        "/title @a title Wolf Hunt!",
+                        "/title @a subtitle Wolves are out on the prowl!"
+                    ],
+                    "on_exit": [
+                        "/tellraw @a {\"rawtext\":[{\"text\":\"Wolf Hunt is no longer spawning mobs!\"}]}"
                     ]
                 },
                 "limbo": {

@@ -218,7 +218,8 @@
 						"value": "minecraft:is_tamed"
 					},
 					"broadcast_targets": [
-						"direwolf"
+						"direwolf",
+						"wolf"
 					],
 					"duration": 60,
 					"calm_event": {
@@ -354,7 +355,8 @@
 						"value": "minecraft:is_tamed"
 					},
 					"broadcast_targets": [
-						"direwolf"
+						"direwolf",
+						"wolf"
 					],
 					"duration": 60,
 					"calm_event": {
@@ -3151,6 +3153,32 @@
 					{
 						"on_damage": {
 							"filters": {
+                				"all_of": [
+                  					{
+                    					"test": "is_family",
+                    					"subject": "other",
+                    					"value": "direwolf"
+                  					},
+                  					{
+                    					"test": "has_component",
+                    					"subject": "self",
+                    					"operator": "!=",
+                    					"value": "minecraft:is_baby"
+                  					},
+				                	{
+                    					"test": "has_damage",
+                    					"subject": "self",
+                    					"value": "fatal"
+                  					}
+                				]
+							},
+							"event": "rift:drop_more_raw_exotic_meat_from_direwolf",
+							"target": "self"
+						}
+					},
+					{
+						"on_damage": {
+							"filters": {
 								"test": "is_family",
 								"subject": "other",
 								"value": "sarcoSpinAttack"
@@ -4561,6 +4589,28 @@
 						  		"rift:drop_more_meat_from_sarcosuchus"
 							]
 					  	}
+					},
+					{
+					  	"filters": {
+							"all_of": [
+						  		{
+									"test": "is_family",
+									"subject": "other",
+									"value": "direwolfForcedAttack"
+						  		},
+						  		{
+									"test": "has_component",
+									"subject": "self",
+									"operator": "!=",
+									"value": "minecraft:is_baby"
+						  		}
+							]
+					  	},
+					  	"add": {
+							"component_groups": [
+						  		"rift:drop_more_meat_from_direwolf"
+							]
+					  	}
 					}
 				]
 			},
@@ -4582,6 +4632,13 @@
 			  	"add": {
 					"component_groups": [
 				  		"rift:drop_more_meat_from_sarcosuchus"
+					]
+			  	}
+			},
+			"rift:drop_more_raw_exotic_meat_from_direwolf": {
+			  	"add": {
+					"component_groups": [
+				  		"rift:drop_more_meat_from_direwolf"
 					]
 			  	}
 			},
