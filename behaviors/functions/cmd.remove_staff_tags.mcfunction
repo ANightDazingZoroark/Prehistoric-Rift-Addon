@@ -22,3 +22,5 @@ tag @e remove anomaloInvisible
 tag @e remove carrying
 tag @e remove saurophaganaxLightBlast
 tag @e remove direwolfBuff
+tag @e remove megalocerosCharge
+tag @e remove megalocerosHarvest
