@@ -708,7 +708,7 @@
 				"minecraft:navigation.walk": {
 					"avoid_water": true,
 					"avoid_damage_blocks": true
-				}
+				}                                          
             },
 			"rift:utahraptor_tamed": {
 				"minecraft:is_tamed": {},
@@ -796,7 +796,7 @@
 			"rift:utahraptor_tamed_buff_pounceable": {
 				"minecraft:area_attack": {
 					"damage_range": 0.75,
-					"damage_per_tick": 30,
+					"damage_per_tick": 16,
 					"cause": "entity_attack",
 					"entity_filter": {
 						"all_of": [
@@ -959,17 +959,6 @@
 						"max_wait_time": 0,
 						"spawn_item": "rift:raw_exotic_meat",
 						"num_to_spawn": 1,
-						"single_use": true
-					}
-			 	}
-			},
-			"rift:drop_more_meat_from_direwolf": {
-				"minecraft:spawn_entity": {
-					"entities": {
-						"min_wait_time": 0,
-						"max_wait_time": 0,
-						"spawn_item": "rift:raw_exotic_meat",
-						"num_to_spawn": 2,
 						"single_use": true
 					}
 			 	}
@@ -3427,32 +3416,6 @@
 					{
 						"on_damage": {
 							"filters": {
-                				"all_of": [
-                  					{
-                    					"test": "is_family",
-                    					"subject": "other",
-                    					"value": "direwolf"
-                  					},
-                  					{
-                    					"test": "has_component",
-                    					"subject": "self",
-                    					"operator": "!=",
-                    					"value": "minecraft:is_baby"
-                  					},
-				                	{
-                    					"test": "has_damage",
-                    					"subject": "self",
-                    					"value": "fatal"
-                  					}
-                				]
-							},
-							"event": "rift:drop_more_raw_exotic_meat_from_direwolf",
-							"target": "self"
-						}
-					},
-					{
-						"on_damage": {
-							"filters": {
 								"test": "is_family",
 								"subject": "other",
 								"value": "sarcoSpinAttack"
@@ -3992,7 +3955,6 @@
 						"rift:utahraptor_sittable",
 						"rift:pushable",
 						"rift:can_attack",
-						"rift:utahraptor_adult_can_pounce",
 						"rift:aggravating_horn_attack"
 					]
 				},
@@ -4007,8 +3969,7 @@
 					"component_groups": [
 						"rift:utahraptor_sittable",
 						"rift:pushable",
-						"rift:can_attack",
-						"rift:utahraptor_adult_can_pounce"
+						"rift:can_attack"
 					]
 				},
 				"remove": {
@@ -4121,8 +4082,7 @@
 			"rift:wild_utahraptor_remove_buffs": {
 				"run_command": {
 					"command": [
-						"effect @s speed 0",
-						"effect @s strength 0"
+						"effect @s clear"
 					]
 				}
 			},
@@ -4463,28 +4423,6 @@
 						  		"rift:drop_more_meat_from_sarcosuchus"
 							]
 					  	}
-					},
-					{
-					  	"filters": {
-							"all_of": [
-						  		{
-									"test": "is_family",
-									"subject": "other",
-									"value": "direwolfForcedAttack"
-						  		},
-						  		{
-									"test": "has_component",
-									"subject": "self",
-									"operator": "!=",
-									"value": "minecraft:is_baby"
-						  		}
-							]
-					  	},
-					  	"add": {
-							"component_groups": [
-						  		"rift:drop_more_meat_from_direwolf"
-							]
-					  	}
 					}
 				]
 			},
@@ -4506,13 +4444,6 @@
 			  	"add": {
 					"component_groups": [
 				  		"rift:drop_more_meat_from_sarcosuchus"
-					]
-			  	}
-			},
-			"rift:drop_more_raw_exotic_meat_from_direwolf": {
-			  	"add": {
-					"component_groups": [
-				  		"rift:drop_more_meat_from_direwolf"
 					]
 			  	}
 			},

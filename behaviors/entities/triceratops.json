@@ -438,60 +438,6 @@
 					]
 				}
 			},
-			"rift:herbivore_stampede_targets": {
-				"minecraft:behavior.nearest_attackable_target": {
-					"priority": 3,
-					"reselect_targets": true,
-					"within_radius": 48,
-					"must_see": true,
-					"entity_types": [
-					  	{
-							"filters": {
-								"test": "is_family", 
-								"subject": "other", 
-								"value": "parasaurAngerer"
-						 	}
-					  	},
-						{
-							"filters": {
-								"all_of": [
-									{
-										"test": "is_family", 
-										"subject": "other", 
-										"value": "player"
-									},
-									{
-										"test": "is_riding", 
-										"subject": "other", 
-										"value": false
-									}
-								]
-							}
-						},
-						{
-							"filters": {
-								"test": "is_family", 
-								"subject": "other", 
-								"value": "animal"
-							}
-						},
-						{
-							"filters": {
-								"test": "is_family", 
-								"subject": "other", 
-								"value": "carnivore"
-							}
-						},
-						{
-							"filters": {
-								"test": "has_component",
-								"subject": "other",
-								"value": "minecraft:is_tamed"
-							}
-						}
-					]
-				}
-			},
 			"rift:attack_forced_attack_entity_adult": {
 				"minecraft:behavior.nearest_attackable_target": {
 				  	"priority": 3,
@@ -1233,17 +1179,6 @@
 						"max_wait_time": 0,
 						"spawn_item": "rift:raw_exotic_meat",
 						"num_to_spawn": 1,
-						"single_use": true
-					}
-			 	}
-			},
-			"rift:drop_more_meat_from_direwolf": {
-				"minecraft:spawn_entity": {
-					"entities": {
-						"min_wait_time": 0,
-						"max_wait_time": 0,
-						"spawn_item": "rift:raw_exotic_meat",
-						"num_to_spawn": 2,
 						"single_use": true
 					}
 			 	}
@@ -3422,15 +3357,15 @@
 									},
 									{
 										"test": "has_component",
-										"subject": "self",
+										"subject": "other",
 										"operator": "!=",
-										"value": "minecraft:is_tamed"
+										"value": "minecraft:baby"
 									}
 								]
 							}
 						},
-						"deals_damage": false,
-						"cause": "attack"
+						"deals_damage": true,
+						"damage_multiplier": 5
 					},
 					{
 						"on_damage": {
@@ -3747,32 +3682,6 @@
 					{
 						"on_damage": {
 							"filters": {
-                				"all_of": [
-                  					{
-                    					"test": "is_family",
-                    					"subject": "other",
-                    					"value": "direwolf"
-                  					},
-                  					{
-                    					"test": "has_component",
-                    					"subject": "self",
-                    					"operator": "!=",
-                    					"value": "minecraft:is_baby"
-                  					},
-				                	{
-                    					"test": "has_damage",
-                    					"subject": "self",
-                    					"value": "fatal"
-                  					}
-                				]
-							},
-							"event": "rift:drop_more_raw_exotic_meat_from_direwolf",
-							"target": "self"
-						}
-					},
-					{
-						"on_damage": {
-							"filters": {
 								"test": "is_family",
 								"subject": "other",
 								"value": "sarcoSpinAttack"
@@ -3964,7 +3873,7 @@
 							]
 						},
 						"event": "rift:triceratops_harvest"						
-					}
+					}					
 				]
 			},
 			"minecraft:scheduler": {
@@ -4128,66 +4037,6 @@
 					}
 				]
 			},
-			"rift:spawn_for_herbivore_stampede": {
-				"randomize": [
-					{
-						"weight": 25,
-						"add": {
-							"component_groups": [
-								"rift:triceratops_adult",
-								"rift:triceratops_adult_wild",
-								"rift:triceratops_adult_calm",
-								"rift:pushable",
-								"rift:herbivore_stampede_targets",
-								"rift:variant_zero",
-								"rift:can_attack"
-							]
-						}
-					},
-					{
-						"weight": 25,
-						"add": {
-							"component_groups": [
-								"rift:triceratops_adult",
-								"rift:triceratops_adult_wild",
-								"rift:triceratops_adult_calm",
-								"rift:pushable",
-								"rift:herbivore_stampede_targets",
-								"rift:variant_one",
-								"rift:can_attack"
-							]
-						}
-					},
-					{
-						"weight": 25,
-						"add": {
-							"component_groups": [
-								"rift:triceratops_adult",
-								"rift:triceratops_adult_wild",
-								"rift:triceratops_adult_calm",
-								"rift:pushable",
-								"rift:herbivore_stampede_targets",
-								"rift:variant_two",
-								"rift:can_attack"
-							]
-						}
-					},
-					{
-						"weight": 25,
-						"add": {
-							"component_groups": [
-								"rift:triceratops_adult",
-								"rift:triceratops_adult_wild",
-								"rift:triceratops_adult_calm",
-								"rift:pushable",
-								"rift:herbivore_stampede_targets",
-								"rift:variant_three",
-								"rift:can_attack"
-							]
-						}
-					}
-				]
-			},
 			"minecraft:entity_born": {
 				"add": {
 					"component_groups": [
@@ -4238,8 +4087,7 @@
 								"rift:triceratops_baby_tamed",
 								"rift:triceratops_adult_wild",
 								"rift:triceratops_adult_calm",
-								"rift:default_targets",
-								"rift:herbivore_stampede_targets"
+								"rift:default_targets"
 							]
 						}
 					}
@@ -4298,7 +4146,6 @@
 						"rift:triceratops_adult_wild",
 						"rift:triceratops_adult_calm",
 						"rift:default_targets",
-						"rift:herbivore_stampede_targets",
 						"rift:attack_forced_attack_entity_adult"
 					]
 				}
@@ -4548,7 +4395,6 @@
 						"function cmd.trike_harvest_dark_oak_leaves",
 						"function cmd.trike_harvest_acacia_leaves",
 						"function cmd.trike_harvest_azalea_leaves",
-						"function cmd.trike_harvest_flowered_azalea_leaves",
 						"function cmd.trike_harvest_nether_wart_block",
 						"function cmd.trike_harvest_warped_wart_block",
 						"function cmd.trike_harvest_oak_log",
@@ -4644,8 +4490,7 @@
 				},
 				"remove": {
 					"component_groups": [
-						"rift:default_targets",
-						"rift:herbivore_stampede_targets"
+						"rift:default_targets"
 					]
 				}
 			},
@@ -4822,28 +4667,6 @@
 						  		"rift:drop_more_meat_from_sarcosuchus"
 							]
 					  	}
-					},
-					{
-					  	"filters": {
-							"all_of": [
-						  		{
-									"test": "is_family",
-									"subject": "other",
-									"value": "direwolfForcedAttack"
-						  		},
-						  		{
-									"test": "has_component",
-									"subject": "self",
-									"operator": "!=",
-									"value": "minecraft:is_baby"
-						  		}
-							]
-					  	},
-					  	"add": {
-							"component_groups": [
-						  		"rift:drop_more_meat_from_direwolf"
-							]
-					  	}
 					}
 				]
 			},
@@ -4865,13 +4688,6 @@
 			  	"add": {
 					"component_groups": [
 				  		"rift:drop_more_meat_from_sarcosuchus"
-					]
-			  	}
-			},
-			"rift:drop_more_raw_exotic_meat_from_direwolf": {
-			  	"add": {
-					"component_groups": [
-				  		"rift:drop_more_meat_from_direwolf"
 					]
 			  	}
 			},

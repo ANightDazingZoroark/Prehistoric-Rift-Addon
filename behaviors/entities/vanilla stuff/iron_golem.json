@@ -54,8 +54,21 @@
             {
               "filters": { 
                 "all_of": [
-                  { "test": "has_component", "subject": "other", "operator": "!=", "value": "minecraft:is_tamed" },
-                  { "test" :  "is_family", "subject" : "other", "value" :  "carnivore"}
+                  {
+                    "test": "has_component", "subject": "other", "operator": "!=", "value": "minecraft:is_tamed"
+                  },
+                  {
+                    "any_of": [
+                      { "test" :  "is_family", "subject" : "other", "value" :  "utahraptor"},
+                      {
+                        "all_of": [
+                          { "test": "is_family", "subject": "other", "value": "tyrannosaurus"},
+                          { "test": "has_component", "subject": "other", "value": "minecraft:behavior.nearest_attackable_target"},
+                          { "test": "has_component", "subject": "other", "operator": "!=", "value": "minecraft:is_tamed"}
+                        ]
+                      }
+                    ]
+                  }
                 ] 
               },
               "within_default": 30

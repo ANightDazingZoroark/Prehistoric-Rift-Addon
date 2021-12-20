@@ -44,22 +44,7 @@
                     }
                 }
             },
-            "rift:not_on_ground_piranha_swarm": {
-                "minecraft:environment_sensor": {
-                    "triggers": [
-                        {
-                            "filters": {
-                                "test": "on_ground",
-                                "subject": "self",
-                                "value": true
-                            },
-                            "event": "rift:execute_piranha_swarm",
-                            "target": "self"
-                        }
-                    ]
-                }
-            },
-            "rift:on_ground_piranha_swarm": {
+            "rift:do_piranha_swarm": {
                 "minecraft:spawn_entity": {
 					"entities": [
 						{
@@ -67,123 +52,6 @@
                             "spawn_event": "minecraft:entity_spawned",
 							"single_use": true,
                             "num_to_spawn": 3,
-							"min_wait_time": 0,
-							"max_wait_time": 0
-						}
-					]
-                },
-                "minecraft:timer": {
-                    "time": 0.5,
-                    "time_down_event": {
-                        "event": "rift:die",
-                        "target": "self"
-                    }
-                }
-            },
-            "rift:not_on_ground_wolf_hunt": {
-                "minecraft:environment_sensor": {
-                    "triggers": [
-                        {
-                            "filters": {
-                                "test": "on_ground",
-                                "subject": "self",
-                                "value": true
-                            },
-                            "event": "rift:execute_wolf_hunt",
-                            "target": "self"
-                        }
-                    ]
-                }
-            },
-            "rift:on_ground_wolf_hunt_one": {
-                "minecraft:spawn_entity": {
-					"entities": [
-						{
-							"spawn_entity": "rift:direwolf",
-                            "spawn_event": "minecraft:entity_spawned",
-							"single_use": true,
-                            "num_to_spawn": 3,
-							"min_wait_time": 0,
-							"max_wait_time": 0
-						},
-						{
-							"spawn_entity": "minecraft:wolf",
-                            "spawn_event": "rift:spawn_for_wolf_hunt",
-							"single_use": true,
-                            "num_to_spawn": 1,
-							"min_wait_time": 0,
-							"max_wait_time": 0
-						}
-					]
-                },
-                "minecraft:timer": {
-                    "time": 0.5,
-                    "time_down_event": {
-                        "event": "rift:die",
-                        "target": "self"
-                    }
-                }
-            },
-            "rift:on_ground_wolf_hunt_two": {
-                "minecraft:spawn_entity": {
-					"entities": [
-						{
-							"spawn_entity": "rift:direwolf",
-                            "spawn_event": "minecraft:entity_spawned",
-							"single_use": true,
-                            "num_to_spawn": 1,
-							"min_wait_time": 0,
-							"max_wait_time": 0
-						},
-						{
-							"spawn_entity": "minecraft:wolf",
-                            "spawn_event": "rift:spawn_for_wolf_hunt",
-							"single_use": true,
-                            "num_to_spawn": 1,
-							"min_wait_time": 0,
-							"max_wait_time": 0
-						}
-					]
-                },
-                "minecraft:timer": {
-                    "time": 0.5,
-                    "time_down_event": {
-                        "event": "rift:die",
-                        "target": "self"
-                    }
-                }
-            },
-            "rift:not_on_ground_herbivore_stampede": {
-                "minecraft:environment_sensor": {
-                    "triggers": [
-                        {
-                            "filters": {
-                                "test": "on_ground",
-                                "subject": "self",
-                                "value": true
-                            },
-                            "event": "rift:execute_herbivore_stampede",
-                            "target": "self"
-                        }
-                    ]
-                }
-            },
-            "rift:on_ground_herbivore_stampede": {
-                "minecraft:spawn_entity": {
-					"entities": [
-						{
-							"spawn_entity": "rift:stegosaurus",
-                            "spawn_event": "rift:spawn_for_herbivore_stampede",
-							"single_use": true,
-                            "num_to_spawn": 1,
-							"min_wait_time": 0,
-							"max_wait_time": 0
-						},
-						{
-							"spawn_entity": "rift:triceratops",
-                            "spawn_event": "rift:spawn_for_herbivore_stampede",
-							"single_use": true,
-                            "num_to_spawn": 1,
 							"min_wait_time": 0,
 							"max_wait_time": 0
 						}
@@ -235,82 +103,13 @@
             "rift:piranha_swarm": {
                 "add": {
                     "component_groups": [
-                        "rift:not_on_ground_piranha_swarm"
-                    ]
-                }
-            },
-            "rift:execute_piranha_swarm": {
-                "add": {
-                    "component_groups": [
-                        "rift:on_ground_piranha_swarm"
-                    ]
-                },
-                "remove": {
-                    "component_groups": [
-                        "rift:not_on_ground_piranha_swarm"
+                        "rift:do_piranha_swarm"
                     ]
                 },
                 "run_command": {
                     "command": [
                         "fill ~+1 ~ ~+1 ~-1 ~ ~-1 flowing_water",
                         "setblock ~ ~-1 ~ flowing_water"
-                    ]
-                }
-            },
-            "rift:wolf_hunt": {
-                "add": {
-                    "component_groups": [
-                        "rift:not_on_ground_wolf_hunt"
-                    ]
-                }
-            },
-            "rift:execute_wolf_hunt": {
-                "sequence": [
-                    {
-                        "randomize": [
-                            {
-                                "weight": 1,
-                                "add": {
-                                    "component_groups": [
-                                        "rift:on_ground_wolf_hunt_one"
-                                    ]
-                                }
-                            },
-                            {
-                                "weight": 1,
-                                "add": {
-                                    "component_groups": [
-                                        "rift:on_ground_wolf_hunt_two"
-                                    ]
-                                }
-                            }
-                        ]
-                    },
-                    {
-                        "remove": {
-                            "component_groups": [
-                                "rift:not_on_ground_wolf_hunt"
-                            ]
-                        }
-                    }
-                ]
-            },
-            "rift:herbivore_stampede": {
-                "add": {
-                    "component_groups": [
-                        "rift:not_on_ground_herbivore_stampede"
-                    ]
-                }
-            },
-            "rift:execute_herbivore_stampede": {
-                "add": {
-                    "component_groups": [
-                        "rift:on_ground_herbivore_stampede"
-                    ]
-                },
-                "remove": {
-                    "component_groups": [
-                        "rift:not_on_ground_herbivore_stampede"
                     ]
                 }
             },
