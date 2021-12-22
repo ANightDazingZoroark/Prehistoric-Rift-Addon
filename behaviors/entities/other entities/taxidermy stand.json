@@ -1036,6 +1036,75 @@
                                 "target": "self"
                             },
                             "use_item": true
+                        },
+                        //megaloceros
+                        {
+                            "on_interact": {
+                                "filters": {
+                                    "all_of": [
+                                        {
+                                            "test": "is_mark_variant",
+                                            "subject": "self",
+                                            "value": 0
+                                        },
+                                        {
+                                            "test": "has_equipment",
+                                            "subject": "other",
+                                            "domain": "hand",
+                                            "value": "rift:megaloceros_antler"
+                                        }
+                                    ]
+                                },
+                                "event": "rift:do_megaloceros_taxidermy",
+                                "target": "self"
+                            },
+                            "use_item": true
+                        },
+                        {
+                            "on_interact": {
+                                "filters": {
+                                    "all_of": [
+                                        {
+                                            "test": "has_equipment",
+                                            "subject": "other",
+                                            "domain": "hand",
+                                            "value": "rift:furniture_tool"
+                                        },
+                                        {
+                                            "test": "is_sneaking",
+                                            "subject": "other",
+                                            "value": false
+                                        },
+                                        {
+                                            "any_of": [
+                                                {
+                                                    "test": "is_mark_variant",
+                                                    "subject": "self",
+                                                    "value": 57
+                                                },
+                                                {
+                                                    "test": "is_mark_variant",
+                                                    "subject": "self",
+                                                    "value": 58
+                                                },
+                                                {
+                                                    "test": "is_mark_variant",
+                                                    "subject": "self",
+                                                    "value": 59
+                                                },
+                                                {
+                                                    "test": "is_mark_variant",
+                                                    "subject": "self",
+                                                    "value": 60
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                "event": "rift:change_megaloceros_pose",
+                                "target": "self"
+                            },
+                            "use_item": true
                         }
                     ]
                 }
@@ -1659,6 +1728,47 @@
                     }
                 }
 			},
+            //megaloceros
+            "rift:megaloceros_taxidermy_variant_one": {
+                "minecraft:mark_variant": {
+                    "value": 57
+                }
+            },
+            "rift:megaloceros_taxidermy_variant_two": {
+                "minecraft:mark_variant": {
+                    "value": 58
+                }
+            },
+            "rift:megaloceros_taxidermy_variant_three": {
+                "minecraft:mark_variant": {
+                    "value": 59
+                }
+            },
+            "rift:megaloceros_taxidermy_variant_four": {
+                "minecraft:mark_variant": {
+                    "value": 60
+                }
+            },
+            "rift:drop_megaloceros_antler": {
+                "minecraft:spawn_entity": {
+                    "entities": [
+                        {
+                            "spawn_item": "rift:megaloceros_antler",
+                            "min_wait_time": 0,
+                            "max_wait_time": 0,
+                            "single_use": true,
+                            "num_to_spawn": 1
+                        }
+                    ]
+                },
+                "minecraft:timer": {
+                    "time": 0.05,
+                    "time_down_event": {
+                        "event": "rift:remove_taxidermy_phase_two",
+                        "target": "self"
+                    }
+                }
+			},
             "rift:pose_zero": {
                 "minecraft:skin_id": {
                     "value": 0
@@ -2238,6 +2348,37 @@
                                 ]
                             },
                             "spawn_item": "rift:direwolf_tail",
+                            "min_wait_time": 0,
+                            "max_wait_time": 0,
+                            "single_use": true,
+                            "num_to_spawn": 1
+                        },
+                        {
+                            "filters": {
+                                "any_of": [
+                                    {
+                                        "test": "is_mark_variant",
+                                        "subject": "self",
+                                        "value": 57
+                                    },
+                                    {
+                                        "test": "is_mark_variant",
+                                        "subject": "self",
+                                        "value": 58
+                                    },
+                                    {
+                                        "test": "is_mark_variant",
+                                        "subject": "self",
+                                        "value": 59
+                                    },
+                                    {
+                                        "test": "is_mark_variant",
+                                        "subject": "self",
+                                        "value": 60
+                                    }
+                                ]
+                            },
+                            "spawn_item": "rift:megaloceros_antler",
                             "min_wait_time": 0,
                             "max_wait_time": 0,
                             "single_use": true,
@@ -3162,6 +3303,45 @@
                                 "rift:direwolf_taxidermy_variant_four"
                             ]
                         }
+                    },
+                    {
+                        "filters": {
+                            "any_of": [
+                                {
+                                    "test": "is_mark_variant",
+                                    "subject": "self",
+                                    "value": 57
+                                },
+                                {
+                                    "test": "is_mark_variant",
+                                    "subject": "self",
+                                    "value": 58
+                                },
+                                {
+                                    "test": "is_mark_variant",
+                                    "subject": "self",
+                                    "value": 59
+                                },
+                                {
+                                    "test": "is_mark_variant",
+                                    "subject": "self",
+                                    "value": 60
+                                }
+                            ]
+                        },
+                        "add": {
+                            "component_groups": [
+                                "rift:drop_megaloceros_antler"
+                            ]
+                        },
+                        "remove": {
+                            "component_groups": [
+                                "rift:megaloceros_taxidermy_variant_one",
+                                "rift:megaloceros_taxidermy_variant_two",
+                                "rift:megaloceros_taxidermy_variant_three",
+                                "rift:megaloceros_taxidermy_variant_four"
+                            ]
+                        }
                     }
                 ]
             },
@@ -3191,7 +3371,8 @@
                         "rift:drop_sarcosuchus_snout",
                         "rift:drop_anomalocaris_appendage",
                         "rift:drop_saurophaganax_eye",
-                        "rift:drop_direwolf_tail"
+                        "rift:drop_direwolf_tail",
+                        "rift:drop_megaloceros_antler"
                     ]
                 }
             },
@@ -4601,6 +4782,101 @@
                                 "rift:direwolf_taxidermy_variant_two",
                                 "rift:direwolf_taxidermy_variant_three",
                                 "rift:direwolf_taxidermy_variant_four"
+                            ]
+                        }
+                    }
+                ]
+            },
+            //megaloceros
+            "rift:do_megaloceros_taxidermy": {
+                "add": {
+                    "component_groups": [
+                        "rift:megaloceros_taxidermy_variant_one",
+                        "rift:pose_zero"
+                    ]
+                },
+                "remove": {
+                    "component_groups": [
+                        "rift:no_taxidermy"
+                    ]
+                }
+            },
+            "rift:change_megaloceros_pose": {
+                "sequence": [
+                    {},
+                    {
+                        "filters": {
+                            "test": "is_mark_variant",
+                            "subject": "self",
+                            "value": 57
+                        },
+                        "add": {
+                            "component_groups": [
+                                "rift:megaloceros_taxidermy_variant_two"
+                            ]
+                        },
+                        "remove": {
+                            "component_groups": [
+                                "rift:megaloceros_taxidermy_variant_one",
+                                "rift:megaloceros_taxidermy_variant_three",
+                                "rift:megaloceros_taxidermy_variant_four"
+                            ]
+                        }
+                    },
+                    {
+                        "filters": {
+                            "test": "is_mark_variant",
+                            "subject": "self",
+                            "value": 58
+                        },
+                        "add": {
+                            "component_groups": [
+                                "rift:megaloceros_taxidermy_variant_three"
+                            ]
+                        },
+                        "remove": {
+                            "component_groups": [
+                                "rift:megaloceros_taxidermy_variant_one",
+                                "rift:megaloceros_taxidermy_variant_two",
+                                "rift:megaloceros_taxidermy_variant_four"
+                            ]
+                        }
+                    },
+                    {
+                        "filters": {
+                            "test": "is_mark_variant",
+                            "subject": "self",
+                            "value": 59
+                        },
+                        "add": {
+                            "component_groups": [
+                                "rift:megaloceros_taxidermy_variant_four"
+                            ]
+                        },
+                        "remove": {
+                            "component_groups": [
+                                "rift:megaloceros_taxidermy_variant_one",
+                                "rift:megaloceros_taxidermy_variant_two",
+                                "rift:megaloceros_taxidermy_variant_three"
+                            ]
+                        }
+                    },
+                    {
+                        "filters": {
+                            "test": "is_mark_variant",
+                            "subject": "self",
+                            "value": 60
+                        },
+                        "add": {
+                            "component_groups": [
+                                "rift:megaloceros_taxidermy_variant_one"
+                            ]
+                        },
+                        "remove": {
+                            "component_groups": [
+                                "rift:megaloceros_taxidermy_variant_two",
+                                "rift:megaloceros_taxidermy_variant_three",
+                                "rift:megaloceros_taxidermy_variant_four"
                             ]
                         }
                     }
