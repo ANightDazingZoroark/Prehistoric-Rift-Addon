@@ -121,7 +121,7 @@ execute @s[ry=45, rym=-45] ~ ~ ~ detect ~ ~+3 ~+1 wood 4 setblock ~ ~+3 ~+1 wood
 execute @s[ry=45, rym=-45] ~ ~ ~ detect ~+1 ~ ~+1 log2 0 summon rift:megaloceros_harvest_dropper ~+1 ~+3 ~ rift:acacia_log_dropper
 execute @s[ry=45, rym=-45] ~ ~ ~ detect ~+1 ~ ~+1 log2 0 setblock ~+1 ~ ~+1 stripped_acacia_log 0
 execute @s[ry=45, rym=-45] ~ ~ ~ detect ~+1 ~+1 ~+1 log2 0 summon rift:megaloceros_harvest_dropper ~+1 ~+4 ~ rift:acacia_log_dropper
-execute @s[ry=45, rym=-45] ~ ~ ~ detect ~+1 ~+1 ~+1 log2 0 setblock ~+1 ~+1 ~+1 stripped_acacia_lo2 0
+execute @s[ry=45, rym=-45] ~ ~ ~ detect ~+1 ~+1 ~+1 log2 0 setblock ~+1 ~+1 ~+1 stripped_acacia_log 0
 execute @s[ry=45, rym=-45] ~ ~ ~ detect ~+1 ~+2 ~+1 log2 0 summon rift:megaloceros_harvest_dropper ~+1 ~+5 ~ rift:acacia_log_dropper
 execute @s[ry=45, rym=-45] ~ ~ ~ detect ~+1 ~+2 ~+1 log2 0 setblock ~+1 ~+2 ~+1 stripped_acacia_log 0
 execute @s[ry=45, rym=-45] ~ ~ ~ detect ~+1 ~+3 ~+1 log2 0 summon rift:megaloceros_harvest_dropper ~+1 ~+6 ~ rift:acacia_log_dropper
@@ -130,7 +130,7 @@ execute @s[ry=45, rym=-45] ~ ~ ~ detect ~+1 ~+3 ~+1 log2 0 setblock ~+1 ~+3 ~+1 
 execute @s[ry=45, rym=-45] ~ ~ ~ detect ~+1 ~ ~+1 log2 2 summon rift:megaloceros_harvest_dropper ~+1 ~+3 ~ rift:acacia_log_dropper
 execute @s[ry=45, rym=-45] ~ ~ ~ detect ~+1 ~ ~+1 log2 2 setblock ~+1 ~ ~+1 stripped_acacia_log 0
 execute @s[ry=45, rym=-45] ~ ~ ~ detect ~+1 ~+1 ~+1 log2 2 summon rift:megaloceros_harvest_dropper ~+1 ~+4 ~ rift:acacia_log_dropper
-execute @s[ry=45, rym=-45] ~ ~ ~ detect ~+1 ~+1 ~+1 log2 2 setblock ~+1 ~+1 ~+1 stripped_acacia_lo2 0
+execute @s[ry=45, rym=-45] ~ ~ ~ detect ~+1 ~+1 ~+1 log2 2 setblock ~+1 ~+1 ~+1 stripped_acacia_log 0
 execute @s[ry=45, rym=-45] ~ ~ ~ detect ~+1 ~+2 ~+1 log2 2 summon rift:megaloceros_harvest_dropper ~+1 ~+5 ~ rift:acacia_log_dropper
 execute @s[ry=45, rym=-45] ~ ~ ~ detect ~+1 ~+2 ~+1 log2 2 setblock ~+1 ~+2 ~+1 stripped_acacia_log 0
 execute @s[ry=45, rym=-45] ~ ~ ~ detect ~+1 ~+3 ~+1 log2 2 summon rift:megaloceros_harvest_dropper ~+1 ~+6 ~ rift:acacia_log_dropper
@@ -139,7 +139,7 @@ execute @s[ry=45, rym=-45] ~ ~ ~ detect ~+1 ~+3 ~+1 log2 2 setblock ~+1 ~+3 ~+1 
 execute @s[ry=45, rym=-45] ~ ~ ~ detect ~+1 ~ ~+1 log2 3 summon rift:megaloceros_harvest_dropper ~+1 ~+3 ~ rift:acacia_log_dropper
 execute @s[ry=45, rym=-45] ~ ~ ~ detect ~+1 ~ ~+1 log2 3 setblock ~+1 ~ ~+1 stripped_acacia_log 0
 execute @s[ry=45, rym=-45] ~ ~ ~ detect ~+1 ~+1 ~+1 log2 3 summon rift:megaloceros_harvest_dropper ~+1 ~+4 ~ rift:acacia_log_dropper
-execute @s[ry=45, rym=-45] ~ ~ ~ detect ~+1 ~+1 ~+1 log2 3 setblock ~+1 ~+1 ~+1 stripped_acacia_lo2 0
+execute @s[ry=45, rym=-45] ~ ~ ~ detect ~+1 ~+1 ~+1 log2 3 setblock ~+1 ~+1 ~+1 stripped_acacia_log 0
 execute @s[ry=45, rym=-45] ~ ~ ~ detect ~+1 ~+2 ~+1 log2 3 summon rift:megaloceros_harvest_dropper ~+1 ~+5 ~ rift:acacia_log_dropper
 execute @s[ry=45, rym=-45] ~ ~ ~ detect ~+1 ~+2 ~+1 log2 3 setblock ~+1 ~+2 ~+1 stripped_acacia_log 0
 execute @s[ry=45, rym=-45] ~ ~ ~ detect ~+1 ~+3 ~+1 log2 3 summon rift:megaloceros_harvest_dropper ~+1 ~+6 ~ rift:acacia_log_dropper
@@ -148,7 +148,7 @@ execute @s[ry=45, rym=-45] ~ ~ ~ detect ~+1 ~+3 ~+1 log2 3 setblock ~+1 ~+3 ~+1 
 execute @s[ry=45, rym=-45] ~ ~ ~ detect ~+1 ~ ~+1 log2 4 summon rift:megaloceros_harvest_dropper ~+1 ~+3 ~ rift:acacia_log_dropper
 execute @s[ry=45, rym=-45] ~ ~ ~ detect ~+1 ~ ~+1 log2 4 setblock ~+1 ~ ~+1 stripped_acacia_log 1
 execute @s[ry=45, rym=-45] ~ ~ ~ detect ~+1 ~+1 ~+1 log2 4 summon rift:megaloceros_harvest_dropper ~+1 ~+4 ~ rift:acacia_log_dropper
-execute @s[ry=45, rym=-45] ~ ~ ~ detect ~+1 ~+1 ~+1 log2 4 setblock ~+1 ~+1 ~+1 stripped_acacia_lo2 1
+execute @s[ry=45, rym=-45] ~ ~ ~ detect ~+1 ~+1 ~+1 log2 4 setblock ~+1 ~+1 ~+1 stripped_acacia_log 1
 execute @s[ry=45, rym=-45] ~ ~ ~ detect ~+1 ~+2 ~+1 log2 4 summon rift:megaloceros_harvest_dropper ~+1 ~+5 ~ rift:acacia_log_dropper
 execute @s[ry=45, rym=-45] ~ ~ ~ detect ~+1 ~+2 ~+1 log2 4 setblock ~+1 ~+2 ~+1 stripped_acacia_log 1
 execute @s[ry=45, rym=-45] ~ ~ ~ detect ~+1 ~+3 ~+1 log2 4 summon rift:megaloceros_harvest_dropper ~+1 ~+6 ~ rift:acacia_log_dropper
@@ -157,7 +157,7 @@ execute @s[ry=45, rym=-45] ~ ~ ~ detect ~+1 ~+3 ~+1 log2 4 setblock ~+1 ~+3 ~+1 
 execute @s[ry=45, rym=-45] ~ ~ ~ detect ~+1 ~ ~+1 log2 6 summon rift:megaloceros_harvest_dropper ~+1 ~+3 ~ rift:acacia_log_dropper
 execute @s[ry=45, rym=-45] ~ ~ ~ detect ~+1 ~ ~+1 log2 6 setblock ~+1 ~ ~+1 stripped_acacia_log 1
 execute @s[ry=45, rym=-45] ~ ~ ~ detect ~+1 ~+1 ~+1 log2 6 summon rift:megaloceros_harvest_dropper ~+1 ~+4 ~ rift:acacia_log_dropper
-execute @s[ry=45, rym=-45] ~ ~ ~ detect ~+1 ~+1 ~+1 log2 6 setblock ~+1 ~+1 ~+1 stripped_acacia_lo2 1
+execute @s[ry=45, rym=-45] ~ ~ ~ detect ~+1 ~+1 ~+1 log2 6 setblock ~+1 ~+1 ~+1 stripped_acacia_log 1
 execute @s[ry=45, rym=-45] ~ ~ ~ detect ~+1 ~+2 ~+1 log2 6 summon rift:megaloceros_harvest_dropper ~+1 ~+5 ~ rift:acacia_log_dropper
 execute @s[ry=45, rym=-45] ~ ~ ~ detect ~+1 ~+2 ~+1 log2 6 setblock ~+1 ~+2 ~+1 stripped_acacia_log 1
 execute @s[ry=45, rym=-45] ~ ~ ~ detect ~+1 ~+3 ~+1 log2 6 summon rift:megaloceros_harvest_dropper ~+1 ~+6 ~ rift:acacia_log_dropper
@@ -166,7 +166,7 @@ execute @s[ry=45, rym=-45] ~ ~ ~ detect ~+1 ~+3 ~+1 log2 6 setblock ~+1 ~+3 ~+1 
 execute @s[ry=45, rym=-45] ~ ~ ~ detect ~+1 ~ ~+1 log2 7 summon rift:megaloceros_harvest_dropper ~+1 ~+3 ~ rift:acacia_log_dropper
 execute @s[ry=45, rym=-45] ~ ~ ~ detect ~+1 ~ ~+1 log2 7 setblock ~+1 ~ ~+1 stripped_acacia_log 1
 execute @s[ry=45, rym=-45] ~ ~ ~ detect ~+1 ~+1 ~+1 log2 7 summon rift:megaloceros_harvest_dropper ~+1 ~+4 ~ rift:acacia_log_dropper
-execute @s[ry=45, rym=-45] ~ ~ ~ detect ~+1 ~+1 ~+1 log2 7 setblock ~+1 ~+1 ~+1 stripped_acacia_lo2 1
+execute @s[ry=45, rym=-45] ~ ~ ~ detect ~+1 ~+1 ~+1 log2 7 setblock ~+1 ~+1 ~+1 stripped_acacia_log 1
 execute @s[ry=45, rym=-45] ~ ~ ~ detect ~+1 ~+2 ~+1 log2 7 summon rift:megaloceros_harvest_dropper ~+1 ~+5 ~ rift:acacia_log_dropper
 execute @s[ry=45, rym=-45] ~ ~ ~ detect ~+1 ~+2 ~+1 log2 7 setblock ~+1 ~+2 ~+1 stripped_acacia_log 1
 execute @s[ry=45, rym=-45] ~ ~ ~ detect ~+1 ~+3 ~+1 log2 7 summon rift:megaloceros_harvest_dropper ~+1 ~+6 ~ rift:acacia_log_dropper
@@ -175,7 +175,7 @@ execute @s[ry=45, rym=-45] ~ ~ ~ detect ~+1 ~+3 ~+1 log2 7 setblock ~+1 ~+3 ~+1 
 execute @s[ry=45, rym=-45] ~ ~ ~ detect ~+1 ~ ~+1 log2 8 summon rift:megaloceros_harvest_dropper ~+1 ~+3 ~ rift:acacia_log_dropper
 execute @s[ry=45, rym=-45] ~ ~ ~ detect ~+1 ~ ~+1 log2 8 setblock ~+1 ~ ~+1 stripped_acacia_log 2
 execute @s[ry=45, rym=-45] ~ ~ ~ detect ~+1 ~+1 ~+1 log2 8 summon rift:megaloceros_harvest_dropper ~+1 ~+4 ~ rift:acacia_log_dropper
-execute @s[ry=45, rym=-45] ~ ~ ~ detect ~+1 ~+1 ~+1 log2 8 setblock ~+1 ~+1 ~+1 stripped_acacia_lo2 2
+execute @s[ry=45, rym=-45] ~ ~ ~ detect ~+1 ~+1 ~+1 log2 8 setblock ~+1 ~+1 ~+1 stripped_acacia_log 2
 execute @s[ry=45, rym=-45] ~ ~ ~ detect ~+1 ~+2 ~+1 log2 8 summon rift:megaloceros_harvest_dropper ~+1 ~+5 ~ rift:acacia_log_dropper
 execute @s[ry=45, rym=-45] ~ ~ ~ detect ~+1 ~+2 ~+1 log2 8 setblock ~+1 ~+2 ~+1 stripped_acacia_log 2
 execute @s[ry=45, rym=-45] ~ ~ ~ detect ~+1 ~+3 ~+1 log2 8 summon rift:megaloceros_harvest_dropper ~+1 ~+6 ~ rift:acacia_log_dropper
@@ -184,7 +184,7 @@ execute @s[ry=45, rym=-45] ~ ~ ~ detect ~+1 ~+3 ~+1 log2 8 setblock ~+1 ~+3 ~+1 
 execute @s[ry=45, rym=-45] ~ ~ ~ detect ~+1 ~ ~+1 log2 10 summon rift:megaloceros_harvest_dropper ~+1 ~+3 ~ rift:acacia_log_dropper
 execute @s[ry=45, rym=-45] ~ ~ ~ detect ~+1 ~ ~+1 log2 10 setblock ~+1 ~ ~+1 stripped_acacia_log 2
 execute @s[ry=45, rym=-45] ~ ~ ~ detect ~+1 ~+1 ~+1 log2 10 summon rift:megaloceros_harvest_dropper ~+1 ~+4 ~ rift:acacia_log_dropper
-execute @s[ry=45, rym=-45] ~ ~ ~ detect ~+1 ~+1 ~+1 log2 10 setblock ~+1 ~+1 ~+1 stripped_acacia_lo2 2
+execute @s[ry=45, rym=-45] ~ ~ ~ detect ~+1 ~+1 ~+1 log2 10 setblock ~+1 ~+1 ~+1 stripped_acacia_log 2
 execute @s[ry=45, rym=-45] ~ ~ ~ detect ~+1 ~+2 ~+1 log2 10 summon rift:megaloceros_harvest_dropper ~+1 ~+5 ~ rift:acacia_log_dropper
 execute @s[ry=45, rym=-45] ~ ~ ~ detect ~+1 ~+2 ~+1 log2 10 setblock ~+1 ~+2 ~+1 stripped_acacia_log 2
 execute @s[ry=45, rym=-45] ~ ~ ~ detect ~+1 ~+3 ~+1 log2 10 summon rift:megaloceros_harvest_dropper ~+1 ~+6 ~ rift:acacia_log_dropper
@@ -193,7 +193,7 @@ execute @s[ry=45, rym=-45] ~ ~ ~ detect ~+1 ~+3 ~+1 log2 10 setblock ~+1 ~+3 ~+1
 execute @s[ry=45, rym=-45] ~ ~ ~ detect ~+1 ~ ~+1 log2 11 summon rift:megaloceros_harvest_dropper ~+1 ~+3 ~ rift:acacia_log_dropper
 execute @s[ry=45, rym=-45] ~ ~ ~ detect ~+1 ~ ~+1 log2 11 setblock ~+1 ~ ~+1 stripped_acacia_log 2
 execute @s[ry=45, rym=-45] ~ ~ ~ detect ~+1 ~+1 ~+1 log2 11 summon rift:megaloceros_harvest_dropper ~+1 ~+4 ~ rift:acacia_log_dropper
-execute @s[ry=45, rym=-45] ~ ~ ~ detect ~+1 ~+1 ~+1 log2 11 setblock ~+1 ~+1 ~+1 stripped_acacia_lo2 2
+execute @s[ry=45, rym=-45] ~ ~ ~ detect ~+1 ~+1 ~+1 log2 11 setblock ~+1 ~+1 ~+1 stripped_acacia_log 2
 execute @s[ry=45, rym=-45] ~ ~ ~ detect ~+1 ~+2 ~+1 log2 11 summon rift:megaloceros_harvest_dropper ~+1 ~+5 ~ rift:acacia_log_dropper
 execute @s[ry=45, rym=-45] ~ ~ ~ detect ~+1 ~+2 ~+1 log2 11 setblock ~+1 ~+2 ~+1 stripped_acacia_log 2
 execute @s[ry=45, rym=-45] ~ ~ ~ detect ~+1 ~+3 ~+1 log2 11 summon rift:megaloceros_harvest_dropper ~+1 ~+6 ~ rift:acacia_log_dropper
@@ -202,7 +202,7 @@ execute @s[ry=45, rym=-45] ~ ~ ~ detect ~+1 ~+3 ~+1 log2 11 setblock ~+1 ~+3 ~+1
 execute @s[ry=45, rym=-45] ~ ~ ~ detect ~+1 ~ ~+1 log2 12 summon rift:megaloceros_harvest_dropper ~+1 ~+3 ~ rift:acacia_log_dropper
 execute @s[ry=45, rym=-45] ~ ~ ~ detect ~+1 ~ ~+1 log2 12 setblock ~+1 ~ ~+1 wood 12
 execute @s[ry=45, rym=-45] ~ ~ ~ detect ~+1 ~+1 ~+1 log2 12 summon rift:megaloceros_harvest_dropper ~+1 ~+4 ~ rift:acacia_log_dropper
-execute @s[ry=45, rym=-45] ~ ~ ~ detect ~+1 ~+1 ~+1 log2 12 setblock ~+1 ~+1 ~+1 woo2 12
+execute @s[ry=45, rym=-45] ~ ~ ~ detect ~+1 ~+1 ~+1 log2 12 setblock ~+1 ~+1 ~+1 wood 12
 execute @s[ry=45, rym=-45] ~ ~ ~ detect ~+1 ~+2 ~+1 log2 12 summon rift:megaloceros_harvest_dropper ~+1 ~+5 ~ rift:acacia_log_dropper
 execute @s[ry=45, rym=-45] ~ ~ ~ detect ~+1 ~+2 ~+1 log2 12 setblock ~+1 ~+2 ~+1 wood 12
 execute @s[ry=45, rym=-45] ~ ~ ~ detect ~+1 ~+3 ~+1 log2 12 summon rift:megaloceros_harvest_dropper ~+1 ~+6 ~ rift:acacia_log_dropper
@@ -211,7 +211,7 @@ execute @s[ry=45, rym=-45] ~ ~ ~ detect ~+1 ~+3 ~+1 log2 12 setblock ~+1 ~+3 ~+1
 execute @s[ry=45, rym=-45] ~ ~ ~ detect ~+1 ~ ~+1 log2 14 summon rift:megaloceros_harvest_dropper ~+1 ~+3 ~ rift:acacia_log_dropper
 execute @s[ry=45, rym=-45] ~ ~ ~ detect ~+1 ~ ~+1 log2 14 setblock ~+1 ~ ~+1 wood 12
 execute @s[ry=45, rym=-45] ~ ~ ~ detect ~+1 ~+1 ~+1 log2 14 summon rift:megaloceros_harvest_dropper ~+1 ~+4 ~ rift:acacia_log_dropper
-execute @s[ry=45, rym=-45] ~ ~ ~ detect ~+1 ~+1 ~+1 log2 14 setblock ~+1 ~+1 ~+1 woo2 12
+execute @s[ry=45, rym=-45] ~ ~ ~ detect ~+1 ~+1 ~+1 log2 14 setblock ~+1 ~+1 ~+1 wood 12
 execute @s[ry=45, rym=-45] ~ ~ ~ detect ~+1 ~+2 ~+1 log2 14 summon rift:megaloceros_harvest_dropper ~+1 ~+5 ~ rift:acacia_log_dropper
 execute @s[ry=45, rym=-45] ~ ~ ~ detect ~+1 ~+2 ~+1 log2 14 setblock ~+1 ~+2 ~+1 wood 12
 execute @s[ry=45, rym=-45] ~ ~ ~ detect ~+1 ~+3 ~+1 log2 14 summon rift:megaloceros_harvest_dropper ~+1 ~+6 ~ rift:acacia_log_dropper
@@ -220,7 +220,7 @@ execute @s[ry=45, rym=-45] ~ ~ ~ detect ~+1 ~+3 ~+1 log2 14 setblock ~+1 ~+3 ~+1
 execute @s[ry=45, rym=-45] ~ ~ ~ detect ~+1 ~ ~+1 log2 15 summon rift:megaloceros_harvest_dropper ~+1 ~+3 ~ rift:acacia_log_dropper
 execute @s[ry=45, rym=-45] ~ ~ ~ detect ~+1 ~ ~+1 log2 15 setblock ~+1 ~ ~+1 wood 12
 execute @s[ry=45, rym=-45] ~ ~ ~ detect ~+1 ~+1 ~+1 log2 15 summon rift:megaloceros_harvest_dropper ~+1 ~+4 ~ rift:acacia_log_dropper
-execute @s[ry=45, rym=-45] ~ ~ ~ detect ~+1 ~+1 ~+1 log2 15 setblock ~+1 ~+1 ~+1 woo2 12
+execute @s[ry=45, rym=-45] ~ ~ ~ detect ~+1 ~+1 ~+1 log2 15 setblock ~+1 ~+1 ~+1 wood 12
 execute @s[ry=45, rym=-45] ~ ~ ~ detect ~+1 ~+2 ~+1 log2 15 summon rift:megaloceros_harvest_dropper ~+1 ~+5 ~ rift:acacia_log_dropper
 execute @s[ry=45, rym=-45] ~ ~ ~ detect ~+1 ~+2 ~+1 log2 15 setblock ~+1 ~+2 ~+1 wood 12
 execute @s[ry=45, rym=-45] ~ ~ ~ detect ~+1 ~+3 ~+1 log2 15 summon rift:megaloceros_harvest_dropper ~+1 ~+6 ~ rift:acacia_log_dropper
@@ -228,8 +228,8 @@ execute @s[ry=45, rym=-45] ~ ~ ~ detect ~+1 ~+3 ~+1 log2 15 setblock ~+1 ~+3 ~+1
 
 execute @s[ry=45, rym=-45] ~ ~ ~ detect ~+1 ~ ~+1 wood 4 summon rift:megaloceros_harvest_dropper ~+1 ~+3 ~ rift:acacia_log_dropper
 execute @s[ry=45, rym=-45] ~ ~ ~ detect ~+1 ~ ~+1 wood 4 setblock ~+1 ~ ~+1 wood 12
-execute @s[ry=45, rym=-45] ~ ~ ~ detect ~+1 ~+1 ~+1 woo2 4 summon rift:megaloceros_harvest_dropper ~+1 ~+4 ~ rift:acacia_log_dropper
-execute @s[ry=45, rym=-45] ~ ~ ~ detect ~+1 ~+1 ~+1 woo2 4 setblock ~+1 ~+1 ~+1 woo2 12
+execute @s[ry=45, rym=-45] ~ ~ ~ detect ~+1 ~+1 ~+1 wood 4 summon rift:megaloceros_harvest_dropper ~+1 ~+4 ~ rift:acacia_log_dropper
+execute @s[ry=45, rym=-45] ~ ~ ~ detect ~+1 ~+1 ~+1 wood 4 setblock ~+1 ~+1 ~+1 wood 12
 execute @s[ry=45, rym=-45] ~ ~ ~ detect ~+1 ~+2 ~+1 wood 4 summon rift:megaloceros_harvest_dropper ~+1 ~+5 ~ rift:acacia_log_dropper
 execute @s[ry=45, rym=-45] ~ ~ ~ detect ~+1 ~+2 ~+1 wood 4 setblock ~+1 ~+2 ~+1 wood 12
 execute @s[ry=45, rym=-45] ~ ~ ~ detect ~+1 ~+3 ~+1 wood 4 summon rift:megaloceros_harvest_dropper ~+1 ~+6 ~ rift:acacia_log_dropper

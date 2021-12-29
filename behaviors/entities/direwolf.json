@@ -922,6 +922,54 @@
 					"keep_owner": true
 				}
 			},
+			"rift:direwolf_tamed_forced_into_standing_werewolf_variant_zero": {
+				"minecraft:transformation": {
+					"into": "rift:direwolf_werewolf<rift:forced_from_tamed_standing_variant_zero>",
+					"keep_owner": true
+				}
+			},
+			"rift:direwolf_tamed_forced_into_standing_werewolf_variant_one": {
+				"minecraft:transformation": {
+					"into": "rift:direwolf_werewolf<rift:forced_from_tamed_standing_variant_one>",
+					"keep_owner": true
+				}
+			},
+			"rift:direwolf_tamed_forced_into_standing_werewolf_variant_two": {
+				"minecraft:transformation": {
+					"into": "rift:direwolf_werewolf<rift:forced_from_tamed_standing_variant_two>",
+					"keep_owner": true
+				}
+			},
+			"rift:direwolf_tamed_forced_into_standing_werewolf_variant_three": {
+				"minecraft:transformation": {
+					"into": "rift:direwolf_werewolf<rift:forced_from_tamed_standing_variant_three>",
+					"keep_owner": true
+				}
+			},
+			"rift:direwolf_tamed_forced_into_sitting_werewolf_variant_zero": {
+				"minecraft:transformation": {
+					"into": "rift:direwolf_werewolf<rift:forced_from_tamed_sitting_variant_zero>",
+					"keep_owner": true
+				}
+			},
+			"rift:direwolf_tamed_forced_into_sitting_werewolf_variant_one": {
+				"minecraft:transformation": {
+					"into": "rift:direwolf_werewolf<rift:forced_from_tamed_sitting_variant_one>",
+					"keep_owner": true
+				}
+			},
+			"rift:direwolf_tamed_forced_into_sitting_werewolf_variant_two": {
+				"minecraft:transformation": {
+					"into": "rift:direwolf_werewolf<rift:forced_from_tamed_sitting_variant_two>",
+					"keep_owner": true
+				}
+			},
+			"rift:direwolf_tamed_forced_into_sitting_werewolf_variant_three": {
+				"minecraft:transformation": {
+					"into": "rift:direwolf_werewolf<rift:forced_from_tamed_sitting_variant_three>",
+					"keep_owner": true
+				}
+			},
 			"rift:pushable": {
 				"minecraft:pushable": {
 					"is_pushable": true,
@@ -1102,6 +1150,39 @@
 								]
 							},
 							"event": "rift:adult_failed_tame",
+							"target": "self"
+						},
+						"use_item": true
+					},
+					{
+						"on_interact": {
+							"filters": {
+								"all_of": [
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_tamed"
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"operator": "!=",
+										"value": "minecraft:is_baby"
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_illager_captain"
+									},
+									{
+										"test": "has_equipment",
+										"subject": "other",
+										"domain": "hand",
+										"value": "rift:lunar_stimulant"
+									}
+								]
+							},
+							"event": "rift:forced_transform",
 							"target": "self"
 						},
 						"use_item": true
@@ -2915,8 +2996,56 @@
 						"damage_multiplier": 5
 					},
 					{
-						"deals_damage": false,
-						"cause": "fall"
+						"on_damage": {
+							"filters": {
+								"all_of": [
+									{
+										"any_of": [
+											{
+												"test": "is_family",
+												"subject": "other",
+												"value": "mob"
+											},
+											{
+												"test": "is_family",
+												"subject": "other",
+												"value": "player"
+											},
+											{
+												"test": "is_family",
+												"subject": "other",
+												"value": "forcedAttack"
+											}
+										]
+									},
+									{
+										"test": "random_chance",
+										"value": 3,
+										"subject": "self"
+									},
+									{
+										"test": "has_damage",
+										"subject": "self",
+										"operator": "!=",
+										"value": "fatal"
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"operator": "!=",
+										"value": "minecraft:is_baby"
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"operator": "!=",
+										"value": "minecraft:is_tamed"
+									}
+								]
+							},
+							"event": "rift:wild_snarl",
+							"target": "self"
+						}
 					},
 					{
 						"on_damage": {
@@ -3524,6 +3653,180 @@
 						"add": {
 							"component_groups": [
 								"rift:direwolf_wild_into_werewolf_variant_three"
+							]
+						}
+					}
+				]
+			},
+			"rift:forced_transform": {
+				"sequence": [
+					{},
+					{
+						"filters": {
+							"all_of": [
+								{
+									"test": "is_variant",
+									"subject": "self",
+									"value": 0
+								},
+								{
+									"test": "is_mark_variant",
+									"subject": "self",
+									"value": 0
+								}
+							]
+						},
+						"add": {
+							"component_groups": [
+								"rift:direwolf_tamed_forced_into_standing_werewolf_variant_zero"
+							]
+						}
+					},
+					{
+						"filters": {
+							"all_of": [
+								{
+									"test": "is_variant",
+									"subject": "self",
+									"value": 1
+								},
+								{
+									"test": "is_mark_variant",
+									"subject": "self",
+									"value": 0
+								}
+							]
+						},
+						"add": {
+							"component_groups": [
+								"rift:direwolf_tamed_forced_into_standing_werewolf_variant_one"
+							]
+						}
+					},
+					{
+						"filters": {
+							"all_of": [
+								{
+									"test": "is_variant",
+									"subject": "self",
+									"value": 2
+								},
+								{
+									"test": "is_mark_variant",
+									"subject": "self",
+									"value": 0
+								}
+							]
+						},
+						"add": {
+							"component_groups": [
+								"rift:direwolf_tamed_forced_into_standing_werewolf_variant_two"
+							]
+						}
+					},
+					{
+						"filters": {
+							"all_of": [
+								{
+									"test": "is_variant",
+									"subject": "self",
+									"value": 3
+								},
+								{
+									"test": "is_mark_variant",
+									"subject": "self",
+									"value": 0
+								}
+							]
+						},
+						"add": {
+							"component_groups": [
+								"rift:direwolf_tamed_forced_into_standing_werewolf_variant_three"
+							]
+						}
+					},
+
+					{
+						"filters": {
+							"all_of": [
+								{
+									"test": "is_variant",
+									"subject": "self",
+									"value": 0
+								},
+								{
+									"test": "is_mark_variant",
+									"subject": "self",
+									"value": 1
+								}
+							]
+						},
+						"add": {
+							"component_groups": [
+								"rift:direwolf_tamed_forced_into_sitting_werewolf_variant_zero"
+							]
+						}
+					},
+					{
+						"filters": {
+							"all_of": [
+								{
+									"test": "is_variant",
+									"subject": "self",
+									"value": 1
+								},
+								{
+									"test": "is_mark_variant",
+									"subject": "self",
+									"value": 1
+								}
+							]
+						},
+						"add": {
+							"component_groups": [
+								"rift:direwolf_tamed_forced_into_sitting_werewolf_variant_one"
+							]
+						}
+					},
+					{
+						"filters": {
+							"all_of": [
+								{
+									"test": "is_variant",
+									"subject": "self",
+									"value": 2
+								},
+								{
+									"test": "is_mark_variant",
+									"subject": "self",
+									"value": 1
+								}
+							]
+						},
+						"add": {
+							"component_groups": [
+								"rift:direwolf_tamed_forced_into_sitting_werewolf_variant_two"
+							]
+						}
+					},
+					{
+						"filters": {
+							"all_of": [
+								{
+									"test": "is_variant",
+									"subject": "self",
+									"value": 3
+								},
+								{
+									"test": "is_mark_variant",
+									"subject": "self",
+									"value": 1
+								}
+							]
+						},
+						"add": {
+							"component_groups": [
+								"rift:direwolf_tamed_forced_into_sitting_werewolf_variant_three"
 							]
 						}
 					}
@@ -4489,6 +4792,14 @@
 				"run_command": {
 					"command": [
 						"kill @s"
+					]
+				}
+			},
+			"rift:wild_snarl": {
+				"run_command": {
+					"command": [
+						"playanimation @s animation.direwolf.snarl",
+						"effect @e[type=!rift:direwolf, type=!rift:direwolf_werewolf, family=!inanimate, r=16] weakness 90"
 					]
 				}
 			},
