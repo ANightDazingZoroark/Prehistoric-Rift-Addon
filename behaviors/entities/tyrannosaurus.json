@@ -116,7 +116,7 @@
 					"end_scale": 1.75
 				},
 				"minecraft:behavior.tempt": {
-					"priority": 5,
+					"priority": 9,
 					"items": [
 						"minecraft:beef",
 						"minecraft:cooked_beef",
@@ -148,7 +148,7 @@
 					"value": 30
 				},
 				"minecraft:behavior.random_stroll": {
-					"priority": 6
+					"priority": 11
 				},
 				"minecraft:tameable": {
 					"probability": 0.25,
@@ -220,13 +220,13 @@
 			"rift:tyrannosaurus_tamed": {
 				"minecraft:is_tamed": {},
 				"minecraft:behavior.owner_hurt_by_target": {
-					"priority": 2
+					"priority": 5
 				},
 				"minecraft:behavior.owner_hurt_target": {
-					"priority": 3
+					"priority": 6
 				},
 				"minecraft:behavior.follow_owner": {
-					"priority": 5
+					"priority": 10
 				}
 			},
 			"rift:tyrannosaurus_adult_wild": {
@@ -235,7 +235,7 @@
 					"max": 160
 				},
 				"minecraft:behavior.random_stroll": {
-					"priority": 6
+					"priority": 11
 				},
 				"minecraft:despawn": {
 					"despawn_from_distance": {}
@@ -426,7 +426,7 @@
 					}
 				},
 				"minecraft:behavior.nearest_attackable_target": {
-					"priority": 3,
+					"priority": 4,
 					"reselect_targets": true,
 					"within_radius": 48,
 					"must_see": true,
@@ -463,7 +463,7 @@
 					}
 				},
 				"minecraft:behavior.nearest_attackable_target": {
-					"priority": 3,
+					"priority": 4,
 					"must_see": false,
 					"within_radius": 50,
 					"persist_time": 25,
@@ -545,7 +545,7 @@
 			},
 			"rift:attack_forced_attack_entity": {
 				"minecraft:behavior.nearest_attackable_target": {
-					"priority": 3,
+					"priority": 4,
 					"entity_types": [
 					  	{
 							"filters": {
@@ -564,7 +564,7 @@
 			},
 			"rift:aggravating_horn_attack": {
 				"minecraft:behavior.nearest_attackable_target": {
-					"priority": 3,
+					"priority": 4,
 					"must_see": false,
 					"within_radius": 48,
 					"persist_time": 25,
@@ -798,7 +798,7 @@
 			},
 			"rift:can_attack": {
 				"minecraft:behavior.delayed_attack": {
-					"priority": 4,
+					"priority": 7,
 					"attack_duration": 0.5,
 					"hit_delay_pct": 1,
 					"track_target": true,
@@ -853,6 +853,65 @@
 						"single_use": true
 					}
 			 	}
+			},
+			"rift:tyrannosaurus_nest_dweller": {
+				"minecraft:health": {
+					"value": 160,
+					"max": 160
+				},
+				"minecraft:behavior.random_stroll": {
+					"priority": 11
+				},
+				"minecraft:behavior.hurt_by_target": {
+					"priority": 2,
+					"entity_types": {
+						"filters": {
+						  	"test": "is_family",
+						  	"subject": "other",
+						  	"operator": "!=",
+							"value": "forcedAttack"
+						}
+					}
+				},
+				"minecraft:home": {}
+			},
+			"rift:tyrannosaurus_nest_dweller_sleeping": {
+				"minecraft:behavior.nap": {
+					"priority": 3,
+					"can_nap_filters": {
+						"all_of": [
+							{
+								"test": "has_target",
+								"subject": "self",
+								"value": false
+							},
+							{
+								"test": "in_water",
+								"subject": "self",
+								"value": false
+							},
+							{
+								"test": "on_ground",
+								"subject": "self",
+								"value": true
+							}
+						]
+					}
+				},
+                "minecraft:on_target_acquired": {
+                    "event": "rift:nest_dweller_wake_up",
+                    "target": "self"
+                }
+			},
+			"rift:tyrannosaurus_nest_dweller_awake": {
+                "minecraft:behavior.go_home": {
+                    "priority": 8,
+                    "goal_radius": 1.2,
+                    "on_home": {
+                        "event": "rift:go_back_home",
+                        "target": "self"
+                    }
+                }
 			}
 		},
 		"components": {
@@ -870,7 +929,6 @@
 				"avoid_damage_blocks": true
 			},
 			"minecraft:movement.generic": {},
-			"minecraft:behavior.move_to_land": {},
 			"minecraft:behavior.breed": {
 				"priority": 1
 			},
@@ -3392,6 +3450,11 @@
 										"subject": "self",
 										"operator": "!=",
 										"value": "minecraft:is_tamed"
+									},
+									{
+										"test": "is_sleeping",
+										"subject": "self",
+										"value": false
 									}
 								]
 							},
@@ -3579,7 +3642,7 @@
 				]
 			},
 			"minecraft:behavior.random_look_around": {
-				"priority": 7
+				"priority": 12
 			},
 			"minecraft:environment_sensor": {
 				"triggers": [
@@ -4566,6 +4629,106 @@
 				"remove": {
 					"component_groups": [
 						"rift:aggravating_horn_attack"
+					]
+				}
+			},
+			"rift:spawn_as_nest_dweller": {
+				"randomize": [
+					{
+						"weight": 1,
+						"add": {
+							"component_groups": [
+								"rift:tyrannosaurus_adult",
+								"rift:variant_zero",
+								"rift:pushable",
+								"rift:can_attack",
+								"rift:tyrannosaurus_nest_dweller",
+								"rift:tyrannosaurus_nest_dweller_sleeping"
+							]
+						},
+						"run_command": {
+							"command": [
+								"tp @s ~ ~ ~ 30"
+							]
+						}
+					},
+					{
+						"weight": 1,
+						"add": {
+							"component_groups": [
+								"rift:tyrannosaurus_adult",
+								"rift:variant_one",
+								"rift:pushable",
+								"rift:can_attack",
+								"rift:tyrannosaurus_nest_dweller",
+								"rift:tyrannosaurus_nest_dweller_sleeping"
+							]
+						},
+						"run_command": {
+							"command": [
+								"tp @s ~ ~ ~ 30"
+							]
+						}
+					},
+					{
+						"weight": 1,
+						"add": {
+							"component_groups": [
+								"rift:tyrannosaurus_adult",
+								"rift:variant_two",
+								"rift:pushable",
+								"rift:can_attack",
+								"rift:tyrannosaurus_nest_dweller",
+								"rift:tyrannosaurus_nest_dweller_sleeping"
+							]
+						},
+						"run_command": {
+							"command": [
+								"tp @s ~ ~ ~ 30"
+							]
+						}
+					},
+					{
+						"weight": 1,
+						"add": {
+							"component_groups": [
+								"rift:tyrannosaurus_adult",
+								"rift:variant_three",
+								"rift:pushable",
+								"rift:can_attack",
+								"rift:tyrannosaurus_nest_dweller",
+								"rift:tyrannosaurus_nest_dweller_sleeping"
+							]
+						},
+						"run_command": {
+							"command": [
+								"tp @s ~ ~ ~ 30"
+							]
+						}
+					}
+				]
+			},
+			"rift:nest_dweller_wake_up": {
+				"add": {
+					"component_groups": [
+						"rift:tyrannosaurus_nest_dweller_awake"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:tyrannosaurus_nest_dweller_sleeping"
+					]
+				}
+			},
+			"rift:go_back_home": {
+				"add": {
+					"component_groups": [
+						"rift:tyrannosaurus_nest_dweller_sleeping"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:tyrannosaurus_nest_dweller_awake"
 					]
 				}
 			},
