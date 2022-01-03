@@ -1460,7 +1460,7 @@
 							"default": "(query.get_equipped_item_name('main_hand') != 'command_staff') || !query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:direwolf_werewolf'"
 						},
 						{
-							"callToBite": "query.is_jumping && query.is_riding"
+							"callToSniff": "query.is_jumping && query.is_riding"
 						},
 						{
 							"useCallMode": "query.is_using_item"
@@ -1477,7 +1477,84 @@
 						"/tag @e[type=rift:direwolf_werewolf, c=1, tag=tamed, tag=!baby] add direwolfBuff"
 					]
 				},
-				"callToBite": {
+				"callToSniff": {
+					"transitions": [
+						{
+							"default": "(query.get_equipped_item_name('main_hand') != 'command_staff') || !query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:direwolf_werewolf'"
+						},
+						{
+							"sniffMode": "!query.is_jumping"
+						}
+					],
+					"on_exit": [
+						"/tellraw @s {\"rawtext\":[{\"text\":\"Ability set to Sniff Mode\"}]}"
+					]
+				},
+				"sniffMode": {
+					"transitions": [
+						{
+							"default": "(query.get_equipped_item_name('main_hand') != 'command_staff') || !query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:direwolf_werewolf'"
+						},
+						{
+							"sniffToSnarl": "query.is_jumping && query.is_riding"
+						},
+						{
+							"useSniffMode": "query.is_using_item"
+						}
+					]
+				},
+				"useSniffMode": {
+					"transitions": [
+						{
+							"sniffMode": "(query.get_equipped_item_name('main_hand') != 'command_staff') || !query.is_using_item"
+						}
+					],
+					"on_entry": [
+						"/tag @s add direwolfSniff",
+						"/execute @e[type=rift:direwolf_werewolf, c=1, tag=tamed, tag=!baby] ~ ~ ~ tag @e[x=~-72, dx=144, y=~-4, dy=20, z=~-72, dz=144, c=16, type=!xp_orb, type=!player, type=!item, tag=!tamed, family=!inanimate] add sniffedByDirewolf"
+					],
+					"on_exit": [
+						"/execute @e[type=rift:direwolf_werewolf, c=1, tag=tamed, tag=!baby] ~ ~ ~ tag @e remove sniffedByDirewolf"
+					]
+				},
+				"sniffToSnarl": {
+					"transitions": [
+						{
+							"default": "(query.get_equipped_item_name('main_hand') != 'command_staff') || !query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:direwolf_werewolf'"
+						},
+						{
+							"snarlMode": "!query.is_jumping"
+						}
+					],
+					"on_exit": [
+						"/tellraw @s {\"rawtext\":[{\"text\":\"Ability set to Snarl Mode\"}]}"
+					]
+				},
+				"snarlMode": {
+					"transitions": [
+						{
+							"default": "(query.get_equipped_item_name('main_hand') != 'command_staff') || !query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:direwolf_werewolf'"
+						},
+						{
+							"snarlToBite": "query.is_jumping && query.is_riding"
+						},
+						{
+							"useSnarlMode": "query.is_using_item"
+						}
+					]
+				},
+				"useSnarlMode": {
+					"transitions": [
+						{
+							"snarlMode": "(query.get_equipped_item_name('main_hand') != 'command_staff') || !query.is_using_item"
+						}
+					],
+					"on_entry": [
+						"/execute @e[type=rift:direwolf_werewolf, c=1, tag=tamed, tag=!baby] ~ ~ ~ playanimation @s animation.direwolf_werewolf.snarl",
+						"/execute @e[type=rift:direwolf_werewolf, c=1, tag=tamed, tag=!baby] ~ ~ ~ effect @e[type=!player, tag=!tamed, family=!inanimate, r=16] weakness 30 1"
+					]
+				},
+				"snarlToBite": {
 					"transitions": [
 						{
 							"default": "(query.get_equipped_item_name('main_hand') != 'command_staff') || !query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:direwolf_werewolf'"
