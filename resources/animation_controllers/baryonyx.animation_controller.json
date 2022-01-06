@@ -1,0 +1,124 @@
+{
+	"format_version": "1.10.0",
+	"animation_controllers": {
+		"controller.animation.baryonyx_movement": {
+			"initial_state": "default",
+			"states": {
+				"default": {
+					"animations": [
+						{
+							"animStandingLand": "query.ground_speed == 0"
+						},
+						{
+							"animWalk": "query.ground_speed > 0"
+						}
+					],
+					"transitions": [
+						{
+							"sitting": "query.is_sitting && !query.is_in_water"
+						},
+                        {
+                            "waterMode": "query.is_in_water"
+                        }
+					]
+				},
+                "waterMode": {
+                    "animations": [
+                        {
+                            "animStandingWater": "query.ground_speed == 0"
+                        },
+                        {
+                            "animSwim": "query.ground_speed > 0"
+                        }
+                    ],
+                    "transitions": [
+						{
+							"sitting": "query.is_sitting && !query.is_in_water"
+						},
+                        {
+                            "default": "!query.is_in_water"
+                        }
+					]
+                },
+				"sitting": {
+					"animations": [
+						"animSitting"
+					],
+					"transitions": [
+						{
+							"default": "!query.is_sitting"
+						}
+					]
+				}
+			}
+		},
+		"controller.animation.baryonyx_attack": {
+			"initial_state": "default",
+			"states": {
+				"default": {
+					"transitions": [
+						{
+							"attacking": "query.is_delayed_attacking"
+						}
+					]
+				},
+				"attacking": {
+					"transitions": [
+						{
+							"default": "!query.is_delayed_attacking"
+						},
+						{
+							"bite": "query.mark_variant == 0"
+						},
+						{
+							"clawLimbo": "query.mark_variant == 1"
+						}
+					]
+				},
+                "bite": {
+					"animations": [
+						"animBite"
+					],
+					"transitions": [
+						{
+							"default": "!query.is_delayed_attacking"
+						}
+					]
+				},
+				"clawLimbo": {
+					"transitions": [
+						{
+							"default": "!query.is_delayed_attacking"
+						},
+						{
+							"clawOne": "v.clawMode = (math.floor(math.random(0,2))); return v.scratchMode == 0;"
+						},
+						{
+							"clawTwo": "v.clawMode == 1"
+						}
+					]
+				},
+				"clawOne": {
+					"animations": [
+						"animClawOne"
+					],
+					"transitions": [
+						{
+							"default": "!query.is_delayed_attacking"
+						}
+					]
+				},
+				"clawTwo": {
+					"animations": [
+						"animClawTwo"
+					],
+					"transitions": [
+						{
+							"default": "!query.is_delayed_attacking"
+						}
+					]
+				}
+			}
+		}
+	}
+}
