@@ -430,7 +430,7 @@
 				"minecraft:behavior.nearest_attackable_target": {
 					"priority": 4,
 					"reselect_targets": true,
-					"within_radius": 48,
+					"within_radius": 96,
 					"must_see": true,
 					"entity_types": [
 					  	{
@@ -442,14 +442,40 @@
 										"value" :  "parasaurAngerer"
 									},
 									{
-										"test": "is_family",
-										"subject": "other",
-										"operator": "!=",
-										"value": "tyrannosaurus"
+										"test": "is_sleeping",
+										"subject": "self",
+										"value": false
 									}
 								]
 							}
-					  	}
+					  	},
+						{
+							"filters": {
+								"all_of": [
+									{
+										"test" :  "is_family", 
+										"subject" : "other", 
+										"value" :  "player"
+									},
+									{
+										"test": "is_riding",
+										"subject": "other",
+										"value": false
+									},
+									{
+										"test" :  "is_sneaking", 
+										"subject" : "other", 
+										"value" :  false
+									},
+									{
+										"test": "is_sleeping",
+										"subject": "self",
+										"value": true
+									}
+								]
+							},
+							"max_dist": 16
+						}
 					]
 				}
 			},
@@ -467,17 +493,16 @@
 				"minecraft:behavior.nearest_attackable_target": {
 					"priority": 4,
 					"must_see": false,
-					"within_radius": 50,
+					"within_radius": 96,
 					"persist_time": 25,
 					"entity_types": [
 						{
 							"filters": {
 								"all_of": [
 									{
-										"test": "is_family",
-										"subject": "other",
-										"operator": "!=",
-										"value": "tyrannosaurus"
+										"test": "is_sleeping",
+										"subject": "self",
+										"value": false
 									},
 									{
 										"any_of": [
@@ -506,10 +531,9 @@
 										"operator": "!="
 									},
 									{
-										"test": "is_family",
-										"subject": "other",
-										"operator": "!=",
-										"value": "tyrannosaurus"
+										"test": "is_sleeping",
+										"subject": "self",
+										"value": false
 									},
 									{
 										"any_of": [
@@ -541,6 +565,33 @@
 									}
 								]
 							}
+						},
+						{
+							"filters": {
+								"all_of": [
+									{
+										"test": "is_family",
+										"subject": "other",
+										"value": "player"
+									},
+									{
+										"test": "is_riding",
+										"subject": "other",
+										"value": false
+									},
+									{
+										"test": "is_sleeping",
+										"subject": "self",
+										"value": true
+									},
+									{
+										"test" :  "is_sneaking", 
+										"subject" : "other", 
+										"value" :  false
+									}
+								]
+							},
+							"max_dist": 16
 						}
 					]
 				}
@@ -548,14 +599,14 @@
 			"rift:attack_forced_attack_entity": {
 				"minecraft:behavior.nearest_attackable_target": {
 					"priority": 4,
+					"within_radius": 96,
 					"entity_types": [
 					  	{
 							"filters": {
 							  	"test": "is_family",
 							  	"subject": "other",
 							  	"value": "isForcedAttacking"
-							},
-							"max_dist": 35
+							}
 					  	}
 					]
 			  	},
@@ -568,7 +619,7 @@
 				"minecraft:behavior.nearest_attackable_target": {
 					"priority": 4,
 					"must_see": false,
-					"within_radius": 48,
+					"within_radius": 96,
 					"persist_time": 25,
 					"entity_types": [
 					  	{
@@ -4641,8 +4692,9 @@
 						"add": {
 							"component_groups": [
 								"rift:tyrannosaurus_adult",
+								"rift:tyrannosaurus_hunting",
 								"rift:variant_zero",
-								"rift:pushable",
+								"rift:unpushable",
 								"rift:can_attack",
 								"rift:tyrannosaurus_nest_dweller",
 								"rift:tyrannosaurus_nest_dweller_sleeping"
@@ -4659,8 +4711,9 @@
 						"add": {
 							"component_groups": [
 								"rift:tyrannosaurus_adult",
+								"rift:tyrannosaurus_hunting",
 								"rift:variant_one",
-								"rift:pushable",
+								"rift:unpushable",
 								"rift:can_attack",
 								"rift:tyrannosaurus_nest_dweller",
 								"rift:tyrannosaurus_nest_dweller_sleeping"
@@ -4677,8 +4730,9 @@
 						"add": {
 							"component_groups": [
 								"rift:tyrannosaurus_adult",
+								"rift:tyrannosaurus_hunting",
 								"rift:variant_two",
-								"rift:pushable",
+								"rift:unpushable",
 								"rift:can_attack",
 								"rift:tyrannosaurus_nest_dweller",
 								"rift:tyrannosaurus_nest_dweller_sleeping"
@@ -4695,8 +4749,9 @@
 						"add": {
 							"component_groups": [
 								"rift:tyrannosaurus_adult",
+								"rift:tyrannosaurus_hunting",
 								"rift:variant_three",
-								"rift:pushable",
+								"rift:unpushable",
 								"rift:can_attack",
 								"rift:tyrannosaurus_nest_dweller",
 								"rift:tyrannosaurus_nest_dweller_sleeping"
