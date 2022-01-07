@@ -58,20 +58,10 @@
 				"default": {
 					"transitions": [
 						{
-							"attacking": "query.is_delayed_attacking"
-						}
-					]
-				},
-				"attacking": {
-					"transitions": [
-						{
-							"default": "!query.is_delayed_attacking"
+							"bite": "query.is_delayed_attacking"
 						},
 						{
-							"bite": "query.mark_variant == 0"
-						},
-						{
-							"clawLimbo": "query.mark_variant == 1"
+							"clawLimbo": "v.attack_time > 0"
 						}
 					]
 				},
@@ -88,10 +78,10 @@
 				"clawLimbo": {
 					"transitions": [
 						{
-							"default": "!query.is_delayed_attacking"
+							"default": "v.attack_time == 0"
 						},
 						{
-							"clawOne": "v.clawMode = (math.floor(math.random(0,2))); return v.scratchMode == 0;"
+							"clawOne": "v.clawMode = (math.floor(math.random(0,2))); return v.clawMode == 0;"
 						},
 						{
 							"clawTwo": "v.clawMode == 1"
@@ -104,7 +94,7 @@
 					],
 					"transitions": [
 						{
-							"default": "!query.is_delayed_attacking"
+							"default": "v.attack_time == 0"
 						}
 					]
 				},
@@ -114,7 +104,45 @@
 					],
 					"transitions": [
 						{
-							"default": "!query.is_delayed_attacking"
+							"default": "v.attack_time == 0"
+						}
+					]
+				}
+			}
+		},
+		"controller.animation.baryonyx_taming_progress": {
+			"initial_state": "default",
+			"states": {
+				"default": {
+					"transitions": [
+						{
+							"wait": "!query.is_tamed && query.is_illager_captain"
+						}
+					]
+				},
+				"wait": {
+					"animations": [
+						"animClock"
+					],
+					"transitions": [
+						{
+							"default": "query.is_tamed"
+						},
+						{
+							"feedAgain": "!query.is_illager_captain && !query.is_tamed"
+						}
+					]
+				},
+				"feedAgain": {
+					"animations": [
+						"animAlert"
+					],
+					"transitions": [
+						{
+							"default": "query.is_tamed"
+						},
+						{
+							"wait": "query.is_illager_captain && !query.is_tamed"
 						}
 					]
 				}

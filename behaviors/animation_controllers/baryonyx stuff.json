@@ -1,0 +1,85 @@
+{
+    "format_version": "1.10.0",
+    "animation_controllers": {
+        "controller.animation.baryonyx_switch_between_melee_attacks": {
+            "initial_state": "default",
+            "states": {
+                "default": {
+                    "transitions": [
+                        {
+                            "chooseAttack": "query.has_target && !query.is_baby"
+                        }
+                    ]
+                },
+                "chooseAttack": {
+                    "transitions": [
+                        {
+                            "bite": "v.attackMode = (math.floor(math.random(0,2))); return v.attackMode == 0;"
+                        },
+                        {
+                            "claw": "v.attackMode == 1"
+                        }
+                    ]
+                },
+                "bite": {
+                    "transitions": [
+                        {
+                            "biteLimbo": "query.is_delayed_attacking"
+                        },
+                        {
+                            "default": "!query.has_target"
+                        }
+                    ],
+                    "on_entry": [
+                        "@s rift:can_use_bite"
+                    ]
+                },
+                "biteLimbo": {
+                    "transitions": [
+                        {
+                            "bite": "v.attackMode = (math.floor(math.random(0,2))); return !query.is_delayed_attacking && v.attackMode == 0;"
+                        },
+                        {
+                            "claw": "!query.is_delayed_attacking && v.attackMode == 1"
+                        },
+                        {
+                            "default": "!query.has_target"
+                        }
+                    ],
+                    "on_exit": [
+                        "@s rift:cannot_use_bite"
+                    ]
+                },
+                "claw": {
+                    "transitions": [
+                        {
+                            "clawLimbo": "v.attack_time > 0"
+                        },
+                        {
+                            "default": "!query.has_target"
+                        }
+                    ],
+                    "on_entry": [
+                        "@s rift:can_use_claw"
+                    ]
+                },
+                "clawLimbo": {
+                    "transitions": [
+                        {
+                            "bite": "v.attackMode = (math.floor(math.random(0,2))); return v.attack_time == 0 && v.attackMode == 0;"
+                        },
+                        {
+                            "claw": "v.attack_time == 0 && v.attackMode == 1"
+                        },
+                        {
+                            "default": "!query.has_target"
+                        }
+                    ],
+                    "on_exit": [
+                        "@s rift:cannot_use_claw"
+                    ]
+                }
+            }
+        }
+    }
+}
