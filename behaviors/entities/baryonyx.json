@@ -8,14 +8,21 @@
             "is_experimental": false,
 			"animations": {
 				"contSwitchBetweenMeleeAttacks": "controller.animation.baryonyx_switch_between_melee_attacks",
+				"contBaryonyxUseBite": "controller.animation.baryonyx_forced_use_bite",
+				"contBaryonyxUseSlash": "controller.animation.baryonyx_forced_use_slash",
 				"contTameTag": "controller.animation.add_tame_tag",
 				"contBabyTag": "controller.animation.add_baby_tag",
 				"contRiddenTag": "controller.animation.add_ridden_tag",
-				"contSittingTag": "controller.animation.add_sitting_tag"
+				"contSittingTag": "controller.animation.add_sitting_tag",
+				"animForcedAttackBite": "animation.forced_attack_baryonyx_bite",
+				"animForcedAttackSlashOne": "animation.forced_attack_baryonyx_slash_one",
+				"animForcedAttackSlashTwo": "animation.forced_attack_baryonyx_slash_two"
 			},
 			"scripts": {
 				"animate": [
 					"contSwitchBetweenMeleeAttacks",
+					"contBaryonyxUseBite",
+					"contBaryonyxUseSlash",
 					"contTameTag",
 					"contBabyTag",
 					"contRiddenTag",
@@ -195,11 +202,6 @@
                 }
             },
             "rift:baryonyx_adult": {
-				"minecraft:attack": {
-					"damage": 7,
-					"effect_name": "poison",
-					"effect_duration": 10
-				},
                 "minecraft:scale": {
                     "value": 1
                 },
@@ -863,7 +865,7 @@
             "rift:forced_bite": {
 				"minecraft:is_sheared": {}
 			},
-            "rift:forced_claw": {
+            "rift:forced_slash": {
 				"minecraft:is_charged": {}
 			},
             "rift:summon_forced_bite_entity": {
@@ -878,11 +880,11 @@
 					]
 				}
 			},
-            "rift:summon_forced_claw_entity": {
+            "rift:summon_forced_slash_entity": {
 				"minecraft:spawn_entity": {
 					"entities": [
 						{
-							"spawn_entity": "rift:baryonyx_claw",
+							"spawn_entity": "rift:baryonyx_slash",
 							"single_use": true,
 							"min_wait_time": 0,
 							"max_wait_time": 0
@@ -911,6 +913,9 @@
 				}
 			},
             "rift:can_bite_attack": {
+				"minecraft:attack": {
+					"damage": 10
+				},
                 "minecraft:mark_variant": {
                     "value": 0
                 },
@@ -923,6 +928,11 @@
 				}
 			},
             "rift:can_claw_attack": {
+				"minecraft:attack": {
+					"damage": 7,
+					"effect_name": "poison",
+					"effect_duration": 10
+				},
                 "minecraft:mark_variant": {
                     "value": 1
                 },
@@ -3570,6 +3580,62 @@
 					]
 				}
 			},
+			"rift:spawn_as_baby": {
+				"randomize": [
+					{
+						"weight": 1,
+						"add": {
+							"component_groups": [
+								"rift:baryonyx_baby",
+								"rift:baryonyx_baby_wild",
+								"rift:default_navigation",
+								"rift:baryonyx_land_dweller",
+								"rift:pushable",
+								"rift:variant_one"
+							]
+						}
+					},
+					{
+						"weight": 1,
+						"add": {
+							"component_groups": [
+								"rift:baryonyx_baby",
+								"rift:baryonyx_baby_wild",
+								"rift:default_navigation",
+								"rift:baryonyx_land_dweller",
+								"rift:pushable",
+								"rift:variant_two"
+							]
+						}
+					},
+					{
+						"weight": 1,
+						"add": {
+							"component_groups": [
+								"rift:baryonyx_baby",
+								"rift:baryonyx_baby_wild",
+								"rift:default_navigation",
+								"rift:baryonyx_land_dweller",
+								"rift:pushable",
+								"rift:variant_three"
+							]
+						}
+					},
+					{
+						"weight": 1,
+						"add": {
+							"component_groups": [
+								"rift:baryonyx_baby",
+								"rift:baryonyx_baby_wild",
+								"rift:default_navigation",
+								"rift:baryonyx_land_dweller",
+								"rift:pushable",
+								"rift:variant_four"
+							]
+						}
+					}
+				]
+			},
 			"rift:baby_grow_up": {
 				"sequence": [
 					{
@@ -3766,6 +3832,86 @@
 				"remove": {
 					"component_groups": [
 						"rift:attack_forced_attack_entity"
+					]
+				}
+			},
+			"rift:on_forced_attack_family": {
+				"add": {
+					"component_groups": [
+						"rift:forced_attack_family"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:default_family"
+					]
+				}
+			},
+			"rift:no_forced_attack_family": {
+				"add": {
+					"component_groups": [
+						"rift:default_family"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:forced_attack_family"
+					]
+				}
+			},
+			"rift:use_forced_bite": {
+				"add": {
+					"component_groups": [
+						"rift:forced_bite"
+					]
+				}
+			},
+			"rift:stop_forced_bite": {
+				"remove": {
+					"component_groups": [
+						"rift:forced_bite"
+					]
+				}
+			},
+			"rift:use_forced_slash": {
+				"add": {
+					"component_groups": [
+						"rift:forced_slash"
+					]
+				}
+			},
+			"rift:stop_forced_slash": {
+				"remove": {
+					"component_groups": [
+						"rift:forced_slash"
+					]
+				}
+			},
+			"rift:on_summon_forced_bite": {
+				"add": {
+					"component_groups": [
+						"rift:summon_forced_bite_entity"
+					]
+				}
+			},
+			"rift:no_summon_forced_bite": {
+				"remove": {
+					"component_groups": [
+						"rift:summon_forced_bite_entity"
+					]
+				}
+			},
+			"rift:on_summon_forced_slash": {
+				"add": {
+					"component_groups": [
+						"rift:summon_forced_slash_entity"
+					]
+				}
+			},
+			"rift:no_summon_forced_slash": {
+				"remove": {
+					"component_groups": [
+						"rift:summon_forced_slash_entity"
 					]
 				}
 			},
