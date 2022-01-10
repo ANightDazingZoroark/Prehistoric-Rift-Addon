@@ -219,6 +219,41 @@
 					"value": 10
 				}
 			},
+			"rift:tyrannosaurus_adult_birthday": {
+				"minecraft:scale": {
+					"value": 2.5
+				},
+				"minecraft:attack": {
+					"damage": 35
+				},
+				"minecraft:experience_reward": {
+					"on_bred": "Math.Random(1,7)",
+					"on_death": "query.last_hit_by_player ? Math.Random(7,12) : 0"
+				},
+				"minecraft:loot": {
+					"table": "loot_tables/entities/tyrannosaurus.loot.json"
+				},
+				"minecraft:breedable": {
+					"breeds_with": {
+						"mate_type": "rift:tyrannosaurus",
+						"baby_type": "rift:egg",
+						"breed_event": {
+							"event": "rift:summon_tyrannosaurus_egg",
+							"target": "baby"
+						}
+					},
+					"breed_items": [
+						"rift:flesh_treat",
+						"rift:carrion_treat"
+					],
+					"require_tame": true,
+					"breed_cooldown": 1200,
+					"inherit_tamed": false
+				},
+				"minecraft:knockback_resistance": {
+					"value": 10
+				}
+			},
 			"rift:tyrannosaurus_tamed": {
 				"minecraft:is_tamed": {},
 				"minecraft:behavior.owner_hurt_by_target": {
@@ -721,6 +756,25 @@
 					"crouching_skip_interact": true
 				}
 			},
+			"rift:birthday_rideable": {
+				"minecraft:rideable": {
+					"seat_count": 1,
+					"family_types": [
+						"player"
+					],
+					"interact_text": "action.interact.mount",
+					"seats": [
+						{
+							"position": [
+								0,
+								1.6,
+								0.3
+							]
+						}
+					],
+					"crouching_skip_interact": true
+				}
+			},
 			"rift:variant_zero": {
 				"minecraft:variant": {
 					"value": 0
@@ -781,6 +835,27 @@
 			"rift:variant_eleven": {
 				"minecraft:variant": {
 					"value": 11
+				}
+			},
+			//birthday costumes
+			"rift:variant_twelve": {
+				"minecraft:variant": {
+					"value": 12
+				}
+			},
+			"rift:variant_thirteen": {
+				"minecraft:variant": {
+					"value": 13
+				}
+			},
+			"rift:variant_fourteen": {
+				"minecraft:variant": {
+					"value": 14
+				}
+			},
+			"rift:variant_fifteen": {
+				"minecraft:variant": {
+					"value": 15
 				}
 			},
 			"rift:roaring": {
@@ -903,6 +978,17 @@
 						"max_wait_time": 0,
 						"spawn_item": "rift:raw_exotic_meat",
 						"num_to_spawn": 2,
+						"single_use": true
+					}
+			 	}
+			},
+			"rift:drop_more_meat_from_baryonyx": {
+				"minecraft:spawn_entity": {
+					"entities": {
+						"min_wait_time": 0,
+						"max_wait_time": 0,
+						"spawn_item": "rift:raw_exotic_meat",
+						"num_to_spawn": 1,
 						"single_use": true
 					}
 			 	}
@@ -1705,6 +1791,282 @@
 						},
 						"add_items": {
 							"table": "loot_tables/others/remove christmas costume.json"
+						},
+						"hurt_item": 1
+					},
+					{
+						"on_interact": {
+							"filters": {
+								"all_of": [
+									{
+										"test": "is_variant",
+										"subject": "self",
+										"value": 0
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_tamed"
+									},
+									{
+										"test": "has_component",
+										"operator": "!=",
+										"subject": "self",
+										"value": "minecraft:is_baby"
+									},
+									{
+										"test": "has_equipment",
+										"subject": "other",
+										"domain": "hand",
+										"value": "rift:birthday_costume"
+									}
+								]
+							},
+							"event": "rift:birthday_costume_zero",
+							"target": "self"
+						},
+						"use_item": true
+					},
+					{
+						"on_interact": {
+							"filters": {
+								"all_of": [
+									{
+										"test": "is_variant",
+										"subject": "self",
+										"value": 1
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_tamed"
+									},
+									{
+										"test": "has_component",
+										"operator": "!=",
+										"subject": "self",
+										"value": "minecraft:is_baby"
+									},
+									{
+										"test": "has_equipment",
+										"subject": "other",
+										"domain": "hand",
+										"value": "rift:birthday_costume"
+									}
+								]
+							},
+							"event": "rift:birthday_costume_one",
+							"target": "self"
+						},
+						"use_item": true
+					},
+					{
+						"on_interact": {
+							"filters": {
+								"all_of": [
+									{
+										"test": "is_variant",
+										"subject": "self",
+										"value": 2
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_tamed"
+									},
+									{
+										"test": "has_component",
+										"operator": "!=",
+										"subject": "self",
+										"value": "minecraft:is_baby"
+									},
+									{
+										"test": "has_equipment",
+										"subject": "other",
+										"domain": "hand",
+										"value": "rift:birthday_costume"
+									}
+								]
+							},
+							"event": "rift:birthday_costume_two",
+							"target": "self"
+						},
+						"use_item": true
+					},
+					{
+						"on_interact": {
+							"filters": {
+								"all_of": [
+									{
+										"test": "is_variant",
+										"subject": "self",
+										"value": 3
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_tamed"
+									},
+									{
+										"test": "has_component",
+										"operator": "!=",
+										"subject": "self",
+										"value": "minecraft:is_baby"
+									},
+									{
+										"test": "has_equipment",
+										"subject": "other",
+										"domain": "hand",
+										"value": "rift:birthday_costume"
+									}
+								]
+							},
+							"event": "rift:birthday_costume_three",
+							"target": "self"
+						},
+						"use_item": true
+					},
+					{
+						"on_interact": {
+							"filters": {
+								"all_of": [
+									{
+										"test": "is_variant",
+										"subject": "self",
+										"value": 12
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_tamed"
+									},
+									{
+										"test": "has_component",
+										"operator": "!=",
+										"subject": "self",
+										"value": "minecraft:is_baby"
+									},
+									{
+										"test": "has_equipment",
+										"subject": "other",
+										"domain": "hand",
+										"value": "minecraft:shears"
+									}
+								]
+							},
+							"event": "rift:remove_birthday_costume_zero",
+							"target": "self"
+						},
+						"add_items": {
+							"table": "loot_tables/others/remove birthday costume.json"
+						},
+						"hurt_item": 1
+					},
+					{
+						"on_interact": {
+							"filters": {
+								"all_of": [
+									{
+										"test": "is_variant",
+										"subject": "self",
+										"value": 13
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_tamed"
+									},
+									{
+										"test": "has_component",
+										"operator": "!=",
+										"subject": "self",
+										"value": "minecraft:is_baby"
+									},
+									{
+										"test": "has_equipment",
+										"subject": "other",
+										"domain": "hand",
+										"value": "minecraft:shears"
+									}
+								]
+							},
+							"event": "rift:remove_birthday_costume_one",
+							"target": "self"
+						},
+						"add_items": {
+							"table": "loot_tables/others/remove birthday costume.json"
+						},
+						"hurt_item": 1
+					},
+					{
+						"on_interact": {
+							"filters": {
+								"all_of": [
+									{
+										"test": "is_variant",
+										"subject": "self",
+										"value": 14
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_tamed"
+									},
+									{
+										"test": "has_component",
+										"operator": "!=",
+										"subject": "self",
+										"value": "minecraft:is_baby"
+									},
+									{
+										"test": "has_equipment",
+										"subject": "other",
+										"domain": "hand",
+										"value": "minecraft:shears"
+									}
+								]
+							},
+							"event": "rift:remove_birthday_costume_two",
+							"target": "self"
+						},
+						"add_items": {
+							"table": "loot_tables/others/remove birthday costume.json"
+						},
+						"hurt_item": 1
+					},
+					{
+						"on_interact": {
+							"filters": {
+								"all_of": [
+									{
+										"test": "is_variant",
+										"subject": "self",
+										"value": 15
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_tamed"
+									},
+									{
+										"test": "has_component",
+										"operator": "!=",
+										"subject": "self",
+										"value": "minecraft:is_baby"
+									},
+									{
+										"test": "has_equipment",
+										"subject": "other",
+										"domain": "hand",
+										"value": "minecraft:shears"
+									}
+								]
+							},
+							"event": "rift:remove_birthday_costume_three",
+							"target": "self"
+						},
+						"add_items": {
+							"table": "loot_tables/others/remove birthday costume.json"
 						},
 						"hurt_item": 1
 					},
@@ -3461,6 +3823,17 @@
 					{
 						"on_damage": {
 							"filters": {
+								"test": "is_sleeping",
+								"subject": "self",
+								"value": true
+							}
+						},
+						"deals_damage": false,
+						"cause": "projectile"
+					},
+					{
+						"on_damage": {
+							"filters": {
 								"all_of": [
 									{
 										"any_of": [
@@ -3667,6 +4040,58 @@
                 				]
 							},
 							"event": "rift:drop_more_raw_exotic_meat_from_sarcosuchus",
+							"target": "self"
+						}
+					},
+					{
+						"on_damage": {
+							"filters": {
+                				"all_of": [
+                  					{
+                    					"test": "is_family",
+                    					"subject": "other",
+                    					"value": "direwolf"
+                  					},
+                  					{
+                    					"test": "has_component",
+                    					"subject": "self",
+                    					"operator": "!=",
+                    					"value": "minecraft:is_baby"
+                  					},
+				                	{
+                    					"test": "has_damage",
+                    					"subject": "self",
+                    					"value": "fatal"
+                  					}
+                				]
+							},
+							"event": "rift:drop_more_raw_exotic_meat_from_direwolf",
+							"target": "self"
+						}
+					},
+					{
+						"on_damage": {
+							"filters": {
+                				"all_of": [
+                  					{
+                    					"test": "is_family",
+                    					"subject": "other",
+                    					"value": "baryonyx"
+                  					},
+                  					{
+                    					"test": "has_component",
+                    					"subject": "self",
+                    					"operator": "!=",
+                    					"value": "minecraft:is_baby"
+                  					},
+				                	{
+                    					"test": "has_damage",
+                    					"subject": "self",
+                    					"value": "fatal"
+                  					}
+                				]
+							},
+							"event": "rift:drop_more_raw_exotic_meat_from_baryonyx",
 							"target": "self"
 						}
 					},
@@ -4448,6 +4873,28 @@
 						  		"rift:drop_more_meat_from_direwolf"
 							]
 					  	}
+					},
+					{
+					  	"filters": {
+							"all_of": [
+						  		{
+									"test": "is_family",
+									"subject": "other",
+									"value": "baryonyxForcedAttack"
+						  		},
+						  		{
+									"test": "has_component",
+									"subject": "self",
+									"operator": "!=",
+									"value": "minecraft:is_baby"
+						  		}
+							]
+					  	},
+					  	"add": {
+							"component_groups": [
+						  		"rift:drop_more_meat_from_baryonyx"
+							]
+					  	}
 					}
 				]
 			},
@@ -4476,6 +4923,13 @@
 			  	"add": {
 					"component_groups": [
 				  		"rift:drop_more_meat_from_direwolf"
+					]
+			  	}
+			},
+			"rift:drop_more_raw_exotic_meat_from_baryonyx": {
+			  	"add": {
+					"component_groups": [
+				  		"rift:drop_more_meat_from_baryonyx"
 					]
 			  	}
 			},
@@ -4668,6 +5122,134 @@
 				"remove": {
 					"component_groups": [
 						"rift:variant_eleven"
+					]
+				}
+			},
+			"rift:birthday_costume_zero": {
+				"add": {
+					"component_groups": [
+						"rift:variant_twelve",
+                        "rift:birthday_rideable",
+                        "rift:tyrannosaurus_adult_birthday"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:variant_zero",
+                        "rift:rideable",
+                        "rift:tyrannosaurus_adult"
+					]
+				}
+			},
+			"rift:birthday_costume_one": {
+				"add": {
+					"component_groups": [
+						"rift:variant_thirteen",
+                        "rift:birthday_rideable",
+                        "rift:tyrannosaurus_adult_birthday"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:variant_one",
+                        "rift:rideable",
+                        "rift:tyrannosaurus_adult"
+					]
+				}
+			},
+			"rift:birthday_costume_two": {
+				"add": {
+					"component_groups": [
+						"rift:variant_fourteen",
+                        "rift:birthday_rideable",
+                        "rift:tyrannosaurus_adult_birthday"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:variant_two",
+                        "rift:rideable",
+                        "rift:tyrannosaurus_adult"
+					]
+				}
+			},
+			"rift:birthday_costume_three": {
+				"add": {
+					"component_groups": [
+						"rift:variant_fifteen",
+                        "rift:birthday_rideable",
+                        "rift:tyrannosaurus_adult_birthday"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:variant_three",
+                        "rift:rideable",
+                        "rift:tyrannosaurus_adult"
+					]
+				}
+			},
+			"rift:remove_birthday_costume_zero": {
+				"add": {
+					"component_groups": [
+						"rift:variant_zero",
+                        "rift:rideable",
+                        "rift:tyrannosaurus_adult"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:variant_twelve",
+                        "rift:birthday_rideable",
+                        "rift:tyrannosaurus_adult_birthday"
+					]
+				}
+			},
+			"rift:remove_birthday_costume_one": {
+				"add": {
+					"component_groups": [
+						"rift:variant_one",
+                        "rift:rideable",
+                        "rift:tyrannosaurus_adult"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:variant_thirteen",
+                        "rift:birthday_rideable",
+                        "rift:tyrannosaurus_adult_birthday"
+					]
+				}
+			},
+			"rift:remove_birthday_costume_two": {
+				"add": {
+					"component_groups": [
+						"rift:variant_two",
+                        "rift:rideable",
+                        "rift:tyrannosaurus_adult"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:variant_fourteen",
+                        "rift:birthday_rideable",
+                        "rift:tyrannosaurus_adult_birthday"
+					]
+				}
+			},
+			"rift:remove_birthday_costume_three": {
+				"add": {
+					"component_groups": [
+						"rift:variant_three",
+                        "rift:rideable",
+                        "rift:tyrannosaurus_adult"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:variant_fifteen",
+                        "rift:birthday_rideable",
+                        "rift:tyrannosaurus_adult_birthday"
 					]
 				}
 			},

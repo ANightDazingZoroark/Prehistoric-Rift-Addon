@@ -169,6 +169,17 @@
               "single_use": true
           }
         }
+      },
+      "rift:drop_more_meat_from_baryonyx": {
+        "minecraft:spawn_entity": {
+          "entities": {
+              "min_wait_time": 0,
+              "max_wait_time": 0,
+              "spawn_item": "porkchop",
+              "num_to_spawn": 1,
+              "single_use": true
+          }
+        }
       }
     },
 
@@ -439,6 +450,32 @@
                 ]
 							},
 							"event": "rift:drop_more_porkchop_from_direwolf",
+							"target": "self"
+						}
+					},
+					{
+						"on_damage": {
+							"filters": {
+                "all_of": [
+                  {
+                    "test": "is_family",
+                    "subject": "other",
+                    "value": "baryonyx"
+                  },
+                  {
+                    "test": "has_component",
+                    "subject": "self",
+                    "operator": "!=",
+                    "value": "minecraft:is_baby"
+                  },
+                  {
+                    "test": "has_damage",
+                    "subject": "self",
+                    "value": "fatal"
+                  }
+                ]
+							},
+							"event": "rift:drop_more_porkchop_from_baryonyx",
 							"target": "self"
 						}
 					},
@@ -854,6 +891,28 @@
           },
           {
             "filters": {
+              "all_of": [
+                {
+                  "test": "is_family",
+                  "subject": "other",
+                  "value": "baryonyxForcedAttack"
+                },
+                {
+                  "test": "has_component",
+                  "subject": "self",
+                  "operator": "!=",
+                  "value": "minecraft:is_baby"
+                }
+              ]
+            },
+            "add": {
+              "component_groups": [
+                "rift:drop_more_meat_from_baryonyx"
+              ]
+            }
+          },
+          {
+            "filters": {
               "test": "is_family",
               "subject": "other",
               "value": "anomalocarisForcedAttack"
@@ -891,6 +950,13 @@
         "add": {
           "component_groups": [
             "rift:drop_more_meat_from_direwolf"
+          ]
+        }
+      },
+      "rift:drop_more_porkchop_from_baryonyx": {
+        "add": {
+          "component_groups": [
+            "rift:drop_more_meat_from_baryonyx"
           ]
         }
       }

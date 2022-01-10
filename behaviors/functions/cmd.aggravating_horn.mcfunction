@@ -1,5 +1,6 @@
 execute @s[tag=inWater] ~ ~ ~ event entity @e[type=rift:anomalocaris, r=64, tag=tamed, tag=!baby, tag=!sitting, tag=!ridden, tag=!hasTarget] rift:aggravated_via_aggravating_horn
 execute @s[tag=!inWater] ~ ~ ~ event entity @e[type=rift:apatosaurus, r=64, tag=tamed, tag=!baby, tag=!sitting, tag=!ridden, tag=!hasTarget] rift:aggravated_via_aggravating_horn
+event entity @e[type=rift:baryonyx, r=64, tag=tamed, tag=!baby, tag=!sitting, tag=!ridden, tag=!hasTarget] rift:aggravated_via_aggravating_horn
 execute @s[tag=!inWater] ~ ~ ~ event entity @e[type=rift:dimetrodon, r=64, tag=tamed, tag=!baby, tag=!sitting, tag=!ridden, tag=!hasTarget] rift:aggravated_via_aggravating_horn
 execute @s[tag=!inWater] ~ ~ ~ event entity @e[type=rift:direwolf, r=64, tag=tamed, tag=!baby, tag=!sitting, tag=!ridden, tag=!hasTarget] rift:aggravated_via_aggravating_horn
 execute @s[tag=!inWater] ~ ~ ~ event entity @e[type=rift:direwolf_werewolf, r=64, tag=tamed, tag=!baby, tag=!sitting, tag=!ridden, tag=!hasTarget] rift:aggravated_via_aggravating_horn

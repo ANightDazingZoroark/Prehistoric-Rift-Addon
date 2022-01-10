@@ -143,6 +143,17 @@
                         "single_use": true
                     }
                 }
+            },
+            "rift:drop_more_meat_from_baryonyx": {
+                "minecraft:spawn_entity": {
+                    "entities": {
+                        "min_wait_time": 0,
+                        "max_wait_time": 0,
+                        "spawn_item": "rift:raw_megapiranha",
+                        "num_to_spawn": 2,
+                        "single_use": true
+                    }
+                }
             }
         },
         "components": {
@@ -370,6 +381,32 @@
 						}
 					},
 					{
+						"on_damage": {
+							"filters": {
+                                "all_of": [
+                                    {
+                                        "test": "is_family",
+                                        "subject": "other",
+                                        "value": "baryonyx"
+                                    },
+                                    {
+                                        "test": "has_component",
+                                        "subject": "self",
+                                        "operator": "!=",
+                                        "value": "minecraft:is_baby"
+                                    },
+                                    {
+                                        "test": "has_damage",
+                                        "subject": "self",
+                                        "value": "fatal"
+                                    }
+                                ]
+							},
+							"event": "rift:drop_more_raw_megapiranha_from_baryonyx",
+							"target": "self"
+						}
+					},
+					{
 					  	"on_damage": {
 							"filters": {
 						  		"test": "is_family",
@@ -584,6 +621,28 @@
                                 "rift:drop_more_meat_from_anomalocaris"
                             ]
                         }
+                    },
+                    {
+                        "filters": {
+                            "all_of": [
+                                {
+                                    "test": "is_family",
+                                    "subject": "other",
+                                    "value": "baryonyxForcedAttack"
+                                },
+                                {
+                                    "test": "has_component",
+                                    "subject": "self",
+                                    "operator": "!=",
+                                    "value": "minecraft:is_baby"
+                                }
+                            ]
+                        },
+                        "add": {
+                            "component_groups": [
+                                "rift:drop_more_meat_from_baryonyx"
+                            ]
+                        }
                     }
                 ]
 			},
@@ -598,6 +657,13 @@
                 "add": {
                     "component_groups": [
                         "rift:drop_more_meat_from_anomalocaris"
+                    ]
+                }
+            },
+            "rift:drop_more_raw_megapiranha_from_baryonyx": {
+                "add": {
+                    "component_groups": [
+                        "rift:drop_more_meat_from_baryonyx"
                     ]
                 }
             }

@@ -1098,6 +1098,17 @@
 						"single_use": true
 					}
 			 	}
+			},
+			"rift:drop_more_meat_from_baryonyx": {
+				"minecraft:spawn_entity": {
+					"entities": {
+						"min_wait_time": 0,
+						"max_wait_time": 0,
+						"spawn_item": "rift:raw_exotic_meat",
+						"num_to_spawn": 1,
+						"single_use": true
+					}
+			 	}
 			}
         },
         "components": {
@@ -1227,41 +1238,10 @@
 							  			"test": "has_damage",
 							  			"subject": "self",
 							  			"value": "fatal"
-									},
-									{
-							  			"test": "has_component",
-							  			"subject": "self",
-							  			"value": "minecraft:is_baby"
 									}
 						  		]
 							},
-							"event": "rift:on_force_attacked_death_baby",
-							"target": "self"
-					  	}
-					},
-					{
-						"on_damage": {
-							"filters": {
-						  		"all_of": [
-									{
-							  			"test": "is_family",
-							  			"subject": "other",
-							  			"value": "forcedAttack"
-									},
-									{
-							  			"test": "has_damage",
-							  			"subject": "self",
-							  			"value": "fatal"
-									},
-									{
-							  			"test": "has_component",
-							  			"subject": "self",
-							  			"operator": "!=",
-							  			"value": "minecraft:is_baby"
-									}
-						  		]
-							},
-							"event": "rift:on_force_attacked_death_adult",
+							"event": "rift:on_force_attacked_death",
 							"target": "self"
 					  	}
 					},
@@ -1366,6 +1346,32 @@
                 				]
 							},
 							"event": "rift:drop_more_raw_exotic_meat_from_direwolf",
+							"target": "self"
+						}
+					},
+					{
+						"on_damage": {
+							"filters": {
+                				"all_of": [
+                  					{
+                    					"test": "is_family",
+                    					"subject": "other",
+                    					"value": "baryonyx"
+                  					},
+                  					{
+                    					"test": "has_component",
+                    					"subject": "self",
+                    					"operator": "!=",
+                    					"value": "minecraft:is_baby"
+                  					},
+				                	{
+                    					"test": "has_damage",
+                    					"subject": "self",
+                    					"value": "fatal"
+                  					}
+                				]
+							},
+							"event": "rift:drop_more_raw_exotic_meat_from_baryonyx",
 							"target": "self"
 						}
 					},
@@ -4740,23 +4746,10 @@
 				  	]
 				}
 			},
-			"rift:on_force_attacked_death_baby": {
+			"rift:on_force_attacked_death": {
 				"sequence": [
 					{
 						
-					},
-					{
-						"filters": {
-							"test": "is_family",
-							"subject": "other",
-							"operator": "!=",
-							"value": "sarcoSpinAttack"
-						},
-						"add": {
-							"component_groups": [
-						  		"rift:baby_drop_experience_from_forced_attack"
-							]
-					  	}
 					},
 					{
 						"filters": {
@@ -4764,122 +4757,16 @@
 								{
 									"test": "is_family",
 									"subject": "other",
+									"operator": "!=",
 									"value": "sarcoSpinAttack"
 								},
 								{
 									"test": "has_component",
 									"subject": "other",
-									"value": "minecraft:is_tamed"
+									"operator": "!=",
+									"value": "minecraft:is_baby"
 								}
 							]
-						},
-						"add": {
-							"component_groups": [
-								"rift:baby_experience_from_forced_attack"
-							]
-						}
-					},
-					{
-					  	"filters": {
-							"all_of": [
-						  		{
-									"test": "is_family",
-									"subject": "other",
-									"value": "utahraptorForcedAttack"
-						  		},
-						  		{
-									"test": "has_component",
-									"subject": "self",
-									"operator": "!=",
-									"value": "minecraft:is_baby"
-						  		}
-							]
-					  	},
-					  	"add": {
-							"component_groups": [
-						  		"rift:drop_more_meat_from_utahraptor"
-							]
-					  	}
-					},
-					{
-					  	"filters": {
-							"all_of": [
-						  		{
-									"test": "is_family",
-									"subject": "other",
-									"value": "tyrannosaurusForcedAttack"
-						  		},
-						  		{
-									"test": "has_component",
-									"subject": "self",
-									"operator": "!=",
-									"value": "minecraft:is_baby"
-						  		}
-							]
-					  	},
-					  	"add": {
-							"component_groups": [
-						  		"rift:drop_more_meat_from_tyrannosaurus"
-							]
-					  	}
-					},
-					{
-					  	"filters": {
-							"all_of": [
-						  		{
-									"test": "is_family",
-									"subject": "other",
-									"value": "sarcosuchusForcedAttack"
-						  		},
-						  		{
-									"test": "has_component",
-									"subject": "self",
-									"operator": "!=",
-									"value": "minecraft:is_baby"
-						  		}
-							]
-					  	},
-					  	"add": {
-							"component_groups": [
-						  		"rift:drop_more_meat_from_sarcosuchus"
-							]
-					  	}
-					},
-					{
-					  	"filters": {
-							"all_of": [
-						  		{
-									"test": "is_family",
-									"subject": "other",
-									"value": "direwolfForcedAttack"
-						  		},
-						  		{
-									"test": "has_component",
-									"subject": "self",
-									"operator": "!=",
-									"value": "minecraft:is_baby"
-						  		}
-							]
-					  	},
-					  	"add": {
-							"component_groups": [
-						  		"rift:drop_more_meat_from_direwolf"
-							]
-					  	}
-					}
-				]
-			},
-			"rift:on_force_attacked_death_adult": {
-				"sequence": [
-					{
-						
-					},
-					{
-						"filters": {
-							"test": "is_family",
-							"subject": "other",
-							"operator": "!=",
-							"value": "sarcoSpinAttack"
 						},
 						"add": {
 							"component_groups": [
@@ -4899,6 +4786,12 @@
 									"test": "has_component",
 									"subject": "other",
 									"value": "minecraft:is_tamed"
+								},
+								{
+									"test": "has_component",
+									"subject": "other",
+									"operator": "!=",
+									"value": "minecraft:is_baby"
 								}
 							]
 						},
@@ -4995,6 +4888,28 @@
 						  		"rift:drop_more_meat_from_direwolf"
 							]
 					  	}
+					},
+					{
+					  	"filters": {
+							"all_of": [
+						  		{
+									"test": "is_family",
+									"subject": "other",
+									"value": "baryonyxForcedAttack"
+						  		},
+						  		{
+									"test": "has_component",
+									"subject": "self",
+									"operator": "!=",
+									"value": "minecraft:is_baby"
+						  		}
+							]
+					  	},
+					  	"add": {
+							"component_groups": [
+						  		"rift:drop_more_meat_from_baryonyx"
+							]
+					  	}
 					}
 				]
 			},
@@ -5023,6 +4938,13 @@
 			  	"add": {
 					"component_groups": [
 				  		"rift:drop_more_meat_from_direwolf"
+					]
+			  	}
+			},
+			"rift:drop_more_raw_exotic_meat_from_baryonyx": {
+			  	"add": {
+					"component_groups": [
+				  		"rift:drop_more_meat_from_baryonyx"
 					]
 			  	}
 			},
