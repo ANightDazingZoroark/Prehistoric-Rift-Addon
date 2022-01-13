@@ -1,10 +1,8 @@
 import { World, Commands } from "mojang-minecraft";
 
-function hasTag(player, tag) {
-    let d = World.getDimension("overworld");
-    
+function hasTag(player, tag, dimension) {
     try {
-        let msg = Commands.run(`tag "${player.name}" list`, d).statusMessage;
+        let msg = Commands.run(`tag "${player.name}" list`, World.getDimension(dimension ?? 'overworld')).statusMessage;
         let msgSplited = msg.split(":");
         let playerTags = msgSplited.length > 1 ? msgSplited[1].match(/§a(.*?)§r/)[1].trim().split(",") : [];
         

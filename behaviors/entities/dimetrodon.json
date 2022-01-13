@@ -100,6 +100,14 @@
 						{
 							"item": "rift:cooked_hadrosaur_meat",
 							"growth": 0.125
+						},
+						{
+							"item": "rift:raw_megapiranha",
+							"growth": 0.1
+						},
+						{
+							"item": "rift:cooked_megapiranha",
+							"growth": 0.125
 						}
                     ]
                 },
@@ -108,7 +116,7 @@
                     "end_scale": 0.85
                 },
                 "minecraft:behavior.tempt": {
-                    "priority": 2,
+                    "priority": 10,
                     "items": [
                         "minecraft:beef",
 						"minecraft:cooked_beef",
@@ -133,7 +141,9 @@
 						"rift:raw_dodo_meat",
 						"rift:cooked_dodo_meat",
 						"rift:raw_hadrosaur_meat",
-						"rift:cooked_hadrosaur_meat"
+						"rift:cooked_hadrosaur_meat",
+						"rift:raw_megapiranha",
+						"rift:cooked_megapiranha"
                     ]
                 }
             },
@@ -142,7 +152,7 @@
                     "value": 20
                 },
                 "minecraft:behavior.follow_parent": {
-                    "priority": 6
+                    "priority": 12
                 },
                 "minecraft:tameable": {
                     "probability": 0.25,
@@ -157,7 +167,7 @@
                     }
 				},
 				"minecraft:behavior.random_stroll": {
-					"priority": 7
+					"priority": 13
 				},
 				"minecraft:despawn": {
 					"despawn_from_distance": {}
@@ -203,6 +213,15 @@
 					"big_wave_speed": 10.0,
 					"drag_down_on_buoyancy_removed": 0,
 					"liquid_blocks": ["water"]
+				},
+				"minecraft:on_target_acquired": {
+					"filters": {
+						"test": "has_component",
+						"subject": "self",
+						"value": "minecraft:is_ignited"
+					},
+					"event": "rift:give_self_fire_weapon",
+					"target": "self"
 				}
             },
             "rift:dimetrodon_adult_wild": {
@@ -211,7 +230,7 @@
                     "max": 40
                 },
                 "minecraft:behavior.random_stroll": {
-					"priority": 7
+					"priority": 13
 				},
 				"minecraft:behavior.avoid_mob_type": {
 					"priority": 2,
@@ -233,7 +252,7 @@
 					"despawn_from_distance": {}
 				},
 				"minecraft:behavior.hurt_by_target": {
-					"priority": 3,
+					"priority": 5,
 					"entity_types": {
 						"filters": {
 						  	"test": "is_family",
@@ -242,6 +261,137 @@
 						  	"value": "forcedAttack"
 						}
 					}
+				},
+				"minecraft:shareables": {
+					"all_items": true,
+					"all_items_max_amount": 1,
+					"items": [
+						{ 
+							"item": "minecraft:beef", 
+							"priority": 0, 
+							"max_amount": 1 
+						},
+						{ 
+							"item": "minecraft:cooked_beef", 
+							"priority": 0, 
+							"max_amount": 1 
+						},
+						{ 
+							"item": "minecraft:porkchop", 
+							"priority": 0, 
+							"max_amount": 1 
+						},
+						{ 
+							"item": "minecraft:cooked_porkchop", 
+							"priority": 0, 
+							"max_amount": 1 
+						},
+						{ 
+							"item": "minecraft:chicken", 
+							"priority": 0, 
+							"max_amount": 1 
+						},
+						{ 
+							"item": "minecraft:cooked_chicken", 
+							"priority": 0, 
+							"max_amount": 1 
+						},
+						{ 
+							"item": "minecraft:mutton", 
+							"priority": 0, 
+							"max_amount": 1 
+						},
+						{ 
+							"item": "minecraft:cooked_mutton", 
+							"priority": 0, 
+							"max_amount": 1 
+						},
+						{ 
+							"item": "minecraft:rabbit", 
+							"priority": 0, 
+							"max_amount": 1 
+						},
+						{ 
+							"item": "minecraft:cooked_rabbit", 
+							"priority": 0, 
+							"max_amount": 1 
+						},
+						{ 
+							"item": "minecraft:cod", 
+							"priority": 0, 
+							"max_amount": 1 
+						},
+						{ 
+							"item": "minecraft:cooked_cod", 
+							"priority": 0, 
+							"max_amount": 1 
+						},
+						{ 
+							"item": "minecraft:salmon", 
+							"priority": 0, 
+							"max_amount": 1 
+						},
+						{ 
+							"item": "minecraft:cooked_salmon", 
+							"priority": 0, 
+							"max_amount": 1 
+						},
+						{ 
+							"item": "minecraft:tropical_fish", 
+							"priority": 0, 
+							"max_amount": 1 
+						},
+						{ 
+							"item": "rift:raw_exotic_meat", 
+							"priority": 0, 
+							"max_amount": 1 
+						},
+						{ 
+							"item": "rift:cooked_exotic_meat", 
+							"priority": 0, 
+							"max_amount": 1 
+						},
+						{ 
+							"item": "rift:raw_dodo_meat", 
+							"priority": 0, 
+							"max_amount": 1 
+						},
+						{ 
+							"item": "rift:cooked_dodo_meat", 
+							"priority": 0, 
+							"max_amount": 1 
+						},
+						{ 
+							"item": "rift:raw_hadrosaur_meat", 
+							"priority": 0, 
+							"max_amount": 1 
+						},
+						{ 
+							"item": "rift:cooked_hadrosaur_meat", 
+							"priority": 0, 
+							"max_amount": 1 
+						},
+						{ 
+							"item": "rift:raw_megapiranha", 
+							"priority": 0, 
+							"max_amount": 1 
+						},
+						{ 
+							"item": "rift:cooked_megapiranha", 
+							"priority": 0, 
+							"max_amount": 1 
+						}
+				  	]
+				},
+				"minecraft:behavior.pickup_items": {
+					"priority": 8,
+					"max_dist": 32,
+					"goal_radius": 2,
+					"speed_multiplier": 1
+				},
+				"minecraft:behavior.eat_carried_item": {
+					"priority": 9,
+					"delay_before_eating": 0
 				}
 			},
 			"rift:dimetrodon_adult_not_trusting": {
@@ -260,7 +410,7 @@
 			},
 			"rift:default_targets": {
 				"minecraft:behavior.nearest_attackable_target": {
-					"priority": 4,
+					"priority": 6,
 					"reselect_targets": true,
 					"within_radius": 25,
 					"must_see": true,
@@ -320,7 +470,7 @@
 			},
 			"rift:attack_forced_attack_entity": {
 				"minecraft:behavior.nearest_attackable_target": {
-				  	"priority": 4,
+				  	"priority": 6,
 					"within_radius": 25,
 				  	"entity_types": [
 						{
@@ -356,7 +506,7 @@
 			},
 			"rift:aggravating_horn_attack": {
 				"minecraft:behavior.nearest_attackable_target": {
-				  	"priority": 4,
+				  	"priority": 6,
 					"reselect_targets": true,
 					"within_radius": 25,
 					"must_see": true,
@@ -517,9 +667,6 @@
 				"minecraft:attack": {
 					"damage": 8
 				},
-				"minecraft:equipment": {
-					"table": "loot_tables/entities/dimetrodon fire weapon.json"
-				},
 				"minecraft:environment_sensor": {
 					"triggers": [
 						{
@@ -597,9 +744,6 @@
 				},
 				"minecraft:attack": {
 					"damage": 8
-				},
-				"minecraft:equipment": {
-					"table": "loot_tables/entities/dimetrodon fire weapon.json"
 				},
 				"minecraft:environment_sensor": {
 					"triggers": [
@@ -708,6 +852,15 @@
 					]
 				}
 			},
+			"rift:use_flame_weapon": {
+				"minecraft:equipment": {
+					"table": "loot_tables/entities/dimetrodon fire weapon.json"
+				},
+				"minecraft:on_target_escape": {
+					"event": "rift:remove_fire_weapon",
+					"target": "self"
+				}
+			},
 			"rift:dimetrodon_frost_mode_grace_period": {
 				"minecraft:is_charged": {},
 				"minecraft:movement": {
@@ -745,9 +898,6 @@
 				},
 				"minecraft:attack": {
 					"damage": 8
-				},
-				"minecraft:equipment": {
-					"table": "loot_tables/entities/dimetrodon fire weapon.json"
 				},
 				"minecraft:fire_immune": {},
 				"minecraft:timer": {
@@ -923,6 +1073,21 @@
 									"amplifier": 3
 								}
 							]
+						},
+						{
+							"item": "rift:raw_megapiranha",
+							"heal_amount": 4
+						},
+						{
+							"item": "rift:cooked_megapiranha",
+							"heal_amount": 8,
+							"effects": [
+								{
+									"name": "regeneration",
+									"duration": 15,
+									"amplifier": 3
+								}
+							]
 						}
 					]
                 }
@@ -932,7 +1097,7 @@
 				"minecraft:behavior.follow_owner": {
 					"start_distance": 4,
 					"stop_distance": 40,
-					"priority": 6
+					"priority": 11
 				},
 				"minecraft:behavior.owner_hurt_by_target": {
 					"priority": 3
@@ -1048,7 +1213,6 @@
 				"can_walk_in_lava": true
 			},
 			"minecraft:movement.basic": {},
-			"minecraft:behavior.move_to_land": {},
 			"minecraft:behavior.breed": {
 				"priority": 1
 			},
@@ -1056,7 +1220,7 @@
 				"jump_power": 0.65
 			},
 			"minecraft:behavior.delayed_attack": {
-				"priority": 5,
+				"priority": 7,
 				"attack_duration": 0.52,
 				"hit_delay_pct": 1,
 				"track_target": true,
@@ -1080,7 +1244,7 @@
 				"max_distance": 12
 			},
 			"minecraft:behavior.random_look_around": {
-				"priority": 8
+				"priority": 14
 			},
 			"minecraft:interact": {
 				"interactions": [
@@ -3678,6 +3842,20 @@
 				"run_command": {
 					"command": [
 						"replaceitem entity @s slot.weapon.mainhand 0 air"
+					]
+				}
+			},
+			"rift:give_self_fire_weapon": {
+				"add": {
+					"component_groups": [
+						"rift:use_flame_weapon"
+					]
+				}
+			},
+			"rift:remove_fire_weapon": {
+				"remove": {
+					"component_groups": [
+						"rift:use_flame_weapon"
 					]
 				}
 			},
