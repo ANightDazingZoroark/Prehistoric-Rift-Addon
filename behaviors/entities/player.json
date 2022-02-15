@@ -40,7 +40,7 @@
 				"contBakunawaStaffUse": "controller.animation.player_use_bakunawa_staff",
 				"contRideBakunawaWithHeart": "controller.animation.player_ride_bakunawa_with_heart",
 				"contDismount": "controller.animation.player_dismount",
-				"contWearBakunawaArmor": "controller.animation.player_wear_bakunawa_armor",
+				"contWeaponManagement": "controller.animation.player_weapon_management",
 				//prehistoric rift anims
 				"animClimbStay": "animation.stay_in_place",
 				"animClimbUp": "animation.climb_up",
@@ -61,7 +61,8 @@
 				"animRideBakunawaWithHeart": "animation.player_ride_bakunawa_with_heart",
 				"animBakunawaDescend": "animation.player_control_bakunawa_descend",
 				"animBakunawaAscend": "animation.player_control_bakunawa_ascend",
-				"animIcthyosaurAscend": "animation.player_control_icthyosaur_ascend"
+				"animIcthyosaurAscend": "animation.player_control_icthyosaur_ascend",
+				"animUseStaffTimer": "animation.player_use_staff_timer"
 			},
 			"scripts": {
 				"animate": [
@@ -97,7 +98,8 @@
 					"contControlBakunawa",
 					"contBakunawaStaffUse",
 					"contRideBakunawaWithHeart",
-					"contDismount"
+					"contDismount",
+					"contWeaponManagement"
 				]
 			}
 		},
@@ -194,11 +196,6 @@
 					"value": 6
 				}
 			},
-			"borgy:no_special_things": {
-				"minecraft:skin_id": {
-				  	"value": 0
-				}
-			},
 			"rift:has_no_wool": {
 				"minecraft:mark_variant": {
 					"value": 0
@@ -284,15 +281,85 @@
 					"value": 16
 				}
 			},
-			"borgy:has_bakunawa_armor": {
-				"minecraft:skin_id": {
-				  	"value": 1
-				}
+			"borgy:no_special_things": {
+			  	"minecraft:skin_id": {
+					"value": 0
+			  	}
 			},
-			"borgy:has_sonic_absorbtion_armor": {
-				"minecraft:skin_id": {
-					  "value": 2
+			"borgy:has_bile_launcher_ammo": {
+			  	"minecraft:skin_id": {
+					"value": 1
+			  	}
+			},
+			"borgy:has_headcrab_launcher_ammo": {
+			  	"minecraft:skin_id": {
+					"value": 2
+			  	}
+			},
+			"borgy:has_sonic_cannon_ammo": {
+			  	"minecraft:skin_id": {
+					"value": 3
+			  	}
+			},
+			"borgy:bile_launcher_fire": {
+			  "minecraft:spawn_entity": {
+				"entities": [
+					{
+						"spawn_entity": "borgy:bullsquid_projectile",
+						"spawn_event": "borgy:when_fired_by_player",
+						"min_wait_time": 0,
+						"max_wait_time": 0,            
+						"single_use": true
+					}
+				]
+			  },
+			  "minecraft:timer": {
+					"time": 0.05,
+					"time_down_event": {
+				  		"event": "borgy:stop_using_bile_launcher",
+				  		"target": "self"
+					}
+			  	}
+			},
+			"borgy:headcrab_launcher_fire": {
+			  	"minecraft:spawn_entity": {
+					"entities": [
+						{
+							"spawn_entity": "borgy:fired_headcrab",
+							"spawn_event": "borgy:when_fired_by_player",
+							"min_wait_time": 0,
+							"max_wait_time": 0,            
+							"single_use": true
+						}
+					]
+			  	},
+			  	"minecraft:timer": {
+					"time": 0.05,
+					"time_down_event": {
+						"event": "borgy:stop_using_headcrab_launcher",
+						"target": "self"
+					}
+			  	}
+			},
+			"borgy:sonic_cannon_fire": {
+			  "minecraft:spawn_entity": {
+				"entities": [
+							  {
+								  "spawn_entity": "borgy:sonic_cannon_entity",
+					"spawn_event": "minecraft:entity_spawned",
+								  "min_wait_time": 0,
+								  "max_wait_time": 0,            
+					"single_use": true
+							  }
+						  ]
+			  },
+			  "minecraft:timer": {
+				"time": 0.05,
+				"time_down_event": {
+				  "event": "borgy:stop_using_sonic_cannon",
+				  "target": "self"
 				}
+			  }
 			}
 		},
 		"components": {
@@ -2255,6 +2322,107 @@
 				  		"tag @s remove hasSonicAbsorb"
 					]
 			  	}
+			},
+
+			"borgy:use_bile_launcher": {
+			  "add": {
+				"component_groups": [
+				  "borgy:bile_launcher_fire"
+				]
+			  },
+			  "run_command": {
+				"command": [
+				  "tag @s add usedBileLauncherAmmo"
+				]
+			  }
+			},
+			"borgy:stop_using_bile_launcher": {
+			  "remove": {
+				"component_groups": [
+				  "borgy:bile_launcher_fire"
+				]
+			  }
+			},
+			"borgy:has_bile_launcher_ammo": {
+			  "add": {
+				"component_groups": [
+				  "borgy:has_bile_launcher_ammo"
+				]
+			  },
+			  "remove": {
+				"component_groups": [
+				  "borgy:no_special_things"
+				]
+			  }
+			},
+	  
+			"borgy:use_headcrab_launcher": {
+			  "add": {
+				"component_groups": [
+				  "borgy:headcrab_launcher_fire"
+				]
+			  }
+			},
+			"borgy:stop_using_headcrab_launcher": {
+			  "remove": {
+				"component_groups": [
+				  "borgy:headcrab_launcher_fire"
+				]
+			  }
+			},
+			"borgy:has_headcrab_launcher_ammo": {
+			  "add": {
+				"component_groups": [
+				  "borgy:has_headcrab_launcher_ammo"
+				]
+			  },
+			  "remove": {
+				"component_groups": [
+				  "borgy:no_special_things"
+				]
+			  }
+			},
+	  
+			"borgy:use_sonic_cannon": {
+			  "add": {
+				"component_groups": [
+				  "borgy:sonic_cannon_fire"
+				]
+			  }
+			},
+			"borgy:stop_using_sonic_cannon": {
+			  "remove": {
+				"component_groups": [
+				  "borgy:sonic_cannon_fire"
+				]
+			  }
+			},
+			"borgy:has_sonic_cannon_ammo": {
+			  "add": {
+				"component_groups": [
+				  "borgy:has_sonic_cannon_ammo"
+				]
+			  },
+			  "remove": {
+				"component_groups": [
+				  "borgy:no_special_things"
+				]
+			  }
+			},
+	  
+			"borgy:no_ammo": {
+			  "add": {
+				"component_groups": [
+				  "borgy:no_special_things"
+				]
+			  },
+			  "remove": {
+				"component_groups": [
+				  "borgy:has_bile_launcher_ammo",
+				  "borgy:has_headcrab_launcher_ammo",
+				  "borgy:has_sonic_cannon_ammo"
+				]
+			  }
 			}
 		}
 	}
