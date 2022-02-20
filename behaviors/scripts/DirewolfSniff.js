@@ -10,37 +10,31 @@ function testForCommand(command, dimension) {
 };
 
 world.events.tick.subscribe((ev) => {
-    let players = world.getDimension('overworld').runCommand(`testfor @a`).victim;
+    let players = Array.from(world.getPlayers());
     let textOutput;
     for (let i = 0; i < players.length; i++) {
-        try {
-            if (players[i].hasTag("direwolfSniff")){
-                if (testForCommand(`testfor @e[tag=sniffedByDirewolf]`) == false) {
-                    world.getDimension('overworld').runCommand(`say hello`);
-                    let mobs = world.getDimension('overworld').runCommand(`testfor @e[tag=sniffedByDirewolf]`);
+        if (players[i].hasTag("direwolfSniff")){
+            if (testForCommand(`testfor @e[tag=sniffedByDirewolf]`) == false) {
+                let mobs = world.getDimension('overworld').runCommand(`testfor @e[tag=sniffedByDirewolf]`);
 
-                    for (let x = 0; x < mobs.victim.length; x++) {
-                        if (x == 0) {
-                            textOutput = mobs.victim[x];
-                        }
-                        else {
-                            textOutput = textOutput + ", " + mobs.victim[x];
-                        }
+                for (let x = 0; x < mobs.victim.length; x++) {
+                    if (x == 0) {
+                        textOutput = mobs.victim[x];
                     }
-                    world.getDimension('overworld').runCommand(`tellraw @a[tag=direwolfSniff] {"rawtext":[{"text":"Found ${textOutput}"}]}`);
+                    else {
+                        textOutput = textOutput + ", " + mobs.victim[x];
+                    }
                 }
-                else {
-                    world.getDimension('overworld').runCommand(`tellraw @a[tag=direwolfSniff] {"rawtext":[{"text":"Nothing found so far..."}]}`);
-                }
-                world.getDimension('overworld').runCommand(`tag @e[tag=direwolfSniff] remove direwolfSniff`);
-                ev.cancel = true;
+                world.getDimension('overworld').runCommand(`tellraw @a[tag=direwolfSniff] {"rawtext":[{"text":"Found ${textOutput}"}]}`);
             }
-            else if (!players[i].hasTag("direwolfSniff")) {
-                ev.cancel = false;
+            else {
+                world.getDimension('overworld').runCommand(`tellraw @a[tag=direwolfSniff] {"rawtext":[{"text":"Nothing found so far..."}]}`);
             }
+            world.getDimension('overworld').runCommand(`tag @e[tag=direwolfSniff] remove direwolfSniff`);
+            ev.cancel = true;
         }
-        catch(e) {
-            Commands.run(`say ${e}`, world.getDimension("overworld"));
+        else if (!players[i].hasTag("direwolfSniff")) {
+            ev.cancel = false;
         }
     }
 });
