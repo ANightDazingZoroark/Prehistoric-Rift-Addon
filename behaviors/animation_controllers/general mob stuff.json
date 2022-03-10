@@ -277,6 +277,169 @@
                     ]
 				}
 			}
+		},
+		"controller.animation.manage_tame_state": {
+			"initial_state": "default",
+			"states": {
+				"default": {
+					"transitions": [
+						{
+							"standing": "query.is_tamed && query.actor_property('rift:tame_state') == 0"
+						},
+						{
+							"sitting": "query.is_tamed && query.actor_property('rift:tame_state') == 1"
+						},
+						{
+							"wandering": "query.is_tamed && query.actor_property('rift:tame_state') == 2"
+						}
+					]
+				},
+				"standing": {
+					"transitions": [
+						{
+							"default": "!query.is_tamed"
+						},
+						{
+							"sitting": "query.actor_property('rift:tame_state') == 1"
+						},
+						{
+							"wandering": "query.actor_property('rift:tame_state') == 2"
+						}
+					],
+					"on_entry": [
+						"@s rift:on_standing"
+					]
+				},
+				"sitting": {
+					"transitions": [
+						{
+							"default": "!query.is_tamed"
+						},
+						{
+							"standing": "query.actor_property('rift:tame_state') == 0"
+						},
+						{
+							"wandering": "query.actor_property('rift:tame_state') == 2"
+						}
+					],
+					"on_entry": [
+						"@s rift:on_sitting"
+					]
+				},
+				"wandering": {
+					"transitions": [
+						{
+							"default": "!query.is_tamed"
+						},
+						{
+							"standing": "query.actor_property('rift:tame_state') == 0"
+						},
+						{
+							"sitting": "query.actor_property('rift:tame_state') == 1"
+						}
+					],
+					"on_entry": [
+						"@s rift:on_wandering"
+					]
+				}
+			}
+		},
+		"controller.animation.manage_tame_behavior": {
+			"initial_state": "default",
+			"states": {
+				"default": {
+					"transitions": [
+						{
+							"assist": "query.is_tamed && query.actor_property('rift:behavior_state') == 0"
+						},
+						{
+							"neutral": "query.is_tamed && query.actor_property('rift:behavior_state') == 1"
+						},
+						{
+							"aggressive": "query.is_tamed && query.actor_property('rift:behavior_state') == 2"
+						},
+						{
+							"passive": "query.is_tamed && query.actor_property('rift:behavior_state') == 3"
+						}
+					]
+				},
+				"assist": {
+					"transitions": [
+						{
+							"default": "!query.is_tamed"
+						},
+						{
+							"neutral": "query.actor_property('rift:behavior_state') == 1"
+						},
+						{
+							"aggressive": "query.actor_property('rift:behavior_state') == 2"
+						},
+						{
+							"passive": "query.actor_property('rift:behavior_state') == 3"
+						}
+					],
+					"on_entry": [
+						"@s rift:on_assist_behavior"
+					]
+				},
+				"neutral": {
+					"transitions": [
+						{
+							"default": "!query.is_tamed"
+						},
+						{
+							"assist": "query.actor_property('rift:behavior_state') == 0"
+						},
+						{
+							"aggressive": "query.actor_property('rift:behavior_state') == 2"
+						},
+						{
+							"passive": "query.actor_property('rift:behavior_state') == 3"
+						}
+					],
+					"on_entry": [
+						"@s rift:on_neutral_behavior"
+					]
+				},
+				"aggressive": {
+					"transitions": [
+						{
+							"default": "!query.is_tamed"
+						},
+						{
+							"assist": "query.actor_property('rift:behavior_state') == 0"
+						},
+						{
+							"neutral": "query.actor_property('rift:behavior_state') == 1"
+						},
+						{
+							"passive": "query.actor_property('rift:behavior_state') == 3"
+						}
+					],
+					"on_entry": [
+						"@s rift:on_aggressive_behavior"
+					]
+				},
+				"passive": {
+					"transitions": [
+						{
+							"default": "!query.is_tamed"
+						},
+						{
+							"assist": "query.actor_property('rift:behavior_state') == 0"
+						},
+						{
+							"neutral": "query.actor_property('rift:behavior_state') == 1"
+						},
+						{
+							"aggressive": "query.actor_property('rift:behavior_state') == 2"
+						}
+					],
+					"on_entry": [
+						"@s rift:on_passive_behavior"
+					]
+				}
+			}
 		}
 	}
 }

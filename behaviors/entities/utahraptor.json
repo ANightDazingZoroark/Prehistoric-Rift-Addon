@@ -8,12 +8,19 @@
 			"is_experimental": false,
 			"properties": {
                 "rift:tame_state": {
-                    "values": [
-                        "standing",
-						"sitting",
-						"wandering"
-                    ],
-					"default": "standing"
+                    "values": {
+						"min": 0, //0 for standing, 1 for sitting, 2 for wandering
+						"max": 2
+					},
+					"default": 0,
+					"client_sync": true
+                },
+                "rift:behavior_state": {
+                    "values": {
+						"min": 0, //0 for assist, 1 for neutral, 2 for aggressive, 3 for passive
+						"max": 3
+					},
+					"default": 0
                 }
 			},
 			"animations": {
@@ -24,6 +31,8 @@
 				"contBabyTag": "controller.animation.add_baby_tag",
 				"contRiddenTag": "controller.animation.add_ridden_tag",
 				"contSittingTag": "controller.animation.add_sitting_tag",
+				"contTameState": "controller.animation.manage_tame_state",
+				"contBehaviorState": "controller.animation.manage_tame_behavior",
 				"animForcedAttack": "animation.forced_attack_utahraptor"
 			},
 			"scripts": {
@@ -34,7 +43,9 @@
 					"contTameTag",
 					"contBabyTag",
 					"contRiddenTag",
-					"contSittingTag"
+					"contSittingTag",
+					"contTameState",
+					"contBehaviorState"
 				]
 			}
         },
@@ -149,6 +160,17 @@
                 "minecraft:health": {
                     "value": 15
                 },
+				"minecraft:behavior.hurt_by_target": {
+					"priority": 5,
+					"entity_types": {
+						"filters": {
+							"test": "is_family",
+							"subject": "other",
+							"operator": "!=",
+							"value": "forcedAttack"
+						}
+					}
+				},
                 "minecraft:behavior.follow_parent": {
                     "priority": 13
                 },
@@ -180,20 +202,6 @@
                         ]
                     }
                 },
-                "minecraft:behavior.random_stroll": {
-					"priority": 14
-				},
-				"minecraft:behavior.hurt_by_target": {
-					"priority": 5,
-					"entity_types": {
-						"filters": {
-						  	"test": "is_family",
-						  	"subject": "other",
-						  	"operator": "!=",
-							"value": "forcedAttack"
-						}
-					}
-				},
 				"minecraft:despawn": {
 					"despawn_from_distance": {}
 				}
@@ -269,8 +277,16 @@
                     "value": 30,
                     "max": 30
                 },
-                "minecraft:behavior.random_stroll": {
-					"priority": 14
+				"minecraft:behavior.hurt_by_target": {
+					"priority": 5,
+					"entity_types": {
+						"filters": {
+						"test": "is_family",
+						"subject": "other",
+						"operator": "!=",
+						"value": "forcedAttack"
+					}
+					}
 				},
                 "minecraft:group_size": {
                     "radius": 10,
@@ -309,17 +325,6 @@
 							"sprint_speed_multiplier": 1.2
 					  	}
 					]
-				},
-				"minecraft:behavior.hurt_by_target": {
-					"priority": 5,
-					"entity_types": {
-						"filters": {
-						  	"test": "is_family",
-						  	"subject": "other",
-						  	"operator": "!=",
-							"value": "forcedAttack"
-						}
-					}
 				},
 				"minecraft:despawn": {
 					"despawn_from_distance": {}
@@ -824,34 +829,8 @@
 				}
             },
 			"rift:utahraptor_tamed": {
-				"minecraft:is_tamed": {},
-				"minecraft:behavior.follow_owner": {
-					"start_distance": 8,
-					"stop_distance": 40,
-					"priority": 9
-				},
-				"minecraft:behavior.owner_hurt_by_target": {
-					"priority": 3
-				},
-				"minecraft:behavior.owner_hurt_target": {
-					"priority": 4
-				}
+				"minecraft:is_tamed": {}
             },
-			"rift:utahraptor_sittable": {
-				"minecraft:sittable": {
-					"sit_event": {
-						"event": "rift:made_to_sit_message",
-						"target": "self"
-					},
-					"stand_event": {
-						"event": "rift:made_to_stand_message",
-						"target": "self"
-					}
-				},
-				"minecraft:behavior.stay_while_sitting": {
-					"priority": 0
-				}
-            }, 
 			"rift:utahraptor_saddled": {
 				"minecraft:is_saddled": {},
 				"minecraft:input_ground_controlled": {}
@@ -961,6 +940,171 @@
 							"max_wait_time": 0
 						}
 					]
+				}
+			},
+			"rift:wild_standing": {
+                "minecraft:behavior.random_stroll": {
+					"priority": 14
+				},
+				"minecraft:behavior.random_look_around": {
+					"priority": 15
+				},
+				"minecraft:movement": {
+					"value": 0.35
+				}
+			},
+			"rift:tamed_standing": {
+				"minecraft:behavior.follow_owner": {
+					"start_distance": 8,
+					"stop_distance": 40,
+					"priority": 9
+				},
+				"minecraft:movement": {
+					"value": 0.35
+				}
+			},
+			"rift:sitting": {
+				"minecraft:movement": {
+					"value": 0.0
+				},
+				"minecraft:on_target_acquired": {
+					"event": "rift:sitting_on_anger",
+					"target": "self"
+				}
+			},
+			"rift:sitting_angered": {
+				"minecraft:movement": {
+					"value": 0.35
+				},
+				"minecraft:on_target_escape": {
+					"event": "rift:sitting_on_calm",
+				  	"target": "self"
+				}
+			},
+			"rift:wandering": {
+                "minecraft:behavior.random_stroll": {
+					"priority": 14
+				},
+				"minecraft:movement": {
+					"value": 0.35
+				}
+			},
+			"rift:assist_behavior": {
+				"minecraft:behavior.owner_hurt_by_target": {
+					"priority": 3
+				},
+				"minecraft:behavior.owner_hurt_target": {
+					"priority": 4
+				},
+				"minecraft:behavior.hurt_by_target": {
+					"priority": 5,
+					"entity_types": {
+						"filters": {
+							"all_of": [
+								{
+									"test": "is_family",
+									"subject": "other",
+									"operator": "!=",
+									"value": "forcedAttack"
+								},
+								{
+									"test": "has_component",
+									"subject": "self",
+									"operator": "!=",
+									"value": "minecraft:is_baby"
+								}
+							]
+						}
+					}
+				}
+			},
+			"rift:neutral_behavior": {
+				"minecraft:behavior.hurt_by_target": {
+					"priority": 5,
+					"entity_types": {
+						"filters": {
+							"all_of": [
+								{
+									"test": "is_family",
+									"subject": "other",
+									"operator": "!=",
+									"value": "forcedAttack"
+								},
+								{
+									"test": "has_component",
+									"subject": "self",
+									"operator": "!=",
+									"value": "minecraft:is_baby"
+								}
+							]
+						}
+					}
+				}
+			},
+			"rift:aggressive_behavior": {
+				"minecraft:behavior.owner_hurt_by_target": {
+					"priority": 3
+				},
+				"minecraft:behavior.owner_hurt_target": {
+					"priority": 4
+				},
+				"minecraft:behavior.nearest_attackable_target": {
+					"priority": 6,
+					"within_radius": 32.0,
+					"must_see": true,
+					"entity_types": [
+						{
+							"filters": {
+								"all_of": [
+									{
+										"test": "in_water",
+										"subject": "other",
+										"value": false
+									},
+									{
+										"test": "has_component",
+										"subject": "other",
+										"operator": "!=",
+										"value": "minecraft:is_tamed"
+									},
+									{
+										"test": "is_family",
+										"subject": "other",
+										"operator": "!=",
+										"value": "player"
+									},
+									{
+										"test": "is_family",
+										"subject": "other",
+										"operator": "!=",
+										"value": "inanimate"
+									}
+								]
+					  		},
+							"max_dist": 48
+						}
+					]
+				},
+				"minecraft:behavior.hurt_by_target": {
+					"priority": 5,
+					"entity_types": {
+						"filters": {
+							"all_of": [
+								{
+									"test": "is_family",
+									"subject": "other",
+									"operator": "!=",
+									"value": "forcedAttack"
+								},
+								{
+									"test": "has_component",
+									"subject": "self",
+									"operator": "!=",
+									"value": "minecraft:is_baby"
+								}
+							]
+						}
+					}
 				}
 			},
 			"rift:variant_zero": {
@@ -1130,6 +1274,9 @@
 			}
         },
         "components": {
+			"minecraft:movement": {
+				"value": 0.35
+			},
 			"minecraft:type_family": {
 				"family": [
 					"utahraptor",
@@ -1143,9 +1290,6 @@
 			"minecraft:movement.basic": {},
 			"minecraft:behavior.breed": {
 				"priority": 1
-			},
-			"minecraft:movement": {
-				"value": 0.35
 			},
 			"minecraft:jump.static": {},
 			"minecraft:is_hidden_when_invisible": {},      
@@ -1191,6 +1335,59 @@
 							"target": "self"
 						},
 						"interact_text": "action.interact.tame"
+					},
+					{
+						"on_interact": {
+							"filters": {
+								"all_of": [
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_tamed"
+									},
+									{
+										"test": "is_sneaking",
+										"subject": "other",
+										"value": true
+									},
+									{
+										"test": "has_equipment",
+										"subject": "other",
+										"domain": "hand",
+										"operator": "!=",
+										"value": "rift:command_staff"
+									}
+								]
+							},
+							"event": "rift:manage_state",
+							"target": "self"
+						}
+					},
+					{
+						"on_interact": {
+							"filters": {
+								"all_of": [
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_tamed"
+									},
+									{
+										"test": "is_sneaking",
+										"subject": "other",
+										"value": true
+									},
+									{
+										"test": "has_equipment",
+										"subject": "other",
+										"domain": "hand",
+										"value": "rift:command_staff"
+									}
+								]
+							},
+							"event": "rift:manage_behavior",
+							"target": "self"
+						}
 					},
 					{
 						"on_interact": {
@@ -3957,9 +4154,6 @@
 					}
 				]
 			},
-			"minecraft:behavior.random_look_around": {
-				"priority": 15
-			},
 			"minecraft:collision_box": {
 				"width": 1.25,
 				"height": 1.5
@@ -4213,7 +4407,8 @@
                                 "rift:utahraptor_adult_wild_not_trusting",
 								"rift:utahraptor_adult_can_pounce",
 								"rift:pushable",
-								"rift:can_attack"
+								"rift:can_attack",
+								"rift:wild_standing"
 							]
 						}
 					},
@@ -4229,7 +4424,8 @@
                                 "rift:utahraptor_adult_wild_not_trusting",
 								"rift:utahraptor_adult_can_pounce",
 								"rift:pushable",
-								"rift:can_attack"
+								"rift:can_attack",
+								"rift:wild_standing"
 							]
 						}
 					},
@@ -4245,7 +4441,8 @@
                                 "rift:utahraptor_adult_wild_not_trusting",
 								"rift:utahraptor_adult_can_pounce",
 								"rift:pushable",
-								"rift:can_attack"
+								"rift:can_attack",
+								"rift:wild_standing"
 							]
 						}
 					},
@@ -4261,7 +4458,8 @@
                                 "rift:utahraptor_adult_wild_not_trusting",
 								"rift:utahraptor_adult_can_pounce",
 								"rift:pushable",
-								"rift:can_attack"
+								"rift:can_attack",
+								"rift:wild_standing"
 							]
 						}
 					}
@@ -4327,14 +4525,16 @@
 					"component_groups": [
 						"rift:utahraptor_baby_tamed",
 						"rift:utahraptor_tamed",
-						"rift:utahraptor_sittable"
+						"rift:tamed_standing",
+						"rift:rideable"
 					]
 				},
 				"remove": {
 					"component_groups": [
 						"rift:utahraptor_baby_wild",
 						"rift:utahraptor_baby_calm",
-						"rift:utahraptor_baby_scared"
+						"rift:utahraptor_baby_scared",
+						"rift:wild_standing"
 					]
 				}
 			},
@@ -4343,7 +4543,6 @@
 					"component_groups": [
 						"rift:utahraptor_baby",
 						"rift:utahraptor_baby_tamed",
-						"rift:utahraptor_sittable",
 						"rift:pushable"
 					]
 				}
@@ -4422,7 +4621,7 @@
 					"component_groups": [
 						"rift:utahraptor_tamed",
 						"rift:utahraptor_adult_tamed",
-						"rift:utahraptor_sittable",
+						"rift:tamed_standing",
 						"rift:rideable"
 					]
 				},
@@ -4432,7 +4631,8 @@
 						"rift:utahraptor_adult_waiting_for_tame",
 						"rift:utahraptor_adult_tameable",
 						"rift:utahraptor_adult_chance_for_tame",
-						"rift:utahraptor_adult_trusting"
+						"rift:utahraptor_adult_trusting",
+						"rift:wild_standing"
 					]
 				},
 				"run_command": {
@@ -4472,7 +4672,6 @@
 				},
 				"remove": {
 					"component_groups": [
-						"rift:utahraptor_sittable",
 						"rift:pushable",
 						"rift:can_attack",
 						"rift:utahraptor_adult_can_pounce",
@@ -4488,7 +4687,6 @@
 			"rift:can_sit": {
 				"add": {
 					"component_groups": [
-						"rift:utahraptor_sittable",
 						"rift:pushable",
 						"rift:can_attack",
 						"rift:utahraptor_adult_can_pounce"
@@ -4502,6 +4700,165 @@
 				"run_command": {
 					"command": [
 						"tag @s remove climber"
+					]
+				}
+			},
+			"rift:on_standing": {
+				"add": {
+					"component_groups": [
+						"rift:tamed_standing",
+						"rift:rideable"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:sitting",
+						"rift:sitting_angered",
+						"rift:wandering"
+					]
+				},
+				"run_command": {
+					"command": [
+						"tag @s remove sitting",
+						"tellraw @p {\"rawtext\":[{\"text\":\"Your Utahraptor is currently following\"}]}"
+					]
+				}
+			},
+			"rift:on_sitting": {
+				"add": {
+					"component_groups": [
+						"rift:sitting"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:tamed_standing",
+						"rift:sitting_angered",
+						"rift:wandering",
+						"rift:rideable"
+					]
+				},
+				"run_command": {
+					"command": [
+						"tag @s add sitting",
+						"tellraw @p {\"rawtext\":[{\"text\":\"Your Utahraptor is currently sitting\"}]}"
+					]
+				}
+			},
+			"rift:on_wandering": {
+				"add": {
+					"component_groups": [
+						"rift:wandering",
+						"rift:rideable"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:tamed_standing",
+						"rift:sitting",
+						"rift:sitting_angered"
+					]
+				},
+				"run_command": {
+					"command": [
+						"tag @s remove sitting",
+						"tellraw @p {\"rawtext\":[{\"text\":\"Your Utahraptor is currently wandering\"}]}"
+					]
+				}
+			},
+			"rift:sitting_on_anger": {
+				"add": {
+					"component_groups": [
+						"rift:sitting_angered"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:sitting"
+					]
+				}
+			},
+			"rift:sitting_on_calm": {
+				"add": {
+					"component_groups": [
+						"rift:sitting"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:sitting_angered"
+					]
+				}
+			},
+			"rift:on_assist_behavior": {
+				"add": {
+					"component_groups": [
+						"rift:assist_behavior"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:neutral_behavior",
+						"rift:aggressive_behavior"
+					]
+				},
+				"run_command": {
+					"command": [
+						"tag @s remove hunting",
+						"tellraw @p {\"rawtext\":[{\"text\":\"Your Utahraptor will now assist you in combat\"}]}"
+					]
+				}
+			},
+			"rift:on_neutral_behavior": {
+				"add": {
+					"component_groups": [
+						"rift:neutral_behavior"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:assist_behavior",
+						"rift:aggressive_behavior"
+					]
+				},
+				"run_command": {
+					"command": [
+						"tag @s remove hunting",
+						"tellraw @p {\"rawtext\":[{\"text\":\"Your Utahraptor will now be neutral\"}]}"
+					]
+				}
+			},
+			"rift:on_aggressive_behavior": {
+				"add": {
+					"component_groups": [
+						"rift:aggressive_behavior"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:assist_behavior",
+						"rift:neutral_behavior"
+					]
+				},
+				"run_command": {
+					"command": [
+						"tag @s add hunting",
+						"tellraw @p {\"rawtext\":[{\"text\":\"Your Utahraptor will now be aggressive\"}]}"
+					]
+				}
+			},
+			"rift:on_passive_behavior": {
+				"remove": {
+					"component_groups": [
+						"rift:assist_behavior",
+						"rift:neutral_behavior",
+						"rift:aggressive_behavior"
+					]
+				},
+				"run_command": {
+					"command": [
+						"tag @s remove hunting",
+						"tellraw @p {\"rawtext\":[{\"text\":\"Your Utahraptor will now be passive\"}]}"
 					]
 				}
 			},
@@ -4538,7 +4895,8 @@
 								"rift:utahraptor_baby_calm",
 								"rift:variant_zero",
 								"rift:pushable",
-								"rift:can_attack"
+								"rift:can_attack",
+								"rift:wild_standing"
 							]
 						}
 					},
@@ -4551,7 +4909,8 @@
 								"rift:utahraptor_baby_calm",
 								"rift:variant_one",
 								"rift:pushable",
-								"rift:can_attack"
+								"rift:can_attack",
+								"rift:wild_standing"
 							]
 						}
 					},
@@ -4564,7 +4923,8 @@
 								"rift:utahraptor_baby_calm",
 								"rift:variant_two",
 								"rift:pushable",
-								"rift:can_attack"
+								"rift:can_attack",
+								"rift:wild_standing"
 							]
 						}
 					},
@@ -4577,7 +4937,8 @@
 								"rift:utahraptor_baby_calm",
 								"rift:variant_three",
 								"rift:pushable",
-								"rift:can_attack"
+								"rift:can_attack",
+								"rift:wild_standing"
 							]
 						}
 					}
@@ -5232,18 +5593,14 @@
 					]
 				}
 			},
-			"rift:made_to_sit_message": {
-				"run_command": {
-					"command": [
-						"tellraw @p {\"rawtext\":[{\"text\":\"Your Utahraptor is currently sitting\"}]}"
-					]
+			"rift:manage_state": {
+				"set_actor_property": {
+					"rift:tame_state": "(query.actor_property('rift:tame_state') >= 0 && query.actor_property('rift:tame_state') <= 1) ? query.actor_property('rift:tame_state') + 1 : 0"
 				}
 			},
-			"rift:made_to_stand_message": {
-				"run_command": {
-					"command": [
-						"tellraw @p {\"rawtext\":[{\"text\":\"Your Utahraptor is currently standing\"}]}"
-					]
+			"rift:manage_behavior": {
+				"set_actor_property": {
+					"rift:behavior_state": "(query.actor_property('rift:behavior_state') >= 0 && query.actor_property('rift:behavior_state') <= 2) ? query.actor_property('rift:behavior_state') + 1 : 0"
 				}
 			},
 			//for potion effects
