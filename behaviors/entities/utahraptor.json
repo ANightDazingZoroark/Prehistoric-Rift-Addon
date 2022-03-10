@@ -6,6 +6,16 @@
             "is_spawnable": true,
             "is_summonable": true,
 			"is_experimental": false,
+			"properties": {
+                "rift:tame_state": {
+                    "values": [
+                        "standing",
+						"sitting",
+						"wandering"
+                    ],
+					"default": "standing"
+                }
+			},
 			"animations": {
 				"contPackBuff": "controller.animation.wild_utahraptor_pack_buff",
 				"contWildRemoveBuffs": "controller.animation.wild_utahraptor_remove_buffs",
@@ -456,7 +466,8 @@
 			"rift:default_targets": {
 				"minecraft:behavior.nearest_attackable_target": {
 					"priority": 6,
-					"within_radius": 96,
+					"within_radius": 32.0,
+					"must_see": true,
 					"entity_types": [
 						{
 							"filters": {
@@ -477,7 +488,8 @@
 										"value": "animal"
 									}
 								]
-							}
+							},
+							"max_dist": 48
 						},
 						{
 							"filters": {
@@ -500,7 +512,8 @@
 										"value": false
 									}
 								]
-							}
+							},
+							"max_dist": 48
 						},
 						{
 							"filters": {
@@ -517,7 +530,8 @@
 										"value": "apatosaurus"
 									}
 								]
-							}
+							},
+							"max_dist": 48
 						},
 						{
 							"filters": {
@@ -539,7 +553,8 @@
 										"value": 0
 									}
 								]
-							}
+							},
+							"max_dist": 48
 						}
 					]
 				}
@@ -554,7 +569,7 @@
 								"subject": "other",
 								"value": "isForcedAttacking"
 					  		},
-					  		"max_dist": 35
+					  		"max_dist": 25
 						}
 				  	]
 				},
@@ -566,7 +581,8 @@
 			"rift:aggravating_horn_attack": {
 				"minecraft:behavior.nearest_attackable_target": {
 					"priority": 6,
-					"within_radius": 96,
+					"within_radius": 32.0,
+					"must_see": true,
 					"entity_types": [
 						{
 							"filters": {
@@ -595,7 +611,8 @@
 										"value": "inanimate"
 									}
 								]
-					  		}
+					  		},
+							"max_dist": 48
 						}
 					]
 				},
@@ -821,7 +838,16 @@
 				}
             },
 			"rift:utahraptor_sittable": {
-				"minecraft:sittable": {},
+				"minecraft:sittable": {
+					"sit_event": {
+						"event": "rift:made_to_sit_message",
+						"target": "self"
+					},
+					"stand_event": {
+						"event": "rift:made_to_stand_message",
+						"target": "self"
+					}
+				},
 				"minecraft:behavior.stay_while_sitting": {
 					"priority": 0
 				}
@@ -5203,6 +5229,20 @@
 				"remove": {
 					"component_groups": [
 						"rift:aggravating_horn_attack"
+					]
+				}
+			},
+			"rift:made_to_sit_message": {
+				"run_command": {
+					"command": [
+						"tellraw @p {\"rawtext\":[{\"text\":\"Your Utahraptor is currently sitting\"}]}"
+					]
+				}
+			},
+			"rift:made_to_stand_message": {
+				"run_command": {
+					"command": [
+						"tellraw @p {\"rawtext\":[{\"text\":\"Your Utahraptor is currently standing\"}]}"
 					]
 				}
 			},

@@ -470,10 +470,9 @@
             "rift:default_targets": {
 				"minecraft:behavior.nearest_attackable_target": {
 					"priority": 5,
-					"reselect_targets": false,
-					"within_radius": 50,
-					"must_see": false,
-					"attack_interval": 10,
+					"within_radius": 32.0,
+					"must_see": true,
+					"attack_interval": 10.0,
 					"entity_types": [
 						{
 							"filters": {
@@ -498,7 +497,8 @@
                                         "value": true
                                     }
                                 ]
-							}
+							},
+							"max_dist": 48
 						},
 						{
 							"filters": {
@@ -546,7 +546,8 @@
 										]
 									}
 								]
-							}
+							},
+							"max_dist": 48
 						},
 						{
 							"filters": {
@@ -577,7 +578,8 @@
 										"value": "guardian_elder"
 									}
 								]
-							}
+							},
+							"max_dist": 48
 						}
 					]
 				}
@@ -592,7 +594,7 @@
 								"subject": "other",
 								"value": "isForcedAttacking"
 					  		},
-					  		"max_dist": 25
+					  		"max_dist": 25.0
 						}
 				  	]
 				}
@@ -600,9 +602,8 @@
 			"rift:aggravating_horn_attack": {
 				"minecraft:behavior.nearest_attackable_target": {
 					"priority": 5,
-					"reselect_targets": false,
-					"within_radius": 50,
-					"must_see": false,
+					"within_radius": 32.0,
+					"must_see": true,
 				  	"entity_types": [
 						{
 					  		"filters": {
@@ -632,7 +633,7 @@
 									}
 								]
 					  		},
-					  		"max_dist": 35
+							"max_dist": 48
 						}
 				  	]
 				}
@@ -890,7 +891,16 @@
 				}
 			},
 			"rift:anomalocaris_sittable": {
-                "minecraft:sittable": {},
+                "minecraft:sittable": {
+					"sit_event": {
+						"event": "rift:made_to_sit_message",
+						"target": "self"
+					},
+					"stand_event": {
+						"event": "rift:made_to_stand_message",
+						"target": "self"
+					}
+				},
 				"minecraft:behavior.stay_while_sitting": {
 					"priority": 0
 				}
@@ -4104,6 +4114,20 @@
 				"run_command": {
 					"command": [
 						"say test"
+					]
+				}
+			},
+			"rift:made_to_sit_message": {
+				"run_command": {
+					"command": [
+						"tellraw @p {\"rawtext\":[{\"text\":\"Your Anomalocaris is currently sitting\"}]}"
+					]
+				}
+			},
+			"rift:made_to_stand_message": {
+				"run_command": {
+					"command": [
+						"tellraw @p {\"rawtext\":[{\"text\":\"Your Anomalocaris is currently standing\"}]}"
 					]
 				}
 			},

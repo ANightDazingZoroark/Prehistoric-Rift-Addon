@@ -441,9 +441,8 @@
             "rift:default_targets": {
 				"minecraft:behavior.nearest_attackable_target": {
 					"priority": 4,
-					"reselect_targets": false,
-					"within_radius": 50,
-					"must_see": false,
+					"within_radius": 32.0,
+					"must_see": true,
 					"entity_types": [
 						{
 							"filters": {
@@ -473,7 +472,8 @@
                                         "value": true
                                     }
                                 ]
-							}
+							},
+							"max_dist": 48
 						},
 						{
 							"filters": {
@@ -510,7 +510,8 @@
 										]
 									}
 								]
-							}
+							},
+							"max_dist": 48
 						},
 						{
 							"filters": {
@@ -532,7 +533,8 @@
 										"value": "apatosaurus"
 									}
 								]
-							}
+							},
+							"max_dist": 48
 						},
 						{
 							"filters": {
@@ -563,7 +565,8 @@
 										"value": "apatosaurus"
 									}
 								]
-							}
+							},
+							"max_dist": 48
 						},
 						{
 							"filters": {
@@ -579,7 +582,8 @@
 										"value": "fish"
 									}
 								]
-							}
+							},
+							"max_dist": 48
 						},
 						{
 							"filters": {
@@ -587,7 +591,7 @@
 								"subject": "other", 
 								"value":  "parasaurAngerer"
 						 	},
-							"max_dist": 35
+							"max_dist": 48
 					  	}
 					]
 				}
@@ -595,14 +599,14 @@
 			"rift:attack_forced_attack_entity": {
 				"minecraft:behavior.nearest_attackable_target": {
 				  	"priority": 4,
-					"within_radius": 50,
 				  	"entity_types": [
 						{
 					  		"filters": {
 								"test": "is_family",
 								"subject": "other",
 								"value": "isForcedAttacking"
-					  		}
+					  		},
+							"max_dist": 25.0
 						}
 				  	]
 				},
@@ -614,9 +618,8 @@
 			"rift:aggravating_horn_attack": {
 				"minecraft:behavior.nearest_attackable_target": {
 				  	"priority": 4,
-					"reselect_targets": false,
-					"within_radius": 50,
-					"must_see": false,
+					"within_radius": 32.0,
+					"must_see": true,
 				  	"entity_types": [
 						{
 					  		"filters": {
@@ -641,7 +644,7 @@
 									}
 								]
 					  		},
-					  		"max_dist": 25
+							"max_dist": 48
 						}
 				  	]
 				},
@@ -957,7 +960,16 @@
 				}
             },
             "rift:baryonyx_sittable": {
-                "minecraft:sittable": {},
+                "minecraft:sittable": {
+					"sit_event": {
+						"event": "rift:made_to_sit_message",
+						"target": "self"
+					},
+					"stand_event": {
+						"event": "rift:made_to_stand_message",
+						"target": "self"
+					}
+				},
 				"minecraft:behavior.stay_while_sitting": {
 					"priority": 0
 				}
@@ -4391,6 +4403,20 @@
 				  		"rift:drop_more_meat_from_baryonyx"
 					]
 			  	}
+			},
+			"rift:made_to_sit_message": {
+				"run_command": {
+					"command": [
+						"tellraw @p {\"rawtext\":[{\"text\":\"Your Baryonyx is currently sitting\"}]}"
+					]
+				}
+			},
+			"rift:made_to_stand_message": {
+				"run_command": {
+					"command": [
+						"tellraw @p {\"rawtext\":[{\"text\":\"Your Baryonyx is currently standing\"}]}"
+					]
+				}
 			},
 			//for potion effects
 			"rift:drink_night_vision_potion_one": {

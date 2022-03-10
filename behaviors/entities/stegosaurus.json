@@ -371,7 +371,8 @@
 			"rift:default_targets": {
 				"minecraft:behavior.nearest_attackable_target": {
 					"priority": 3,
-					"within_radius": 25.0,
+					"within_radius": 32.0,
+					"must_see": true,
 					"entity_types": [
 					  	{
 							"filters": {
@@ -379,7 +380,7 @@
 								"subject": "other", 
 								"value":  "parasaurAngerer"
 						 	},
-							"max_dist": 35
+							"max_dist": 48
 					  	}
 					]
 				}
@@ -387,14 +388,16 @@
 			"rift:herbivore_stampede_targets": {
 				"minecraft:behavior.nearest_attackable_target": {
 					"priority": 3,
-					"within_radius": 48,
+					"within_radius": 32.0,
+					"must_see": true,
 					"entity_types": [
 					  	{
 							"filters": {
 								"test":  "is_family", 
 								"subject": "other", 
 								"value":  "parasaurAngerer"
-						 	}
+						 	},
+							"max_dist": 48
 					  	},
 						{
 							"filters": {
@@ -410,28 +413,32 @@
 										"value": false
 									}
 								]
-							}
+							},
+							"max_dist": 48
 						},
 						{
 							"filters": {
 								"test": "is_family", 
 								"subject": "other", 
 								"value": "animal"
-							}
+							},
+							"max_dist": 48
 						},
 						{
 							"filters": {
 								"test": "is_family", 
 								"subject": "other", 
 								"value": "carnivore"
-							}
+							},
+							"max_dist": 48
 						},
 						{
 							"filters": {
 								"test": "has_component",
 								"subject": "other",
 								"value": "minecraft:is_tamed"
-							}
+							},
+							"max_dist": 48
 						}
 					]
 				}
@@ -458,14 +465,14 @@
 			"rift:attack_forced_attack_entity_baby": {
 				"minecraft:behavior.nearest_attackable_target": {
 				  	"priority": 2,
-					"within_radius": 35,
 				  	"entity_types": [
 						{
 					  		"filters": {
 								"test": "is_family",
 								"subject": "other",
 								"value": "isForcedAttacking"
-					  		}
+					  		},
+							"max_dist": 25
 						}
 				  	]
 				},
@@ -477,7 +484,8 @@
 			"rift:aggravating_horn_attack": {
 				"minecraft:behavior.nearest_attackable_target": {
 					"priority": 3,
-					"within_radius": 35,
+					"within_radius": 32.0,
+					"must_see": true,
 					"entity_types": [
 					  	{
 							"filters": {
@@ -506,7 +514,8 @@
 										"value": "inanimate"
 									}
 								]
-					  		}
+					  		},
+							"max_dist": 48
 					  	}
 					]
 				},
@@ -798,7 +807,16 @@
 				}
 			},
 			"rift:stegosaurus_sittable": {
-				"minecraft:sittable": {},
+				"minecraft:sittable": {
+					"sit_event": {
+						"event": "rift:made_to_sit_message",
+						"target": "self"
+					},
+					"stand_event": {
+						"event": "rift:made_to_stand_message",
+						"target": "self"
+					}
+				},
 				"minecraft:behavior.stay_while_sitting": {
 					"priority": 0
 				}
@@ -4483,6 +4501,20 @@
 				"remove": {
 					"component_groups": [
 						"rift:aggravating_horn_attack"
+					]
+				}
+			},
+			"rift:made_to_sit_message": {
+				"run_command": {
+					"command": [
+						"tellraw @p {\"rawtext\":[{\"text\":\"Your Stegosaurus is currently sitting\"}]}"
+					]
+				}
+			},
+			"rift:made_to_stand_message": {
+				"run_command": {
+					"command": [
+						"tellraw @p {\"rawtext\":[{\"text\":\"Your Stegosaurus is currently standing\"}]}"
 					]
 				}
 			},

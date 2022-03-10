@@ -431,7 +431,8 @@
 			"rift:default_targets": {
 				"minecraft:behavior.nearest_attackable_target": {
 					"priority": 7,
-					"within_radius": 35,
+					"within_radius": 32.0,
+					"must_see": true,
 					"entity_types": [
 						{
 							"filters": {
@@ -454,21 +455,24 @@
 										"value":  "witch"
 									}
 								]
-						 	}
+						 	},
+							"max_dist": 48
 					  	},
 					  	{
 							"filters": {
 								"test":  "is_family", 
 								"subject": "other", 
 								"value":  "undead"
-						 	}
+						 	},
+							"max_dist": 48
 					  	},
 					  	{
 							"filters": {
 								"test":  "is_family", 
 								"subject": "other", 
 								"value":  "parasaurAngerer"
-						 	}
+						 	},
+							"max_dist": 48
 					  	}
 					]
 				}
@@ -495,7 +499,8 @@
 			"rift:aggravating_horn_attack": {
 				"minecraft:behavior.nearest_attackable_target": {
 				  	"priority": 7,
-					"within_radius": 35,
+					"within_radius": 32.0,
+					"must_see": true,
 				  	"entity_types": [
 						{
 					  		"filters": {
@@ -524,7 +529,8 @@
 										"value": "inanimate"
 									}
 								]
-					  		}
+					  		},
+							"max_dist": 48
 						}
 				  	]
 				},
@@ -803,7 +809,16 @@
 				}
 			},
 			"rift:saurophaganax_sittable": {
-				"minecraft:sittable": {},
+				"minecraft:sittable": {
+					"sit_event": {
+						"event": "rift:made_to_sit_message",
+						"target": "self"
+					},
+					"stand_event": {
+						"event": "rift:made_to_stand_message",
+						"target": "self"
+					}
+				},
 				"minecraft:behavior.stay_while_sitting": {
 					"priority": 6
 				}
@@ -4570,6 +4585,20 @@
 				"remove": {
 					"component_groups": [
 						"rift:aggravating_horn_attack"
+					]
+				}
+			},
+			"rift:made_to_sit_message": {
+				"run_command": {
+					"command": [
+						"tellraw @p {\"rawtext\":[{\"text\":\"Your Saurophaganax is currently sitting\"}]}"
+					]
+				}
+			},
+			"rift:made_to_stand_message": {
+				"run_command": {
+					"command": [
+						"tellraw @p {\"rawtext\":[{\"text\":\"Your Saurophaganax is currently standing\"}]}"
 					]
 				}
 			},

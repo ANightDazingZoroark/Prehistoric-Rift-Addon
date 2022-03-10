@@ -247,7 +247,7 @@
 						  		"subject": "other"
 							},
 							"max_dist": 12,
-							"must_see": true,
+							"must_see": false,
 							"walk_speed_multiplier": 1.2,
 							"sprint_speed_multiplier": 1.2
 					  	}
@@ -414,9 +414,8 @@
             "rift:default_targets": {
 				"minecraft:behavior.nearest_attackable_target": {
 					"priority": 6,
-					"reselect_targets": false,
-					"within_radius": 50,
-					"must_see": false,
+					"within_radius": 32.0,
+					"must_see": true,
 					"entity_types": [
 						{
 							"filters": {
@@ -446,7 +445,8 @@
                                         "value": true
                                     }
                                 ]
-							}
+							},
+							"max_dist": 48
 						},
 						{
 							"filters": {
@@ -479,7 +479,8 @@
 										"value": false
 									}
 								]
-							}
+							},
+							"max_dist": 48
 						},
 						{
 							"filters": {
@@ -522,7 +523,8 @@
                                         "value": true
                                     }
 								]
-							}
+							},
+							"max_dist": 48
 						},
 						{
 							"filters": {
@@ -530,7 +532,7 @@
 								"subject": "other", 
 								"value":  "parasaurAngerer"
 						 	},
-							"max_dist": 35
+							"max_dist": 48
 					  	}
 					]
 				}
@@ -538,14 +540,14 @@
 			"rift:attack_forced_attack_entity": {
 				"minecraft:behavior.nearest_attackable_target": {
 				  	"priority": 6,
-					"within_radius": 50,
 				  	"entity_types": [
 						{
 					  		"filters": {
 								"test": "is_family",
 								"subject": "other",
 								"value": "isForcedAttacking"
-					  		}
+					  		},
+							"max_dist": 25
 						}
 				  	]
 				},
@@ -558,8 +560,8 @@
 				"minecraft:behavior.nearest_attackable_target": {
 				  	"priority": 6,
 					"reselect_targets": false,
-					"within_radius": 50,
-					"must_see": false,
+					"within_radius": 32.0,
+					"must_see": true,
 				  	"entity_types": [
 						{
 					  		"filters": {
@@ -584,7 +586,7 @@
 									}
 								]
 					  		},
-					  		"max_dist": 25
+							"max_dist": 48
 						}
 				  	]
 				},
@@ -851,7 +853,16 @@
 				}
             },
             "rift:sarcosuchus_sittable": {
-                "minecraft:sittable": {},
+				"minecraft:sittable": {
+					"sit_event": {
+						"event": "rift:made_to_sit_message",
+						"target": "self"
+					},
+					"stand_event": {
+						"event": "rift:made_to_stand_message",
+						"target": "self"
+					}
+				},
 				"minecraft:behavior.stay_while_sitting": {
 					"priority": 0
 				}
@@ -4702,6 +4713,20 @@
 				"remove": {
 					"component_groups": [
 						"rift:aggravating_horn_attack"
+					]
+				}
+			},
+			"rift:made_to_sit_message": {
+				"run_command": {
+					"command": [
+						"tellraw @p {\"rawtext\":[{\"text\":\"Your Sarcosuchus is currently sitting\"}]}"
+					]
+				}
+			},
+			"rift:made_to_stand_message": {
+				"run_command": {
+					"command": [
+						"tellraw @p {\"rawtext\":[{\"text\":\"Your Sarcosuchus is currently standing\"}]}"
 					]
 				}
 			},

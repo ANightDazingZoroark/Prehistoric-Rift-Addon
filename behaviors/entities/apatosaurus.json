@@ -834,7 +834,16 @@
                 }
             },
             "rift:apatosaurus_sittable": {
-				"minecraft:sittable": {},
+                "minecraft:sittable": {
+					"sit_event": {
+						"event": "rift:made_to_sit_message",
+						"target": "self"
+					},
+					"stand_event": {
+						"event": "rift:made_to_stand_message",
+						"target": "self"
+					}
+				},
 				"minecraft:behavior.stay_while_sitting": {
 					"priority": 0
 				}
@@ -988,14 +997,14 @@
 			"rift:attack_forced_attack_entity": {
 				"minecraft:behavior.nearest_attackable_target": {
 					"priority": 3,
-					"within_radius": 48,
 					"entity_types": [
 					  	{
 							"filters": {
 								"test": "is_family", 
 								"subject": "other", 
 								"value": "isForcedAttacking"
-						 	}
+						 	},
+							"max_dist": 25.0
 					  	}
 					]
 				},
@@ -1007,7 +1016,8 @@
 			"rift:aggravating_horn_attack": {
 				"minecraft:behavior.nearest_attackable_target": {
 				  	"priority": 3,
-					"within_radius": 48,
+					"within_radius": 32.0,
+					"must_see": true,
 				  	"entity_types": [
 						{
 					  		"filters": {
@@ -1036,7 +1046,8 @@
 										"value": "inanimate"
 									}
 								]
-					  		}
+					  		},
+							"max_dist": 48
 						}
 				  	]
 				},
@@ -5059,6 +5070,20 @@
 				"remove": {
 					"component_groups": [
 						"rift:aggravating_horn_attack"
+					]
+				}
+			},
+			"rift:made_to_sit_message": {
+				"run_command": {
+					"command": [
+						"tellraw @p {\"rawtext\":[{\"text\":\"Your Apatosaurus is currently sitting\"}]}"
+					]
+				}
+			},
+			"rift:made_to_stand_message": {
+				"run_command": {
+					"command": [
+						"tellraw @p {\"rawtext\":[{\"text\":\"Your Apatosaurus is currently standing\"}]}"
 					]
 				}
 			},

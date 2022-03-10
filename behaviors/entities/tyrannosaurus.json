@@ -566,7 +566,7 @@
 				"minecraft:behavior.nearest_attackable_target": {
 					"priority": 4,
 					"reselect_targets": true,
-					"within_radius": 96,
+					"within_radius": 48.0,
 					"must_see": true,
 					"entity_types": [
 					  	{
@@ -583,7 +583,8 @@
 										"value": false
 									}
 								]
-							}
+							},
+							"max_dist": 16
 					  	},
 						{
 							"filters": {
@@ -628,8 +629,8 @@
 				},
 				"minecraft:behavior.nearest_attackable_target": {
 					"priority": 4,
-					"must_see": false,
-					"within_radius": 96,
+					"must_see": true,
+					"within_radius": 48.0,
 					"persist_time": 25,
 					"entity_types": [
 						{
@@ -655,7 +656,8 @@
 										]
 									}
 								]
-							}
+							},
+							"max_dist": 64
 						},
 						{
 							"filters": {
@@ -700,7 +702,8 @@
 										]
 									}
 								]
-							}
+							},
+							"max_dist": 64
 						},
 						{
 							"filters": {
@@ -735,14 +738,14 @@
 			"rift:attack_forced_attack_entity": {
 				"minecraft:behavior.nearest_attackable_target": {
 					"priority": 4,
-					"within_radius": 96,
 					"entity_types": [
 					  	{
 							"filters": {
 							  	"test": "is_family",
 							  	"subject": "other",
 							  	"value": "isForcedAttacking"
-							}
+							},
+							"max_dist": 25
 					  	}
 					]
 			  	},
@@ -754,8 +757,8 @@
 			"rift:aggravating_horn_attack": {
 				"minecraft:behavior.nearest_attackable_target": {
 					"priority": 4,
-					"must_see": false,
-					"within_radius": 96,
+					"must_see": true,
+					"within_radius": 48.0,
 					"persist_time": 25,
 					"entity_types": [
 					  	{
@@ -785,7 +788,8 @@
 										"value": "inanimate"
 									}
 								]
-					  		}
+					  		},
+							"max_dist": 64
 					  	}
 					]
 				},
@@ -819,7 +823,16 @@
 				}
 			},
 			"rift:tyrannosaurus_sittable": {
-				"minecraft:sittable": {},
+				"minecraft:sittable": {
+					"sit_event": {
+						"event": "rift:made_to_sit_message",
+						"target": "self"
+					},
+					"stand_event": {
+						"event": "rift:made_to_stand_message",
+						"target": "self"
+					}
+				},
 				"minecraft:behavior.stay_while_sitting": {
 					"priority": 0
 				}
@@ -5469,6 +5482,20 @@
 				"remove": {
 					"component_groups": [
 						"rift:tyrannosaurus_nest_dweller_awake"
+					]
+				}
+			},
+			"rift:made_to_sit_message": {
+				"run_command": {
+					"command": [
+						"tellraw @p {\"rawtext\":[{\"text\":\"Your Tyrannosaurus is currently sitting\"}]}"
+					]
+				}
+			},
+			"rift:made_to_stand_message": {
+				"run_command": {
+					"command": [
+						"tellraw @p {\"rawtext\":[{\"text\":\"Your Tyrannosaurus is currently standing\"}]}"
 					]
 				}
 			},

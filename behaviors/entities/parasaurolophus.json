@@ -316,15 +316,16 @@
 			"rift:default_targets": {
 				"minecraft:behavior.nearest_attackable_target": {
 					"priority": 4,
-					"reselect_targets": true,
-					"within_radius": 16,
+					"within_radius": 32.0,
+					"must_see": true,
 					"entity_types": [
 					  	{
 							"filters": {
 								"test":  "is_family", 
 								"subject": "other", 
 								"value":  "carnivore"
-							}
+							},
+							"max_dist": 48
 					  	}
 					]
 				}
@@ -339,7 +340,7 @@
 								"subject": "other",
 								"value": "isForcedAttacking"
 					  		},
-					  		"max_dist": 35
+					  		"max_dist": 25
 						}
 				  	]
 				}
@@ -509,7 +510,16 @@
                 }
             },
             "rift:parasaurolophus_sittable": {
-                "minecraft:sittable": {},
+				"minecraft:sittable": {
+					"sit_event": {
+						"event": "rift:made_to_sit_message",
+						"target": "self"
+					},
+					"stand_event": {
+						"event": "rift:made_to_stand_message",
+						"target": "self"
+					}
+				},
 				"minecraft:behavior.stay_while_sitting": {
 					"priority": 0
 				}
@@ -4242,6 +4252,20 @@
 				  		"rift:drop_more_meat_from_baryonyx"
 					]
 			  	}
+			},
+			"rift:made_to_sit_message": {
+				"run_command": {
+					"command": [
+						"tellraw @p {\"rawtext\":[{\"text\":\"Your Parasaurolophus is currently sitting\"}]}"
+					]
+				}
+			},
+			"rift:made_to_stand_message": {
+				"run_command": {
+					"command": [
+						"tellraw @p {\"rawtext\":[{\"text\":\"Your Parasaurolophus is currently standing\"}]}"
+					]
+				}
 			},
 			//for potion effects
 			"rift:drink_night_vision_potion_one": {

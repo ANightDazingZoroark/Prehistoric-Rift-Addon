@@ -391,15 +391,16 @@
             "rift:default_targets": {
 				"minecraft:behavior.nearest_attackable_target": {
 					"priority": 7,
-					"reselect_targets": true,
-					"within_radius": 64,
+					"within_radius": 32.0,
+					"must_see": true,
 					"entity_types": [
 					  	{
 							"filters": {
 								"test": "is_family", 
 								"subject": "other", 
 								"value": "parasaurAngerer"
-							}
+							},
+							"max_dist": 48
 					  	},
 						{
 							"filters": {
@@ -422,7 +423,8 @@
 									  	"value": "minecraft:attack_cooldown"
 									}
 								]
-							}
+							},
+							"max_dist": 48
 						}
 					]
 				},
@@ -467,14 +469,14 @@
 			"rift:attack_forced_attack_entity_baby": {
 				"minecraft:behavior.nearest_attackable_target": {
 				  	"priority": 7,
-					"within_radius": 35,
 				  	"entity_types": [
 						{
 					  		"filters": {
 								"test": "is_family",
 								"subject": "other",
 								"value": "isForcedAttacking"
-					  		}
+					  		},
+					  		"max_dist": 25
 						}
 				  	]
 				},
@@ -486,7 +488,8 @@
             "rift:aggravating_horn_attack": {
 				"minecraft:behavior.nearest_attackable_target": {
 					"priority": 7,
-					"within_radius": 50,
+					"within_radius": 32.0,
+					"must_see": true,
 					"entity_types": [
 						{
 							"filters": {
@@ -515,7 +518,8 @@
 										"value": "inanimate"
 									}
 								]
-					  		}
+					  		},
+					  		"max_dist": 48
 						}
 					]
 				},
@@ -750,7 +754,16 @@
                 }
             },
             "rift:megaloceros_sittable": {
-                "minecraft:sittable": {},
+				"minecraft:sittable": {
+					"sit_event": {
+						"event": "rift:made_to_sit_message",
+						"target": "self"
+					},
+					"stand_event": {
+						"event": "rift:made_to_stand_message",
+						"target": "self"
+					}
+				},
 				"minecraft:behavior.stay_while_sitting": {
 					"priority": 0
 				}
@@ -4261,6 +4274,20 @@
 				"remove": {
 					"component_groups": [
 						"rift:aggravating_horn_attack"
+					]
+				}
+			},
+			"rift:made_to_sit_message": {
+				"run_command": {
+					"command": [
+						"tellraw @p {\"rawtext\":[{\"text\":\"Your Megaloceros is currently sitting\"}]}"
+					]
+				}
+			},
+			"rift:made_to_stand_message": {
+				"run_command": {
+					"command": [
+						"tellraw @p {\"rawtext\":[{\"text\":\"Your Megaloceros is currently standing\"}]}"
 					]
 				}
 			},
