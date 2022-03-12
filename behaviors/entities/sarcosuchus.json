@@ -6,6 +6,23 @@
             "is_spawnable": true,
             "is_summonable": true,
             "is_experimental": false,
+			"properties": {
+                "rift:tame_state": {
+                    "values": {
+						"min": 0, //0 for standing, 1 for sitting, 2 for wandering
+						"max": 2
+					},
+					"default": 0,
+					"client_sync": true
+                },
+                "rift:behavior_state": {
+                    "values": {
+						"min": 0, //0 for assist, 1 for neutral, 2 for aggressive, 3 for passive
+						"max": 3
+					},
+					"default": 0
+                }
+			},
 			"animations": {
 				"contSarcoUseForcedAttack": "controller.animation.sarco_forced_use_attack",
 				"contTameTag": "controller.animation.add_tame_tag",
@@ -14,6 +31,8 @@
 				"contSittingTag": "controller.animation.add_sitting_tag",
 				"contSpinAttack": "controller.animation.sarco_use_spin_attack",
 				"contSarcoEndSpinCooldown": "controller.animation.sarco_end_spin_cooldown",
+				"contTameState": "controller.animation.manage_tame_state",
+				"contBehaviorState": "controller.animation.manage_tame_behavior",
 				"animWildSpinAttackWater": "animation.sarco_spin_attack_wild_water",
 				"animTamedSpinAttackWater": "animation.sarco_spin_attack_tamed_water",
 				"animWildSpinAttackLand": "animation.sarco_spin_attack_wild_land",
@@ -29,7 +48,9 @@
 					"contRiddenTag",
 					"contSittingTag",
 					"contSpinAttack",
-					"contSarcoEndSpinCooldown"
+					"contSarcoEndSpinCooldown",
+					"contTameState",
+					"contBehaviorState"
 				]
 			}
         },
@@ -214,24 +235,8 @@
                 },
                 "minecraft:loot": {
                     "table": "loot_tables/entities/sarcosuchus.loot.json"
-                },
-                "minecraft:breedable": {
-                    "breeds_with": {
-                        "mate_type": "rift:sarcosuchus",
-                        "baby_type": "rift:egg",
-                        "breed_event": {
-                            "event": "rift:summon_sarcosuchus_egg",
-                            "target": "baby"
-                        }
-                    },
-                    "breed_items": [
-						"rift:fish_treat"
-                    ],
-                    "require_tame": true,
-                    "inherit_tamed": false,
-                    "breed_cooldown": 1200
-				}
-            },
+                }
+			},
             "rift:sarcosuchus_adult_wild": {
                 "minecraft:health": {
                     "value": 80,
@@ -839,34 +844,8 @@
 				"minecraft:behavior.player_ride_tamed": {}
             },
             "rift:sarcosuchus_tamed": {
-                "minecraft:is_tamed": {},
-				"minecraft:behavior.follow_owner": {
-					"start_distance": 8,
-					"stop_distance": 40,
-					"priority": 11
-				},
-				"minecraft:behavior.owner_hurt_by_target": {
-					"priority": 3
-				},
-				"minecraft:behavior.owner_hurt_target": {
-					"priority": 4
-				}
-            },
-            "rift:sarcosuchus_sittable": {
-				"minecraft:sittable": {
-					"sit_event": {
-						"event": "rift:made_to_sit_message",
-						"target": "self"
-					},
-					"stand_event": {
-						"event": "rift:made_to_stand_message",
-						"target": "self"
-					}
-				},
-				"minecraft:behavior.stay_while_sitting": {
-					"priority": 0
-				}
-            },
+                "minecraft:is_tamed": {}
+			},
             "rift:sarcosuchus_saddled": {
                 "minecraft:is_saddled": {},
 				"minecraft:input_ground_controlled": {},
@@ -993,6 +972,181 @@
 							"max_wait_time": 0
 						}
 					]
+				}
+			},
+			"rift:wild_standing": {
+				"minecraft:behavior.random_look_around": {
+					"priority": 16
+				}
+			},
+			"rift:tamed_standing": {
+                "minecraft:breedable": {
+                    "breeds_with": {
+                        "mate_type": "rift:sarcosuchus",
+                        "baby_type": "rift:egg",
+                        "breed_event": {
+                            "event": "rift:summon_sarcosuchus_egg",
+                            "target": "baby"
+                        }
+                    },
+                    "breed_items": [
+						"rift:fish_treat"
+                    ],
+                    "require_tame": true,
+                    "inherit_tamed": false,
+                    "breed_cooldown": 1200
+				},
+				"minecraft:behavior.follow_owner": {
+					"start_distance": 8,
+					"stop_distance": 40,
+					"priority": 11
+				}
+            },
+			"rift:sitting": {
+				"minecraft:on_target_acquired": {
+					"event": "rift:sitting_on_anger",
+					"target": "self"
+				}
+			},
+			"rift:sitting_angered": {
+				"minecraft:on_target_escape": {
+					"event": "rift:sitting_on_calm",
+				  	"target": "self"
+				}
+			},
+			"rift:wandering": {
+                "minecraft:breedable": {
+                    "breeds_with": {
+                        "mate_type": "rift:sarcosuchus",
+                        "baby_type": "rift:egg",
+                        "breed_event": {
+                            "event": "rift:summon_sarcosuchus_egg",
+                            "target": "baby"
+                        }
+                    },
+                    "breed_items": [
+						"rift:fish_treat"
+                    ],
+                    "require_tame": true,
+                    "inherit_tamed": false,
+                    "breed_cooldown": 1200
+				},
+				"minecraft:behavior.random_stroll": {
+					"priority": 15
+				}
+			},
+			"rift:assist_behavior": {
+				"minecraft:behavior.owner_hurt_by_target": {
+					"priority": 3
+				},
+				"minecraft:behavior.owner_hurt_target": {
+					"priority": 4
+				},
+				"minecraft:behavior.hurt_by_target": {
+					"priority": 5,
+					"entity_types": {
+						"filters": {
+							"all_of": [
+								{
+									"test": "is_family",
+									"subject": "other",
+									"operator": "!=",
+									"value": "forcedAttack"
+								},
+								{
+									"test": "has_component",
+									"subject": "self",
+									"operator": "!=",
+									"value": "minecraft:is_baby"
+								}
+							]
+						}
+					}
+				}
+            },
+			"rift:neutral_behavior": {
+				"minecraft:behavior.hurt_by_target": {
+					"priority": 5,
+					"entity_types": {
+						"filters": {
+							"all_of": [
+								{
+									"test": "is_family",
+									"subject": "other",
+									"operator": "!=",
+									"value": "forcedAttack"
+								},
+								{
+									"test": "has_component",
+									"subject": "self",
+									"operator": "!=",
+									"value": "minecraft:is_baby"
+								}
+							]
+						}
+					}
+				}
+            },
+			"rift:aggressive_behavior": {
+				"minecraft:behavior.owner_hurt_by_target": {
+					"priority": 3
+				},
+				"minecraft:behavior.owner_hurt_target": {
+					"priority": 4
+				},
+				"minecraft:behavior.nearest_attackable_target": {
+				  	"priority": 6,
+					"reselect_targets": false,
+					"within_radius": 32.0,
+					"must_see": true,
+				  	"entity_types": [
+						{
+					  		"filters": {
+								"all_of": [
+									{
+										"test": "has_component",
+										"subject": "other",
+										"operator": "!=",
+										"value": "minecraft:is_tamed"
+									},
+									{
+										"test": "is_family",
+										"subject": "other",
+										"operator": "!=",
+										"value": "player"
+									},
+									{
+										"test": "is_family",
+										"subject": "other",
+										"operator": "!=",
+										"value": "inanimate"
+									}
+								]
+					  		},
+							"max_dist": 48
+						}
+				  	]
+				},
+				"minecraft:behavior.hurt_by_target": {
+					"priority": 5,
+					"entity_types": {
+						"filters": {
+							"all_of": [
+								{
+									"test": "is_family",
+									"subject": "other",
+									"operator": "!=",
+									"value": "forcedAttack"
+								},
+								{
+									"test": "has_component",
+									"subject": "self",
+									"operator": "!=",
+									"value": "minecraft:is_baby"
+								}
+							]
+						}
+					}
 				}
 			},
             "rift:variant_zero": {
@@ -1177,9 +1331,6 @@
 				"hard_distance": 8,
 				"max_distance": 12
 			},
-			"minecraft:behavior.random_look_around": {
-				"priority": 16
-			},
             "minecraft:interact": {
 				"interactions": [
 					{
@@ -1208,6 +1359,101 @@
 							"target": "self"
 						},
 						"interact_text": "action.interact.tame"
+					},
+					{
+						"on_interact": {
+							"filters": {
+								"all_of": [
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_tamed"
+									},
+									{
+										"test": "is_sneaking",
+										"subject": "other",
+										"value": true
+									},
+									{
+										"test": "has_equipment",
+										"subject": "other",
+										"domain": "hand",
+										"operator": "!=",
+										"value": "rift:command_staff"
+									},
+									{
+										"test": "has_equipment",
+										"subject": "other",
+										"domain": "hand",
+										"operator": "!=",
+										"value": "minecraft:chest"
+									},
+									{
+										"test": "has_equipment",
+										"subject": "other",
+										"domain": "hand",
+										"operator": "!=",
+										"value": "rift:euthanasia"
+									},
+									{
+										"test": "has_equipment",
+										"subject": "other",
+										"domain": "hand",
+										"operator": "!=",
+										"value": "minecraft:potion"
+									},
+									{
+										"test": "has_equipment",
+										"subject": "other",
+										"domain": "hand",
+										"operator": "!=",
+										"value": "rift:halloween_costume"
+									},
+									{
+										"test": "has_equipment",
+										"subject": "other",
+										"domain": "hand",
+										"operator": "!=",
+										"value": "rift:fish_treat"
+									},
+									{
+										"test": "has_equipment",
+										"subject": "other",
+										"domain": "hand",
+										"operator": "!=",
+										"value": "minecraft:shears"
+									}
+								]
+							},
+							"event": "rift:manage_state",
+							"target": "self"
+						}
+					},
+					{
+						"on_interact": {
+							"filters": {
+								"all_of": [
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_tamed"
+									},
+									{
+										"test": "is_sneaking",
+										"subject": "other",
+										"value": true
+									},
+									{
+										"test": "has_equipment",
+										"subject": "other",
+										"domain": "hand",
+										"value": "rift:command_staff"
+									}
+								]
+							},
+							"event": "rift:manage_behavior",
+							"target": "self"
+						}
 					},
 					{
 						"on_interact": {
@@ -3860,6 +4106,7 @@
                                 "rift:default_targets",
 								"rift:default_navigation",
                                 "rift:pushable",
+								"rift:wild_standing",
                                 "rift:variant_zero"
                             ]
                         }
@@ -3875,6 +4122,7 @@
                                 "rift:default_targets",
 								"rift:default_navigation",
                                 "rift:pushable",
+								"rift:wild_standing",
                                 "rift:variant_one"
                             ]
                         }
@@ -3890,6 +4138,7 @@
                                 "rift:default_targets",
 								"rift:default_navigation",
                                 "rift:pushable",
+								"rift:wild_standing",
                                 "rift:variant_two"
                             ]
                         }
@@ -3905,6 +4154,7 @@
                                 "rift:default_targets",
 								"rift:default_navigation",
                                 "rift:pushable",
+								"rift:wild_standing",
                                 "rift:variant_three"
                             ]
                         }
@@ -3980,8 +4230,7 @@
 				"add": {
 					"component_groups": [
 						"rift:sarcosuchus_baby_tamed",
-						"rift:sarcosuchus_tamed",
-						"rift:sarcosuchus_sittable"
+						"rift:sarcosuchus_tamed"
 					]
 				},
 				"remove": {
@@ -3990,6 +4239,9 @@
 						"rift:sarcosuchus_wild_in_water",
 						"rift:sarcosuchus_wild_not_in_water"
 					]
+				},
+				"set_actor_property": {
+					"rift:behavior_state": "3"
 				}
 			},
 			"rift:on_trust": {
@@ -4074,13 +4326,17 @@
 						"rift:sarcosuchus_adult_trusting",
 						"rift:sarcosuchus_adult_wild",
 						"rift:sarcosuchus_wild_in_water",
-						"rift:sarcosuchus_wild_not_in_water"
+						"rift:sarcosuchus_wild_not_in_water",
+						"rift:wild_standing"
 					]
 				},
 				"run_command": {
 					"command": [
 						"tellraw @p {\"rawtext\":[{\"text\":\"You have succesfully tamed a Sarcosuchus!\"}]}"
 					]
+				},
+				"set_actor_property": {
+					"rift:behavior_state": "0"
 				}
 			},
 			"rift:attach_saddle": {
@@ -4112,7 +4368,6 @@
 				},
 				"remove": {
 					"component_groups": [
-						"rift:sarcosuchus_sittable",
 						"rift:pushable",
 						"rift:default_navigation",
 						"rift:can_bite_attack",
@@ -4128,7 +4383,6 @@
 			"rift:can_sit": {
 				"add": {
 					"component_groups": [
-						"rift:sarcosuchus_sittable",
 						"rift:pushable",
 						"rift:default_navigation",
 						"rift:can_bite_attack"
@@ -4202,6 +4456,165 @@
 				  	]
 				}
 			},
+			"rift:on_standing": {
+				"add": {
+					"component_groups": [
+						"rift:tamed_standing"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:wild_standing",
+						"rift:sitting",
+						"rift:sitting_angered",
+						"rift:wandering"
+					]
+				},
+				"run_command": {
+					"command": [
+						"tag @s remove sitting",
+						"tellraw @p {\"rawtext\":[{\"text\":\"Your Sarcosuchus is currently following\"}]}"
+					]
+				}
+			},
+			"rift:on_sitting": {
+				"add": {
+					"component_groups": [
+						"rift:sitting"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:wild_standing",
+						"rift:tamed_standing",
+						"rift:sitting_angered",
+						"rift:wandering"
+					]
+				},
+				"run_command": {
+					"command": [
+						"tag @s add sitting",
+						"tellraw @p {\"rawtext\":[{\"text\":\"Your Sarcosuchus is currently sitting\"}]}"
+					]
+				}
+			},
+			"rift:on_wandering": {
+				"add": {
+					"component_groups": [
+						"rift:wandering"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:wild_standing",
+						"rift:tamed_standing",
+						"rift:sitting",
+						"rift:sitting_angered"
+					]
+				},
+				"run_command": {
+					"command": [
+						"tag @s remove sitting",
+						"tellraw @p {\"rawtext\":[{\"text\":\"Your Sarcosuchus is currently wandering\"}]}"
+					]
+				}
+			},
+			"rift:sitting_on_anger": {
+				"add": {
+					"component_groups": [
+						"rift:sitting_angered"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:sitting"
+					]
+				}
+			},
+			"rift:sitting_on_calm": {
+				"add": {
+					"component_groups": [
+						"rift:sitting"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:sitting_angered"
+					]
+				}
+			},
+			"rift:on_assist_behavior": {
+				"add": {
+					"component_groups": [
+						"rift:assist_behavior"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:neutral_behavior",
+						"rift:aggressive_behavior"
+					]
+				},
+				"run_command": {
+					"command": [
+						"tag @s remove hunting",
+						"tellraw @p {\"rawtext\":[{\"text\":\"Your Sarcosuchus will now assist you in combat\"}]}"
+					]
+				}
+			},
+			"rift:on_neutral_behavior": {
+				"add": {
+					"component_groups": [
+						"rift:neutral_behavior"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:assist_behavior",
+						"rift:aggressive_behavior"
+					]
+				},
+				"run_command": {
+					"command": [
+						"tag @s remove hunting",
+						"tellraw @p {\"rawtext\":[{\"text\":\"Your Sarcosuchus will now be neutral\"}]}"
+					]
+				}
+			},
+			"rift:on_aggressive_behavior": {
+				"add": {
+					"component_groups": [
+						"rift:aggressive_behavior"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:assist_behavior",
+						"rift:neutral_behavior"
+					]
+				},
+				"run_command": {
+					"command": [
+						"tag @s add hunting",
+						"tellraw @p {\"rawtext\":[{\"text\":\"Your Sarcosuchus will now be aggressive\"}]}"
+					]
+				}
+			},
+			"rift:on_passive_behavior": {
+				"remove": {
+					"component_groups": [
+						"rift:assist_behavior",
+						"rift:neutral_behavior",
+						"rift:aggressive_behavior"
+					]
+				},
+				"run_command": {
+					"command": [
+						"tag @s remove hunting",
+						"tellraw @p {\"rawtext\":[{\"text\":\"Your Sarcosuchus will now be passive\"}]}"
+					]
+				}
+			},
 			"rift:spawn_as_baby": {
 				"randomize": [
                     {
@@ -4213,6 +4626,7 @@
 								"rift:can_bite_attack",
 								"rift:default_navigation",
                                 "rift:pushable",
+								"rift:wild_standing",
                                 "rift:variant_zero"
                             ]
                         }
@@ -4226,6 +4640,7 @@
 								"rift:can_bite_attack",
 								"rift:default_navigation",
                                 "rift:pushable",
+								"rift:wild_standing",
                                 "rift:variant_one"
                             ]
                         }
@@ -4239,6 +4654,7 @@
 								"rift:can_bite_attack",
 								"rift:default_navigation",
                                 "rift:pushable",
+								"rift:wild_standing",
                                 "rift:variant_two"
                             ]
                         }
@@ -4252,6 +4668,7 @@
 								"rift:can_bite_attack",
 								"rift:default_navigation",
                                 "rift:pushable",
+								"rift:wild_standing",
                                 "rift:variant_three"
                             ]
                         }
@@ -4716,18 +5133,14 @@
 					]
 				}
 			},
-			"rift:made_to_sit_message": {
-				"run_command": {
-					"command": [
-						"tellraw @p {\"rawtext\":[{\"text\":\"Your Sarcosuchus is currently sitting\"}]}"
-					]
+			"rift:manage_state": {
+				"set_actor_property": {
+					"rift:tame_state": "(query.actor_property('rift:tame_state') >= 0 && query.actor_property('rift:tame_state') <= 1) ? query.actor_property('rift:tame_state') + 1 : 0"
 				}
 			},
-			"rift:made_to_stand_message": {
-				"run_command": {
-					"command": [
-						"tellraw @p {\"rawtext\":[{\"text\":\"Your Sarcosuchus is currently standing\"}]}"
-					]
+			"rift:manage_behavior": {
+				"set_actor_property": {
+					"rift:behavior_state": "!query.is_baby ? ((query.actor_property('rift:behavior_state') >= 0 && query.actor_property('rift:behavior_state') <= 2) ? query.actor_property('rift:behavior_state') + 1 : 0) : 3"
 				}
 			},
 			//for potion effects

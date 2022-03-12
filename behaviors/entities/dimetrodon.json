@@ -6,6 +6,23 @@
             "is_spawnable": true,
             "is_summonable": true,
             "is_experimental": false,
+			"properties": {
+                "rift:tame_state": {
+                    "values": {
+						"min": 0, //0 for standing, 1 for sitting, 2 for wandering
+						"max": 2
+					},
+					"default": 0,
+					"client_sync": true
+                },
+                "rift:behavior_state": {
+                    "values": {
+						"min": 0, //0 for assist, 1 for neutral, 2 for aggressive, 3 for passive
+						"max": 3
+					},
+					"default": 0
+                }
+			},
 			"animations": {
 				"contTameTag": "controller.animation.add_tame_tag",
 				"contBabyTag": "controller.animation.add_baby_tag",
@@ -13,7 +30,9 @@
 				"contWildFlameBite": "controller.animation.dimetrodon_wild_flame_bite",
 				"contWildFrostBite": "controller.animation.dimetrodon_wild_frost_bite",
 				"contTamedFlameBite": "controller.animation.dimetrodon_tamed_flame_bite",
-				"contTamedFrostBite": "controller.animation.dimetrodon_tamed_frost_bite"
+				"contTamedFrostBite": "controller.animation.dimetrodon_tamed_frost_bite",
+				"contTameState": "controller.animation.manage_tame_state",
+				"contBehaviorState": "controller.animation.manage_tame_behavior"
 			},
 			"scripts": {
 				"animate": [
@@ -23,7 +42,9 @@
 					"contWildFlameBite",
 					"contWildFrostBite",
 					"contTamedFlameBite",
-					"contTamedFrostBite"
+					"contTamedFrostBite",
+					"contTameState",
+					"contBehaviorState"
 				]
 			}
         },
@@ -166,9 +187,6 @@
                         "target": "self"
                     }
 				},
-				"minecraft:behavior.random_stroll": {
-					"priority": 13
-				},
 				"minecraft:despawn": {
 					"despawn_from_distance": {}
 				}
@@ -187,24 +205,6 @@
                 "minecraft:loot": {
                     "table": "loot_tables/entities/dimetrodon.loot.json"
                 },
-                "minecraft:breedable": {
-                    "breeds_with": {
-                        "mate_type": "rift:dimetrodon",
-                        "baby_type": "rift:egg",
-                        "breed_event": {
-                            "event": "rift:summon_dimetrodon_egg",
-                            "target": "baby"
-                        }
-                    },
-                    "breed_items": [
-						"rift:flesh_treat",
-						"rift:fish_treat",
-						"rift:carrion_treat"
-                    ],
-                    "require_tame": true,
-                    "inherit_tamed": false,
-                    "breed_cooldown": 1200
-				},
 				"minecraft:buoyant": {
 					"apply_gravity": true,
 					"base_buoyancy": 0.4,
@@ -229,9 +229,6 @@
                     "value": 40,
                     "max": 40
                 },
-                "minecraft:behavior.random_stroll": {
-					"priority": 13
-				},
 				"minecraft:behavior.avoid_mob_type": {
 					"priority": 2,
 					"entity_types": [
@@ -1092,30 +1089,192 @@
                 }
 			},
 			"rift:dimetrodon_tamed": {
-				"minecraft:is_tamed": {},
+				"minecraft:is_tamed": {}
+			},
+			"rift:wild_standing": {
+				"minecraft:behavior.random_stroll": {
+					"priority": 13
+				},
+				"minecraft:behavior.random_look_around": {
+					"priority": 14
+				}
+			},
+			"rift:tamed_standing": {
+                "minecraft:breedable": {
+                    "breeds_with": {
+                        "mate_type": "rift:dimetrodon",
+                        "baby_type": "rift:egg",
+                        "breed_event": {
+                            "event": "rift:summon_dimetrodon_egg",
+                            "target": "baby"
+                        }
+                    },
+                    "breed_items": [
+						"rift:flesh_treat",
+						"rift:fish_treat",
+						"rift:carrion_treat"
+                    ],
+                    "require_tame": true,
+                    "inherit_tamed": false,
+                    "breed_cooldown": 1200
+				},
 				"minecraft:behavior.follow_owner": {
 					"start_distance": 4,
 					"stop_distance": 40,
 					"priority": 11
+				}
+			},
+			"rift:sitting": {
+				"minecraft:on_target_acquired": {
+					"event": "rift:sitting_on_anger",
+					"target": "self"
+				}
+			},
+			"rift:sitting_angered": {
+				"minecraft:on_target_escape": {
+					"event": "rift:sitting_on_calm",
+				  	"target": "self"
+				}
+			},
+			"rift:wandering": {
+                "minecraft:breedable": {
+                    "breeds_with": {
+                        "mate_type": "rift:dimetrodon",
+                        "baby_type": "rift:egg",
+                        "breed_event": {
+                            "event": "rift:summon_dimetrodon_egg",
+                            "target": "baby"
+                        }
+                    },
+                    "breed_items": [
+						"rift:flesh_treat",
+						"rift:fish_treat",
+						"rift:carrion_treat"
+                    ],
+                    "require_tame": true,
+                    "inherit_tamed": false,
+                    "breed_cooldown": 1200
 				},
+				"minecraft:behavior.random_stroll": {
+					"priority": 13
+				}
+			},
+			"rift:assist_behavior": {
 				"minecraft:behavior.owner_hurt_by_target": {
 					"priority": 3
 				},
 				"minecraft:behavior.owner_hurt_target": {
 					"priority": 4
 				},
-				"minecraft:sittable": {
-					"sit_event": {
-						"event": "rift:made_to_sit_message",
-						"target": "self"
-					},
-					"stand_event": {
-						"event": "rift:made_to_stand_message",
-						"target": "self"
+				"minecraft:behavior.hurt_by_target": {
+					"priority": 5,
+					"entity_types": {
+						"filters": {
+							"all_of": [
+								{
+									"test": "is_family",
+									"subject": "other",
+									"operator": "!=",
+									"value": "forcedAttack"
+								},
+								{
+									"test": "has_component",
+									"subject": "self",
+									"operator": "!=",
+									"value": "minecraft:is_baby"
+								}
+							]
+						}
 					}
+				}
+			},
+			"rift:neutral_behavior": {
+				"minecraft:behavior.hurt_by_target": {
+					"priority": 5,
+					"entity_types": {
+						"filters": {
+							"all_of": [
+								{
+									"test": "is_family",
+									"subject": "other",
+									"operator": "!=",
+									"value": "forcedAttack"
+								},
+								{
+									"test": "has_component",
+									"subject": "self",
+									"operator": "!=",
+									"value": "minecraft:is_baby"
+								}
+							]
+						}
+					}
+				}
+			},
+			"rift:aggressive_behavior": {
+				"minecraft:behavior.owner_hurt_by_target": {
+					"priority": 3
 				},
-				"minecraft:behavior.stay_while_sitting": {
-					"priority": 0
+				"minecraft:behavior.owner_hurt_target": {
+					"priority": 4
+				},
+				"minecraft:behavior.nearest_attackable_target": {
+				  	"priority": 6,
+					"within_radius": 32.0,
+					"must_see": true,
+				  	"entity_types": [
+						{
+					  		"filters": {
+								"all_of": [
+									{
+										"test": "in_water",
+										"subject": "other",
+										"value": false
+									},
+									{
+										"test": "has_component",
+										"subject": "other",
+										"operator": "!=",
+										"value": "minecraft:is_tamed"
+									},
+									{
+										"test": "is_family",
+										"subject": "other",
+										"operator": "!=",
+										"value": "player"
+									},
+									{
+										"test": "is_family",
+										"subject": "other",
+										"operator": "!=",
+										"value": "inanimate"
+									}
+								]
+					  		},
+							"max_dist": 48
+						}
+				  	]
+				},
+				"minecraft:behavior.hurt_by_target": {
+					"priority": 5,
+					"entity_types": {
+						"filters": {
+							"all_of": [
+								{
+									"test": "is_family",
+									"subject": "other",
+									"operator": "!=",
+									"value": "forcedAttack"
+								},
+								{
+									"test": "has_component",
+									"subject": "self",
+									"operator": "!=",
+									"value": "minecraft:is_baby"
+								}
+							]
+						}
+					}
 				}
 			},
 			"rift:variant_one": {
@@ -1251,9 +1410,6 @@
 				"hard_distance": 8,
 				"max_distance": 12
 			},
-			"minecraft:behavior.random_look_around": {
-				"priority": 14
-			},
 			"minecraft:interact": {
 				"interactions": [
 					{
@@ -1298,6 +1454,94 @@
 							"target": "self"
 						},
 						"interact_text": "action.interact.tame"
+					},
+					{
+						"on_interact": {
+							"filters": {
+								"all_of": [
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_tamed"
+									},
+									{
+										"test": "is_sneaking",
+										"subject": "other",
+										"value": true
+									},
+									{
+										"test": "has_equipment",
+										"subject": "other",
+										"domain": "hand",
+										"operator": "!=",
+										"value": "rift:command_staff"
+									},
+									{
+										"test": "has_equipment",
+										"subject": "other",
+										"domain": "hand",
+										"operator": "!=",
+										"value": "rift:euthanasia"
+									},
+									{
+										"test": "has_equipment",
+										"subject": "other",
+										"domain": "hand",
+										"operator": "!=",
+										"value": "minecraft:potion"
+									},
+									{
+										"test": "has_equipment",
+										"subject": "other",
+										"domain": "hand",
+										"operator": "!=",
+										"value": "rift:flesh_treat"
+									},
+									{
+										"test": "has_equipment",
+										"subject": "other",
+										"domain": "hand",
+										"operator": "!=",
+										"value": "rift:fish_treat"
+									},
+									{
+										"test": "has_equipment",
+										"subject": "other",
+										"domain": "hand",
+										"operator": "!=",
+										"value": "rift:carrion_treat"
+									}
+								]
+							},
+							"event": "rift:manage_state",
+							"target": "self"
+						}
+					},
+					{
+						"on_interact": {
+							"filters": {
+								"all_of": [
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_tamed"
+									},
+									{
+										"test": "is_sneaking",
+										"subject": "other",
+										"value": true
+									},
+									{
+										"test": "has_equipment",
+										"subject": "other",
+										"domain": "hand",
+										"value": "rift:command_staff"
+									}
+								]
+							},
+							"event": "rift:manage_behavior",
+							"target": "self"
+						}
 					},
 					{
 						"on_interact": {
@@ -3492,6 +3736,7 @@
 								"rift:default_targets",
 								"rift:dimetrodon_adult_not_trusting",
 								"rift:dimetrodon_default_temperature_mode",
+								"rift:wild_standing",
 								"rift:variant_one"
 							]
 						}
@@ -3505,6 +3750,7 @@
 								"rift:default_targets",
 								"rift:dimetrodon_adult_not_trusting",
 								"rift:dimetrodon_default_temperature_mode",
+								"rift:wild_standing",
 								"rift:variant_two"
 							]
 						}
@@ -3518,6 +3764,7 @@
 								"rift:default_targets",
 								"rift:dimetrodon_adult_not_trusting",
 								"rift:dimetrodon_default_temperature_mode",
+								"rift:wild_standing",
 								"rift:variant_three"
 							]
 						}
@@ -3531,6 +3778,7 @@
 								"rift:default_targets",
 								"rift:dimetrodon_adult_not_trusting",
 								"rift:dimetrodon_default_temperature_mode",
+								"rift:wild_standing",
 								"rift:variant_four"
 							]
 						}
@@ -3574,6 +3822,9 @@
 								"rift:default_targets",
 								"rift:dimetrodon_adult_not_trusting"
 							]
+						},
+						"set_actor_property": {
+							"rift:behavior_state": "0"
 						}
 					}
 				]
@@ -3589,6 +3840,9 @@
 					"component_groups": [
 						"rift:dimetrodon_baby_wild"
 					]
+				},
+				"set_actor_property": {
+					"rift:behavior_state": "3"
 				}
 			},
 			"rift:on_trust": {
@@ -3672,12 +3926,172 @@
 						"rift:dimetrodon_adult_waiting_for_tame",
 						"rift:dimetrodon_adult_chance_for_tame",
 						"rift:dimetrodon_adult_trusting",
-						"rift:dimetrodon_adult_wild"
+						"rift:dimetrodon_adult_wild",
+						"rift:wild_standing"
 					]
 				},
 				"run_command": {
 					"command": [
 						"tellraw @p {\"rawtext\":[{\"text\":\"You have succesfully tamed a Dimetrodon!\"}]}"
+					]
+				}
+			},
+			"rift:on_standing": {
+				"add": {
+					"component_groups": [
+						"rift:tamed_standing"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:wild_standing",
+						"rift:sitting",
+						"rift:sitting_angered",
+						"rift:wandering"
+					]
+				},
+				"run_command": {
+					"command": [
+						"tag @s remove sitting",
+						"tellraw @p {\"rawtext\":[{\"text\":\"Your Dimetrodon is currently following\"}]}"
+					]
+				}
+			},
+			"rift:on_sitting": {
+				"add": {
+					"component_groups": [
+						"rift:sitting"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:wild_standing",
+						"rift:tamed_standing",
+						"rift:sitting_angered",
+						"rift:wandering"
+					]
+				},
+				"run_command": {
+					"command": [
+						"tag @s add sitting",
+						"tellraw @p {\"rawtext\":[{\"text\":\"Your Dimetrodon is currently sitting\"}]}"
+					]
+				}
+			},
+			"rift:on_wandering": {
+				"add": {
+					"component_groups": [
+						"rift:wandering"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:wild_standing",
+						"rift:tamed_standing",
+						"rift:sitting",
+						"rift:sitting_angered"
+					]
+				},
+				"run_command": {
+					"command": [
+						"tag @s remove sitting",
+						"tellraw @p {\"rawtext\":[{\"text\":\"Your Dimetrodon is currently wandering\"}]}"
+					]
+				}
+			},
+			"rift:sitting_on_anger": {
+				"add": {
+					"component_groups": [
+						"rift:sitting_angered"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:sitting"
+					]
+				}
+			},
+			"rift:sitting_on_calm": {
+				"add": {
+					"component_groups": [
+						"rift:sitting"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:sitting_angered"
+					]
+				}
+			},
+			"rift:on_assist_behavior": {
+				"add": {
+					"component_groups": [
+						"rift:assist_behavior"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:neutral_behavior",
+						"rift:aggressive_behavior"
+					]
+				},
+				"run_command": {
+					"command": [
+						"tag @s remove hunting",
+						"tellraw @p {\"rawtext\":[{\"text\":\"Your Dimetrodon will now assist you in combat\"}]}"
+					]
+				}
+			},
+			"rift:on_neutral_behavior": {
+				"add": {
+					"component_groups": [
+						"rift:neutral_behavior"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:assist_behavior",
+						"rift:aggressive_behavior"
+					]
+				},
+				"run_command": {
+					"command": [
+						"tag @s remove hunting",
+						"tellraw @p {\"rawtext\":[{\"text\":\"Your Dimetrodon will now be neutral\"}]}"
+					]
+				}
+			},
+			"rift:on_aggressive_behavior": {
+				"add": {
+					"component_groups": [
+						"rift:aggressive_behavior"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:assist_behavior",
+						"rift:neutral_behavior"
+					]
+				},
+				"run_command": {
+					"command": [
+						"tag @s add hunting",
+						"tellraw @p {\"rawtext\":[{\"text\":\"Your Dimetrodon will now be aggressive\"}]}"
+					]
+				}
+			},
+			"rift:on_passive_behavior": {
+				"remove": {
+					"component_groups": [
+						"rift:assist_behavior",
+						"rift:neutral_behavior",
+						"rift:aggressive_behavior"
+					]
+				},
+				"run_command": {
+					"command": [
+						"tag @s remove hunting",
+						"tellraw @p {\"rawtext\":[{\"text\":\"Your Dimetrodon will now be passive\"}]}"
 					]
 				}
 			},
@@ -3689,6 +4103,7 @@
 							"component_groups": [
 								"rift:dimetrodon_baby",
 								"rift:dimetrodon_baby_wild",
+								"rift:wild_standing",
 								"rift:variant_one"
 							]
 						}
@@ -3699,6 +4114,7 @@
 							"component_groups": [
 								"rift:dimetrodon_baby",
 								"rift:dimetrodon_baby_wild",
+								"rift:wild_standing",
 								"rift:variant_two"
 							]
 						}
@@ -3709,6 +4125,7 @@
 							"component_groups": [
 								"rift:dimetrodon_baby",
 								"rift:dimetrodon_baby_wild",
+								"rift:wild_standing",
 								"rift:variant_three"
 							]
 						}
@@ -3719,6 +4136,7 @@
 							"component_groups": [
 								"rift:dimetrodon_baby",
 								"rift:dimetrodon_baby_wild",
+								"rift:wild_standing",
 								"rift:variant_four"
 							]
 						}
@@ -4186,18 +4604,14 @@
 					]
 				}
 			},
-			"rift:made_to_sit_message": {
-				"run_command": {
-					"command": [
-						"tellraw @p {\"rawtext\":[{\"text\":\"Your Dimetrodon is currently sitting\"}]}"
-					]
+			"rift:manage_state": {
+				"set_actor_property": {
+					"rift:tame_state": "(query.actor_property('rift:tame_state') >= 0 && query.actor_property('rift:tame_state') <= 1) ? query.actor_property('rift:tame_state') + 1 : 0"
 				}
 			},
-			"rift:made_to_stand_message": {
-				"run_command": {
-					"command": [
-						"tellraw @p {\"rawtext\":[{\"text\":\"Your Dimetrodon is currently standing\"}]}"
-					]
+			"rift:manage_behavior": {
+				"set_actor_property": {
+					"rift:behavior_state": "!query.is_baby ? ((query.actor_property('rift:behavior_state') >= 0 && query.actor_property('rift:behavior_state') <= 2) ? query.actor_property('rift:behavior_state') + 1 : 0) : 3"
 				}
 			},
 			//for potion effects

@@ -6,6 +6,23 @@
             "is_spawnable": true,
             "is_summonable": true,
             "is_experimental": false,
+			"properties": {
+                "rift:tame_state": {
+                    "values": {
+						"min": 0, //0 for standing, 1 for sitting, 2 for wandering
+						"max": 2
+					},
+					"default": 0,
+					"client_sync": true
+                },
+                "rift:behavior_state": {
+                    "values": {
+						"min": 0, //0 for assist, 1 for neutral, 2 for aggressive, 3 for passive
+						"max": 3
+					},
+					"default": 0
+                }
+			},
 			"animations": {
 				"contTameTag": "controller.animation.add_tame_tag",
 				"contBabyTag": "controller.animation.add_baby_tag",
@@ -14,6 +31,8 @@
 				"contMegalocerosUseAttack": "controller.animation.megaloceros_forced_use_headbutt",
 				"contWildBreakStuff": "controller.animation.megaloceros_wild_can_break_blocks",
 				"contTamedBreakStuff": "controller.animation.megaloceros_tamed_can_break_blocks",
+				"contTameState": "controller.animation.manage_tame_state",
+				"contBehaviorState": "controller.animation.manage_tame_behavior",
 				"animBreakStuff": "animation.megaloceros_break_stuff",
 				"animForcedAttack": "animation.forced_attack_megaloceros"
 			},
@@ -25,7 +44,9 @@
 					"contSittingTag",
 					"contMegalocerosUseAttack",
 					"contWildBreakStuff",
-					"contTamedBreakStuff"
+					"contTamedBreakStuff",
+					"contTameState",
+					"contBehaviorState"
 				]
 			}
         },
@@ -119,10 +140,6 @@
 						"event": "rift:baby_on_tame",
 						"target": "self"
 					}
-				},
-				"minecraft:behavior.random_stroll": {
-					"priority": 12,
-					"speed_multiplier": 0.75
 				},
                 "minecraft:behavior.avoid_mob_type": {
 					"priority": 3,
@@ -218,24 +235,6 @@
 				},
 				"minecraft:loot": {
 					"table": "loot_tables/entities/megaloceros.loot.json"
-				},
-				"minecraft:breedable": {
-					"breeds_with": {
-						"mate_type": "rift:megaloceros",
-						"baby_type": "rift:megaloceros",
-						"breed_event": {
-							"event": "minecraft:entity_born",
-							"target": "baby"
-						}
-					},
-					"breed_items": [
-						"rift:berry_treat",
-						"rift:leafy_treat",
-						"rift:grassy_treat"
-					],
-					"require_tame": true,
-					"breed_cooldown": 1200,
-					"inherit_tamed": true
 				}
             },
             "rift:megaloceros_adult_wild": {
@@ -254,10 +253,6 @@
 						"event": "rift:adult_on_tame",
 						"target": "self"
 					}
-				},
-				"minecraft:behavior.random_stroll": {
-					"priority": 12,
-					"speed_multiplier": 0.75
 				},
                 "minecraft:behavior.avoid_mob_type": {
 					"priority": 3,
@@ -643,38 +638,7 @@
 				"minecraft:behavior.player_ride_tamed": {}
             },
             "rift:megaloceros_tamed": {
-                "minecraft:is_tamed": {},
-				"minecraft:behavior.owner_hurt_by_target": {
-					"priority": 4,
-					"entity_types": [
-						{
-							"filters": {
-								"test": "has_component",
-								"subject": "self",
-								"value": "minecraft:is_baby",
-								"operator": "!="
-							}
-						}
-					]
-				},
-				"minecraft:behavior.owner_hurt_target": {
-					"priority": 5,
-					"entity_types": [
-						{
-							"filters": {
-								"test": "has_component",
-								"subject": "self",
-								"value": "minecraft:is_baby",
-								"operator": "!="
-							}
-						}
-					]
-				},
-				"minecraft:behavior.follow_owner": {
-					"start_distance": 8,
-					"stop_distance": 40,
-					"priority": 10
-				}
+                "minecraft:is_tamed": {}
             },
 			"rift:megaloceros_tamed_charging": {
 				"minecraft:is_ignited": {},
@@ -733,6 +697,234 @@
 					]
 				}
 			},
+			"rift:wild_standing": {
+				"minecraft:behavior.random_stroll": {
+					"priority": 12,
+					"speed_multiplier": 0.75
+				},
+				"minecraft:behavior.random_look_around": {
+					"priority": 13
+				}
+			},
+			"rift:tamed_standing": {
+				"minecraft:breedable": {
+					"breeds_with": {
+						"mate_type": "rift:megaloceros",
+						"baby_type": "rift:megaloceros",
+						"breed_event": {
+							"event": "minecraft:entity_born",
+							"target": "baby"
+						}
+					},
+					"breed_items": [
+						"rift:berry_treat",
+						"rift:leafy_treat",
+						"rift:grassy_treat"
+					],
+					"require_tame": true,
+					"breed_cooldown": 1200,
+					"inherit_tamed": true
+				},
+				"minecraft:behavior.follow_owner": {
+					"start_distance": 8,
+					"stop_distance": 40,
+					"priority": 10
+				}
+			},
+			"rift:sitting": {
+				"minecraft:on_target_acquired": {
+					"event": "rift:sitting_on_anger",
+					"target": "self"
+				}
+			},
+			"rift:sitting_angered": {
+				"minecraft:on_target_escape": {
+					"event": "rift:sitting_on_calm",
+				  	"target": "self"
+				}
+			},
+			"rift:wandering": {
+				"minecraft:breedable": {
+					"breeds_with": {
+						"mate_type": "rift:megaloceros",
+						"baby_type": "rift:megaloceros",
+						"breed_event": {
+							"event": "minecraft:entity_born",
+							"target": "baby"
+						}
+					},
+					"breed_items": [
+						"rift:berry_treat",
+						"rift:leafy_treat",
+						"rift:grassy_treat"
+					],
+					"require_tame": true,
+					"breed_cooldown": 1200,
+					"inherit_tamed": true
+				},
+				"minecraft:behavior.random_stroll": {
+					"priority": 12,
+					"speed_multiplier": 0.75
+				}
+			},
+			"rift:assist_behavior": {
+				"minecraft:behavior.owner_hurt_by_target": {
+					"priority": 4,
+					"entity_types": [
+						{
+							"filters": {
+								"test": "has_component",
+								"subject": "self",
+								"value": "minecraft:is_baby",
+								"operator": "!="
+							}
+						}
+					]
+				},
+				"minecraft:behavior.owner_hurt_target": {
+					"priority": 5,
+					"entity_types": [
+						{
+							"filters": {
+								"test": "has_component",
+								"subject": "self",
+								"value": "minecraft:is_baby",
+								"operator": "!="
+							}
+						}
+					]
+				},
+				"minecraft:behavior.hurt_by_target": {
+					"priority": 6,
+					"entity_types": {
+						"filters": {
+							"all_of": [
+								{
+									"test": "is_family",
+									"subject": "other",
+									"operator": "!=",
+									"value": "forcedAttack"
+								},
+								{
+									"test": "has_component",
+									"subject": "self",
+									"operator": "!=",
+									"value": "minecraft:is_baby"
+								}
+							]
+						}
+					}
+				}
+			},
+			"rift:neutral_behavior": {
+				"minecraft:behavior.hurt_by_target": {
+					"priority": 6,
+					"entity_types": {
+						"filters": {
+							"all_of": [
+								{
+									"test": "is_family",
+									"subject": "other",
+									"operator": "!=",
+									"value": "forcedAttack"
+								},
+								{
+									"test": "has_component",
+									"subject": "self",
+									"operator": "!=",
+									"value": "minecraft:is_baby"
+								}
+							]
+						}
+					}
+				}
+			},
+			"rift:aggressive_behavior": {
+				"minecraft:behavior.owner_hurt_by_target": {
+					"priority": 4,
+					"entity_types": [
+						{
+							"filters": {
+								"test": "has_component",
+								"subject": "self",
+								"value": "minecraft:is_baby",
+								"operator": "!="
+							}
+						}
+					]
+				},
+				"minecraft:behavior.owner_hurt_target": {
+					"priority": 5,
+					"entity_types": [
+						{
+							"filters": {
+								"test": "has_component",
+								"subject": "self",
+								"value": "minecraft:is_baby",
+								"operator": "!="
+							}
+						}
+					]
+				},
+				"minecraft:behavior.nearest_attackable_target": {
+					"priority": 7,
+					"within_radius": 32.0,
+					"must_see": true,
+					"entity_types": [
+						{
+							"filters": {
+								"all_of": [
+									{
+										"test": "in_water",
+										"subject": "other",
+										"value": false
+									},
+									{
+										"test": "has_component",
+										"subject": "other",
+										"operator": "!=",
+										"value": "minecraft:is_tamed"
+									},
+									{
+										"test": "is_family",
+										"subject": "other",
+										"operator": "!=",
+										"value": "player"
+									},
+									{
+										"test": "is_family",
+										"subject": "other",
+										"operator": "!=",
+										"value": "inanimate"
+									}
+								]
+					  		},
+					  		"max_dist": 48
+						}
+					]
+				},
+				"minecraft:behavior.hurt_by_target": {
+					"priority": 6,
+					"entity_types": {
+						"filters": {
+							"all_of": [
+								{
+									"test": "is_family",
+									"subject": "other",
+									"operator": "!=",
+									"value": "forcedAttack"
+								},
+								{
+									"test": "has_component",
+									"subject": "self",
+									"operator": "!=",
+									"value": "minecraft:is_baby"
+								}
+							]
+						}
+					}
+				}
+			},
             "rift:variant_zero": {
                 "minecraft:variant": {
                     "value": 0
@@ -752,21 +944,6 @@
                 "minecraft:variant": {
                     "value": 3
                 }
-            },
-            "rift:megaloceros_sittable": {
-				"minecraft:sittable": {
-					"sit_event": {
-						"event": "rift:made_to_sit_message",
-						"target": "self"
-					},
-					"stand_event": {
-						"event": "rift:made_to_stand_message",
-						"target": "self"
-					}
-				},
-				"minecraft:behavior.stay_while_sitting": {
-					"priority": 0
-				}
             },
             "rift:is_rideable": {
                 "minecraft:rideable": {
@@ -930,9 +1107,6 @@
             "minecraft:movement": {
                 "value": 0.35
             },
-            "minecraft:behavior.random_look_around": {
-				"priority": 13
-			},
 			"minecraft:behavior.breed": {
 				"priority": 1
 			},
@@ -999,6 +1173,101 @@
 							"target": "self"
 						},
 						"interact_text": "action.interact.tame"
+					},
+					{
+						"on_interact": {
+							"filters": {
+								"all_of": [
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_tamed"
+									},
+									{
+										"test": "is_sneaking",
+										"subject": "other",
+										"value": true
+									},
+									{
+										"test": "has_equipment",
+										"subject": "other",
+										"domain": "hand",
+										"operator": "!=",
+										"value": "rift:command_staff"
+									},
+									{
+										"test": "has_equipment",
+										"subject": "other",
+										"domain": "hand",
+										"operator": "!=",
+										"value": "minecraft:chest"
+									},
+									{
+										"test": "has_equipment",
+										"subject": "other",
+										"domain": "hand",
+										"operator": "!=",
+										"value": "rift:euthanasia"
+									},
+									{
+										"test": "has_equipment",
+										"subject": "other",
+										"domain": "hand",
+										"operator": "!=",
+										"value": "minecraft:potion"
+									},
+									{
+										"test": "has_equipment",
+										"subject": "other",
+										"domain": "hand",
+										"operator": "!=",
+										"value": "rift:leafy_treat"
+									},
+									{
+										"test": "has_equipment",
+										"subject": "other",
+										"domain": "hand",
+										"operator": "!=",
+										"value": "rift:grassy_treat"
+									},
+									{
+										"test": "has_equipment",
+										"subject": "other",
+										"domain": "hand",
+										"operator": "!=",
+										"value": "rift:berry_treat"
+									}
+								]
+							},
+							"event": "rift:manage_state",
+							"target": "self"
+						}
+					},
+					{
+						"on_interact": {
+							"filters": {
+								"all_of": [
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_tamed"
+									},
+									{
+										"test": "is_sneaking",
+										"subject": "other",
+										"value": true
+									},
+									{
+										"test": "has_equipment",
+										"subject": "other",
+										"domain": "hand",
+										"value": "rift:command_staff"
+									}
+								]
+							},
+							"event": "rift:manage_behavior",
+							"target": "self"
+						}
 					},
 					{
 						"on_interact": {
@@ -3400,6 +3669,7 @@
 										"rift:megaloceros_adult_wild",
 										"rift:default_targets",
 										"rift:megaloceros_adult_calm",
+										"rift:wild_standing",
 										"rift:variant_zero",
 										"rift:pushable",
 										"rift:can_attack",
@@ -3415,6 +3685,7 @@
 										"rift:megaloceros_adult_wild",
 										"rift:default_targets",
 										"rift:megaloceros_adult_calm",
+										"rift:wild_standing",
 										"rift:variant_one",
 										"rift:pushable",
 										"rift:can_attack",
@@ -3430,6 +3701,7 @@
 										"rift:megaloceros_adult_wild",
 										"rift:default_targets",
 										"rift:megaloceros_adult_calm",
+										"rift:wild_standing",
 										"rift:variant_two",
 										"rift:pushable",
 										"rift:can_attack",
@@ -3445,6 +3717,7 @@
 										"rift:megaloceros_adult_wild",
 										"rift:default_targets",
 										"rift:megaloceros_adult_calm",
+										"rift:wild_standing",
 										"rift:variant_three",
 										"rift:pushable",
 										"rift:can_attack",
@@ -3514,7 +3787,6 @@
                     "component_groups": [
                         "rift:megaloceros_baby",
                         "rift:megaloceros_baby_tamed",
-                        "rift:megaloceros_sittable",
                         "rift:megaloceros_tamed",
 						"rift:pushable"
                     ]
@@ -3577,8 +3849,7 @@
                 "add": {
                     "component_groups": [
                         "rift:megaloceros_baby_tamed",
-                        "rift:megaloceros_tamed",
-                        "rift:megaloceros_sittable"
+                        "rift:megaloceros_tamed"
                     ]
                 },
                 "remove": {
@@ -3587,7 +3858,10 @@
                         "rift:megaloceros_baby_calm",
                         "rift:megaloceros_baby_scared"
                     ]
-                }
+                },
+				"set_actor_property": {
+					"rift:behavior_state": "3"
+				}
             },
             "rift:baby_become_scared": {
                 "add": {
@@ -3618,7 +3892,6 @@
                     "component_groups": [
                         "rift:megaloceros_adult_tamed",
                         "rift:megaloceros_tamed",
-                        "rift:megaloceros_sittable",
                         "rift:is_rideable"
                     ]
                 },
@@ -3630,9 +3903,13 @@
 						"rift:megaloceros_adult_angry_attack",
 						"rift:megaloceros_adult_angry_scared",
                         "rift:default_targets",
-						"rift:attack_cooldown"
+						"rift:attack_cooldown",
+						"rift:wild_standing"
                     ]
-                }
+                },
+				"set_actor_property": {
+					"rift:behavior_state": "0"
+				}
             },
             "rift:adult_on_find_target": {
 				"sequence": [
@@ -3832,6 +4109,165 @@
 					]
 				}
 			},
+			"rift:on_standing": {
+				"add": {
+					"component_groups": [
+						"rift:tamed_standing"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:wild_standing",
+						"rift:sitting",
+						"rift:sitting_angered",
+						"rift:wandering"
+					]
+				},
+				"run_command": {
+					"command": [
+						"tag @s remove sitting",
+						"tellraw @p {\"rawtext\":[{\"text\":\"Your Megaloceros is currently following\"}]}"
+					]
+				}
+			},
+			"rift:on_sitting": {
+				"add": {
+					"component_groups": [
+						"rift:sitting"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:wild_standing",
+						"rift:tamed_standing",
+						"rift:sitting_angered",
+						"rift:wandering"
+					]
+				},
+				"run_command": {
+					"command": [
+						"tag @s add sitting",
+						"tellraw @p {\"rawtext\":[{\"text\":\"Your Megaloceros is currently sitting\"}]}"
+					]
+				}
+			},
+			"rift:on_wandering": {
+				"add": {
+					"component_groups": [
+						"rift:wandering"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:wild_standing",
+						"rift:tamed_standing",
+						"rift:sitting",
+						"rift:sitting_angered"
+					]
+				},
+				"run_command": {
+					"command": [
+						"tag @s remove sitting",
+						"tellraw @p {\"rawtext\":[{\"text\":\"Your Megaloceros is currently wandering\"}]}"
+					]
+				}
+			},
+			"rift:sitting_on_anger": {
+				"add": {
+					"component_groups": [
+						"rift:sitting_angered"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:sitting"
+					]
+				}
+			},
+			"rift:sitting_on_calm": {
+				"add": {
+					"component_groups": [
+						"rift:sitting"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:sitting_angered"
+					]
+				}
+			},
+			"rift:on_assist_behavior": {
+				"add": {
+					"component_groups": [
+						"rift:assist_behavior"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:neutral_behavior",
+						"rift:aggressive_behavior"
+					]
+				},
+				"run_command": {
+					"command": [
+						"tag @s remove hunting",
+						"tellraw @p {\"rawtext\":[{\"text\":\"Your Megaloceros will now assist you in combat\"}]}"
+					]
+				}
+			},
+			"rift:on_neutral_behavior": {
+				"add": {
+					"component_groups": [
+						"rift:neutral_behavior"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:assist_behavior",
+						"rift:aggressive_behavior"
+					]
+				},
+				"run_command": {
+					"command": [
+						"tag @s remove hunting",
+						"tellraw @p {\"rawtext\":[{\"text\":\"Your Megaloceros will now be neutral\"}]}"
+					]
+				}
+			},
+			"rift:on_aggressive_behavior": {
+				"add": {
+					"component_groups": [
+						"rift:aggressive_behavior"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:assist_behavior",
+						"rift:neutral_behavior"
+					]
+				},
+				"run_command": {
+					"command": [
+						"tag @s add hunting",
+						"tellraw @p {\"rawtext\":[{\"text\":\"Your Megaloceros will now be aggressive\"}]}"
+					]
+				}
+			},
+			"rift:on_passive_behavior": {
+				"remove": {
+					"component_groups": [
+						"rift:assist_behavior",
+						"rift:neutral_behavior",
+						"rift:aggressive_behavior"
+					]
+				},
+				"run_command": {
+					"command": [
+						"tag @s remove hunting",
+						"tellraw @p {\"rawtext\":[{\"text\":\"Your Megaloceros will now be passive\"}]}"
+					]
+				}
+			},
 			"rift:spawn_as_baby": {
 				"randomize": [
 					{
@@ -3842,6 +4278,7 @@
 								"rift:megaloceros_baby_wild",
 								"rift:megaloceros_baby_calm",
 								"rift:pushable",
+								"rift:wild_standing",
                                 "rift:variant_zero"
 							]
 						}
@@ -3854,6 +4291,7 @@
 								"rift:megaloceros_baby_wild",
 								"rift:megaloceros_baby_calm",
 								"rift:pushable",
+								"rift:wild_standing",
                                 "rift:variant_one"
 							]
 						}
@@ -3866,6 +4304,7 @@
 								"rift:megaloceros_baby_wild",
 								"rift:megaloceros_baby_calm",
 								"rift:pushable",
+								"rift:wild_standing",
                                 "rift:variant_two"
 							]
 						}
@@ -3878,6 +4317,7 @@
 								"rift:megaloceros_baby_wild",
 								"rift:megaloceros_baby_calm",
 								"rift:pushable",
+								"rift:wild_standing",
                                 "rift:variant_three"
 							]
 						}
@@ -4014,7 +4454,6 @@
 				},
 				"remove": {
 					"component_groups": [
-						"rift:megaloceros_sittable",
 						"rift:pushable",
 						"rift:can_attack"
 					]
@@ -4023,7 +4462,6 @@
 			"rift:can_sit": {
 				"add": {
 					"component_groups": [
-						"rift:megaloceros_sittable",
 						"rift:pushable",
 						"rift:can_attack"
 					]
@@ -4277,18 +4715,14 @@
 					]
 				}
 			},
-			"rift:made_to_sit_message": {
-				"run_command": {
-					"command": [
-						"tellraw @p {\"rawtext\":[{\"text\":\"Your Megaloceros is currently sitting\"}]}"
-					]
+			"rift:manage_state": {
+				"set_actor_property": {
+					"rift:tame_state": "(query.actor_property('rift:tame_state') >= 0 && query.actor_property('rift:tame_state') <= 1) ? query.actor_property('rift:tame_state') + 1 : 0"
 				}
 			},
-			"rift:made_to_stand_message": {
-				"run_command": {
-					"command": [
-						"tellraw @p {\"rawtext\":[{\"text\":\"Your Megaloceros is currently standing\"}]}"
-					]
+			"rift:manage_behavior": {
+				"set_actor_property": {
+					"rift:behavior_state": "!query.is_baby ? ((query.actor_property('rift:behavior_state') >= 0 && query.actor_property('rift:behavior_state') <= 2) ? query.actor_property('rift:behavior_state') + 1 : 0) : 3"
 				}
 			},
 			//for potion effects

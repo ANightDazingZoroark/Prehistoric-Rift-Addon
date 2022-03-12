@@ -6,6 +6,23 @@
             "is_spawnable": true,
             "is_summonable": true,
             "is_experimental": false,
+			"properties": {
+                "rift:tame_state": {
+                    "values": {
+						"min": 0, //0 for standing, 1 for sitting, 2 for wandering
+						"max": 2
+					},
+					"default": 0,
+					"client_sync": true
+                },
+                "rift:behavior_state": {
+                    "values": {
+						"min": 0, //0 for assist, 1 for neutral, 2 for aggressive, 3 for passive
+						"max": 3
+					},
+					"default": 0
+                }
+			},
 			"animations": {
 				"contAnomaloUseSlash": "controller.animation.anomalo_forced_use_attack",
 				"contTameTag": "controller.animation.add_tame_tag",
@@ -14,6 +31,8 @@
 				"contSittingTag": "controller.animation.add_sitting_tag",
 				"contCarry": "controller.animation.anomalocaris_carrying",
 				"contInvisibility": "controller.animation.anomalocaris_invisibility",
+				"contTameState": "controller.animation.manage_tame_state",
+				"contBehaviorState": "controller.animation.manage_tame_behavior",
 				"animInvisibility": "animation.invisibility",
 				"animForcedAttack": "animation.forced_attack_anomalocaris",
 				"animCarry": "animation.anomalo_carry"
@@ -26,7 +45,9 @@
 					"contRiddenTag",
 					"contSittingTag",
 					"contInvisibility",
-					"contCarry"
+					"contCarry",
+					"contTameState",
+					"contBehaviorState"
 				]
 			}
         },
@@ -207,13 +228,6 @@
                         "target": "self"
                     }
 				},
-                "minecraft:behavior.random_swim": {
-                    "priority": 11,
-                    "interval": 0,
-                    "xz_dist": 20,
-                    "y_dist": 2,
-                    "speed_multiplier": 1
-                },
 				"minecraft:despawn": {
 					"despawn_from_distance": {}
 				}
@@ -238,23 +252,6 @@
                 "minecraft:loot": {
                     "table": "loot_tables/entities/anomalocaris.loot.json"
                 },
-                "minecraft:breedable": {
-                    "breeds_with": {
-                        "mate_type": "rift:anomalocaris",
-                        "baby_type": "rift:sac",
-                        "breed_event": {
-                            "event": "rift:summon_anomalocaris_sac",
-                            "target": "baby"
-                        }
-                    },
-                    "breed_items": [
-						"rift:fish_treat",
-						"rift:bug_treat"
-                    ],
-                    "require_tame": true,
-                    "inherit_tamed": false,
-                    "breed_cooldown": 1200
-				},
 				"minecraft:on_target_escape": {
 					"event": "rift:no_more_target",
 				  	"target": "self"
@@ -264,13 +261,6 @@
 				"minecraft:health": {
                     "value": 50,
                     "max": 50
-                },
-                "minecraft:behavior.random_swim": {
-                    "priority": 8,
-                    "interval": 10,
-                    "xz_dist": 20,
-                    "y_dist": 2,
-                    "speed_multiplier": 1
                 },
 				"minecraft:despawn": {
 					"despawn_from_distance": {}
@@ -877,34 +867,8 @@
 				"minecraft:behavior.player_ride_tamed": {}
 			},
 			"rift:anomalocaris_tamed": {
-				"minecraft:is_tamed": {},
-				"minecraft:behavior.follow_owner": {
-					"start_distance": 4,
-					"stop_distance": 40,
-					"priority": 10
-				},
-				"minecraft:behavior.owner_hurt_by_target": {
-					"priority": 3
-				},
-				"minecraft:behavior.owner_hurt_target": {
-					"priority": 2
-				}
+				"minecraft:is_tamed": {}
 			},
-			"rift:anomalocaris_sittable": {
-                "minecraft:sittable": {
-					"sit_event": {
-						"event": "rift:made_to_sit_message",
-						"target": "self"
-					},
-					"stand_event": {
-						"event": "rift:made_to_stand_message",
-						"target": "self"
-					}
-				},
-				"minecraft:behavior.stay_while_sitting": {
-					"priority": 0
-				}
-            },
             "rift:anomalocaris_saddled": {
                 "minecraft:is_saddled": {},
 				"minecraft:input_ground_controlled": {},
@@ -983,6 +947,234 @@
 			},
 			"rift:carry_mob": {
 				"minecraft:is_illager_captain": {}
+			},
+			"rift:wild_standing": {
+                "minecraft:behavior.random_swim": {
+                    "priority": 11,
+                    "interval": 10,
+                    "xz_dist": 20,
+                    "y_dist": 2,
+                    "speed_multiplier": 1
+                },
+				"minecraft:behavior.random_look_around": {
+					"priority": 12
+				},
+				"minecraft:movement": {
+					"value": 0.05
+				},
+				"minecraft:underwater_movement": {
+					"value": 0.25
+				}
+			},
+			"rift:tamed_standing": {
+                "minecraft:breedable": {
+                    "breeds_with": {
+                        "mate_type": "rift:anomalocaris",
+                        "baby_type": "rift:sac",
+                        "breed_event": {
+                            "event": "rift:summon_anomalocaris_sac",
+                            "target": "baby"
+                        }
+                    },
+                    "breed_items": [
+						"rift:fish_treat",
+						"rift:bug_treat"
+                    ],
+                    "require_tame": true,
+                    "inherit_tamed": false,
+                    "breed_cooldown": 1200
+				},
+				"minecraft:behavior.follow_owner": {
+					"start_distance": 4,
+					"stop_distance": 40,
+					"priority": 10
+				},
+				"minecraft:movement": {
+					"value": 0.05
+				},
+				"minecraft:underwater_movement": {
+					"value": 0.25
+				}
+			},
+			"rift:sitting": {
+				"minecraft:movement": {
+					"value": 0.05
+				},
+				"minecraft:underwater_movement": {
+					"value": 0.25
+				},
+				"minecraft:on_target_acquired": {
+					"event": "rift:sitting_on_anger",
+					"target": "self"
+				}
+			},
+			"rift:sitting_angered": {
+				"minecraft:movement": {
+					"value": 0.05
+				},
+				"minecraft:underwater_movement": {
+					"value": 0.25
+				},
+				"minecraft:on_target_escape": {
+					"event": "rift:sitting_on_calm",
+				  	"target": "self"
+				}
+			},
+			"rift:wandering": {
+                "minecraft:breedable": {
+                    "breeds_with": {
+                        "mate_type": "rift:anomalocaris",
+                        "baby_type": "rift:sac",
+                        "breed_event": {
+                            "event": "rift:summon_anomalocaris_sac",
+                            "target": "baby"
+                        }
+                    },
+                    "breed_items": [
+						"rift:fish_treat",
+						"rift:bug_treat"
+                    ],
+                    "require_tame": true,
+                    "inherit_tamed": false,
+                    "breed_cooldown": 1200
+				},
+                "minecraft:behavior.random_swim": {
+                    "priority": 11,
+                    "interval": 10,
+                    "xz_dist": 20,
+                    "y_dist": 2,
+                    "speed_multiplier": 1
+                },
+				"minecraft:movement": {
+					"value": 0.05
+				},
+				"minecraft:underwater_movement": {
+					"value": 0.25
+				}
+			},
+			"rift:assist_behavior": {
+				"minecraft:behavior.owner_hurt_by_target": {
+					"priority": 2
+				},
+				"minecraft:behavior.owner_hurt_target": {
+					"priority": 3
+				},
+				"minecraft:behavior.hurt_by_target": {
+					"priority": 4,
+					"entity_types": {
+						"filters": {
+							"all_of": [
+								{
+									"test": "is_family",
+									"subject": "other",
+									"operator": "!=",
+									"value": "forcedAttack"
+								},
+								{
+									"test": "has_component",
+									"subject": "self",
+									"operator": "!=",
+									"value": "minecraft:is_baby"
+								}
+							]
+						}
+					}
+				}
+			},
+			"rift:neutral_behavior": {
+				"minecraft:behavior.owner_hurt_by_target": {
+					"priority": 2
+				},
+				"minecraft:behavior.owner_hurt_target": {
+					"priority": 3
+				},
+				"minecraft:behavior.hurt_by_target": {
+					"priority": 4,
+					"entity_types": {
+						"filters": {
+							"all_of": [
+								{
+									"test": "is_family",
+									"subject": "other",
+									"operator": "!=",
+									"value": "forcedAttack"
+								},
+								{
+									"test": "has_component",
+									"subject": "self",
+									"operator": "!=",
+									"value": "minecraft:is_baby"
+								}
+							]
+						}
+					}
+				}
+			},
+			"rift:aggressive_behavior": {
+				"minecraft:behavior.owner_hurt_by_target": {
+					"priority": 2
+				},
+				"minecraft:behavior.owner_hurt_target": {
+					"priority": 3
+				},
+				"minecraft:behavior.nearest_attackable_target": {
+					"priority": 5,
+					"within_radius": 32.0,
+					"must_see": true,
+				  	"entity_types": [
+						{
+					  		"filters": {
+								"all_of": [
+									{
+										"test": "in_water",
+										"subject": "other",
+										"value": true
+									},
+									{
+										"test": "has_component",
+										"subject": "other",
+										"operator": "!=",
+										"value": "minecraft:is_tamed"
+									},
+									{
+										"test": "is_family",
+										"subject": "other",
+										"operator": "!=",
+										"value": "player"
+									},
+									{
+										"test": "is_family",
+										"subject": "other",
+										"operator": "!=",
+										"value": "inanimate"
+									}
+								]
+					  		},
+							"max_dist": 48
+						}
+				  	]
+				},
+				"minecraft:behavior.hurt_by_target": {
+					"priority": 4,
+					"entity_types": {
+						"filters": {
+							"all_of": [
+								{
+									"test": "is_family",
+									"subject": "other",
+									"operator": "!=",
+									"value": "forcedAttack"
+								},
+								{
+									"test": "has_component",
+									"subject": "self",
+									"operator": "!=",
+									"value": "minecraft:is_baby"
+								}
+							]
+						}
+					}
+				}
 			},
 			"rift:variant_zero": {
 				"minecraft:variant": {
@@ -1069,12 +1261,6 @@
 					"arthropod"
 				]
 			},
-			"minecraft:movement": {
-                "value": 0.05
-            },
-            "minecraft:underwater_movement": {
-                "value": 0.25
-            },
 			"minecraft:movement.generic": {},
             "minecraft:behavior.breed": {
 				"priority": 1
@@ -1096,9 +1282,6 @@
 				"soft_distance": 4,
 				"hard_distance": 8,
 				"max_distance": 12
-			},
-			"minecraft:behavior.random_look_around": {
-				"priority": 12
 			},
 			"minecraft:interact": {
 				"interactions": [
@@ -1138,6 +1321,94 @@
 							"target": "self"
 						},
 						"interact_text": "action.interact.tame"
+					},
+					{
+						"on_interact": {
+							"filters": {
+								"all_of": [
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_tamed"
+									},
+									{
+										"test": "is_sneaking",
+										"subject": "other",
+										"value": true
+									},
+									{
+										"test": "has_equipment",
+										"subject": "other",
+										"domain": "hand",
+										"operator": "!=",
+										"value": "rift:command_staff"
+									},
+									{
+										"test": "has_equipment",
+										"subject": "other",
+										"domain": "hand",
+										"operator": "!=",
+										"value": "minecraft:chest"
+									},
+									{
+										"test": "has_equipment",
+										"subject": "other",
+										"domain": "hand",
+										"operator": "!=",
+										"value": "rift:euthanasia"
+									},
+									{
+										"test": "has_equipment",
+										"subject": "other",
+										"domain": "hand",
+										"operator": "!=",
+										"value": "minecraft:potion"
+									},
+									{
+										"test": "has_equipment",
+										"subject": "other",
+										"domain": "hand",
+										"operator": "!=",
+										"value": "rift:fish_treat"
+									},
+									{
+										"test": "has_equipment",
+										"subject": "other",
+										"domain": "hand",
+										"operator": "!=",
+										"value": "rift:bug_treat"
+									}
+								]
+							},
+							"event": "rift:manage_state",
+							"target": "self"
+						}
+					},
+					{
+						"on_interact": {
+							"filters": {
+								"all_of": [
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_tamed"
+									},
+									{
+										"test": "is_sneaking",
+										"subject": "other",
+										"value": true
+									},
+									{
+										"test": "has_equipment",
+										"subject": "other",
+										"domain": "hand",
+										"value": "rift:command_staff"
+									}
+								]
+							},
+							"event": "rift:manage_behavior",
+							"target": "self"
+						}
 					},
 					{
 						"on_interact": {
@@ -3493,6 +3764,7 @@
 								"rift:default_targets",
 								"rift:default_navigation",
 								"rift:pushable",
+								"rift:wild_standing",
 								"rift:variant_zero"
 							]
 						}
@@ -3508,6 +3780,7 @@
 								"rift:default_targets",
 								"rift:default_navigation",
 								"rift:pushable",
+								"rift:wild_standing",
 								"rift:variant_one"
 							]
 						}
@@ -3523,6 +3796,7 @@
 								"rift:default_targets",
 								"rift:default_navigation",
 								"rift:pushable",
+								"rift:wild_standing",
 								"rift:variant_two"
 							]
 						}
@@ -3538,6 +3812,7 @@
 								"rift:default_targets",
 								"rift:default_navigation",
 								"rift:pushable",
+								"rift:wild_standing",
 								"rift:variant_three"
 							]
 						}
@@ -3584,6 +3859,9 @@
 								"rift:anomalocaris_adult_not_trusting",
 								"rift:anomalocaris_invisible"
 							]
+						},
+						"set_actor_property": {
+							"rift:behavior_state": "0"
 						}
 					}
 				]
@@ -3592,14 +3870,16 @@
 				"add": {
 					"component_groups": [
 						"rift:anomalocaris_baby_tamed",
-						"rift:anomalocaris_tamed",
-						"rift:anomalocaris_sittable"
+						"rift:anomalocaris_tamed"
 					]
 				},
 				"remove": {
 					"component_groups": [
 						"rift:anomalocaris_baby_wild"
 					]
+				},
+				"set_actor_property": {
+					"rift:behavior_state": "3"
 				}
 			},
 			"rift:on_trust": {
@@ -3675,7 +3955,6 @@
 					"component_groups": [
 						"rift:anomalocaris_adult_tamed",
 						"rift:anomalocaris_tamed",
-						"rift:anomalocaris_sittable",
 						"rift:rideable"
 					]
 				},
@@ -3685,7 +3964,8 @@
 						"rift:anomalocaris_adult_waiting_for_tame",
 						"rift:anomalocaris_adult_chance_for_tame",
 						"rift:anomalocaris_adult_trusting",
-						"rift:anomalocaris_adult_wild"
+						"rift:anomalocaris_adult_wild",
+						"rift:wild_standing"
 					]
 				},
 				"run_command": {
@@ -3723,7 +4003,6 @@
 				},
 				"remove": {
 					"component_groups": [
-						"rift:anomalocaris_sittable",
 						"rift:pushable",
 						"rift:default_navigation",
 						"rift:can_attack",
@@ -3739,7 +4018,6 @@
 			"rift:can_sit": {
 				"add": {
 					"component_groups": [
-						"rift:anomalocaris_sittable",
 						"rift:pushable",
 						"rift:default_navigation",
 						"rift:can_attack"
@@ -3758,6 +4036,165 @@
 					"command": [
 						"tag @s remove waterMountHasRider",
 						"kill @e[type=rift:anomalo_carry_stuff, c=1]"
+					]
+				}
+			},
+			"rift:on_standing": {
+				"add": {
+					"component_groups": [
+						"rift:tamed_standing"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:wild_standing",
+						"rift:sitting",
+						"rift:sitting_angered",
+						"rift:wandering"
+					]
+				},
+				"run_command": {
+					"command": [
+						"tag @s remove sitting",
+						"tellraw @p {\"rawtext\":[{\"text\":\"Your Anomalocaris is currently following\"}]}"
+					]
+				}
+			},
+			"rift:on_sitting": {
+				"add": {
+					"component_groups": [
+						"rift:sitting"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:wild_standing",
+						"rift:tamed_standing",
+						"rift:sitting_angered",
+						"rift:wandering"
+					]
+				},
+				"run_command": {
+					"command": [
+						"tag @s add sitting",
+						"tellraw @p {\"rawtext\":[{\"text\":\"Your Anomalocaris is currently sitting\"}]}"
+					]
+				}
+			},
+			"rift:on_wandering": {
+				"add": {
+					"component_groups": [
+						"rift:wandering"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:wild_standing",
+						"rift:tamed_standing",
+						"rift:sitting",
+						"rift:sitting_angered"
+					]
+				},
+				"run_command": {
+					"command": [
+						"tag @s remove sitting",
+						"tellraw @p {\"rawtext\":[{\"text\":\"Your Anomalocaris is currently wandering\"}]}"
+					]
+				}
+			},
+			"rift:sitting_on_anger": {
+				"add": {
+					"component_groups": [
+						"rift:sitting_angered"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:sitting"
+					]
+				}
+			},
+			"rift:sitting_on_calm": {
+				"add": {
+					"component_groups": [
+						"rift:sitting"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:sitting_angered"
+					]
+				}
+			},
+			"rift:on_assist_behavior": {
+				"add": {
+					"component_groups": [
+						"rift:assist_behavior"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:neutral_behavior",
+						"rift:aggressive_behavior"
+					]
+				},
+				"run_command": {
+					"command": [
+						"tag @s remove hunting",
+						"tellraw @p {\"rawtext\":[{\"text\":\"Your Anomalocaris will now assist you in combat\"}]}"
+					]
+				}
+			},
+			"rift:on_neutral_behavior": {
+				"add": {
+					"component_groups": [
+						"rift:neutral_behavior"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:assist_behavior",
+						"rift:aggressive_behavior"
+					]
+				},
+				"run_command": {
+					"command": [
+						"tag @s remove hunting",
+						"tellraw @p {\"rawtext\":[{\"text\":\"Your Anomalocaris will now be neutral\"}]}"
+					]
+				}
+			},
+			"rift:on_aggressive_behavior": {
+				"add": {
+					"component_groups": [
+						"rift:aggressive_behavior"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:assist_behavior",
+						"rift:neutral_behavior"
+					]
+				},
+				"run_command": {
+					"command": [
+						"tag @s add hunting",
+						"tellraw @p {\"rawtext\":[{\"text\":\"Your Anomalocaris will now be aggressive\"}]}"
+					]
+				}
+			},
+			"rift:on_passive_behavior": {
+				"remove": {
+					"component_groups": [
+						"rift:assist_behavior",
+						"rift:neutral_behavior",
+						"rift:aggressive_behavior"
+					]
+				},
+				"run_command": {
+					"command": [
+						"tag @s remove hunting",
+						"tellraw @p {\"rawtext\":[{\"text\":\"Your Anomalocaris will now be passive\"}]}"
 					]
 				}
 			},
@@ -3902,6 +4339,7 @@
                                 "rift:anomalocaris_baby_wild",
 								"rift:default_navigation",
                                 "rift:pushable",
+								"rift:wild_standing",
                                 "rift:variant_zero"
                             ]
                         }
@@ -3914,6 +4352,7 @@
                                 "rift:anomalocaris_baby_wild",
 								"rift:default_navigation",
                                 "rift:pushable",
+								"rift:wild_standing",
                                 "rift:variant_one"
                             ]
                         }
@@ -3926,6 +4365,7 @@
                                 "rift:anomalocaris_baby_wild",
 								"rift:default_navigation",
                                 "rift:pushable",
+								"rift:wild_standing",
                                 "rift:variant_two"
                             ]
                         }
@@ -3938,6 +4378,7 @@
                                 "rift:anomalocaris_baby_wild",
 								"rift:default_navigation",
                                 "rift:pushable",
+								"rift:wild_standing",
                                 "rift:variant_three"
                             ]
                         }
@@ -4117,18 +4558,14 @@
 					]
 				}
 			},
-			"rift:made_to_sit_message": {
-				"run_command": {
-					"command": [
-						"tellraw @p {\"rawtext\":[{\"text\":\"Your Anomalocaris is currently sitting\"}]}"
-					]
+			"rift:manage_state": {
+				"set_actor_property": {
+					"rift:tame_state": "(query.actor_property('rift:tame_state') >= 0 && query.actor_property('rift:tame_state') <= 1) ? query.actor_property('rift:tame_state') + 1 : 0"
 				}
 			},
-			"rift:made_to_stand_message": {
-				"run_command": {
-					"command": [
-						"tellraw @p {\"rawtext\":[{\"text\":\"Your Anomalocaris is currently standing\"}]}"
-					]
+			"rift:manage_behavior": {
+				"set_actor_property": {
+					"rift:behavior_state": "!query.is_baby ? ((query.actor_property('rift:behavior_state') >= 0 && query.actor_property('rift:behavior_state') <= 2) ? query.actor_property('rift:behavior_state') + 1 : 0) : 3"
 				}
 			},
 			//for potion effects

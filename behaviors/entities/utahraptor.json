@@ -252,22 +252,6 @@
                 "minecraft:loot": {
                     "table": "loot_tables/entities/utahraptor.loot.json"
                 },
-                "minecraft:breedable": {
-                    "breeds_with": {
-                        "mate_type": "rift:utahraptor",
-                        "baby_type": "rift:egg",
-                        "breed_event": {
-                            "event": "rift:summon_utahraptor_egg",
-                            "target": "baby"
-                        }
-                    },
-                    "breed_items": [
-                        "rift:flesh_treat"
-                    ],
-                    "require_tame": true,
-                    "inherit_tamed": false,
-                    "breed_cooldown": 1200
-                },
 				"minecraft:attack": {
 					"damage": 12
 				}
@@ -954,6 +938,22 @@
 				}
 			},
 			"rift:tamed_standing": {
+                "minecraft:breedable": {
+                    "breeds_with": {
+                        "mate_type": "rift:utahraptor",
+                        "baby_type": "rift:egg",
+                        "breed_event": {
+                            "event": "rift:summon_utahraptor_egg",
+                            "target": "baby"
+                        }
+                    },
+                    "breed_items": [
+                        "rift:flesh_treat"
+                    ],
+                    "require_tame": true,
+                    "inherit_tamed": false,
+                    "breed_cooldown": 1200
+                },
 				"minecraft:behavior.follow_owner": {
 					"start_distance": 8,
 					"stop_distance": 40,
@@ -965,7 +965,7 @@
 			},
 			"rift:sitting": {
 				"minecraft:movement": {
-					"value": 0.0
+					"value": 0.35
 				},
 				"minecraft:on_target_acquired": {
 					"event": "rift:sitting_on_anger",
@@ -982,6 +982,22 @@
 				}
 			},
 			"rift:wandering": {
+                "minecraft:breedable": {
+                    "breeds_with": {
+                        "mate_type": "rift:utahraptor",
+                        "baby_type": "rift:egg",
+                        "breed_event": {
+                            "event": "rift:summon_utahraptor_egg",
+                            "target": "baby"
+                        }
+                    },
+                    "breed_items": [
+                        "rift:flesh_treat"
+                    ],
+                    "require_tame": true,
+                    "inherit_tamed": false,
+                    "breed_cooldown": 1200
+                },
                 "minecraft:behavior.random_stroll": {
 					"priority": 14
 				},
@@ -1356,6 +1372,55 @@
 										"domain": "hand",
 										"operator": "!=",
 										"value": "rift:command_staff"
+									},
+									{
+										"test": "has_equipment",
+										"subject": "other",
+										"domain": "hand",
+										"operator": "!=",
+										"value": "minecraft:chest"
+									},
+									{
+										"test": "has_equipment",
+										"subject": "other",
+										"domain": "hand",
+										"operator": "!=",
+										"value": "rift:euthanasia"
+									},
+									{
+										"test": "has_equipment",
+										"subject": "other",
+										"domain": "hand",
+										"operator": "!=",
+										"value": "minecraft:potion"
+									},
+									{
+										"test": "has_equipment",
+										"subject": "other",
+										"domain": "hand",
+										"operator": "!=",
+										"value": "rift:halloween_costume"
+									},
+									{
+										"test": "has_equipment",
+										"subject": "other",
+										"domain": "hand",
+										"operator": "!=",
+										"value": "rift:christmas_costume"
+									},
+									{
+										"test": "has_equipment",
+										"subject": "other",
+										"domain": "hand",
+										"operator": "!=",
+										"value": "rift:flesh_treat"
+									},
+									{
+										"test": "has_equipment",
+										"subject": "other",
+										"domain": "hand",
+										"operator": "!=",
+										"value": "minecraft:shears"
 									}
 								]
 							},
@@ -4368,7 +4433,7 @@
 								}
 							]
 						},
-						"event": "rift:cannot_sit"
+						"event": "rift:has_rider"
 					},
 					{
 						"filters": {
@@ -4386,7 +4451,7 @@
 								}
 							]
 						},
-						"event": "rift:can_sit"
+						"event": "rift:has_no_rider"
 					}
 				]
 			},
@@ -4516,6 +4581,9 @@
 								"rift:default_targets",
 								"rift:utahraptor_adult_wild_not_trusting"
 							]
+						},
+						"set_actor_property": {
+							"rift:behavior_state": "0"
 						}
 					}
 				]
@@ -4524,29 +4592,20 @@
 				"add": {
 					"component_groups": [
 						"rift:utahraptor_baby_tamed",
-						"rift:utahraptor_tamed",
-						"rift:tamed_standing",
-						"rift:rideable"
+						"rift:utahraptor_tamed"
 					]
 				},
 				"remove": {
 					"component_groups": [
 						"rift:utahraptor_baby_wild",
 						"rift:utahraptor_baby_calm",
-						"rift:utahraptor_baby_scared",
-						"rift:wild_standing"
+						"rift:utahraptor_baby_scared"
 					]
+				},
+				"set_actor_property": {
+					"rift:behavior_state": "3"
 				}
 			},
-			"minecraft:entity_born": {
-				"add": {
-					"component_groups": [
-						"rift:utahraptor_baby",
-						"rift:utahraptor_baby_tamed",
-						"rift:pushable"
-					]
-				}
-            },
 			"rift:on_trust": {
 				"add": {
 					"component_groups": [
@@ -4664,7 +4723,7 @@
 					]
 				}
 			},
-			"rift:cannot_sit": {
+			"rift:has_rider": {
 				"add": {
 					"component_groups": [
 						"rift:unpushable"
@@ -4684,7 +4743,7 @@
 					]
 				}
 			},
-			"rift:can_sit": {
+			"rift:has_no_rider": {
 				"add": {
 					"component_groups": [
 						"rift:pushable",
@@ -4706,12 +4765,12 @@
 			"rift:on_standing": {
 				"add": {
 					"component_groups": [
-						"rift:tamed_standing",
-						"rift:rideable"
+						"rift:tamed_standing"
 					]
 				},
 				"remove": {
 					"component_groups": [
+						"rift:wild_standing",
 						"rift:sitting",
 						"rift:sitting_angered",
 						"rift:wandering"
@@ -4732,10 +4791,10 @@
 				},
 				"remove": {
 					"component_groups": [
+						"rift:wild_standing",
 						"rift:tamed_standing",
 						"rift:sitting_angered",
-						"rift:wandering",
-						"rift:rideable"
+						"rift:wandering"
 					]
 				},
 				"run_command": {
@@ -4748,12 +4807,12 @@
 			"rift:on_wandering": {
 				"add": {
 					"component_groups": [
-						"rift:wandering",
-						"rift:rideable"
+						"rift:wandering"
 					]
 				},
 				"remove": {
 					"component_groups": [
+						"rift:wild_standing",
 						"rift:tamed_standing",
 						"rift:sitting",
 						"rift:sitting_angered"
@@ -5600,7 +5659,7 @@
 			},
 			"rift:manage_behavior": {
 				"set_actor_property": {
-					"rift:behavior_state": "(query.actor_property('rift:behavior_state') >= 0 && query.actor_property('rift:behavior_state') <= 2) ? query.actor_property('rift:behavior_state') + 1 : 0"
+					"rift:behavior_state": "!query.is_baby ? ((query.actor_property('rift:behavior_state') >= 0 && query.actor_property('rift:behavior_state') <= 2) ? query.actor_property('rift:behavior_state') + 1 : 0) : 3"
 				}
 			},
 			//for potion effects

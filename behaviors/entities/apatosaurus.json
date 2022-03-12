@@ -6,6 +6,23 @@
             "is_spawnable": true,
             "is_summonable": true,
             "is_experimental": false,
+			"properties": {
+                "rift:tame_state": {
+                    "values": {
+						"min": 0, //0 for standing, 1 for sitting, 2 for wandering
+						"max": 2
+					},
+					"default": 0,
+					"client_sync": true
+                },
+                "rift:behavior_state": {
+                    "values": {
+						"min": 0, //0 for assist, 1 for neutral, 2 for aggressive, 3 for passive
+						"max": 3
+					},
+					"default": 0
+                }
+			},
 			"animations": {
 				"contApatoUseStomp": "controller.animation.apato_forced_use_stomp",
 				"contTameTag": "controller.animation.add_tame_tag",
@@ -16,6 +33,8 @@
 				"contWildLowHealth": "controller.animation.apato_wild_low_on_health",
 				"contWildBreakStuff": "controller.animation.apato_wild_can_break_blocks",
 				"contTamedBreakStuff": "controller.animation.apato_tamed_can_break_blocks",
+				"contTameState": "controller.animation.manage_tame_state",
+				"contBehaviorState": "controller.animation.manage_tame_behavior",
 				"animForcedAttack": "animation.forced_attack_apatosaurus",
 				"animBreakStuff": "animation.apato_break_stuff"
 			},
@@ -29,7 +48,9 @@
 					"contDetectWeapon",
 					"contWildLowHealth",
 					"contWildBreakStuff",
-					"contTamedBreakStuff"
+					"contTamedBreakStuff",
+					"contTameState",
+					"contBehaviorState"
 				]
 			}
         },
@@ -93,20 +114,14 @@
 						"target": "self"
                     }
                 },
-                "minecraft:movement": {
-                    "value": 0.25
-                },
 				"minecraft:behavior.float": {}
             },
             "rift:apatosaurus_baby_wild": {
 				"minecraft:health": {
 					"value": 50
                 },
-                "minecraft:behavior.random_stroll": {
-					"priority": 6
-				},
                 "minecraft:behavior.follow_parent": {
-					"priority": 5
+					"priority": 9
                 },
                 "minecraft:group_size": {
 					"radius": 10,
@@ -127,7 +142,7 @@
 					}
 				},
 				"minecraft:behavior.hurt_by_target": {
-					"priority": 2,
+					"priority": 4,
 					"entity_types": {
 						"filters": {
 						  	"test": "is_family",
@@ -159,7 +174,7 @@
                     "end_scale": 1.25
                 },
                 "minecraft:behavior.tempt": {
-					"priority": 2,
+					"priority": 7,
 					"within_radius": 16,
 					"speed_multiplier": 0.75,
 					"items": [
@@ -209,9 +224,11 @@
 						"target": "self"
 					}
 				},
-				"minecraft:behavior.run_around_like_crazy": {
-					"priority": 0
-                }
+				"minecraft:behavior.panic": {
+					"priority": 1,
+					"speed_multiplier": 1.25,
+					"force": true
+				}
             },
             "rift;apatosaurus_baby_tamed": {
                 "minecraft:health": {
@@ -236,27 +253,6 @@
 				},
 				"minecraft:loot": {
 					"table": "loot_tables/entities/apatosaurus adult.loot.json"
-				},
-				"minecraft:breedable": {
-					"breeds_with": {
-						"mate_type": "rift:apatosaurus",
-						"baby_type": "rift:egg",
-						"breed_event": {
-							"event": "rift:summon_apatosaurus_egg",
-							"target": "baby"
-						}
-					},
-					"breed_items": [
-						"rift:berry_treat",
-						"rift:leafy_treat",
-						"rift:grassy_treat"
-					],
-					"require_tame": true,
-					"breed_cooldown": 1200,
-					"inherit_tamed": false
-                },
-                "minecraft:movement": {
-                    "value": 0.10
 				},
 				"minecraft:knockback_resistance": {
 					"value": 100
@@ -335,9 +331,6 @@
 					"value": 200,
 					"max": 200
                 },
-                "minecraft:behavior.random_stroll": {
-					"priority": 5
-				},
 				"minecraft:group_size": {
 					"radius": 10,
 					"filters": {
@@ -360,7 +353,7 @@
 					"despawn_from_distance": {}
 				},
 				"minecraft:behavior.hurt_by_target": {
-					"priority": 2,
+					"priority": 4,
 					"entity_types": {
 						"filters": {
 						  	"test": "is_family",
@@ -671,37 +664,6 @@
 				}
 			},
             "rift:apatosaurus_tamed": {
-				"minecraft:behavior.owner_hurt_by_target": {
-					"priority": 2,
-					"entity_types": [
-						{
-							"filters": {
-								"test": "has_component",
-								"subject": "self",
-								"value": "minecraft:is_baby",
-								"operator": "!="
-							}
-						}
-					]
-				},
-				"minecraft:behavior.owner_hurt_target": {
-					"priority": 3,
-					"entity_types": [
-						{
-							"filters": {
-								"test": "has_component",
-								"subject": "self",
-								"value": "minecraft:is_baby",
-								"operator": "!="
-							}
-						}
-					]
-				},
-				"minecraft:behavior.follow_owner": {
-					"start_distance": 8,
-					"stop_distance": 40,
-					"priority": 5
-				},
 				"minecraft:is_tamed": {}
             },
             "rift:apatosaurus_platformed": {
@@ -813,6 +775,241 @@
 					]
 				}
             },
+			"rift:wild_adult_standing": {
+                "minecraft:behavior.random_stroll": {
+					"priority": 10
+				},
+                "minecraft:behavior.random_look_around": {
+					"priority": 11
+				},
+                "minecraft:movement": {
+                    "value": 0.10
+				}
+			},
+			"rift:wild_baby_standing": {
+                "minecraft:behavior.random_stroll": {
+					"priority": 10
+				},
+                "minecraft:behavior.random_look_around": {
+					"priority": 11
+				},
+                "minecraft:movement": {
+                    "value": 0.25
+				}
+			},
+			"rift:tamed_adult_standing": {
+				"minecraft:breedable": {
+					"breeds_with": {
+						"mate_type": "rift:apatosaurus",
+						"baby_type": "rift:egg",
+						"breed_event": {
+							"event": "rift:summon_apatosaurus_egg",
+							"target": "baby"
+						}
+					},
+					"breed_items": [
+						"rift:berry_treat",
+						"rift:leafy_treat",
+						"rift:grassy_treat"
+					],
+					"require_tame": true,
+					"breed_cooldown": 1200,
+					"inherit_tamed": false
+                },
+				"minecraft:behavior.follow_owner": {
+					"start_distance": 8,
+					"stop_distance": 40,
+					"priority": 8
+				},
+                "minecraft:movement": {
+                    "value": 0.10
+				}
+			},
+			"rift:tamed_baby_standing": {
+				"minecraft:behavior.follow_owner": {
+					"start_distance": 8,
+					"stop_distance": 40,
+					"priority": 8
+				},
+                "minecraft:movement": {
+                    "value": 0.25
+				}
+			},
+			"rift:adult_sitting": {
+                "minecraft:movement": {
+                    "value": 0.10
+				},
+				"minecraft:on_target_acquired": {
+					"event": "rift:sitting_on_anger",
+					"target": "self"
+				}
+			},
+			"rift:baby_sitting": {
+                "minecraft:movement": {
+                    "value": 0.25
+				}
+			},
+			"rift:adult_sitting_angered": {
+                "minecraft:movement": {
+                    "value": 0.10
+				},
+				"minecraft:on_target_escape": {
+					"event": "rift:sitting_on_calm",
+				  	"target": "self"
+				}
+			},
+			"rift:adult_wandering": {
+				"minecraft:breedable": {
+					"breeds_with": {
+						"mate_type": "rift:apatosaurus",
+						"baby_type": "rift:egg",
+						"breed_event": {
+							"event": "rift:summon_apatosaurus_egg",
+							"target": "baby"
+						}
+					},
+					"breed_items": [
+						"rift:berry_treat",
+						"rift:leafy_treat",
+						"rift:grassy_treat"
+					],
+					"require_tame": true,
+					"breed_cooldown": 1200,
+					"inherit_tamed": false
+                },
+                "minecraft:behavior.random_stroll": {
+					"priority": 10
+				},
+                "minecraft:movement": {
+                    "value": 0.10
+				}
+			},
+			"rift:baby_wandering": {
+                "minecraft:behavior.random_stroll": {
+					"priority": 10
+				},
+                "minecraft:movement": {
+                    "value": 0.25
+				}
+			},
+			"rift:assist_behavior": {
+				"minecraft:behavior.owner_hurt_by_target": {
+					"priority": 2
+				},
+				"minecraft:behavior.owner_hurt_target": {
+					"priority": 3
+				},
+				"minecraft:behavior.hurt_by_target": {
+					"priority": 4,
+					"entity_types": {
+						"filters": {
+							"all_of": [
+								{
+									"test": "is_family",
+									"subject": "other",
+									"operator": "!=",
+									"value": "forcedAttack"
+								},
+								{
+									"test": "has_component",
+									"subject": "self",
+									"operator": "!=",
+									"value": "minecraft:is_baby"
+								}
+							]
+						}
+					}
+				}
+			},
+			"rift:neutral_behavior": {
+				"minecraft:behavior.hurt_by_target": {
+					"priority": 4,
+					"entity_types": {
+						"filters": {
+							"all_of": [
+								{
+									"test": "is_family",
+									"subject": "other",
+									"operator": "!=",
+									"value": "forcedAttack"
+								},
+								{
+									"test": "has_component",
+									"subject": "self",
+									"operator": "!=",
+									"value": "minecraft:is_baby"
+								}
+							]
+						}
+					}
+				}
+			},
+			"rift:aggressive_behavior": {
+				"minecraft:behavior.owner_hurt_by_target": {
+					"priority": 2
+				},
+				"minecraft:behavior.owner_hurt_target": {
+					"priority": 3
+				},
+				"minecraft:behavior.nearest_attackable_target": {
+				  	"priority": 5,
+					"within_radius": 32.0,
+					"must_see": true,
+				  	"entity_types": [
+						{
+					  		"filters": {
+								"all_of": [
+									{
+										"test": "in_water",
+										"subject": "other",
+										"value": false
+									},
+									{
+										"test": "has_component",
+										"subject": "other",
+										"operator": "!=",
+										"value": "minecraft:is_tamed"
+									},
+									{
+										"test": "is_family",
+										"subject": "other",
+										"operator": "!=",
+										"value": "player"
+									},
+									{
+										"test": "is_family",
+										"subject": "other",
+										"operator": "!=",
+										"value": "inanimate"
+									}
+								]
+					  		},
+							"max_dist": 48
+						}
+				  	]
+				},
+				"minecraft:behavior.hurt_by_target": {
+					"priority": 4,
+					"entity_types": {
+						"filters": {
+							"all_of": [
+								{
+									"test": "is_family",
+									"subject": "other",
+									"operator": "!=",
+									"value": "forcedAttack"
+								},
+								{
+									"test": "has_component",
+									"subject": "self",
+									"operator": "!=",
+									"value": "minecraft:is_baby"
+								}
+							]
+						}
+					}
+				}
+			},
             "rift:variant_one": {
                 "minecraft:variant": {
                     "value": 0
@@ -833,21 +1030,6 @@
                     "value": 3
                 }
             },
-            "rift:apatosaurus_sittable": {
-                "minecraft:sittable": {
-					"sit_event": {
-						"event": "rift:made_to_sit_message",
-						"target": "self"
-					},
-					"stand_event": {
-						"event": "rift:made_to_stand_message",
-						"target": "self"
-					}
-				},
-				"minecraft:behavior.stay_while_sitting": {
-					"priority": 0
-				}
-			},
 			"rift:apatosaurus_tamed_can_break_stuff": {
 				"minecraft:is_ignited": {}
 			},
@@ -987,7 +1169,7 @@
 			},
 			"rift:can_attack": {
 				"minecraft:behavior.delayed_attack": {
-					"priority": 4,
+					"priority": 6,
 					"attack_duration": 3,
 					"hit_delay_pct": 1,
 					"track_target": true,
@@ -996,7 +1178,7 @@
 			},
 			"rift:attack_forced_attack_entity": {
 				"minecraft:behavior.nearest_attackable_target": {
-					"priority": 3,
+					"priority": 5,
 					"entity_types": [
 					  	{
 							"filters": {
@@ -1015,7 +1197,7 @@
 			},
 			"rift:aggravating_horn_attack": {
 				"minecraft:behavior.nearest_attackable_target": {
-				  	"priority": 3,
+				  	"priority": 5,
 					"within_radius": 32.0,
 					"must_see": true,
 				  	"entity_types": [
@@ -1137,10 +1319,9 @@
 			},
 			"minecraft:movement.basic": {},
 			"minecraft:behavior.breed": {
-				"priority": 1
+				"priority": 0
 			},
 			"minecraft:jump.static": {},
-			"minecraft:behavior.move_to_land": {},
 			"minecraft:collision_box": {
 				"height": 5.75,
 				"width": 2.25
@@ -1493,6 +1674,101 @@
 							"target": "self"
 						},
 						"interact_text": "action.interact.tame"
+					},
+					{
+						"on_interact": {
+							"filters": {
+								"all_of": [
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_tamed"
+									},
+									{
+										"test": "is_sneaking",
+										"subject": "other",
+										"value": true
+									},
+									{
+										"test": "has_equipment",
+										"subject": "other",
+										"domain": "hand",
+										"operator": "!=",
+										"value": "rift:command_staff"
+									},
+									{
+										"test": "has_equipment",
+										"subject": "other",
+										"domain": "hand",
+										"operator": "!=",
+										"value": "minecraft:chest"
+									},
+									{
+										"test": "has_equipment",
+										"subject": "other",
+										"domain": "hand",
+										"operator": "!=",
+										"value": "rift:euthanasia"
+									},
+									{
+										"test": "has_equipment",
+										"subject": "other",
+										"domain": "hand",
+										"operator": "!=",
+										"value": "minecraft:potion"
+									},
+									{
+										"test": "has_equipment",
+										"subject": "other",
+										"domain": "hand",
+										"operator": "!=",
+										"value": "rift:berry_treat"
+									},
+									{
+										"test": "has_equipment",
+										"subject": "other",
+										"domain": "hand",
+										"operator": "!=",
+										"value": "rift:grassy_treat"
+									},
+									{
+										"test": "has_equipment",
+										"subject": "other",
+										"domain": "hand",
+										"operator": "!=",
+										"value": "rift:leafy_treat"
+									}
+								]
+							},
+							"event": "rift:manage_state",
+							"target": "self"
+						}
+					},
+					{
+						"on_interact": {
+							"filters": {
+								"all_of": [
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_tamed"
+									},
+									{
+										"test": "is_sneaking",
+										"subject": "other",
+										"value": true
+									},
+									{
+										"test": "has_equipment",
+										"subject": "other",
+										"domain": "hand",
+										"value": "rift:command_staff"
+									}
+								]
+							},
+							"event": "rift:manage_behavior",
+							"target": "self"
+						}
 					},
 					{
 						"on_interact": {
@@ -3965,6 +4241,7 @@
 										"rift:apatosaurus_adult_wild",
 										"rift:apatosaurus_adult_calm",
 										"rift:default_collision",
+										"rift:wild_adult_standing",
 										"rift:variant_one",
 										"rift:pushable",
 										"rift:can_attack"
@@ -3979,6 +4256,7 @@
 										"rift:apatosaurus_adult_wild",
 										"rift:apatosaurus_adult_calm",
 										"rift:default_collision",
+										"rift:wild_adult_standing",
 										"rift:variant_two",
 										"rift:pushable",
 										"rift:can_attack"
@@ -3993,6 +4271,7 @@
 										"rift:apatosaurus_adult_wild",
 										"rift:apatosaurus_adult_calm",
 										"rift:default_collision",
+										"rift:wild_adult_standing",
 										"rift:variant_three",
 										"rift:pushable",
 										"rift:can_attack"
@@ -4007,6 +4286,7 @@
 										"rift:apatosaurus_adult_wild",
 										"rift:apatosaurus_adult_calm",
 										"rift:default_collision",
+										"rift:wild_adult_standing",
 										"rift:variant_four",
 										"rift:pushable",
 										"rift:can_attack"
@@ -4027,6 +4307,7 @@
                                         "rift:apatosaurus_baby_wild_untameable",
 										"rift:apatosaurus_baby_calm",
 										"rift:default_collision",
+										"rift:wild_baby_standing",
 										"rift:variant_one",
 										"rift:pushable",
 										"rift:can_attack"
@@ -4042,6 +4323,7 @@
                                         "rift:apatosaurus_baby_wild_untameable",
 										"rift:apatosaurus_baby_calm",
 										"rift:default_collision",
+										"rift:wild_baby_standing",
 										"rift:variant_two",
 										"rift:pushable",
 										"rift:can_attack"
@@ -4057,6 +4339,7 @@
                                         "rift:apatosaurus_baby_wild_untameable",
 										"rift:apatosaurus_baby_calm",
 										"rift:default_collision",
+										"rift:wild_baby_standing",
 										"rift:variant_three",
 										"rift:pushable",
 										"rift:can_attack"
@@ -4072,6 +4355,7 @@
                                         "rift:apatosaurus_baby_wild_untameable",
 										"rift:apatosaurus_baby_calm",
 										"rift:default_collision",
+										"rift:wild_baby_standing",
 										"rift:variant_four",
 										"rift:pushable",
 										"rift:can_attack"
@@ -4082,17 +4366,6 @@
 					}
 				]
             },
-            "minecraft:entity_born": {
-				"add": {
-					"component_groups": [
-						"rift:apatosaurus_baby",
-						"rift:apatosaurus_baby_tamed",
-						"rift:apatosaurus_tamed",
-						"rift:apatosaurus_sittable",
-						"rift:pushable"
-					]
-				}
-            },
             "rift:grow_up": {
                 "sequence": [
                     {
@@ -4100,7 +4373,8 @@
 							"component_groups": [
 								"rift:apatosaurus_adult",
 								"rift:apatosaurus_adult_wild",
-								"rift:apatosaurus_adult_calm"
+								"rift:apatosaurus_adult_calm",
+								"rift:wild_adult_standing"
 							]
 						},
 						"remove": {
@@ -4109,7 +4383,8 @@
                                 "rift:apatosaurus_baby_wild",
                                 "rift:apatosaurus_baby_wild_untameable",
                                 "rift:apatosaurus_baby_wild_tameable",
-								"rift:apatosaurus_baby_calm"
+								"rift:apatosaurus_baby_calm",
+								"rift:wild_baby_standing"
 							]
 						}
                     },
@@ -4127,14 +4402,21 @@
 							"component_groups": [
 								"rift:apatosaurus_adult",
 								"rift:apatosaurus_adult_tamed",
-								"rift:apatosaurus_rideable"
+								"rift:apatosaurus_rideable",
+								"rift:tamed_adult_standing"
 							]
 						},
 						"remove": {
 							"component_groups": [
                                 "rift:apatosaurus_adult_wild",
-								"rift:apatosaurus_adult_calm"
+								"rift:apatosaurus_adult_calm",
+								"rift:tamed_baby_standing",
+								"rift:wild_adult_standing",
+								"rift:wild_baby_standing"
 							]
+						},
+						"set_actor_property": {
+							"rift:behavior_state": "0"
 						}
 					}
                 ]
@@ -4167,8 +4449,7 @@
                 "add": {
                     "component_groups": [
                         "rift:apatosaurus_baby_tamed",
-                        "rift:apatosaurus_tamed",
-                        "rift:apatosaurus_sittable"
+                        "rift:apatosaurus_tamed"
                     ]
                 },
                 "remove": {
@@ -4179,7 +4460,10 @@
                         "rift:apatosaurus_baby_wild_tameable",
 						"rift:attack_forced_attack_entity"
                     ]
-                }
+                },
+				"set_actor_property": {
+					"rift:behavior_state": "3"
+				}
             },
             "rift:adult_become_angry": {
                 "add": {
@@ -4537,7 +4821,6 @@
 				},
                 "remove": {
                     "component_groups": [
-                        "rift:apatosaurus_sittable",
 						"rift:pushable",
 						"rift:aggravating_horn_attack",
 						"rift:can_attack"
@@ -4547,7 +4830,6 @@
             "rift:can_sit": {
                 "add": {
                     "component_groups": [
-                        "rift:apatosaurus_sittable",
 						"rift:pushable",
 						"rift:can_attack"
                     ]
@@ -4564,6 +4846,285 @@
 					]
 				}
             },
+			"rift:on_standing": {
+				"sequence": [
+					{
+						"run_command": {
+							"command": [
+								"tag @s remove sitting",
+								"tellraw @p {\"rawtext\":[{\"text\":\"Your Apatosaurus is currently following\"}]}"
+							]
+						}
+					},
+					{
+						"filters": {
+							"test": "has_component",
+							"subject": "self",
+							"value": "minecraft:is_baby"
+						},
+						"add": {
+							"component_groups": [
+								"rift:tamed_baby_standing"
+							]
+						},
+						"remove": {
+							"component_groups": [
+								"rift:tamed_adult_standing",
+								"rift:wild_adult_standing",
+								"rift:adult_sitting",
+								"rift:adult_sitting_angered",
+								"rift:adult_wandering",
+								"rift:wild_baby_standing",
+								"rift:baby_sitting",
+								"rift:baby_wandering"
+							]
+						}
+					},
+					{
+						"filters": {
+							"test": "has_component",
+							"subject": "self",
+							"operator": "!=",
+							"value": "minecraft:is_baby"
+						},
+						"add": {
+							"component_groups": [
+								"rift:tamed_adult_standing"
+							]
+						},
+						"remove": {
+							"component_groups": [
+								"rift:wild_adult_standing",
+								"rift:adult_sitting",
+								"rift:adult_sitting_angered",
+								"rift:adult_wandering",
+								"rift:tamed_baby_standing",
+								"rift:wild_baby_standing",
+								"rift:baby_sitting",
+								"rift:baby_wandering"
+							]
+						}
+					}
+				]
+			},
+			"rift:on_sitting": {
+				"sequence": [
+					{
+						"run_command": {
+							"command": [
+								"tag @s add sitting",
+								"tellraw @p {\"rawtext\":[{\"text\":\"Your Apatosaurus is currently sitting\"}]}"
+							]
+						}
+					},
+					{
+						"filters": {
+							"test": "has_component",
+							"subject": "self",
+							"value": "minecraft:is_baby"
+						},
+						"add": {
+							"component_groups": [
+								"rift:baby_sitting"
+							]
+						},
+						"remove": {
+							"component_groups": [
+								"rift:wild_adult_standing",
+								"rift:tamed_adult_standing",
+								"rift:adult_wandering",
+								"rift:adult_sitting",
+								"rift:adult_sitting_angered",
+								"rift:wild_baby_standing",
+								"rift:tamed_baby_standing",
+								"rift:baby_wandering"
+							]
+						}
+					},
+					{
+						"filters": {
+							"test": "has_component",
+							"subject": "self",
+							"operator": "!=",
+							"value": "minecraft:is_baby"
+						},
+						"add": {
+							"component_groups": [
+								"rift:adult_sitting"
+							]
+						},
+						"remove": {
+							"component_groups": [
+								"rift:wild_adult_standing",
+								"rift:tamed_adult_standing",
+								"rift:adult_wandering",
+								"rift:adult_sitting_angered",
+								"rift:baby_sitting",
+								"rift:wild_baby_standing",
+								"rift:tamed_baby_standing",
+								"rift:baby_wandering"
+							]
+						}
+					}
+				]
+			},
+			"rift:on_wandering": {
+				"sequence": [
+					{
+						"run_command": {
+							"command": [
+								"tag @s remove sitting",
+								"tellraw @p {\"rawtext\":[{\"text\":\"Your Apatosaurus is currently wandering\"}]}"
+							]
+						}
+					},
+					{
+						"filters": {
+							"test": "has_component",
+							"subject": "self",
+							"value": "minecraft:is_baby"
+						},
+						"add": {
+							"component_groups": [
+								"rift:baby_wandering"
+							]
+						},
+						"remove": {
+							"component_groups": [
+								"rift:wild_adult_standing",
+								"rift:tamed_adult_standing",
+								"rift:adult_wandering",
+								"rift:adult_sitting_angered",
+								"rift:adult_sitting",
+								"rift:wild_baby_standing",
+								"rift:tamed_baby_standing",
+								"rift:baby_sitting"
+							]
+						}
+					},
+					{
+						"filters": {
+							"test": "has_component",
+							"subject": "self",
+							"operator": "!=",
+							"value": "minecraft:is_baby"
+						},
+						"add": {
+							"component_groups": [
+								"rift:adult_wandering"
+							]
+						},
+						"remove": {
+							"component_groups": [
+								"rift:wild_adult_standing",
+								"rift:tamed_adult_standing",
+								"rift:adult_sitting_angered",
+								"rift:adult_sitting",
+								"rift:wild_baby_standing",
+								"rift:tamed_baby_standing",
+								"rift:baby_sitting",
+								"rift:baby_wandering"
+							]
+						}
+					}
+				]
+			},
+			"rift:sitting_on_anger": {
+				"add": {
+					"component_groups": [
+						"rift:adult_sitting_angered"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:adult_sitting"
+					]
+				}
+			},
+			"rift:sitting_on_calm": {
+				"add": {
+					"component_groups": [
+						"rift:adult_sitting"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:adult_sitting_angered"
+					]
+				}
+			},
+			"rift:on_assist_behavior": {
+				"add": {
+					"component_groups": [
+						"rift:assist_behavior"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:neutral_behavior",
+						"rift:aggressive_behavior"
+					]
+				},
+				"run_command": {
+					"command": [
+						"tag @s remove hunting",
+						"tellraw @p {\"rawtext\":[{\"text\":\"Your Apatosaurus will now assist you in combat\"}]}"
+					]
+				}
+			},
+			"rift:on_neutral_behavior": {
+				"add": {
+					"component_groups": [
+						"rift:neutral_behavior"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:assist_behavior",
+						"rift:aggressive_behavior"
+					]
+				},
+				"run_command": {
+					"command": [
+						"tag @s remove hunting",
+						"tellraw @p {\"rawtext\":[{\"text\":\"Your Apatosaurus will now be neutral\"}]}"
+					]
+				}
+			},
+			"rift:on_aggressive_behavior": {
+				"add": {
+					"component_groups": [
+						"rift:aggressive_behavior"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:assist_behavior",
+						"rift:neutral_behavior"
+					]
+				},
+				"run_command": {
+					"command": [
+						"tag @s add hunting",
+						"tellraw @p {\"rawtext\":[{\"text\":\"Your Apatosaurus will now be aggressive\"}]}"
+					]
+				}
+			},
+			"rift:on_passive_behavior": {
+				"remove": {
+					"component_groups": [
+						"rift:assist_behavior",
+						"rift:neutral_behavior",
+						"rift:aggressive_behavior"
+					]
+				},
+				"run_command": {
+					"command": [
+						"tag @s remove hunting",
+						"tellraw @p {\"rawtext\":[{\"text\":\"Your Apatosaurus will now be passive\"}]}"
+					]
+				}
+			},
             "rift:spawn_as_baby": {
                 "randomize": [
                     {
@@ -4575,6 +5136,7 @@
                                 "rift:apatosaurus_baby_wild_tameable",
 								"rift:apatosaurus_baby_calm",
 								"rift:default_collision",
+								"rift:wild_baby_standing",
                                 "rift:variant_one",
 								"rift:pushable",
 								"rift:can_attack"
@@ -4590,6 +5152,7 @@
                                 "rift:apatosaurus_baby_wild_tameable",
 								"rift:apatosaurus_baby_calm",
 								"rift:default_collision",
+								"rift:wild_baby_standing",
                                 "rift:variant_two",
 								"rift:pushable",
 								"rift:can_attack"
@@ -4605,6 +5168,7 @@
                                 "rift:apatosaurus_baby_wild_tameable",
 								"rift:apatosaurus_baby_calm",
 								"rift:default_collision",
+								"rift:wild_baby_standing",
                                 "rift:variant_three",
 								"rift:pushable",
 								"rift:can_attack"
@@ -4620,6 +5184,7 @@
                                 "rift:apatosaurus_baby_wild_tameable",
 								"rift:apatosaurus_baby_calm",
 								"rift:default_collision",
+								"rift:wild_baby_standing",
                                 "rift:variant_four",
 								"rift:pushable",
 								"rift:can_attack"
@@ -5073,18 +5638,14 @@
 					]
 				}
 			},
-			"rift:made_to_sit_message": {
-				"run_command": {
-					"command": [
-						"tellraw @p {\"rawtext\":[{\"text\":\"Your Apatosaurus is currently sitting\"}]}"
-					]
+			"rift:manage_state": {
+				"set_actor_property": {
+					"rift:tame_state": "(query.actor_property('rift:tame_state') >= 0 && query.actor_property('rift:tame_state') <= 1) ? query.actor_property('rift:tame_state') + 1 : 0"
 				}
 			},
-			"rift:made_to_stand_message": {
-				"run_command": {
-					"command": [
-						"tellraw @p {\"rawtext\":[{\"text\":\"Your Apatosaurus is currently standing\"}]}"
-					]
+			"rift:manage_behavior": {
+				"set_actor_property": {
+					"rift:behavior_state": "!query.is_baby ? ((query.actor_property('rift:behavior_state') >= 0 && query.actor_property('rift:behavior_state') <= 2) ? query.actor_property('rift:behavior_state') + 1 : 0) : 3"
 				}
 			},
 			//for potion effects
