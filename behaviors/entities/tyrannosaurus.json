@@ -6,6 +6,23 @@
 			"is_summonable": true,
 			"is_spawnable": true,
 			"is_experimental": false,
+			"properties": {
+                "rift:tame_state": {
+                    "values": {
+						"min": 0, //0 for standing, 1 for sitting, 2 for wandering
+						"max": 2
+					},
+					"default": 0,
+					"client_sync": true
+                },
+                "rift:behavior_state": {
+                    "values": {
+						"min": 0, //0 for assist, 1 for neutral, 2 for aggressive, 3 for passive
+						"max": 3
+					},
+					"default": 0
+                }
+			},
 			"animations": {
 				"contTyrannoUseBite": "controller.animation.tyranno_forced_use_bite",
 				"contTameTag": "controller.animation.add_tame_tag",
@@ -15,6 +32,8 @@
 				"contSittingTag": "controller.animation.add_sitting_tag",
 				"contTyrannoEndRoarCooldown": "controller.animation.tyranno_end_roar_cooldown",
 				"contIntimidate": "controller.animation.tyranno_intimidate",
+				"contTameState": "controller.animation.manage_tame_state",
+				"contBehaviorState": "controller.animation.manage_tame_behavior",
 				"animForcedAttack": "animation.forced_attack_tyrannosaurus",
 				"animTyrannoRoarCooldown": "animation.tyranno_roar_cooldown",
 				"animIntimidateWild": "animation.apex_predator_intimidate_wild",
@@ -29,7 +48,9 @@
 					"contRiddenTag",
 					"contSittingTag",
 					"contTyrannoEndRoarCooldown",
-					"contIntimidate"
+					"contIntimidate",
+					"contTameState",
+					"contBehaviorState"
 				]
 			}
 		},
@@ -149,9 +170,6 @@
 				"minecraft:health": {
 					"value": 30
 				},
-				"minecraft:behavior.random_stroll": {
-					"priority": 13
-				},
 				"minecraft:tameable": {
 					"probability": 0.25,
 					"tame_items": [
@@ -255,24 +273,12 @@
 				}
 			},
 			"rift:tyrannosaurus_tamed": {
-				"minecraft:is_tamed": {},
-				"minecraft:behavior.owner_hurt_by_target": {
-					"priority": 5
-				},
-				"minecraft:behavior.owner_hurt_target": {
-					"priority": 6
-				},
-				"minecraft:behavior.follow_owner": {
-					"priority": 10
-				}
+				"minecraft:is_tamed": {}
 			},
 			"rift:tyrannosaurus_adult_wild": {
 				"minecraft:health": {
 					"value": 160,
 					"max": 160
-				},
-				"minecraft:behavior.random_stroll": {
-					"priority": 13
 				},
 				"minecraft:despawn": {
 					"despawn_from_distance": {}
@@ -822,21 +828,6 @@
 					]
 				}
 			},
-			"rift:tyrannosaurus_sittable": {
-				"minecraft:sittable": {
-					"sit_event": {
-						"event": "rift:made_to_sit_message",
-						"target": "self"
-					},
-					"stand_event": {
-						"event": "rift:made_to_stand_message",
-						"target": "self"
-					}
-				},
-				"minecraft:behavior.stay_while_sitting": {
-					"priority": 0
-				}
-			},
 			"rift:tyrannosaurus_saddled": {
 				"minecraft:is_saddled": {},
 				"minecraft:input_ground_controlled": {},
@@ -887,6 +878,131 @@
 						}
 					],
 					"crouching_skip_interact": true
+				}
+			},
+			"rift:wild_standing": {
+				"minecraft:behavior.random_stroll": {
+					"priority": 13
+				},
+				"minecraft:behavior.random_look_around": {
+					"priority": 14
+				}
+			},
+			"rift:tamed_standing": {
+				"minecraft:behavior.breed": {
+					"priority": 1
+				},
+				"minecraft:behavior.follow_owner": {
+					"priority": 10
+				}
+			},
+			"rift:sitting": {
+				"minecraft:on_target_acquired": {
+					"event": "rift:sitting_on_anger",
+					"target": "self"
+				}
+			},
+			"rift:sitting_angered": {
+				"minecraft:on_target_escape": {
+					"event": "rift:sitting_on_calm",
+				  	"target": "self"
+				}
+			},
+			"rift:wandering": {
+				"minecraft:behavior.breed": {
+					"priority": 1
+				},
+				"minecraft:behavior.random_stroll": {
+					"priority": 13
+				}
+			},
+			"rift:assist_behavior": {
+				"minecraft:behavior.owner_hurt_by_target": {
+					"priority": 5
+				},
+				"minecraft:behavior.owner_hurt_target": {
+					"priority": 6
+				},
+				"minecraft:behavior.hurt_by_target": {
+					"priority": 2,
+					"entity_types": {
+						"filters": {
+						  	"test": "is_family",
+						  	"subject": "other",
+						  	"operator": "!=",
+							"value": "forcedAttack"
+						}
+					}
+				}
+			},
+			"rift:neutral_behavior": {
+				"minecraft:behavior.hurt_by_target": {
+					"priority": 2,
+					"entity_types": {
+						"filters": {
+						  	"test": "is_family",
+						  	"subject": "other",
+						  	"operator": "!=",
+							"value": "forcedAttack"
+						}
+					}
+				}
+			},
+			"rift:aggressive_behavior": {
+				"minecraft:behavior.owner_hurt_by_target": {
+					"priority": 5
+				},
+				"minecraft:behavior.owner_hurt_target": {
+					"priority": 6
+				},
+				"minecraft:behavior.nearest_attackable_target": {
+					"priority": 4,
+					"must_see": true,
+					"within_radius": 48.0,
+					"persist_time": 25,
+					"entity_types": [
+					  	{
+							"filters": {
+								"all_of": [
+									{
+										"test": "in_water",
+										"subject": "other",
+										"value": false
+									},
+									{
+										"test": "has_component",
+										"subject": "other",
+										"operator": "!=",
+										"value": "minecraft:is_tamed"
+									},
+									{
+										"test": "is_family",
+										"subject": "other",
+										"operator": "!=",
+										"value": "player"
+									},
+									{
+										"test": "is_family",
+										"subject": "other",
+										"operator": "!=",
+										"value": "inanimate"
+									}
+								]
+					  		},
+							"max_dist": 64
+					  	}
+					]
+				},
+				"minecraft:behavior.hurt_by_target": {
+					"priority": 2,
+					"entity_types": {
+						"filters": {
+						  	"test": "is_family",
+						  	"subject": "other",
+						  	"operator": "!=",
+							"value": "forcedAttack"
+						}
+					}
 				}
 			},
 			"rift:variant_zero": {
@@ -1112,9 +1228,6 @@
 					"value": 160,
 					"max": 160
 				},
-				"minecraft:behavior.random_stroll": {
-					"priority": 13
-				},
 				"minecraft:behavior.hurt_by_target": {
 					"priority": 2,
 					"entity_types": {
@@ -1182,9 +1295,6 @@
 				"avoid_damage_blocks": true
 			},
 			"minecraft:movement.generic": {},
-			"minecraft:behavior.breed": {
-				"priority": 1
-			},
 			"minecraft:jump.static": {},
 			"minecraft:is_hidden_when_invisible": {},
 			"minecraft:physics": {},
@@ -1278,6 +1388,122 @@
 							"target": "self"
 						},
 						"interact_text": "action.interact.tame"
+					},
+					{
+						"on_interact": {
+							"filters": {
+								"all_of": [
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_tamed"
+									},
+									{
+										"test": "is_sneaking",
+										"subject": "other",
+										"value": true
+									},
+									{
+										"test": "has_equipment",
+										"subject": "other",
+										"domain": "hand",
+										"operator": "!=",
+										"value": "rift:command_staff"
+									},
+									{
+										"test": "has_equipment",
+										"subject": "other",
+										"domain": "hand",
+										"operator": "!=",
+										"value": "minecraft:chest"
+									},
+									{
+										"test": "has_equipment",
+										"subject": "other",
+										"domain": "hand",
+										"operator": "!=",
+										"value": "rift:euthanasia"
+									},
+									{
+										"test": "has_equipment",
+										"subject": "other",
+										"domain": "hand",
+										"operator": "!=",
+										"value": "minecraft:potion"
+									},
+									{
+										"test": "has_equipment",
+										"subject": "other",
+										"domain": "hand",
+										"operator": "!=",
+										"value": "rift:halloween_costume"
+									},
+									{
+										"test": "has_equipment",
+										"subject": "other",
+										"domain": "hand",
+										"operator": "!=",
+										"value": "rift:christmas_costume"
+									},
+									{
+										"test": "has_equipment",
+										"subject": "other",
+										"domain": "hand",
+										"operator": "!=",
+										"value": "rift:birthday_costume"
+									},
+									{
+										"test": "has_equipment",
+										"subject": "other",
+										"domain": "hand",
+										"operator": "!=",
+										"value": "rift:flesh_treat"
+									},
+									{
+										"test": "has_equipment",
+										"subject": "other",
+										"domain": "hand",
+										"operator": "!=",
+										"value": "rift:carrion_treat"
+									},
+									{
+										"test": "has_equipment",
+										"subject": "other",
+										"domain": "hand",
+										"operator": "!=",
+										"value": "minecraft:shears"
+									}
+								]
+							},
+							"event": "rift:manage_state",
+							"target": "self"
+						}
+					},
+					{
+						"on_interact": {
+							"filters": {
+								"all_of": [
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_tamed"
+									},
+									{
+										"test": "is_sneaking",
+										"subject": "other",
+										"value": true
+									},
+									{
+										"test": "has_equipment",
+										"subject": "other",
+										"domain": "hand",
+										"value": "rift:command_staff"
+									}
+								]
+							},
+							"event": "rift:manage_behavior",
+							"target": "self"
+						}
 					},
 					{
 						"on_interact": {
@@ -4233,9 +4459,6 @@
 					}
 				]
 			},
-			"minecraft:behavior.random_look_around": {
-				"priority": 14
-			},
 			"minecraft:environment_sensor": {
 				"triggers": [
 					{
@@ -4373,6 +4596,7 @@
 										"rift:tyrannosaurus_adult",
 										"rift:tyrannosaurus_adult_wild",
 										"rift:tyrannosaurus_hunting",
+										"rift:wild_standing",
 										"rift:variant_zero",
 										"rift:pushable",
 										"rift:can_attack"
@@ -4386,6 +4610,7 @@
 										"rift:tyrannosaurus_adult",
 										"rift:tyrannosaurus_adult_wild",
 										"rift:tyrannosaurus_hunting",
+										"rift:wild_standing",
 										"rift:variant_one",
 										"rift:pushable",
 										"rift:can_attack"
@@ -4399,6 +4624,7 @@
 										"rift:tyrannosaurus_adult",
 										"rift:tyrannosaurus_adult_wild",
 										"rift:tyrannosaurus_hunting",
+										"rift:wild_standing",
 										"rift:variant_two",
 										"rift:pushable",
 										"rift:can_attack"
@@ -4412,6 +4638,7 @@
 										"rift:tyrannosaurus_adult",
 										"rift:tyrannosaurus_adult_wild",
 										"rift:tyrannosaurus_hunting",
+										"rift:wild_standing",
 										"rift:variant_three",
 										"rift:pushable",
 										"rift:can_attack"
@@ -4527,7 +4754,6 @@
 				"add": {
 					"component_groups": [
 						"rift:tyrannosaurus_baby_tamed",
-						"rift:tyrannosaurus_sittable",
 						"rift:tyrannosaurus_tamed"
 					]
 				},
@@ -4537,6 +4763,9 @@
 						"rift:tyrannosaurus_hunting",
 						"rift:tyrannosaurus_not_hunting"
 					]
+				},
+				"set_actor_property": {
+					"rift:behavior_state": "3"
 				}
 			},
 			"rift:attach_saddle": {
@@ -4636,7 +4865,6 @@
 				},
 				"remove": {
 					"component_groups": [
-						"rift:tyrannosaurus_sittable",
 						"rift:pushable",
 						"rift:can_attack",
 						"rift:aggravating_horn_attack"
@@ -4646,7 +4874,6 @@
 			"rift:can_sit": {
 				"add": {
 					"component_groups": [
-						"rift:tyrannosaurus_sittable",
 						"rift:pushable",
 						"rift:can_attack"
 					]
@@ -4664,6 +4891,165 @@
 					]
 				}
 			},
+			"rift:on_standing": {
+				"add": {
+					"component_groups": [
+						"rift:tamed_standing"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:wild_standing",
+						"rift:sitting",
+						"rift:sitting_angered",
+						"rift:wandering"
+					]
+				},
+				"run_command": {
+					"command": [
+						"tag @s remove sitting",
+						"tellraw @p {\"rawtext\":[{\"text\":\"Your Tyrannosaurus is currently following\"}]}"
+					]
+				}
+			},
+			"rift:on_sitting": {
+				"add": {
+					"component_groups": [
+						"rift:sitting"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:wild_standing",
+						"rift:tamed_standing",
+						"rift:sitting_angered",
+						"rift:wandering"
+					]
+				},
+				"run_command": {
+					"command": [
+						"tag @s add sitting",
+						"tellraw @p {\"rawtext\":[{\"text\":\"Your Tyrannosaurus is currently sitting\"}]}"
+					]
+				}
+			},
+			"rift:on_wandering": {
+				"add": {
+					"component_groups": [
+						"rift:wandering"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:wild_standing",
+						"rift:tamed_standing",
+						"rift:sitting",
+						"rift:sitting_angered"
+					]
+				},
+				"run_command": {
+					"command": [
+						"tag @s remove sitting",
+						"tellraw @p {\"rawtext\":[{\"text\":\"Your Tyrannosaurus is currently wandering\"}]}"
+					]
+				}
+			},
+			"rift:sitting_on_anger": {
+				"add": {
+					"component_groups": [
+						"rift:sitting_angered"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:sitting"
+					]
+				}
+			},
+			"rift:sitting_on_calm": {
+				"add": {
+					"component_groups": [
+						"rift:sitting"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:sitting_angered"
+					]
+				}
+			},
+			"rift:on_assist_behavior": {
+				"add": {
+					"component_groups": [
+						"rift:assist_behavior"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:neutral_behavior",
+						"rift:aggressive_behavior"
+					]
+				},
+				"run_command": {
+					"command": [
+						"tag @s remove hunting",
+						"tellraw @p {\"rawtext\":[{\"text\":\"Your Tyrannosaurus will now assist you in combat\"}]}"
+					]
+				}
+			},
+			"rift:on_neutral_behavior": {
+				"add": {
+					"component_groups": [
+						"rift:neutral_behavior"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:assist_behavior",
+						"rift:aggressive_behavior"
+					]
+				},
+				"run_command": {
+					"command": [
+						"tag @s remove hunting",
+						"tellraw @p {\"rawtext\":[{\"text\":\"Your Tyrannosaurus will now be neutral\"}]}"
+					]
+				}
+			},
+			"rift:on_aggressive_behavior": {
+				"add": {
+					"component_groups": [
+						"rift:aggressive_behavior"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:assist_behavior",
+						"rift:neutral_behavior"
+					]
+				},
+				"run_command": {
+					"command": [
+						"tag @s add hunting",
+						"tellraw @p {\"rawtext\":[{\"text\":\"Your Tyrannosaurus will now be aggressive\"}]}"
+					]
+				}
+			},
+			"rift:on_passive_behavior": {
+				"remove": {
+					"component_groups": [
+						"rift:assist_behavior",
+						"rift:neutral_behavior",
+						"rift:aggressive_behavior"
+					]
+				},
+				"run_command": {
+					"command": [
+						"tag @s remove hunting",
+						"tellraw @p {\"rawtext\":[{\"text\":\"Your Tyrannosaurus will now be passive\"}]}"
+					]
+				}
+			},
 			"rift:spawn_as_baby": {
 				"randomize": [
 					{
@@ -4672,6 +5058,7 @@
 							"component_groups": [
 								"rift:tyrannosaurus_baby",
 								"rift:tyrannosaurus_baby_wild",
+								"rift:wild_standing",
 								"rift:variant_zero",
 								"rift:pushable",
 								"rift:can_attack"
@@ -4684,6 +5071,7 @@
 							"component_groups": [
 								"rift:tyrannosaurus_baby",
 								"rift:tyrannosaurus_baby_wild",
+								"rift:wild_standing",
 								"rift:variant_one",
 								"rift:pushable",
 								"rift:can_attack"
@@ -4696,6 +5084,7 @@
 							"component_groups": [
 								"rift:tyrannosaurus_baby",
 								"rift:tyrannosaurus_baby_wild",
+								"rift:wild_standing",
 								"rift:variant_two",
 								"rift:pushable",
 								"rift:can_attack"
@@ -4708,6 +5097,7 @@
 							"component_groups": [
 								"rift:tyrannosaurus_baby",
 								"rift:tyrannosaurus_baby_wild",
+								"rift:wild_standing",
 								"rift:variant_three",
 								"rift:pushable",
 								"rift:can_attack"
@@ -5485,18 +5875,14 @@
 					]
 				}
 			},
-			"rift:made_to_sit_message": {
-				"run_command": {
-					"command": [
-						"tellraw @p {\"rawtext\":[{\"text\":\"Your Tyrannosaurus is currently sitting\"}]}"
-					]
+			"rift:manage_state": {
+				"set_actor_property": {
+					"rift:tame_state": "(query.actor_property('rift:tame_state') >= 0 && query.actor_property('rift:tame_state') <= 1) ? query.actor_property('rift:tame_state') + 1 : 0"
 				}
 			},
-			"rift:made_to_stand_message": {
-				"run_command": {
-					"command": [
-						"tellraw @p {\"rawtext\":[{\"text\":\"Your Tyrannosaurus is currently standing\"}]}"
-					]
+			"rift:manage_behavior": {
+				"set_actor_property": {
+					"rift:behavior_state": "!query.is_baby ? ((query.actor_property('rift:behavior_state') >= 0 && query.actor_property('rift:behavior_state') <= 2) ? query.actor_property('rift:behavior_state') + 1 : 0) : 3"
 				}
 			},
 			//for potion effects
