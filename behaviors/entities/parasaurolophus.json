@@ -9,7 +9,7 @@
 			"properties": {
                 "rift:tame_state": {
                     "values": {
-						"min": 0, //0 for standing, 1 for sitting, 2 for wandering, 3 for turret
+						"min": 0, //0 for standing, 1 for sitting, 2 for wandering
 						"max": 2
 					},
 					"default": 0,
@@ -22,6 +22,7 @@
 				"contBabyTag": "controller.animation.add_baby_tag",
 				"contRiddenTag": "controller.animation.add_ridden_tag",
 				"contSittingTag": "controller.animation.add_sitting_tag",
+				"contTameState": "controller.animation.manage_tame_state",
 				"animForcedAttack": "animation.forced_attack_parasaurolophus"
 			},
 			"scripts": {
@@ -30,7 +31,8 @@
 					"contTameTag",
 					"contBabyTag",
 					"contRiddenTag",
-					"contSittingTag"
+					"contSittingTag",
+					"contTameState"
 				]
 			}
         },
@@ -114,9 +116,6 @@
 						"event": "rift:baby_on_tame",
 						"target": "self"
 					}
-				},
-				"minecraft:behavior.random_stroll": {
-					"priority": 6
 				},
 				"minecraft:group_size": {
 					"radius": 10,
@@ -234,9 +233,6 @@
 						"event": "rift:adult_on_tame",
 						"target": "self"
 					}
-				},
-				"minecraft:behavior.random_stroll": {
-					"priority": 6
 				},
 				"minecraft:group_size": {
 					"radius": 10,
@@ -499,6 +495,27 @@
             "rift:parasaurolophus_tamed": {
                 "minecraft:is_tamed": {}
             },
+			"rift:wild_standing": {
+				"minecraft:behavior.random_stroll": {
+					"priority": 6
+				},
+				"minecraft:behavior.random_look_around": {
+					"priority": 7
+				}
+			},
+			"rift:tamed_standing": {
+				"minecraft:behavior.breed": {
+					"priority": 1
+				}
+			},
+			"rift:wandering": {
+				"minecraft:behavior.breed": {
+					"priority": 1
+				},
+				"minecraft:behavior.random_stroll": {
+					"priority": 6
+				}
+			},
             "rift:variant_one": {
                 "minecraft:variant": {
                     "value": 0
@@ -518,21 +535,6 @@
                 "minecraft:variant": {
                     "value": 3
                 }
-            },
-            "rift:parasaurolophus_sittable": {
-				"minecraft:sittable": {
-					"sit_event": {
-						"event": "rift:made_to_sit_message",
-						"target": "self"
-					},
-					"stand_event": {
-						"event": "rift:made_to_stand_message",
-						"target": "self"
-					}
-				},
-				"minecraft:behavior.stay_while_sitting": {
-					"priority": 0
-				}
             },
             "rift:is_rideable": {
                 "minecraft:rideable": {
@@ -835,12 +837,6 @@
             "minecraft:movement": {
                 "value": 0.25
             },
-            "minecraft:behavior.random_look_around": {
-				"priority": 7
-			},
-			"minecraft:behavior.breed": {
-				"priority": 1
-			},
 			"minecraft:jump.static": {},
             "minecraft:behavior.move_to_land": {},
             "minecraft:behavior.float": {},
@@ -904,6 +900,75 @@
 							"target": "self"
 						},
 						"interact_text": "action.interact.tame"
+					},
+					{
+						"on_interact": {
+							"filters": {
+								"all_of": [
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_tamed"
+									},
+									{
+										"test": "is_sneaking",
+										"subject": "other",
+										"value": true
+									},
+									{
+										"test": "has_equipment",
+										"subject": "other",
+										"domain": "hand",
+										"operator": "!=",
+										"value": "rift:command_staff"
+									},
+									{
+										"test": "has_equipment",
+										"subject": "other",
+										"domain": "hand",
+										"operator": "!=",
+										"value": "minecraft:chest"
+									},
+									{
+										"test": "has_equipment",
+										"subject": "other",
+										"domain": "hand",
+										"operator": "!=",
+										"value": "rift:euthanasia"
+									},
+									{
+										"test": "has_equipment",
+										"subject": "other",
+										"domain": "hand",
+										"operator": "!=",
+										"value": "minecraft:potion"
+									},
+									{
+										"test": "has_equipment",
+										"subject": "other",
+										"domain": "hand",
+										"operator": "!=",
+										"value": "rift:berry_treat"
+									},
+									{
+										"test": "has_equipment",
+										"subject": "other",
+										"domain": "hand",
+										"operator": "!=",
+										"value": "rift:grassy_treat"
+									},
+									{
+										"test": "has_equipment",
+										"subject": "other",
+										"domain": "hand",
+										"operator": "!=",
+										"value": "rift:rooted_treat"
+									}
+								]
+							},
+							"event": "rift:manage_state",
+							"target": "self"
+						}
 					},
 					{
 						"on_interact": {
@@ -3392,6 +3457,7 @@
 										"rift:default_targets",
                                         "rift:parasaurolophus_adult_calm",
                                         "rift:is_quadrapedal",
+										"rift:wild_standing",
 										"rift:variant_one",
 										"rift:pushable"
 									]
@@ -3406,6 +3472,7 @@
 										"rift:default_targets",
                                         "rift:parasaurolophus_adult_calm",
                                         "rift:is_quadrapedal",
+										"rift:wild_standing",
 										"rift:variant_two",
 										"rift:pushable"
 									]
@@ -3420,6 +3487,7 @@
 										"rift:default_targets",
                                         "rift:parasaurolophus_adult_calm",
                                         "rift:is_quadrapedal",
+										"rift:wild_standing",
 										"rift:variant_three",
 										"rift:pushable"
 									]
@@ -3434,6 +3502,7 @@
 										"rift:default_targets",
                                         "rift:parasaurolophus_adult_calm",
                                         "rift:is_quadrapedal",
+										"rift:wild_standing",
 										"rift:variant_four",
 										"rift:pushable"
 									]
@@ -3502,7 +3571,6 @@
 						"rift:parasaurolophus_baby",
 						"rift:parasaurolophus_baby_tamed",
 						"rift:parasaurolophus_tamed",
-						"rift:parasaurolophus_sittable",
 						"rift:pushable"
 					]
 				}
@@ -3557,7 +3625,6 @@
                 "add": {
 					"component_groups": [
 						"rift:parasaurolophus_baby_tamed",
-						"rift:parasaurolophus_sittable",
 						"rift:parasaurolophus_tamed",
 						"rift:parasaurolophus_not_in_turret_mode"
 					]
@@ -3598,7 +3665,6 @@
 				"add": {
 					"component_groups": [
 						"rift:parasaurolophus_adult_tamed",
-						"rift:parasaurolophus_sittable",
                         "rift:parasaurolophus_tamed",
 						"rift:is_rideable",
 						"rift:parasaurolophus_not_in_turret_mode"
@@ -3611,7 +3677,8 @@
                         "rift:parasaurolophus_adult_calm",
                         "rift:is_bipedal",
                         "rift:is_quadrapedal",
-						"rift:default_targets"
+						"rift:default_targets",
+						"rift:wild_standing"
 					]
 				}
 			},
@@ -3696,6 +3763,7 @@
 								"rift:parasaurolophus_baby",
 								"rift:parasaurolophus_baby_wild",
 								"rift:parasaurolophus_baby_calm",
+								"rift:wild_standing",
 								"rift:variant_one",
 								"rift:pushable"
 							]
@@ -3708,6 +3776,7 @@
 								"rift:parasaurolophus_baby",
 								"rift:parasaurolophus_baby_wild",
 								"rift:parasaurolophus_baby_calm",
+								"rift:wild_standing",
 								"rift:variant_two",
 								"rift:pushable"
 							]
@@ -3720,6 +3789,7 @@
 								"rift:parasaurolophus_baby",
 								"rift:parasaurolophus_baby_wild",
 								"rift:parasaurolophus_baby_calm",
+								"rift:wild_standing",
 								"rift:variant_three",
 								"rift:pushable"
 							]
@@ -3732,6 +3802,7 @@
 								"rift:parasaurolophus_baby",
 								"rift:parasaurolophus_baby_wild",
 								"rift:parasaurolophus_baby_calm",
+								"rift:wild_standing",
 								"rift:variant_four",
 								"rift:pushable"
 							]
@@ -3747,7 +3818,6 @@
 				},
 				"remove": {
 					"component_groups": [
-						"rift:parasaurolophus_sittable",
 						"rift:pushable"
 					]
 				}
@@ -3755,7 +3825,6 @@
 			"rift:can_sit": {
 				"add": {
 					"component_groups": [
-						"rift:parasaurolophus_sittable",
 						"rift:pushable"
 					]
 				},
@@ -3765,6 +3834,62 @@
 					]
 				}
             },
+			"rift:on_standing": {
+				"add": {
+					"component_groups": [
+						"rift:parasaurolophus_not_in_turret_mode",
+						"rift:tamed_standing"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:wild_standing",
+						"rift:wandering"
+					]
+				},
+				"run_command": {
+					"command": [
+						"tag @s remove sitting",
+						"tellraw @p {\"rawtext\":[{\"text\":\"Your Parasaurolophus is currently following\"}]}"
+					]
+				}
+			},
+			"rift:on_sitting": {
+				"remove": {
+					"component_groups": [
+						"rift:wild_standing",
+						"rift:tamed_standing",
+						"rift:wandering",
+						"rift:parasaurolophus_not_in_turret_mode"
+					]
+				},
+				"run_command": {
+					"command": [
+						"tag @s add sitting",
+						"tellraw @p {\"rawtext\":[{\"text\":\"Your Parasaurolophus is currently sitting\"}]}"
+					]
+				}
+			},
+			"rift:on_wandering": {
+				"add": {
+					"component_groups": [
+						"rift:wandering"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:wild_standing",
+						"rift:tamed_standing",
+						"rift:parasaurolophus_not_in_turret_mode"
+					]
+				},
+				"run_command": {
+					"command": [
+						"tag @s remove sitting",
+						"tellraw @p {\"rawtext\":[{\"text\":\"Your Parasaurolophus is currently wandering\"}]}"
+					]
+				}
+			},
             "rift:stop_calling": {
                 "remove": {
                     "component_groups": [
@@ -3891,9 +4016,7 @@
 				},
 				"remove": {
 					"component_groups": [
-						"rift:parasaurolophus_sittable",
 						"rift:is_rideable",
-						"rift:parasaurolophus_not_in_turret_mode",
 						"rift:reset_movement"
 					]
 				},
@@ -3901,14 +4024,15 @@
 					"command": [
 						"tellraw @p {\"rawtext\":[{\"text\":\"Turret Mode Enabled\"}]}"
 					]
+				},
+				"set_actor_property": {
+					"rift:tame_state": "1"
 				}
 			},
 			"rift:disable_turret_mode": {
 				"add": {
 					"component_groups": [
-						"rift:parasaurolophus_sittable",
 						"rift:is_rideable",
-						"rift:parasaurolophus_not_in_turret_mode",
 						"rift:reset_movement"
 					]
 				},
@@ -4263,18 +4387,9 @@
 					]
 			  	}
 			},
-			"rift:made_to_sit_message": {
-				"run_command": {
-					"command": [
-						"tellraw @p {\"rawtext\":[{\"text\":\"Your Parasaurolophus is currently sitting\"}]}"
-					]
-				}
-			},
-			"rift:made_to_stand_message": {
-				"run_command": {
-					"command": [
-						"tellraw @p {\"rawtext\":[{\"text\":\"Your Parasaurolophus is currently standing\"}]}"
-					]
+			"rift:manage_state": {
+				"set_actor_property": {
+					"rift:tame_state": "!query.is_sheared ? ((query.actor_property('rift:tame_state') >= 0 && query.actor_property('rift:tame_state') <= 1) ? query.actor_property('rift:tame_state') + 1 : 0) : 1"
 				}
 			},
 			//for potion effects
