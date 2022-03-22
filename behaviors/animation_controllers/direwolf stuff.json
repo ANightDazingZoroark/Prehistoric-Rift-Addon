@@ -186,6 +186,68 @@
                     ]
                 }
             }
+        },
+        "controller.animation.direwolf_werewolf_can_throw_boulder": {
+            "initial_state": "default",
+            "states": {
+                "default": {
+                    "transitions": [
+                        {
+                            "countdown": "query.is_ignited && query.has_target"
+                        }
+                    ]
+                },
+                "countdown": {
+                    "animations": [
+                        "animCanThrowCountdown"
+                    ],
+                    "transitions": [
+                        {
+                            "canThrow": "query.all_animations_finished"
+                        },
+                        {
+                            "default": "!query.has_target || !query.is_ignited"
+                        }
+                    ]
+                },
+                "canThrow": {
+                    "transitions": [
+                        {
+                            "default": "query.actor_property('rift:is_throwing_boulder') == false || (!query.has_target && !query.is_ignited)"
+                        }
+                    ],
+                    "on_entry": [
+                        "@s rift:activate_boulder_throw_mode"
+                    ]
+                }
+            }
+        },
+        "controller.animation.direwolf_werewolf_boulder_throwing": {
+            "initial_state": "default",
+            "states": {
+                "default": {
+                    "transitions": [
+                        {
+                            "throwing": "query.actor_property('rift:is_throwing_boulder') == true"
+                        }
+                    ]
+                },
+                "throwing": {
+                    "animations": [
+                        "animThrowBoulder"
+                    ],
+                    "transitions": [
+                        {
+                            "default": "query.all_animations_finished"
+                        }
+                    ],
+                    "on_exit": [
+                        "/effect @s slowness 0",
+                        "@s rift:boulder_throw_stop",
+                        "@s rift:deactivate_boulder_throw_mode"
+                    ]
+                }
+            }
         }
     }
 }

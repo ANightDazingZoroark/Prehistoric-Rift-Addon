@@ -7,12 +7,6 @@
             "is_summonable": true,
             "is_experimental": false,
 			"properties": {
-                "rift:was_ridden": {
-                    "values": [
-                        false,
-						true
-                    ]
-                },
 				"rift:forced_attack_mode": {
                     "values": {
 						"min": 0, //0 for nothing, 1 for normal bite, 2 for werewolf mode bite, 3 for werewolf mode slash, 4 for boulder throw
@@ -20,6 +14,14 @@
 					},
 					"default": 0
 				},
+				"rift:is_throwing_boulder": {
+                    "values": [
+                        false,
+						true
+                    ],
+					"default": false,
+					"client_sync": true
+                },
                 "rift:tame_state": {
                     "values": {
 						"min": 0, //0 for standing, 1 for sitting, 2 for wandering
@@ -42,12 +44,16 @@
 				"contPackBuff": "controller.animation.wild_direwolf_pack_buff",
 				"contWildRemoveBuffs": "controller.animation.wild_direwolf_remove_buffs",
 				"contSwitchBetweenMeleeAttacks": "controller.animation.direwolf_werewolf_switch_between_melee_attacks",
+				"contCanThrowBoulder": "controller.animation.direwolf_werewolf_can_throw_boulder",
+				"contBoulderThrowing": "controller.animation.direwolf_werewolf_boulder_throwing",
 				"contTameTag": "controller.animation.add_tame_tag",
 				"contBabyTag": "controller.animation.add_baby_tag",
 				"contRiddenTag": "controller.animation.add_ridden_tag",
 				"contTameState": "controller.animation.manage_tame_state",
 				"contBehaviorState": "controller.animation.manage_tame_behavior",
-				"animForcedAttackNormal": "animation.forced_attack_direwolf"
+				"animForcedAttackNormal": "animation.forced_attack_direwolf",
+				"animCanThrowCountdown": "animation.direwolf_werewolf_can_throw_countdown",
+				"animThrowBoulder": "animation.direwolf_werewolf_throw_boulder"
 			},
 			"scripts": {
 				"animate": [
@@ -56,6 +62,8 @@
 					"contPackBuff",
 					"contWildRemoveBuffs",
 					"contSwitchBetweenMeleeAttacks",
+					"contCanThrowBoulder",
+					"contBoulderThrowing",
 					"contTameTag",
 					"contBabyTag",
 					"contRiddenTag",
@@ -670,9 +678,6 @@
 					"attack_interval_min": 3,
 					"attack_interval_max": 5,
 					"attack_radius": 64
-				},
-				"minecraft:shooter": {
-					"def": "rift:direwolf_werewolf_boulder"
 				}
 			},
 			"rift:direwolf_adult_calm": {
@@ -3628,6 +3633,25 @@
 							"filters": {
 								"all_of": [
 									{
+										"test": "has_damage",
+										"subject": "self",
+										"value": "fall"
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_ignited"
+									}
+								]
+							}
+						},
+						"deals_damage": false
+					},
+					{
+						"on_damage": {
+							"filters": {
+								"all_of": [
+									{
 										"test": "is_family",
 										"subject": "other",
 										"value": "direwolf"
@@ -4432,7 +4456,8 @@
 					{
 						"add": {
 							"component_groups": [
-								"rift:werewolf_mode_attack"
+								"rift:werewolf_mode_attack",
+								"rift:can_pounce_attack_werewolf"
 							]
 						},
 						"remove": {
@@ -4488,6 +4513,26 @@
 						}
 					}
 				]
+			},
+			"rift:activate_boulder_throw_mode": {
+				"add": {
+					"component_groups": [
+						"rift:can_boulder_throw_werewolf"
+					]
+				},
+				"set_actor_property": {
+					"rift:is_throwing_boulder": "true"
+				}
+			},
+			"rift:deactivate_boulder_throw_mode": {
+				"remove": {
+					"component_groups": [
+						"rift:can_boulder_throw_werewolf"
+					]
+				},
+				"set_actor_property": {
+					"rift:is_throwing_boulder": "false"
+				}
 			},
 			"rift:transform_into_normal": {
 				"sequence": [
@@ -5125,7 +5170,6 @@
 				"remove": {
 					"component_groups": [
 						"rift:pushable",
-						"rift:normal_mode_attack",
 						"rift:aggravating_horn_attack"
 					]
 				}
@@ -5133,8 +5177,7 @@
 			"rift:can_sit": {
 				"add": {
 					"component_groups": [
-						"rift:pushable",
-						"rift:normal_mode_attack"
+						"rift:pushable"
 					]
 				},
 				"remove": {
@@ -5590,6 +5633,20 @@
 				"run_command": {
 					"command": [
 						"tellraw @p {\"rawtext\":[{\"text\":\"Treats are for healing and breeding only! Use regular foods to heal adults or speed up growth for babies!\"}]}"
+					]
+				}
+			},
+			"rift:boulder_throw": {
+				"add": {
+					"component_groups": [
+						"rift:throwing_boulder_werewolf"
+					]
+				}
+			},
+			"rift:boulder_throw_stop": {
+				"remove": {
+					"component_groups": [
+						"rift:throwing_boulder_werewolf"
 					]
 				}
 			}

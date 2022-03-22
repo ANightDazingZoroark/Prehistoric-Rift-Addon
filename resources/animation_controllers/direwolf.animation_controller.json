@@ -7,15 +7,24 @@
 				"default": {
 					"animations": [
 						{
-							"animNormalStanding": "query.ground_speed == 0"
+							"animNormalStanding": "!query.is_ignited && query.ground_speed == 0"
 						},
 						{
-							"animNormalWalk": "query.ground_speed > 0"
+							"animNormalWalk": "!query.is_ignited && query.ground_speed > 0"
+						},
+						{
+							"animWerewolfStanding": "query.is_ignited && query.ground_speed == 0"
+						},
+						{
+							"animWerewolfWalk": "query.is_ignited && query.ground_speed > 0"
 						}
 					],
 					"transitions": [
 						{
-							"sitting": "query.actor_property('rift:tame_state') == 1 && !query.has_target && !query.has_rider"
+							"sitting": "query.actor_property('rift:tame_state') == 1 && !query.has_target && !query.has_rider && !query.is_ignited"
+						},
+						{
+							"notOnGround": "query.is_ignited && !query.is_on_ground"
 						}
 					]
 				},
@@ -25,7 +34,17 @@
 					],
 					"transitions": [
 						{
-							"default": "query.actor_property('rift:tame_state') != 1 || query.has_target || query.has_rider"
+							"default": "query.actor_property('rift:tame_state') != 1 || query.has_target || query.has_rider || query.is_ignited"
+						}
+					]
+				},
+				"notOnGround": {
+					"animations": [
+						"animWerewolfPounce"
+					],
+					"transitions": [
+						{
+							"default": "!query.is_ignited || query.is_on_ground"
 						}
 					]
 				}
@@ -94,36 +113,6 @@
 				}
 			}
 		},
-        "controller.animation.direwolf_werewolf_movement": {
-			"initial_state": "default",
-			"states": {
-				"default": {
-					"animations": [
-						{
-							"animStanding": "query.ground_speed == 0"
-						},
-						{
-							"animWalk": "query.ground_speed > 0"
-						}
-					],
-					"transitions": [
-						{
-							"notOnGround": "!query.is_on_ground"
-						}
-					]
-				},
-				"notOnGround": {
-					"animations": [
-						"animPounce"
-					],
-					"transitions": [
-						{
-							"default": "query.is_on_ground"
-						}
-					]
-				}
-			}
-        },
         "controller.animation.direwolf_werewolf_attack": {
 			"initial_state": "default",
 			"states": {
@@ -149,7 +138,7 @@
 				},
 				"bite": {
 					"animations": [
-						"animBite"
+						"animWerewolfBite"
 					],
 					"transitions": [
 						{
@@ -172,7 +161,7 @@
 				},
 				"clawOne": {
 					"animations": [
-						"animScratchOne"
+						"animWerewolfScratchOne"
 					],
 					"transitions": [
 						{
@@ -182,7 +171,7 @@
 				},
 				"clawTwo": {
 					"animations": [
-						"animScratchTwo"
+						"animWerewolfScratchTwo"
 					],
 					"transitions": [
 						{
@@ -191,28 +180,6 @@
 					]
 				}
 			}
-        },
-		"controller.animation.direwolf_werewolf_boulder_throw": {
-			"initial_state": "default",
-			"states": {
-				"default": {
-					"transitions": [
-						{
-							"throwing": "query.is_charged"
-						}
-					]
-				},
-				"throwing": {
-					"animations": [
-						"animBoulderHurl"
-					],
-					"transitions": [
-						{
-							"default": "query.all_animations_finished"
-						}
-					]
-				}
-			}
-		}
+        }
     }
 }
