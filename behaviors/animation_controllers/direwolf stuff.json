@@ -88,14 +88,14 @@
                 "default": {
                     "transitions": [
                         {
-                            "transformed": "query.out_of_control && ((query.time_of_day >= 0.75) || (query.time_of_day < 0.25))"
+                            "transformed": "query.actor_property('rift:forced_transform') == true || (!query.is_illager_captain && query.out_of_control && ((query.time_of_day >= 0.75) || (query.time_of_day < 0.25)))"
                         }
                     ]
                 },
                 "transformed": {
                     "transitions": [
                         {
-                            "default": "!query.biome_has_any_tag('nether', 'the_end') && (query.time_of_day < 0.75) && (query.time_of_day >= 0.25)"
+                            "default": "query.actor_property('rift:forced_transform') == false && !query.biome_has_any_tag('nether', 'the_end') && (query.time_of_day < 0.75) && (query.time_of_day >= 0.25)"
                         }
                     ],
                     "on_entry": [
@@ -104,6 +104,49 @@
                     "on_exit": [
                         "@s rift:transform_into_normal"
                     ]
+                }
+            }
+        },
+        "controller.animation.direwolf_untransformability_management": {
+            "initial_state": "default",
+            "states": {
+                "default": {
+                    "transitions": [
+                        {
+                            "cannotTransform": "query.is_illager_captain"
+                        }
+                    ]
+                },
+                "cannotTransform": {
+                    "transitions": [
+                        {
+                            "default": "!query.biome_has_any_tag('nether', 'the_end') && (query.time_of_day < 0.75) && (query.time_of_day >= 0.25)"
+                        }
+                    ],
+                    "on_exit": [
+                        "@s rift:can_transform_again"
+                    ]
+                }
+            }
+        },
+        "controller.animation.direwolf_forced_transform_management": {
+            "initial_state": "default",
+            "states": {
+                "default": {
+                    "transitions": [
+                        {
+                            "forcedTransform": "query.actor_property('rift:forced_transform') == true"
+                        }
+                    ]
+                },
+                "forcedTransform": {
+                    "animations": [],
+                    "transitions": [
+                        {
+                            "default": "query.actor_property('rift:forced_transform') == false"
+                        }
+                    ],
+                    "on_exit": []
                 }
             }
         },

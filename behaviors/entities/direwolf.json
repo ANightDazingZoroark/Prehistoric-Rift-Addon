@@ -14,6 +14,14 @@
 					},
 					"default": 0
 				},
+				"rift:forced_transform": {
+                    "values": [
+                        false,
+						true
+                    ],
+					"default": false,
+					"client_sync": true
+                },
 				"rift:is_throwing_boulder": {
                     "values": [
                         false,
@@ -40,6 +48,7 @@
 			},
 			"animations": {
 				"contTransform": "controller.animation.direwolf_transform",
+				"contUntransformability": "controller.animation.direwolf_untransformability_management",
 				"contDirewolfUseBite": "controller.animation.direwolf_forced_use_bite",
 				"contPackBuff": "controller.animation.wild_direwolf_pack_buff",
 				"contWildRemoveBuffs": "controller.animation.wild_direwolf_remove_buffs",
@@ -58,6 +67,7 @@
 			"scripts": {
 				"animate": [
 					"contTransform",
+					"contUntransformability",
 					"contDirewolfUseBite",
 					"contPackBuff",
 					"contWildRemoveBuffs",
@@ -1358,10 +1368,54 @@
 					}
 				}
 			},
+			"rift:forcibly_transform_into_normal_wild_one": {
+				"minecraft:transformation": {
+					"into": "rift:direwolf<rift:forced_transform_into_normal_wild_one>"
+				}
+			},
+			"rift:forcibly_transform_into_normal_wild_two": {
+				"minecraft:transformation": {
+					"into": "rift:direwolf<rift:forced_transform_into_normal_wild_two>"
+				}
+			},
+			"rift:forcibly_transform_into_normal_wild_three": {
+				"minecraft:transformation": {
+					"into": "rift:direwolf<rift:forced_transform_into_normal_wild_three>"
+				}
+			},
+			"rift:forcibly_transform_into_normal_wild_four": {
+				"minecraft:transformation": {
+					"into": "rift:direwolf<rift:forced_transform_into_normal_wild_four>"
+				}
+			},
+			"rift:forcibly_transform_into_normal_tamed_one": {
+				"minecraft:transformation": {
+					"into": "rift:direwolf<rift:forced_transform_into_normal_tamed_one>",
+					"keep_owner": true
+				}
+			},
+			"rift:forcibly_transform_into_normal_tamed_two": {
+				"minecraft:transformation": {
+					"into": "rift:direwolf<rift:forced_transform_into_normal_tamed_two>",
+					"keep_owner": true
+				}
+			},
+			"rift:forcibly_transform_into_normal_tamed_three": {
+				"minecraft:transformation": {
+					"into": "rift:direwolf<rift:forced_transform_into_normal_tamed_three>",
+					"keep_owner": true
+				}
+			},
+			"rift:forcibly_transform_into_normal_tamed_four": {
+				"minecraft:transformation": {
+					"into": "rift:direwolf<rift:forced_transform_into_normal_tamed_four>",
+					"keep_owner": true
+				}
+			},
 			"rift:can_transform": {
 				"minecraft:out_of_control": {}
 			},
-			"rift:forced_transform": {
+			"rift:forced_transformed_back": {
 				"minecraft:is_illager_captain": {}
 			},
 			"rift:wild_standing": {
@@ -1860,7 +1914,8 @@
 									{
 										"test": "has_component",
 										"subject": "self",
-										"value": "minecraft:is_illager_captain"
+										"operator": "!=",
+										"value": "minecraft:is_ignited"
 									},
 									{
 										"test": "has_equipment",
@@ -3652,6 +3707,25 @@
 							"filters": {
 								"all_of": [
 									{
+										"test": "has_damage",
+										"subject": "self",
+										"value": "fatal"
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_ignited"
+									}
+								]
+							},
+							"event": "rift:start_forced_transform_into_normal"
+						}
+					},
+					{
+						"on_damage": {
+							"filters": {
+								"all_of": [
+									{
 										"test": "is_family",
 										"subject": "other",
 										"value": "direwolf"
@@ -4595,6 +4669,428 @@
 					}
 				]
 			},
+			"rift:start_forced_transform_into_normal": {
+				"sequence": [
+					{
+						"filters": {
+							"all_of": [
+								{
+									"test": "is_variant",
+									"subject": "self",
+									"value": 0
+								},
+								{
+									"test": "has_component",
+									"subject": "self",
+									"operator": "!=",
+									"value": "minecraft:is_tamed"
+								}
+							]
+						},
+						"add": {
+							"component_groups": [
+								"rift:forcibly_transform_into_normal_wild_one"
+							]
+						}
+					},
+					{
+						"filters": {
+							"all_of": [
+								{
+									"test": "is_variant",
+									"subject": "self",
+									"value": 1
+								},
+								{
+									"test": "has_component",
+									"subject": "self",
+									"operator": "!=",
+									"value": "minecraft:is_tamed"
+								}
+							]
+						},
+						"add": {
+							"component_groups": [
+								"rift:forcibly_transform_into_normal_wild_two"
+							]
+						}
+					},
+					{
+						"filters": {
+							"all_of": [
+								{
+									"test": "is_variant",
+									"subject": "self",
+									"value": 2
+								},
+								{
+									"test": "has_component",
+									"subject": "self",
+									"operator": "!=",
+									"value": "minecraft:is_tamed"
+								}
+							]
+						},
+						"add": {
+							"component_groups": [
+								"rift:forcibly_transform_into_normal_wild_three"
+							]
+						}
+					},
+					{
+						"filters": {
+							"all_of": [
+								{
+									"test": "is_variant",
+									"subject": "self",
+									"value": 3
+								},
+								{
+									"test": "has_component",
+									"subject": "self",
+									"operator": "!=",
+									"value": "minecraft:is_tamed"
+								}
+							]
+						},
+						"add": {
+							"component_groups": [
+								"rift:forcibly_transform_into_normal_wild_four"
+							]
+						}
+					},
+					
+					{
+						"filters": {
+							"all_of": [
+								{
+									"test": "is_variant",
+									"subject": "self",
+									"value": 0
+								},
+								{
+									"test": "has_component",
+									"subject": "self",
+									"value": "minecraft:is_tamed"
+								}
+							]
+						},
+						"add": {
+							"component_groups": [
+								"rift:forcibly_transform_into_normal_tamed_one"
+							]
+						}
+					},
+					{
+						"filters": {
+							"all_of": [
+								{
+									"test": "is_variant",
+									"subject": "self",
+									"value": 1
+								},
+								{
+									"test": "has_component",
+									"subject": "self",
+									"value": "minecraft:is_tamed"
+								}
+							]
+						},
+						"add": {
+							"component_groups": [
+								"rift:forcibly_transform_into_normal_tamed_two"
+							]
+						}
+					},
+					{
+						"filters": {
+							"all_of": [
+								{
+									"test": "is_variant",
+									"subject": "self",
+									"value": 2
+								},
+								{
+									"test": "has_component",
+									"subject": "self",
+									"value": "minecraft:is_tamed"
+								}
+							]
+						},
+						"add": {
+							"component_groups": [
+								"rift:forcibly_transform_into_normal_tamed_three"
+							]
+						}
+					},
+					{
+						"filters": {
+							"all_of": [
+								{
+									"test": "is_variant",
+									"subject": "self",
+									"value": 3
+								},
+								{
+									"test": "has_component",
+									"subject": "self",
+									"value": "minecraft:is_tamed"
+								}
+							]
+						},
+						"add": {
+							"component_groups": [
+								"rift:forcibly_transform_into_normal_tamed_four"
+							]
+						}
+					}
+				]
+			},
+			"rift:forced_transform_into_normal_wild_one": {
+				"add": {
+					"component_groups": [
+						"rift:variant_one",
+						"rift:direwolf_adult",
+						"rift:can_transform",
+						"rift:normal_mode_attack",
+						"rift:forced_transformed_back",
+						"rift:direwolf_adult_wild",
+						"rift:direwolf_adult_wild_not_trusting",
+						"rift:default_targets_normal"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:werewolf_mode_attack",
+						"rift:can_bite_attack_werewolf",
+						"rift:can_claw_attack_werewolf",
+						"rift:can_pounce_attack_werewolf",
+						"rift:can_boulder_throw_werewolf",
+						"rift:direwolf_adult_werewolf_wild",
+						"rift:default_targets_werewolf",
+						"rift:attack_forced_attack_entity"
+					]
+				}
+			},
+			"rift:forced_transform_into_normal_wild_two": {
+				"add": {
+					"component_groups": [
+						"rift:variant_two",
+						"rift:direwolf_adult",
+						"rift:can_transform",
+						"rift:normal_mode_attack",
+						"rift:forced_transformed_back",
+						"rift:direwolf_adult_wild",
+						"rift:direwolf_adult_wild_not_trusting",
+						"rift:default_targets_normal"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:werewolf_mode_attack",
+						"rift:can_bite_attack_werewolf",
+						"rift:can_claw_attack_werewolf",
+						"rift:can_pounce_attack_werewolf",
+						"rift:can_boulder_throw_werewolf",
+						"rift:direwolf_adult_werewolf_wild",
+						"rift:default_targets_werewolf",
+						"rift:attack_forced_attack_entity"
+					]
+				}
+			},
+			"rift:forced_transform_into_normal_wild_three": {
+				"add": {
+					"component_groups": [
+						"rift:variant_three",
+						"rift:direwolf_adult",
+						"rift:can_transform",
+						"rift:normal_mode_attack",
+						"rift:forced_transformed_back",
+						"rift:direwolf_adult_wild",
+						"rift:direwolf_adult_wild_not_trusting",
+						"rift:default_targets_normal"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:werewolf_mode_attack",
+						"rift:can_bite_attack_werewolf",
+						"rift:can_claw_attack_werewolf",
+						"rift:can_pounce_attack_werewolf",
+						"rift:can_boulder_throw_werewolf",
+						"rift:direwolf_adult_werewolf_wild",
+						"rift:default_targets_werewolf",
+						"rift:attack_forced_attack_entity"
+					]
+				}
+			},
+			"rift:forced_transform_into_normal_wild_four": {
+				"add": {
+					"component_groups": [
+						"rift:variant_four",
+						"rift:direwolf_adult",
+						"rift:can_transform",
+						"rift:normal_mode_attack",
+						"rift:forced_transformed_back",
+						"rift:direwolf_adult_wild",
+						"rift:direwolf_adult_wild_not_trusting",
+						"rift:default_targets_normal"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:werewolf_mode_attack",
+						"rift:can_bite_attack_werewolf",
+						"rift:can_claw_attack_werewolf",
+						"rift:can_pounce_attack_werewolf",
+						"rift:can_boulder_throw_werewolf",
+						"rift:direwolf_adult_werewolf_wild",
+						"rift:default_targets_werewolf",
+						"rift:attack_forced_attack_entity"
+					]
+				}
+			},
+			"rift:forced_transform_into_normal_tamed_one": {
+				"add": {
+					"component_groups": [
+						"rift:direwolf_tamed",
+						"rift:variant_one",
+						"rift:direwolf_adult",
+						"rift:can_transform",
+						"rift:normal_mode_attack",
+						"rift:forced_transformed_back",
+						"rift:direwolf_adult_tamed",
+						"rift:direwolf_normal_rideable",
+						"rift:cannot_power_jump"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:werewolf_mode_attack",
+						"rift:can_bite_attack_werewolf",
+						"rift:can_claw_attack_werewolf",
+						"rift:can_pounce_attack_werewolf",
+						"rift:can_boulder_throw_werewolf",
+						"rift:direwolf_adult_werewolf_tamed",
+						"rift:direwolf_werewolf_rideable",
+						"rift:can_power_jump"
+					]
+				},
+				"set_actor_property": {
+					"rift:tame_state": "0",
+					"rift:behavior_state": "0"
+				}
+			},
+			"rift:forced_transform_into_normal_tamed_two": {
+				"add": {
+					"component_groups": [
+						"rift:direwolf_tamed",
+						"rift:variant_two",
+						"rift:direwolf_adult",
+						"rift:can_transform",
+						"rift:normal_mode_attack",
+						"rift:forced_transformed_back",
+						"rift:direwolf_adult_tamed",
+						"rift:direwolf_normal_rideable",
+						"rift:cannot_power_jump"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:werewolf_mode_attack",
+						"rift:can_bite_attack_werewolf",
+						"rift:can_claw_attack_werewolf",
+						"rift:can_pounce_attack_werewolf",
+						"rift:can_boulder_throw_werewolf",
+						"rift:direwolf_adult_werewolf_tamed",
+						"rift:direwolf_werewolf_rideable",
+						"rift:can_power_jump"
+					]
+				},
+				"set_actor_property": {
+					"rift:tame_state": "0",
+					"rift:behavior_state": "0"
+				}
+			},
+			"rift:forced_transform_into_normal_tamed_three": {
+				"add": {
+					"component_groups": [
+						"rift:direwolf_tamed",
+						"rift:variant_three",
+						"rift:direwolf_adult",
+						"rift:can_transform",
+						"rift:normal_mode_attack",
+						"rift:forced_transformed_back",
+						"rift:direwolf_adult_tamed",
+						"rift:direwolf_normal_rideable",
+						"rift:cannot_power_jump"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:werewolf_mode_attack",
+						"rift:can_bite_attack_werewolf",
+						"rift:can_claw_attack_werewolf",
+						"rift:can_pounce_attack_werewolf",
+						"rift:can_boulder_throw_werewolf",
+						"rift:direwolf_adult_werewolf_tamed",
+						"rift:direwolf_werewolf_rideable",
+						"rift:can_power_jump"
+					]
+				},
+				"set_actor_property": {
+					"rift:tame_state": "0",
+					"rift:behavior_state": "0"
+				}
+			},
+			"rift:forced_transform_into_normal_tamed_four": {
+				"add": {
+					"component_groups": [
+						"rift:direwolf_tamed",
+						"rift:variant_four",
+						"rift:direwolf_adult",
+						"rift:can_transform",
+						"rift:normal_mode_attack",
+						"rift:forced_transformed_back",
+						"rift:direwolf_adult_tamed",
+						"rift:direwolf_normal_rideable",
+						"rift:cannot_power_jump"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:werewolf_mode_attack",
+						"rift:can_bite_attack_werewolf",
+						"rift:can_claw_attack_werewolf",
+						"rift:can_pounce_attack_werewolf",
+						"rift:can_boulder_throw_werewolf",
+						"rift:direwolf_adult_werewolf_tamed",
+						"rift:direwolf_werewolf_rideable",
+						"rift:can_power_jump"
+					]
+				},
+				"set_actor_property": {
+					"rift:tame_state": "0",
+					"rift:behavior_state": "0"
+				}
+			},
+			"rift:forced_transform": {
+				"remove": {
+					"component_groups": [
+						"rift:forced_transformed_back"
+					]
+				},
+				"set_actor_property": {
+					"rift:forced_transform": "true"
+				}
+			},
+			"rift:can_transform_again": {
+				"remove": {
+					"component_groups": [
+						"rift:forced_transformed_back"
+					]
+				}
+			},
 			"rift:can_use_bite_werewolf": {
 				"add": {
 					"component_groups": [
@@ -4935,7 +5431,7 @@
 				"run_command": {
 					"command": [
 						"playanimation @s animation.direwolf.snarl",
-						"effect @e[type=!rift:direwolf, type=!rift:direwolf_werewolf, family=!inanimate, r=16] weakness 90"
+						"effect @e[type=!rift:direwolf, family=!inanimate, r=16] weakness 90"
 					]
 				}
 			},
