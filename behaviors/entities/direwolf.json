@@ -49,7 +49,8 @@
 			"animations": {
 				"contTransform": "controller.animation.direwolf_transform",
 				"contUntransformability": "controller.animation.direwolf_untransformability_management",
-				"contDirewolfUseBite": "controller.animation.direwolf_forced_use_bite",
+				"contForcedTransformManagement": "controller.animation.direwolf_forced_transform_management",
+				"contDirewolfUseBite": "controller.animation.direwolf_forced_attack",
 				"contPackBuff": "controller.animation.wild_direwolf_pack_buff",
 				"contWildRemoveBuffs": "controller.animation.wild_direwolf_remove_buffs",
 				"contSwitchBetweenMeleeAttacks": "controller.animation.direwolf_werewolf_switch_between_melee_attacks",
@@ -61,13 +62,18 @@
 				"contTameState": "controller.animation.manage_tame_state",
 				"contBehaviorState": "controller.animation.manage_tame_behavior",
 				"animForcedAttackNormal": "animation.forced_attack_direwolf",
+				"animForcedAttackWerewolfBite": "animation.forced_attack_direwolf_werewolf_bite",
+				"animForcedAttackWerewolfSlashOne": "animation.forced_attack_direwolf_werewolf_slash_one",
+				"animForcedAttackWerewolfSlashTwo": "animation.forced_attack_direwolf_werewolf_slash_two",
 				"animCanThrowCountdown": "animation.direwolf_werewolf_can_throw_countdown",
-				"animThrowBoulder": "animation.direwolf_werewolf_throw_boulder"
+				"animThrowBoulder": "animation.direwolf_werewolf_throw_boulder",
+				"animForcedTransformCountdown": "animation.direwolf_forced_transform_countdown"
 			},
 			"scripts": {
 				"animate": [
 					"contTransform",
 					"contUntransformability",
+					"contForcedTransformManagement",
 					"contDirewolfUseBite",
 					"contPackBuff",
 					"contWildRemoveBuffs",
@@ -1829,6 +1835,13 @@
 										"domain": "hand",
 										"operator": "!=",
 										"value": "rift:flesh_treat"
+									},
+									{
+										"test": "has_equipment",
+										"subject": "other",
+										"domain": "hand",
+										"operator": "!=",
+										"value": "rift:lunar_stimulant"
 									}
 								]
 							},
@@ -1900,6 +1913,11 @@
 						"on_interact": {
 							"filters": {
 								"all_of": [
+									{
+										"test": "is_sneaking",
+										"subject": "other",
+										"value": true
+									},
 									{
 										"test": "has_component",
 										"subject": "self",
@@ -4227,7 +4245,7 @@
 								}
 							]
 						},
-						"event": "rift:cannot_sit"
+						"event": "rift:has_rider"
 					},
 					{
 						"filters": {
@@ -4245,7 +4263,7 @@
 								}
 							]
 						},
-						"event": "rift:can_sit"
+						"event": "rift:has_no_rider"
 					}
 				]
 			}
@@ -5084,6 +5102,11 @@
 					"rift:forced_transform": "true"
 				}
 			},
+			"rift:stop_forced_transform": {
+				"set_actor_property": {
+					"rift:forced_transform": false
+				}
+			},
 			"rift:can_transform_again": {
 				"remove": {
 					"component_groups": [
@@ -5258,9 +5281,19 @@
 					}
 				]
 			},
-			"rift:use_forced_bite_normal": {
+			"rift:use_forced_bite": {
 				"set_actor_property": {
 					"rift:forced_attack_mode": "1"
+				}
+			},
+			"rift:use_forced_slash": {
+				"set_actor_property": {
+					"rift:forced_attack_mode": "2"
+				}
+			},
+			"rift:start_throwing_boulder": {
+				"set_actor_property": {
+					"rift:forced_attack_mode": "3"
 				}
 			},
 			"rift:on_summon_forced_bite_entity_normal": {
@@ -5307,6 +5340,104 @@
 						"add": {
 							"component_groups": [
 								"rift:summon_buffed_forced_bite_entity_normal"
+							]
+						}
+					}
+				]
+			},
+			"rift:on_summon_forced_bite_entity_werewolf": {
+				"sequence": [
+					{},
+					{
+						"filters": {
+							"all_of": [
+								{
+									"test": "has_mob_effect",
+									"subject": "self",
+									"operator": "!=",
+									"value": "strength"
+								},
+								{
+									"test": "has_mob_effect",
+									"subject": "self",
+									"operator": "!=",
+									"value": "speed"
+								}
+							]
+						},
+						"add": {
+							"component_groups": [
+								"rift:summon_forced_bite_entity_werewolf"
+							]
+						}
+					},
+					{
+						"filters": {
+							"all_of": [
+								{
+									"test": "has_mob_effect",
+									"subject": "self",
+									"value": "strength"
+								},
+								{
+									"test": "has_mob_effect",
+									"subject": "self",
+									"value": "speed"
+								}
+							]
+						},
+						"add": {
+							"component_groups": [
+								"rift:summon_buffed_forced_bite_entity_werewolf"
+							]
+						}
+					}
+				]
+			},
+			"rift:on_summon_forced_slash_entity_werewolf": {
+				"sequence": [
+					{},
+					{
+						"filters": {
+							"all_of": [
+								{
+									"test": "has_mob_effect",
+									"subject": "self",
+									"operator": "!=",
+									"value": "strength"
+								},
+								{
+									"test": "has_mob_effect",
+									"subject": "self",
+									"operator": "!=",
+									"value": "speed"
+								}
+							]
+						},
+						"add": {
+							"component_groups": [
+								"rift:summon_forced_slash_entity_werewolf"
+							]
+						}
+					},
+					{
+						"filters": {
+							"all_of": [
+								{
+									"test": "has_mob_effect",
+									"subject": "self",
+									"value": "strength"
+								},
+								{
+									"test": "has_mob_effect",
+									"subject": "self",
+									"value": "speed"
+								}
+							]
+						},
+						"add": {
+							"component_groups": [
+								"rift:summon_buffed_forced_slash_entity_werewolf"
 							]
 						}
 					}
@@ -5428,12 +5559,40 @@
 				}
 			},
 			"rift:wild_snarl": {
-				"run_command": {
-					"command": [
-						"playanimation @s animation.direwolf.snarl",
-						"effect @e[type=!rift:direwolf, family=!inanimate, r=16] weakness 90"
-					]
-				}
+				"sequence": [
+					{
+						"run_command": {
+							"command": [
+								"effect @e[type=!rift:direwolf, family=!inanimate, r=16] weakness 90"
+							]
+						}
+					},
+					{
+						"filters": {
+							"test": "has_component",
+							"subject": "self",
+							"operator": "!=",
+							"value": "minecraft:is_ignited"
+						},
+						"run_command": {
+							"command": [
+								"playanimation @s animation.direwolf.snarl"
+							]
+						}
+					},
+					{
+						"filters": {
+							"test": "has_component",
+							"subject": "self",
+							"value": "minecraft:is_ignited"
+						},
+						"run_command": {
+							"command": [
+								"playanimation @s animation.direwolf_werewolf.snarl"
+							]
+						}
+					}
+				]
 			},
 			"rift:on_pounced_by_utahraptor": {
 				"run_command": {
@@ -5657,7 +5816,7 @@
 					]
 			  	}
 			},
-			"rift:cannot_sit": {
+			"rift:has_rider": {
 				"add": {
 					"component_groups": [
 						"rift:unpushable"
@@ -5670,15 +5829,60 @@
 					]
 				}
 			},
-			"rift:can_sit": {
+			"rift:has_no_rider": {
+				"sequence": [
+					{
+						"add": {
+							"component_groups": [
+								"rift:pushable"
+							]
+						},
+						"remove": {
+							"component_groups": [
+								"rift:unpushable"
+							]
+						}
+					},
+					{
+						"filters": {
+							"test": "has_component",
+							"subject": "self",
+							"value": "minecraft:is_ignited"
+						},
+						"add": {
+							"component_groups": [
+								"rift:can_power_jump"
+							]
+						},
+						"remove": {
+							"component_groups": [
+								"rift:cannot_power_jump"
+							]
+						}
+					}
+				]
+			},
+			"rift:enable_jump": {
 				"add": {
 					"component_groups": [
-						"rift:pushable"
+						"rift:can_power_jump"
 					]
 				},
 				"remove": {
 					"component_groups": [
-						"rift:unpushable"
+						"rift:cannot_power_jump"
+					]
+				}
+			},
+			"rift:disable_jump": {
+				"add": {
+					"component_groups": [
+						"rift:cannot_power_jump"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:can_power_jump"
 					]
 				}
 			},
@@ -5808,20 +6012,76 @@
 				}
 			},
 			"rift:buffing": {
-				"run_command": {
-					"command": [
-						"playanimation @s animation.direwolf.howl",
-						"function cmd.direwolf_pack_buff"
-					]
-				}
+				"sequence": [
+					{
+						"run_command": {
+							"command": [
+								"function cmd.direwolf_pack_buff"
+							]
+						}
+					},
+					{
+						"filters": {
+							"test": "has_component",
+							"subject": "self",
+							"operator": "!=",
+							"value": "minecraft:is_ignited"
+						},
+						"run_command": {
+							"command": [
+								"playanimation @s animation.direwolf.howl"
+							]
+						}
+					},
+					{
+						"filters": {
+							"test": "has_component",
+							"subject": "self",
+							"value": "minecraft:is_ignited"
+						},
+						"run_command": {
+							"command": [
+								"playanimation @s animation.direwolf_werewolf.howl"
+							]
+						}
+					}
+				]
 			},
 			"rift:wild_direwolf_buffing": {
-				"run_command": {
-					"command": [
-						"playanimation @s animation.direwolf.howl",
-						"function cmd.direwolf_wild_pack_buff"
-					]
-				}
+				"sequence": [
+					{
+						"run_command": {
+							"command": [
+								"function cmd.direwolf_wild_pack_buff"
+							]
+						}
+					},
+					{
+						"filters": {
+							"test": "has_component",
+							"subject": "self",
+							"operator": "!=",
+							"value": "minecraft:is_ignited"
+						},
+						"run_command": {
+							"command": [
+								"playanimation @s animation.direwolf.howl"
+							]
+						}
+					},
+					{
+						"filters": {
+							"test": "has_component",
+							"subject": "self",
+							"value": "minecraft:is_ignited"
+						},
+						"run_command": {
+							"command": [
+								"playanimation @s animation.direwolf_werewolf.howl"
+							]
+						}
+					}
+				]
 			},
 			"rift:wild_direwolf_remove_buffs": {
 				"run_command": {
