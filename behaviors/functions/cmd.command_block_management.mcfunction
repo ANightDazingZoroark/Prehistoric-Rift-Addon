@@ -1,1 +1,0 @@
-gamerule commandblockoutput false

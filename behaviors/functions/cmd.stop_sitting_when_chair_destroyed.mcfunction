@@ -1,1 +1,0 @@
-execute @e[type=rift:chair] ~ ~ ~ detect ~ ~ ~ air 0 kill @s

@@ -1,3 +1,0 @@
-execute @e[type=rift:saurophaganax, tag=ridden, tag=!sheared, tag=!baby, tag=!sleeping, tag=!roaring, tag=!informed, scores={saurophLightBlst=10}] ~ ~ ~ tellraw @p {"rawtext":[{"text":"Light Blast Available!"}]}
-tag @e[type=rift:saurophaganax, tag=ridden, tag=!sheared, tag=!baby, tag=!sleeping, tag=!roaring, tag=!informed, scores={saurophLightBlst=10}] add informed
-tag @e[type=rift:saurophaganax, tag=!ridden] remove informed
