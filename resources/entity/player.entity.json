@@ -11,6 +11,7 @@
       "textures": {
         "default": "textures/entity/steve",
         "cape": "textures/entity/cape_invisible",
+        "warning": "textures/ui/warning",
         "tyrannoJournal": "textures/journals/tyrannosaurus journal",
         "stegoJournal": "textures/journals/stegosaurus journal",
         "dodoJournal": "textures/journals/dodo journal",
@@ -31,7 +32,8 @@
       "geometry": {
         "default": "geometry.humanoid.custom",
         "cape": "geometry.cape",
-        "journal": "geometry.journal"
+        "journal": "geometry.journal",
+        "warning": "geometry.warning"
       },
       "scripts": {
         "scale": "0.9375",
@@ -57,7 +59,10 @@
         "animate": [
           "root",
           {
-            "hand": "variable.journal"
+            "journal": "variable.journal"
+          },
+          {
+            "warning": "!query.is_ignited"
           }
         ]
       },
@@ -111,12 +116,14 @@
         "shield_block_main_hand": "animation.player.shield_block_main_hand",
         "shield_block_off_hand": "animation.player.shield_block_off_hand",
         "blink": "controller.animation.persona.blink",
-        "hand": "animation.item.hand"
+        "journal": "animation.item.journal",
+        "warning": "animation.item.warning"
       },
       "render_controllers": [
         { "controller.render.player.first_person": "variable.is_first_person" },
         { "controller.render.player.third_person": "!variable.is_first_person && !variable.map_face_icon" },
         { "controller.render.player.map": "variable.map_face_icon" },
+        { "controller.render.player.warning": "!query.is_ignited" },
         { "controller.render.player.tyrannosaurus_journal": "query.get_equipped_item_name == 'tyrannosaurus_journal' && variable.is_first_person" },
         { "controller.render.player.stegosaurus_journal": "query.get_equipped_item_name == 'stegosaurus_journal' && variable.is_first_person" },
         { "controller.render.player.dodo_journal": "query.get_equipped_item_name == 'dodo_journal' && variable.is_first_person" },

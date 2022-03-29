@@ -7,7 +7,7 @@
 				"default": {
 					"transitions": [
 						{
-							"attachRiders": "query.is_jumping && query.is_riding ? (query.get_ride -> query.owner_identifier) == 'rift:apatosaurus' && query.get_equipped_item_name('main_hand') != 'command_staff'"
+							"attachRiders": "query.is_jumping && query.is_riding ? (query.get_ride -> query.owner_identifier) == 'rift:apatosaurus'"
 						}
                     ]
                 },
@@ -31,7 +31,7 @@
                             "default": "!query.is_riding"
                         },
                         {
-                            "evictRiders": "query.is_jumping && query.get_equipped_item_name('main_hand') != 'command_staff'"
+                            "evictRiders": "query.is_jumping"
                         }
                     ]
                 },
@@ -55,7 +55,7 @@
                             "default": "!query.is_riding"
                         },
                         {
-                            "attachRiders": "query.is_jumping && query.get_equipped_item_name('main_hand') != 'command_staff'"
+                            "attachRiders": "query.is_jumping"
                         }
                     ]
                 }
@@ -105,7 +105,7 @@
                             "default": "!query.is_riding || (query.is_riding ? (query.get_ride -> query.is_saddled) == 0) || (query.is_riding ? (query.get_ride -> query.is_in_water) == 0)"
                         },
                         {
-                            "ascending": "query.is_jumping && query.get_equipped_item_name('main_hand') != 'command_staff'"
+                            "ascending": "query.is_jumping"
                         }
                     ],
                     "on_entry": [
@@ -134,7 +134,7 @@
                             "default": "!query.is_riding || (query.is_riding ? (query.get_ride -> query.is_saddled) == 0)"
                         },
                         {
-                            "descending": "query.get_equipped_item_name('main_hand') == 'command_staff' || (query.is_riding ? (query.get_ride -> query.is_in_water) == 0)"
+                            "descending": "(query.is_riding ? (query.get_ride -> query.is_in_water) == 0)"
                         },
                         {
                             "jumpCooldown": "variable.jump_cooldown = query.life_time; return (!query.is_jumping);"
@@ -152,7 +152,7 @@
                     ],
                     "transitions": [
                         {
-                            "ascending": "return query.life_time - variable.jump_cooldown > 1 && (query.is_jumping == 1.0) && (query.get_equipped_item_name('main_hand') != 'command_staff');"
+                            "ascending": "return query.life_time - variable.jump_cooldown > 1 && (query.is_jumping == 1.0);"
                         },
                         {
                             "default": "!query.is_riding || (query.is_riding ? (query.get_ride -> query.is_in_water) == 0)"

@@ -146,34 +146,46 @@
 							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:tyrannosaurus'"
 						},
 						{
-							"biteToRoar": "query.is_jumping && query.is_riding"
+							"biteModeLimbo": "query.is_using_item && (query.get_ride -> query.is_saddled) && query.get_equipped_item_name('main_hand') == 'command_staff'"
+						}
+					]
+				},
+				"biteModeLimbo": {
+					"animations": [
+						"animAbilitySwitchCooldown"
+					],
+					"transitions": [
+						{
+							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:tyrannosaurus' || query.get_equipped_item_name('main_hand') != 'command_staff'"
 						},
 						{
-							"useBiteMode": "query.get_equipped_item_name('main_hand') == 'command_staff' && query.is_using_item && (query.get_ride -> query.is_saddled)"
+							"useBiteMode": "!query.is_using_item"
+						},
+						{
+							"biteToRoar": "query.all_animations_finished"
 						}
 					]
 				},
 				"useBiteMode": {
 					"transitions": [
 						{
-							"biteMode": "query.get_equipped_item_name('main_hand') != 'command_staff' || !query.is_using_item"
+							"biteMode": "(1.0)"
 						}
 					],
 					"on_entry": [
-						"/event entity @e[type=rift:tyrannosaurus, c=1, tag=tamed, tag=!baby] rift:use_forced_bite"
-					],
-					"on_exit": [
-						"/event entity @e[type=rift:tyrannosaurus, c=1, tag=tamed, tag=!baby] rift:stop_forced_bite",
-						"/event entity @e[type=rift:tyrannosaurus, c=1, tag=tamed, tag=!baby] rift:no_summon_forced_bite_entity"
+						"/execute @e[type=rift:tyrannosaurus, c=1, tag=tamed, tag=!baby] ~ ~ ~ summon rift:tyrannosaurus_bite ~ ~ ~",
+						"/event entity @e[type=rift:tyrannosaurus, c=1, tag=tamed, tag=!baby] rift:on_forced_attack_family",
+						"/execute @e[type=rift:tyrannosaurus, c=1, tag=tamed, tag=!baby] ~ ~ ~ playanimation @s animation.tyrannosaurus.attack",
+						"/execute @e[type=rift:tyrannosaurus, c=1, tag=tamed, tag=!baby] ~ ~ ~ function cmd.tyrannosaurus_forced_break_blocks"
 					]
 				},
 				"biteToRoar": {
 					"transitions": [
 						{
-							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:tyrannosaurus'"
+							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:tyrannosaurus' || query.get_equipped_item_name('main_hand') != 'command_staff'"
 						},
 						{
-							"roarMode": "!query.is_jumping"
+							"roarMode": "!query.is_using_item"
 						}
 					],
 					"on_exit": [
@@ -186,17 +198,30 @@
 							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:tyrannosaurus'"
 						},
 						{
-							"roarToBite": "query.is_jumping && query.is_riding"
+							"roarModeLimbo": "query.get_equipped_item_name('main_hand') == 'command_staff' && query.is_using_item && (query.get_ride -> query.is_saddled)"
+						}
+					]
+				},
+				"roarModeLimbo": {
+					"animations": [
+						"animAbilitySwitchCooldown"
+					],
+					"transitions": [
+						{
+							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:tyrannosaurus' || query.get_equipped_item_name('main_hand') != 'command_staff'"
 						},
 						{
-							"useRoarMode": "query.get_equipped_item_name('main_hand') == 'command_staff' && query.is_using_item"
+							"useRoarMode": "!query.is_using_item"
+						},
+						{
+							"roarToBite": "query.all_animations_finished"
 						}
 					]
 				},
 				"useRoarMode": {
 					"transitions": [
 						{
-							"roarMode": "query.get_equipped_item_name('main_hand') != 'command_staff' || !query.is_using_item"
+							"roarMode": "(1.0)"
 						}
 					],
 					"on_entry": [
@@ -206,10 +231,10 @@
 				"roarToBite": {
 					"transitions": [
 						{
-							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:tyrannosaurus'"
+							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:tyrannosaurus' || query.get_equipped_item_name('main_hand') != 'command_staff'"
 						},
 						{
-							"biteMode": "!query.is_jumping"
+							"biteMode": "!query.is_using_item"
 						}
 					],
 					"on_exit": [
@@ -243,38 +268,50 @@
 							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:stegosaurus'"
 						},
 						{
-							"stabToFocus": "query.is_jumping && query.is_riding"
+							"stabModeLimbo": "query.is_using_item && (query.get_ride -> query.is_saddled)"
+						}
+					]
+				},
+				"stabModeLimbo": {
+					"animations": [
+						"animAbilitySwitchCooldown"
+					],
+					"transitions": [
+						{
+							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:stegosaurus' || query.get_equipped_item_name('main_hand') != 'command_staff'"
 						},
 						{
-							"useStabMode": "query.get_equipped_item_name('main_hand') == 'command_staff' && query.is_using_item && (query.get_ride -> query.is_saddled)"
+							"useStabMode": "!query.is_using_item"
+						},
+						{
+							"stabToFocus": "query.all_animations_finished"
 						}
 					]
 				},
 				"useStabMode": {
 					"transitions": [
 						{
-							"stabMode": "query.get_equipped_item_name('main_hand') != 'command_staff' || !query.is_using_item"
+							"stabMode": "(1.0)"
 						}
 					],
 					"on_entry": [
-						"/event entity @e[type=rift:stegosaurus, c=1, tag=tamed, tag=!baby] rift:use_forced_stab"
-					],
-					"on_exit": [
-						"/event entity @e[type=rift:stegosaurus, c=1, tag=tamed, tag=!baby] rift:stop_forced_stab",
-						"/event entity @e[type=rift:stegosaurus, c=1, tag=tamed, tag=!baby] rift:no_summon_forced_stab_entity"
+						"/execute @e[type=rift:stegosaurus, c=1, tag=tamed, tag=!baby] ~ ~ ~ summon rift:stegosaurus_stab ~ ~ ~",
+						"/event entity @e[type=rift:stegosaurus, c=1, tag=tamed, tag=!baby] rift:on_forced_attack_family",
+						"/execute @e[type=rift:stegosaurus, c=1, tag=tamed, tag=!baby] ~ ~ ~ playanimation @s animation.stegosaurus.attack"
 					]
 				},
 				"stabToFocus": {
 					"transitions": [
 						{
-							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:stegosaurus'"
+							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:stegosaurus' || query.get_equipped_item_name('main_hand') != 'command_staff'"
 						},
 						{
-							"focusMode": "!query.is_jumping"
+							"focusMode": "!query.is_using_item"
 						}
 					],
 					"on_exit": [
-						"/tellraw @s {\"rawtext\":[{\"text\":\"Ability set to Focused Stab Mode\"}]}"
+						"/tellraw @s {\"rawtext\":[{\"text\":\"Ability set to Focused Stab Mode\"}]}",
+						"/tellraw @s {\"rawtext\":[{\"text\":\"To use your focus attack, press and hold jump to charge up energy, then release for massive damage!\"}]}"
 					]
 				},
 				"focusMode": {
@@ -283,10 +320,10 @@
 							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:stegosaurus'"
 						},
 						{
-							"focusToPlateFling": "query.is_jumping && query.is_riding"
+							"focusToPlateFling": "query.is_using_item && (query.get_ride -> query.is_saddled) && query.get_equipped_item_name('main_hand') == 'command_staff'"
 						},
 						{
-							"useFocusMode": "query.get_equipped_item_name('main_hand') == 'command_staff' && query.is_using_item"
+							"useFocusMode": "(query.get_ride -> query.is_saddled) && query.get_equipped_item_name('main_hand') == 'command_staff' && query.is_jumping"
 						}
 					],
 					"on_entry": [
@@ -296,7 +333,7 @@
 				"useFocusMode": {
 					"transitions": [
 						{
-							"focusMode": "query.get_equipped_item_name('main_hand') != 'command_staff' || !query.is_using_item"
+							"focusMode": "query.get_equipped_item_name('main_hand') != 'command_staff' || !query.is_jumping"
 						}
 					],
 					"animations": [
@@ -319,10 +356,10 @@
 				"focusToPlateFling": {
 					"transitions": [
 						{
-							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:stegosaurus'"
+							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:stegosaurus' || query.get_equipped_item_name('main_hand') != 'command_staff'"
 						},
 						{
-							"plateFlingMode": "!query.is_jumping"
+							"plateFlingMode": "!query.is_using_item"
 						}
 					],
 					"on_exit": [
@@ -335,14 +372,27 @@
 							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:stegosaurus'"
 						},
 						{
-							"plateFlingToStab": "query.is_jumping && query.is_riding"
-						},
-						{
-							"usePlateFlingMode": "query.get_equipped_item_name('main_hand') == 'command_staff' && query.is_using_item"
+							"plateFlingLimbo": "query.is_using_item && (query.get_ride -> query.is_saddled) && query.get_equipped_item_name('main_hand') == 'command_staff'"
 						}
 					],
 					"on_entry": [
 						"/event entity @e[type=rift:stegosaurus, c=1, tag=tamed, tag=!baby] rift:activate_forced_plate_fling_pose"
+					]
+				},
+				"plateFlingLimbo": {
+					"animations": [
+						"animAbilitySwitchCooldown"
+					],
+					"transitions": [
+						{
+							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:stegosaurus' || query.get_equipped_item_name('main_hand') != 'command_staff'"
+						},
+						{
+							"usePlateFlingMode": "!query.is_using_item"
+						},
+						{
+							"plateFlingToStab": "query.all_animations_finished"
+						}
 					]
 				},
 				"usePlateFlingMode": {
@@ -361,7 +411,7 @@
 							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:stegosaurus'"
 						},
 						{
-							"stabMode": "!query.is_jumping"
+							"stabMode": "!query.is_using_item"
 						}
 					],
 					"on_entry": [
@@ -395,25 +445,37 @@
 							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:triceratops'"
 						},
 						{
-							"stabToCharge": "query.is_jumping && query.is_riding"
+							"stabModeLimbo": "query.is_using_item && (query.get_ride -> query.is_saddled) && query.get_equipped_item_name('main_hand') == 'command_staff'"
+						}
+					]
+				},
+				"stabModeLimbo": {
+					"animations": [
+						"animAbilitySwitchCooldown"
+					],
+					"transitions": [
+						{
+							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:triceratops' || query.get_equipped_item_name('main_hand') != 'command_staff'"
 						},
 						{
-							"useStabMode": "query.get_equipped_item_name('main_hand') == 'command_staff' && query.is_using_item && (query.get_ride -> query.is_saddled)"
+							"useStabMode": "!query.is_using_item"
+						},
+						{
+							"stabToCharge": "query.all_animations_finished"
 						}
 					]
 				},
 				"useStabMode": {
 					"transitions": [
 						{
-							"stabMode": "query.get_equipped_item_name('main_hand') != 'command_staff' || !query.is_using_item"
+							"stabMode": "(1.0)"
 						}
 					],
 					"on_entry": [
-						"/event entity @e[type=rift:triceratops, c=1, tag=tamed, tag=!baby] rift:use_forced_stab"
-					],
-					"on_exit": [
-						"/event entity @e[type=rift:triceratops, c=1, tag=tamed, tag=!baby] rift:stop_forced_stab",
-						"/event entity @e[type=rift:triceratops, c=1, tag=tamed, tag=!baby] rift:no_summon_forced_stab_entity"
+						"/execute @e[type=rift:triceratops, c=1, tag=tamed, tag=!baby] ~ ~ ~ playanimation @s animation.triceratops.attack",
+						"/execute @e[type=rift:triceratops, c=1, tag=tamed, tag=!baby, tag=!illagerCaptain] ~ ~ ~ summon rift:triceratops_stab ~ ~ ~",
+						"/execute @e[type=rift:triceratops, c=1, tag=tamed, tag=!baby, tag=illagerCaptain] ~ ~ ~ summon rift:triceratops_buffed_stab ~ ~ ~",
+						"/event entity @e[type=rift:triceratops, c=1, tag=tamed, tag=!baby] rift:on_forced_attack_family"
 					]
 				},
 				"stabToCharge": {
@@ -422,7 +484,7 @@
 							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:triceratops'"
 						},
 						{
-							"chargeMode": "!query.is_jumping"
+							"chargeMode": "!query.is_using_item"
 						}
 					],
 					"on_exit": [
@@ -435,17 +497,30 @@
 							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:triceratops'"
 						},
 						{
-							"chargeToStab": "query.is_jumping && query.is_riding"
+							"chargeModeLimbo": "query.is_using_item && (query.get_ride -> query.is_saddled) && query.get_equipped_item_name('main_hand') == 'command_staff'"
+						}
+					]
+				},
+				"chargeModeLimbo": {
+					"animations": [
+						"animAbilitySwitchCooldown"
+					],
+					"transitions": [
+						{
+							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:triceratops' || query.get_equipped_item_name('main_hand') != 'command_staff'"
 						},
 						{
-							"useChargeMode": "query.get_equipped_item_name('main_hand') == 'command_staff' && query.is_using_item"
+							"useChargeMode": "!query.is_using_item"
+						},
+						{
+							"chargeToStab": "query.all_animations_finished"
 						}
 					]
 				},
 				"useChargeMode": {
 					"transitions": [
 						{
-							"chargeMode": "query.get_equipped_item_name('main_hand') != 'command_staff' || !query.is_using_item"
+							"chargeMode": "(1.0)"
 						}
 					],
 					"on_entry": [
@@ -458,7 +533,7 @@
 							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:triceratops'"
 						},
 						{
-							"stabMode": "!query.is_jumping"
+							"stabMode": "!query.is_using_item"
 						}
 					],
 					"on_exit": [
@@ -473,43 +548,56 @@
 				"default": {
 					"transitions": [
 						{
-							"slashMode": "(query.get_equipped_item_name('main_hand') == 'command_staff') && query.is_riding && (query.get_ride -> query.owner_identifier) == 'rift:utahraptor'"
+							"slashMode": "query.is_riding && (query.get_ride -> query.owner_identifier) == 'rift:utahraptor'"
 						}
 					],
 					"on_entry": [
-						"/event entity @e[type=rift:utahraptor, c=1, tag=tamed, tag=!baby] rift:enable_jump",
 						"/event entity @e[type=rift:utahraptor, c=1, tag=tamed, tag=!baby] rift:no_forced_attack_family"
 					],
 					"on_exit": [
-						"/tellraw @s {\"rawtext\":[{\"text\":\"Ability set to Slash Mode\"}]}",
-						"/event entity @e[type=rift:utahraptor, c=1, tag=tamed, tag=!baby] rift:disable_jump"
+						"/tellraw @s {\"rawtext\":[{\"text\":\"Ability set to Slash Mode\"}]}"
 					]
 				},
 				"slashMode": {
 					"transitions": [
 						{
-							"default": "(query.get_equipped_item_name('main_hand') != 'command_staff') || !query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:utahraptor'"
+							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:utahraptor'"
 						},
 						{
-							"slashToCall": "query.is_jumping && query.is_riding"
+							"slashModeLimbo": "query.is_using_item && (query.get_ride -> query.is_saddled) && query.get_equipped_item_name('main_hand') == 'command_staff'"
+						}
+					],
+					"on_entry": [
+						"/event entity @e[type=rift:utahraptor, c=1, tag=tamed, tag=!baby] rift:stop_forced_slash",
+						"/event entity @e[type=rift:utahraptor, c=1, tag=tamed, tag=!baby] rift:no_summon_forced_slash_entity"
+					]
+				},
+				"slashModeLimbo": {
+					"animations": [
+						"animAbilitySwitchCooldown"
+					],
+					"transitions": [
+						{
+							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:utahraptor' || query.get_equipped_item_name('main_hand') != 'command_staff'"
 						},
 						{
-							"useSlashMode": "query.is_using_item && (query.get_ride -> query.is_saddled)"
+							"useSlashMode": "!query.is_using_item"
+						},
+						{
+							"slashToCall": "query.all_animations_finished"
 						}
 					]
 				},
 				"useSlashMode": {
 					"transitions": [
 						{
-							"slashMode": "(query.get_equipped_item_name('main_hand') != 'command_staff') || !query.is_using_item"
+							"slashMode": "(1.0)"
 						}
 					],
 					"on_entry": [
-						"/event entity @e[type=rift:utahraptor, c=1, tag=tamed, tag=!baby] rift:use_forced_slash"
-					],
-					"on_exit": [
-						"/event entity @e[type=rift:utahraptor, c=1, tag=tamed, tag=!baby] rift:stop_forced_slash",
-						"/event entity @e[type=rift:utahraptor, c=1, tag=tamed, tag=!baby] rift:no_summon_forced_slash_entity"
+						"/playanimation @e[type=rift:utahraptor, c=1, tag=tamed, tag=!baby] animation.utahraptor.attack",
+						"/event entity @e[type=rift:utahraptor, c=1, tag=tamed, tag=!baby] rift:on_summon_forced_slash_entity",
+						"/event entity @e[type=rift:utahraptor, c=1, tag=tamed, tag=!baby] rift:on_forced_attack_family"
 					]
 				},
 				"slashToCall": {
@@ -518,7 +606,7 @@
 							"default": "(query.get_equipped_item_name('main_hand') != 'command_staff') || !query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:utahraptor'"
 						},
 						{
-							"callMode": "!query.is_jumping"
+							"callMode": "!query.is_using_item"
 						}
 					],
 					"on_exit": [
@@ -528,20 +616,33 @@
 				"callMode": {
 					"transitions": [
 						{
-							"default": "(query.get_equipped_item_name('main_hand') != 'command_staff') || !query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:utahraptor'"
+							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:utahraptor'"
 						},
 						{
-							"callToSlash": "query.is_jumping && query.is_riding"
+							"callModeLimbo": "query.is_using_item && (query.get_ride -> query.is_saddled) && query.get_equipped_item_name('main_hand') == 'command_staff'"
+						}
+					]
+				},
+				"callModeLimbo": {
+					"animations": [
+						"animAbilitySwitchCooldown"
+					],
+					"transitions": [
+						{
+							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:utahraptor' || query.get_equipped_item_name('main_hand') != 'command_staff'"
 						},
 						{
-							"useCallMode": "query.is_using_item && (query.get_ride -> query.is_saddled)"
+							"useCallMode": "!query.is_using_item"
+						},
+						{
+							"callToSlash": "query.all_animations_finished"
 						}
 					]
 				},
 				"useCallMode": {
 					"transitions": [
 						{
-							"callMode": "(query.get_equipped_item_name('main_hand') != 'command_staff') || !query.is_using_item"
+							"callMode": "(1.0)"
 						}
 					],
 					"on_entry": [
@@ -554,7 +655,7 @@
 							"default": "(query.get_equipped_item_name('main_hand') != 'command_staff') || !query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:utahraptor'"
 						},
 						{
-							"slashMode": "!query.is_jumping"
+							"slashMode": "!query.is_using_item"
 						}
 					],
 					"on_exit": [
@@ -569,7 +670,7 @@
 				"default": {
 					"transitions": [
 						{
-							"stompMode": "(query.get_equipped_item_name('main_hand') == 'command_staff') && query.is_riding && (query.get_ride -> query.owner_identifier) == 'rift:apatosaurus'"
+							"stompMode": "query.is_riding && (query.get_ride -> query.owner_identifier) == 'rift:apatosaurus'"
 						}
 					],
 					"on_entry": [
@@ -582,28 +683,40 @@
 				"stompMode": {
 					"transitions": [
 						{
-							"default": "(query.get_equipped_item_name('main_hand') != 'command_staff') || !query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:apatosaurus'"
+							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:apatosaurus'"
 						},
 						{
-							"stompToTailWhip": "query.is_jumping && query.is_riding"
+							"stompModeLimbo": "query.is_using_item && (query.get_ride -> query.is_saddled) && query.get_equipped_item_name('main_hand') == 'command_staff'"
+						}
+					]
+				},
+				"stompModeLimbo": {
+					"animations": [
+						"animAbilitySwitchCooldown"
+					],
+					"transitions": [
+						{
+							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:apatosaurus' || query.get_equipped_item_name('main_hand') != 'command_staff'"
 						},
 						{
-							"useStompMode": "query.is_using_item && (query.get_ride -> query.is_saddled)"
+							"useStompMode": "!query.is_using_item"
+						},
+						{
+							"stompToTailWhip": "query.all_animations_finished"
 						}
 					]
 				},
 				"useStompMode": {
 					"transitions": [
 						{
-							"stompMode": "(query.get_equipped_item_name('main_hand') != 'command_staff') || !query.is_using_item"
+							"stompMode": "(1.0)"
 						}
 					],
 					"on_entry": [
-						"/event entity @e[type=rift:apatosaurus, c=1, tag=tamed, tag=!baby] rift:use_forced_stomp"
-					],
-					"on_exit": [
-						"/event entity @e[type=rift:apatosaurus, c=1, tag=tamed, tag=!baby] rift:stop_forced_stomp",
-						"/event entity @e[type=rift:apatosaurus, c=1, tag=tamed, tag=!baby] rift:no_summon_forced_stomp_entity"
+						"/execute @e[type=rift:apatosaurus, c=1, tag=tamed, tag=!baby] ~ ~ ~ summon rift:apatosaurus_smash ~ ~ ~",
+						"/playanimation @e[type=rift:apatosaurus, c=1, tag=tamed, tag=!baby] animation.apatosaurus.stomp",
+						"/event entity @e[type=rift:apatosaurus, c=1, tag=tamed, tag=!baby] rift:on_forced_attack_family",
+						"/execute @e[type=rift:apatosaurus, c=1, tag=tamed, tag=!baby] ~ ~ ~ function cmd.apatosaurus_forced_break_blocks"
 					]
 				},
 				"stompToTailWhip": {
@@ -612,7 +725,7 @@
 							"default": "(query.get_equipped_item_name('main_hand') != 'command_staff') || !query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:apatosaurus'"
 						},
 						{
-							"tailWhipMode": "!query.is_jumping"
+							"tailWhipMode": "!query.is_using_item"
 						}
 					],
 					"on_exit": [
@@ -622,24 +735,39 @@
 				"tailWhipMode": {
 					"transitions": [
 						{
-							"default": "(query.get_equipped_item_name('main_hand') != 'command_staff') || !query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:apatosaurus'"
+							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:apatosaurus'"
 						},
 						{
-							"tailWhipToBulldoze": "query.is_jumping && query.is_riding"
+							"tailWhipModeLimbo": "query.is_using_item && (query.get_ride -> query.is_saddled) && query.get_equipped_item_name('main_hand') == 'command_staff'"
+						}
+					]
+				},
+				"tailWhipModeLimbo": {
+					"animations": [
+						"animAbilitySwitchCooldown"
+					],
+					"transitions": [
+						{
+							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:apatosaurus' || query.get_equipped_item_name('main_hand') != 'command_staff'"
 						},
 						{
-							"useTailWhipMode": "query.is_using_item && (query.get_ride -> query.is_saddled)"
+							"useTailWhipMode": "!query.is_using_item"
+						},
+						{
+							"tailWhipToBulldoze": "query.all_animations_finished"
 						}
 					]
 				},
 				"useTailWhipMode": {
 					"transitions": [
 						{
-							"tailWhipMode": "(query.get_equipped_item_name('main_hand') != 'command_staff') || !query.is_using_item"
+							"tailWhipMode": "(1.0)"
 						}
 					],
 					"on_entry": [
-						"/tag @e[type=rift:apatosaurus, c=1, tag=tamed, tag=!baby] add apatoTailWhip"
+						"/execute @e[type=rift:apatosaurus, c=1, tag=tamed, tag=!baby] ~ ~ ~ summon rift:apatosaurus_tail_whip ~ ~ ~",
+						"/playanimation @e[type=rift:apatosaurus, c=1, tag=tamed, tag=!baby] animation.apatosaurus.tail_whip",
+						"/event entity @e[type=rift:apatosaurus, c=1, tag=tamed, tag=!baby] rift:on_forced_attack_family"
 					]
 				},
 				"tailWhipToBulldoze": {
@@ -648,30 +776,31 @@
 							"default": "(query.get_equipped_item_name('main_hand') != 'command_staff') || !query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:apatosaurus'"
 						},
 						{
-							"bulldozeMode": "!query.is_jumping"
+							"bulldozeMode": "!query.is_using_item"
 						}
 					],
 					"on_exit": [
-						"/tellraw @s {\"rawtext\":[{\"text\":\"Ability set to Bulldoze Mode\"}]}"
+						"/tellraw @s {\"rawtext\":[{\"text\":\"Ability set to Bulldoze Mode\"}]}",
+						"/tellraw @s {\"rawtext\":[{\"text\":\"To use bulldoze, press and hold jump!\"}]}"
 					]
 				},
 				"bulldozeMode": {
 					"transitions": [
 						{
-							"default": "(query.get_equipped_item_name('main_hand') != 'command_staff') || !query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:apatosaurus'"
+							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:apatosaurus'"
 						},
 						{
-							"bulldozeToStomp": "query.is_jumping && query.is_riding"
+							"bulldozeToStomp": "query.is_using_item && (query.get_ride -> query.is_saddled) && query.get_equipped_item_name('main_hand') == 'command_staff'"
 						},
 						{
-							"useBulldozeMode": "query.is_using_item && (query.get_ride -> query.is_saddled)"
+							"useBulldozeMode": "(query.get_ride -> query.is_saddled) && query.get_equipped_item_name('main_hand') == 'command_staff' && query.is_jumping"
 						}
 					]
 				},
 				"useBulldozeMode": {
 					"transitions": [
 						{
-							"bulldozeMode": "(query.get_equipped_item_name('main_hand') != 'command_staff') || !query.is_using_item"
+							"bulldozeMode": "query.get_equipped_item_name('main_hand') != 'command_staff' || !query.is_jumping"
 						}
 					],
 					"on_entry": [
@@ -687,7 +816,7 @@
 							"default": "(query.get_equipped_item_name('main_hand') != 'command_staff') || !query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:apatosaurus'"
 						},
 						{
-							"stompMode": "!query.is_jumping"
+							"stompMode": "!query.is_using_item"
 						}
 					],
 					"on_exit": [
@@ -718,25 +847,36 @@
 							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:parasaurolophus'"
 						},
 						{
-							"attackToScare": "query.is_jumping && query.is_riding"
+							"attackModeLimbo": "query.is_using_item && (query.get_ride -> query.is_saddled) && query.get_equipped_item_name('main_hand') == 'command_staff'"
+						}
+					]
+				},
+				"attackModeLimbo": {
+					"animations": [
+						"animAbilitySwitchCooldown"
+					],
+					"transitions": [
+						{
+							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:parasaurolophus' || query.get_equipped_item_name('main_hand') != 'command_staff'"
 						},
 						{
-							"useAttackMode": "query.get_equipped_item_name('main_hand') == 'command_staff' && query.is_using_item && (query.get_ride -> query.is_saddled)"
+							"useAttackMode": "!query.is_using_item"
+						},
+						{
+							"attackToScare": "query.all_animations_finished"
 						}
 					]
 				},
 				"useAttackMode": {
 					"transitions": [
 						{
-							"attackMode": "query.get_equipped_item_name('main_hand') != 'command_staff' || !query.is_using_item"
+							"attackMode": "(1.0)"
 						}
 					],
 					"on_entry": [
-						"/event entity @e[type=rift:parasaurolophus, c=1, tag=tamed, tag=!baby] rift:use_forced_attack"
-					],
-					"on_exit": [
-						"/event entity @e[type=rift:parasaurolophus, c=1, tag=tamed, tag=!baby] rift:stop_forced_attack",
-						"/event entity @e[type=rift:parasaurolophus, c=1, tag=tamed, tag=!baby] rift:no_summon_forced_attack_entity"
+						"/execute @e[type=rift:parasaurolophus, c=1, tag=tamed, tag=!baby] ~ ~ ~ playanimation @s animation.parasaurolophus.harvest",
+						"/execute @e[type=rift:parasaurolophus, c=1, tag=tamed, tag=!baby] ~ ~ ~ summon rift:parasaurolophus_attack ~ ~ ~",
+						"/event entity @e[type=rift:parasaurolophus, c=1, tag=tamed, tag=!baby] rift:on_forced_attack_family"
 					]
 				},
 				"attackToScare": {
@@ -745,7 +885,7 @@
 							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:parasaurolophus'"
 						},
 						{
-							"scareMode": "!query.is_jumping"
+							"scareMode": "!query.is_using_item"
 						}
 					],
 					"on_exit": [
@@ -758,17 +898,30 @@
 							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:parasaurolophus'"
 						},
 						{
-							"scareToAggravate": "query.is_jumping && query.is_riding"
+							"scareModeLimbo": "query.is_using_item && (query.get_ride -> query.is_saddled) && query.get_equipped_item_name('main_hand') == 'command_staff'"
+						}
+					]
+				},
+				"scareModeLimbo": {
+					"animations": [
+						"animAbilitySwitchCooldown"
+					],
+					"transitions": [
+						{
+							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:parasaurolophus' || query.get_equipped_item_name('main_hand') != 'command_staff'"
 						},
 						{
-							"useScareMode": "query.get_equipped_item_name('main_hand') == 'command_staff' && query.is_using_item && (query.get_ride -> query.is_saddled)"
+							"useScareMode": "!query.is_using_item"
+						},
+						{
+							"scareToAggravate": "query.all_animations_finished"
 						}
 					]
 				},
 				"useScareMode": {
 					"transitions": [
 						{
-							"scareMode": "query.get_equipped_item_name('main_hand') != 'command_staff' || !query.is_using_item"
+							"scareMode": "(1.0)"
 						}
 					],
 					"on_entry": [
@@ -781,7 +934,7 @@
 							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:parasaurolophus'"
 						},
 						{
-							"aggravateMode": "!query.is_jumping"
+							"aggravateMode": "!query.is_using_item"
 						}
 					],
 					"on_exit": [
@@ -794,17 +947,30 @@
 							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:parasaurolophus'"
 						},
 						{
-							"aggravateToAttack": "query.is_jumping && query.is_riding"
+							"aggravateModeLimbo": "query.is_using_item && (query.get_ride -> query.is_saddled) && query.get_equipped_item_name('main_hand') == 'command_staff'"
+						}
+					]
+				},
+				"aggravateModeLimbo": {
+					"animations": [
+						"animAbilitySwitchCooldown"
+					],
+					"transitions": [
+						{
+							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:parasaurolophus' || query.get_equipped_item_name('main_hand') != 'command_staff'"
 						},
 						{
-							"useAggravateMode": "query.get_equipped_item_name('main_hand') == 'command_staff' && query.is_using_item"
+							"useAggravateMode": "!query.is_using_item"
+						},
+						{
+							"aggravateToAttack": "query.all_animations_finished"
 						}
 					]
 				},
 				"useAggravateMode": {
 					"transitions": [
 						{
-							"aggravateMode": "query.get_equipped_item_name('main_hand') != 'command_staff' || !query.is_using_item"
+							"aggravateMode": "(1.0)"
 						}
 					],
 					"on_entry": [
@@ -817,7 +983,7 @@
 							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:parasaurolophus'"
 						},
 						{
-							"attackMode": "!query.is_jumping"
+							"attackMode": "!query.is_using_item"
 						}
 					],
 					"on_exit": [
@@ -832,7 +998,7 @@
 				"default": {
 					"transitions": [
 						{
-							"biteMode": "(query.get_equipped_item_name('main_hand') == 'command_staff') && query.is_riding && (query.get_ride -> query.owner_identifier) == 'rift:sarcosuchus'"
+							"biteMode": "query.is_riding && (query.get_ride -> query.owner_identifier) == 'rift:sarcosuchus'"
 						}
 					],
 					"on_entry": [
@@ -845,28 +1011,39 @@
 				"biteMode": {
 					"transitions": [
 						{
-							"default": "(query.get_equipped_item_name('main_hand') != 'command_staff') || !query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:sarcosuchus'"
+							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:sarcosuchus'"
 						},
 						{
-							"biteToSpin": "query.is_jumping && query.is_riding"
+							"biteModeLimbo": "query.is_using_item && (query.get_ride -> query.is_saddled) && query.get_equipped_item_name('main_hand') == 'command_staff'"
+						}
+					]
+				},
+				"biteModeLimbo": {
+					"animations": [
+						"animAbilitySwitchCooldown"
+					],
+					"transitions": [
+						{
+							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:sarcosuchus' || query.get_equipped_item_name('main_hand') != 'command_staff'"
 						},
 						{
-							"useBiteMode": "query.is_using_item && (query.get_ride -> query.is_saddled)"
+							"useBiteMode": "!query.is_using_item"
+						},
+						{
+							"biteToSpin": "query.all_animations_finished"
 						}
 					]
 				},
 				"useBiteMode": {
 					"transitions": [
 						{
-							"biteMode": "(query.get_equipped_item_name('main_hand') != 'command_staff') || !query.is_using_item"
+							"biteMode": "(1.0)"
 						}
 					],
 					"on_entry": [
-						"/event entity @e[type=rift:sarcosuchus, c=1, tag=tamed, tag=!baby] rift:use_forced_bite"
-					],
-					"on_exit": [
-						"/event entity @e[type=rift:sarcosuchus, c=1, tag=tamed, tag=!baby] rift:stop_forced_bite",
-						"/event entity @e[type=rift:sarcosuchus, c=1, tag=tamed, tag=!baby] rift:no_summon_forced_bite_entity"
+						"/playanimation @e[type=rift:sarcosuchus, c=1, tag=tamed, tag=!baby] animation.sarcosuchus.bite",
+						"/execute @e[type=rift:sarcosuchus, c=1, tag=tamed, tag=!baby] ~ ~ ~ summon rift:sarcosuchus_bite ~ ~ ~",
+						"/event entity @e[type=rift:sarcosuchus, c=1, tag=tamed, tag=!baby] rift:on_forced_attack_family"
 					]
 				},
 				"biteToSpin": {
@@ -875,7 +1052,7 @@
 							"default": "(query.get_equipped_item_name('main_hand') != 'command_staff') || !query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:sarcosuchus'"
 						},
 						{
-							"spinMode": "!query.is_jumping"
+							"spinMode": "!query.is_using_item"
 						}
 					],
 					"on_exit": [
@@ -885,20 +1062,33 @@
 				"spinMode": {
 					"transitions": [
 						{
-							"default": "(query.get_equipped_item_name('main_hand') != 'command_staff') || !query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:sarcosuchus'"
+							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:sarcosuchus'"
 						},
 						{
-							"spinToBite": "query.is_jumping && query.is_riding"
+							"spinModeLimbo": "query.is_using_item && (query.get_ride -> query.is_saddled) && query.get_equipped_item_name('main_hand') == 'command_staff'"
+						}
+					]
+				},
+				"spinModeLimbo": {
+					"animations": [
+						"animAbilitySwitchCooldown"
+					],
+					"transitions": [
+						{
+							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:sarcosuchus' || query.get_equipped_item_name('main_hand') != 'command_staff'"
 						},
 						{
-							"useSpinMode": "query.is_using_item"
+							"useSpinMode": "!query.is_using_item"
+						},
+						{
+							"spinToBite": "query.all_animations_finished"
 						}
 					]
 				},
 				"useSpinMode": {
 					"transitions": [
 						{
-							"spinMode": "(query.get_equipped_item_name('main_hand') != 'command_staff') || !query.is_using_item"
+							"spinMode": "(1.0)"
 						}
 					],
 					"on_entry": [
@@ -911,7 +1101,7 @@
 							"default": "(query.get_equipped_item_name('main_hand') != 'command_staff') || !query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:sarcosuchus'"
 						},
 						{
-							"biteMode": "!query.is_jumping"
+							"biteMode": "!query.is_using_item"
 						}
 					],
 					"on_exit": [
@@ -926,7 +1116,7 @@
 				"default": {
 					"transitions": [
 						{
-							"slashMode": "(query.get_equipped_item_name('main_hand') == 'command_staff') && query.is_riding && (query.get_ride -> query.owner_identifier) == 'rift:anomalocaris'"
+							"slashMode": "query.is_riding && (query.get_ride -> query.owner_identifier) == 'rift:anomalocaris'"
 						}
 					],
 					"on_entry": [
@@ -939,28 +1129,39 @@
 				"slashMode": {
 					"transitions": [
 						{
-							"default": "(query.get_equipped_item_name('main_hand') != 'command_staff') || !query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:anomalocaris'"
+							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:anomalocaris'"
 						},
 						{
-							"slashToCarry": "query.is_jumping && query.is_riding"
+							"slashModeLimbo": "query.is_using_item && (query.get_ride -> query.is_saddled) && query.get_equipped_item_name('main_hand') == 'command_staff'"
+						}
+					]
+				},
+				"slashModeLimbo": {
+					"animations": [
+						"animAbilitySwitchCooldown"
+					],
+					"transitions": [
+						{
+							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:anomalocaris' || query.get_equipped_item_name('main_hand') != 'command_staff'"
 						},
 						{
-							"useSlashMode": "query.is_using_item && (query.get_ride -> query.is_saddled)"
+							"useSlashMode": "!query.is_using_item"
+						},
+						{
+							"slashToCarry": "query.all_animations_finished"
 						}
 					]
 				},
 				"useSlashMode": {
 					"transitions": [
 						{
-							"slashMode": "(query.get_equipped_item_name('main_hand') != 'command_staff') || !query.is_using_item"
+							"slashMode": "(1.0)"
 						}
 					],
 					"on_entry": [
-						"/event entity @e[type=rift:anomalocaris, c=1, tag=tamed, tag=!baby] rift:use_forced_slash"
-					],
-					"on_exit": [
-						"/event entity @e[type=rift:anomalocaris, c=1, tag=tamed, tag=!baby] rift:stop_forced_slash",
-						"/event entity @e[type=rift:anomalocaris, c=1, tag=tamed, tag=!baby] rift:no_summon_forced_slash"
+						"/playanimation @e[type=rift:anomalocaris, c=1, tag=tamed, tag=!baby] animation.anomalocaris.attack",
+						"/execute @e[type=rift:anomalocaris, c=1, tag=tamed, tag=!baby] ~ ~ ~ summon rift:anomalocaris_slash",
+						"/event entity @e@e[type=rift:anomalocaris, c=1, tag=tamed, tag=!baby] rift:on_forced_attack_family"
 					]
 				},
 				"slashToCarry": {
@@ -969,7 +1170,7 @@
 							"default": "(query.get_equipped_item_name('main_hand') != 'command_staff') || !query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:anomalocaris'"
 						},
 						{
-							"carryMode": "!query.is_jumping"
+							"carryMode": "!query.is_using_item"
 						}
 					],
 					"on_exit": [
@@ -979,20 +1180,33 @@
 				"carryMode": {
 					"transitions": [
 						{
-							"default": "(query.get_equipped_item_name('main_hand') != 'command_staff') || !query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:anomalocaris'"
+							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:anomalocaris'"
 						},
 						{
-							"carryToInvisibility": "query.is_jumping && query.is_riding"
+							"carryModeLimbo": "query.is_using_item && (query.get_ride -> query.is_saddled) && query.get_equipped_item_name('main_hand') == 'command_staff'"
+						}
+					]
+				},
+				"carryModeLimbo": {
+					"animations": [
+						"animAbilitySwitchCooldown"
+					],
+					"transitions": [
+						{
+							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:anomalocaris' || query.get_equipped_item_name('main_hand') != 'command_staff'"
 						},
 						{
-							"useCarryMode": "query.is_using_item"
+							"useCarryMode": "!query.is_using_item"
+						},
+						{
+							"carryToInvisibility": "query.all_animations_finished"
 						}
 					]
 				},
 				"useCarryMode": {
 					"transitions": [
 						{
-							"carryMode": "(query.get_equipped_item_name('main_hand') != 'command_staff') || !query.is_using_item"
+							"carryMode": "(1.0)"
 						}
 					],
 					"on_entry": [
@@ -1005,7 +1219,7 @@
 							"default": "(query.get_equipped_item_name('main_hand') != 'command_staff') || !query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:anomalocaris'"
 						},
 						{
-							"invisibilityMode": "!query.is_jumping"
+							"invisibilityMode": "!query.is_using_item"
 						}
 					],
 					"on_exit": [
@@ -1015,20 +1229,33 @@
 				"invisibilityMode": {
 					"transitions": [
 						{
-							"default": "(query.get_equipped_item_name('main_hand') != 'command_staff') || !query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:anomalocaris'"
+							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:anomalocaris'"
 						},
 						{
-							"invisibilityToSlash": "query.is_jumping && query.is_riding"
+							"invisibilityModeLimbo": "query.is_using_item && (query.get_ride -> query.is_saddled) && query.get_equipped_item_name('main_hand') == 'command_staff'"
+						}
+					]
+				},
+				"invisibilityModeLimbo": {
+					"animations": [
+						"animAbilitySwitchCooldown"
+					],
+					"transitions": [
+						{
+							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:anomalocaris' || query.get_equipped_item_name('main_hand') != 'command_staff'"
 						},
 						{
-							"useInvisibilityMode": "query.is_using_item"
+							"useInvisibilityMode": "!query.is_using_item"
+						},
+						{
+							"invisibilityToSlash": "query.all_animations_finished"
 						}
 					]
 				},
 				"useInvisibilityMode": {
 					"transitions": [
 						{
-							"invisibilityMode": "(query.get_equipped_item_name('main_hand') != 'command_staff') || !query.is_using_item"
+							"invisibilityMode": "(1.0)"
 						}
 					],
 					"on_entry": [
@@ -1041,7 +1268,7 @@
 							"default": "(query.get_equipped_item_name('main_hand') != 'command_staff') || !query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:anomalocaris'"
 						},
 						{
-							"slashMode": "!query.is_jumping"
+							"slashMode": "!query.is_using_item"
 						}
 					],
 					"on_exit": [
@@ -1072,25 +1299,36 @@
 							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:saurophaganax'"
 						},
 						{
-							"biteToLightBlast": "query.is_jumping && query.is_riding"
+							"biteModeLimbo": "query.is_using_item && (query.get_ride -> query.is_saddled) && query.get_equipped_item_name('main_hand') == 'command_staff'"
+						}
+					]
+				},
+				"biteModeLimbo": {
+					"animations": [
+						"animAbilitySwitchCooldown"
+					],
+					"transitions": [
+						{
+							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:saurophaganax' || query.get_equipped_item_name('main_hand') != 'command_staff'"
 						},
 						{
-							"useBiteMode": "query.get_equipped_item_name('main_hand') == 'command_staff' && query.is_using_item && (query.get_ride -> query.is_saddled)"
+							"useBiteMode": "!query.is_using_item"
+						},
+						{
+							"biteToLightBlast": "query.all_animations_finished"
 						}
 					]
 				},
 				"useBiteMode": {
 					"transitions": [
 						{
-							"biteMode": "query.get_equipped_item_name('main_hand') != 'command_staff' || !query.is_using_item"
+							"biteMode": "(1.0)"
 						}
 					],
 					"on_entry": [
-						"/event entity @e[type=rift:saurophaganax, c=1, tag=tamed, tag=!baby] rift:use_forced_bite"
-					],
-					"on_exit": [
-						"/event entity @e[type=rift:saurophaganax, c=1, tag=tamed, tag=!baby] rift:stop_forced_bite",
-						"/event entity @e[type=rift:saurophaganax, c=1, tag=tamed, tag=!baby] rift:no_summon_forced_bite_entity"
+						"/playanimation @e[type=rift:saurophaganax, c=1, tag=tamed, tag=!baby] animation.saurophaganax.bite",
+						"/event entity @e[type=rift:saurophaganax, c=1, tag=tamed, tag=!baby] rift:on_summon_forced_bite_entity",
+						"/event entity @e[type=rift:saurophaganax, c=1, tag=tamed, tag=!baby] rift:on_forced_attack_family"
 					]
 				},
 				"biteToLightBlast": {
@@ -1099,7 +1337,7 @@
 							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:saurophaganax'"
 						},
 						{
-							"lightBlastMode": "!query.is_jumping"
+							"lightBlastMode": "!query.is_using_item"
 						}
 					],
 					"on_exit": [
@@ -1112,17 +1350,30 @@
 							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:saurophaganax'"
 						},
 						{
-							"lightBlastToBite": "query.is_jumping && query.is_riding"
+							"lightBlastModeLimbo": "query.is_using_item && (query.get_ride -> query.is_saddled) && query.get_equipped_item_name('main_hand') == 'command_staff'"
+						}
+					]
+				},
+				"lightBlastModeLimbo": {
+					"animations": [
+						"animAbilitySwitchCooldown"
+					],
+					"transitions": [
+						{
+							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:saurophaganax' || query.get_equipped_item_name('main_hand') != 'command_staff'"
 						},
 						{
-							"useLightBlastMode": "query.get_equipped_item_name('main_hand') == 'command_staff' && query.is_using_item"
+							"useLightBlastMode": "!query.is_using_item"
+						},
+						{
+							"lightBlastToBite": "query.all_animations_finished"
 						}
 					]
 				},
 				"useLightBlastMode": {
 					"transitions": [
 						{
-							"lightBlastMode": "query.get_equipped_item_name('main_hand') != 'command_staff' || !query.is_using_item"
+							"lightBlastMode": "(1.0)"
 						}
 					],
 					"on_entry": [
@@ -1136,7 +1387,7 @@
 							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:saurophaganax'"
 						},
 						{
-							"biteMode": "!query.is_jumping"
+							"biteMode": "!query.is_using_item"
 						}
 					],
 					"on_exit": [
@@ -1167,25 +1418,35 @@
 							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:direwolf' || (query.get_ride -> query.is_ignited)"
 						},
 						{
-							"biteToCall": "query.is_jumping && query.is_riding"
+							"biteModeLimbo": "query.is_using_item && (query.get_ride -> query.is_saddled) && query.get_equipped_item_name('main_hand') == 'command_staff'"
+						}
+					]
+				},
+				"biteModeLimbo": {
+					"animations": [
+						"animAbilitySwitchCooldown"
+					],
+					"transitions": [
+						{
+							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:direwolf' || (query.get_ride -> query.is_ignited) || query.get_equipped_item_name('main_hand') != 'command_staff'"
 						},
 						{
-							"useBiteMode": "query.get_equipped_item_name('main_hand') == 'command_staff' && query.is_using_item"
+							"useBiteMode": "!query.is_using_item"
+						},
+						{
+							"biteToCall": "query.all_animations_finished"
 						}
 					]
 				},
 				"useBiteMode": {
 					"transitions": [
 						{
-							"biteMode": "(query.get_equipped_item_name('main_hand') != 'command_staff') || !query.is_using_item"
+							"biteMode": "(1.0)"
 						}
 					],
 					"on_entry": [
-						"/event entity @e[type=rift:direwolf, c=1, tag=tamed, tag=!baby] rift:use_forced_bite"
-					],
-					"on_exit": [
-						"/event entity @e[type=rift:direwolf, c=1, tag=tamed, tag=!baby] rift:stop_forced_attack",
-						"/event entity @e[type=rift:direwolf, c=1, tag=tamed, tag=!baby] rift:no_summon_forced_attack_entity"
+						"/event entity @e[type=rift:direwolf, c=1, tag=tamed, tag=!baby] rift:on_summon_forced_bite_entity_normal",
+						"/event entity @e[type=rift:direwolf, c=1, tag=tamed, tag=!baby] rift:on_forced_attack_family"
 					]
 				},
 				"biteToCall": {
@@ -1194,7 +1455,7 @@
 							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:direwolf' || (query.get_ride -> query.is_ignited)"
 						},
 						{
-							"callMode": "!query.is_jumping"
+							"callMode": "!query.is_using_item"
 						}
 					],
 					"on_exit": [
@@ -1207,17 +1468,30 @@
 							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:direwolf' || (query.get_ride -> query.is_ignited)"
 						},
 						{
-							"callToSniff": "query.is_jumping && query.is_riding"
+							"callModeLimbo": "query.is_using_item && (query.get_ride -> query.is_saddled) && query.get_equipped_item_name('main_hand') == 'command_staff'"
+						}
+					]
+				},
+				"callModeLimbo": {
+					"animations": [
+						"animAbilitySwitchCooldown"
+					],
+					"transitions": [
+						{
+							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:direwolf' || (query.get_ride -> query.is_ignited) || query.get_equipped_item_name('main_hand') != 'command_staff'"
 						},
 						{
-							"useCallMode": "query.get_equipped_item_name('main_hand') == 'command_staff' && query.is_using_item"
+							"useCallMode": "!query.is_using_item"
+						},
+						{
+							"callToSniff": "query.all_animations_finished"
 						}
 					]
 				},
 				"useCallMode": {
 					"transitions": [
 						{
-							"callMode": "(query.get_equipped_item_name('main_hand') != 'command_staff') || !query.is_using_item"
+							"callMode": "(1.0)"
 						}
 					],
 					"on_entry": [
@@ -1230,7 +1504,7 @@
 							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:direwolf' || (query.get_ride -> query.is_ignited)"
 						},
 						{
-							"sniffMode": "!query.is_jumping"
+							"sniffMode": "!query.is_using_item"
 						}
 					],
 					"on_exit": [
@@ -1243,25 +1517,38 @@
 							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:direwolf' || (query.get_ride -> query.is_ignited)"
 						},
 						{
-							"sniffToSnarl": "query.is_jumping && query.is_riding"
+							"sniffModeLimbo": "query.is_using_item && (query.get_ride -> query.is_saddled) && query.get_equipped_item_name('main_hand') == 'command_staff'"
+						}
+					],
+					"on_entry": [
+						"/execute @e[type=rift:direwolf, c=1, tag=tamed, tag=!baby] ~ ~ ~ tag @e remove sniffedByDirewolf"
+					]
+				},
+				"sniffModeLimbo": {
+					"animations": [
+						"animAbilitySwitchCooldown"
+					],
+					"transitions": [
+						{
+							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:direwolf' || (query.get_ride -> query.is_ignited) || query.get_equipped_item_name('main_hand') != 'command_staff'"
 						},
 						{
-							"useSniffMode": "query.get_equipped_item_name('main_hand') == 'command_staff' && query.is_using_item"
+							"useSniffMode": "!query.is_using_item"
+						},
+						{
+							"sniffToSnarl": "query.all_animations_finished"
 						}
 					]
 				},
 				"useSniffMode": {
 					"transitions": [
 						{
-							"sniffMode": "(query.get_equipped_item_name('main_hand') != 'command_staff') || !query.is_using_item"
+							"sniffMode": "(1.0)"
 						}
 					],
 					"on_entry": [
 						"/tag @s add direwolfSniff",
 						"/execute @e[type=rift:direwolf, c=1, tag=tamed, tag=!baby] ~ ~ ~ tag @e[x=~-72, dx=144, y=~-4, dy=20, z=~-72, dz=144, c=16, type=!xp_orb, type=!player, type=!item, tag=!tamed, family=!inanimate] add sniffedByDirewolf"
-					],
-					"on_exit": [
-						"/execute @e[type=rift:direwolf, c=1, tag=tamed, tag=!baby] ~ ~ ~ tag @e remove sniffedByDirewolf"
 					]
 				},
 				"sniffToSnarl": {
@@ -1270,7 +1557,7 @@
 							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:direwolf' || (query.get_ride -> query.is_ignited)"
 						},
 						{
-							"snarlMode": "!query.is_jumping"
+							"snarlMode": "!query.is_using_item"
 						}
 					],
 					"on_exit": [
@@ -1283,17 +1570,30 @@
 							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:direwolf' || (query.get_ride -> query.is_ignited)"
 						},
 						{
-							"snarlToBite": "query.is_jumping && query.is_riding"
+							"snarlModeLimbo": "query.is_using_item && (query.get_ride -> query.is_saddled) && query.get_equipped_item_name('main_hand') == 'command_staff'"
+						}
+					]
+				},
+				"snarlModeLimbo": {
+					"animations": [
+						"animAbilitySwitchCooldown"
+					],
+					"transitions": [
+						{
+							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:direwolf' || query.get_equipped_item_name('main_hand') != 'command_staff'"
 						},
 						{
-							"useSnarlMode": "query.get_equipped_item_name('main_hand') == 'command_staff' && query.is_using_item"
+							"useSnarlMode": "!query.is_using_item"
+						},
+						{
+							"snarlToBite": "query.all_animations_finished"
 						}
 					]
 				},
 				"useSnarlMode": {
 					"transitions": [
 						{
-							"snarlMode": "(query.get_equipped_item_name('main_hand') != 'command_staff') || !query.is_using_item"
+							"snarlMode": "(1.0)"
 						}
 					],
 					"on_entry": [
@@ -1307,7 +1607,7 @@
 							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:direwolf' || (query.get_ride -> query.is_ignited)"
 						},
 						{
-							"biteMode": "!query.is_jumping"
+							"biteMode": "!query.is_using_item"
 						}
 					],
 					"on_exit": [

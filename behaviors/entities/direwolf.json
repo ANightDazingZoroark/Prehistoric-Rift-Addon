@@ -1618,6 +1618,50 @@
 					}
 			 	}
 			},
+			"rift:direwolf_tamed_pounceable": {
+				"minecraft:area_attack": {
+					"damage_range": 0.75,
+					"damage_per_tick": 12,
+					"cause": "entity_attack",
+					"entity_filter": {
+						"all_of": [
+							{
+								"test": "is_owner",
+								"subject": "other",
+								"value": false
+							},
+							{
+								"test": "has_component",
+								"subject": "other",
+								"operator": "!=",
+								"value": "minecraft:is_tamed"
+							}
+						]
+					}
+				}
+			},
+			"rift:direwolf_tamed_buff_pounceable": {
+				"minecraft:area_attack": {
+					"damage_range": 0.75,
+					"damage_per_tick": 30,
+					"cause": "entity_attack",
+					"entity_filter": {
+						"all_of": [
+							{
+								"test": "is_owner",
+								"subject": "other",
+								"value": false
+							},
+							{
+								"test": "has_component",
+								"subject": "other",
+								"operator": "!=",
+								"value": "minecraft:is_tamed"
+							}
+						]
+					}
+				}
+            },
 			"rift:variant_one": {
                 "minecraft:variant": {
                     "value": 0
@@ -4195,6 +4239,110 @@
 			},
 			"minecraft:environment_sensor": {
                 "triggers":[
+					{
+						"filters": {
+							"all_of": [
+								{
+									"test": "on_ground",
+									"subject": "self",
+									"value": false
+								},
+								{
+									"test": "has_component",
+									"subject": "self",
+									"value": "minecraft:is_tamed"
+								},
+								{
+									"test": "has_component",
+									"subject": "self",
+									"value": "minecraft:is_ignited"
+								},
+								{
+									"test": "rider_count",
+									"subject": "self",
+									"operator": ">",
+									"value": 0
+								},
+								{
+									"test": "has_mob_effect",
+									"subject": "self",
+									"operator": "!=",
+									"value": "speed"
+								},
+								{
+									"test": "has_mob_effect",
+									"subject": "self",
+									"operator": "!=",
+									"value": "strength"
+								}
+							]
+						},
+						"event": "rift:leap_ability"
+					},
+					{
+						"filters": {
+							"all_of": [
+								{
+									"test": "on_ground",
+									"subject": "self",
+									"value": false
+								},
+								{
+									"test": "has_component",
+									"subject": "self",
+									"value": "minecraft:is_tamed"
+								},
+								{
+									"test": "has_component",
+									"subject": "self",
+									"value": "minecraft:is_ignited"
+								},
+								{
+									"test": "rider_count",
+									"subject": "self",
+									"operator": ">",
+									"value": 0
+								},
+								{
+									"test": "has_mob_effect",
+									"subject": "self",
+									"operator": "==",
+									"value": "speed"
+								},
+								{
+									"test": "has_mob_effect",
+									"subject": "self",
+									"operator": "==",
+									"value": "strength"
+								}
+							]
+						},
+						"event": "rift:buffed_leap_ability"
+					},
+					{
+						"filters": {
+							"all_of": [
+								{
+									"test": "on_ground",
+									"subject": "self",
+									"value": true
+								},
+								{
+									"test": "has_component",
+									"subject": "self",
+									"value": "minecraft:is_tamed"
+								},
+								{
+									"test": "rider_count",
+									"subject": "self",
+									"operator": ">",
+									"value": 0
+								}
+							]
+						},
+						"event": "rift:disable_leap",
+						"target": "self"
+					},
                     {
                         "filters": {
                             "all_of": [
@@ -4640,7 +4788,9 @@
 								"rift:can_bite_attack_werewolf",
 								"rift:can_claw_attack_werewolf",
 								"rift:can_pounce_attack_werewolf",
-								"rift:can_boulder_throw_werewolf"
+								"rift:can_boulder_throw_werewolf",
+								"rift:direwolf_tamed_pounceable",
+								"rift:direwolf_tamed_buff_pounceable"
 							]
 						}
 					},
@@ -4777,7 +4927,6 @@
 							]
 						}
 					},
-					
 					{
 						"filters": {
 							"all_of": [
@@ -5827,6 +5976,11 @@
 						"rift:pushable",
 						"rift:aggravating_horn_attack"
 					]
+				},
+				"run_command": {
+					"command": [
+						"tag @s add climber"
+					]
 				}
 			},
 			"rift:has_no_rider": {
@@ -5840,6 +5994,11 @@
 						"remove": {
 							"component_groups": [
 								"rift:unpushable"
+							]
+						},
+						"run_command": {
+							"command": [
+								"tag @s remove climber"
 							]
 						}
 					},
@@ -6105,6 +6264,28 @@
 					]
 				}
 			},
+			"rift:leap_ability": {
+				"add": {
+					"component_groups": [
+						"rift:direwolf_tamed_pounceable"
+					]
+				}
+            },
+			"rift:buffed_leap_ability": {
+				"add": {
+					"component_groups": [
+						"rift:direwolf_tamed_buff_pounceable"
+					]
+				}
+			},
+			"rift:disable_leap": {
+				"remove": {
+					"component_groups": [
+						"rift:direwolf_tamed_pounceable",
+						"rift:direwolf_tamed_buff_pounceable"
+					]
+				}
+            },
 			"rift:manage_state": {
 				"set_actor_property": {
 					"rift:tame_state": "(query.actor_property('rift:tame_state') >= 0 && query.actor_property('rift:tame_state') <= 1) ? query.actor_property('rift:tame_state') + 1 : 0"
