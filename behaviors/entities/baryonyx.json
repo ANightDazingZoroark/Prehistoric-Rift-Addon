@@ -30,7 +30,6 @@
 				"contTameTag": "controller.animation.add_tame_tag",
 				"contBabyTag": "controller.animation.add_baby_tag",
 				"contRiddenTag": "controller.animation.add_ridden_tag",
-				"contSittingTag": "controller.animation.add_sitting_tag",
 				"contTameState": "controller.animation.manage_tame_state",
 				"contBehaviorState": "controller.animation.manage_tame_behavior",
 				"animForcedAttackBite": "animation.forced_attack_baryonyx_bite",
@@ -45,7 +44,6 @@
 					"contTameTag",
 					"contBabyTag",
 					"contRiddenTag",
-					"contSittingTag",
 					"contTameState",
 					"contBehaviorState"
 				]
@@ -1268,6 +1266,16 @@
 					"priority": 7,
 					"track_target": true,
 					"reach_multiplier": 5
+				}
+			},
+			"rift:harvest_cooldown": {
+				"minecraft:out_of_control": {},
+				"minecraft:timer": {
+					"time": 10,
+					"time_down_event": {
+						"event": "rift:harvest_cooldown_end",
+						"target": "self"
+					}
 				}
 			},
 			"rift:default_navigation": {
@@ -3371,6 +3379,99 @@
 					}
 				]
             },
+			"minecraft:environment_sensor": {
+                "triggers": [
+					{
+						"filters": {
+							"all_of": [
+								{
+									"test": "has_tag",
+									"value": "baryonyxHarvest",
+									"subject": "self"									
+								},
+								{
+									"test": "rider_count",
+									"operator": ">",
+									"value": 0,
+									"subject": "self"
+								},
+								{
+									"test": "has_component",
+									"value": "minecraft:is_tamed",
+									"subject": "self"
+								},
+								{
+									"test": "has_component",
+									"operator": "!=",
+									"value": "minecraft:is_baby",
+									"subject": "self"
+								},
+								{
+									"test": "has_component",
+									"value": "minecraft:is_saddled",
+									"subject": "self"
+								},
+								{
+									"test": "has_component",
+									"value": "minecraft:out_of_control",
+									"operator": "!=",
+									"subject": "self"
+								},
+								{
+									"test": "in_water",
+									"value": true,
+									"subject": "self"
+								}
+							]
+						},
+						"event": "rift:baryonyx_harvest"
+					},
+					{
+						"filters": {
+							"all_of": [
+								{
+									"test": "has_tag",
+									"value": "baryonyxHarvest",
+									"subject": "self"									
+								},
+								{
+									"test": "rider_count",
+									"operator": ">",
+									"value": 0,
+									"subject": "self"
+								},
+								{
+									"test": "has_component",
+									"value": "minecraft:is_tamed",
+									"subject": "self"
+								},
+								{
+									"test": "has_component",
+									"operator": "!=",
+									"value": "minecraft:is_baby",
+									"subject": "self"
+								},
+								{
+									"test": "has_component",
+									"value": "minecraft:is_saddled",
+									"subject": "self"
+								},
+								{
+									"test": "has_component",
+									"value": "minecraft:out_of_control",
+									"subject": "self"
+								},
+								{
+									"test": "in_water",
+									"value": true,
+									"subject": "self"
+								}
+							]
+						},
+						"event": "rift:baryonyx_harvest_fail"
+					}
+				]
+			},
 			"minecraft:scheduler": {
 				"scheduled_events": [
 					{
@@ -4636,6 +4737,84 @@
 						"effect @s weakness 20 2",
 						"effect @s slowness 20 2"
 				  	]
+				}
+			},
+			"rift:baryonyx_harvest": {
+				"sequence": [
+					{
+						"add": {
+							"component_groups": [
+								"rift:harvest_cooldown"
+							]
+						},
+						"run_command": {
+							"command": [
+								"playanimation @s animation.baryonyx.bite"
+							]
+						}
+					},
+					{
+						"filters": {
+							"all_of": [
+								{
+									"test": "has_biome_tag",
+									"operator": "!=",
+									"value": "jungle"
+								},
+								{
+									"test": "has_biome_tag",
+									"operator": "!=",
+									"value": "ocean"
+								}
+							]
+						},
+						"run_command": {
+							"command": [
+								"loot spawn ~ ~ ~ loot \"harvest results/baryonyx/general water drops\""
+							]
+						}
+					},
+					{
+						"filters": {
+							"test": "has_biome_tag",
+							"value": "jungle"
+						},
+						"run_command": {
+							"command": [
+								"loot spawn ~ ~ ~ loot \"harvest results/baryonyx/jungle water drops\""
+							]
+						}
+					},
+					{
+						"filters": {
+							"test": "has_biome_tag",
+							"value": "ocean"
+						},
+						"run_command": {
+							"command": [
+								"loot spawn ~ ~ ~ loot \"harvest results/baryonyx/ocean water drops\""
+							]
+						}
+					}
+				]
+			},
+			"rift:baryonyx_harvest_fail": {
+				"run_command": {
+					"command": [
+						"tellraw @p {\"rawtext\":[{\"text\":\"Cannot harvest for another 10 seconds!\"}]}"
+					]
+				}
+			},
+			"rift:harvest_cooldown_end": {
+				"remove": {
+					"component_groups": [
+						"rift:harvest_cooldown"
+					]
+				},
+				"run_command": {
+					"command": [
+						"tellraw @p {\"rawtext\":[{\"text\":\"Cooldown ended\"}]}"
+					]
 				}
 			},
 			"rift:on_force_attacked_death": {

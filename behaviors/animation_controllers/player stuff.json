@@ -388,6 +388,45 @@
                     ]
                 }
             }
+        },
+		"controller.animation.jump_speed_boost": {
+            "initial_state": "default",
+            "states": {
+                "default": {
+                    "transitions": [
+                        {
+                            "prepareJumpBoost": "query.is_jumping && query.is_riding && ((query.get_ride -> query.owner_identifier) == 'rift:utahraptor' || (query.get_ride -> query.owner_identifier) == 'rift:direwolf' || (query.get_ride -> query.owner_identifier) == 'rift:megaloceros')"
+                        }
+                    ]
+                },
+                "prepareJumpBoost": {
+                    "transitions": [
+                        {
+                            "jumpBoost": "!query.is_jumping"
+                        },
+                        {
+                            "default": "!query.is_riding || ((query.get_ride -> query.owner_identifier) != 'rift:utahraptor' && (query.get_ride -> query.owner_identifier) != 'rift:direwolf' && (query.get_ride -> query.owner_identifier) != 'rift:megaloceros')"
+                        }
+                    ]
+                },
+                "jumpBoost": {
+                    "transitions": [
+                        {
+                            "default": "!query.is_riding || (query.get_ride -> query.is_on_ground) || ((query.get_ride -> query.owner_identifier) != 'rift:utahraptor' && (query.get_ride -> query.owner_identifier) != 'rift:direwolf' && (query.get_ride -> query.owner_identifier) != 'rift:megaloceros')"
+                        }
+                    ],
+                    "on_entry": [
+                        "/effect @e[type=rift:utahraptor, c=1, tag=tamed, tag=ridden, tag=!baby] speed 60 19",
+                        "/effect @e[type=rift:direwolf, c=1, tag=tamed, tag=ridden, tag=!baby] speed 60 19",
+                        "/effect @e[type=rift:megaloceros, c=1, tag=tamed, tag=ridden, tag=!baby] speed 60 19"
+                    ],
+                    "on_exit": [
+                        "/effect @e[type=rift:utahraptor, c=1, tag=tamed, tag=ridden, tag=!baby] speed 0",
+                        "/effect @e[type=rift:direwolf, c=1, tag=tamed, tag=ridden, tag=!baby] speed 0",
+                        "/effect @e[type=rift:megaloceros, c=1, tag=tamed, tag=ridden, tag=!baby] speed 0"
+                    ]
+                }
+            }
         }
 	}
 }

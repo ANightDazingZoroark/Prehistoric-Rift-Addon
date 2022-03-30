@@ -24,3 +24,4 @@ tag @e remove saurophaganaxLightBlast
 tag @e remove direwolfBuff
 tag @e remove megalocerosCharge
 tag @e remove megalocerosHarvest
+tag @e remove baryonyxHarvest
