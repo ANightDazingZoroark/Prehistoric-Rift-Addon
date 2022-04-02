@@ -17,16 +17,13 @@
                 }
 			},
 			"animations": {
-				"contParasaurUseAttack": "controller.animation.parasaur_forced_use_attack",
 				"contTameTag": "controller.animation.add_tame_tag",
 				"contBabyTag": "controller.animation.add_baby_tag",
 				"contRiddenTag": "controller.animation.add_ridden_tag",
-				"contTameState": "controller.animation.manage_tame_state",
-				"animForcedAttack": "animation.forced_attack_parasaurolophus"
+				"contTameState": "controller.animation.manage_tame_state"
 			},
 			"scripts": {
 				"animate": [
-					"contParasaurUseAttack",
 					"contTameTag",
 					"contBabyTag",
 					"contRiddenTag",
@@ -571,6 +568,16 @@
                     }
                 }
             },
+			"rift:horn_cooldown": {
+				"minecraft:is_charged": {},
+                "minecraft:timer": {
+                    "time": 10,
+                    "time_down_event": {
+                        "event": "rift:end_horn_cooldown",
+                        "target": "self"
+                    }
+                }
+			},
             "rift:parasaurolophus_is_feared": {
                 "minecraft:type_family": {
                     "family": [
@@ -607,9 +614,6 @@
                     }
                 }
             },
-			"rift:forced_attack": {
-				"minecraft:is_charged": {}
-			},
 			"rift:summon_forced_attack_entity": {
 				"minecraft:spawn_entity": {
 					"entities": [
@@ -2899,6 +2903,47 @@
 							"all_of": [
 								{
 									"test": "has_tag",
+									"value": "parasaurSoundBlast",
+									"subject": "self",
+									"operator": "=="
+								},
+								{
+									"test": "rider_count",
+									"operator": ">",
+									"value": 0,
+									"subject": "self"
+								},
+								{
+									"test": "has_component",
+									"value": "minecraft:is_tamed",
+									"subject": "self"
+								},
+								{
+									"test": "has_component",
+									"operator": "!=",
+									"value": "minecraft:is_baby",
+									"subject": "self"
+								},
+								{
+									"test": "has_component",
+									"value": "minecraft:is_saddled",
+									"subject": "self"
+								},
+								{
+									"test": "has_component",
+									"operator": "!=",
+									"value": "minecraft:is_charged",
+									"subject": "self"
+								}
+							]
+						},
+						"event": "rift:parasaur_sound_blaster"
+					},
+					{
+						"filters": {
+							"all_of": [
+								{
+									"test": "has_tag",
 									"value": "parasaurCallScare",
 									"subject": "self",
 									"operator": "=="
@@ -2923,6 +2968,12 @@
 								{
 									"test": "has_component",
 									"value": "minecraft:is_saddled",
+									"subject": "self"
+								},
+								{
+									"test": "has_component",
+									"operator": "!=",
+									"value": "minecraft:is_charged",
 									"subject": "self"
 								}
 							]
@@ -2959,10 +3010,69 @@
 									"test": "has_component",
 									"value": "minecraft:is_saddled",
 									"subject": "self"
+								},
+								{
+									"test": "has_component",
+									"operator": "!=",
+									"value": "minecraft:is_charged",
+									"subject": "self"
 								}
 							]
 						},
 						"event": "rift:parasaur_aggravator"
+					},
+					{
+						"filters": {
+							"all_of": [
+								{
+									"any_of": [
+										{
+											"test": "has_tag",
+											"value": "parasaurSoundBlast",
+											"subject": "self"
+										},
+										{
+											"test": "has_tag",
+											"value": "parasaurCallScare",
+											"subject": "self"
+										},
+										{
+											"test": "has_tag",
+											"value": "parasaurCallAggravate",
+											"subject": "self"
+										}
+									]
+								},
+								{
+									"test": "rider_count",
+									"operator": ">",
+									"value": 0,
+									"subject": "self"
+								},
+								{
+									"test": "has_component",
+									"value": "minecraft:is_tamed",
+									"subject": "self"
+								},
+								{
+									"test": "has_component",
+									"operator": "!=",
+									"value": "minecraft:is_baby",
+									"subject": "self"
+								},
+								{
+									"test": "has_component",
+									"value": "minecraft:is_saddled",
+									"subject": "self"
+								},
+								{
+									"test": "has_component",
+									"value": "minecraft:is_charged",
+									"subject": "self"
+								}
+							]
+						},
+						"event": "rift:parasaur_failed_horn_use"
 					}
 				]
 			},
@@ -3927,6 +4037,40 @@
 					]
 				}
 			},
+			"rift:parasaur_sound_blaster": {
+				"add": {
+					"component_groups": [
+						"rift:horn_cooldown",
+						"rift:parasaurolophus_reset_family"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:parasaurolophus_is_feared",
+						"rift:parasaurolophus_is_aggravating"
+					]
+				},
+				"run_command": {
+					"command": [
+						"playanimation @s animation.parasaurolophus.call",
+						"playsound mob.parasaurolophus.sound_blasting @a[r=10]",
+						"camerashake add @a[r=10] 4",
+						"effect @e[r=10, tag=!tamed, family=!inanimate, tag=!riding] slowness 10 255"
+					]
+				}
+			},
+			"rift:end_horn_cooldown": {
+				"remove": {
+					"component_groups": [
+						"rift:horn_cooldown"
+					]
+				},
+				"run_command": {
+					"command": [
+						"tellraw @p {\"rawtext\":[{\"text\":\"Cooldown ended\"}]}"
+					]
+				}
+			},
 			"rift:parasaur_scarer": {
 				"add": {
 					"component_groups": [
@@ -3962,6 +4106,13 @@
 					"command": [
 						"playanimation @s animation.parasaurolophus.call",
 						"playsound mob.parasaurolophus.calling @a[r=10]"
+					]
+				}
+			},
+			"rift:parasaur_failed_horn_use": {
+				"run_command": {
+					"command": [
+						"tellraw @p {\"rawtext\":[{\"text\":\"Cannot use any horn related abilities for another 10 seconds!\"}]}"
 					]
 				}
 			},

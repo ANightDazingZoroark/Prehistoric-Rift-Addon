@@ -21,29 +21,39 @@
 						"max": 3
 					},
 					"default": 0
+                },
+				"rift:is_pack_buffed": {
+                    "values": [
+                        false,
+						true
+                    ],
+					"default": false
                 }
 			},
 			"animations": {
 				"contPackBuff": "controller.animation.wild_utahraptor_pack_buff",
 				"contWildRemoveBuffs": "controller.animation.wild_utahraptor_remove_buffs",
-				"contUtahUseSlash": "controller.animation.utah_forced_use_slash",
 				"contTameTag": "controller.animation.add_tame_tag",
 				"contBabyTag": "controller.animation.add_baby_tag",
 				"contRiddenTag": "controller.animation.add_ridden_tag",
 				"contTameState": "controller.animation.manage_tame_state",
 				"contBehaviorState": "controller.animation.manage_tame_behavior",
-				"animForcedAttack": "animation.forced_attack_utahraptor"
+				"contPackBuffed": "controller.animation.utah_pack_buffed",
+				"contPackBuffCountdown": "controller.animation.utah_pack_buff_countdown",
+				"animPackBuffed": "animation.pack_buffed",
+				"animPackBuffCountdown": "animation.buff_countdown"
 			},
 			"scripts": {
 				"animate": [
 					"contPackBuff",
 					"contWildRemoveBuffs",
-					"contUtahUseSlash",
 					"contTameTag",
 					"contBabyTag",
 					"contRiddenTag",
 					"contTameState",
-					"contBehaviorState"
+					"contBehaviorState",
+					"contPackBuffed",
+					"contPackBuffCountdown"
 				]
 			}
         },
@@ -5006,6 +5016,16 @@
 					]
 				}
 			},
+			"rift:start_self_pack_buff": {
+				"set_actor_property": {
+					"rift:is_pack_buffed": "true"
+				}
+			},
+			"rift:stop_self_pack_buff": {
+				"set_actor_property": {
+					"rift:is_pack_buffed": "false"
+				}
+			},
 			"rift:wild_utahraptor_remove_buffs": {
 				"run_command": {
 					"command": [
@@ -5042,20 +5062,6 @@
 				"remove": {
 					"component_groups": [
 						"rift:utahraptor_cannot_jump"
-					]
-				}
-			},
-			"rift:use_forced_slash": {
-				"add": {
-					"component_groups": [
-						"rift:forced_slash"
-					]
-				}
-			},
-			"rift:stop_forced_slash": {
-				"remove": {
-					"component_groups": [
-						"rift:forced_slash"
 					]
 				}
 			},

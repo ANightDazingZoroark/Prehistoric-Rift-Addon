@@ -44,6 +44,13 @@
 						"max": 3
 					},
 					"default": 0
+                },
+				"rift:is_pack_buffed": {
+                    "values": [
+                        false,
+						true
+                    ],
+					"default": false
                 }
 			},
 			"animations": {
@@ -62,13 +69,13 @@
 				"contIgnitedTag": "controller.animation.add_ignited_tag",
 				"contTameState": "controller.animation.manage_tame_state",
 				"contBehaviorState": "controller.animation.manage_tame_behavior",
-				"animForcedAttackNormal": "animation.forced_attack_direwolf",
-				"animForcedAttackWerewolfBite": "animation.forced_attack_direwolf_werewolf_bite",
-				"animForcedAttackWerewolfSlashOne": "animation.forced_attack_direwolf_werewolf_slash_one",
-				"animForcedAttackWerewolfSlashTwo": "animation.forced_attack_direwolf_werewolf_slash_two",
+				"contPackBuffed": "controller.animation.direwolf_pack_buffed",
+				"contPackBuffCountdown": "controller.animation.direwolf_pack_buff_countdown",
 				"animCanThrowCountdown": "animation.direwolf_werewolf_can_throw_countdown",
 				"animThrowBoulder": "animation.direwolf_werewolf_throw_boulder",
-				"animForcedTransformCountdown": "animation.direwolf_forced_transform_countdown"
+				"animForcedTransformCountdown": "animation.direwolf_forced_transform_countdown",
+				"animPackBuffed": "animation.pack_buffed",
+				"animPackBuffCountdown": "animation.buff_countdown"
 			},
 			"scripts": {
 				"animate": [
@@ -86,7 +93,9 @@
 					"contRiddenTag",
 					"contIgnitedTag",
 					"contTameState",
-					"contBehaviorState"
+					"contBehaviorState",
+					"contPackBuffed",
+					"contPackBuffCountdown"
 				]
 			}
         },
@@ -1170,7 +1179,8 @@
 					"avoid_water": true,
 					"avoid_damage_blocks": true
 				},
-				"minecraft:movement.generic": {}
+				"minecraft:movement.generic": {},
+				"minecraft:behavior.player_ride_tamed": {}
 			},
 			"rift:direwolf_adult_werewolf_tamed": {
 				"minecraft:is_ignited": {},
@@ -1315,7 +1325,8 @@
 				},
 				"minecraft:movement.generic": {},
 				"minecraft:can_climb": {},
-				"minecraft:scaffolding_climber": {}
+				"minecraft:scaffolding_climber": {},
+				"minecraft:behavior.player_ride_tamed": {}
 			},
 			"rift:direwolf_tamed": {
 				"minecraft:is_tamed": {}
@@ -6207,6 +6218,16 @@
 						}
 					}
 				]
+			},
+			"rift:start_self_pack_buff": {
+				"set_actor_property": {
+					"rift:is_pack_buffed": "true"
+				}
+			},
+			"rift:stop_self_pack_buff": {
+				"set_actor_property": {
+					"rift:is_pack_buffed": "false"
+				}
 			},
 			"rift:wild_direwolf_buffing": {
 				"sequence": [

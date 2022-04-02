@@ -863,7 +863,7 @@
 							"useAttackMode": "!query.is_using_item"
 						},
 						{
-							"attackToScare": "query.all_animations_finished"
+							"attackToSoundBlast": "query.all_animations_finished"
 						}
 					]
 				},
@@ -879,7 +879,56 @@
 						"/event entity @e[type=rift:parasaurolophus, c=1, tag=tamed, tag=!baby] rift:on_forced_attack_family"
 					]
 				},
-				"attackToScare": {
+				"attackToSoundBlast": {
+					"transitions": [
+						{
+							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:parasaurolophus'"
+						},
+						{
+							"soundBlastMode": "!query.is_using_item"
+						}
+					],
+					"on_exit": [
+						"/tellraw @s {\"rawtext\":[{\"text\":\"Ability set to Sound Blast Mode\"}]}"
+					]
+				},
+				"soundBlastMode": {
+					"transitions": [
+						{
+							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:parasaurolophus'"
+						},
+						{
+							"soundBlastModeLimbo": "query.is_using_item && (query.get_ride -> query.is_saddled) && query.get_equipped_item_name('main_hand') == 'command_staff'"
+						}
+					]
+				},
+				"soundBlastModeLimbo": {
+					"animations": [
+						"animAbilitySwitchCooldown"
+					],
+					"transitions": [
+						{
+							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:parasaurolophus' || query.get_equipped_item_name('main_hand') != 'command_staff'"
+						},
+						{
+							"useSoundBlastMode": "!query.is_using_item"
+						},
+						{
+							"soundBlastToScare": "query.all_animations_finished"
+						}
+					]
+				},
+				"useSoundBlastMode": {
+					"transitions": [
+						{
+							"soundBlastMode": "(1.0)"
+						}
+					],
+					"on_entry": [
+						"/tag @e[type=rift:parasaurolophus, c=1, tag=tamed, tag=!baby] add parasaurSoundBlast"
+					]
+				},
+				"soundBlastToScare": {
 					"transitions": [
 						{
 							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:parasaurolophus'"
