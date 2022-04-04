@@ -82,7 +82,7 @@
 				"default": {
 					"transitions": [
 						{
-							"lowHealth": "(query.health <= query.max_health * 0.25) && !query.is_tamed && !query.is_baby"
+							"lowHealth": "(query.health <= query.max_health * 0.25) && !!query.is_baby"
 						}
 					]
 				},
@@ -107,7 +107,7 @@
 				"default": {
 					"transitions": [
 						{
-							"canBreak": "!query.is_tamed && (query.is_angry || query.is_avoiding_mobs)"
+							"canBreak": "!(query.is_angry || query.is_avoiding_mobs)"
 						}
 					]
 				},
@@ -129,18 +129,155 @@
 				"default": {
 					"transitions": [
 						{
-							"canBreak": "query.is_tamed && query.is_ignited"
+							"canBreak": "query.is_ignited"
 						}
 					]
 				},
 				"canBreak": {
 					"transitions": [
 						{
-							"default": "!query.is_tamed || !query.is_ignited"
+							"default": "!query.is_tamed || query.is_baby || !query.is_ignited"
 						}
 					],
 					"animations": [
 						"animBreakStuff"
+					]
+				}
+			}
+		},
+		"controller.animation.apato_manage_tame_state": {
+			"initial_state": "default",
+			"states": {
+				"default": {
+					"transitions": [
+						{
+							"isBaby": "query.is_baby && query.is_tamed"
+						},
+						{
+							"isAdult": "!query.is_baby && query.is_tamed"
+						}
+					]
+				},
+				"isBaby": {
+					"transitions": [
+						{
+							"standingBaby": "query.actor_property('rift:tame_state') == 0"
+						},
+						{
+							"sittingBaby": "query.actor_property('rift:tame_state') == 1"
+						},
+						{
+							"wanderingBaby": "query.actor_property('rift:tame_state') == 2"
+						}
+					]
+				},
+				"isAdult": {
+					"transitions": [
+						{
+							"standingAdult": "query.actor_property('rift:tame_state') == 0"
+						},
+						{
+							"sittingAdult": "query.actor_property('rift:tame_state') == 1"
+						},
+						{
+							"wanderingAdult": "query.actor_property('rift:tame_state') == 2"
+						}
+					]
+				},
+				"standingBaby": {
+					"transitions": [
+						{
+							"default": "!query.is_tamed || !query.is_baby"
+						},
+						{
+							"sittingBaby": "query.actor_property('rift:tame_state') == 1"
+						},
+						{
+							"wanderingBaby": "query.actor_property('rift:tame_state') == 2"
+						}
+					],
+					"on_entry": [
+						"@s rift:on_standing_baby"
+					]
+				},
+				"sittingBaby": {
+					"transitions": [
+						{
+							"default": "!query.is_tamed || !query.is_baby"
+						},
+						{
+							"standingBaby": "query.actor_property('rift:tame_state') == 0"
+						},
+						{
+							"wanderingBaby": "query.actor_property('rift:tame_state') == 2"
+						}
+					],
+					"on_entry": [
+						"@s rift:on_sitting_baby"
+					]
+				},
+				"wanderingBaby": {
+					"transitions": [
+						{
+							"default": "!query.is_tamed || !query.is_baby"
+						},
+						{
+							"standingBaby": "query.actor_property('rift:tame_state') == 0"
+						},
+						{
+							"sittingBaby": "query.actor_property('rift:tame_state') == 1"
+						}
+					],
+					"on_entry": [
+						"@s rift:on_wandering_baby"
+					]
+				},
+				"standingAdult": {
+					"transitions": [
+						{
+							"default": "!query.is_tamed || query.is_baby"
+						},
+						{
+							"sittingAdult": "query.actor_property('rift:tame_state') == 1"
+						},
+						{
+							"wanderingAdult": "query.actor_property('rift:tame_state') == 2"
+						}
+					],
+					"on_entry": [
+						"@s rift:on_standing_adult"
+					]
+				},
+				"sittingAdult": {
+					"transitions": [
+						{
+							"default": "!query.is_tamed || query.is_baby"
+						},
+						{
+							"standingAdult": "query.actor_property('rift:tame_state') == 0"
+						},
+						{
+							"wanderingAdult": "query.actor_property('rift:tame_state') == 2"
+						}
+					],
+					"on_entry": [
+						"@s rift:on_sitting_adult"
+					]
+				},
+				"wanderingAdult": {
+					"transitions": [
+						{
+							"default": "!query.is_tamed || query.is_baby"
+						},
+						{
+							"standingAdult": "query.actor_property('rift:tame_state') == 0"
+						},
+						{
+							"sittingAdult": "query.actor_property('rift:tame_state') == 1"
+						}
+					],
+					"on_entry": [
+						"@s rift:on_wandering_adult"
 					]
 				}
 			}

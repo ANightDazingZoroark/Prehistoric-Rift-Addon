@@ -31,7 +31,7 @@
 				"contWildLowHealth": "controller.animation.apato_wild_low_on_health",
 				"contWildBreakStuff": "controller.animation.apato_wild_can_break_blocks",
 				"contTamedBreakStuff": "controller.animation.apato_tamed_can_break_blocks",
-				"contTameState": "controller.animation.manage_tame_state",
+				"contTameState": "controller.animation.apato_manage_tame_state",
 				"contBehaviorState": "controller.animation.manage_tame_behavior",
 				"animForcedAttack": "animation.forced_attack_apatosaurus",
 				"animBreakStuff": "animation.apato_break_stuff"
@@ -4824,188 +4824,155 @@
 					]
 				}
             },
-			"rift:on_standing": {
-				"sequence": [
-					{
-						"run_command": {
-							"command": [
-								"tag @s remove sitting",
-								"tellraw @p {\"rawtext\":[{\"text\":\"Your Apatosaurus is currently following\"}]}"
-							]
-						}
-					},
-					{
-						"filters": {
-							"test": "has_component",
-							"subject": "self",
-							"value": "minecraft:is_baby"
-						},
-						"add": {
-							"component_groups": [
-								"rift:tamed_baby_standing"
-							]
-						},
-						"remove": {
-							"component_groups": [
-								"rift:tamed_adult_standing",
-								"rift:wild_adult_standing",
-								"rift:adult_sitting",
-								"rift:adult_sitting_angered",
-								"rift:adult_wandering",
-								"rift:wild_baby_standing",
-								"rift:baby_sitting",
-								"rift:baby_wandering"
-							]
-						}
-					},
-					{
-						"filters": {
-							"test": "has_component",
-							"subject": "self",
-							"operator": "!=",
-							"value": "minecraft:is_baby"
-						},
-						"add": {
-							"component_groups": [
-								"rift:tamed_adult_standing"
-							]
-						},
-						"remove": {
-							"component_groups": [
-								"rift:wild_adult_standing",
-								"rift:adult_sitting",
-								"rift:adult_sitting_angered",
-								"rift:adult_wandering",
-								"rift:tamed_baby_standing",
-								"rift:wild_baby_standing",
-								"rift:baby_sitting",
-								"rift:baby_wandering"
-							]
-						}
-					}
-				]
+			"rift:on_standing_baby": {
+				"add": {
+					"component_groups": [
+						"rift:tamed_baby_standing"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:tamed_adult_standing",
+						"rift:wild_adult_standing",
+						"rift:adult_sitting",
+						"rift:adult_sitting_angered",
+						"rift:adult_wandering",
+						"rift:wild_baby_standing",
+						"rift:baby_sitting",
+						"rift:baby_wandering"
+					]
+				},
+				"run_command": {
+					"command": [
+						"tag @s remove sitting",
+						"tellraw @p {\"rawtext\":[{\"text\":\"Your Apatosaurus is currently following\"}]}"
+					]
+				}
 			},
-			"rift:on_sitting": {
-				"sequence": [
-					{
-						"run_command": {
-							"command": [
-								"tag @s add sitting",
-								"tellraw @p {\"rawtext\":[{\"text\":\"Your Apatosaurus is currently sitting\"}]}"
-							]
-						}
-					},
-					{
-						"filters": {
-							"test": "has_component",
-							"subject": "self",
-							"value": "minecraft:is_baby"
-						},
-						"add": {
-							"component_groups": [
-								"rift:baby_sitting"
-							]
-						},
-						"remove": {
-							"component_groups": [
-								"rift:wild_adult_standing",
-								"rift:tamed_adult_standing",
-								"rift:adult_wandering",
-								"rift:adult_sitting",
-								"rift:adult_sitting_angered",
-								"rift:wild_baby_standing",
-								"rift:tamed_baby_standing",
-								"rift:baby_wandering"
-							]
-						}
-					},
-					{
-						"filters": {
-							"test": "has_component",
-							"subject": "self",
-							"operator": "!=",
-							"value": "minecraft:is_baby"
-						},
-						"add": {
-							"component_groups": [
-								"rift:adult_sitting"
-							]
-						},
-						"remove": {
-							"component_groups": [
-								"rift:wild_adult_standing",
-								"rift:tamed_adult_standing",
-								"rift:adult_wandering",
-								"rift:adult_sitting_angered",
-								"rift:baby_sitting",
-								"rift:wild_baby_standing",
-								"rift:tamed_baby_standing",
-								"rift:baby_wandering"
-							]
-						}
-					}
-				]
+			"rift:on_sitting_baby": {
+				"add": {
+					"component_groups": [
+						"rift:baby_sitting"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:wild_adult_standing",
+						"rift:tamed_adult_standing",
+						"rift:adult_wandering",
+						"rift:adult_sitting",
+						"rift:adult_sitting_angered",
+						"rift:wild_baby_standing",
+						"rift:tamed_baby_standing",
+						"rift:baby_wandering"
+					]
+				},
+				"run_command": {
+					"command": [
+						"tag @s add sitting",
+						"tellraw @p {\"rawtext\":[{\"text\":\"Your Apatosaurus is currently sitting\"}]}"
+					]
+				}
 			},
-			"rift:on_wandering": {
-				"sequence": [
-					{
-						"run_command": {
-							"command": [
-								"tag @s remove sitting",
-								"tellraw @p {\"rawtext\":[{\"text\":\"Your Apatosaurus is currently wandering\"}]}"
-							]
-						}
-					},
-					{
-						"filters": {
-							"test": "has_component",
-							"subject": "self",
-							"value": "minecraft:is_baby"
-						},
-						"add": {
-							"component_groups": [
-								"rift:baby_wandering"
-							]
-						},
-						"remove": {
-							"component_groups": [
-								"rift:wild_adult_standing",
-								"rift:tamed_adult_standing",
-								"rift:adult_wandering",
-								"rift:adult_sitting_angered",
-								"rift:adult_sitting",
-								"rift:wild_baby_standing",
-								"rift:tamed_baby_standing",
-								"rift:baby_sitting"
-							]
-						}
-					},
-					{
-						"filters": {
-							"test": "has_component",
-							"subject": "self",
-							"operator": "!=",
-							"value": "minecraft:is_baby"
-						},
-						"add": {
-							"component_groups": [
-								"rift:adult_wandering"
-							]
-						},
-						"remove": {
-							"component_groups": [
-								"rift:wild_adult_standing",
-								"rift:tamed_adult_standing",
-								"rift:adult_sitting_angered",
-								"rift:adult_sitting",
-								"rift:wild_baby_standing",
-								"rift:tamed_baby_standing",
-								"rift:baby_sitting",
-								"rift:baby_wandering"
-							]
-						}
-					}
-				]
+			"rift:on_wandering_baby": {
+				"add": {
+					"component_groups": [
+						"rift:baby_wandering"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:wild_adult_standing",
+						"rift:tamed_adult_standing",
+						"rift:adult_wandering",
+						"rift:adult_sitting_angered",
+						"rift:adult_sitting",
+						"rift:wild_baby_standing",
+						"rift:tamed_baby_standing",
+						"rift:baby_sitting"
+					]
+				},
+				"run_command": {
+					"command": [
+						"tag @s remove sitting",
+						"tellraw @p {\"rawtext\":[{\"text\":\"Your Apatosaurus is currently wandering\"}]}"
+					]
+				}
+			},
+			"rift:on_standing_adult": {
+				"add": {
+					"component_groups": [
+						"rift:tamed_adult_standing"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:wild_adult_standing",
+						"rift:adult_sitting",
+						"rift:adult_sitting_angered",
+						"rift:adult_wandering",
+						"rift:tamed_baby_standing",
+						"rift:wild_baby_standing",
+						"rift:baby_sitting",
+						"rift:baby_wandering"
+					]
+				},
+				"run_command": {
+					"command": [
+						"tag @s remove sitting",
+						"tellraw @p {\"rawtext\":[{\"text\":\"Your Apatosaurus is currently following\"}]}"
+					]
+				}
+			},
+			"rift:on_sitting_adult": {
+				"add": {
+					"component_groups": [
+						"rift:adult_sitting"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:wild_adult_standing",
+						"rift:tamed_adult_standing",
+						"rift:adult_wandering",
+						"rift:adult_sitting_angered",
+						"rift:baby_sitting",
+						"rift:wild_baby_standing",
+						"rift:tamed_baby_standing",
+						"rift:baby_wandering"
+					]
+				},
+				"run_command": {
+					"command": [
+						"tag @s add sitting",
+						"tellraw @p {\"rawtext\":[{\"text\":\"Your Apatosaurus is currently sitting\"}]}"
+					]
+				}
+			},
+			"rift:on_wandering_adult": {
+				"add": {
+					"component_groups": [
+						"rift:adult_wandering"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:wild_adult_standing",
+						"rift:tamed_adult_standing",
+						"rift:adult_sitting_angered",
+						"rift:adult_sitting",
+						"rift:wild_baby_standing",
+						"rift:tamed_baby_standing",
+						"rift:baby_sitting",
+						"rift:baby_wandering"
+					]
+				},
+				"run_command": {
+					"command": [
+						"tag @s remove sitting",
+						"tellraw @p {\"rawtext\":[{\"text\":\"Your Apatosaurus is currently wandering\"}]}"
+					]
+				}
 			},
 			"rift:sitting_on_anger": {
 				"add": {
