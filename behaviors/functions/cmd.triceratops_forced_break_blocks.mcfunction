@@ -81,6 +81,7 @@ execute @s[ry=45, rym=-45] ~ ~ ~ fill ~+2 ~ ~+2 ~-2 ~+3 ~+4 air 0 replace rift:c
 execute @s[ry=45, rym=-45] ~ ~ ~ fill ~+2 ~ ~+2 ~-2 ~+3 ~+4 air 0 replace rift:warped_thatch_block
 execute @s[ry=45, rym=-45] ~ ~ ~ fill ~+2 ~ ~+2 ~-2 ~+3 ~+4 air 0 replace rift:wooden_chair
 execute @s[ry=45, rym=-45] ~ ~ ~ fill ~+2 ~ ~+2 ~-2 ~+3 ~+4 air 0 replace rift:wooden_table
+execute @s[ry=45, rym=-45] ~ ~ ~ fill ~+2 ~ ~+2 ~-2 ~+3 ~+4 air 0 replace rift:glass_table
 execute @s[ry=45, rym=-45] ~ ~ ~ fill ~+2 ~ ~+2 ~-2 ~+3 ~+4 air 0 replace rift:sofa
 execute @s[ry=45, rym=-45] ~ ~ ~ fill ~+2 ~ ~+2 ~-2 ~+3 ~+4 air 0 replace rift:wooden_bench
 
@@ -167,6 +168,7 @@ execute @s[ry=135, rym=45] ~ ~ ~ fill ~-2 ~ ~+2 ~-4 ~+3 ~-2 air 0 replace rift:c
 execute @s[ry=135, rym=45] ~ ~ ~ fill ~-2 ~ ~+2 ~-4 ~+3 ~-2 air 0 replace rift:warped_thatch_block
 execute @s[ry=135, rym=45] ~ ~ ~ fill ~-2 ~ ~+2 ~-4 ~+3 ~-2 air 0 replace rift:wooden_chair
 execute @s[ry=135, rym=45] ~ ~ ~ fill ~-2 ~ ~+2 ~-4 ~+3 ~-2 air 0 replace rift:wooden_table
+execute @s[ry=135, rym=45] ~ ~ ~ fill ~-2 ~ ~+2 ~-4 ~+3 ~-2 air 0 replace rift:glass_table
 execute @s[ry=135, rym=45] ~ ~ ~ fill ~-2 ~ ~+2 ~-4 ~+3 ~-2 air 0 replace rift:sofa
 execute @s[ry=135, rym=45] ~ ~ ~ fill ~-2 ~ ~+2 ~-4 ~+3 ~-2 air 0 replace rift:wooden_bench
 
@@ -253,6 +255,7 @@ execute @s[ry=-45, rym=-135] ~ ~ ~ fill ~+2 ~ ~-2 ~+4 ~+3 ~+2 air 0 replace rift
 execute @s[ry=-45, rym=-135] ~ ~ ~ fill ~+2 ~ ~-2 ~+4 ~+3 ~+2 air 0 replace rift:warped_thatch_block
 execute @s[ry=-45, rym=-135] ~ ~ ~ fill ~+2 ~ ~-2 ~+4 ~+3 ~+2 air 0 replace rift:wooden_chair
 execute @s[ry=-45, rym=-135] ~ ~ ~ fill ~+2 ~ ~-2 ~+4 ~+3 ~+2 air 0 replace rift:wooden_table
+execute @s[ry=-45, rym=-135] ~ ~ ~ fill ~+2 ~ ~-2 ~+4 ~+3 ~+2 air 0 replace rift:glass_table
 execute @s[ry=-45, rym=-135] ~ ~ ~ fill ~+2 ~ ~-2 ~+4 ~+3 ~+2 air 0 replace rift:sofa
 execute @s[ry=-45, rym=-135] ~ ~ ~ fill ~+2 ~ ~-2 ~+4 ~+3 ~+2 air 0 replace rift:wooden_bench
 
@@ -339,6 +342,7 @@ execute @s[ry=180, rym=135] ~ ~ ~ fill ~-2 ~ ~-2 ~+2 ~+3 ~-4 air 0 replace rift:
 execute @s[ry=180, rym=135] ~ ~ ~ fill ~-2 ~ ~-2 ~+2 ~+3 ~-4 air 0 replace rift:warped_thatch_block
 execute @s[ry=180, rym=135] ~ ~ ~ fill ~-2 ~ ~-2 ~+2 ~+3 ~-4 air 0 replace rift:wooden_chair
 execute @s[ry=180, rym=135] ~ ~ ~ fill ~-2 ~ ~-2 ~+2 ~+3 ~-4 air 0 replace rift:wooden_table
+execute @s[ry=180, rym=135] ~ ~ ~ fill ~-2 ~ ~-2 ~+2 ~+3 ~-4 air 0 replace rift:glass_table
 execute @s[ry=180, rym=135] ~ ~ ~ fill ~-2 ~ ~-2 ~+2 ~+3 ~-4 air 0 replace rift:sofa
 execute @s[ry=180, rym=135] ~ ~ ~ fill ~-2 ~ ~-2 ~+2 ~+3 ~-4 air 0 replace rift:wooden_bench
 execute @s[ry=-135, rym=-180] ~ ~ ~ fill ~-2 ~ ~-2 ~+2 ~+3 ~-4 air 0 replace planks
@@ -423,5 +427,6 @@ execute @s[ry=-135, rym=-180] ~ ~ ~ fill ~-2 ~ ~-2 ~+2 ~+3 ~-4 air 0 replace rif
 execute @s[ry=-135, rym=-180] ~ ~ ~ fill ~-2 ~ ~-2 ~+2 ~+3 ~-4 air 0 replace rift:warped_thatch_block
 execute @s[ry=-135, rym=-180] ~ ~ ~ fill ~-2 ~ ~-2 ~+2 ~+3 ~-4 air 0 replace rift:wooden_chair
 execute @s[ry=-135, rym=-180] ~ ~ ~ fill ~-2 ~ ~-2 ~+2 ~+3 ~-4 air 0 replace rift:wooden_table
+execute @s[ry=-135, rym=-180] ~ ~ ~ fill ~-2 ~ ~-2 ~+2 ~+3 ~-4 air 0 replace rift:glass_table
 execute @s[ry=-135, rym=-180] ~ ~ ~ fill ~-2 ~ ~-2 ~+2 ~+3 ~-4 air 0 replace rift:sofa
 execute @s[ry=-135, rym=-180] ~ ~ ~ fill ~-2 ~ ~-2 ~+2 ~+3 ~-4 air 0 replace rift:wooden_bench
