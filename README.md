@@ -1,5 +1,6 @@
 # Prehistoric-Rift-Addon
 [![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/I2I5C4GCI)
+
 A Minecraft Bedrock Addon that aims to add dinosaurs and expand upon gameplay. Always updated to the latest stable version of Bedrock when available 
 
 Feel free to join the addon's Discord server as well: https://discord.gg/qVWaKRMCRc
