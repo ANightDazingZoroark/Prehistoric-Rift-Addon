@@ -137,28 +137,6 @@
                     "start_scale": 0.3,
                     "end_scale": 0.85
                 },
-                "minecraft:behavior.tempt": {
-                    "priority": 12,
-                    "items": [
-                        "minecraft:beef",
-						"minecraft:cooked_beef",
-						"minecraft:porkchop",
-						"minecraft:cooked_porkchop",
-						"minecraft:chicken",
-						"minecraft:cooked_chicken",
-						"minecraft:mutton",
-						"minecraft:cooked_mutton",
-						"minecraft:rabbit",
-						"minecraft:cooked_rabbit",
-						"rift:flesh_treat",
-						"rift:raw_exotic_meat",
-						"rift:cooked_exotic_meat",
-						"rift:raw_dodo_meat",
-						"rift:cooked_dodo_meat",
-						"rift:raw_hadrosaur_meat",
-						"rift:cooked_hadrosaur_meat"                      
-                    ]
-                },
                 "minecraft:navigation.walk": {
 					"avoid_water": true,
 					"avoid_damage_blocks": true
@@ -951,6 +929,30 @@
 						}
 					]
 				}
+			},
+			"rift:temptable": {
+                "minecraft:behavior.tempt": {
+                    "priority": 12,
+                    "items": [
+                        "minecraft:beef",
+						"minecraft:cooked_beef",
+						"minecraft:porkchop",
+						"minecraft:cooked_porkchop",
+						"minecraft:chicken",
+						"minecraft:cooked_chicken",
+						"minecraft:mutton",
+						"minecraft:cooked_mutton",
+						"minecraft:rabbit",
+						"minecraft:cooked_rabbit",
+						"rift:flesh_treat",
+						"rift:raw_exotic_meat",
+						"rift:cooked_exotic_meat",
+						"rift:raw_dodo_meat",
+						"rift:cooked_dodo_meat",
+						"rift:raw_hadrosaur_meat",
+						"rift:cooked_hadrosaur_meat"
+                    ]
+                }
 			},
 			"rift:wild_standing": {
                 "minecraft:behavior.random_stroll": {
@@ -4551,7 +4553,8 @@
 								"rift:utahraptor_baby",
 								"rift:utahraptor_baby_wild",
 								"rift:utahraptor_baby_calm",
-								"rift:utahraptor_baby_scared"
+								"rift:utahraptor_baby_scared",
+								"rift:temptable"
 							]
 						}
 					},
@@ -4576,7 +4579,8 @@
 								"rift:utahraptor_adult_calm",
 								"rift:utahraptor_adult_angry",
 								"rift:default_targets",
-								"rift:utahraptor_adult_wild_not_trusting"
+								"rift:utahraptor_adult_wild_not_trusting",
+								"rift:temptable"
 							]
 						},
 						"set_actor_property": {
@@ -4760,25 +4764,41 @@
 				}
 			},
 			"rift:on_standing": {
-				"add": {
-					"component_groups": [
-						"rift:tamed_standing"
-					]
-				},
-				"remove": {
-					"component_groups": [
-						"rift:wild_standing",
-						"rift:sitting",
-						"rift:sitting_angered",
-						"rift:wandering"
-					]
-				},
-				"run_command": {
-					"command": [
-						"tag @s remove sitting",
-						"tellraw @p {\"rawtext\":[{\"text\":\"Your Utahraptor is currently following\"}]}"
-					]
-				}
+				"sequence": [
+					{
+						"add": {
+							"component_groups": [
+								"rift:tamed_standing"
+							]
+						},
+						"remove": {
+							"component_groups": [
+								"rift:wild_standing",
+								"rift:sitting",
+								"rift:sitting_angered",
+								"rift:wandering"
+							]
+						},
+						"run_command": {
+							"command": [
+								"tag @s remove sitting",
+								"tellraw @p {\"rawtext\":[{\"text\":\"Your Utahraptor is currently following\"}]}"
+							]
+						}
+					},
+					{
+						"filters": {
+							"test": "has_component",
+							"subject": "self",
+							"value": "minecraft:is_baby"
+						},
+						"add": {
+							"component_groups": [
+								"rift:temptable"
+							]
+						}
+					}
+				]
 			},
 			"rift:on_sitting": {
 				"add": {
@@ -4791,7 +4811,8 @@
 						"rift:wild_standing",
 						"rift:tamed_standing",
 						"rift:sitting_angered",
-						"rift:wandering"
+						"rift:wandering",
+						"rift:temptable"
 					]
 				},
 				"run_command": {
@@ -4802,25 +4823,41 @@
 				}
 			},
 			"rift:on_wandering": {
-				"add": {
-					"component_groups": [
-						"rift:wandering"
-					]
-				},
-				"remove": {
-					"component_groups": [
-						"rift:wild_standing",
-						"rift:tamed_standing",
-						"rift:sitting",
-						"rift:sitting_angered"
-					]
-				},
-				"run_command": {
-					"command": [
-						"tag @s remove sitting",
-						"tellraw @p {\"rawtext\":[{\"text\":\"Your Utahraptor is currently wandering\"}]}"
-					]
-				}
+				"sequence": [
+					{
+						"add": {
+							"component_groups": [
+								"rift:wandering"
+							]
+						},
+						"remove": {
+							"component_groups": [
+								"rift:wild_standing",
+								"rift:tamed_standing",
+								"rift:sitting",
+								"rift:sitting_angered"
+							]
+						},
+						"run_command": {
+							"command": [
+								"tag @s remove sitting",
+								"tellraw @p {\"rawtext\":[{\"text\":\"Your Utahraptor is currently wandering\"}]}"
+							]
+						}
+					},
+					{
+						"filters": {
+							"test": "has_component",
+							"subject": "self",
+							"value": "minecraft:is_baby"
+						},
+						"add": {
+							"component_groups": [
+								"rift:temptable"
+							]
+						}
+					}
+				]
 			},
 			"rift:sitting_on_anger": {
 				"add": {
@@ -4952,7 +4989,8 @@
 								"rift:variant_zero",
 								"rift:pushable",
 								"rift:can_attack",
-								"rift:wild_standing"
+								"rift:wild_standing",
+								"rift:temptable"
 							]
 						}
 					},
@@ -4966,7 +5004,8 @@
 								"rift:variant_one",
 								"rift:pushable",
 								"rift:can_attack",
-								"rift:wild_standing"
+								"rift:wild_standing",
+								"rift:temptable"
 							]
 						}
 					},
@@ -4980,7 +5019,8 @@
 								"rift:variant_two",
 								"rift:pushable",
 								"rift:can_attack",
-								"rift:wild_standing"
+								"rift:wild_standing",
+								"rift:temptable"
 							]
 						}
 					},
@@ -4994,7 +5034,8 @@
 								"rift:variant_three",
 								"rift:pushable",
 								"rift:can_attack",
-								"rift:wild_standing"
+								"rift:wild_standing",
+								"rift:temptable"
 							]
 						}
 					}

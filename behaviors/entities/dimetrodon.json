@@ -133,37 +133,6 @@
                 "minecraft:scale_by_age": {
                     "start_scale": 0.4,
                     "end_scale": 0.85
-                },
-                "minecraft:behavior.tempt": {
-                    "priority": 10,
-                    "items": [
-                        "minecraft:beef",
-						"minecraft:cooked_beef",
-						"minecraft:porkchop",
-						"minecraft:cooked_porkchop",
-						"minecraft:chicken",
-						"minecraft:cooked_chicken",
-						"minecraft:muttonraw",
-						"minecraft:muttoncooked",
-						"minecraft:rabbit",
-						"minecraft:cooked_rabbit",
-						"minecraft:cod",
-						"minecraft:cooked_cod",
-						"minecraft:salmon",
-						"minecraft:cooked_salmon",
-						"minecraft:tropical_fish",
-						"rift:flesh_treat",
-						"rift:fish_treat",
-						"rift:carrion_treat",
-						"rift:raw_exotic_meat",
-						"rift:cooked_exotic_meat",
-						"rift:raw_dodo_meat",
-						"rift:cooked_dodo_meat",
-						"rift:raw_hadrosaur_meat",
-						"rift:cooked_hadrosaur_meat",
-						"rift:raw_megapiranha",
-						"rift:cooked_megapiranha"
-                    ]
                 }
             },
             "rift:dimetrodon_baby_wild": {
@@ -1106,6 +1075,39 @@
 			},
 			"rift:dimetrodon_tamed": {
 				"minecraft:is_tamed": {}
+			},
+			"rift:temptable": {
+                "minecraft:behavior.tempt": {
+                    "priority": 10,
+                    "items": [
+                        "minecraft:beef",
+						"minecraft:cooked_beef",
+						"minecraft:porkchop",
+						"minecraft:cooked_porkchop",
+						"minecraft:chicken",
+						"minecraft:cooked_chicken",
+						"minecraft:muttonraw",
+						"minecraft:muttoncooked",
+						"minecraft:rabbit",
+						"minecraft:cooked_rabbit",
+						"minecraft:cod",
+						"minecraft:cooked_cod",
+						"minecraft:salmon",
+						"minecraft:cooked_salmon",
+						"minecraft:tropical_fish",
+						"rift:flesh_treat",
+						"rift:fish_treat",
+						"rift:carrion_treat",
+						"rift:raw_exotic_meat",
+						"rift:cooked_exotic_meat",
+						"rift:raw_dodo_meat",
+						"rift:cooked_dodo_meat",
+						"rift:raw_hadrosaur_meat",
+						"rift:cooked_hadrosaur_meat",
+						"rift:raw_megapiranha",
+						"rift:cooked_megapiranha"
+                    ]
+                }
 			},
 			"rift:wild_standing": {
 				"minecraft:behavior.random_stroll": {
@@ -3783,7 +3785,8 @@
 						"remove": {
 							"component_groups": [
 								"rift:dimetrodon_baby",
-								"rift:dimetrodon_baby_wild"
+								"rift:dimetrodon_baby_wild",
+								"rift:temptable"
 							]
 						}
 					},
@@ -3920,25 +3923,41 @@
 				}
 			},
 			"rift:on_standing": {
-				"add": {
-					"component_groups": [
-						"rift:tamed_standing"
-					]
-				},
-				"remove": {
-					"component_groups": [
-						"rift:wild_standing",
-						"rift:sitting",
-						"rift:sitting_angered",
-						"rift:wandering"
-					]
-				},
-				"run_command": {
-					"command": [
-						"tag @s remove sitting",
-						"tellraw @p {\"rawtext\":[{\"text\":\"Your Dimetrodon is currently following\"}]}"
-					]
-				}
+				"sequence": [
+					{
+						"add": {
+							"component_groups": [
+								"rift:tamed_standing"
+							]
+						},
+						"remove": {
+							"component_groups": [
+								"rift:wild_standing",
+								"rift:sitting",
+								"rift:sitting_angered",
+								"rift:wandering"
+							]
+						},
+						"run_command": {
+							"command": [
+								"tag @s remove sitting",
+								"tellraw @p {\"rawtext\":[{\"text\":\"Your Dimetrodon is currently following\"}]}"
+							]
+						}
+					},
+					{
+						"filters": {
+							"test": "has_component",
+							"subject": "self",
+							"value": "minecraft:is_baby"
+						},
+						"add": {
+							"component_groups": [
+								"rift:temptable"
+							]
+						}
+					}
+				]
 			},
 			"rift:on_sitting": {
 				"add": {
@@ -3951,7 +3970,8 @@
 						"rift:wild_standing",
 						"rift:tamed_standing",
 						"rift:sitting_angered",
-						"rift:wandering"
+						"rift:wandering",
+						"rift:temptable"
 					]
 				},
 				"run_command": {
@@ -3962,25 +3982,41 @@
 				}
 			},
 			"rift:on_wandering": {
-				"add": {
-					"component_groups": [
-						"rift:wandering"
-					]
-				},
-				"remove": {
-					"component_groups": [
-						"rift:wild_standing",
-						"rift:tamed_standing",
-						"rift:sitting",
-						"rift:sitting_angered"
-					]
-				},
-				"run_command": {
-					"command": [
-						"tag @s remove sitting",
-						"tellraw @p {\"rawtext\":[{\"text\":\"Your Dimetrodon is currently wandering\"}]}"
-					]
-				}
+				"sequence": [
+					{
+						"add": {
+							"component_groups": [
+								"rift:wandering"
+							]
+						},
+						"remove": {
+							"component_groups": [
+								"rift:wild_standing",
+								"rift:tamed_standing",
+								"rift:sitting",
+								"rift:sitting_angered"
+							]
+						},
+						"run_command": {
+							"command": [
+								"tag @s remove sitting",
+								"tellraw @p {\"rawtext\":[{\"text\":\"Your Dimetrodon is currently wandering\"}]}"
+							]
+						}
+					},
+					{
+						"filters": {
+							"test": "has_component",
+							"subject": "self",
+							"value": "minecraft:is_baby"
+						},
+						"add": {
+							"component_groups": [
+								"rift:temptable"
+							]
+						}
+					}
+				]
 			},
 			"rift:sitting_on_anger": {
 				"add": {
@@ -4087,7 +4123,8 @@
 								"rift:dimetrodon_baby",
 								"rift:dimetrodon_baby_wild",
 								"rift:wild_standing",
-								"rift:variant_one"
+								"rift:variant_one",
+								"rift:temptable"
 							]
 						}
 					},
@@ -4098,7 +4135,8 @@
 								"rift:dimetrodon_baby",
 								"rift:dimetrodon_baby_wild",
 								"rift:wild_standing",
-								"rift:variant_two"
+								"rift:variant_two",
+								"rift:temptable"
 							]
 						}
 					},
@@ -4109,7 +4147,8 @@
 								"rift:dimetrodon_baby",
 								"rift:dimetrodon_baby_wild",
 								"rift:wild_standing",
-								"rift:variant_three"
+								"rift:variant_three",
+								"rift:temptable"
 							]
 						}
 					},
@@ -4120,7 +4159,8 @@
 								"rift:dimetrodon_baby",
 								"rift:dimetrodon_baby_wild",
 								"rift:wild_standing",
-								"rift:variant_four"
+								"rift:variant_four",
+								"rift:temptable"
 							]
 						}
 					}

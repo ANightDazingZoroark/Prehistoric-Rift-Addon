@@ -92,22 +92,6 @@
 				"minecraft:scale_by_age": {
 					"start_scale": 0.3,
 					"end_scale": 1.75
-				},
-				"minecraft:behavior.tempt": {
-					"priority": 7,
-					"within_radius": 16,
-					"speed_multiplier": 0.75,
-					"items": [
-						"minecraft:wheat",
-						"minecraft:carrot",
-						"minecraft:potato",
-						"minecraft:beetroot",
-						"minecraft:apple",
-						"minecraft:sweet_berries",
-						"rift:rooted_treat",
-						"rift:grassy_treat",
-						"rift:berry_treat"
-					]
 				}
 			},
 			"rift:triceratops_baby_wild": {
@@ -803,6 +787,24 @@
 								-0.375
 							]
 						}
+					]
+				}
+			},
+			"rift:temptable": {
+				"minecraft:behavior.tempt": {
+					"priority": 7,
+					"within_radius": 16,
+					"speed_multiplier": 0.75,
+					"items": [
+						"minecraft:wheat",
+						"minecraft:carrot",
+						"minecraft:potato",
+						"minecraft:beetroot",
+						"minecraft:apple",
+						"minecraft:sweet_berries",
+						"rift:rooted_treat",
+						"rift:grassy_treat",
+						"rift:berry_treat"
 					]
 				}
 			},
@@ -4430,7 +4432,8 @@
 										"rift:triceratops_baby_wild",
 										"rift:triceratops_baby_calm",
 										"rift:pushable",
-										"rift:variant_zero"
+										"rift:variant_zero",
+										"rift:temptable"
 									]
 								}
 							},
@@ -4442,7 +4445,8 @@
 										"rift:triceratops_baby_wild",
 										"rift:triceratops_baby_calm",
 										"rift:pushable",
-										"rift:variant_one"
+										"rift:variant_one",
+										"rift:temptable"
 									]
 								}
 							},
@@ -4454,7 +4458,8 @@
 										"rift:triceratops_baby_wild",
 										"rift:triceratops_baby_calm",
 										"rift:pushable",
-										"rift:variant_two"
+										"rift:variant_two",
+										"rift:temptable"
 									]
 								}
 							},
@@ -4466,7 +4471,8 @@
 										"rift:triceratops_baby_wild",
 										"rift:triceratops_baby_calm",
 										"rift:pushable",
-										"rift:variant_three"
+										"rift:variant_three",
+										"rift:temptable"
 									]
 								}
 							}
@@ -4564,7 +4570,8 @@
 							"component_groups": [
 								"rift:triceratops_baby",
 								"rift:triceratops_baby_wild",
-								"rift:triceratops_baby_calm"
+								"rift:triceratops_baby_calm",
+								"rift:temptable"
 							]
 						}
 					},
@@ -4839,25 +4846,41 @@
 				}
 			},
 			"rift:on_standing": {
-				"add": {
-					"component_groups": [
-						"rift:tamed_standing"
-					]
-				},
-				"remove": {
-					"component_groups": [
-						"rift:wild_standing",
-						"rift:sitting",
-						"rift:sitting_angered",
-						"rift:wandering"
-					]
-				},
-				"run_command": {
-					"command": [
-						"tag @s remove sitting",
-						"tellraw @p {\"rawtext\":[{\"text\":\"Your Triceratops is currently following\"}]}"
-					]
-				}
+				"sequence": [
+					{
+						"add": {
+							"component_groups": [
+								"rift:tamed_standing"
+							]
+						},
+						"remove": {
+							"component_groups": [
+								"rift:wild_standing",
+								"rift:sitting",
+								"rift:sitting_angered",
+								"rift:wandering"
+							]
+						},
+						"run_command": {
+							"command": [
+								"tag @s remove sitting",
+								"tellraw @p {\"rawtext\":[{\"text\":\"Your Triceratops is currently following\"}]}"
+							]
+						}
+					},
+					{
+						"filters": {
+							"test": "has_component",
+							"subject": "self",
+							"value": "minecraft:is_baby"
+						},
+						"add": {
+							"component_groups": [
+								"rift:temptable"
+							]
+						}
+					}
+				]
 			},
 			"rift:on_sitting": {
 				"add": {
@@ -4870,7 +4893,8 @@
 						"rift:wild_standing",
 						"rift:tamed_standing",
 						"rift:sitting_angered",
-						"rift:wandering"
+						"rift:wandering",
+						"rift:temptable"
 					]
 				},
 				"run_command": {
@@ -4881,25 +4905,41 @@
 				}
 			},
 			"rift:on_wandering": {
-				"add": {
-					"component_groups": [
-						"rift:wandering"
-					]
-				},
-				"remove": {
-					"component_groups": [
-						"rift:wild_standing",
-						"rift:tamed_standing",
-						"rift:sitting",
-						"rift:sitting_angered"
-					]
-				},
-				"run_command": {
-					"command": [
-						"tag @s remove sitting",
-						"tellraw @p {\"rawtext\":[{\"text\":\"Your Triceratops is currently wandering\"}]}"
-					]
-				}
+				"sequence": [
+					{
+						"add": {
+							"component_groups": [
+								"rift:wandering"
+							]
+						},
+						"remove": {
+							"component_groups": [
+								"rift:wild_standing",
+								"rift:tamed_standing",
+								"rift:sitting",
+								"rift:sitting_angered"
+							]
+						},
+						"run_command": {
+							"command": [
+								"tag @s remove sitting",
+								"tellraw @p {\"rawtext\":[{\"text\":\"Your Triceratops is currently wandering\"}]}"
+							]
+						}
+					},
+					{
+						"filters": {
+							"test": "has_component",
+							"subject": "self",
+							"value": "minecraft:is_baby"
+						},
+						"add": {
+							"component_groups": [
+								"rift:temptable"
+							]
+						}
+					}
+				]
 			},
 			"rift:sitting_on_anger": {
 				"add": {
@@ -5008,7 +5048,8 @@
 								"rift:triceratops_baby_calm",
 								"rift:pushable",
 								"rift:wild_standing",
-								"rift:variant_zero"
+								"rift:variant_zero",
+								"rift:temptable"
 							]
 						}
 					},
@@ -5021,7 +5062,8 @@
 								"rift:triceratops_baby_calm",
 								"rift:pushable",
 								"rift:wild_standing",
-								"rift:variant_one"
+								"rift:variant_one",
+								"rift:temptable"
 							]
 						}
 					},
@@ -5034,7 +5076,8 @@
 								"rift:triceratops_baby_calm",
 								"rift:pushable",
 								"rift:wild_standing",
-								"rift:variant_two"
+								"rift:variant_two",
+								"rift:temptable"
 							]
 						}
 					},
@@ -5047,7 +5090,8 @@
 								"rift:triceratops_baby_calm",
 								"rift:pushable",
 								"rift:wild_standing",
-								"rift:variant_three"
+								"rift:variant_three",
+								"rift:temptable"
 							]
 						}
 					}

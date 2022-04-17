@@ -93,22 +93,6 @@
 				"minecraft:scale_by_age": {
 					"start_scale": 0.3,
 					"end_scale": 2.75
-				},
-				"minecraft:behavior.tempt": {
-					"priority": 8,
-					"within_radius": 16,
-					"speed_multiplier": 0.75,
-					"items": [
-						"minecraft:wheat",
-						"minecraft:carrot",
-						"minecraft:potato",
-						"minecraft:beetroot",
-						"minecraft:apple",
-						"minecraft:sweet_berries",
-						"rift:rooted_treat",
-						"rift:grassy_treat",
-						"rift:berry_treat"
-					]
 				}
 			},
 			"rift:stegosaurus_baby_wild": {
@@ -739,6 +723,24 @@
 			"rift:charged_cooldown_five": {
 				"minecraft:skin_id": {
 					"value": 5
+				}
+			},
+			"rift:temptable": {
+				"minecraft:behavior.tempt": {
+					"priority": 8,
+					"within_radius": 16,
+					"speed_multiplier": 0.75,
+					"items": [
+						"minecraft:wheat",
+						"minecraft:carrot",
+						"minecraft:potato",
+						"minecraft:beetroot",
+						"minecraft:apple",
+						"minecraft:sweet_berries",
+						"rift:rooted_treat",
+						"rift:grassy_treat",
+						"rift:berry_treat"
+					]
 				}
 			},
 			"rift:wild_standing": {
@@ -3818,7 +3820,8 @@
 										"rift:stegosaurus_baby_wild",
 										"rift:stegosaurus_baby_calm",
 										"rift:variant_zero",
-										"rift:pushable"
+										"rift:pushable",
+										"rift:temptable"
 									]
 								}
 							},
@@ -3830,7 +3833,8 @@
 										"rift:stegosaurus_baby_wild",
 										"rift:stegosaurus_baby_calm",
 										"rift:variant_one",
-										"rift:pushable"
+										"rift:pushable",
+										"rift:temptable"
 									]
 								}
 							},
@@ -3842,7 +3846,8 @@
 										"rift:stegosaurus_baby_wild",
 										"rift:stegosaurus_baby_calm",
 										"rift:variant_two",
-										"rift:pushable"
+										"rift:pushable",
+										"rift:temptable"
 									]
 								}
 							},
@@ -3854,7 +3859,8 @@
 										"rift:stegosaurus_baby_wild",
 										"rift:stegosaurus_baby_calm",
 										"rift:variant_three",
-										"rift:pushable"
+										"rift:pushable",
+										"rift:temptable"
 									]
 								}
 							}
@@ -3952,7 +3958,8 @@
 							"component_groups": [
 								"rift:stegosaurus_baby",
 								"rift:stegosaurus_baby_wild",
-								"rift:stegosaurus_baby_calm"
+								"rift:stegosaurus_baby_calm",
+								"rift:temptable"
 							]
 						}
 					},
@@ -4116,25 +4123,41 @@
 				}
 			},
 			"rift:on_standing": {
-				"add": {
-					"component_groups": [
-						"rift:tamed_standing"
-					]
-				},
-				"remove": {
-					"component_groups": [
-						"rift:wild_standing",
-						"rift:sitting",
-						"rift:sitting_angered",
-						"rift:wandering"
-					]
-				},
-				"run_command": {
-					"command": [
-						"tag @s remove sitting",
-						"tellraw @p {\"rawtext\":[{\"text\":\"Your Stegosaurus is currently following\"}]}"
-					]
-				}
+				"sequence": [
+					{
+						"add": {
+							"component_groups": [
+								"rift:tamed_standing"
+							]
+						},
+						"remove": {
+							"component_groups": [
+								"rift:wild_standing",
+								"rift:sitting",
+								"rift:sitting_angered",
+								"rift:wandering"
+							]
+						},
+						"run_command": {
+							"command": [
+								"tag @s remove sitting",
+								"tellraw @p {\"rawtext\":[{\"text\":\"Your Stegosaurus is currently following\"}]}"
+							]
+						}
+					},
+					{
+						"filters": {
+							"test": "has_component",
+							"subject": "self",
+							"value": "minecraft:is_baby"
+						},
+						"add": {
+							"component_groups": [
+								"rift:temptable"
+							]
+						}
+					}
+				]
 			},
 			"rift:on_sitting": {
 				"add": {
@@ -4147,7 +4170,8 @@
 						"rift:wild_standing",
 						"rift:tamed_standing",
 						"rift:sitting_angered",
-						"rift:wandering"
+						"rift:wandering",
+						"rift:temptable"
 					]
 				},
 				"run_command": {
@@ -4158,25 +4182,41 @@
 				}
 			},
 			"rift:on_wandering": {
-				"add": {
-					"component_groups": [
-						"rift:wandering"
-					]
-				},
-				"remove": {
-					"component_groups": [
-						"rift:wild_standing",
-						"rift:tamed_standing",
-						"rift:sitting",
-						"rift:sitting_angered"
-					]
-				},
-				"run_command": {
-					"command": [
-						"tag @s remove sitting",
-						"tellraw @p {\"rawtext\":[{\"text\":\"Your Stegosaurus is currently wandering\"}]}"
-					]
-				}
+				"sequence": [
+					{
+						"add": {
+							"component_groups": [
+								"rift:wandering"
+							]
+						},
+						"remove": {
+							"component_groups": [
+								"rift:wild_standing",
+								"rift:tamed_standing",
+								"rift:sitting",
+								"rift:sitting_angered"
+							]
+						},
+						"run_command": {
+							"command": [
+								"tag @s remove sitting",
+								"tellraw @p {\"rawtext\":[{\"text\":\"Your Stegosaurus is currently wandering\"}]}"
+							]
+						}
+					},
+					{
+						"filters": {
+							"test": "has_component",
+							"subject": "self",
+							"value": "minecraft:is_baby"
+						},
+						"add": {
+							"component_groups": [
+								"rift:temptable"
+							]
+						}
+					}
+				]
 			},
 			"rift:sitting_on_anger": {
 				"add": {
@@ -4285,7 +4325,8 @@
 								"rift:stegosaurus_baby_calm",
 								"rift:wild_standing",
 								"rift:variant_zero",
-								"rift:pushable"
+								"rift:pushable",
+								"rift:temptable"
 							]
 						}
 					},
@@ -4298,7 +4339,8 @@
 								"rift:stegosaurus_baby_calm",
 								"rift:wild_standing",
 								"rift:variant_one",
-								"rift:pushable"
+								"rift:pushable",
+								"rift:temptable"
 							]
 						}
 					},
@@ -4311,7 +4353,8 @@
 								"rift:stegosaurus_baby_calm",
 								"rift:wild_standing",
 								"rift:variant_two",
-								"rift:pushable"
+								"rift:pushable",
+								"rift:temptable"
 							]
 						}
 					},
@@ -4324,7 +4367,8 @@
 								"rift:stegosaurus_baby_calm",
 								"rift:wild_standing",
 								"rift:variant_three",
-								"rift:pushable"
+								"rift:pushable",
+								"rift:temptable"
 							]
 						}
 					}

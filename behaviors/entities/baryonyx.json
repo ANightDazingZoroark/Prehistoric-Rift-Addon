@@ -152,35 +152,6 @@
                 "minecraft:scale_by_age": {
                     "start_scale": 0.4,
                     "end_scale": 0.9
-                },
-                "minecraft:behavior.tempt": {
-                    "priority": 10,
-                    "items": [
-                        "minecraft:beef",
-						"minecraft:cooked_beef",
-						"minecraft:porkchop",
-						"minecraft:cooked_porkchop",
-						"minecraft:chicken",
-						"minecraft:cooked_chicken",
-						"minecraft:mutton",
-						"minecraft:cooked_mutton",
-						"minecraft:rabbit",
-						"minecraft:cooked_rabbit",
-                        "minecraft:cod",
-                        "minecraft:cooked_cod",
-                        "minecraft:salmon",
-                        "minecraft:cooked_salmon",
-                        "minecraft:tropical_fish",
-						"rift:fish_treat",
-						"rift:raw_exotic_meat",
-						"rift:cooked_exotic_meat",
-						"rift:raw_dodo_meat",
-						"rift:cooked_dodo_meat",
-						"rift:raw_hadrosaur_meat",
-						"rift:cooked_hadrosaur_meat",
-                        "rift:raw_megapiranha",
-                        "rift:cooked_megapiranha"
-                    ]
                 }
             },
             "rift:baryonyx_baby_wild": {
@@ -1014,6 +985,37 @@
 						}
 					]
 				}
+			},
+			"rift:temptable": {
+                "minecraft:behavior.tempt": {
+                    "priority": 10,
+                    "items": [
+                        "minecraft:beef",
+						"minecraft:cooked_beef",
+						"minecraft:porkchop",
+						"minecraft:cooked_porkchop",
+						"minecraft:chicken",
+						"minecraft:cooked_chicken",
+						"minecraft:mutton",
+						"minecraft:cooked_mutton",
+						"minecraft:rabbit",
+						"minecraft:cooked_rabbit",
+                        "minecraft:cod",
+                        "minecraft:cooked_cod",
+                        "minecraft:salmon",
+                        "minecraft:cooked_salmon",
+                        "minecraft:tropical_fish",
+						"rift:fish_treat",
+						"rift:raw_exotic_meat",
+						"rift:cooked_exotic_meat",
+						"rift:raw_dodo_meat",
+						"rift:cooked_dodo_meat",
+						"rift:raw_hadrosaur_meat",
+						"rift:cooked_hadrosaur_meat",
+                        "rift:raw_megapiranha",
+                        "rift:cooked_megapiranha"
+                    ]
+                }
 			},
 			"rift:wild_standing": {
 				"minecraft:behavior.random_stroll": {
@@ -4132,7 +4134,8 @@
 								"rift:baryonyx_land_dweller",
 								"rift:pushable",
 								"rift:wild_standing",
-								"rift:variant_one"
+								"rift:variant_one",
+								"rift:temptable"
 							]
 						}
 					},
@@ -4146,7 +4149,8 @@
 								"rift:baryonyx_land_dweller",
 								"rift:pushable",
 								"rift:wild_standing",
-								"rift:variant_two"
+								"rift:variant_two",
+								"rift:temptable"
 							]
 						}
 					},
@@ -4160,7 +4164,8 @@
 								"rift:baryonyx_land_dweller",
 								"rift:pushable",
 								"rift:wild_standing",
-								"rift:variant_three"
+								"rift:variant_three",
+								"rift:temptable"
 							]
 						}
 					},
@@ -4174,7 +4179,8 @@
 								"rift:baryonyx_land_dweller",
 								"rift:pushable",
 								"rift:wild_standing",
-								"rift:variant_four"
+								"rift:variant_four",
+								"rift:temptable"
 							]
 						}
 					}
@@ -4195,7 +4201,8 @@
 						"remove": {
 							"component_groups": [
 								"rift:baryonyx_baby",
-								"rift:baryonyx_baby_wild"
+								"rift:baryonyx_baby_wild",
+								"rift:temptable"
 							]
 						}
 					},
@@ -4552,25 +4559,41 @@
 				}
 			},
 			"rift:on_standing": {
-				"add": {
-					"component_groups": [
-						"rift:tamed_standing"
-					]
-				},
-				"remove": {
-					"component_groups": [
-						"rift:wild_standing",
-						"rift:sitting",
-						"rift:sitting_angered",
-						"rift:wandering"
-					]
-				},
-				"run_command": {
-					"command": [
-						"tag @s remove sitting",
-						"tellraw @p {\"rawtext\":[{\"text\":\"Your Baryonyx is currently following\"}]}"
-					]
-				}
+				"sequence": [
+					{
+						"add": {
+							"component_groups": [
+								"rift:tamed_standing"
+							]
+						},
+						"remove": {
+							"component_groups": [
+								"rift:wild_standing",
+								"rift:sitting",
+								"rift:sitting_angered",
+								"rift:wandering"
+							]
+						},
+						"run_command": {
+							"command": [
+								"tag @s remove sitting",
+								"tellraw @p {\"rawtext\":[{\"text\":\"Your Baryonyx is currently following\"}]}"
+							]
+						}
+					},
+					{
+						"filters": {
+							"test": "has_component",
+							"subject": "self",
+							"value": "minecraft:is_baby"
+						},
+						"add": {
+							"component_groups": [
+								"rift:temptable"
+							]
+						}
+					}
+				]
 			},
 			"rift:on_sitting": {
 				"add": {
@@ -4583,7 +4606,8 @@
 						"rift:wild_standing",
 						"rift:tamed_standing",
 						"rift:sitting_angered",
-						"rift:wandering"
+						"rift:wandering",
+						"rift:temptable"
 					]
 				},
 				"run_command": {
@@ -4594,25 +4618,41 @@
 				}
 			},
 			"rift:on_wandering": {
-				"add": {
-					"component_groups": [
-						"rift:wandering"
-					]
-				},
-				"remove": {
-					"component_groups": [
-						"rift:wild_standing",
-						"rift:tamed_standing",
-						"rift:sitting",
-						"rift:sitting_angered"
-					]
-				},
-				"run_command": {
-					"command": [
-						"tag @s remove sitting",
-						"tellraw @p {\"rawtext\":[{\"text\":\"Your Baryonyx is currently wandering\"}]}"
-					]
-				}
+				"sequence": [
+					{
+						"add": {
+							"component_groups": [
+								"rift:wandering"
+							]
+						},
+						"remove": {
+							"component_groups": [
+								"rift:wild_standing",
+								"rift:tamed_standing",
+								"rift:sitting",
+								"rift:sitting_angered"
+							]
+						},
+						"run_command": {
+							"command": [
+								"tag @s remove sitting",
+								"tellraw @p {\"rawtext\":[{\"text\":\"Your Baryonyx is currently wandering\"}]}"
+							]
+						}
+					},
+					{
+						"filters": {
+							"test": "has_component",
+							"subject": "self",
+							"value": "minecraft:is_baby"
+						},
+						"add": {
+							"component_groups": [
+								"rift:temptable"
+							]
+						}
+					}
+				]
 			},
 			"rift:sitting_on_anger": {
 				"add": {

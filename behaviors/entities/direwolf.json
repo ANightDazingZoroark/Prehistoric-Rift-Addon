@@ -178,28 +178,6 @@
                 "minecraft:scale_by_age": {
                     "start_scale": 0.3,
                     "end_scale": 0.65
-                },
-                "minecraft:behavior.tempt": {
-                    "priority": 10,
-                    "items": [
-                        "minecraft:beef",
-						"minecraft:cooked_beef",
-						"minecraft:porkchop",
-						"minecraft:cooked_porkchop",
-						"minecraft:chicken",
-						"minecraft:cooked_chicken",
-						"minecraft:mutton",
-						"minecraft:cooked_mutton",
-						"minecraft:rabbit",
-						"minecraft:cooked_rabbit",
-						"rift:flesh_treat",
-						"rift:raw_exotic_meat",
-						"rift:cooked_exotic_meat",
-						"rift:raw_dodo_meat",
-						"rift:cooked_dodo_meat",
-						"rift:raw_hadrosaur_meat",
-						"rift:cooked_hadrosaur_meat"                      
-                    ]
                 }
 			},
 			"rift:direwolf_wild_baby": {
@@ -1436,6 +1414,30 @@
 			},
 			"rift:forced_transformed_back": {
 				"minecraft:is_illager_captain": {}
+			},
+			"rift:temptable": {
+                "minecraft:behavior.tempt": {
+                    "priority": 10,
+                    "items": [
+                        "minecraft:beef",
+						"minecraft:cooked_beef",
+						"minecraft:porkchop",
+						"minecraft:cooked_porkchop",
+						"minecraft:chicken",
+						"minecraft:cooked_chicken",
+						"minecraft:mutton",
+						"minecraft:cooked_mutton",
+						"minecraft:rabbit",
+						"minecraft:cooked_rabbit",
+						"rift:flesh_treat",
+						"rift:raw_exotic_meat",
+						"rift:cooked_exotic_meat",
+						"rift:raw_dodo_meat",
+						"rift:cooked_dodo_meat",
+						"rift:raw_hadrosaur_meat",
+						"rift:cooked_hadrosaur_meat"
+                    ]
+				}
 			},
 			"rift:wild_standing": {
                 "minecraft:behavior.random_stroll": {
@@ -4582,7 +4584,8 @@
 						"rift:direwolf_baby",
 						"rift:direwolf_tamed_baby",
 						"rift:direwolf_tamed",
-						"rift:normal_mode_attack"
+						"rift:normal_mode_attack",
+						"rift:temptable"
 					]
 				}
 			},
@@ -4597,7 +4600,8 @@
 								"rift:direwolf_baby_calm",
 								"rift:pushable",
 								"rift:wild_standing",
-								"rift:variant_one"
+								"rift:variant_one",
+								"rift:temptable"
 							]
 						}
 					},
@@ -4610,7 +4614,8 @@
 								"rift:direwolf_baby_calm",
 								"rift:pushable",
 								"rift:wild_standing",
-								"rift:variant_two"
+								"rift:variant_two",
+								"rift:temptable"
 							]
 						}
 					},
@@ -4623,7 +4628,8 @@
 								"rift:direwolf_baby_calm",
 								"rift:pushable",
 								"rift:wild_standing",
-								"rift:variant_three"
+								"rift:variant_three",
+								"rift:temptable"
 							]
 						}
 					},
@@ -4636,7 +4642,8 @@
 								"rift:direwolf_baby_calm",
 								"rift:pushable",
 								"rift:wild_standing",
-								"rift:variant_four"
+								"rift:variant_four",
+								"rift:temptable"
 							]
 						}
 					}
@@ -4661,7 +4668,8 @@
 								"rift:direwolf_wild_baby",
 								"rift:direwolf_baby_calm",
 								"rift:direwolf_baby_scared",
-								"rift:direwolf_tamed_baby"
+								"rift:direwolf_tamed_baby",
+								"rift:temptable"
 							]
 						}
 					},
@@ -6059,30 +6067,47 @@
 				}
 			},
 			"rift:on_standing": {
-				"add": {
-					"component_groups": [
-						"rift:tamed_standing"
-					]
-				},
-				"remove": {
-					"component_groups": [
-						"rift:wild_standing",
-						"rift:wandering"
-					]
-				},
-				"run_command": {
-					"command": [
-						"tag @s remove sitting",
-						"tellraw @p {\"rawtext\":[{\"text\":\"Your Direwolf is currently following\"}]}"
-					]
-				}
+				"sequence": [
+					{
+						"add": {
+							"component_groups": [
+								"rift:tamed_standing"
+							]
+						},
+						"remove": {
+							"component_groups": [
+								"rift:wild_standing",
+								"rift:wandering"
+							]
+						},
+						"run_command": {
+							"command": [
+								"tag @s remove sitting",
+								"tellraw @p {\"rawtext\":[{\"text\":\"Your Direwolf is currently following\"}]}"
+							]
+						}
+					},
+					{
+						"filters": {
+							"test": "has_component",
+							"subject": "self",
+							"value": "minecraft:is_baby"
+						},
+						"add": {
+							"component_groups": [
+								"rift:temptable"
+							]
+						}
+					}
+				]
 			},
 			"rift:on_sitting": {
 				"remove": {
 					"component_groups": [
 						"rift:wild_standing",
 						"rift:tamed_standing",
-						"rift:wandering"
+						"rift:wandering",
+						"rift:temptable"
 					]
 				},
 				"run_command": {
@@ -6093,23 +6118,39 @@
 				}
 			},
 			"rift:on_wandering": {
-				"add": {
-					"component_groups": [
-						"rift:wandering"
-					]
-				},
-				"remove": {
-					"component_groups": [
-						"rift:wild_standing",
-						"rift:tamed_standing"
-					]
-				},
-				"run_command": {
-					"command": [
-						"tag @s remove sitting",
-						"tellraw @p {\"rawtext\":[{\"text\":\"Your Direwolf is currently wandering\"}]}"
-					]
-				}
+				"sequence": [
+					{
+						"add": {
+							"component_groups": [
+								"rift:wandering"
+							]
+						},
+						"remove": {
+							"component_groups": [
+								"rift:wild_standing",
+								"rift:tamed_standing"
+							]
+						},
+						"run_command": {
+							"command": [
+								"tag @s remove sitting",
+								"tellraw @p {\"rawtext\":[{\"text\":\"Your Direwolf is currently wandering\"}]}"
+							]
+						}
+					},
+					{
+						"filters": {
+							"test": "has_component",
+							"subject": "self",
+							"value": "minecraft:is_baby"
+						},
+						"add": {
+							"component_groups": [
+								"rift:temptable"
+							]
+						}
+					}
+				]
 			},
 			"rift:on_assist_behavior": {
 				"add": {

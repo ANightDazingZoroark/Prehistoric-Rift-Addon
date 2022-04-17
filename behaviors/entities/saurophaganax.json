@@ -123,26 +123,6 @@
 					"start_scale": 0.2,
 					"end_scale": 0.75
 				},
-				"minecraft:behavior.tempt": {
-					"priority": 12,
-					"items": [
-                        "minecraft:rotten_flesh",
-                        "minecraft:bone",
-                        "minecraft:gunpowder",
-                        "minecraft:spider_eye",
-                        "minecraft:ender_pearl",
-                        "minecraft:slime_ball",
-						"minecraft:phantom_membrane",
-                        "minecraft:ghast_tear",
-                        "minecraft:blaze_rod",
-                        "minecraft:blaze_powder",
-                        "minecraft:magma_cream",
-                        "rift:raw_hemolymph",
-                        "rift:boiled_hemolymph",
-						"rift:bug_treat",
-						"rift:carrion_treat"
-					]
-				},
 				"minecraft:behavior.float": {}
             },
             "rift:saurophaganax_baby_wild": {
@@ -840,6 +820,28 @@
 						}
 					],
 					"crouching_skip_interact": true
+				}
+			},
+			"rift:temptable": {
+				"minecraft:behavior.tempt": {
+					"priority": 12,
+					"items": [
+                        "minecraft:rotten_flesh",
+                        "minecraft:bone",
+                        "minecraft:gunpowder",
+                        "minecraft:spider_eye",
+                        "minecraft:ender_pearl",
+                        "minecraft:slime_ball",
+						"minecraft:phantom_membrane",
+                        "minecraft:ghast_tear",
+                        "minecraft:blaze_rod",
+                        "minecraft:blaze_powder",
+                        "minecraft:magma_cream",
+                        "rift:raw_hemolymph",
+                        "rift:boiled_hemolymph",
+						"rift:bug_treat",
+						"rift:carrion_treat"
+					]
 				}
 			},
 			"rift:wild_standing": {
@@ -4135,7 +4137,8 @@
 								"rift:saurophaganax_baby_wild",
 								"rift:saurophaganax_baby_prime",
 								"rift:saurophaganax_baby_weakened",
-								"rift:saurophaganax_baby_tameable"
+								"rift:saurophaganax_baby_tameable",
+								"rift:temptable"
 							]
 						},
 						"run_command": {
@@ -4766,25 +4769,41 @@
 			  	}
 			},
 			"rift:on_standing": {
-				"add": {
-					"component_groups": [
-						"rift:tamed_standing"
-					]
-				},
-				"remove": {
-					"component_groups": [
-						"rift:wild_standing",
-						"rift:sitting",
-						"rift:sitting_angered",
-						"rift:wandering"
-					]
-				},
-				"run_command": {
-					"command": [
-						"tag @s remove sitting",
-						"tellraw @p {\"rawtext\":[{\"text\":\"Your Saurophaganax is currently following\"}]}"
-					]
-				}
+				"sequence": [
+					{
+						"add": {
+							"component_groups": [
+								"rift:tamed_standing"
+							]
+						},
+						"remove": {
+							"component_groups": [
+								"rift:wild_standing",
+								"rift:sitting",
+								"rift:sitting_angered",
+								"rift:wandering"
+							]
+						},
+						"run_command": {
+							"command": [
+								"tag @s remove sitting",
+								"tellraw @p {\"rawtext\":[{\"text\":\"Your Saurophaganax is currently following\"}]}"
+							]
+						}
+					},
+					{
+						"filters": {
+							"test": "has_component",
+							"subject": "self",
+							"value": "minecraft:is_baby"
+						},
+						"add": {
+							"component_groups": [
+								"rift:temptable"
+							]
+						}
+					}
+				]
 			},
 			"rift:on_sitting": {
 				"add": {
@@ -4797,7 +4816,8 @@
 						"rift:wild_standing",
 						"rift:tamed_standing",
 						"rift:sitting_angered",
-						"rift:wandering"
+						"rift:wandering",
+						"rift:temptable"
 					]
 				},
 				"run_command": {
@@ -4808,25 +4828,41 @@
 				}
 			},
 			"rift:on_wandering": {
-				"add": {
-					"component_groups": [
-						"rift:wandering"
-					]
-				},
-				"remove": {
-					"component_groups": [
-						"rift:wild_standing",
-						"rift:tamed_standing",
-						"rift:sitting",
-						"rift:sitting_angered"
-					]
-				},
-				"run_command": {
-					"command": [
-						"tag @s remove sitting",
-						"tellraw @p {\"rawtext\":[{\"text\":\"Your Saurophaganax is currently wandering\"}]}"
-					]
-				}
+				"sequence": [
+					{
+						"add": {
+							"component_groups": [
+								"rift:wandering"
+							]
+						},
+						"remove": {
+							"component_groups": [
+								"rift:wild_standing",
+								"rift:tamed_standing",
+								"rift:sitting",
+								"rift:sitting_angered"
+							]
+						},
+						"run_command": {
+							"command": [
+								"tag @s remove sitting",
+								"tellraw @p {\"rawtext\":[{\"text\":\"Your Saurophaganax is currently wandering\"}]}"
+							]
+						}
+					},
+					{
+						"filters": {
+							"test": "has_component",
+							"subject": "self",
+							"value": "minecraft:is_baby"
+						},
+						"add": {
+							"component_groups": [
+								"rift:temptable"
+							]
+						}
+					}
+				]
 			},
 			"rift:sitting_on_anger": {
 				"add": {
@@ -4936,7 +4972,8 @@
 								"rift:wild_standing",
 								"rift:variant_zero",
 								"rift:pushable",
-								"rift:can_attack"
+								"rift:can_attack",
+								"rift:temptable"
 							]
 						}
 					},
@@ -4950,7 +4987,8 @@
 								"rift:wild_standing",
 								"rift:variant_one",
 								"rift:pushable",
-								"rift:can_attack"
+								"rift:can_attack",
+								"rift:temptable"
 							]
 						}
 					},
@@ -4964,7 +5002,8 @@
 								"rift:wild_standing",
 								"rift:variant_two",
 								"rift:pushable",
-								"rift:can_attack"
+								"rift:can_attack",
+								"rift:temptable"
 							]
 						}
 					},
@@ -4978,7 +5017,8 @@
 								"rift:wild_standing",
 								"rift:variant_three",
 								"rift:pushable",
-								"rift:can_attack"
+								"rift:can_attack",
+								"rift:temptable"
 							]
 						}
 					}

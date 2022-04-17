@@ -97,25 +97,6 @@
                 "minecraft:scale_by_age": {
 					"start_scale": 0.2,
 					"end_scale": 0.6
-				},
-				"minecraft:behavior.tempt": {
-					"priority": 9,
-					"within_radius": 16,
-					"speed_multiplier": 0.75,
-					"items": [
-						"minecraft:wheat",
-                        "minecraft:leaves:0",
-                        "minecraft:leaves:1",
-                        "minecraft:leaves:2",
-                        "minecraft:leaves:3",
-                        "minecraft:leaves2:0",
-                        "minecraft:leaves2:1",
-						"minecraft:apple",
-						"minecraft:sweet_berries",
-						"rift:leafy_treat",
-						"rift:grassy_treat",
-						"rift:berry_treat"
-					]
 				}
             },
             "rift:megaloceros_baby_wild": {
@@ -708,6 +689,27 @@
 							"min_wait_time": 0,
 							"max_wait_time": 0
 						}
+					]
+				}
+			},
+			"rift:temptable": {
+				"minecraft:behavior.tempt": {
+					"priority": 9,
+					"within_radius": 16,
+					"speed_multiplier": 0.75,
+					"items": [
+						"minecraft:wheat",
+                        "minecraft:leaves:0",
+                        "minecraft:leaves:1",
+                        "minecraft:leaves:2",
+                        "minecraft:leaves:3",
+                        "minecraft:leaves2:0",
+                        "minecraft:leaves2:1",
+						"minecraft:apple",
+						"minecraft:sweet_berries",
+						"rift:leafy_treat",
+						"rift:grassy_treat",
+						"rift:berry_treat"
 					]
 				}
 			},
@@ -3719,7 +3721,8 @@
 										"rift:megaloceros_baby_wild",
 										"rift:megaloceros_baby_calm",
 										"rift:pushable",
-										"rift:variant_zero"
+										"rift:variant_zero",
+										"rift:temptable"
 									]
 								}
 							},
@@ -3731,7 +3734,8 @@
 										"rift:megaloceros_baby_wild",
 										"rift:megaloceros_baby_calm",
 										"rift:pushable",
-										"rift:variant_one"
+										"rift:variant_one",
+										"rift:temptable"
 									]
 								}
 							},
@@ -3743,7 +3747,8 @@
 										"rift:megaloceros_baby_wild",
 										"rift:megaloceros_baby_calm",
 										"rift:pushable",
-										"rift:variant_two"
+										"rift:variant_two",
+										"rift:temptable"
 									]
 								}
 							},
@@ -3755,7 +3760,8 @@
 										"rift:megaloceros_baby_wild",
 										"rift:megaloceros_baby_calm",
 										"rift:pushable",
-										"rift:variant_three"
+										"rift:variant_three",
+										"rift:temptable"
 									]
 								}
 							}
@@ -3769,7 +3775,8 @@
                         "rift:megaloceros_baby",
                         "rift:megaloceros_baby_tamed",
                         "rift:megaloceros_tamed",
-						"rift:pushable"
+						"rift:pushable",
+						"rift:temptable"
                     ]
                 }
             },
@@ -3791,7 +3798,8 @@
                                 "rift:megaloceros_baby",
                                 "rift:megaloceros_baby_wild",
                                 "rift:megaloceros_baby_calm",
-                                "rift:megaloceros_baby_scared"
+                                "rift:megaloceros_baby_scared",
+								"rift:temptable"
                             ]
                         }
                     },
@@ -4091,25 +4099,41 @@
 				}
 			},
 			"rift:on_standing": {
-				"add": {
-					"component_groups": [
-						"rift:tamed_standing"
-					]
-				},
-				"remove": {
-					"component_groups": [
-						"rift:wild_standing",
-						"rift:sitting",
-						"rift:sitting_angered",
-						"rift:wandering"
-					]
-				},
-				"run_command": {
-					"command": [
-						"tag @s remove sitting",
-						"tellraw @p {\"rawtext\":[{\"text\":\"Your Megaloceros is currently following\"}]}"
-					]
-				}
+				"sequence": [
+					{
+						"add": {
+							"component_groups": [
+								"rift:tamed_standing"
+							]
+						},
+						"remove": {
+							"component_groups": [
+								"rift:wild_standing",
+								"rift:sitting",
+								"rift:sitting_angered",
+								"rift:wandering"
+							]
+						},
+						"run_command": {
+							"command": [
+								"tag @s remove sitting",
+								"tellraw @p {\"rawtext\":[{\"text\":\"Your Megaloceros is currently following\"}]}"
+							]
+						}
+					},
+					{
+						"filters": {
+							"test": "has_component",
+							"subject": "self",
+							"value": "minecraft:is_baby"
+						},
+						"add": {
+							"component_groups": [
+								"rift:temptable"
+							]
+						}
+					}
+				]
 			},
 			"rift:on_sitting": {
 				"add": {
@@ -4122,7 +4146,8 @@
 						"rift:wild_standing",
 						"rift:tamed_standing",
 						"rift:sitting_angered",
-						"rift:wandering"
+						"rift:wandering",
+						"rift:temptable"
 					]
 				},
 				"run_command": {
@@ -4133,25 +4158,41 @@
 				}
 			},
 			"rift:on_wandering": {
-				"add": {
-					"component_groups": [
-						"rift:wandering"
-					]
-				},
-				"remove": {
-					"component_groups": [
-						"rift:wild_standing",
-						"rift:tamed_standing",
-						"rift:sitting",
-						"rift:sitting_angered"
-					]
-				},
-				"run_command": {
-					"command": [
-						"tag @s remove sitting",
-						"tellraw @p {\"rawtext\":[{\"text\":\"Your Megaloceros is currently wandering\"}]}"
-					]
-				}
+				"sequence": [
+					{
+						"add": {
+							"component_groups": [
+								"rift:wandering"
+							]
+						},
+						"remove": {
+							"component_groups": [
+								"rift:wild_standing",
+								"rift:tamed_standing",
+								"rift:sitting",
+								"rift:sitting_angered"
+							]
+						},
+						"run_command": {
+							"command": [
+								"tag @s remove sitting",
+								"tellraw @p {\"rawtext\":[{\"text\":\"Your Megaloceros is currently wandering\"}]}"
+							]
+						}
+					},
+					{
+						"filters": {
+							"test": "has_component",
+							"subject": "self",
+							"value": "minecraft:is_baby"
+						},
+						"add": {
+							"component_groups": [
+								"rift:temptable"
+							]
+						}
+					}
+				]
 			},
 			"rift:sitting_on_anger": {
 				"add": {
@@ -4260,7 +4301,8 @@
 								"rift:megaloceros_baby_calm",
 								"rift:pushable",
 								"rift:wild_standing",
-                                "rift:variant_zero"
+                                "rift:variant_zero",
+								"rift:temptable"
 							]
 						}
 					},
@@ -4273,7 +4315,8 @@
 								"rift:megaloceros_baby_calm",
 								"rift:pushable",
 								"rift:wild_standing",
-                                "rift:variant_one"
+                                "rift:variant_one",
+								"rift:temptable"
 							]
 						}
 					},
@@ -4286,7 +4329,8 @@
 								"rift:megaloceros_baby_calm",
 								"rift:pushable",
 								"rift:wild_standing",
-                                "rift:variant_two"
+                                "rift:variant_two",
+								"rift:temptable"
 							]
 						}
 					},
@@ -4299,7 +4343,8 @@
 								"rift:megaloceros_baby_calm",
 								"rift:pushable",
 								"rift:wild_standing",
-                                "rift:variant_three"
+                                "rift:variant_three",
+								"rift:temptable"
 							]
 						}
 					}

@@ -74,23 +74,6 @@
                 "minecraft:scale_by_age": {
 					"start_scale": 0.3,
 					"end_scale": 1.5
-				},
-				"minecraft:behavior.tempt": {
-					"priority": 3,
-					"within_radius": 16,
-					"speed_multiplier": 0.75,
-					"items": [
-						"minecraft:wheat",
-						"minecraft:carrot",
-						"minecraft:potato",
-						"minecraft:beetroot",
-						"minecraft:apple",
-						"minecraft:sweet_berries",
-						"rift:truffle",
-						"rift:rooted_treat",
-						"rift:grassy_treat",
-						"rift:berry_treat"
-					]
 				}
             },
             "rift:parasaurolophus_baby_wild": {
@@ -490,6 +473,25 @@
             "rift:parasaurolophus_tamed": {
                 "minecraft:is_tamed": {}
             },
+			"rift:temptable": {
+				"minecraft:behavior.tempt": {
+					"priority": 3,
+					"within_radius": 16,
+					"speed_multiplier": 0.75,
+					"items": [
+						"minecraft:wheat",
+						"minecraft:carrot",
+						"minecraft:potato",
+						"minecraft:beetroot",
+						"minecraft:apple",
+						"minecraft:sweet_berries",
+						"rift:truffle",
+						"rift:rooted_treat",
+						"rift:grassy_treat",
+						"rift:berry_treat"
+					]
+				}
+			},
 			"rift:wild_standing": {
 				"minecraft:behavior.random_stroll": {
 					"priority": 6
@@ -3629,7 +3631,8 @@
 										"rift:parasaurolophus_baby_wild",
 										"rift:parasaurolophus_baby_calm",
 										"rift:variant_one",
-										"rift:pushable"
+										"rift:pushable",
+										"rift:temptable"
 									]
 								}
 							},
@@ -3641,7 +3644,8 @@
 										"rift:parasaurolophus_baby_wild",
 										"rift:parasaurolophus_baby_calm",
 										"rift:variant_two",
-										"rift:pushable"
+										"rift:pushable",
+										"rift:temptable"
 									]
 								}
 							},
@@ -3653,7 +3657,8 @@
 										"rift:parasaurolophus_baby_wild",
 										"rift:parasaurolophus_baby_calm",
 										"rift:variant_three",
-										"rift:pushable"
+										"rift:pushable",
+										"rift:temptable"
 									]
 								}
 							},
@@ -3665,7 +3670,8 @@
 										"rift:parasaurolophus_baby_wild",
 										"rift:parasaurolophus_baby_calm",
 										"rift:variant_four",
-										"rift:pushable"
+										"rift:pushable",
+										"rift:temptable"
 									]
 								}
 							}
@@ -3698,7 +3704,8 @@
 							"component_groups": [
 								"rift:parasaurolophus_baby",
 								"rift:parasaurolophus_baby_wild",
-								"rift:parasaurolophus_baby_calm"
+								"rift:parasaurolophus_baby_calm",
+								"rift:temptable"
 							]
 						}
 					},
@@ -3873,7 +3880,8 @@
 								"rift:parasaurolophus_baby_calm",
 								"rift:wild_standing",
 								"rift:variant_one",
-								"rift:pushable"
+								"rift:pushable",
+								"rift:temptable"
 							]
 						}
 					},
@@ -3886,7 +3894,8 @@
 								"rift:parasaurolophus_baby_calm",
 								"rift:wild_standing",
 								"rift:variant_two",
-								"rift:pushable"
+								"rift:pushable",
+								"rift:temptable"
 							]
 						}
 					},
@@ -3899,7 +3908,8 @@
 								"rift:parasaurolophus_baby_calm",
 								"rift:wild_standing",
 								"rift:variant_three",
-								"rift:pushable"
+								"rift:pushable",
+								"rift:temptable"
 							]
 						}
 					},
@@ -3912,7 +3922,8 @@
 								"rift:parasaurolophus_baby_calm",
 								"rift:wild_standing",
 								"rift:variant_four",
-								"rift:pushable"
+								"rift:pushable",
+								"rift:temptable"
 							]
 						}
 					}
@@ -3943,24 +3954,40 @@
 				}
             },
 			"rift:on_standing": {
-				"add": {
-					"component_groups": [
-						"rift:parasaurolophus_not_in_turret_mode",
-						"rift:tamed_standing"
-					]
-				},
-				"remove": {
-					"component_groups": [
-						"rift:wild_standing",
-						"rift:wandering"
-					]
-				},
-				"run_command": {
-					"command": [
-						"tag @s remove sitting",
-						"tellraw @p {\"rawtext\":[{\"text\":\"Your Parasaurolophus is currently following\"}]}"
-					]
-				}
+				"sequence": [
+					{
+						"add": {
+							"component_groups": [
+								"rift:parasaurolophus_not_in_turret_mode",
+								"rift:tamed_standing"
+							]
+						},
+						"remove": {
+							"component_groups": [
+								"rift:wild_standing",
+								"rift:wandering"
+							]
+						},
+						"run_command": {
+							"command": [
+								"tag @s remove sitting",
+								"tellraw @p {\"rawtext\":[{\"text\":\"Your Parasaurolophus is currently following\"}]}"
+							]
+						}
+					},
+					{
+						"filters": {
+							"test": "has_component",
+							"subject": "self",
+							"value": "minecraft:is_baby"
+						},
+						"add": {
+							"component_groups": [
+								"rift:temptable"
+							]
+						}
+					}
+				]
 			},
 			"rift:on_sitting": {
 				"remove": {
@@ -3968,7 +3995,8 @@
 						"rift:wild_standing",
 						"rift:tamed_standing",
 						"rift:wandering",
-						"rift:parasaurolophus_not_in_turret_mode"
+						"rift:parasaurolophus_not_in_turret_mode",
+						"rift:temptable"
 					]
 				},
 				"run_command": {
@@ -3979,24 +4007,40 @@
 				}
 			},
 			"rift:on_wandering": {
-				"add": {
-					"component_groups": [
-						"rift:wandering"
-					]
-				},
-				"remove": {
-					"component_groups": [
-						"rift:wild_standing",
-						"rift:tamed_standing",
-						"rift:parasaurolophus_not_in_turret_mode"
-					]
-				},
-				"run_command": {
-					"command": [
-						"tag @s remove sitting",
-						"tellraw @p {\"rawtext\":[{\"text\":\"Your Parasaurolophus is currently wandering\"}]}"
-					]
-				}
+				"sequence": [
+					{
+						"add": {
+							"component_groups": [
+								"rift:wandering"
+							]
+						},
+						"remove": {
+							"component_groups": [
+								"rift:wild_standing",
+								"rift:tamed_standing",
+								"rift:parasaurolophus_not_in_turret_mode"
+							]
+						},
+						"run_command": {
+							"command": [
+								"tag @s remove sitting",
+								"tellraw @p {\"rawtext\":[{\"text\":\"Your Parasaurolophus is currently wandering\"}]}"
+							]
+						}
+					},
+					{
+						"filters": {
+							"test": "has_component",
+							"subject": "self",
+							"value": "minecraft:is_baby"
+						},
+						"add": {
+							"component_groups": [
+								"rift:temptable"
+							]
+						}
+					}
+				]
 			},
             "rift:stop_calling": {
                 "remove": {

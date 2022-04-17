@@ -170,39 +170,6 @@
                     "start_scale": 0.3,
                     "end_scale": 1
                 },
-                "minecraft:behavior.tempt": {
-                    "priority": 9,
-                    "items": [
-                        "minecraft:beef",
-						"minecraft:cooked_beef",
-						"minecraft:porkchop",
-						"minecraft:cooked_porkchop",
-						"minecraft:chicken",
-						"minecraft:cooked_chicken",
-						"minecraft:mutton",
-						"minecraft:cooked_mutton",
-						"minecraft:rabbit",
-						"minecraft:cooked_rabbit",
-                        "minecraft:cod",
-                        "minecraft:cooked_cod",
-                        "minecraft:salmon",
-                        "minecraft:cooked_salmon",
-                        "minecraft:tropical_fish",
-						"rift:fish_treat",
-						"rift:bug_treat",
-						"rift:raw_exotic_meat",
-						"rift:cooked_exotic_meat",
-						"rift:raw_dodo_meat",
-						"rift:cooked_dodo_meat",
-						"rift:raw_hadrosaur_meat",
-						"rift:cooked_hadrosaur_meat",
-						"rift:raw_coelacanth",
-                        "rift:raw_megapiranha",
-                        "rift:cooked_megapiranha",
-                        "rift:raw_hemolymph",
-                        "rift:boiled_hemolymph"
-                    ]
-                },
 				"minecraft:behavior.melee_attack": {
 					"priority": 6,
 					"track_target": true,
@@ -960,6 +927,41 @@
 			},
 			"rift:carry_mob": {
 				"minecraft:is_illager_captain": {}
+			},
+			"rift:temptable": {
+                "minecraft:behavior.tempt": {
+                    "priority": 9,
+                    "items": [
+                        "minecraft:beef",
+						"minecraft:cooked_beef",
+						"minecraft:porkchop",
+						"minecraft:cooked_porkchop",
+						"minecraft:chicken",
+						"minecraft:cooked_chicken",
+						"minecraft:mutton",
+						"minecraft:cooked_mutton",
+						"minecraft:rabbit",
+						"minecraft:cooked_rabbit",
+                        "minecraft:cod",
+                        "minecraft:cooked_cod",
+                        "minecraft:salmon",
+                        "minecraft:cooked_salmon",
+                        "minecraft:tropical_fish",
+						"rift:fish_treat",
+						"rift:bug_treat",
+						"rift:raw_exotic_meat",
+						"rift:cooked_exotic_meat",
+						"rift:raw_dodo_meat",
+						"rift:cooked_dodo_meat",
+						"rift:raw_hadrosaur_meat",
+						"rift:cooked_hadrosaur_meat",
+						"rift:raw_coelacanth",
+                        "rift:raw_megapiranha",
+                        "rift:cooked_megapiranha",
+                        "rift:raw_hemolymph",
+                        "rift:boiled_hemolymph"
+                    ]
+                }
 			},
 			"rift:wild_standing": {
                 "minecraft:behavior.random_swim": {
@@ -3816,7 +3818,8 @@
 						"remove": {
 							"component_groups": [
 								"rift:anomalocaris_baby",
-								"rift:anomalocaris_baby_wild"
+								"rift:anomalocaris_baby_wild",
+								"rift:temptable"
 							]
 						}
 					},
@@ -4022,25 +4025,41 @@
 				}
 			},
 			"rift:on_standing": {
-				"add": {
-					"component_groups": [
-						"rift:tamed_standing"
-					]
-				},
-				"remove": {
-					"component_groups": [
-						"rift:wild_standing",
-						"rift:sitting",
-						"rift:sitting_angered",
-						"rift:wandering"
-					]
-				},
-				"run_command": {
-					"command": [
-						"tag @s remove sitting",
-						"tellraw @p {\"rawtext\":[{\"text\":\"Your Anomalocaris is currently following\"}]}"
-					]
-				}
+				"sequence": [
+					{
+						"add": {
+							"component_groups": [
+								"rift:tamed_standing"
+							]
+						},
+						"remove": {
+							"component_groups": [
+								"rift:wild_standing",
+								"rift:sitting",
+								"rift:sitting_angered",
+								"rift:wandering"
+							]
+						},
+						"run_command": {
+							"command": [
+								"tag @s remove sitting",
+								"tellraw @p {\"rawtext\":[{\"text\":\"Your Anomalocaris is currently following\"}]}"
+							]
+						}
+					},
+					{
+						"filters": {
+							"test": "has_component",
+							"subject": "self",
+							"value": "minecraft:is_baby"
+						},
+						"add": {
+							"component_groups": [
+								"rift:temptable"
+							]
+						}
+					}
+				]
 			},
 			"rift:on_sitting": {
 				"add": {
@@ -4053,7 +4072,8 @@
 						"rift:wild_standing",
 						"rift:tamed_standing",
 						"rift:sitting_angered",
-						"rift:wandering"
+						"rift:wandering",
+						"rift:temptable"
 					]
 				},
 				"run_command": {
@@ -4064,25 +4084,41 @@
 				}
 			},
 			"rift:on_wandering": {
-				"add": {
-					"component_groups": [
-						"rift:wandering"
-					]
-				},
-				"remove": {
-					"component_groups": [
-						"rift:wild_standing",
-						"rift:tamed_standing",
-						"rift:sitting",
-						"rift:sitting_angered"
-					]
-				},
-				"run_command": {
-					"command": [
-						"tag @s remove sitting",
-						"tellraw @p {\"rawtext\":[{\"text\":\"Your Anomalocaris is currently wandering\"}]}"
-					]
-				}
+				"sequence": [
+					{
+						"add": {
+							"component_groups": [
+								"rift:wandering"
+							]
+						},
+						"remove": {
+							"component_groups": [
+								"rift:wild_standing",
+								"rift:tamed_standing",
+								"rift:sitting",
+								"rift:sitting_angered"
+							]
+						},
+						"run_command": {
+							"command": [
+								"tag @s remove sitting",
+								"tellraw @p {\"rawtext\":[{\"text\":\"Your Anomalocaris is currently wandering\"}]}"
+							]
+						}
+					},
+					{
+						"filters": {
+							"test": "has_component",
+							"subject": "self",
+							"value": "minecraft:is_baby"
+						},
+						"add": {
+							"component_groups": [
+								"rift:temptable"
+							]
+						}
+					}
+				]
 			},
 			"rift:sitting_on_anger": {
 				"add": {
@@ -4322,7 +4358,8 @@
 								"rift:default_navigation",
                                 "rift:pushable",
 								"rift:wild_standing",
-                                "rift:variant_zero"
+                                "rift:variant_zero",
+								"rift:temptable"
                             ]
                         }
                     },
@@ -4335,7 +4372,8 @@
 								"rift:default_navigation",
                                 "rift:pushable",
 								"rift:wild_standing",
-                                "rift:variant_one"
+                                "rift:variant_one",
+								"rift:temptable"
                             ]
                         }
                     },
@@ -4348,7 +4386,8 @@
 								"rift:default_navigation",
                                 "rift:pushable",
 								"rift:wild_standing",
-                                "rift:variant_two"
+                                "rift:variant_two",
+								"rift:temptable"
                             ]
                         }
                     },
@@ -4361,7 +4400,8 @@
 								"rift:default_navigation",
                                 "rift:pushable",
 								"rift:wild_standing",
-                                "rift:variant_three"
+                                "rift:variant_three",
+								"rift:temptable"
                             ]
                         }
                     }

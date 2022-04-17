@@ -133,29 +133,6 @@
 					"start_scale": 0.3,
 					"end_scale": 1.75
 				},
-				"minecraft:behavior.tempt": {
-					"priority": 9,
-					"items": [
-						"minecraft:beef",
-						"minecraft:cooked_beef",
-						"minecraft:porkchop",
-						"minecraft:cooked_porkchop",
-						"minecraft:chicken",
-						"minecraft:cooked_chicken",
-						"minecraft:mutton",
-						"minecraft:cooked_mutton",
-						"minecraft:rabbit",
-						"minecraft:cooked_rabbit",
-						"rift:flesh_treat",
-						"rift:carrion_treat",
-						"rift:raw_exotic_meat",
-						"rift:cooked_exotic_meat",
-						"rift:raw_dodo_meat",
-						"rift:cooked_dodo_meat",
-						"rift:raw_hadrosaur_meat",
-						"rift:cooked_hadrosaur_meat"
-					]
-				},
 				"minecraft:attack": {
 					"damage": 8
 				},
@@ -873,6 +850,31 @@
 						}
 					],
 					"crouching_skip_interact": true
+				}
+			},
+			"rift:temptable": {
+				"minecraft:behavior.tempt": {
+					"priority": 9,
+					"items": [
+						"minecraft:beef",
+						"minecraft:cooked_beef",
+						"minecraft:porkchop",
+						"minecraft:cooked_porkchop",
+						"minecraft:chicken",
+						"minecraft:cooked_chicken",
+						"minecraft:mutton",
+						"minecraft:cooked_mutton",
+						"minecraft:rabbit",
+						"minecraft:cooked_rabbit",
+						"rift:flesh_treat",
+						"rift:carrion_treat",
+						"rift:raw_exotic_meat",
+						"rift:cooked_exotic_meat",
+						"rift:raw_dodo_meat",
+						"rift:cooked_dodo_meat",
+						"rift:raw_hadrosaur_meat",
+						"rift:cooked_hadrosaur_meat"
+					]
 				}
 			},
 			"rift:wild_standing": {
@@ -4714,7 +4716,8 @@
 						"remove": {
 							"component_groups": [
 								"rift:tyrannosaurus_baby",
-								"rift:tyrannosaurus_baby_wild"
+								"rift:tyrannosaurus_baby_wild",
+								"rift:temptable"
 							]
 						}
 					},
@@ -4887,25 +4890,41 @@
 				}
 			},
 			"rift:on_standing": {
-				"add": {
-					"component_groups": [
-						"rift:tamed_standing"
-					]
-				},
-				"remove": {
-					"component_groups": [
-						"rift:wild_standing",
-						"rift:sitting",
-						"rift:sitting_angered",
-						"rift:wandering"
-					]
-				},
-				"run_command": {
-					"command": [
-						"tag @s remove sitting",
-						"tellraw @p {\"rawtext\":[{\"text\":\"Your Tyrannosaurus is currently following\"}]}"
-					]
-				}
+				"sequence": [
+					{
+						"add": {
+							"component_groups": [
+								"rift:tamed_standing"
+							]
+						},
+						"remove": {
+							"component_groups": [
+								"rift:wild_standing",
+								"rift:sitting",
+								"rift:sitting_angered",
+								"rift:wandering"
+							]
+						},
+						"run_command": {
+							"command": [
+								"tag @s remove sitting",
+								"tellraw @p {\"rawtext\":[{\"text\":\"Your Tyrannosaurus is currently following\"}]}"
+							]
+						}
+					},
+					{
+						"filters": {
+							"test": "has_component",
+							"subject": "self",
+							"value": "minecraft:is_baby"
+						},
+						"add": {
+							"component_groups": [
+								"rift:temptable"
+							]
+						}
+					}
+				]
 			},
 			"rift:on_sitting": {
 				"add": {
@@ -4918,7 +4937,8 @@
 						"rift:wild_standing",
 						"rift:tamed_standing",
 						"rift:sitting_angered",
-						"rift:wandering"
+						"rift:wandering",
+						"rift:temptable"
 					]
 				},
 				"run_command": {
@@ -4929,25 +4949,41 @@
 				}
 			},
 			"rift:on_wandering": {
-				"add": {
-					"component_groups": [
-						"rift:wandering"
-					]
-				},
-				"remove": {
-					"component_groups": [
-						"rift:wild_standing",
-						"rift:tamed_standing",
-						"rift:sitting",
-						"rift:sitting_angered"
-					]
-				},
-				"run_command": {
-					"command": [
-						"tag @s remove sitting",
-						"tellraw @p {\"rawtext\":[{\"text\":\"Your Tyrannosaurus is currently wandering\"}]}"
-					]
-				}
+				"sequence": [
+					{
+						"add": {
+							"component_groups": [
+								"rift:wandering"
+							]
+						},
+						"remove": {
+							"component_groups": [
+								"rift:wild_standing",
+								"rift:tamed_standing",
+								"rift:sitting",
+								"rift:sitting_angered"
+							]
+						},
+						"run_command": {
+							"command": [
+								"tag @s remove sitting",
+								"tellraw @p {\"rawtext\":[{\"text\":\"Your Tyrannosaurus is currently wandering\"}]}"
+							]
+						}
+					},
+					{
+						"filters": {
+							"test": "has_component",
+							"subject": "self",
+							"value": "minecraft:is_baby"
+						},
+						"add": {
+							"component_groups": [
+								"rift:temptable"
+							]
+						}
+					}
+				]
 			},
 			"rift:sitting_on_anger": {
 				"add": {
@@ -5056,7 +5092,8 @@
 								"rift:wild_standing",
 								"rift:variant_zero",
 								"rift:pushable",
-								"rift:can_attack"
+								"rift:can_attack",
+								"rift:temptable"
 							]
 						}
 					},
@@ -5069,7 +5106,8 @@
 								"rift:wild_standing",
 								"rift:variant_one",
 								"rift:pushable",
-								"rift:can_attack"
+								"rift:can_attack",
+								"rift:temptable"
 							]
 						}
 					},
@@ -5082,7 +5120,8 @@
 								"rift:wild_standing",
 								"rift:variant_two",
 								"rift:pushable",
-								"rift:can_attack"
+								"rift:can_attack",
+								"rift:temptable"
 							]
 						}
 					},
@@ -5095,7 +5134,8 @@
 								"rift:wild_standing",
 								"rift:variant_three",
 								"rift:pushable",
-								"rift:can_attack"
+								"rift:can_attack",
+								"rift:temptable"
 							]
 						}
 					}
