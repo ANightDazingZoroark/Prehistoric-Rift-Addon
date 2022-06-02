@@ -43,3 +43,15 @@ world.events.entityHit.subscribe(( { entity, hitEntity } ) => {
         entity.runCommand(`scoreboard players add @s[scores={saurophLightBlst=!10}] saurophLightBlst 1`)
     }
 })
+
+world.events.entityHurt.subscribe(({ hurtEntity, damagingEntity }) => {
+    if (damagingEntity.id == 'rift:sarco_spin_attack_hitter') {
+        hurtEntity.runCommand(`effect @s slowness 30 2`)
+    }
+    if (damagingEntity.id == 'rift:anomalocaris_slash') {
+        damagingEntity.runCommand(`effect @e[type=rift:anomalocaris, c=1, tag=tamed] instant_health 5`)
+    }
+    if (damagingEntity.id == 'rift:saurophaganax_bite_prime' && saurophaganaxFood.includes(hurtEntity.id)) {
+        damagingEntity.runCommand(`scoreboard players add @e[type=rift:saurophaganax, c=1, tag=tamed, scores={saurophLightBlst=!10}] saurophLightBlst 1`)
+    }
+})
