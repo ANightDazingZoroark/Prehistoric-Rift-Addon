@@ -1,5 +1,4 @@
 import "scripts/DirewolfSniff.js";
-import "scripts/DamageManagement.js";
 import { world } from "mojang-minecraft";
 
 world.events.tick.subscribe((ev) => {

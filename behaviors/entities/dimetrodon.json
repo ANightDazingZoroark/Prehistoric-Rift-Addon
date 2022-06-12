@@ -26,6 +26,10 @@
 			"animations": {
 				"contTameTag": "controller.animation.add_tame_tag",
 				"contBabyTag": "controller.animation.add_baby_tag",
+				"contWildFlameBite": "controller.animation.dimetrodon_wild_flame_bite",
+				"contWildFrostBite": "controller.animation.dimetrodon_wild_frost_bite",
+				"contTamedFlameBite": "controller.animation.dimetrodon_tamed_flame_bite",
+				"contTamedFrostBite": "controller.animation.dimetrodon_tamed_frost_bite",
 				"contTameState": "controller.animation.manage_tame_state",
 				"contBehaviorState": "controller.animation.manage_tame_behavior"
 			},
@@ -176,6 +180,15 @@
 					"big_wave_speed": 10.0,
 					"drag_down_on_buoyancy_removed": 0,
 					"liquid_blocks": ["water"]
+				},
+				"minecraft:on_target_acquired": {
+					"filters": {
+						"test": "has_component",
+						"subject": "self",
+						"value": "minecraft:is_ignited"
+					},
+					"event": "rift:give_self_fire_weapon",
+					"target": "self"
 				}
             },
             "rift:dimetrodon_adult_wild": {
@@ -805,6 +818,10 @@
 			"rift:use_flame_weapon": {
 				"minecraft:equipment": {
 					"table": "loot_tables/entities/dimetrodon fire weapon.json"
+				},
+				"minecraft:on_target_escape": {
+					"event": "rift:remove_fire_weapon",
+					"target": "self"
 				}
 			},
 			"rift:dimetrodon_frost_mode_grace_period": {
@@ -4172,8 +4189,7 @@
 			"rift:flame_mode": {
 				"add": {
 					"component_groups": [
-						"rift:dimetrodon_flame_mode",
-						"rift:use_flame_weapon"
+						"rift:dimetrodon_flame_mode"
 					]
 				},
 				"remove": {
@@ -4202,8 +4218,7 @@
 				},
 				"remove": {
 					"component_groups": [
-						"rift:dimetrodon_flame_mode_grace_period",
-						"rift:use_flame_weapon"
+						"rift:dimetrodon_flame_mode_grace_period"
 					]
 				},
 				"run_command": {
@@ -4215,8 +4230,7 @@
 			"rift:forced_flame_mode": {
 				"add": {
 					"component_groups": [
-						"rift:dimetrodon_forced_flame_mode",
-						"rift:use_flame_weapon"
+						"rift:dimetrodon_forced_flame_mode"
 					]
 				},
 				"remove": {
@@ -4237,8 +4251,7 @@
 				},
 				"remove": {
 					"component_groups": [
-						"rift:dimetrodon_forced_flame_mode",
-						"rift:use_flame_weapon"
+						"rift:dimetrodon_forced_flame_mode"
 					]
 				},
 				"run_command": {
