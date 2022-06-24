@@ -1,7 +1,7 @@
 import "scripts/JournalEntries.js";
 import { world } from "mojang-minecraft";
 import { ActionFormData } from "mojang-minecraft-ui"
-import { guiTyrannosaurusEntry } from "./JournalEntries";
+import * as guiEntry from "./JournalEntries";
 
 let creatureList = [
     ['Anomalocaris', 'invertebrates'],
@@ -26,6 +26,7 @@ let creatureList = [
 export const guiMain = new ActionFormData()
 .title('Journal')
 .button('Search')
+.button('How To Fill up the Journal')
 .button('Dinosaurs')
 .button('Mammals')
 .button('Reptiles')
@@ -87,30 +88,96 @@ for (let i = 0; i < creatureList.length; i++) {
     }
 }
 
-world.events.beforeItemUse.subscribe(data => {
-    const source = data.source
-    if (data.item.id === 'rift:journal') guiMain.show(source).then(result => {
+function mainGui(source) {
+    guiMain.show(source).then(result => {
         if (result.selection === 1) {
-            guiDinosaurs.show(source).then(result => {
-                if (result.selection == 6) {
-                    guiTyrannosaurusEntry.show(source)
+            guiEntry.guiTutorialEntry.show(source).then(result => {
+                if (result.selection == 0) {
+                    mainGui(source)
                 }
             })
         }
         if (result.selection === 2) {
-            guiMammals.show(source)
+            guiDinosaurs.show(source).then(result => {
+                if (result.selection == 0) {
+                    guiEntry.guiApatosaurusEntry.show(source).then(result => {
+                        if (result.selection == 0) {
+                            mainGui(source)
+                        }
+                    })
+                }
+                if (result.selection == 1) {
+                    guiEntry.guiBaryonyxEntry.show(source).then(result => {
+                        if (result.selection == 0) {
+                            mainGui(source)
+                        }
+                    })
+                }
+                if (result.selection == 2) {
+                    guiEntry.guiParasaurolophusEntry.show(source).then(result => {
+                        if (result.selection == 0) {
+                            mainGui(source)
+                        }
+                    })
+                }
+                if (result.selection == 3) {
+                    guiEntry.guiSaurophaganaxEntry.show(source).then(result => {
+                        if (result.selection == 0) {
+                            mainGui(source)
+                        }
+                    })
+                }
+                if (result.selection == 4) {
+                    guiEntry.guiStegosaurusEntry.show(source).then(result => {
+                        if (result.selection == 0) {
+                            mainGui(source)
+                        }
+                    })
+                }
+                if (result.selection == 5) {
+                    guiEntry.guiTriceratopsEntry.show(source).then(result => {
+                        if (result.selection == 0) {
+                            mainGui(source)
+                        }
+                    })
+                }
+                if (result.selection == 6) {
+                    guiEntry.guiTyrannosaurusEntry.show(source).then(result => {
+                        if (result.selection == 0) {
+                            mainGui(source)
+                        }
+                    })
+                }
+                if (result.selection == 7) {
+                    guiEntry.guiUtahraptorEntry.show(source).then(result => {
+                        if (result.selection == 0) {
+                            mainGui(source)
+                        }
+                    })
+                }
+            })
         }
         if (result.selection === 3) {
-            guiReptiles.show(source)
+            guiMammals.show(source)
         }
         if (result.selection === 4) {
-            guiBirds.show(source)
+            guiReptiles.show(source)
         }
         if (result.selection === 5) {
-            guiFishes.show(source)
+            guiBirds.show(source)
         }
         if (result.selection === 6) {
+            guiFishes.show(source)
+        }
+        if (result.selection === 7) {
             guiInvertebrates.show(source)
         }
     })
+}
+
+world.events.beforeItemUse.subscribe(data => {
+    const source = data.source
+    if (data.item.id === 'rift:journal') {
+        mainGui(source)
+    }
 })
