@@ -36,7 +36,8 @@ export const guiMain = new ActionFormData()
 
 //for dinosaurs
 const guiDinosaurs = new ActionFormData()
-guiDinosaurs.title('Dinosaurs')
+.title('Dinosaurs')
+.button('Return to Index')
 for (let i = 0; i < creatureList.length; i++) {
     if (creatureList[i][1] == "dinosaurs") {
         guiDinosaurs.button(creatureList[i][0])
@@ -45,7 +46,8 @@ for (let i = 0; i < creatureList.length; i++) {
 
 //for mammals
 const guiMammals = new ActionFormData()
-guiMammals.title('Mammals')
+.title('Mammals')
+.button('Return to Index')
 for (let i = 0; i < creatureList.length; i++) {
     if (creatureList[i][1] == "mammals") {
         guiMammals.button(creatureList[i][0])
@@ -54,7 +56,8 @@ for (let i = 0; i < creatureList.length; i++) {
 
 //for reptiles
 const guiReptiles = new ActionFormData()
-guiReptiles.title('Reptiles')
+.title('Reptiles')
+.button('Return to Index')
 for (let i = 0; i < creatureList.length; i++) {
     if (creatureList[i][1] == "reptiles") {
         guiReptiles.button(creatureList[i][0])
@@ -63,7 +66,8 @@ for (let i = 0; i < creatureList.length; i++) {
 
 //for birds
 const guiBirds = new ActionFormData()
-guiBirds.title('Birds')
+.title('Birds')
+.button('Return to Index')
 for (let i = 0; i < creatureList.length; i++) {
     if (creatureList[i][1] == "birds") {
         guiBirds.button(creatureList[i][0])
@@ -72,7 +76,8 @@ for (let i = 0; i < creatureList.length; i++) {
 
 //for fish
 const guiFishes = new ActionFormData()
-guiFishes.title('Fishes')
+.title('Fishes')
+.button('Return to Index')
 for (let i = 0; i < creatureList.length; i++) {
     if (creatureList[i][1] == "fishes") {
         guiFishes.button(creatureList[i][0])
@@ -81,7 +86,8 @@ for (let i = 0; i < creatureList.length; i++) {
 
 //for invertebrates
 const guiInvertebrates = new ActionFormData()
-guiInvertebrates.title('Invertebrates')
+.title('Invertebrates')
+.button('Return to Index')
 for (let i = 0; i < creatureList.length; i++) {
     if (creatureList[i][1] == "invertebrates") {
         guiInvertebrates.button(creatureList[i][0])
@@ -98,67 +104,10 @@ function mainGui(source) {
             })
         }
         if (result.selection === 2) {
-            guiDinosaurs.show(source).then(result => {
-                if (result.selection == 0) {
-                    guiEntry.guiApatosaurusEntry.show(source).then(result => {
-                        if (result.selection == 0) {
-                            mainGui(source)
-                        }
-                    })
-                }
-                if (result.selection == 1) {
-                    guiEntry.guiBaryonyxEntry.show(source).then(result => {
-                        if (result.selection == 0) {
-                            mainGui(source)
-                        }
-                    })
-                }
-                if (result.selection == 2) {
-                    guiEntry.guiParasaurolophusEntry.show(source).then(result => {
-                        if (result.selection == 0) {
-                            mainGui(source)
-                        }
-                    })
-                }
-                if (result.selection == 3) {
-                    guiEntry.guiSaurophaganaxEntry.show(source).then(result => {
-                        if (result.selection == 0) {
-                            mainGui(source)
-                        }
-                    })
-                }
-                if (result.selection == 4) {
-                    guiEntry.guiStegosaurusEntry.show(source).then(result => {
-                        if (result.selection == 0) {
-                            mainGui(source)
-                        }
-                    })
-                }
-                if (result.selection == 5) {
-                    guiEntry.guiTriceratopsEntry.show(source).then(result => {
-                        if (result.selection == 0) {
-                            mainGui(source)
-                        }
-                    })
-                }
-                if (result.selection == 6) {
-                    guiEntry.guiTyrannosaurusEntry.show(source).then(result => {
-                        if (result.selection == 0) {
-                            mainGui(source)
-                        }
-                    })
-                }
-                if (result.selection == 7) {
-                    guiEntry.guiUtahraptorEntry.show(source).then(result => {
-                        if (result.selection == 0) {
-                            mainGui(source)
-                        }
-                    })
-                }
-            })
+            dinosaursGui(source)
         }
         if (result.selection === 3) {
-            guiMammals.show(source)
+            mammalsGui(source)
         }
         if (result.selection === 4) {
             guiReptiles.show(source)
@@ -171,6 +120,99 @@ function mainGui(source) {
         }
         if (result.selection === 7) {
             guiInvertebrates.show(source)
+        }
+    })
+}
+
+function dinosaursGui(source) {
+    guiDinosaurs.show(source).then(result => {
+        if (result.selection == 0) {
+            mainGui(source)
+        }
+        if (result.selection == 1) {
+            guiEntry.guiApatosaurusEntry.show(source).then(result => {
+                if (result.selection == 0) {
+                    mainGui(source)
+                }
+            })
+        }
+        if (result.selection == 2) {
+            guiEntry.guiBaryonyxEntry.show(source).then(result => {
+                if (result.selection == 0) {
+                    mainGui(source)
+                }
+            })
+        }
+        if (result.selection == 3) {
+            guiEntry.guiParasaurolophusEntry.show(source).then(result => {
+                if (result.selection == 0) {
+                    mainGui(source)
+                }
+            })
+        }
+        if (result.selection == 4) {
+            guiEntry.guiSaurophaganaxEntry.show(source).then(result => {
+                if (result.selection == 0) {
+                    mainGui(source)
+                }
+            })
+        }
+        if (result.selection == 5) {
+            guiEntry.guiStegosaurusEntry.show(source).then(result => {
+                if (result.selection == 0) {
+                    mainGui(source)
+                }
+            })
+        }
+        if (result.selection == 6) {
+            guiEntry.guiTriceratopsEntry.show(source).then(result => {
+                if (result.selection == 0) {
+                    mainGui(source)
+                }
+            })
+        }
+        if (result.selection == 7) {
+            guiEntry.guiTyrannosaurusEntry.show(source).then(result => {
+                if (result.selection == 0) {
+                    mainGui(source)
+                }
+            })
+        }
+        if (result.selection == 8) {
+            guiEntry.guiUtahraptorEntry.show(source).then(result => {
+                if (result.selection == 0) {
+                    mainGui(source)
+                }
+            })
+        }
+    })
+}
+
+function mammalsGui(source) {
+    guiMammals.show(source).then(result => {
+        if (result.selection == 0) {
+            mainGui(source)
+        }
+        if (result.selection == 1) {
+            guiEntry.guiDimetrodonEntry.show(source).then(result => {
+                if (result.selection == 0) {
+                    mainGui(source)
+                }
+            })
+        }
+        if (result.selection == 2) {
+            guiEntry.guiDirewolfEntry.show(source).then(result => {
+                if (result.selection == 0) {
+                    mainGui(source)
+                }
+            })
+        }
+        if (result.selection == 3) {
+            guiEntry.guiMegalocerosEntry.show(source).then(result => {
+                if (result.selection == 0) {
+                    mainGui(source)
+                }
+            })
         }
     })
 }
