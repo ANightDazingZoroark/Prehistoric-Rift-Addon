@@ -1,6 +1,5 @@
-import "scripts/JournalEntries.js";
 import { world } from "mojang-minecraft";
-import { ActionFormData } from "mojang-minecraft-ui"
+import { ActionFormData, ModalFormData } from "mojang-minecraft-ui"
 import * as guiEntry from "./JournalEntries";
 
 let creatureList = [
@@ -96,6 +95,9 @@ for (let i = 0; i < creatureList.length; i++) {
 
 function mainGui(source) {
     guiMain.show(source).then(result => {
+        if (result.selection === 0) {
+            searchGui(source)
+        }
         if (result.selection === 1) {
             guiEntry.guiTutorialEntry.show(source).then(result => {
                 if (result.selection == 0) {
@@ -110,16 +112,48 @@ function mainGui(source) {
             mammalsGui(source)
         }
         if (result.selection === 4) {
-            guiReptiles.show(source)
+            reptilesGui(source)
         }
         if (result.selection === 5) {
-            guiBirds.show(source)
+            birdsGui(source)
         }
         if (result.selection === 6) {
-            guiFishes.show(source)
+            fishesGui(source)
         }
         if (result.selection === 7) {
-            guiInvertebrates.show(source)
+            invertebratesGui(source)
+        }
+    })
+}
+
+function searchGui(source) {
+    const guiSearch = new ModalFormData()
+    .title('Search')
+    .textField("Search Entry", "(e.x., Tyrannosaurus)")
+    .show(source).then(result => {
+        searchResultsGui(source, creatureList.map(element => element[0].toLowerCase()).filter((element) => element.includes(result.formValues[0].toLowerCase())))
+    })
+}
+
+function searchResultsGui(source, searchResults) {
+    searchResults = searchResults.map(element => element.charAt(0).toUpperCase() + element.substring(1))
+
+    const guiSearchResults = new ActionFormData()
+    .title('Search Results')
+    .button('Return to Search')
+    .button('Return to Index')
+    for (let i = 0; i < searchResults.length; i++) {
+        guiSearchResults.button(searchResults[i])
+    }
+    guiSearchResults.show(source).then(result => {
+        if (result.selection === 0) {
+            searchGui(source)
+        }
+        if (result.selection === 1) {
+            mainGui(source)
+        }
+        if (result.selection >= 2) {
+            eval("guiEntry.gui"+searchResults[result.selection-2]+"Entry.show(source).then(result => {if (result.selection == 0) {mainGui(source)}})");
         }
     })
 }
@@ -209,6 +243,73 @@ function mammalsGui(source) {
         }
         if (result.selection == 3) {
             guiEntry.guiMegalocerosEntry.show(source).then(result => {
+                if (result.selection == 0) {
+                    mainGui(source)
+                }
+            })
+        }
+    })
+}
+
+function reptilesGui(source) {
+    guiReptiles.show(source).then(result => {
+        if (result.selection == 0) {
+            mainGui(source)
+        }
+        if (result.selection == 1) {
+            guiEntry.guiSarcosuchusEntry.show(source).then(result => {
+                if (result.selection == 0) {
+                    mainGui(source)
+                }
+            })
+        }
+    })
+}
+
+function birdsGui(source) {
+    guiBirds.show(source).then(result => {
+        if (result.selection == 0) {
+            mainGui(source)
+        }
+        if (result.selection == 1) {
+            guiEntry.guiDodoEntry.show(source).then(result => {
+                if (result.selection == 0) {
+                    mainGui(source)
+                }
+            })
+        }
+    })
+}
+
+function fishesGui(source) {
+    guiFishes.show(source).then(result => {
+        if (result.selection == 0) {
+            mainGui(source)
+        }
+        if (result.selection == 1) {
+            guiEntry.guiCoelacanthEntry.show(source).then(result => {
+                if (result.selection == 0) {
+                    mainGui(source)
+                }
+            })
+        }
+        if (result.selection == 2) {
+            guiEntry.guiMegapiranhaEntry.show(source).then(result => {
+                if (result.selection == 0) {
+                    mainGui(source)
+                }
+            })
+        }
+    })
+}
+
+function invertebratesGui(source) {
+    guiInvertebrates.show(source).then(result => {
+        if (result.selection == 0) {
+            mainGui(source)
+        }
+        if (result.selection == 1) {
+            guiEntry.guiAnomalocarisEntry.show(source).then(result => {
                 if (result.selection == 0) {
                     mainGui(source)
                 }

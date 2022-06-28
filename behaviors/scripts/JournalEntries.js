@@ -1,9 +1,14 @@
-import "scripts/JournalManagement.js";
 import { ActionFormData } from "mojang-minecraft-ui"
 
 export const guiTutorialEntry = new ActionFormData()
 .title('How to Use')
-.body("To fill up the journal, you need to insert this journal in a journal enscriber, then you need to place a tribute item to add the entry of that creature to this journal.\n\nNote that each reader can access different entries depending on what they unlocked through this method.")
+//.body("To fill up the journal, you need to insert this journal in a journal enscriber, then you need to place a tribute item to add the entry of that creature to this journal.\n\nNote that each player will access different entries depending on what they unlocked through this method.")
+.body("Since this is just a demo showing off the new GameTest related stuff you can read all the entries. Once the full update releases expect that the entries will be locked until you do certain things.")
+.button('Return to Index')
+
+export const guiAnomalocarisEntry = new ActionFormData()
+.title('Anomalocaris')
+.body("\n\n\n\n\n\n\n\n\n\n\nDiet: Carnivore\nBehavior: Hostile\nTaming Tier: Tier 2\nFavorite Treats: Fish Treat, Bug Treat\n\nIt's hard swimming through coral reefs nowadays. Not because the corals are annoying to swim through, but because you aren't sure if an Anomalocaris will come over to attack. You can't even see them normally, you have to attack them first to expose them.\n\nAnything around the size of a human or smaller gets the short end of the stick if face to face with these because they prefer to grab them and drag them around as they drain their health. Even the larger creatures can get their health sapped by these.\n\nTrying to spot one is a nightmare. I've had to squint my eyes real hard on multiple occasions just to figure out their location through the invisibility particles they produce. I don't even want to think of an alternate universe where they don't do that.")
 .button('Return to Index')
 
 export const guiApatosaurusEntry = new ActionFormData()
@@ -16,6 +21,11 @@ export const guiBaryonyxEntry = new ActionFormData()
 .body("\n\n\n\n\n\n\n\n\n\nDiet: Carnivore\nBehavior: Neutral\nTaming Tier: Tier 2\nFavorite Treats: Fish Treat, Flesh Treat\n\nBaryonyxes prefer being around rivers. They prefer eating fish, but eat some of the land creatures from time to time.\n\nTheir claws can inject poison into their targets, but their skin is poisonous too. Might not seem much at first, but the water lets that poison spread. They're why I don't swim a lot.\n\nThey have a great affinity for fishing, and every once in a while they might end up catching something rare from the water.")
 .button('Return to Index')
 
+export const guiCoelacanthEntry = new ActionFormData()
+.title('Coelacanth')
+.body("\n\n\n\n\n\n\n\n\n\n\n\nDiet: n/a\nBehavior: Passive\nTaming Tier: Untameable\nFavorite Treats: n/a\n\nCoelacanths aren't any special. They just swim about just like nearly any other fish, doomed to be eaten someday by something else in the water. Or fished up.\n\nThe meat isn't safe for consumption for most creatures. It can however be converted into oil for various purposes.")
+.button('Return to Index')
+
 export const guiDimetrodonEntry = new ActionFormData()
 .title('Dimetrodon')
 .body("\n\n\n\n\n\n\n\n\n\n\n\nDiet: Carnivore\nBehavior: Neutral\nTaming Tier: Tier 2\nFavorite Treats: Fish Treat, Flesh Treat\n\nI forgot how many times I have confused these things for Spinosauruses, yet here we are.\n\nThe sail inverts its internal and external temperature which also applies to its surroundings. The inverted temperature even gets redirected to the fangs, allowing it to slow down and weaken targets with a frost bite in hot temperatures and set targets aflame with overheating fangs in cold temperatures.\n\nBest used for egg incubation. Way better than having to manually bring eggs to random far off places.")
@@ -26,14 +36,29 @@ export const guiDirewolfEntry = new ActionFormData()
 .body("\n\n\n\n\n\n\n\n\n\n\n\n\nDiet: Carnivore\nBehavior: Neutral\nTaming Tier: Tier 2\nFavorite Treats: Flesh Treat\n\nFar more vicious than the regular wolf. Packs are far deadlier because one of the members will boost the damage and speed of all the others.\n\nTheir keen sense of smell lets them identify what mobs might be nearby. There's no way to mask your scent, as far as my knowledge is concerned.\n\nThe best part about them as a mount is that there's no need for a saddle! If you're out in the snowy areas all by yourself you can just kill a couple creatures and tame a Direwolf to help out! Too bad they can't carry chests.\n\nI've seen certain Direwolves transform into giant monstrous forms at night. In such a state, they are more powerful and have access to more powerful abilities, such as their destructive blows and ability to break blocks. You can tell if they can do so by seeing if they emit particles by day.")
 .button('Return to Index')
 
+export const guiDodoEntry = new ActionFormData()
+.title('Dodo')
+.body("\n\n\n\n\n\n\n\n\n\n\nDiet: Herbivore\nBehavior: Passive\nTaming Tier: Untameable\nFavorite Treats: Berry Treat\n\nAre doomed to wander the world until they get eaten by something. They don't even run from attackers or panic upon getting hurt. The closest demonstration of self-preservation I have even seen from them is when they flap when falling.\n\nTheir meat, when cooked, provides absorption to those which consume it. Perfect for those wanting extra nutrition.")
+.button('Return to Index')
+
 export const guiMegalocerosEntry = new ActionFormData()
 .title('Megaloceros')
 .body("\n\n\n\n\n\n\n\n\n\n\n\nDiet: Herbivore\nBehavior: Neutral\nTaming Tier: Tier 1\nFavorite Treats: Leafy Treat, Grassy Treat, Berry Treat\n\nNot that imposing the more you look at them. Each individual's behavior depends, they're either skittish or they will retaliate if attacked.\n\nSometimes they will fight amongst each other. I don't know why they do this, its detrimental in the long run when you think about it.\n\nThe antlers let them forage apples and saplings from trees and rip off thatch from the bark.")
 .button('Return to Index')
 
+export const guiMegapiranhaEntry = new ActionFormData()
+.title('Megapiranha')
+.body("\n\n\n\n\n\n\n\n\n\n\nDiet: Carnivore\nBehavior: Hostile\nTaming Tier: Untameable\nFavorite Treats: n/a\n\nProbably the first fish I've seen that is straight up hostile. They attack nearly everything, except for the other aquatic predators.\n\nThough they are pretty weak, they can be found in almost every body of water, from small innocuous ponds, aquifers underground, or riverbanks.\n\nTheir meat, when cooked, grants those who eat it regeneration. Really unfitting given their fragile build.")
+.button('Return to Index')
+
 export const guiParasaurolophusEntry = new ActionFormData()
 .title('Parasaurolophus')
 .body("\n\n\n\n\n\n\n\n\n\n\nDiet: Herbivore\nBehavior: Passive\nTaming Tier: Tier 1\nFavorite Treats: Rooted Treat, Grassy Treat, Berry Treat\n\nIf you see one, expect to see others in the area. They look out for each other, and protect each other from predators by using their horns to alert others about danger. Once there's danger, they'll run away.\n\nWhen in direct danger they might emit a shockwave that can paralyze mobs for a short time before fleeing.\n\nThey really like eating the truffles that have been appearing more frequently and can dig them up from grass. Though it seems they like uprooting rooted crops too")
+.button('Return to Index')
+
+export const guiSarcosuchusEntry = new ActionFormData()
+.title('Sarcosuchus')
+.body("\n\n\n\n\n\n\n\n\nDiet: Carnivore\nBehavior: Hostile\nTaming Tier: Tier 2\nFavorite Treats: Fish Treat\n\nYet another reason to not swim. At least Megapiranhas are scared of them. I should be thankful that boats are really easy to make and use, and that boats are inedible.\n\nThey're deadlier in water. They move faster when swimming than while walking, and their spin attacks do more damage.\n\nSpeaking of their spin attacks, anything hit by it gets slowed down.")
 .button('Return to Index')
 
 export const guiSaurophaganaxEntry = new ActionFormData()
