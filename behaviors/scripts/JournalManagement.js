@@ -3,6 +3,7 @@ import { ActionFormData, ModalFormData } from "mojang-minecraft-ui"
 import * as guiEntry from "./JournalEntries";
 
 let creatureList = [
+    ['Animals', 'others'],
     ['Anomalocaris', 'invertebrates'],
     ['Apatosaurus', 'dinosaurs'],
     ['Baryonyx', 'dinosaurs'],
@@ -10,6 +11,7 @@ let creatureList = [
     ['Dimetrodon', 'mammals'],
     ['Direwolf', 'mammals'],
     ['Dodo', 'birds'],
+    ['Humans', 'others'],
     ['Megaloceros', 'mammals'],
     ['Megapiranha', 'fishes'],
     ['Parasaurolophus', 'dinosaurs'],
@@ -32,6 +34,7 @@ export const guiMain = new ActionFormData()
 .button('Birds')
 .button('Fish')
 .button('Inverterates')
+.button('Others')
 
 //for dinosaurs
 const guiDinosaurs = new ActionFormData()
@@ -93,35 +96,50 @@ for (let i = 0; i < creatureList.length; i++) {
     }
 }
 
+//for others
+const guiOthers = new ActionFormData()
+.title('Others')
+.button('Return to Index')
+for (let i = 0; i < creatureList.length; i++) {
+    if (creatureList[i][1] == "others") {
+        guiOthers.button(creatureList[i][0])
+    }
+}
+
 function mainGui(source) {
     guiMain.show(source).then(result => {
-        if (result.selection === 0) {
-            searchGui(source)
-        }
-        if (result.selection === 1) {
-            guiEntry.guiTutorialEntry.show(source).then(result => {
-                if (result.selection == 0) {
-                    mainGui(source)
-                }
-            })
-        }
-        if (result.selection === 2) {
-            dinosaursGui(source)
-        }
-        if (result.selection === 3) {
-            mammalsGui(source)
-        }
-        if (result.selection === 4) {
-            reptilesGui(source)
-        }
-        if (result.selection === 5) {
-            birdsGui(source)
-        }
-        if (result.selection === 6) {
-            fishesGui(source)
-        }
-        if (result.selection === 7) {
-            invertebratesGui(source)
+        switch (result.selection) {
+            case 0:
+                searchGui(source)
+                break
+            case 1:
+                guiEntry.guiTutorialEntry.show(source).then(result => {
+                    if (result.selection == 0) {
+                        mainGui(source)
+                    }
+                })
+                break
+            case 2:
+                dinosaursGui(source)
+                break
+            case 3:
+                mammalsGui(source)
+                break
+            case 4:
+                reptilesGui(source)
+                break
+            case 5:
+                birdsGui(source)
+                break
+            case 6:
+                fishesGui(source)
+                break
+            case 7:
+                invertebratesGui(source)
+                break
+            case 8:
+                othersGui(source)
+                break
         }
     })
 }
@@ -153,167 +171,126 @@ function searchResultsGui(source, searchResults) {
             mainGui(source)
         }
         if (result.selection >= 2) {
-            eval("guiEntry.gui"+searchResults[result.selection-2]+"Entry.show(source).then(result => {if (result.selection == 0) {mainGui(source)}})");
+            eval("guiEntry.gui"+searchResults[result.selection-2]+"Entry.show(source).then(result => {if (result.selection == 0) {mainGui(source)}})")
         }
     })
 }
 
 function dinosaursGui(source) {
+    let validList = [];
+    for (let creature in creatureList) {
+        if (creatureList[creature][1] === "dinosaurs") {
+            validList.push(creatureList[creature][0])
+        };
+    };
     guiDinosaurs.show(source).then(result => {
         if (result.selection == 0) {
             mainGui(source)
         }
-        if (result.selection == 1) {
-            guiEntry.guiApatosaurusEntry.show(source).then(result => {
-                if (result.selection == 0) {
-                    mainGui(source)
-                }
-            })
-        }
-        if (result.selection == 2) {
-            guiEntry.guiBaryonyxEntry.show(source).then(result => {
-                if (result.selection == 0) {
-                    mainGui(source)
-                }
-            })
-        }
-        if (result.selection == 3) {
-            guiEntry.guiParasaurolophusEntry.show(source).then(result => {
-                if (result.selection == 0) {
-                    mainGui(source)
-                }
-            })
-        }
-        if (result.selection == 4) {
-            guiEntry.guiSaurophaganaxEntry.show(source).then(result => {
-                if (result.selection == 0) {
-                    mainGui(source)
-                }
-            })
-        }
-        if (result.selection == 5) {
-            guiEntry.guiStegosaurusEntry.show(source).then(result => {
-                if (result.selection == 0) {
-                    mainGui(source)
-                }
-            })
-        }
-        if (result.selection == 6) {
-            guiEntry.guiTriceratopsEntry.show(source).then(result => {
-                if (result.selection == 0) {
-                    mainGui(source)
-                }
-            })
-        }
-        if (result.selection == 7) {
-            guiEntry.guiTyrannosaurusEntry.show(source).then(result => {
-                if (result.selection == 0) {
-                    mainGui(source)
-                }
-            })
-        }
-        if (result.selection == 8) {
-            guiEntry.guiUtahraptorEntry.show(source).then(result => {
-                if (result.selection == 0) {
-                    mainGui(source)
-                }
-            })
+        if (result.selection > 0) {
+            eval("guiEntry.gui"+validList[result.selection-1]+"Entry.show(source).then(result => {if (result.selection == 0) {mainGui(source)}})")
         }
     })
 }
 
 function mammalsGui(source) {
+    let validList = [];
+    for (let creature in creatureList) {
+        if (creatureList[creature][1] === "mammals") {
+            validList.push(creatureList[creature][0])
+        };
+    };
     guiMammals.show(source).then(result => {
         if (result.selection == 0) {
             mainGui(source)
         }
-        if (result.selection == 1) {
-            guiEntry.guiDimetrodonEntry.show(source).then(result => {
-                if (result.selection == 0) {
-                    mainGui(source)
-                }
-            })
-        }
-        if (result.selection == 2) {
-            guiEntry.guiDirewolfEntry.show(source).then(result => {
-                if (result.selection == 0) {
-                    mainGui(source)
-                }
-            })
-        }
-        if (result.selection == 3) {
-            guiEntry.guiMegalocerosEntry.show(source).then(result => {
-                if (result.selection == 0) {
-                    mainGui(source)
-                }
-            })
+        if (result.selection > 0) {
+            eval("guiEntry.gui"+validList[result.selection-1]+"Entry.show(source).then(result => {if (result.selection == 0) {mainGui(source)}})")
         }
     })
 }
 
 function reptilesGui(source) {
+    let validList = [];
+    for (let creature in creatureList) {
+        if (creatureList[creature][1] === "reptiles") {
+            validList.push(creatureList[creature][0])
+        };
+    };
     guiReptiles.show(source).then(result => {
         if (result.selection == 0) {
             mainGui(source)
         }
-        if (result.selection == 1) {
-            guiEntry.guiSarcosuchusEntry.show(source).then(result => {
-                if (result.selection == 0) {
-                    mainGui(source)
-                }
-            })
+        if (result.selection > 0) {
+            eval("guiEntry.gui"+validList[result.selection-1]+"Entry.show(source).then(result => {if (result.selection == 0) {mainGui(source)}})")
         }
     })
 }
 
 function birdsGui(source) {
+    let validList = [];
+    for (let creature in creatureList) {
+        if (creatureList[creature][1] === "birds") {
+            validList.push(creatureList[creature][0])
+        };
+    };
     guiBirds.show(source).then(result => {
         if (result.selection == 0) {
             mainGui(source)
         }
-        if (result.selection == 1) {
-            guiEntry.guiDodoEntry.show(source).then(result => {
-                if (result.selection == 0) {
-                    mainGui(source)
-                }
-            })
+        if (result.selection > 0) {
+            eval("guiEntry.gui"+validList[result.selection-1]+"Entry.show(source).then(result => {if (result.selection == 0) {mainGui(source)}})")
         }
     })
 }
 
 function fishesGui(source) {
+    let validList = [];
+    for (let creature in creatureList) {
+        if (creatureList[creature][1] === "fishes") {
+            validList.push(creatureList[creature][0])
+        };
+    };
     guiFishes.show(source).then(result => {
         if (result.selection == 0) {
             mainGui(source)
         }
-        if (result.selection == 1) {
-            guiEntry.guiCoelacanthEntry.show(source).then(result => {
-                if (result.selection == 0) {
-                    mainGui(source)
-                }
-            })
-        }
-        if (result.selection == 2) {
-            guiEntry.guiMegapiranhaEntry.show(source).then(result => {
-                if (result.selection == 0) {
-                    mainGui(source)
-                }
-            })
+        if (result.selection > 0) {
+            eval("guiEntry.gui"+validList[result.selection-1]+"Entry.show(source).then(result => {if (result.selection == 0) {mainGui(source)}})")
         }
     })
 }
 
 function invertebratesGui(source) {
+    let validList = [];
+    for (let creature in creatureList) {
+        if (creatureList[creature][1] === "invertebrates") {
+            validList.push(creatureList[creature][0])
+        };
+    };
     guiInvertebrates.show(source).then(result => {
         if (result.selection == 0) {
             mainGui(source)
         }
-        if (result.selection == 1) {
-            guiEntry.guiAnomalocarisEntry.show(source).then(result => {
-                if (result.selection == 0) {
-                    mainGui(source)
-                }
-            })
+        if (result.selection > 0) {
+            eval("guiEntry.gui"+validList[result.selection-1]+"Entry.show(source).then(result => {if (result.selection == 0) {mainGui(source)}})")
+        }
+    })
+}
+
+function othersGui(source) {
+    let validList = [];
+    for (let creature in creatureList) {
+        if (creatureList[creature][1] === "others") {
+            validList.push(creatureList[creature][0])
+        };
+    };
+    guiOthers.show(source).then(result => {
+        if (result.selection == 0) {
+            mainGui(source)
+        }
+        if (result.selection > 0) {
+            eval("guiEntry.gui"+validList[result.selection-1]+"Entry.show(source).then(result => {if (result.selection == 0) {mainGui(source)}})")
         }
     })
 }

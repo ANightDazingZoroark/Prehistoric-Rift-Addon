@@ -6,6 +6,11 @@ export const guiTutorialEntry = new ActionFormData()
 .body("Since this is just a demo showing off the new GameTest related stuff you can read all the entries. Once the full update releases expect that the entries will be locked until you do certain things.")
 .button('Return to Index')
 
+export const guiAnimalsEntry = new ActionFormData()
+.title('Animals')
+.body("I miss when it was just pigs and sheep and cows and other peaceful stuff. Now there's like giant mobs roaming around the place. All the poor things can even do is run away.\n\nThere still seems to be some hope. Polar Bears don’t seem to be frightened of the creatures of the Rift, but that doesn't mean anything when a giant carnivore can kill you in one hit. And most of the animals that give out food can at least be bred in captivity.\n\nMy research has shown that some of the creatures of the Rift drop meat that is far more nutritious than those of the regular animals. There's definitely no hope for the poor regular animals at all in the near future. Which is quite sad.")
+.button('Return to Index')
+
 export const guiAnomalocarisEntry = new ActionFormData()
 .title('Anomalocaris')
 .body("\n\n\n\n\n\n\n\n\n\n\nDiet: Carnivore\nBehavior: Hostile\nTaming Tier: Tier 2\nFavorite Treats: Fish Treat, Bug Treat\n\nIt's hard swimming through coral reefs nowadays. Not because the corals are annoying to swim through, but because you aren't sure if an Anomalocaris will come over to attack. You can't even see them normally, you have to attack them first to expose them.\n\nAnything around the size of a human or smaller gets the short end of the stick if face to face with these because they prefer to grab them and drag them around as they drain their health. Even the larger creatures can get their health sapped by these.\n\nTrying to spot one is a nightmare. I've had to squint my eyes real hard on multiple occasions just to figure out their location through the invisibility particles they produce. I don't even want to think of an alternate universe where they don't do that.")
@@ -39,6 +44,11 @@ export const guiDirewolfEntry = new ActionFormData()
 export const guiDodoEntry = new ActionFormData()
 .title('Dodo')
 .body("\n\n\n\n\n\n\n\n\n\n\nDiet: Herbivore\nBehavior: Passive\nTaming Tier: Untameable\nFavorite Treats: Berry Treat\n\nAre doomed to wander the world until they get eaten by something. They don't even run from attackers or panic upon getting hurt. The closest demonstration of self-preservation I have even seen from them is when they flap when falling.\n\nTheir meat, when cooked, provides absorption to those which consume it. Perfect for those wanting extra nutrition.")
+.button('Return to Index')
+
+export const guiHumansEntry = new ActionFormData()
+.title('Humans')
+.body("I figured that writing weird stuff about us would be a good way to fill in some space in this book. It may be incredibly weird seeing that anyone who picks up a book knows that a human has wrote it, but I have a lot of spare time at the moment.\n\nWe humans are pretty much one of the few living things here that have a really big impact on this word. All the animals can do is make weird noises and eat grass while all the zombies can do is make more zombies by trying to kill us, but we can mine stuff and terraform land and even build stuff.\n\nProbably the biggest trait of us humans is the fact that we all want to do something that probably makes sense only to us. I want to study everything from the Rift, the Illagers want world domination, yeah those kinds of stuff.")
 .button('Return to Index')
 
 export const guiMegalocerosEntry = new ActionFormData()
