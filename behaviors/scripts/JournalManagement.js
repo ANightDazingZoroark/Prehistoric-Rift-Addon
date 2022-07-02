@@ -1,27 +1,41 @@
-import { world } from "mojang-minecraft";
+import { world } from "mojang-minecraft"
 import { ActionFormData, ModalFormData } from "mojang-minecraft-ui"
-import * as guiEntry from "./JournalEntries";
+import * as guiEntry from "./JournalEntries"
 
-let creatureList = [
-    ['Animals', 'others'],
-    ['Anomalocaris', 'invertebrates'],
-    ['Apatosaurus', 'dinosaurs'],
-    ['Baryonyx', 'dinosaurs'],
-    ['Coelacanth', 'fishes'],
-    ['Dimetrodon', 'mammals'],
-    ['Direwolf', 'mammals'],
-    ['Dodo', 'birds'],
-    ['Humans', 'others'],
-    ['Megaloceros', 'mammals'],
-    ['Megapiranha', 'fishes'],
-    ['Parasaurolophus', 'dinosaurs'],
-    ['Sarcosuchus', 'reptiles'],
-    ['Saurophaganax', 'dinosaurs'],
-    ['Stegosaurus', 'dinosaurs'],
-    ['Triceratops', 'dinosaurs'],
-    ['Tyrannosaurus', 'dinosaurs'],
-    ['Utahraptor', 'dinosaurs']
-]
+let creatureList = {
+    dinosaurs: [
+        'Apatosaurus',
+        'Baryonyx',
+        'Parasaurolophus',
+        'Saurophaganax',
+        'Stegosaurus',
+        'Triceratops',
+        'Tyrannosaurus',
+        'Utahraptor'
+    ],
+    mammals: [
+        'Dimetrodon',
+        'Direwolf',
+        'Megaloceros'
+    ],
+    reptiles: [
+        'Sarcosuchus'
+    ],
+    birds: [
+        'Dodo'
+    ],
+    fishes: [
+        'Coelacanth',
+        'Megapiranha'
+    ],
+    invertebrates: [
+        'Anomalocaris'
+    ],
+    others: [
+        'Animals',
+        'Humans'
+    ]
+}
 
 //for main
 export const guiMain = new ActionFormData()
@@ -40,70 +54,56 @@ export const guiMain = new ActionFormData()
 const guiDinosaurs = new ActionFormData()
 .title('Dinosaurs')
 .button('Return to Index')
-for (let i = 0; i < creatureList.length; i++) {
-    if (creatureList[i][1] == "dinosaurs") {
-        guiDinosaurs.button(creatureList[i][0])
-    }
+for (let i = 0; i < creatureList.dinosaurs.length; i++) {
+    guiDinosaurs.button(creatureList.dinosaurs[i])
 }
 
 //for mammals
 const guiMammals = new ActionFormData()
 .title('Mammals')
 .button('Return to Index')
-for (let i = 0; i < creatureList.length; i++) {
-    if (creatureList[i][1] == "mammals") {
-        guiMammals.button(creatureList[i][0])
-    }
+for (let i = 0; i < creatureList.mammals.length; i++) {
+    guiMammals.button(creatureList.mammals[i])
 }
 
 //for reptiles
 const guiReptiles = new ActionFormData()
 .title('Reptiles')
 .button('Return to Index')
-for (let i = 0; i < creatureList.length; i++) {
-    if (creatureList[i][1] == "reptiles") {
-        guiReptiles.button(creatureList[i][0])
-    }
+for (let i = 0; i < creatureList.reptiles.length; i++) {
+    guiReptiles.button(creatureList.reptiles[i])
 }
 
 //for birds
 const guiBirds = new ActionFormData()
 .title('Birds')
 .button('Return to Index')
-for (let i = 0; i < creatureList.length; i++) {
-    if (creatureList[i][1] == "birds") {
-        guiBirds.button(creatureList[i][0])
-    }
+for (let i = 0; i < creatureList.birds.length; i++) {
+    guiBirds.button(creatureList.birds[i])
 }
 
 //for fish
 const guiFishes = new ActionFormData()
 .title('Fishes')
 .button('Return to Index')
-for (let i = 0; i < creatureList.length; i++) {
-    if (creatureList[i][1] == "fishes") {
-        guiFishes.button(creatureList[i][0])
-    }
+for (let i = 0; i < creatureList.fishes.length; i++) {
+    guiFishes.button(creatureList.fishes[i])
 }
 
 //for invertebrates
 const guiInvertebrates = new ActionFormData()
 .title('Invertebrates')
 .button('Return to Index')
-for (let i = 0; i < creatureList.length; i++) {
-    if (creatureList[i][1] == "invertebrates") {
-        guiInvertebrates.button(creatureList[i][0])
-    }
+for (let i = 0; i < creatureList.invertebrates.length; i++) {
+    guiInvertebrates.button(creatureList.invertebrates[i])
 }
 
 //for others
 const guiOthers = new ActionFormData()
 .title('Others')
 .button('Return to Index')
-for (let i = 0; i < creatureList.length; i++) {
-    if (creatureList[i][1] == "others") {
-        guiOthers.button(creatureList[i][0])
-    }
+for (let i = 0; i < creatureList.others.length; i++) {
+    guiOthers.button(creatureList.others[i])
 }
 
 function mainGui(source) {
@@ -145,11 +145,13 @@ function mainGui(source) {
 }
 
 function searchGui(source) {
+    let searchList = Object.values(creatureList)
+    searchList = [].concat(...searchList).sort()
     const guiSearch = new ModalFormData()
     .title('Search')
     .textField("Search Entry", "(e.x., Tyrannosaurus)")
     .show(source).then(result => {
-        searchResultsGui(source, creatureList.map(element => element[0].toLowerCase()).filter((element) => element.includes(result.formValues[0].toLowerCase())))
+        searchResultsGui(source, searchList.map(element => { return element.toLowerCase() }).filter((element) => element.includes(result.formValues[0].toLowerCase())))
     })
 }
 
@@ -177,120 +179,78 @@ function searchResultsGui(source, searchResults) {
 }
 
 function dinosaursGui(source) {
-    let validList = [];
-    for (let creature in creatureList) {
-        if (creatureList[creature][1] === "dinosaurs") {
-            validList.push(creatureList[creature][0])
-        };
-    };
     guiDinosaurs.show(source).then(result => {
         if (result.selection == 0) {
             mainGui(source)
         }
         if (result.selection > 0) {
-            eval("guiEntry.gui"+validList[result.selection-1]+"Entry.show(source).then(result => {if (result.selection == 0) {mainGui(source)}})")
+            eval("guiEntry.gui"+creatureList.dinosaurs[result.selection-1]+"Entry.show(source).then(result => {if (result.selection == 0) {mainGui(source)}})")
         }
     })
 }
 
 function mammalsGui(source) {
-    let validList = [];
-    for (let creature in creatureList) {
-        if (creatureList[creature][1] === "mammals") {
-            validList.push(creatureList[creature][0])
-        };
-    };
     guiMammals.show(source).then(result => {
         if (result.selection == 0) {
             mainGui(source)
         }
         if (result.selection > 0) {
-            eval("guiEntry.gui"+validList[result.selection-1]+"Entry.show(source).then(result => {if (result.selection == 0) {mainGui(source)}})")
+            eval("guiEntry.gui"+creatureList.mammals[result.selection-1]+"Entry.show(source).then(result => {if (result.selection == 0) {mainGui(source)}})")
         }
     })
 }
 
 function reptilesGui(source) {
-    let validList = [];
-    for (let creature in creatureList) {
-        if (creatureList[creature][1] === "reptiles") {
-            validList.push(creatureList[creature][0])
-        };
-    };
     guiReptiles.show(source).then(result => {
         if (result.selection == 0) {
             mainGui(source)
         }
         if (result.selection > 0) {
-            eval("guiEntry.gui"+validList[result.selection-1]+"Entry.show(source).then(result => {if (result.selection == 0) {mainGui(source)}})")
+            eval("guiEntry.gui"+creatureList.reptiles[result.selection-1]+"Entry.show(source).then(result => {if (result.selection == 0) {mainGui(source)}})")
         }
     })
 }
 
 function birdsGui(source) {
-    let validList = [];
-    for (let creature in creatureList) {
-        if (creatureList[creature][1] === "birds") {
-            validList.push(creatureList[creature][0])
-        };
-    };
     guiBirds.show(source).then(result => {
         if (result.selection == 0) {
             mainGui(source)
         }
         if (result.selection > 0) {
-            eval("guiEntry.gui"+validList[result.selection-1]+"Entry.show(source).then(result => {if (result.selection == 0) {mainGui(source)}})")
+            eval("guiEntry.gui"+creatureList.birds[result.selection-1]+"Entry.show(source).then(result => {if (result.selection == 0) {mainGui(source)}})")
         }
     })
 }
 
 function fishesGui(source) {
-    let validList = [];
-    for (let creature in creatureList) {
-        if (creatureList[creature][1] === "fishes") {
-            validList.push(creatureList[creature][0])
-        };
-    };
     guiFishes.show(source).then(result => {
         if (result.selection == 0) {
             mainGui(source)
         }
         if (result.selection > 0) {
-            eval("guiEntry.gui"+validList[result.selection-1]+"Entry.show(source).then(result => {if (result.selection == 0) {mainGui(source)}})")
+            eval("guiEntry.gui"+creatureList.fishes[result.selection-1]+"Entry.show(source).then(result => {if (result.selection == 0) {mainGui(source)}})")
         }
     })
 }
 
 function invertebratesGui(source) {
-    let validList = [];
-    for (let creature in creatureList) {
-        if (creatureList[creature][1] === "invertebrates") {
-            validList.push(creatureList[creature][0])
-        };
-    };
     guiInvertebrates.show(source).then(result => {
         if (result.selection == 0) {
             mainGui(source)
         }
         if (result.selection > 0) {
-            eval("guiEntry.gui"+validList[result.selection-1]+"Entry.show(source).then(result => {if (result.selection == 0) {mainGui(source)}})")
+            eval("guiEntry.gui"+creatureList.invertebrates[result.selection-1]+"Entry.show(source).then(result => {if (result.selection == 0) {mainGui(source)}})")
         }
     })
 }
 
 function othersGui(source) {
-    let validList = [];
-    for (let creature in creatureList) {
-        if (creatureList[creature][1] === "others") {
-            validList.push(creatureList[creature][0])
-        };
-    };
     guiOthers.show(source).then(result => {
         if (result.selection == 0) {
             mainGui(source)
         }
         if (result.selection > 0) {
-            eval("guiEntry.gui"+validList[result.selection-1]+"Entry.show(source).then(result => {if (result.selection == 0) {mainGui(source)}})")
+            eval("guiEntry.gui"+creatureList.others[result.selection-1]+"Entry.show(source).then(result => {if (result.selection == 0) {mainGui(source)}})")
         }
     })
 }

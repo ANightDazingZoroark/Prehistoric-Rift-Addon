@@ -1,4 +1,4 @@
-import { world } from "mojang-minecraft";
+import { world } from "mojang-minecraft"
 
 let saurophaganaxFood = [
     'minecraft:blaze',
