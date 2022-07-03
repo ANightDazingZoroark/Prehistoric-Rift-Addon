@@ -42,6 +42,9 @@ world.events.entityHit.subscribe(( { entity, hitEntity } ) => {
     if (entity.id == 'rift:saurophaganax' && saurophaganaxFood.includes(hitEntity.id)) {
         entity.runCommand(`scoreboard players add @s[scores={saurophLightBlst=!10}] saurophLightBlst 1`)
     }
+    if (entity.id == 'rift:baryonyx' && entity.getComponent('mark_variant').value == 1) {
+        hitEntity.runCommand(`effect @s poison 10`)
+    }
 })
 
 world.events.entityHurt.subscribe(({ hurtEntity, damagingEntity }) => {
@@ -53,5 +56,8 @@ world.events.entityHurt.subscribe(({ hurtEntity, damagingEntity }) => {
     }
     if (damagingEntity.id == 'rift:saurophaganax_bite_prime' && saurophaganaxFood.includes(hurtEntity.id)) {
         damagingEntity.runCommand(`scoreboard players add @e[type=rift:saurophaganax, c=1, tag=tamed, scores={saurophLightBlst=!10}] saurophLightBlst 1`)
+    }
+    if (damagingEntity.id == 'rift:baryonyx_slash') {
+        hurtEntity.runCommand(`effect @s poison 20`)
     }
 })
