@@ -147,15 +147,7 @@
                     "value": 15
                 },
 				"minecraft:behavior.hurt_by_target": {
-					"priority": 5,
-					"entity_types": {
-						"filters": {
-							"test": "is_family",
-							"subject": "other",
-							"operator": "!=",
-							"value": "forcedAttack"
-						}
-					}
+					"priority": 5
 				},
                 "minecraft:behavior.follow_parent": {
                     "priority": 13
@@ -4196,7 +4188,7 @@
 				"height": 1.5
             },
             "minecraft:environment_sensor": {
-                "triggers":[
+                "triggers": [
                     {
                         "filters": {
                             "all_of": [
@@ -4257,20 +4249,25 @@
 									"value": 0
 								},
 								{
-									"test": "has_mob_effect",
-									"subject": "self",
-									"operator": "!=",
-									"value": "speed"
-								},
-								{
-									"test": "has_mob_effect",
-									"subject": "self",
-									"operator": "!=",
-									"value": "strength"
+									"any_of": [
+										{
+											"test": "has_mob_effect",
+											"subject": "self",
+											"operator": "!=",
+											"value": "speed"
+										},
+										{
+											"test": "has_mob_effect",
+											"subject": "self",
+											"operator": "!=",
+											"value": "strength"
+										}
+									]
 								}
 							]
 						},
-						"event": "rift:leap_ability"
+						"event": "rift:leap_ability",
+						"target": "self"
 					},
 					{
 						"filters": {
@@ -4310,7 +4307,8 @@
 								}
 							]
 						},
-						"event": "rift:buffed_leap_ability"
+						"event": "rift:buffed_leap_ability",
+						"target": "self"
 					},
 					{
 						"filters": {

@@ -1,4 +1,4 @@
-import { ItemStack, Items, MinecraftItemTypes, world } from "mojang-minecraft"
+import { BlockLocation, ItemStack, Items, MinecraftItemTypes, world } from "mojang-minecraft"
 
 let saurophaganaxFood = [
     'minecraft:blaze',
@@ -44,6 +44,8 @@ let exoticMeatDroppers = [
 ]
 
 world.events.entityHurt.subscribe(({ hurtEntity, damagingEntity }) => {
+    let blockBelowAttacker = damagingEntity.dimension.getBlock(new BlockLocation(Math.trunc(damagingEntity.location.x), Math.trunc(damagingEntity.location.y) - 1, Math.trunc(damagingEntity.location.z)))
+
     if (damagingEntity.id == 'rift:tyrannosaurus' && hurtEntity.getComponent('health').current <= 0) {
         if (exoticMeatDroppers.includes(hurtEntity.id)) {
             hurtEntity.dimension.spawnItem(new ItemStack(Items.get('rift:raw_exotic_meat'), 5, 0), hurtEntity.location)
@@ -411,7 +413,10 @@ world.events.entityHurt.subscribe(({ hurtEntity, damagingEntity }) => {
             }
         }
     }
-
+    
+    if (damagingEntity.id == 'rift:utahraptor' && blockBelowAttacker.id == 'minecraft:air' && Math.floor(Math.random() * 4) == 0) {
+        hurtEntity.runCommand(`ride @s evict_riders`)
+    }
     if (damagingEntity.id == 'rift:dimetrodon' && damagingEntity.getComponent('is_charged')) {
         hurtEntity.runCommand(`effect @s weakness 20 2`)
         hurtEntity.runCommand(`effect @s slowness 20 2`)
