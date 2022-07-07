@@ -7,9 +7,6 @@
 				"default": {
 					"animations": [
 						{
-							"animStanding": "query.ground_speed == 0"
-						},
-						{
 							"animWalk": "query.ground_speed > 0"
 						}
 					],
@@ -21,12 +18,7 @@
 				},
 				"sitting": {
 					"animations": [
-						{
-							"animSitting": "query.variant < 4"
-						},
-						{
-							"animSittingBirthday": "query.variant >= 4"
-						}
+						"animSit"
 					],
 					"transitions": [
 						{
@@ -45,12 +37,11 @@
 							"attack": "query.is_delayed_attacking"
 						},
 						{
-							"plateFling": "query.facing_target_to_range_attack || query.is_illager_captain"
+							"plateFlingCharge": "query.is_charged"
 						}
 					]
 				},
 				"attack": {
-					"blend_transition": 1,
 					"animations": [
 						"animAttack"
 					],
@@ -60,13 +51,26 @@
 						}
 					]
 				},
-				"plateFling": {
+				"plateFlingCharge": {
 					"animations": [
-						"animPlateFlingPose"
+						"animPlateFlingBefore"
 					],
 					"transitions": [
 						{
-							"default": "!query.facing_target_to_range_attack && !query.is_illager_captain"
+							"default": "!query.has_target"
+						},
+						{
+							"plateFling": "!query.is_charged"
+						}
+					]
+				},
+				"plateFling": {
+					"animations": [
+						"animPlateFlingAfter"
+					],
+					"transitions": [
+						{
+							"default": "!query.all_animations_finished"
 						}
 					]
 				}

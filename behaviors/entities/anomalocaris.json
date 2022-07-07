@@ -537,21 +537,6 @@
 					]
 				}
 			},
-			"rift:attack_forced_attack_entity": {
-				"minecraft:behavior.nearest_attackable_target": {
-					"priority": 5,
-				  	"entity_types": [
-						{
-					  		"filters": {
-								"test": "is_family",
-								"subject": "other",
-								"value": "isForcedAttacking"
-					  		},
-					  		"max_dist": 25.0
-						}
-				  	]
-				}
-			},
 			"rift:aggravating_horn_attack": {
 				"minecraft:behavior.nearest_attackable_target": {
 					"priority": 5,
@@ -1197,11 +1182,6 @@
 						"target": "self"
 					}
 				}
-			},
-			"rift:drop_experience_from_forced_attack": {
-			  	"minecraft:experience_reward": {
-					"on_death": "Math.random(5, 9)"
-			  	}
 			}
 		},
         "components": {
@@ -3497,206 +3477,6 @@
 							}
 						},
 						"deals_damage": false
-					},
-					{
-						"on_damage": {
-							"filters": {
-								"all_of": [
-									{
-								  		"test": "is_family",
-								  		"subject": "other",
-								  		"value": "forcedAttack"
-									},
-									{
-								  		"test": "has_target",
-								  		"subject": "self",
-								  		"value": false
-									},
-									{
-										"test": "has_component",
-										"subject": "self",
-										"operator": "!=",
-										"value": "minecraft:is_baby"
-									},
-									{
-										"test": "has_component",
-										"subject": "self",
-										"operator": "!=",
-										"value": "minecraft:is_tamed"
-									},
-									{
-									  	"test": "has_damage",
-									  	"subject": "self",
-									  	"operator": "!=",
-									  	"value": "fatal"
-									}
-							  	]
-							},
-							"event": "rift:on_force_attacked",
-							"target": "self"
-						}
-					},
-					{
-						"on_damage": {
-							"filters": {
-						  		"all_of": [
-									{
-							  			"test": "is_family",
-							  			"subject": "other",
-							  			"value": "forcedAttack"
-									},
-									{
-							  			"test": "has_damage",
-							  			"subject": "self",
-							  			"value": "fatal"
-									},
-									{
-							  			"test": "has_component",
-							  			"subject": "self",
-							  			"operator": "!=",
-							  			"value": "minecraft:is_baby"
-									}
-						  		]
-							},
-							"event": "rift:on_force_attacked_death",
-							"target": "self"
-					  	}
-					},
-					{
-						"on_damage": {
-							"filters": {
-								"all_of": [
-									{
-										"all_of": [
-											{
-												"test": "is_family",
-												"subject": "other",
-												"value": "utahraptor"
-											},
-											{
-												"test": "on_ground",
-												"subject": "other",
-												"value": false
-											}
-										]
-									},
-									{
-										"test": "random_chance",
-										"subject": "self",
-										"operator": "<",
-										"value": 7
-									},
-									{
-										"any_of": [
-											{
-												"test": "is_difficulty",
-												"operator": "==",
-												"value": "peaceful"
-											},
-											{
-												"test": "is_difficulty",
-												"operator": "==",
-												"value": "easy"
-											}
-										]
-									}
-								]
-							},
-							"event": "rift:on_pounced_by_utahraptor",
-							"target": "self"
-						}
-					},
-					{
-						"on_damage": {
-							"filters": {
-								"all_of": [
-									{
-										"all_of": [
-											{
-												"test": "is_family",
-												"subject": "other",
-												"value": "utahraptor"
-											},
-											{
-												"test": "on_ground",
-												"subject": "other",
-												"value": false
-											}
-										]
-									},
-									{
-										"test": "random_chance",
-										"subject": "self",
-										"operator": "<",
-										"value": 4
-									},
-									{
-										"test": "is_difficulty",
-										"operator": "==",
-										"value": "normal"
-									}
-								]
-							},
-							"event": "rift:on_pounced_by_utahraptor",
-							"target": "self"
-						}
-					},
-					{
-						"on_damage": {
-							"filters": {
-								"all_of": [
-									{
-										"all_of": [
-											{
-												"test": "is_family",
-												"subject": "other",
-												"value": "utahraptor"
-											},
-											{
-												"test": "on_ground",
-												"subject": "other",
-												"value": false
-											}
-										]
-									},
-									{
-										"test": "random_chance",
-										"subject": "self",
-										"operator": "<",
-										"value": 1
-									},
-									{
-										"test": "is_difficulty",
-										"operator": "==",
-										"value": "hard"
-									}
-								]
-							},
-							"event": "rift:on_pounced_by_utahraptor",
-							"target": "self"
-						}
-					},
-					{
-					  	"on_damage": {
-							"filters": {
-						  		"test": "is_family",
-						  		"subject": "other",
-						  		"value": "sarcoSpinAttack"
-							},
-							"event": "rift:hit_by_sarco_spin",
-							"target": "self"
-					  	}
-					},
-					{
-						"on_damage": {
-						  	"filters": {
-								"test": "has_equipment",
-								"subject": "other",
-								"value": "rift:dimetrodon_frost_attack"
-						  	},
-						  	"event": "rift:hit_by_frost_dimetrodon",
-						  	"target": "self"
-						}
 					}
 				]
 			}
@@ -4259,18 +4039,6 @@
 					]
 				}
 			},
-			"rift:on_force_attacked": {
-				"add": {
-				  	"component_groups": [
-						"rift:attack_forced_attack_entity"
-				  	]
-				},
-				"remove": {
-				  	"component_groups": [
-						"rift:default_targets"
-				  	]
-				}
-			},
 			"rift:no_more_target": {
 				"sequence": [
 					{
@@ -4281,7 +4049,6 @@
 						},
 						"remove": {
 							  "component_groups": [
-								"rift:attack_forced_attack_entity",
 								"rift:carry_mob",
 								"rift:aggravating_horn_attack"
 							  ]
@@ -4473,60 +4240,6 @@
 						"kill @e[type=rift:anomalo_carry_stuff, c=1]"
 					]
 				}
-			},
-			"rift:hit_by_sarco_spin": {
-				"run_command": {
-					"command": [
-						"effect @s slowness 30 2"
-					]
-				}
-			},
-			"rift:hit_by_frost_dimetrodon": {
-				"run_command": {
-					"command": [
-						"effect @s weakness 20 2",
-						"effect @s slowness 20 2"
-				  	]
-				}
-			},
-			"rift:on_force_attacked_death": {
-				"sequence": [
-					{},
-					{
-						"filters": {
-							"test": "is_family",
-							"subject": "other",
-							"operator": "!=",
-							"value": "sarcoSpinAttack"
-						},
-						"add": {
-							"component_groups": [
-								"rift:drop_experience_from_forced_attack"
-							]
-						}
-					},
-					{
-						"filters": {
-							"all_of": [
-								{
-									"test": "is_family",
-									"subject": "other",
-									"value": "sarcoSpinAttack"
-								},
-								{
-									"test": "has_component",
-									"subject": "other",
-									"value": "minecraft:is_tamed"
-								}
-							]
-						},
-						"add": {
-							"component_groups": [
-								  "rift:drop_experience_from_forced_attack"
-							]
-						}
-					}
-				]
 			},
 			"rift:aggravated_via_aggravating_horn": {
 				"add": {

@@ -73,6 +73,12 @@ world.events.entityHurt.subscribe(({ hurtEntity, damagingEntity }) => {
                 case 'minecraft:rabbit':
                     hurtEntity.dimension.spawnItem(new ItemStack(MinecraftItemTypes.rabbit, 5, 0), hurtEntity.location)
                     break
+                case 'rift:dodo':
+                    hurtEntity.dimension.spawnItem(new ItemStack(Items.get('rift:raw_dodo_meat'), 5, 0), hurtEntity.location)
+                    break
+                case 'rift:parasaurolophus':
+                    hurtEntity.dimension.spawnItem(new ItemStack(Items.get('rift:raw_hadrosaur_meat'), 5, 0), hurtEntity.location)
+                    break
                 case 'minecraft:zombie':
                     hurtEntity.dimension.spawnItem(new ItemStack(MinecraftItemTypes.rottenFlesh, 5, 0), hurtEntity.location)
                     break
@@ -124,6 +130,12 @@ world.events.entityHurt.subscribe(({ hurtEntity, damagingEntity }) => {
                 case 'minecraft:rabbit':
                     hurtEntity.dimension.spawnItem(new ItemStack(MinecraftItemTypes.rabbit, 3, 0), hurtEntity.location)
                     break
+                case 'rift:dodo':
+                    hurtEntity.dimension.spawnItem(new ItemStack(Items.get('rift:raw_dodo_meat'), 3, 0), hurtEntity.location)
+                    break
+                case 'rift:parasaurolophus':
+                    hurtEntity.dimension.spawnItem(new ItemStack(Items.get('rift:raw_hadrosaur_meat'), 3, 0), hurtEntity.location)
+                    break
             }
         }
     }
@@ -153,6 +165,12 @@ world.events.entityHurt.subscribe(({ hurtEntity, damagingEntity }) => {
                     break
                 case 'minecraft:rabbit':
                     hurtEntity.dimension.spawnItem(new ItemStack(MinecraftItemTypes.rabbit, 3, 0), hurtEntity.location)
+                    break
+                case 'rift:dodo':
+                    hurtEntity.dimension.spawnItem(new ItemStack(Items.get('rift:raw_dodo_meat'), 3, 0), hurtEntity.location)
+                    break
+                case 'rift:parasaurolophus':
+                    hurtEntity.dimension.spawnItem(new ItemStack(Items.get('rift:raw_hadrosaur_meat'), 3, 0), hurtEntity.location)
                     break
                 case 'minecraft:cod':
                     hurtEntity.dimension.spawnItem(new ItemStack(MinecraftItemTypes.cod, 1, 0), hurtEntity.location)
@@ -196,6 +214,12 @@ world.events.entityHurt.subscribe(({ hurtEntity, damagingEntity }) => {
                 case 'minecraft:rabbit':
                     hurtEntity.dimension.spawnItem(new ItemStack(MinecraftItemTypes.rabbit, 1, 0), hurtEntity.location)
                     break
+                case 'rift:dodo':
+                    hurtEntity.dimension.spawnItem(new ItemStack(Items.get('rift:raw_dodo_meat'), 1, 0), hurtEntity.location)
+                    break
+                case 'rift:parasaurolophus':
+                    hurtEntity.dimension.spawnItem(new ItemStack(Items.get('rift:raw_hadrosaur_meat'), 1, 0), hurtEntity.location)
+                    break
                 case 'minecraft:cod':
                     hurtEntity.dimension.spawnItem(new ItemStack(MinecraftItemTypes.cod, 3, 0), hurtEntity.location)
                     break
@@ -237,6 +261,12 @@ world.events.entityHurt.subscribe(({ hurtEntity, damagingEntity }) => {
                     break
                 case 'minecraft:rabbit':
                     hurtEntity.dimension.spawnItem(new ItemStack(MinecraftItemTypes.rabbit, 1, 0), hurtEntity.location)
+                    break
+                case 'rift:dodo':
+                    hurtEntity.dimension.spawnItem(new ItemStack(Items.get('rift:raw_dodo_meat'), 1, 0), hurtEntity.location)
+                    break
+                case 'rift:parasaurolophus':
+                    hurtEntity.dimension.spawnItem(new ItemStack(Items.get('rift:raw_hadrosaur_meat'), 1, 0), hurtEntity.location)
                     break
                 case 'minecraft:cod':
                     hurtEntity.dimension.spawnItem(new ItemStack(MinecraftItemTypes.cod, 3, 0), hurtEntity.location)
@@ -368,6 +398,12 @@ world.events.entityHurt.subscribe(({ hurtEntity, damagingEntity }) => {
                 case 'minecraft:rabbit':
                     hurtEntity.dimension.spawnItem(new ItemStack(MinecraftItemTypes.rabbit, 3, 0), hurtEntity.location)
                     break
+                case 'rift:dodo':
+                    hurtEntity.dimension.spawnItem(new ItemStack(Items.get('rift:raw_dodo_meat'), 3, 0), hurtEntity.location)
+                    break
+                case 'rift:parasaurolophus':
+                    hurtEntity.dimension.spawnItem(new ItemStack(Items.get('rift:raw_hadrosaur_meat'), 3, 0), hurtEntity.location)
+                    break
             }
         }
     }
@@ -397,6 +433,12 @@ world.events.entityHurt.subscribe(({ hurtEntity, damagingEntity }) => {
                     break
                 case 'minecraft:rabbit':
                     hurtEntity.dimension.spawnItem(new ItemStack(MinecraftItemTypes.rabbit, 3, 0), hurtEntity.location)
+                    break
+                case 'rift:dodo':
+                    hurtEntity.dimension.spawnItem(new ItemStack(Items.get('rift:raw_dodo_meat'), 3, 0), hurtEntity.location)
+                    break
+                case 'rift:parasaurolophus':
+                    hurtEntity.dimension.spawnItem(new ItemStack(Items.get('rift:raw_hadrosaur_meat'), 3, 0), hurtEntity.location)
                     break
                 case 'minecraft:cod':
                     hurtEntity.dimension.spawnItem(new ItemStack(MinecraftItemTypes.cod, 3, 0), hurtEntity.location)
