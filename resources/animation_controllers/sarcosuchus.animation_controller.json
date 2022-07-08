@@ -7,9 +7,6 @@
 				"default": {
 					"animations": [
 						{
-							"animStandingLand": "query.ground_speed == 0"
-						},
-						{
 							"animWalk": "query.ground_speed > 0"
 						}
 					],
@@ -24,17 +21,9 @@
 				},
                 "waterMode": {
                     "animations": [
-                        {
-                            "animStandingWater": "query.ground_speed == 0"
-                        },
-                        {
-                            "animSwim": "query.ground_speed > 0"
-                        }
+                        "animSwim"
                     ],
                     "transitions": [
-						{
-							"sitting": "(query.actor_property('rift:tame_state') == 1 && !query.has_target && !query.has_rider) && !query.is_in_water"
-						},
                         {
                             "default": "!query.is_in_water"
                         }
@@ -42,12 +31,15 @@
                 },
 				"sitting": {
 					"animations": [
-						"animSitting"
+						"animSit"
 					],
 					"transitions": [
 						{
 							"default": "query.actor_property('rift:tame_state') != 1 || query.has_target || query.has_rider"
-						}
+						},
+                        {
+                            "waterMode": "query.is_in_water"
+                        }
 					]
 				}
 			}
@@ -85,9 +77,12 @@
 					]
 				},
 				"wait": {
-					"animations": [
-						"animClock"
-					],
+                    "particle_effects": [
+                        {
+                            "effect": "clock",
+                            "locator": "particlelocator"
+                        }
+                    ],
 					"transitions": [
 						{
 							"default": "query.is_tamed"
@@ -98,9 +93,12 @@
 					]
 				},
 				"feedAgain": {
-					"animations": [
-						"animAlert"
-					],
+                    "particle_effects": [
+                        {
+                            "effect": "alert",
+                            "locator": "particlelocator"
+                        }
+                    ],
 					"transitions": [
 						{
 							"default": "query.is_tamed"

@@ -7,6 +7,16 @@
             "is_summonable": true,
             "is_experimental": false,
 			"properties": {
+				"rift:tame_progress": {
+					"values": [
+						"notTamed",
+						"tamed",
+						"cooldown",
+						"canBeFed"
+					],
+					"default": "notTamed",
+					"client_sync": true
+				},
                 "rift:tame_state": {
                     "values": {
 						"min": 0, //0 for standing, 1 for sitting, 2 for wandering
@@ -193,7 +203,7 @@
 					"damage": 15
 				},
                 "minecraft:scale": {
-                    "value": 1.25
+                    "value": 1.5
                 },
                 "minecraft:experience_reward": {
                     "on_bred": "Math.random(4, 6)",
@@ -832,8 +842,8 @@
 						{
 							"position": [
 								0,
-								0.7,
-								-0.3
+								0.5,
+								-0.1
 							]
 						}
 					],
@@ -3790,6 +3800,7 @@
 					]
 				},
 				"set_actor_property": {
+					"rift:tame_progress": "'tamed'",
 					"rift:behavior_state": "3"
 				}
 			},
@@ -3810,6 +3821,9 @@
 					"command": [
 						"tellraw @p {\"rawtext\":[{\"text\":\"You made a wild Sarcosuchus trust you! Keep feeding it every once in a while to eventually tame it!\"}]}"
 					]
+				},
+				"set_actor_property": {
+					"rift:tame_progress": "'cooldown'"
 				}
 			},
 			"rift:can_be_tamed_again": {
@@ -3825,6 +3839,9 @@
 							"component_groups": [
 								"rift:sarcosuchus_adult_waiting_for_tame"
 							]
+						},
+						"set_actor_property": {
+							"rift:tame_progress": "'canBeFed'"
 						}
 					},
 					{
@@ -3838,6 +3855,9 @@
 							"component_groups": [
 								"rift:sarcosuchus_adult_waiting_for_tame"
 							]
+						},
+						"set_actor_property": {
+							"rift:tame_progress": "'canBeFed'"
 						}
 					}
 				]
@@ -3852,6 +3872,9 @@
 					"component_groups": [
 						"rift:sarcosuchus_adult_chance_for_tame"
 					]
+				},
+				"set_actor_property": {
+					"rift:tame_progress": "'cooldown'"
 				},
 				"run_command": {
 					"command": [
@@ -3885,6 +3908,7 @@
 					]
 				},
 				"set_actor_property": {
+					"rift:tame_progress": "'tamed'",
 					"rift:behavior_state": "0"
 				}
 			},

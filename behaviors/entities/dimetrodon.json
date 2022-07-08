@@ -7,6 +7,16 @@
             "is_summonable": true,
             "is_experimental": false,
 			"properties": {
+				"rift:tame_progress": {
+					"values": [
+						"notTamed",
+						"tamed",
+						"cooldown",
+						"canBeFed"
+					],
+					"default": "notTamed",
+					"client_sync": true
+				},
                 "rift:tame_state": {
                     "values": {
 						"min": 0, //0 for standing, 1 for sitting, 2 for wandering
@@ -157,6 +167,9 @@
                 }
             },
             "rift:dimetrodon_adult": {
+                "minecraft:scale": {
+                    "value": 1.25
+                },
                 "minecraft:experience_reward": {
                     "on_bred": "Math.random(4, 6)",
                     "on_death": "query.last_hit_by_player ? Math.random(5, 9) : 0"
@@ -3459,6 +3472,7 @@
 					]
 				},
 				"set_actor_property": {
+					"rift:tame_progress": "'tamed'",
 					"rift:behavior_state": "3"
 				}
 			},
@@ -3480,6 +3494,9 @@
 					"command": [
 						"tellraw @p {\"rawtext\":[{\"text\":\"You made a wild Dimetrodon trust you! Keep feeding it every once in a while to eventually tame it!\"}]}"
 					]
+				},
+				"set_actor_property": {
+					"rift:tame_progress": "'cooldown'"
 				}
 			},
 			"rift:can_be_tamed_again": {
@@ -3495,6 +3512,9 @@
 							"component_groups": [
 								"rift:dimetrodon_adult_waiting_for_tame"
 							]
+						},
+						"set_actor_property": {
+							"rift:tame_progress": "'canBeFed'"
 						}
 					},
 					{
@@ -3508,6 +3528,9 @@
 							"component_groups": [
 								"rift:dimetrodon_adult_waiting_for_tame"
 							]
+						},
+						"set_actor_property": {
+							"rift:tame_progress": "'canBeFed'"
 						}
 					}
 				]
@@ -3522,6 +3545,9 @@
 					"component_groups": [
 						"rift:dimetrodon_adult_chance_for_tame"
 					]
+				},
+				"set_actor_property": {
+					"rift:tame_progress": "'cooldown'"
 				},
 				"run_command": {
 					"command": [
@@ -3545,6 +3571,9 @@
 						"rift:dimetrodon_adult_wild",
 						"rift:wild_standing"
 					]
+				},
+				"set_actor_property": {
+					"rift:tame_progress": "'tamed'"
 				},
 				"run_command": {
 					"command": [

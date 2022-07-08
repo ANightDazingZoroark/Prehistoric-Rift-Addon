@@ -7,9 +7,6 @@
                 "default": {
                     "animations": [
                         {
-                            "animStanding": "query.ground_speed == 0"
-                        },
-                        {
                             "animWalk": "query.ground_speed > 0"
                         }
                     ],
@@ -24,11 +21,14 @@
                 },
                 "sitting": {
                     "animations": [
-                        "animSitting"
+                        "animSit"
                     ],
                     "transitions": [
                         {
                             "default": "query.actor_property('rift:tame_state') != 1 || query.has_target"
+                        },
+                        {
+                            "swimming": "query.is_in_water"
                         }
                     ]
                 },
@@ -39,9 +39,6 @@
                     "transitions": [
                         {
                             "default": "!query.is_in_water"
-                        },
-                        {
-                            "sitting": "query.actor_property('rift:tame_state') == 1 && !query.has_target"
                         }
                     ]
                 }
@@ -121,9 +118,12 @@
 					]
 				},
 				"wait": {
-					"animations": [
-						"animClock"
-					],
+                    "particle_effects": [
+                        {
+                            "effect": "clock",
+                            "locator": "particlelocator"
+                        }
+                    ],
 					"transitions": [
 						{
 							"default": "query.is_tamed"
@@ -134,9 +134,12 @@
 					]
 				},
 				"feedAgain": {
-					"animations": [
-						"animAlert"
-					],
+                    "particle_effects": [
+                        {
+                            "effect": "alert",
+                            "locator": "particlelocator"
+                        }
+                    ],
 					"transitions": [
 						{
 							"default": "query.is_tamed"

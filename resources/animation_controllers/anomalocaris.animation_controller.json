@@ -1,21 +1,6 @@
 {
 	"format_version": "1.10.0",
 	"animation_controllers": {
-		"controller.animation.anomalocaris_movement": {
-			"initial_state": "default",
-			"states": {
-				"default": {
-					"animations": [
-						{
-							"animIdle": "query.ground_speed == 0"
-						},
-						{
-							"animSwim": "query.ground_speed > 0"
-						}
-					]
-				}
-			}
-		},
 		"controller.animation.anomalocaris_attack": {
 			"initial_state": "default",
 			"states": {
@@ -38,28 +23,6 @@
 				}
 			}
 		},
-		"controller.animation.anomalocaris_grab": {
-			"initial_state": "default",
-			"states": {
-				"default": {
-					"transitions": [
-						{
-							"attacking": "query.is_illager_captain"
-						}
-					]
-				},
-				"attacking": {
-					"animations": [
-						"animGrab"
-					],
-					"transitions": [
-						{
-							"default": "!query.is_illager_captain"
-						}
-					]
-				}
-			}
-		},
 		"controller.animation.anomalocaris_taming_progress": {
 			"initial_state": "default",
 			"states": {
@@ -71,9 +34,12 @@
 					]
 				},
 				"wait": {
-					"animations": [
-						"animClock"
-					],
+                    "particle_effects": [
+                        {
+                            "effect": "clock",
+                            "locator": "particlelocator"
+                        }
+                    ],
 					"transitions": [
 						{
 							"default": "query.is_tamed"
@@ -84,9 +50,12 @@
 					]
 				},
 				"feedAgain": {
-					"animations": [
-						"animAlert"
-					],
+                    "particle_effects": [
+                        {
+                            "effect": "alert",
+                            "locator": "particlelocator"
+                        }
+                    ],
 					"transitions": [
 						{
 							"default": "query.is_tamed"
