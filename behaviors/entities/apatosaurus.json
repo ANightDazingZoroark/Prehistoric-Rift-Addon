@@ -7,6 +7,22 @@
             "is_summonable": true,
             "is_experimental": false,
 			"properties": {
+				"rift:has_crafting_table": {
+                    "values": [
+                        false,
+						true
+                    ],
+					"default": false,
+					"client_sync": true
+                },
+				"rift:has_furnace": {
+                    "values": [
+                        false,
+						true
+                    ],
+					"default": false,
+					"client_sync": true
+                },
                 "rift:tame_state": {
                     "values": {
 						"min": 0, //0 for standing, 1 for sitting, 2 for wandering
@@ -167,7 +183,7 @@
             "rift:apatosaurus_baby_wild_tameable": {
                 "minecraft:scale_by_age": {
                     "start_scale": 0.35,
-                    "end_scale": 1.25
+                    "end_scale": 2.25
                 },
                 "minecraft:tameable": {
 					"probability": 0.25,
@@ -213,19 +229,19 @@
 					"force": true
 				}
             },
-            "rift;apatosaurus_baby_tamed": {
+            "rift:apatosaurus_baby_tamed": {
                 "minecraft:health": {
                     "value": 50,
                     "max": 60
                 },
 				"minecraft:scale_by_age": {
-                    "start_scale": 0.35,
-                    "end_scale": 1.25
+                    "start_scale": 1.5,
+                    "end_scale": 2.25
                 }
             },
             "rift:apatosaurus_adult": {
 				"minecraft:scale": {
-					"value": 1.5
+					"value": 3
 				},
 				"minecraft:attack": {
 					"damage": 80
@@ -749,8 +765,8 @@
 						{
 							"position": [
 								0,
-								2.9,
-								1.15
+								1.5,
+								0.5
 							]
 						},
 						{
@@ -1033,7 +1049,7 @@
 				},
 				"minecraft:collision_box": {
 					"height": 0.5,
-					"width": 2.25
+					"width": 1.75
 				}
 			},
 			"rift:apatosaurus_play_catapult_animation": {
@@ -1065,7 +1081,7 @@
 				},
 				"minecraft:collision_box": {
 					"height": 0.5,
-					"width": 2.25
+					"width": 1.75
 				}
 			},
 			"rift:forced_stomp": {
@@ -1083,8 +1099,8 @@
 			},
 			"rift:default_collision": {
 				"minecraft:collision_box": {
-					"height": 5.75,
-					"width": 2.25
+					"height": 4,
+					"width": 1.75
 				}
 			},
 			"rift:pushable": {
@@ -1189,8 +1205,8 @@
 			"minecraft:movement.basic": {},
 			"minecraft:jump.static": {},
 			"minecraft:collision_box": {
-				"height": 5.75,
-				"width": 2.25
+				"height": 4,
+				"width": 1.75
 			},
             "minecraft:is_hidden_when_invisible": {},
 			"minecraft:physics": {},
@@ -1364,6 +1380,66 @@
 										"subject": "other",
 										"domain": "hand",
 										"operator": "!=",
+										"value": "minecraft:crafting_table"
+									},
+									{
+										"test": "has_equipment",
+										"subject": "other",
+										"domain": "hand",
+										"operator": "!=",
+										"value": "minecraft:furnace"
+									},
+									{
+										"test": "has_equipment",
+										"subject": "other",
+										"domain": "hand",
+										"operator": "!=",
+										"value": "rift:cannon"
+									},
+									{
+										"test": "has_equipment",
+										"subject": "other",
+										"domain": "hand",
+										"operator": "!=",
+										"value": "rift:mortar"
+									},
+									{
+										"test": "has_equipment",
+										"subject": "other",
+										"domain": "hand",
+										"operator": "!=",
+										"value": "rift:catapult"
+									},
+									{
+										"test": "has_equipment",
+										"subject": "other",
+										"domain": "hand",
+										"operator": "!=",
+										"value": "rift:wrench"
+									},
+									{
+										"test": "has_equipment",
+										"subject": "other",
+										"domain": "hand",
+										"value": "rift:cannonball"
+									},
+									{
+										"test": "has_equipment",
+										"subject": "other",
+										"domain": "hand",
+										"value": "rift:mortar_shell"
+									},
+									{
+										"test": "has_equipment",
+										"subject": "other",
+										"domain": "hand",
+										"value": "rift:catapult_boulder"
+									},
+									{
+										"test": "has_equipment",
+										"subject": "other",
+										"domain": "hand",
+										"operator": "!=",
 										"value": "rift:euthanasia"
 									},
 									{
@@ -1468,6 +1544,94 @@
 							"target": "self"
 						},
 						"interact_text": "action.interact.attachchest",
+						"use_item": true
+					},
+					{
+						"on_interact": {
+							"filters": {
+								"all_of": [
+									{
+										"test": "has_equipment",
+										"subject": "other",
+										"domain": "hand",
+										"value": "minecraft:crafting_table"
+									},
+									{
+										"test": "is_owner",
+										"subject": "other",
+										"value": true
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_baby",
+										"operator": "!="
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_tamed"
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_saddled"
+									},
+									{
+										"test": "is_sneaking",
+										"subject": "other",
+										"value": true
+									}
+								]
+							},
+							"event": "rift:attach_crafting_table",
+							"target": "self"
+						},
+						"interact_text": "action.interact.attachcraftingtable",
+						"use_item": true
+					},
+					{
+						"on_interact": {
+							"filters": {
+								"all_of": [
+									{
+										"test": "has_equipment",
+										"subject": "other",
+										"domain": "hand",
+										"value": "minecraft:furnace"
+									},
+									{
+										"test": "is_owner",
+										"subject": "other",
+										"value": true
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_baby",
+										"operator": "!="
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_tamed"
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_saddled"
+									},
+									{
+										"test": "is_sneaking",
+										"subject": "other",
+										"value": true
+									}
+								]
+							},
+							"event": "rift:attach_furnace",
+							"target": "self"
+						},
+						"interact_text": "action.interact.attachfurnace",
 						"use_item": true
 					},
 					{
@@ -4223,6 +4387,26 @@
 				"add": {
 					"component_groups": [
 						"rift:apatosaurus_chested"
+					]
+				}
+			},
+			"rift:attach_crafting_table": {
+				"set_actor_property": {
+					"rift:has_crafting_table": "true"
+				},
+				"run_command": {
+					"command": [
+						"tag @s add hasCraftingTable"
+					]
+				}
+			},
+			"rift:attach_furnace": {
+				"set_actor_property": {
+					"rift:has_furnace": "true"
+				},
+				"run_command": {
+					"command": [
+						"tag @s add hasFurnace"
 					]
 				}
 			},

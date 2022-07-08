@@ -1,3 +1,4 @@
+import "scripts/ApatosaurusCrafting.js"
 import "scripts/DirewolfSniff.js"
 import "scripts/DamageManagement.js"
 import "scripts/JournalManagement.js"
