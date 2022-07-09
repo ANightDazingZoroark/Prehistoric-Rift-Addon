@@ -7,13 +7,7 @@
 				"default": {
 					"animations": [
 						{
-							"animNormalStanding": "!query.is_ignited && query.ground_speed == 0"
-						},
-						{
 							"animNormalWalk": "!query.is_ignited && query.ground_speed > 0"
-						},
-						{
-							"animWerewolfStanding": "query.is_ignited && query.ground_speed == 0"
 						},
 						{
 							"animWerewolfWalk": "query.is_ignited && query.ground_speed > 0"
@@ -30,7 +24,9 @@
 				},
 				"sitting": {
 					"animations": [
-						"animNormalSitting"
+						{
+							"animNormalSit": "!query.is_ignited"
+						}
 					],
 					"transitions": [
 						{
@@ -40,7 +36,7 @@
 				},
 				"notOnGround": {
 					"animations": [
-						"animWerewolfPounce"
+						"animWerewolfLeap"
 					],
 					"transitions": [
 						{
@@ -61,9 +57,12 @@
 					]
 				},
 				"wait": {
-					"animations": [
-						"animClock"
-					],
+                    "particle_effects": [
+                        {
+                            "effect": "clock",
+                            "locator": "particlelocator"
+                        }
+                    ],
 					"transitions": [
 						{
 							"default": "query.is_tamed"
@@ -74,9 +73,12 @@
 					]
 				},
 				"feedAgain": {
-					"animations": [
-						"animAlert"
-					],
+                    "particle_effects": [
+                        {
+                            "effect": "alert",
+                            "locator": "particlelocator"
+                        }
+                    ],
 					"transitions": [
 						{
 							"default": "query.is_tamed"

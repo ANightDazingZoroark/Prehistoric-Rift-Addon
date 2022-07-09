@@ -7,9 +7,6 @@
 				"default": {
 					"animations": [
 						{
-							"animStanding": "query.ground_speed == 0"
-						},
-						{
 							"animWalk": "query.ground_speed > 0"
 						}
 					],
@@ -24,7 +21,7 @@
 				},
 				"sitting": {
 					"animations": [
-						"animSitting"
+						"animSit"
 					],
 					"transitions": [
 						{
@@ -37,7 +34,7 @@
 				},
 				"sleeping": {
 					"animations": [
-						"animSleeping"
+						"animSleep"
 					],
 					"transitions": [
 						{
@@ -56,7 +53,7 @@
 				"default": {
 					"transitions": [
 						{
-							"tired": "query.is_sheared"
+							"tired": "query.is_sheared && !query.is_asleep"
 						}
 					]
 				},
@@ -66,7 +63,7 @@
 					],
 					"transitions": [
 						{
-							"default": "!query.is_sheared"
+							"default": "!query.is_sheared || query.is_asleep"
 						}
 					]
 				}
@@ -130,9 +127,12 @@
 					]
 				},
 				"wait": {
-					"animations": [
-						"animClock"
-					],
+                    "particle_effects": [
+                        {
+                            "effect": "clock",
+                            "locator": "particlelocator"
+                        }
+                    ],
 					"transitions": [
 						{
 							"default": "query.is_tamed"
@@ -143,9 +143,12 @@
 					]
 				},
 				"feedAgain": {
-					"animations": [
-						"animAlert"
-					],
+                    "particle_effects": [
+                        {
+                            "effect": "alert",
+                            "locator": "particlelocator"
+                        }
+                    ],
 					"transitions": [
 						{
 							"default": "query.is_tamed"
