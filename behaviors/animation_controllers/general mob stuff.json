@@ -126,6 +126,31 @@
 				}
 			}
 		},
+		"controller.animation.add_powered_tag": {
+			"initial_state": "default",
+			"states": {
+				"default": {
+					"transitions": [
+						{
+							"hasTag": "query.is_powered"
+						}
+					]
+				},
+				"hasTag": {
+					"transitions": [
+						{
+							"default": "!query.is_powered"
+						}
+					],
+                    "on_entry": [
+                        "/tag @s add powered"
+                    ],
+                    "on_exit": [
+                        "/tag @s remove powered"
+                    ]
+				}
+			}
+		},
 		"controller.animation.add_ignited_tag": {
 			"initial_state": "default",
 			"states": {
@@ -483,6 +508,28 @@
 					],
 					"on_exit": [
 						"/tellraw @p {\"rawtext\":[{\"selector\": \"@s\"}, {\"text\":\" will now assist you in combat\"}]}"
+					]
+				}
+			}
+		},
+		"controller.animation.general_forced_attack": {
+			"initial_state": "default",
+			"states": {
+				"default": {
+					"transitions": [
+						{
+							"forcedAttacking": "query.actor_property('rift:is_forced_attacking') == true"
+						}
+					]
+				},
+				"forcedAttacking": {
+					"animations": [
+						"animForcedAttack"
+					],
+					"transitions": [
+						{
+							"default": "query.all_animations_finished"
+						}
 					]
 				}
 			}

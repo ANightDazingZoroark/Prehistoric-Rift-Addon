@@ -7,6 +7,13 @@
             "is_summonable": true,
             "is_experimental": false,
 			"properties": {
+				"rift:is_forced_attacking": {
+					"values": [
+						false,
+						true
+					],
+					"default": false
+				},
 				"rift:has_crafting_table": {
                     "values": [
                         false,
@@ -43,6 +50,7 @@
 				"contTameTag": "controller.animation.add_tame_tag",
 				"contBabyTag": "controller.animation.add_baby_tag",
 				"contRiddenTag": "controller.animation.add_ridden_tag",
+				"contForcedAttack": "controller.animation.general_forced_attack",
 				"contDetectWeapon": "controller.animation.apato_detect_stationary_weapon",
 				"contWildLowHealth": "controller.animation.apato_wild_low_on_health",
 				"contWildBreakStuff": "controller.animation.apato_wild_can_break_blocks",
@@ -62,6 +70,7 @@
 					"contWildBreakStuff",
 					"contTamedBreakStuff",
 					"contTameState",
+					"contForcedAttack",
 					"contBehaviorState"
 				]
 			}
@@ -1084,19 +1093,6 @@
 					"width": 1.75
 				}
 			},
-			"rift:forced_stomp": {
-				"minecraft:is_sheared": {}
-			},
-			"rift:summon_forced_stomp_entity": {
-				"minecraft:spawn_entity": {
-					"entities": {
-						"spawn_entity": "rift:apatosaurus_smash",
-						"single_use": true,
-						"min_wait_time": 0,
-						"max_wait_time": 0
-					}
-				}
-			},
 			"rift:default_collision": {
 				"minecraft:collision_box": {
 					"height": 4,
@@ -1113,27 +1109,6 @@
 				"minecraft:pushable": {
 					"is_pushable": false,
 					"is_pushable_by_piston": false
-				}
-			},
-			"rift:default_family": {
-				"minecraft:type_family": {
-					"family": [
-						"apatosaurus",
-						"mob",
-						"herbivore",
-						"dinosaur"
-					]
-				}
-			},
-			"rift:forced_attack_family": {
-				"minecraft:type_family": {
-					"family": [
-						"apatosaurus",
-						"mob",
-						"herbivore",
-						"dinosaur",
-						"isForcedAttacking"
-					]
 				}
 			},
 			"rift:can_attack": {
@@ -5034,62 +5009,10 @@
 					]
 				}
 			},
-			"rift:use_forced_stomp": {
-				"add": {
-					"component_groups": [
-						"rift:forced_stomp"
-					]
-				}
-			},
-			"rift:stop_forced_stomp": {
-				"remove": {
-					"component_groups": [
-						"rift:forced_stomp"
-					]
-				}
-			},
-			"rift:on_summon_forced_stomp_entity": {
-				"add": {
-					"component_groups": [
-						"rift:summon_forced_stomp_entity"
-					]
-				}
-			},
-			"rift:no_summon_forced_stomp_entity": {
-				"remove": {
-					"component_groups": [
-						"rift:summon_forced_stomp_entity"
-					]
-				}
-			},
 			"rift:commit_suicide": {
 				"run_command": {
 					"command": [
 						"kill @s"
-					]
-				}
-			},
-			"rift:on_forced_attack_family": {
-				"add": {
-					"component_groups": [
-						"rift:forced_attack_family"
-					]
-				},
-				"remove": {
-					"component_groups": [
-						"rift:default_family"
-					]
-				}
-			},
-			"rift:no_forced_attack_family": {
-				"add": {
-					"component_groups": [
-						"rift:default_family"
-					]
-				},
-				"remove": {
-					"component_groups": [
-						"rift:forced_attack_family"
 					]
 				}
 			},
@@ -5205,6 +5128,16 @@
 					"component_groups": [
 						"rift:aggravating_horn_attack"
 					]
+				}
+			},
+			"rift:start_forced_attack": {
+				"set_actor_property": {
+					"rift:is_forced_attacking": "true"
+				}
+			},
+			"rift:stop_forced_attack": {
+				"set_actor_property": {
+					"rift:is_forced_attacking": "false"
 				}
 			},
 			"rift:manage_state": {

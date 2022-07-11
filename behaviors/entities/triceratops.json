@@ -7,6 +7,13 @@
 			"is_summonable": true,
 			"is_experimental": false,
 			"properties": {
+				"rift:is_forced_attacking": {
+					"values": [
+						false,
+						true
+					],
+					"default": false
+				},
                 "rift:tame_state": {
                     "values": {
 						"min": 0, //0 for standing, 1 for sitting, 2 for wandering
@@ -28,10 +35,12 @@
 				"contBabyTag": "controller.animation.add_baby_tag",
 				"contRiddenTag": "controller.animation.add_ridden_tag",
 				"contIllagerCaptainTag": "controller.animation.add_illager_captain_tag",
+				"contForcedAttack": "controller.animation.general_forced_attack",
 				"contRivalBuff": "controller.animation.trike_rival_buff",
 				"contTrikeEndChargeCooldown": "controller.animation.trike_end_charge_cooldown",
 				"contTameState": "controller.animation.manage_tame_state",
 				"contBehaviorState": "controller.animation.manage_tame_behavior",
+				"animForcedAttack": "animation.forced_attack_triceratops",
 				"animTestForRivals": "animation.test_for_rivals_triceratops",
 				"animRivalBuffEffects": "animation.trike_rival_buff_effects",
 				"animTrikeChargeCooldown": "animation.trike_charge_cooldown",
@@ -43,6 +52,7 @@
 					"contBabyTag",
 					"contRiddenTag",
 					"contIllagerCaptainTag",
+					"contForcedAttack",
 					"contRivalBuff",
 					"contTrikeEndChargeCooldown",
 					"contTameState",
@@ -1193,33 +1203,6 @@
 					}
 				}
 			},
-			"rift:forced_stab": {
-				"minecraft:is_ignited": {}
-			},
-			"rift:summon_forced_stab_entity": {
-				"minecraft:spawn_entity": {
-					"entities": [
-						{
-							"spawn_entity": "rift:triceratops_stab",
-							"single_use": true,
-							"min_wait_time": 0,
-							"max_wait_time": 0
-						}
-					]
-				}
-			},
-			"rift:summon_buffed_forced_stab_entity": {
-				"minecraft:spawn_entity": {
-					"entities": [
-						{
-							"spawn_entity": "rift:triceratops_buffed_stab",
-							"single_use": true,
-							"min_wait_time": 0,
-							"max_wait_time": 0
-						}
-					]
-				}
-			},
 			"rift:pushable": {
 				"minecraft:pushable": {
 					"is_pushable": true,
@@ -1230,27 +1213,6 @@
 				"minecraft:pushable": {
 					"is_pushable": false,
 					"is_pushable_by_piston": false
-				}
-			},
-			"rift:default_family": {
-				"minecraft:type_family": {
-					"family": [
-						"triceratops",
-						"mob",
-						"herbivore",
-						"dinosaur"
-					]
-				}
-			},
-			"rift:forced_attack_family": {
-				"minecraft:type_family": {
-					"family": [
-						"triceratops",
-						"mob",
-						"herbivore",
-						"dinosaur",
-						"isForcedAttacking"
-					]
 				}
 			},
 			"rift:can_attack": {	
@@ -3543,7 +3505,7 @@
 				]
 			},
 			"minecraft:collision_box": {
-				"width": 1.5,
+				"width": 1.25,
 				"height": 2
 			},
 			"minecraft:damage_sensor": {
@@ -4636,30 +4598,6 @@
 					]
 				}
 			},
-			"rift:on_forced_attack_family": {
-				"add": {
-					"component_groups": [
-						"rift:forced_attack_family"
-					]
-				},
-				"remove": {
-					"component_groups": [
-						"rift:default_family"
-					]
-				}
-			},
-			"rift:no_forced_attack_family": {
-				"add": {
-					"component_groups": [
-						"rift:default_family"
-					]
-				},
-				"remove": {
-					"component_groups": [
-						"rift:forced_attack_family"
-					]
-				}
-			},
 			"rift:rival_buff_on": {
 				"add": {
 					"component_groups": [
@@ -4788,6 +4726,16 @@
 					"command": [
 						"effect @s speed 0"
 					]
+				}
+			},
+			"rift:start_forced_attack": {
+				"set_actor_property": {
+					"rift:is_forced_attacking": "true"
+				}
+			},
+			"rift:stop_forced_attack": {
+				"set_actor_property": {
+					"rift:is_forced_attacking": "false"
 				}
 			},
 			"rift:manage_state": {

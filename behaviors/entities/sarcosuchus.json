@@ -7,6 +7,13 @@
             "is_summonable": true,
             "is_experimental": false,
 			"properties": {
+				"rift:is_forced_attacking": {
+					"values": [
+						false,
+						true
+					],
+					"default": false
+				},
 				"rift:tame_progress": {
 					"values": [
 						"notTamed",
@@ -37,10 +44,13 @@
 				"contTameTag": "controller.animation.add_tame_tag",
 				"contBabyTag": "controller.animation.add_baby_tag",
 				"contRiddenTag": "controller.animation.add_ridden_tag",
+				"contPoweredTag": "controller.animation.add_powered_tag",
+				"contForcedAttack": "controller.animation.general_forced_attack",
 				"contSpinAttack": "controller.animation.sarco_use_spin_attack",
 				"contSarcoEndSpinCooldown": "controller.animation.sarco_end_spin_cooldown",
 				"contTameState": "controller.animation.manage_tame_state",
 				"contBehaviorState": "controller.animation.manage_tame_behavior",
+				"animForcedAttack": "animation.forced_attack_sarcosuchus",
 				"animWildSpinAttackWater": "animation.sarco_spin_attack_wild_water",
 				"animTamedSpinAttackWater": "animation.sarco_spin_attack_tamed_water",
 				"animWildSpinAttackLand": "animation.sarco_spin_attack_wild_land",
@@ -52,6 +62,8 @@
 					"contTameTag",
 					"contBabyTag",
 					"contRiddenTag",
+					"contPoweredTag",
+					"contForcedAttack",
 					"contSpinAttack",
 					"contSarcoEndSpinCooldown",
 					"contTameState",
@@ -932,21 +944,6 @@
                     "can_sink": true
                 }
 			},
-            "rift:forced_bite": {
-				"minecraft:is_ignited": {}
-			},
-			"rift:summon_forced_bite_entity": {
-				"minecraft:spawn_entity": {
-					"entities": [
-						{
-							"spawn_entity": "rift:sarcosuchus_bite",
-							"single_use": true,
-							"min_wait_time": 0,
-							"max_wait_time": 0
-						}
-					]
-				}
-			},
 			"rift:temptable": {
                 "minecraft:behavior.tempt": {
                     "priority": 10,
@@ -1151,29 +1148,6 @@
 				"minecraft:pushable": {
 					"is_pushable": false,
 					"is_pushable_by_piston": false
-				}
-			},
-            "rift:default_family": {
-				"minecraft:type_family": {
-					"family": [
-						"sarcosuchus",
-						"mob",
-						"carnivore",
-						"reptile",
-						"waterMount"
-					]
-				}
-			},
-			"rift:forced_attack_family": {
-				"minecraft:type_family": {
-					"family": [
-						"sarcosuchus",
-						"mob",
-						"carnivore",
-						"reptile",
-						"waterMount",
-						"isForcedAttacking"
-					]
 				}
 			}
         },
@@ -4321,58 +4295,6 @@
 					]
 				}
 			},
-			"rift:use_forced_bite": {
-				"add": {
-					"component_groups": [
-						"rift:forced_bite"
-					]
-				}
-			},
-			"rift:stop_forced_bite": {
-				"remove": {
-					"component_groups": [
-						"rift:forced_bite"
-					]
-				}
-			},
-			"rift:on_summon_forced_bite": {
-				"add": {
-					"component_groups": [
-						"rift:summon_forced_bite_entity"
-					]
-				}
-			},
-			"rift:no_summon_forced_bite": {
-				"remove": {
-					"component_groups": [
-						"rift:summon_forced_bite_entity"
-					]
-				}
-			},
-			"rift:on_forced_attack_family": {
-				"add": {
-					"component_groups": [
-						"rift:forced_attack_family"
-					]
-				},
-				"remove": {
-					"component_groups": [
-						"rift:default_family"
-					]
-				}
-			},
-			"rift:no_forced_attack_family": {
-				"add": {
-					"component_groups": [
-						"rift:default_family"
-					]
-				},
-				"remove": {
-					"component_groups": [
-						"rift:forced_attack_family"
-					]
-				}
-			},
 			"rift:sarcosuchus_forced_spin": {
 				"add": {
 					"component_groups": [
@@ -4495,6 +4417,16 @@
 					"component_groups": [
 						"rift:aggravating_horn_attack"
 					]
+				}
+			},
+			"rift:start_forced_attack": {
+				"set_actor_property": {
+					"rift:is_forced_attacking": "true"
+				}
+			},
+			"rift:stop_forced_attack": {
+				"set_actor_property": {
+					"rift:is_forced_attacking": "false"
 				}
 			},
 			"rift:manage_state": {

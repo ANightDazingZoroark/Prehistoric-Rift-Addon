@@ -463,8 +463,11 @@ world.events.entityHurt.subscribe(({ hurtEntity, damagingEntity }) => {
         hurtEntity.runCommand(`effect @s weakness 20 2`)
         hurtEntity.runCommand(`effect @s slowness 20 2`)
     }
+    if (damagingEntity.id == 'rift:sarcosuchus' && damagingEntity.hasTag('powered')) {
+        hurtEntity.runCommand(`effect @s slowness 30 2`)
+    }
     if (damagingEntity.id == 'rift:anomalocaris') {
-        damagingEntity.runCommand(`effect @s instant_health 5`)
+        damagingEntity.getComponent('health').setCurrent(damagingEntity.getComponent('health').current + 4)
     }
     if (damagingEntity.id == 'rift:saurophaganax' && saurophaganaxFood.includes(hurtEntity.id) && hurtEntity.getComponent('health').current <= 0) {
         damagingEntity.runCommand(`scoreboard players add @s[scores={saurophLightBlst=!10}] saurophLightBlst 1`)

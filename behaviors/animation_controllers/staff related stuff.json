@@ -246,13 +246,8 @@
 							"stabMode": "query.is_riding && (query.get_ride -> query.owner_identifier) == 'rift:stegosaurus'"
 						}
 					],
-					"on_entry": [
-						"/tag @s remove stegoFocusCooldown",
-						"/scoreboard players set @s stegoFocusCharge 0"
-					],
 					"on_exit": [
-						"/tellraw @s {\"rawtext\":[{\"text\":\"Ability set to Stab Mode\"}]}",
-						"/execute @e[type=rift:stegosaurus, c=1, tag=tamed, tag=!baby, tag=stegoCooldown] ~ ~ ~ tag @p add stegoFocusCooldown"
+						"/tellraw @s {\"rawtext\":[{\"text\":\"Ability set to Stab Mode\"}]}"
 					]
 				},
 				"stabMode": {
@@ -423,9 +418,6 @@
 							"stabMode": "query.is_riding && (query.get_ride -> query.owner_identifier) == 'rift:triceratops'"
 						}
 					],
-					"on_entry": [
-						"/event entity @e[type=rift:triceratops, c=1, tag=tamed, tag=!baby] rift:no_forced_attack_family"
-					],
 					"on_exit": [
 						"/tellraw @s {\"rawtext\":[{\"text\":\"Ability set to Stab Mode\"}]}"
 					]
@@ -463,10 +455,7 @@
 						}
 					],
 					"on_entry": [
-						"/execute @e[type=rift:triceratops, c=1, tag=tamed, tag=!baby] ~ ~ ~ playanimation @s animation.triceratops.attack",
-						"/execute @e[type=rift:triceratops, c=1, tag=tamed, tag=!baby, tag=!illagerCaptain] ~ ~ ~ summon rift:triceratops_stab ~ ~ ~",
-						"/execute @e[type=rift:triceratops, c=1, tag=tamed, tag=!baby, tag=illagerCaptain] ~ ~ ~ summon rift:triceratops_buffed_stab ~ ~ ~",
-						"/event entity @e[type=rift:triceratops, c=1, tag=tamed, tag=!baby] rift:on_forced_attack_family"
+						"/event entity @e[type=rift:triceratops, c=1, tag=tamed, tag=!baby] rift:start_forced_attack"
 					]
 				},
 				"stabToCharge": {
@@ -542,9 +531,6 @@
 							"slashMode": "query.is_riding && (query.get_ride -> query.owner_identifier) == 'rift:utahraptor'"
 						}
 					],
-					"on_entry": [
-						"/event entity @e[type=rift:utahraptor, c=1, tag=tamed, tag=!baby] rift:no_forced_attack_family"
-					],
 					"on_exit": [
 						"/tellraw @s {\"rawtext\":[{\"text\":\"Ability set to Slash Mode\"}]}"
 					]
@@ -557,10 +543,6 @@
 						{
 							"slashModeLimbo": "query.is_using_item && (query.get_ride -> query.is_saddled) && query.get_equipped_item_name('main_hand') == 'command_staff'"
 						}
-					],
-					"on_entry": [
-						"/event entity @e[type=rift:utahraptor, c=1, tag=tamed, tag=!baby] rift:stop_forced_slash",
-						"/event entity @e[type=rift:utahraptor, c=1, tag=tamed, tag=!baby] rift:no_summon_forced_slash_entity"
 					]
 				},
 				"slashModeLimbo": {
@@ -586,9 +568,7 @@
 						}
 					],
 					"on_entry": [
-						"/playanimation @e[type=rift:utahraptor, c=1, tag=tamed, tag=!baby] animation.utahraptor.attack",
-						"/event entity @e[type=rift:utahraptor, c=1, tag=tamed, tag=!baby] rift:on_summon_forced_slash_entity",
-						"/event entity @e[type=rift:utahraptor, c=1, tag=tamed, tag=!baby] rift:on_forced_attack_family"
+						"/event entity @e[type=rift:utahraptor, c=1, tag=tamed, tag=!baby] rift:start_forced_attack"
 					]
 				},
 				"slashToCall": {
@@ -664,9 +644,6 @@
 							"stompMode": "query.is_riding && (query.get_ride -> query.owner_identifier) == 'rift:apatosaurus'"
 						}
 					],
-					"on_entry": [
-						"/event entity @e[type=rift:apatosaurus, c=1, tag=tamed, tag=!baby] rift:no_forced_attack_family"
-					],
 					"on_exit": [
 						"/tellraw @s {\"rawtext\":[{\"text\":\"Ability set to Stomp Mode\"}]}"
 					]
@@ -704,10 +681,7 @@
 						}
 					],
 					"on_entry": [
-						"/execute @e[type=rift:apatosaurus, c=1, tag=tamed, tag=!baby] ~ ~ ~ summon rift:apatosaurus_smash ~ ~ ~",
-						"/playanimation @e[type=rift:apatosaurus, c=1, tag=tamed, tag=!baby] animation.apatosaurus.stomp",
-						"/event entity @e[type=rift:apatosaurus, c=1, tag=tamed, tag=!baby] rift:on_forced_attack_family",
-						"/execute @e[type=rift:apatosaurus, c=1, tag=tamed, tag=!baby] ~ ~ ~ function cmd.apatosaurus_forced_break_blocks"
+						"/event entity @e[type=rift:apatosaurus, c=1, tag=tamed, tag=!baby] rift:start_forced_attack"
 					]
 				},
 				"stompToTailWhip": {
@@ -825,9 +799,6 @@
 							"attackMode": "query.is_riding && (query.get_ride -> query.owner_identifier) == 'rift:parasaurolophus'"
 						}
 					],
-					"on_entry": [
-						"/event entity @e[type=rift:parasaurolophus, c=1, tag=tamed, tag=!baby] rift:no_forced_attack_family"
-					],
 					"on_exit": [
 						"/tellraw @s {\"rawtext\":[{\"text\":\"Ability set to Attack Mode\"}]}"
 					]
@@ -865,9 +836,7 @@
 						}
 					],
 					"on_entry": [
-						"/execute @e[type=rift:parasaurolophus, c=1, tag=tamed, tag=!baby] ~ ~ ~ playanimation @s animation.parasaurolophus.harvest",
-						"/execute @e[type=rift:parasaurolophus, c=1, tag=tamed, tag=!baby] ~ ~ ~ summon rift:parasaurolophus_attack ~ ~ ~",
-						"/event entity @e[type=rift:parasaurolophus, c=1, tag=tamed, tag=!baby] rift:on_forced_attack_family"
+						"/event entity @e[type=rift:parasaurolophus, c=1, tag=tamed, tag=!baby] rift:start_forced_attack"
 					]
 				},
 				"attackToSoundBlast": {
@@ -1041,9 +1010,6 @@
 							"biteMode": "query.is_riding && (query.get_ride -> query.owner_identifier) == 'rift:sarcosuchus'"
 						}
 					],
-					"on_entry": [
-						"/event entity @e[type=rift:sarcosuchus, c=1, tag=tamed, tag=!baby] rift:no_forced_attack_family"
-					],
 					"on_exit": [
 						"/tellraw @s {\"rawtext\":[{\"text\":\"Ability set to Bite Mode\"}]}"
 					]
@@ -1081,9 +1047,7 @@
 						}
 					],
 					"on_entry": [
-						"/playanimation @e[type=rift:sarcosuchus, c=1, tag=tamed, tag=!baby] animation.sarcosuchus.bite",
-						"/execute @e[type=rift:sarcosuchus, c=1, tag=tamed, tag=!baby] ~ ~ ~ summon rift:sarcosuchus_bite ~ ~ ~",
-						"/event entity @e[type=rift:sarcosuchus, c=1, tag=tamed, tag=!baby] rift:on_forced_attack_family"
+						"/event entity @e[type=rift:sarcosuchus, c=1, tag=tamed, tag=!baby] rift:start_forced_attack"
 					]
 				},
 				"biteToSpin": {
@@ -1159,9 +1123,6 @@
 							"slashMode": "query.is_riding && (query.get_ride -> query.owner_identifier) == 'rift:anomalocaris'"
 						}
 					],
-					"on_entry": [
-						"/event entity @e[type=rift:anomalocaris, c=1, tag=tamed, tag=!baby] rift:no_forced_attack_family"
-					],
 					"on_exit": [
 						"/tellraw @s {\"rawtext\":[{\"text\":\"Ability set to Slash Mode\"}]}"
 					]
@@ -1199,9 +1160,7 @@
 						}
 					],
 					"on_entry": [
-						"/playanimation @e[type=rift:anomalocaris, c=1, tag=tamed, tag=!baby] animation.anomalocaris.attack",
-						"/execute @e[type=rift:anomalocaris, c=1, tag=tamed, tag=!baby] ~ ~ ~ summon rift:anomalocaris_slash",
-						"/event entity @e@e[type=rift:anomalocaris, c=1, tag=tamed, tag=!baby] rift:on_forced_attack_family"
+						"/event entity @e[type=rift:anomalocaris, c=1, tag=tamed, tag=!baby] rift:start_forced_attack"
 					]
 				},
 				"slashToCarry": {

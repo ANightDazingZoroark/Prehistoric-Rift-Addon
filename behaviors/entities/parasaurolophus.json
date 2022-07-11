@@ -7,6 +7,13 @@
             "is_summonable": true,
             "is_experimental": false,
 			"properties": {
+				"rift:is_forced_attacking": {
+					"values": [
+						false,
+						true
+					],
+					"default": false
+				},
                 "rift:tame_state": {
                     "values": {
 						"min": 0, //0 for standing, 1 for sitting, 2 for wandering
@@ -19,13 +26,16 @@
 			"animations": {
 				"contTameTag": "controller.animation.add_tame_tag",
 				"contBabyTag": "controller.animation.add_baby_tag",
+				"contForcedAttack": "controller.animation.general_forced_attack",
 				"contRiddenTag": "controller.animation.add_ridden_tag",
-				"contTameState": "controller.animation.manage_tame_state"
+				"contTameState": "controller.animation.manage_tame_state",
+				"animForcedAttack": "animation.forced_attack_parasaurolophus"
 			},
 			"scripts": {
 				"animate": [
 					"contTameTag",
 					"contBabyTag",
+					"contForcedAttack",
 					"contRiddenTag",
 					"contTameState"
 				]
@@ -585,18 +595,6 @@
                     }
                 }
             },
-			"rift:summon_forced_attack_entity": {
-				"minecraft:spawn_entity": {
-					"entities": [
-						{
-							"spawn_entity": "rift:parasaurolophus_attack",
-							"single_use": true,
-							"min_wait_time": 0,
-							"max_wait_time": 0
-						}
-					]
-				}
-			},
             "rift:parasaurolophus_reset_family": {
                 "minecraft:type_family": {
                     "family": [
@@ -719,17 +717,6 @@
 				"minecraft:pushable": {
 					"is_pushable": false,
 					"is_pushable_by_piston": false
-				}
-			},
-			"rift:forced_attack_family": {
-				"minecraft:type_family": {
-					"family": [
-						"parasaurolophus",
-						"mob",
-						"herbivore",
-						"dinosaur",
-						"isForcedAttacking"
-					]
 				}
 			}
         },
@@ -3867,34 +3854,6 @@
 					]
 				}
 			},
-			"rift:use_forced_attack": {
-				"add": {
-					"component_groups": [
-						"rift:forced_attack"
-					]
-				}
-			},
-			"rift:stop_forced_attack": {
-				"remove": {
-					"component_groups": [
-						"rift:forced_attack"
-					]
-				}
-			},
-			"rift:on_summon_forced_attack_entity": {
-				"add": {
-					"component_groups": [
-						"rift:summon_forced_attack_entity"
-					]
-				}
-			},
-			"rift:no_summon_forced_attack_entity": {
-				"remove": {
-					"component_groups": [
-						"rift:summon_forced_attack_entity"
-					]
-				}
-			},
 			"rift:commit_suicide": {
 				"run_command": {
 					"command": [
@@ -3902,28 +3861,14 @@
 					]
 				}
 			},
-			"rift:on_forced_attack_family": {
-				"add": {
-					"component_groups": [
-						"rift:forced_attack_family"
-					]
-				},
-				"remove": {
-					"component_groups": [
-						"rift:parasaurolophus_reset_family"
-					]
+			"rift:start_forced_attack": {
+				"set_actor_property": {
+					"rift:is_forced_attacking": "true"
 				}
 			},
-			"rift:no_forced_attack_family": {
-				"add": {
-					"component_groups": [
-						"rift:parasaurolophus_reset_family"
-					]
-				},
-				"remove": {
-					"component_groups": [
-						"rift:forced_attack_family"
-					]
+			"rift:stop_forced_attack": {
+				"set_actor_property": {
+					"rift:is_forced_attacking": "false"
 				}
 			},
 			"rift:manage_state": {

@@ -7,6 +7,13 @@
             "is_summonable": true,
 			"is_experimental": false,
 			"properties": {
+				"rift:is_forced_attacking": {
+					"values": [
+						false,
+						true
+					],
+					"default": false
+				},
 				"rift:tame_progress": {
 					"values": [
 						"notTamed",
@@ -47,9 +54,11 @@
 				"contBabyTag": "controller.animation.add_baby_tag",
 				"contRiddenTag": "controller.animation.add_ridden_tag",
 				"contTameState": "controller.animation.manage_tame_state",
+				"contForcedAttack": "controller.animation.general_forced_attack",
 				"contBehaviorState": "controller.animation.manage_tame_behavior",
 				"contPackBuffed": "controller.animation.utah_pack_buffed",
 				"contPackBuffCountdown": "controller.animation.utah_pack_buff_countdown",
+				"animForcedAttack": "animation.forced_attack_utahraptor",
 				"animPackBuffed": "animation.pack_buffed",
 				"animPackBuffCountdown": "animation.buff_countdown"
 			},
@@ -61,6 +70,7 @@
 					"contBabyTag",
 					"contRiddenTag",
 					"contTameState",
+					"contForcedAttack",
 					"contBehaviorState",
 					"contPackBuffed",
 					"contPackBuffCountdown"
@@ -1143,16 +1153,6 @@
 					"value": 11
 				}
 			},
-			"rift:utahraptor_unpounceable": {
-				"minecraft:type_family": {
-					"family": [
-						"utahraptor",
-						"mob",
-						"carnivore",
-						"dinosaur"
-					]
-				}
-			},
 			"rift:pushable": {
 				"minecraft:pushable": {
 					"is_pushable": true,
@@ -1163,17 +1163,6 @@
 				"minecraft:pushable": {
 					"is_pushable": false,
 					"is_pushable_by_piston": false
-				}
-			},
-			"rift:forced_attack_family": {
-				"minecraft:type_family": {
-					"family": [
-						"utahraptor",
-						"mob",
-						"carnivore",
-						"dinosaur",
-						"isForcedAttacking"
-					]
 				}
 			},
 			"rift:can_attack": {
@@ -4755,30 +4744,6 @@
 					]
 				}
 			},
-			"rift:on_forced_attack_family": {
-				"add": {
-					"component_groups": [
-						"rift:forced_attack_family"
-					]
-				},
-				"remove": {
-					"component_groups": [
-						"rift:utahraptor_unpounceable"
-					]
-				}
-			},
-			"rift:no_forced_attack_family": {
-				"add": {
-					"component_groups": [
-						"rift:utahraptor_unpounceable"
-					]
-				},
-				"remove": {
-					"component_groups": [
-						"rift:forced_attack_family"
-					]
-				}
-			},
 			"rift:become_angry": {
 				"add": {
 					"component_groups": [
@@ -5031,6 +4996,16 @@
 					"component_groups": [
 						"rift:aggravating_horn_attack"
 					]
+				}
+			},
+			"rift:start_forced_attack": {
+				"set_actor_property": {
+					"rift:is_forced_attacking": "true"
+				}
+			},
+			"rift:stop_forced_attack": {
+				"set_actor_property": {
+					"rift:is_forced_attacking": "false"
 				}
 			},
 			"rift:manage_state": {

@@ -7,6 +7,13 @@
             "is_summonable": true,
             "is_experimental": false,
 			"properties": {
+				"rift:is_forced_attacking": {
+					"values": [
+						false,
+						true
+					],
+					"default": false
+				},
 				"rift:tame_progress": {
 					"values": [
 						"notTamed",
@@ -37,6 +44,7 @@
 				"contTameTag": "controller.animation.add_tame_tag",
 				"contBabyTag": "controller.animation.add_baby_tag",
 				"contRiddenTag": "controller.animation.add_ridden_tag",
+				"contForcedAttack": "controller.animation.general_forced_attack",
 				"contCarry": "controller.animation.anomalocaris_carrying",
 				"contInvisibility": "controller.animation.anomalocaris_invisibility",
 				"contTameState": "controller.animation.manage_tame_state",
@@ -50,6 +58,7 @@
 					"contTameTag",
 					"contBabyTag",
 					"contRiddenTag",
+					"contForcedAttack",
 					"contInvisibility",
 					"contCarry",
 					"contTameState",
@@ -905,21 +914,6 @@
                     "can_sink": true
                 }
 			},
-			"rift:forced_slash": {
-				"minecraft:is_charged": {}
-			},
-			"rift:summon_forced_slash_entity": {
-				"minecraft:spawn_entity": {
-					"entities": [
-						{
-							"spawn_entity": "rift:anomalocaris_slash",
-							"single_use": true,
-							"min_wait_time": 0,
-							"max_wait_time": 0
-						}
-					]
-				}
-			},
 			"rift:carry_mob": {
 				"minecraft:is_illager_captain": {}
 			},
@@ -1155,31 +1149,6 @@
 				"minecraft:pushable": {
 					"is_pushable": false,
 					"is_pushable_by_piston": false
-				}
-			},
-            "rift:default_family": {
-				"minecraft:type_family": {
-					"family": [
-						"anomalocaris",
-						"mob",
-						"carnivore",
-						"invertebrate",
-						"waterMount",
-						"arthropod"
-					]
-				}
-			},
-			"rift:forced_attack_family": {
-				"minecraft:type_family": {
-					"family": [
-						"anomalocaris",
-						"mob",
-						"carnivore",
-						"invertebrate",
-						"waterMount",
-						"arthropod",
-						"isForcedAttacking"
-					]
 				}
 			},
 			"rift:can_attack": {
@@ -4006,58 +3975,6 @@
 					]
 				}
 			},
-			"rift:use_forced_slash": {
-				"add": {
-					"component_groups": [
-						"rift:forced_slash"
-					]
-				}
-			},
-			"rift:stop_forced_slash": {
-				"remove": {
-					"component_groups": [
-						"rift:forced_slash"
-					]
-				}
-			},
-			"rift:on_summon_forced_slash": {
-				"add": {
-					"component_groups": [
-						"rift:summon_forced_slash_entity"
-					]
-				}
-			},
-			"rift:no_summon_forced_slash": {
-				"remove": {
-					"component_groups": [
-						"rift:summon_forced_slash_entity"
-					]
-				}
-			},
-			"rift:on_forced_attack_family": {
-				"add": {
-					"component_groups": [
-						"rift:forced_attack_family"
-					]
-				},
-				"remove": {
-					"component_groups": [
-						"rift:default_family"
-					]
-				}
-			},
-			"rift:no_forced_attack_family": {
-				"add": {
-					"component_groups": [
-						"rift:default_family"
-					]
-				},
-				"remove": {
-					"component_groups": [
-						"rift:forced_attack_family"
-					]
-				}
-			},
 			"rift:commit_suicide": {
 				"run_command": {
 					"command": [
@@ -4272,11 +4189,16 @@
 					"component_groups": [
 						"rift:aggravating_horn_attack"
 					]
-				},
-				"run_command": {
-					"command": [
-						"say test"
-					]
+				}
+			},
+			"rift:start_forced_attack": {
+				"set_actor_property": {
+					"rift:is_forced_attacking": "true"
+				}
+			},
+			"rift:stop_forced_attack": {
+				"set_actor_property": {
+					"rift:is_forced_attacking": "false"
 				}
 			},
 			"rift:manage_state": {
