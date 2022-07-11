@@ -7,6 +7,27 @@
 			"is_spawnable": true,
 			"is_experimental": false,
 			"properties": {
+				"rift:is_forced_attacking": {
+					"values": [
+						false,
+						true
+					],
+					"default": false
+				},
+                "rift:focused_stab_charge": {
+                    "values": {
+						"min": 0,
+						"max": 5
+					},
+					"default": 0
+                },
+				"rift:is_focused_stabbing": {
+					"values": [
+						false,
+						true
+					],
+					"default": false
+				},
                 "rift:tame_state": {
                     "values": {
 						"min": 0, //0 for standing, 1 for sitting, 2 for wandering
@@ -27,9 +48,17 @@
 				"contTameTag": "controller.animation.add_tame_tag",
 				"contBabyTag": "controller.animation.add_baby_tag",
 				"contRiddenTag": "controller.animation.add_ridden_tag",
+				"contForcedAttack": "controller.animation.tyrannosaurus_forced_attack",
+				"contFocusedStab": "controller.animation.stegosaurus_focused_stab",
 				"contStegoEndFocusedStabCooldown": "controller.animation.stego_end_focus_stab_cooldown",
 				"contTameState": "controller.animation.manage_tame_state",
 				"contBehaviorState": "controller.animation.manage_tame_behavior",
+				"animForcedAttack": "animation.forced_attack_stegosaurus",
+				"animStegoFocusStabOne": "animation.focused_stab_stegosaurus_one",
+				"animStegoFocusStabTwo": "animation.focused_stab_stegosaurus_two",
+				"animStegoFocusStabThree": "animation.focused_stab_stegosaurus_three",
+				"animStegoFocusStabFour": "animation.focused_stab_stegosaurus_four",
+				"animStegoFocusStabFive": "animation.focused_stab_stegosaurus_five",
 				"animStegoFocusStabCooldownOne": "animation.stego_focused_stab_cooldown_one",
 				"animStegoFocusStabCooldownTwo": "animation.stego_focused_stab_cooldown_two",
 				"animStegoFocusStabCooldownThree": "animation.stego_focused_stab_cooldown_three",
@@ -41,6 +70,8 @@
 					"contTameTag",
 					"contBabyTag",
 					"contRiddenTag",
+					"contForcedAttack",
+					"contFocusedStab",
 					"contStegoEndFocusedStabCooldown",
 					"contTameState",
 					"contBehaviorState"
@@ -610,7 +641,7 @@
 					]
 				}
 			},
-			"rift:forced_stab": {
+			"rift:focused_stab": {
 				"minecraft:is_charged": {}
 			},
 			"rift:forced_plate_fling_pose": {
@@ -898,17 +929,6 @@
 						"mob",
 						"herbivore",
 						"dinosaur"
-					]
-				}
-			},
-			"rift:forced_attack_family": {
-				"minecraft:type_family": {
-					"family": [
-						"stegosaurus",
-						"mob",
-						"herbivore",
-						"dinosaur",
-						"isForcedAttacking"
 					]
 				}
 			},
@@ -4040,92 +4060,38 @@
 					]
 				}
 			},
-			"rift:on_forced_attack_family": {
-				"add": {
-					"component_groups": [
-						"rift:forced_attack_family"
-					]
-				},
-				"remove": {
-					"component_groups": [
-						"rift:default_family"
-					]
-				}
-			},
-			"rift:no_forced_attack_family": {
-				"add": {
-					"component_groups": [
-						"rift:default_family"
-					]
-				},
-				"remove": {
-					"component_groups": [
-						"rift:forced_attack_family"
-					]
-				}
-			},
-			"rift:focused_stab_one": {
+			"rift:focused_stab_one_cooldown": {
 				"add": {
 					"component_groups": [
 						"rift:charged_cooldown_one"
 					]
-				},
-				"run_command": {
-					"command": [
-						"playanimation @s animation.stegosaurus.focused_attack",
-						"summon rift:stegosaurus_focused_stab ~ ~ ~ rift:use_charge_one"
-					]
 				}
 			},
-			"rift:focused_stab_two": {
+			"rift:focused_stab_two_cooldown": {
 				"add": {
 					"component_groups": [
 						"rift:charged_cooldown_two"
 					]
-				},
-				"run_command": {
-					"command": [
-						"playanimation @s animation.stegosaurus.focused_attack",
-						"summon rift:stegosaurus_focused_stab ~ ~ ~ rift:use_charge_two"
-					]
 				}
 			},
-			"rift:focused_stab_three": {
+			"rift:focused_stab_three_cooldown": {
 				"add": {
 					"component_groups": [
 						"rift:charged_cooldown_three"
 					]
-				},
-				"run_command": {
-					"command": [
-						"playanimation @s animation.stegosaurus.focused_attack",
-						"summon rift:stegosaurus_focused_stab ~ ~ ~ rift:use_charge_three"
-					]
 				}
 			},
-			"rift:focused_stab_four": {
+			"rift:focused_stab_four_cooldown": {
 				"add": {
 					"component_groups": [
 						"rift:charged_cooldown_four"
 					]
-				},
-				"run_command": {
-					"command": [
-						"playanimation @s animation.stegosaurus.focused_attack",
-						"summon rift:stegosaurus_focused_stab ~ ~ ~ rift:use_charge_four"
-					]
 				}
 			},
-			"rift:focused_stab_five": {
+			"rift:focused_stab_five_cooldown": {
 				"add": {
 					"component_groups": [
 						"rift:charged_cooldown_five"
-					]
-				},
-				"run_command": {
-					"command": [
-						"playanimation @s animation.stegosaurus.focused_attack",
-						"summon rift:stegosaurus_focused_stab ~ ~ ~ rift:use_charge_five"
 					]
 				}
 			},
@@ -4306,6 +4272,56 @@
 					"component_groups": [
 						"rift:aggravating_horn_attack"
 					]
+				}
+			},
+			"rift:focused_stab_charge_zero": {
+				"set_actor_property": {
+					"rift:focused_stab_charge": "0"
+				}
+			},
+			"rift:focused_stab_charge_one": {
+				"set_actor_property": {
+					"rift:focused_stab_charge": "1"
+				}
+			},
+			"rift:focused_stab_charge_two": {
+				"set_actor_property": {
+					"rift:focused_stab_charge": "2"
+				}
+			},
+			"rift:focused_stab_charge_three": {
+				"set_actor_property": {
+					"rift:focused_stab_charge": "3"
+				}
+			},
+			"rift:focused_stab_charge_four": {
+				"set_actor_property": {
+					"rift:focused_stab_charge": "4"
+				}
+			},
+			"rift:focused_stab_charge_five": {
+				"set_actor_property": {
+					"rift:focused_stab_charge": "5"
+				}
+			},
+			"rift:start_forced_attack": {
+				"set_actor_property": {
+					"rift:is_forced_attacking": "true"
+				}
+			},
+			"rift:stop_forced_attack": {
+				"set_actor_property": {
+					"rift:is_forced_attacking": "false"
+				}
+			},
+			"rift:start_focused_stab": {
+				"set_actor_property": {
+					"rift:is_focused_stabbing": "true"
+				}
+			},
+			"rift:stop_focused_stab": {
+				"set_actor_property": {
+					"rift:is_focused_stabbing": "false"
 				}
 			},
 			"rift:manage_state": {

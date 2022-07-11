@@ -133,9 +133,6 @@
 							"biteMode": "query.is_riding && (query.get_ride -> query.owner_identifier) == 'rift:tyrannosaurus'"
 						}
 					],
-					"on_entry": [
-						"/event entity @e[type=rift:tyrannosaurus, c=1, tag=tamed, tag=!baby] rift:no_forced_attack_family"
-					],
 					"on_exit": [
 						"/tellraw @s {\"rawtext\":[{\"text\":\"Ability set to Bite Mode\"}]}"
 					]
@@ -173,10 +170,7 @@
 						}
 					],
 					"on_entry": [
-						"/execute @e[type=rift:tyrannosaurus, c=1, tag=tamed, tag=!baby] ~ ~ ~ summon rift:tyrannosaurus_bite ~ ~ ~",
-						"/event entity @e[type=rift:tyrannosaurus, c=1, tag=tamed, tag=!baby] rift:on_forced_attack_family",
-						"/execute @e[type=rift:tyrannosaurus, c=1, tag=tamed, tag=!baby] ~ ~ ~ playanimation @s animation.tyrannosaurus.attack",
-						"/execute @e[type=rift:tyrannosaurus, c=1, tag=tamed, tag=!baby] ~ ~ ~ function cmd.tyrannosaurus_forced_break_blocks"
+						"/event entity @e[type=rift:tyrannosaurus, c=1, tag=tamed, tag=!baby] rift:start_forced_attack"
 					]
 				},
 				"biteToRoar": {
@@ -253,7 +247,6 @@
 						}
 					],
 					"on_entry": [
-						"/event entity @e[type=rift:stegosaurus, c=1, tag=tamed, tag=!baby] rift:no_forced_attack_family",
 						"/tag @s remove stegoFocusCooldown",
 						"/scoreboard players set @s stegoFocusCharge 0"
 					],
@@ -295,9 +288,7 @@
 						}
 					],
 					"on_entry": [
-						"/execute @e[type=rift:stegosaurus, c=1, tag=tamed, tag=!baby] ~ ~ ~ summon rift:stegosaurus_stab ~ ~ ~",
-						"/event entity @e[type=rift:stegosaurus, c=1, tag=tamed, tag=!baby] rift:on_forced_attack_family",
-						"/execute @e[type=rift:stegosaurus, c=1, tag=tamed, tag=!baby] ~ ~ ~ playanimation @s animation.stegosaurus.attack"
+						"/event entity @e[type=rift:stegosaurus, c=1, tag=tamed, tag=!baby] rift:start_forced_attack"
 					]
 				},
 				"stabToFocus": {
@@ -323,11 +314,11 @@
 							"focusToPlateFling": "query.is_using_item && (query.get_ride -> query.is_saddled) && query.get_equipped_item_name('main_hand') == 'command_staff'"
 						},
 						{
-							"useFocusMode": "(query.get_ride -> query.is_saddled) && query.get_equipped_item_name('main_hand') == 'command_staff' && query.is_jumping"
+							"useFocusMode": "(query.get_ride -> query.is_saddled) && (query.get_ride -> query.skin_id) <= 0 && query.get_equipped_item_name('main_hand') == 'command_staff' && query.is_jumping"
+						},
+						{
+							"useFocusModeCooldown": "(query.get_ride -> query.is_saddled) && (query.get_ride -> query.skin_id) > 0 && query.get_equipped_item_name('main_hand') == 'command_staff' && query.is_jumping"
 						}
-					],
-					"on_entry": [
-						"/scoreboard players set @s stegoFocusCharge 0"
 					]
 				},
 				"useFocusMode": {
@@ -339,18 +330,18 @@
 					"animations": [
 						"animStegoFocus"
 					],
-					"on_entry": [
-						"/tellraw @s[tag=stegoFocusCooldown] {\"rawtext\":[{\"text\":\"Focused stab on cooldown\"}]}"
-					],
 					"on_exit": [
-						"/execute @s[scores={stegoFocusCharge=1}] ~ ~ ~ event entity @e[type=rift:stegosaurus, c=1, tag=tamed, tag=!baby, tag=!stegoCooldown] rift:focused_stab_one",
-						"/execute @s[scores={stegoFocusCharge=2}] ~ ~ ~ event entity @e[type=rift:stegosaurus, c=1, tag=tamed, tag=!baby, tag=!stegoCooldown] rift:focused_stab_two",
-						"/execute @s[scores={stegoFocusCharge=3}] ~ ~ ~ event entity @e[type=rift:stegosaurus, c=1, tag=tamed, tag=!baby, tag=!stegoCooldown] rift:focused_stab_three",
-						"/execute @s[scores={stegoFocusCharge=4}] ~ ~ ~ event entity @e[type=rift:stegosaurus, c=1, tag=tamed, tag=!baby, tag=!stegoCooldown] rift:focused_stab_four",
-						"/execute @s[scores={stegoFocusCharge=5}] ~ ~ ~ event entity @e[type=rift:stegosaurus, c=1, tag=tamed, tag=!baby, tag=!stegoCooldown] rift:focused_stab_five",
-						"/event entity @e[type=rift:stegosaurus, c=1, tag=tamed, tag=!baby, tag=!stegoCooldown] rift:on_forced_attack_family",
-						"/tag @e[type=rift:stegosaurus, c=1, tag=tamed, tag=!baby] add stegoCooldown",
-						"/tag @s add stegoFocusCooldown"
+						"/event entity @e[type=rift:stegosaurus, c=1, tag=tamed, tag=!baby] rift:start_focused_stab"
+					]
+				},
+				"useFocusModeCooldown": {
+					"transitions": [
+						{
+							"focusMode": "query.get_equipped_item_name('main_hand') != 'command_staff' || !query.is_jumping"
+						}
+					],
+					"on_entry": [
+						"/tellraw @s {\"rawtext\":[{\"text\":\"Focused stab on cooldown\"}]}"
 					]
 				},
 				"focusToPlateFling": {

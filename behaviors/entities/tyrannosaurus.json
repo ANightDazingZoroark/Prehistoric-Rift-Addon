@@ -7,6 +7,13 @@
 			"is_spawnable": true,
 			"is_experimental": false,
 			"properties": {
+				"rift:is_forced_attacking": {
+					"values": [
+						false,
+						true
+					],
+					"default": false
+				},
                 "rift:tame_state": {
                     "values": {
 						"min": 0, //0 for standing, 1 for sitting, 2 for wandering
@@ -28,10 +35,12 @@
 				"contBabyTag": "controller.animation.add_baby_tag",
 				"contSleepingTag": "controller.animation.add_sleeping_tag",
 				"contRiddenTag": "controller.animation.add_ridden_tag",
+				"contForcedAttack": "controller.animation.tyrannosaurus_forced_attack",
 				"contTyrannoEndRoarCooldown": "controller.animation.tyranno_end_roar_cooldown",
 				"contIntimidate": "controller.animation.tyranno_intimidate",
 				"contTameState": "controller.animation.manage_tame_state",
 				"contBehaviorState": "controller.animation.manage_tame_behavior",
+				"animForcedAttack": "animation.forced_attack_tyrannosaurus",
 				"animTyrannoRoarCooldown": "animation.tyranno_roar_cooldown",
 				"animIntimidateWild": "animation.apex_predator_intimidate_wild",
 				"animIntimidateTamed": "animation.apex_predator_intimidate_tamed"
@@ -42,6 +51,7 @@
 					"contBabyTag",
 					"contSleepingTag",
 					"contRiddenTag",
+					"contForcedAttack",
 					"contTyrannoEndRoarCooldown",
 					"contIntimidate",
 					"contTameState",
@@ -1068,18 +1078,6 @@
 						"carnivore",
 						"dinosaur",
 						"largeCarnivore"
-					]
-				}
-			},
-			"rift:forced_attack_family": {
-				"minecraft:type_family": {
-					"family": [
-						"tyrannosaurus",
-						"mob",
-						"carnivore",
-						"dinosaur",
-						"largeCarnivore",
-						"isForcedAttacking"
 					]
 				}
 			},
@@ -4848,30 +4846,6 @@
 					]
 				}
 			},
-			"rift:on_forced_attack_family": {
-				"add": {
-					"component_groups": [
-						"rift:forced_attack_family"
-					]
-				},
-				"remove": {
-					"component_groups": [
-						"rift:default_family"
-					]
-				}
-			},
-			"rift:no_forced_attack_family": {
-				"add": {
-					"component_groups": [
-						"rift:default_family"
-					]
-				},
-				"remove": {
-					"component_groups": [
-						"rift:forced_attack_family"
-					]
-				}
-			},
 			"rift:halloween_costume_zero": {
 				"add": {
 					"component_groups": [
@@ -5308,6 +5282,16 @@
 					"component_groups": [
 						"rift:tyrannosaurus_nest_dweller_awake"
 					]
+				}
+			},
+			"rift:start_forced_attack": {
+				"set_actor_property": {
+					"rift:is_forced_attacking": "true"
+				}
+			},
+			"rift:stop_forced_attack": {
+				"set_actor_property": {
+					"rift:is_forced_attacking": "false"
 				}
 			},
 			"rift:manage_state": {

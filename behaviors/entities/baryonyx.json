@@ -7,6 +7,16 @@
             "is_summonable": true,
             "is_experimental": false,
 			"properties": {
+				"rift:tame_progress": {
+					"values": [
+						"notTamed",
+						"tamed",
+						"cooldown",
+						"canBeFed"
+					],
+					"default": "notTamed",
+					"client_sync": true
+				},
                 "rift:tame_state": {
                     "values": {
 						"min": 0, //0 for standing, 1 for sitting, 2 for wandering
@@ -3833,6 +3843,7 @@
 					]
 				},
 				"set_actor_property": {
+					"rift:tame_progress": "'tamed'",
 					"rift:behavior_state": "3"
 				}
 			},
@@ -3854,6 +3865,9 @@
 					"command": [
 						"tellraw @p {\"rawtext\":[{\"text\":\"You made a wild Baryonyx trust you! Keep feeding it every once in a while to eventually tame it!\"}]}"
 					]
+				},
+				"set_actor_property": {
+					"rift:tame_progress": "'cooldown'"
 				}
 			},
 			"rift:can_be_tamed_again": {
@@ -3869,6 +3883,9 @@
 							"component_groups": [
 								"rift:baryonyx_adult_waiting_for_tame"
 							]
+						},
+						"set_actor_property": {
+							"rift:tame_progress": "'canBeFed'"
 						}
 					},
 					{
@@ -3882,6 +3899,9 @@
 							"component_groups": [
 								"rift:baryonyx_adult_waiting_for_tame"
 							]
+						},
+						"set_actor_property": {
+							"rift:tame_progress": "'canBeFed'"
 						}
 					}
 				]
@@ -3896,6 +3916,9 @@
 					"component_groups": [
 						"rift:baryonyx_adult_chance_for_tame"
 					]
+				},
+				"set_actor_property": {
+					"rift:tame_progress": "'cooldown'"
 				},
 				"run_command": {
 					"command": [
@@ -3925,6 +3948,9 @@
 						"rift:baryonyx_adult_wild_poison_area",
 						"rift:wild_standing"
 					]
+				},
+				"set_actor_property": {
+					"rift:tame_progress": "'tamed'"
 				},
 				"run_command": {
 					"command": [
