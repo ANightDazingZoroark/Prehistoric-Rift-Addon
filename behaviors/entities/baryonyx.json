@@ -954,6 +954,7 @@
 			"rift:temptable": {
                 "minecraft:behavior.tempt": {
                     "priority": 10,
+					"within_radius": 16,
                     "items": [
                         "minecraft:beef",
 						"minecraft:cooked_beef",
@@ -3349,6 +3350,27 @@
 							"filters": {
 								"all_of": [
 									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:trust"
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"operator": "!=",
+										"value": "minecraft:is_tamed"
+									}
+								]
+							},
+							"event": "rift:reset_taming_progress",
+							"target": "self"
+						}
+					},
+					{
+						"on_damage": {
+							"filters": {
+								"all_of": [
+									{
 										"test": "is_family",
 										"subject": "other",
 										"value": "baryonyx"
@@ -3782,7 +3804,8 @@
 				"add": {
 					"component_groups": [
 						"rift:baryonyx_adult_trusting",
-						"rift:baryonyx_adult_waiting_for_tame"
+						"rift:baryonyx_adult_waiting_for_tame",
+						"rift:temptable"
 					]
 				},
 				"remove": {
@@ -3799,6 +3822,31 @@
 				},
 				"set_actor_property": {
 					"rift:tame_progress": "'cooldown'"
+				}
+			},
+			"rift:reset_taming_progress": {
+				"add": {
+					"component_groups": [
+						"rift:default_targets",
+						"rift:baryonyx_adult_not_trusting"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:baryonyx_adult_trusting",
+						"rift:baryonyx_adult_waiting_for_tame",
+						"rift:temptable",
+						"rift:baryonyx_adult_chance_for_tame",
+						"rift:baryonyx_adult_tameable"
+					]
+				},
+				"run_command": {
+					"command": [
+						"tellraw @p {\"rawtext\":[{\"text\":\"Your taming progress has been reset!\"}]}"
+					]
+				},
+				"set_actor_property": {
+					"rift:tame_progress": "'notTamed'"
 				}
 			},
 			"rift:can_be_tamed_again": {
@@ -3877,7 +3925,8 @@
 						"rift:baryonyx_water_dweller",
 						"rift:baryonyx_land_dweller",
 						"rift:baryonyx_adult_wild_poison_area",
-						"rift:wild_standing"
+						"rift:wild_standing",
+						"rift:temptable"
 					]
 				},
 				"set_actor_property": {

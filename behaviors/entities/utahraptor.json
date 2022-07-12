@@ -926,6 +926,7 @@
 			"rift:temptable": {
                 "minecraft:behavior.tempt": {
                     "priority": 12,
+					"within_radius": 16,
                     "items": [
                         "minecraft:beef",
 						"minecraft:cooked_beef",
@@ -3722,6 +3723,27 @@
 							"filters": {
 								"all_of": [
 									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:trust"
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"operator": "!=",
+										"value": "minecraft:is_tamed"
+									}
+								]
+							},
+							"event": "rift:reset_taming_progress",
+							"target": "self"
+						}
+					},
+					{
+						"on_damage": {
+							"filters": {
+								"all_of": [
+									{
 										"test": "is_family",
 										"subject": "other",
 										"value": "utahraptor"
@@ -4179,7 +4201,8 @@
 				"add": {
 					"component_groups": [
 						"rift:utahraptor_adult_trusting",
-						"rift:utahraptor_adult_waiting_for_tame"
+						"rift:utahraptor_adult_waiting_for_tame",
+						"rift:temptable"
 					]
 				},
 				"remove": {
@@ -4197,6 +4220,32 @@
 				},
 				"set_actor_property": {
 					"rift:tame_progress": "'cooldown'"
+				}
+			},
+			"rift:reset_taming_progress": {
+				"add": {
+					"component_groups": [
+						"rift:default_targets",
+						"rift:utahraptor_adult_wild_not_trusting",
+						"rift:utahraptor_adult_calm"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:utahraptor_adult_trusting",
+						"rift:utahraptor_adult_waiting_for_tame",
+						"rift:temptable",
+						"rift:utahraptor_adult_chance_for_tame",
+						"rift:utahraptor_adult_tameable"
+					]
+				},
+				"run_command": {
+					"command": [
+						"tellraw @p {\"rawtext\":[{\"text\":\"Your taming progress has been reset!\"}]}"
+					]
+				},
+				"set_actor_property": {
+					"rift:tame_progress": "'notTamed'"
 				}
 			},
 			"rift:can_be_tamed_again": {
@@ -4271,7 +4320,8 @@
 						"rift:utahraptor_adult_tameable",
 						"rift:utahraptor_adult_chance_for_tame",
 						"rift:utahraptor_adult_trusting",
-						"rift:wild_standing"
+						"rift:wild_standing",
+						"rift:temptable"
 					]
 				},
 				"set_actor_property": {
