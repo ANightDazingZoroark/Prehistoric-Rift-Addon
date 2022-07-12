@@ -1,0 +1,63 @@
+{
+    "format_version": "1.16.0",
+    "minecraft:entity": {
+        "description": {
+            "identifier": "rift:direwolf_forced_explosion",
+            "is_spawnable": false,
+            "is_summonable": true,
+            "is_experimental": false,
+            "runtime_identifier": "minecraft:snowball"
+        },
+        "component_groups": {
+            "rift:explode": {
+                "minecraft:explode": {
+                    "fuse_length": 0,
+                    "fuse_lit": true,
+                    "power": 4
+                }
+            }
+        },
+        "components": {
+            "minecraft:projectile": {
+                "on_hit": {
+                    "definition_event": {
+                        "affect_projectile": true,
+                        "event_trigger": {
+                            "event": "rift:explode",
+                            "target": "self"
+                        }
+                    }
+                },
+                "power": 2,
+                "gravity": 0,
+                "angleoffset": 0
+            },
+            "minecraft:timer": {
+                "time": 0.5,
+                "time_down_event": {
+                    "event": "rift:explode",
+                    "target": "self"
+                }
+            },
+            "minecraft:type_family": {
+                "family": [
+                    "direwolfBreathExplode"
+                ]
+            },
+            "minecraft:physics": {},
+            "minecraft:pushable": {
+                "is_pushable": true,
+                "is_pushable_by_piston": true
+            }
+        },
+        "events": {
+            "rift:explode": {
+                "add": {
+                    "component_groups": [
+                        "rift:explode"
+                    ]
+                }
+            }
+        }
+    }
+}

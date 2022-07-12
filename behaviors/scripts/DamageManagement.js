@@ -1,4 +1,4 @@
-import { BlockLocation, ItemStack, Items, MinecraftItemTypes, world } from "mojang-minecraft"
+import { BlockLocation, ItemStack, Items, MinecraftItemTypes, world, Location } from "mojang-minecraft"
 
 let saurophaganaxFood = [
     'minecraft:blaze',
@@ -469,10 +469,13 @@ world.events.entityHurt.subscribe(({ hurtEntity, damagingEntity }) => {
     if (damagingEntity.id == 'rift:anomalocaris') {
         damagingEntity.getComponent('health').setCurrent(damagingEntity.getComponent('health').current + 4)
     }
-    if (damagingEntity.id == 'rift:saurophaganax' && saurophaganaxFood.includes(hurtEntity.id) && hurtEntity.getComponent('health').current <= 0) {
+    if (damagingEntity.id == 'rift:saurophaganax' && !damagingEntity.hasTag('roaring') && saurophaganaxFood.includes(hurtEntity.id) && hurtEntity.getComponent('health').current <= 0) {
         damagingEntity.runCommand(`scoreboard players add @s[scores={saurophLightBlst=!10}] saurophLightBlst 1`)
     }
-    if (damagingEntity.id == 'rift:baryonyx' && damagingEntity.getComponent('mark_variant').value == 1) {
+    if (damagingEntity.id == 'rift:direwolf' && damagingEntity.hasTag('sonicBoom')) {
+        hurtEntity.dimension.spawnEntity('rift:direwolf_explosion', hurtEntity.location)
+    }
+    if (damagingEntity.id == 'rift:baryonyx' && damagingEntity.hasTag('forcedClaw')) {
         hurtEntity.runCommand(`effect @s poison 10`)
     }
 })

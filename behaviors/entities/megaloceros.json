@@ -7,6 +7,13 @@
             "is_summonable": true,
             "is_experimental": false,
 			"properties": {
+				"rift:is_forced_attacking": {
+					"values": [
+						false,
+						true
+					],
+					"default": false
+				},
                 "rift:tame_state": {
                     "values": {
 						"min": 0, //0 for standing, 1 for sitting, 2 for wandering
@@ -27,6 +34,7 @@
 				"contTameTag": "controller.animation.add_tame_tag",
 				"contBabyTag": "controller.animation.add_baby_tag",
 				"contRiddenTag": "controller.animation.add_ridden_tag",
+				"contForcedAttack": "controller.animation.general_forced_attack",
 				"contWildBreakStuff": "controller.animation.megaloceros_wild_can_break_blocks",
 				"contTamedBreakStuff": "controller.animation.megaloceros_tamed_can_break_blocks",
 				"contTameState": "controller.animation.manage_tame_state",
@@ -39,6 +47,7 @@
 					"contTameTag",
 					"contBabyTag",
 					"contRiddenTag",
+					"contForcedAttack",
 					"contWildBreakStuff",
 					"contTamedBreakStuff",
 					"contTameState",
@@ -623,21 +632,6 @@
 					}
 				}
 			},
-            "rift:forced_headbutt": {
-				"minecraft:is_sheared": {}
-			},
-			"rift:summon_forced_headbutt_entity": {
-				"minecraft:spawn_entity": {
-					"entities": [
-						{
-							"spawn_entity": "rift:megaloceros_headbutt",
-							"single_use": true,
-							"min_wait_time": 0,
-							"max_wait_time": 0
-						}
-					]
-				}
-			},
 			"rift:temptable": {
 				"minecraft:behavior.tempt": {
 					"priority": 9,
@@ -877,27 +871,6 @@
 				"minecraft:pushable": {
 					"is_pushable": false,
 					"is_pushable_by_piston": false
-				}
-			},
-			"rift:default_family": {
-				"minecraft:type_family": {
-					"family": [
-						"megaloceros",
-						"mob",
-						"herbivore",
-						"mammal"
-					]
-				}
-			},
-			"rift:forced_attack_family": {
-				"minecraft:type_family": {
-					"family": [
-						"megaloceros",
-						"mob",
-						"herbivore",
-						"mammal",
-						"isForcedAttacking"
-					]
 				}
 			},
             "rift:can_attack": {
@@ -3459,30 +3432,6 @@
                     ]
                 }
             },
-			"rift:on_forced_attack_family": {
-				"add": {
-					"component_groups": [
-						"rift:forced_attack_family"
-					]
-				},
-				"remove": {
-					"component_groups": [
-						"rift:default_family"
-					]
-				}
-			},
-			"rift:no_forced_attack_family": {
-				"add": {
-					"component_groups": [
-						"rift:default_family"
-					]
-				},
-				"remove": {
-					"component_groups": [
-						"rift:forced_attack_family"
-					]
-				}
-			},
 			"rift:add_attack_cooldown": {
 				"add": {
 					"component_groups": [
@@ -3930,6 +3879,16 @@
 					"component_groups": [
 						"rift:aggravating_horn_attack"
 					]
+				}
+			},
+			"rift:start_forced_attack": {
+				"set_actor_property": {
+					"rift:is_forced_attacking": "true"
+				}
+			},
+			"rift:stop_forced_attack": {
+				"set_actor_property": {
+					"rift:is_forced_attacking": "false"
 				}
 			},
 			"rift:manage_state": {

@@ -7,6 +7,13 @@
             "is_summonable": true,
             "is_experimental": false,
 			"properties": {
+				"rift:is_forced_attacking": {
+					"values": [
+						false,
+						true
+					],
+					"default": false
+				},
 				"rift:tame_progress": {
 					"values": [
 						"notTamed",
@@ -42,9 +49,11 @@
 				"contSleepingTag": "controller.animation.add_sleeping_tag",
 				"contHasTargetTag": "controller.animation.add_has_target_tag",
 				"contShearedTag": "controller.animation.add_sheared_tag",
+				"contForcedAttack": "controller.animation.general_forced_attack",
 				"contUnsittableWhenRidden": "controller.animation.become_unsittable_when_ridden",
 				"contTameState": "controller.animation.manage_tame_state",
 				"contBehaviorState": "controller.animation.manage_tame_behavior",
+				"animForcedAttack": "animation.forced_attack_saurophaganax",
 				"animResetLightBlastCharge": "animation.reset_saurophaganax_light_blast_charge",
 				"animUnriddenLightBlast": "animation.saurophaganax_activate_light_blast"
 			},
@@ -58,6 +67,7 @@
 					"contSleepingTag",
 					"contHasTargetTag",
 					"contShearedTag",
+					"contForcedAttack",
 					"contUnsittableWhenRidden",
 					"contTameState",
 					"contBehaviorState",
@@ -748,33 +758,6 @@
 			"rift:saurophaganax_tamed": {
 				"minecraft:is_tamed": {}
 			},
-			"rift:forced_bite": {
-				"minecraft:is_illager_captain": {}
-			},
-			"rift:summon_forced_bite_entity_weakened": {
-				"minecraft:spawn_entity": {
-					"entities": [
-						{
-							"spawn_entity": "rift:saurophaganax_bite_weakened",
-							"single_use": true,
-							"min_wait_time": 0,
-							"max_wait_time": 0
-						}
-					]
-				}
-			},
-			"rift:summon_forced_bite_entity_prime": {
-				"minecraft:spawn_entity": {
-					"entities": [
-						{
-							"spawn_entity": "rift:saurophaganax_bite_prime",
-							"single_use": true,
-							"min_wait_time": 0,
-							"max_wait_time": 0
-						}
-					]
-				}
-			},
 			"rift:saurophaganax_saddled": {
 				"minecraft:is_saddled": {},
 				"minecraft:input_ground_controlled": {},
@@ -1035,29 +1018,6 @@
 					"is_pushable_by_piston": false
 				}
 			},
-			"rift:default_family": {
-				"minecraft:type_family": {
-					"family": [
-						"saurophaganax",
-						"mob",
-						"carnivore",
-						"dinosaur",
-						"largeCarnivore"
-					]
-				}
-			},
-			"rift:forced_attack_family": {
-				"minecraft:type_family": {
-					"family": [
-						"saurophaganax",
-						"mob",
-						"carnivore",
-						"dinosaur",
-						"largeCarnivore",
-						"isForcedAttacking"
-					]
-				}
-			},
 			"rift:can_attack": {
 				"minecraft:behavior.delayed_attack": {
 					"priority": 9,
@@ -1066,66 +1026,6 @@
 					"track_target": true,
 					"reach_multiplier": 2
 				}
-			},
-			"rift:drop_experience_from_forced_attack": {
-			  	"minecraft:experience_reward": {
-					"on_death": "Math.Random(7,12)"
-			  	}
-			},
-			"rift:drop_more_meat_from_utahraptor": {
-				"minecraft:spawn_entity": {
-					"entities": {
-						"min_wait_time": 0,
-						"max_wait_time": 0,
-						"spawn_item": "rift:raw_exotic_meat",
-						"num_to_spawn": 2,
-						"single_use": true
-					}
-			 	}
-			},
-			"rift:drop_more_meat_from_tyrannosaurus": {
-			  	"minecraft:spawn_entity": {
-					"entities": {
-						"min_wait_time": 0,
-						"max_wait_time": 0,
-						"spawn_item": "rift:raw_exotic_meat",
-						"num_to_spawn": 5,
-						"single_use": true
-					}
-			  	}
-			},
-			"rift:drop_more_meat_from_sarcosuchus": {
-				"minecraft:spawn_entity": {
-					"entities": {
-						"min_wait_time": 0,
-						"max_wait_time": 0,
-						"spawn_item": "rift:raw_exotic_meat",
-						"num_to_spawn": 1,
-						"single_use": true
-					}
-			 	}
-			},
-			"rift:drop_more_meat_from_direwolf": {
-				"minecraft:spawn_entity": {
-					"entities": {
-						"min_wait_time": 0,
-						"max_wait_time": 0,
-						"spawn_item": "rift:raw_exotic_meat",
-						"num_to_spawn": 2,
-						"single_use": true
-					}
-			 	}
-			},
-			"rift:drop_more_meat_from_baryonyx": {
-				"minecraft:spawn_entity": {
-					"entities": {
-						"min_wait_time": 0,
-						"max_wait_time": 0,
-						"spawn_item": "rift:raw_exotic_meat",
-						"num_to_spawn": 1,
-						"single_use": true
-					}
-			 	}
 			}
         },
         "components": {
@@ -4038,82 +3938,6 @@
 					]
 				}
 			},
-			"rift:use_forced_bite": {
-				"add": {
-					"component_groups": [
-						"rift:forced_bite"
-					]
-				}
-			},
-			"rift:stop_forced_bite": {
-				"remove": {
-					"component_groups": [
-						"rift:forced_bite"
-					]
-				}
-			},
-			"rift:on_summon_forced_bite_entity": {
-				"sequence": [
-					{},
-					{
-						"filters": {
-							"test": "has_component",
-							"subject": "self",
-							"operator": "!=",
-							"value": "minecraft:is_sheared"
-						},
-						"add": {
-							"component_groups": [
-								"rift:summon_forced_bite_entity_prime"
-							]
-						}
-					},
-					{
-						"filters": {
-							"test": "has_component",
-							"subject": "self",
-							"value": "minecraft:is_sheared"
-						},
-						"add": {
-							"component_groups": [
-								"rift:summon_forced_bite_entity_weakened"
-							]
-						}
-					}
-				]
-			},
-			"rift:no_summon_forced_bite_entity": {
-				"remove": {
-					"component_groups": [
-						"rift:summon_forced_bite_entity_weakened",
-						"rift:summon_forced_bite_entity_prime"
-					]
-				}
-			},
-			"rift:on_forced_attack_family": {
-				"add": {
-					"component_groups": [
-						"rift:forced_attack_family"
-					]
-				},
-				"remove": {
-					"component_groups": [
-						"rift:default_family"
-					]
-				}
-			},
-			"rift:no_forced_attack_family": {
-				"add": {
-					"component_groups": [
-						"rift:default_family"
-					]
-				},
-				"remove": {
-					"component_groups": [
-						"rift:forced_attack_family"
-					]
-				}
-			},
 			"rift:commit_suicide": {
 				"run_command": {
 					"command": [
@@ -4440,6 +4264,16 @@
 					"component_groups": [
 						"rift:aggravating_horn_attack"
 					]
+				}
+			},
+			"rift:start_forced_attack": {
+				"set_actor_property": {
+					"rift:is_forced_attacking": "true"
+				}
+			},
+			"rift:stop_forced_attack": {
+				"set_actor_property": {
+					"rift:is_forced_attacking": "false"
 				}
 			},
 			"rift:manage_state": {

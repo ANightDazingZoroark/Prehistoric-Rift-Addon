@@ -1285,9 +1285,6 @@
 							"biteMode": "query.is_riding && (query.get_ride -> query.owner_identifier) == 'rift:saurophaganax'"
 						}
 					],
-					"on_entry": [
-						"/event entity @e[type=rift:saurophaganax, c=1, tag=tamed, tag=!baby] rift:no_forced_attack_family"
-					],
 					"on_exit": [
 						"/tellraw @s {\"rawtext\":[{\"text\":\"Ability set to Bite Mode\"}]}"
 					]
@@ -1325,9 +1322,7 @@
 						}
 					],
 					"on_entry": [
-						"/playanimation @e[type=rift:saurophaganax, c=1, tag=tamed, tag=!baby] animation.saurophaganax.bite",
-						"/event entity @e[type=rift:saurophaganax, c=1, tag=tamed, tag=!baby] rift:on_summon_forced_bite_entity",
-						"/event entity @e[type=rift:saurophaganax, c=1, tag=tamed, tag=!baby] rift:on_forced_attack_family"
+						"/event entity @e[type=rift:saurophaganax, c=1, tag=tamed, tag=!baby] rift:start_forced_attack"
 					]
 				},
 				"biteToLightBlast": {
@@ -1404,9 +1399,6 @@
 							"biteMode": "query.is_riding && ((query.get_ride -> query.owner_identifier) == 'rift:direwolf') && !(query.get_ride -> query.is_ignited)"
 						}
 					],
-					"on_entry": [
-						"/event entity @e[type=rift:direwolf, c=1, tag=tamed, tag=!baby] rift:no_forced_attack_family"
-					],
 					"on_exit": [
 						"/tellraw @s {\"rawtext\":[{\"text\":\"Ability set to Bite Mode\"}]}"
 					]
@@ -1444,8 +1436,7 @@
 						}
 					],
 					"on_entry": [
-						"/event entity @e[type=rift:direwolf, c=1, tag=tamed, tag=!baby] rift:on_summon_forced_bite_entity_normal",
-						"/event entity @e[type=rift:direwolf, c=1, tag=tamed, tag=!baby] rift:on_forced_attack_family"
+						"/event entity @e[type=rift:direwolf, c=1, tag=tamed, tag=!baby] rift:use_forced_bite"
 					]
 				},
 				"biteToCall": {
@@ -1624,9 +1615,6 @@
 							"biteMode": "query.is_riding && (query.get_ride -> query.owner_identifier) == 'rift:direwolf' && (query.get_ride -> query.is_ignited)"
 						}
 					],
-					"on_entry": [
-						"/event entity @e[type=rift:direwolf, c=1, tag=tamed, tag=!baby] rift:no_forced_attack_family"
-					],
 					"on_exit": [
 						"/tellraw @s {\"rawtext\":[{\"text\":\"Ability set to Bite Mode\"}]}"
 					]
@@ -1664,9 +1652,7 @@
 						}
 					],
 					"on_entry": [
-						"/playanimation @e[type=rift:direwolf, c=1, tag=tamed, tag=!baby] animation.direwolf_werewolf.bite",
-						"/event entity @e[type=rift:direwolf, c=1, tag=tamed, tag=!baby] rift:on_summon_forced_bite_entity_werewolf",
-						"/event entity @e[type=rift:direwolf, c=1, tag=tamed, tag=!baby] rift:on_forced_attack_family"
+						"/event entity @e[type=rift:direwolf, c=1, tag=tamed, tag=!baby] rift:use_forced_bite"
 					]
 				},
 				"biteToSlash": {
@@ -1701,67 +1687,50 @@
 							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:direwolf' || !(query.get_ride -> query.is_ignited) || query.get_equipped_item_name('main_hand') != 'command_staff'"
 						},
 						{
-							"useSlashModeOne": "v.slashMode = (math.floor(math.random(0,2))); return v.slashMode == 0 && !query.is_using_item;"
+							"useSlashMode": "!query.is_using_item"
 						},
 						{
-							"useSlashModeTwo": "v.slashMode == 1 && !query.is_using_item"
-						},
-						{
-							"slashToBoulderThrow": "query.all_animations_finished"
+							"slashToBreath": "query.all_animations_finished"
 						}
 					]
 				},
-				"useSlashModeOne": {
+				"useSlashMode": {
 					"transitions": [
 						{
 							"slashMode": "(1.0)"
 						}
 					],
 					"on_entry": [
-						"/playanimation @e[type=rift:direwolf, c=1, tag=tamed, tag=!baby] animation.direwolf_werewolf.scratch_one",
-						"/event entity @e[type=rift:direwolf, c=1, tag=tamed, tag=!baby] rift:on_summon_forced_slash_entity_werewolf",
-						"/event entity @e[type=rift:direwolf, c=1, tag=tamed, tag=!baby] rift:on_forced_attack_family"
+						"/event entity @e[type=rift:direwolf, c=1, tag=tamed, tag=!baby] rift:use_forced_slash"
 					]
 				},
-				"useSlashModeTwo": {
-					"transitions": [
-						{
-							"slashMode": "(1.0)"
-						}
-					],
-					"on_entry": [
-						"/playanimation @e[type=rift:direwolf, c=1, tag=tamed, tag=!baby] animation.direwolf_werewolf.scratch_two",
-						"/event entity @e[type=rift:direwolf, c=1, tag=tamed, tag=!baby] rift:on_summon_forced_slash_entity_werewolf",
-						"/event entity @e[type=rift:direwolf, c=1, tag=tamed, tag=!baby] rift:on_forced_attack_family"
-					]
-				},
-				"slashToBoulderThrow": {
+				"slashToBreath": {
 					"transitions": [
 						{
 							"default": "(query.get_equipped_item_name('main_hand') != 'command_staff') || !query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:direwolf' || !(query.get_ride -> query.is_ignited)"
 						},
 						{
-							"boulderThrowMode": "!query.is_using_item"
+							"breathMode": "!query.is_using_item"
 						}
 					],
 					"on_exit": [
-						"/tellraw @s {\"rawtext\":[{\"text\":\"Ability set to Boulder Throw Mode\"}]}"
+						"/tellraw @s {\"rawtext\":[{\"text\":\"Ability set to Breath Mode\"}]}"
 					]
 				},
-				"boulderThrowMode": {
+				"breathMode": {
 					"transitions": [
 						{
 							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:direwolf' || !(query.get_ride -> query.is_ignited)"
 						},
 						{
-							"boulderThrowModeLimbo": "query.is_using_item && query.get_equipped_item_name('main_hand') == 'command_staff'"
+							"breathModeLimbo": "query.is_using_item && query.get_equipped_item_name('main_hand') == 'command_staff'"
 						}
 					],
 					"on_entry": [
 						"/effect @e[type=rift:direwolf, c=1, tag=tamed, tag=!baby] slowness 0"
 					]
 				},
-				"boulderThrowModeLimbo": {
+				"breathModeLimbo": {
 					"animations": [
 						"animAbilitySwitchCooldown"
 					],
@@ -1770,25 +1739,24 @@
 							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:direwolf' || !(query.get_ride -> query.is_ignited) || query.get_equipped_item_name('main_hand') != 'command_staff'"
 						},
 						{
-							"useBoulderThrowMode": "!query.is_using_item"
+							"useBreathMode": "!query.is_using_item"
 						},
 						{
-							"boulderThrowToCall": "query.all_animations_finished"
+							"breathToCall": "query.all_animations_finished"
 						}
 					]
 				},
-				"useBoulderThrowMode": {
+				"useBreathMode": {
 					"transitions": [
 						{
-							"boulderThrowMode": "(1.0)"
+							"breathMode": "(1.0)"
 						}
 					],
 					"on_entry": [
-						"/execute @e[type=rift:direwolf, c=1, tag=tamed, tag=!baby] ~ ~ ~ playanimation @s animation.direwolf_werewolf.boulder_hurl",
-						"/event entity @e[type=rift:direwolf, c=1, tag=tamed, tag=!baby] rift:start_throwing_boulder"
+						"/event entity @e[type=rift:direwolf, c=1, tag=tamed, tag=!baby] rift:start_breath"
 					]
 				},
-				"boulderThrowToCall": {
+				"breathToCall": {
 					"transitions": [
 						{
 							"default": "(query.get_equipped_item_name('main_hand') != 'command_staff') || !query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:direwolf' || !(query.get_ride -> query.is_ignited)"
@@ -1964,9 +1932,6 @@
 							"headbuttMode": "query.is_riding && (query.get_ride -> query.owner_identifier) == 'rift:megaloceros'"
 						}
 					],
-					"on_entry": [
-						"/event entity @e[type=rift:megaloceros, c=1, tag=tamed, tag=!baby] rift:no_forced_attack_family"
-					],
 					"on_exit": [
 						"/tellraw @s {\"rawtext\":[{\"text\":\"Ability set to Headbutt Mode\"}]}"
 					]
@@ -2004,9 +1969,7 @@
 						}
 					],
 					"on_entry": [
-						"/playanimation @e[type=rift:megaloceros, c=1, tag=tamed, tag=!baby] animation.megaloceros.headbutt",
-						"/event entity @e[type=rift:megaloceros, c=1, tag=tamed, tag=!baby] rift:on_summon_forced_headbutt_entity",
-						"/event entity @e[type=rift:megaloceros, c=1, tag=tamed, tag=!baby] rift:on_forced_attack_family"
+						"/event entity @e[type=rift:megaloceros, c=1, tag=tamed, tag=!baby] rift:start_forced_attack"
 					]
 				},
 				"headbuttToCharge": {
@@ -2122,9 +2085,7 @@
 						}
 					],
 					"on_entry": [
-						"/playanimation @e[type=rift:baryonyx, c=1, tag=tamed, tag=!baby] animation.baryonyx.bite",
-						"/event entity @e[type=rift:baryonyx, c=1, tag=tamed, tag=!baby] rift:on_summon_forced_bite",
-						"/event entity @e[type=rift:baryonyx, c=1, tag=tamed, tag=!baby] rift:on_forced_attack_family"
+						"/event entity @e[type=rift:baryonyx, c=1, tag=tamed, tag=!baby] rift:use_forced_bite"
 					]
 				},
 				"biteToSlash": {
@@ -2148,6 +2109,9 @@
 						{
 							"slashModeLimbo": "query.is_using_item && (query.get_ride -> query.is_saddled) && query.get_equipped_item_name('main_hand') == 'command_staff'"
 						}
+					],
+					"on_entry": [
+						"/tag @e[type=rift:baryonyx, c=1, tag=tamed, tag=!baby] add forcedClaw"
 					]
 				},
 				"slashModeLimbo": {
@@ -2159,38 +2123,21 @@
 							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:baryonyx' || query.get_equipped_item_name('main_hand') != 'command_staff'"
 						},
 						{
-							"useSlashModeOne": "v.slashMode = (math.floor(math.random(0,2))); return v.slashMode == 0 && !query.is_using_item;"
-						},
-						{
-							"useSlashModeTwo": "v.slashMode == 1 && !query.is_using_item"
+							"useSlashMode": "!query.is_using_item"
 						},
 						{
 							"slashToBite": "query.all_animations_finished"
 						}
 					]
 				},
-				"useSlashModeOne": {
+				"useSlashMode": {
 					"transitions": [
 						{
 							"slashMode": "(1.0)"
 						}
 					],
 					"on_entry": [
-						"/playanimation @e[type=rift:baryonyx, c=1, tag=tamed, tag=!baby] animation.baryonyx.claw_left",
-						"/event entity @e[type=rift:baryonyx, c=1, tag=tamed, tag=!baby] rift:on_summon_forced_slash",
-						"/event entity @e[type=rift:baryonyx, c=1, tag=tamed, tag=!baby] rift:on_forced_attack_family"
-					]
-				},
-				"useSlashModeTwo": {
-					"transitions": [
-						{
-							"slashMode": "(1.0)"
-						}
-					],
-					"on_entry": [
-						"/playanimation @e[type=rift:baryonyx, c=1, tag=tamed, tag=!baby] animation.baryonyx.claw_right",
-						"/event entity @e[type=rift:baryonyx, c=1, tag=tamed, tag=!baby] rift:on_summon_forced_slash",
-						"/event entity @e[type=rift:baryonyx, c=1, tag=tamed, tag=!baby] rift:on_forced_attack_family"
+						"/event entity @e[type=rift:baryonyx, c=1, tag=tamed, tag=!baby] rift:use_forced_claw"
 					]
 				},
 				"slashToBite": {
@@ -2201,6 +2148,9 @@
 						{
 							"biteMode": "!query.is_using_item"
 						}
+					],
+					"on_entry": [
+						"/tag @e[type=rift:baryonyx, c=1, tag=tamed, tag=!baby] remove forcedClaw"
 					],
 					"on_exit": [
 						"/tellraw @s {\"rawtext\":[{\"text\":\"Ability set to Bite Mode\"}]}"

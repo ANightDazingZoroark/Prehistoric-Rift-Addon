@@ -7,6 +7,13 @@
             "is_summonable": true,
             "is_experimental": false,
 			"properties": {
+				"rift:forced_attack_mode": {
+                    "values": {
+						"min": 0, //0 for nothing, 1 for bite, 2 for claw
+						"max": 2
+					},
+					"default": 0
+				},
 				"rift:tame_progress": {
 					"values": [
 						"notTamed",
@@ -39,7 +46,11 @@
 				"contBabyTag": "controller.animation.add_baby_tag",
 				"contRiddenTag": "controller.animation.add_ridden_tag",
 				"contTameState": "controller.animation.manage_tame_state",
-				"contBehaviorState": "controller.animation.manage_tame_behavior"
+				"contBehaviorState": "controller.animation.manage_tame_behavior",
+				"contForcedAttack": "controller.animation.baryonyx_forced_attack",
+				"animForcedAttackBite": "animation.forced_attack_baryonyx_bite",
+				"animForcedAttackSlashOne": "animation.forced_attack_baryonyx_slash_one",
+				"animForcedAttackSlashTwo": "animation.forced_attack_baryonyx_slash_two"
 			},
 			"scripts": {
 				"animate": [
@@ -48,7 +59,8 @@
 					"contBabyTag",
 					"contRiddenTag",
 					"contTameState",
-					"contBehaviorState"
+					"contBehaviorState",
+					"contForcedAttack"
 				]
 			}
         },
@@ -228,15 +240,7 @@
 					"despawn_from_distance": {}
 				},
 				"minecraft:behavior.hurt_by_target": {
-					"priority": 3,
-					"entity_types": {
-						"filters": {
-						  	"test": "is_family",
-						  	"subject": "other",
-						  	"operator": "!=",
-						  	"value": "forcedAttack"
-						}
-					}
+					"priority": 3
 				},
 				"minecraft:shareables": {
 					"all_items_max_amount": 1,
@@ -947,36 +951,6 @@
 					"interact_text": "action.interact.mount"
 				}
             },
-            "rift:forced_bite": {
-				"minecraft:is_sheared": {}
-			},
-            "rift:forced_slash": {
-				"minecraft:is_charged": {}
-			},
-            "rift:summon_forced_bite_entity": {
-				"minecraft:spawn_entity": {
-					"entities": [
-						{
-							"spawn_entity": "rift:baryonyx_bite",
-							"single_use": true,
-							"min_wait_time": 0,
-							"max_wait_time": 0
-						}
-					]
-				}
-			},
-            "rift:summon_forced_slash_entity": {
-				"minecraft:spawn_entity": {
-					"entities": [
-						{
-							"spawn_entity": "rift:baryonyx_slash",
-							"single_use": true,
-							"min_wait_time": 0,
-							"max_wait_time": 0
-						}
-					]
-				}
-			},
 			"rift:temptable": {
                 "minecraft:behavior.tempt": {
                     "priority": 10,
@@ -1104,20 +1078,10 @@
 					"priority": 3,
 					"entity_types": {
 						"filters": {
-							"all_of": [
-								{
-									"test": "is_family",
-									"subject": "other",
-									"operator": "!=",
-									"value": "forcedAttack"
-								},
-								{
-									"test": "has_component",
-									"subject": "self",
-									"operator": "!=",
-									"value": "minecraft:is_baby"
-								}
-							]
+							"test": "has_component",
+							"subject": "self",
+							"operator": "!=",
+							"value": "minecraft:is_baby"
 						}
 					}
 				}
@@ -1159,20 +1123,10 @@
 					"priority": 3,
 					"entity_types": {
 						"filters": {
-							"all_of": [
-								{
-									"test": "is_family",
-									"subject": "other",
-									"operator": "!=",
-									"value": "forcedAttack"
-								},
-								{
-									"test": "has_component",
-									"subject": "self",
-									"operator": "!=",
-									"value": "minecraft:is_baby"
-								}
-							]
+							"test": "has_component",
+							"subject": "self",
+							"operator": "!=",
+							"value": "minecraft:is_baby"
 						}
 					}
 				}
@@ -1278,29 +1232,6 @@
 				"minecraft:pushable": {
 					"is_pushable": false,
 					"is_pushable_by_piston": false
-				}
-			},
-			"rift:default_family": {
-				"minecraft:type_family": {
-					"family": [
-						"baryonyx",
-						"mob",
-						"carnivore",
-						"dinosaur",
-						"waterMount"
-					]
-				}
-			},
-			"rift:forced_attack_family": {
-				"minecraft:type_family": {
-					"family": [
-						"baryonyx",
-						"mob",
-						"carnivore",
-						"dinosaur",
-						"waterMount",
-						"isForcedAttacking"
-					]
 				}
 			}
         },
@@ -3958,86 +3889,6 @@
 					]
 				}
 			},
-			"rift:on_forced_attack_family": {
-				"add": {
-					"component_groups": [
-						"rift:forced_attack_family"
-					]
-				},
-				"remove": {
-					"component_groups": [
-						"rift:default_family"
-					]
-				}
-			},
-			"rift:no_forced_attack_family": {
-				"add": {
-					"component_groups": [
-						"rift:default_family"
-					]
-				},
-				"remove": {
-					"component_groups": [
-						"rift:forced_attack_family"
-					]
-				}
-			},
-			"rift:use_forced_bite": {
-				"add": {
-					"component_groups": [
-						"rift:forced_bite"
-					]
-				}
-			},
-			"rift:stop_forced_bite": {
-				"remove": {
-					"component_groups": [
-						"rift:forced_bite"
-					]
-				}
-			},
-			"rift:use_forced_slash": {
-				"add": {
-					"component_groups": [
-						"rift:forced_slash"
-					]
-				}
-			},
-			"rift:stop_forced_slash": {
-				"remove": {
-					"component_groups": [
-						"rift:forced_slash"
-					]
-				}
-			},
-			"rift:on_summon_forced_bite": {
-				"add": {
-					"component_groups": [
-						"rift:summon_forced_bite_entity"
-					]
-				}
-			},
-			"rift:no_summon_forced_bite": {
-				"remove": {
-					"component_groups": [
-						"rift:summon_forced_bite_entity"
-					]
-				}
-			},
-			"rift:on_summon_forced_slash": {
-				"add": {
-					"component_groups": [
-						"rift:summon_forced_slash_entity"
-					]
-				}
-			},
-			"rift:no_summon_forced_slash": {
-				"remove": {
-					"component_groups": [
-						"rift:summon_forced_slash_entity"
-					]
-				}
-			},
 			"rift:attach_saddle": {
 				"add": {
 					"component_groups": [
@@ -4393,6 +4244,21 @@
 					"command": [
 						"tellraw @p {\"rawtext\":[{\"text\":\"Cooldown ended\"}]}"
 					]
+				}
+			},
+			"rift:use_forced_bite": {
+				"set_actor_property": {
+					"rift:forced_attack_mode": "1"
+				}
+			},
+			"rift:use_forced_claw": {
+				"set_actor_property": {
+					"rift:forced_attack_mode": "2"
+				}
+			},
+			"rift:stop_forced_attack": {
+				"set_actor_property": {
+					"rift:forced_attack_mode": "0"
 				}
 			},
 			"rift:manage_state": {

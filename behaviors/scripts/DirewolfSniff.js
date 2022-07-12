@@ -37,4 +37,4 @@ world.events.tick.subscribe((ev) => {
             ev.cancel = false
         }
     }
-});
+})

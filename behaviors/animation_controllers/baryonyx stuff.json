@@ -80,6 +80,54 @@
                     ]
                 }
             }
-        }
+        },
+        "controller.animation.baryonyx_forced_attack": {
+			"initial_state": "default",
+			"states": {
+				"default": {
+					"transitions": [
+						{
+							"biting": "query.actor_property('rift:forced_attack_mode') == 1"
+						},
+						{
+							"slashingOne": "v.chooseArm = (math.floor(math.random(0,2))); return v.chooseArm == 0 && query.actor_property('rift:forced_attack_mode') == 2;"
+						},
+						{
+							"slashingTwo": "v.chooseArm == 1 && query.actor_property('rift:forced_attack_mode') == 2"
+						}
+					]
+				},
+				"biting": {
+                    "animations": [
+                        "animForcedAttackBite"
+                    ],
+					"transitions": [
+						{
+							"default": "query.all_animations_finished"
+						}
+					]
+				},
+				"slashingOne": {
+                    "animations": [
+                        "animForcedAttackSlashOne"
+                    ],
+					"transitions": [
+						{
+							"default": "query.all_animations_finished"
+						}
+					]
+				},
+				"slashingTwo": {
+                    "animations": [
+                        "animForcedAttackSlashTwo"
+                    ],
+					"transitions": [
+						{
+							"default": "query.all_animations_finished"
+						}
+					]
+				}
+			}
+		}
     }
 }

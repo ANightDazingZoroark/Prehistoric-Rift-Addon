@@ -89,10 +89,13 @@
 							"bitingWerewolf": "query.actor_property('rift:forced_attack_mode') == 1"
 						},
 						{
-							"slashing": "query.actor_property('rift:forced_attack_mode') == 2"
+							"slashingOne": "v.chooseArm = (math.floor(math.random(0,2))); return v.chooseArm == 0 && query.actor_property('rift:forced_attack_mode') == 2;"
 						},
 						{
-							"boulderThrow": "query.actor_property('rift:forced_attack_mode') == 3"
+							"slashingTwo": "v.chooseArm == 1 && query.actor_property('rift:forced_attack_mode') == 2"
+						},
+						{
+							"breath": "query.actor_property('rift:forced_attack_mode') == 3"
 						},
                         {
                             "normalMode": "!query.is_ignited"
@@ -100,38 +103,54 @@
 					]
 				},
 				"bitingNormal": {
-					"transitions": [
-						{
-							"default": "query.actor_property('rift:forced_attack_mode') != 1"
-						}
-					]
-				},
-				"bitingWerewolf": {
-					"transitions": [
-						{
-							"default": "query.actor_property('rift:forced_attack_mode') != 1"
-						}
-					]
-				},
-				"slashing": {
-					"transitions": [
-						{
-							"default": "query.actor_property('rift:forced_attack_mode') != 2"
-						}
-					]
-				},
-				"boulderThrow": {
+                    "animations": [
+                        "animForcedAttackNormal"
+                    ],
 					"transitions": [
 						{
 							"default": "query.all_animations_finished"
 						}
-					],
-					"animations": [
-						"animThrowBoulder"
-					],
-                    "on_exit": [
-                        "@s rift:stop_forced_attack"
-                    ]
+					]
+				},
+				"bitingWerewolf": {
+                    "animations": [
+                        "animForcedAttackBiteWerewolf"
+                    ],
+					"transitions": [
+						{
+							"default": "query.all_animations_finished"
+						}
+					]
+				},
+				"slashingOne": {
+                    "animations": [
+                        "animForcedAttackSlashWerewolfOne"
+                    ],
+					"transitions": [
+						{
+							"default": "query.all_animations_finished"
+						}
+					]
+				},
+				"slashingTwo": {
+                    "animations": [
+                        "animForcedAttackSlashWerewolfTwo"
+                    ],
+					"transitions": [
+						{
+							"default": "query.all_animations_finished"
+						}
+					]
+				},
+				"breath": {
+                    "animations": [
+                        "animForcedAttackBreathWerewolf"
+                    ],
+					"transitions": [
+						{
+							"default": "query.all_animations_finished"
+						}
+					]
 				}
 			}
 		},
@@ -287,64 +306,24 @@
                 }
             }
         },
-        "controller.animation.direwolf_werewolf_can_throw_boulder": {
+        "controller.animation.direwolf_werewolf_breath_management": {
             "initial_state": "default",
             "states": {
                 "default": {
                     "transitions": [
                         {
-                            "countdown": "query.is_ignited && query.has_target"
+                            "breath": "query.is_sonic_boom"
                         }
                     ]
                 },
-                "countdown": {
+                "breath": {
                     "animations": [
-                        "animCanThrowCountdown"
+                        "animStay"
                     ],
                     "transitions": [
                         {
-                            "canThrow": "query.all_animations_finished"
-                        },
-                        {
-                            "default": "!query.has_target || !query.is_ignited"
+                            "default": "!query.is_sonic_boom"
                         }
-                    ]
-                },
-                "canThrow": {
-                    "transitions": [
-                        {
-                            "default": "query.actor_property('rift:is_throwing_boulder') == false || (!query.has_target && !query.is_ignited)"
-                        }
-                    ],
-                    "on_entry": [
-                        "@s rift:activate_boulder_throw_mode"
-                    ]
-                }
-            }
-        },
-        "controller.animation.direwolf_werewolf_boulder_throwing": {
-            "initial_state": "default",
-            "states": {
-                "default": {
-                    "transitions": [
-                        {
-                            "throwing": "query.actor_property('rift:is_throwing_boulder') == true"
-                        }
-                    ]
-                },
-                "throwing": {
-                    "animations": [
-                        "animThrowBoulder"
-                    ],
-                    "transitions": [
-                        {
-                            "default": "query.all_animations_finished"
-                        }
-                    ],
-                    "on_exit": [
-                        "/effect @s slowness 0",
-                        "@s rift:boulder_throw_stop",
-                        "@s rift:deactivate_boulder_throw_mode"
                     ]
                 }
             }
@@ -365,6 +344,12 @@
 							"default": "query.actor_property('rift:is_pack_buffed') == false"
 						}
 					],
+                    "on_entry": [
+                        "/tag @s add packBuffed"
+                    ],
+                    "on_exit": [
+                        "/tag @s remove packBuffed"
+                    ],
 					"animations": [
 					 	"animPackBuffed"
 					]
