@@ -50,7 +50,7 @@ function mainBothGui(entity) {
     })
 }
 
-world.events.entityHit.subscribe(({ hitEntity, entity }) => {
+world.events.entityHit.subscribe(({ hitEntity, hitBlock, entity }) => {
     if (hitEntity.id == 'rift:apatosaurus' && hitEntity.hasTag('hasCraftingTable') && !hitEntity.hasTag('hasCraftingTable')) {
         mainCraftingTableGui(entity)
         world.getDimension('overworld').runCommand(`say can craft`)
