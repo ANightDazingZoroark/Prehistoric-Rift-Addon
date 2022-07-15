@@ -558,6 +558,34 @@
 					]
 				}
 			}
+		},
+		"controller.animation.general_eat_from_inventory_cooldown": {
+			"initial_state": "default",
+			"states": {
+				"default": {
+					"transitions": [
+						{
+							"cooldown": "query.actor_property('rift:eat_from_inventory_cooldown') == true"
+						}
+					]
+				},
+				"cooldown": {
+					"animations": [
+						"animEatFromInventoryCooldown"
+					],
+					"transitions": [
+						{
+							"default": "query.all_animations_finished"
+						}
+					],
+					"on_entry": [
+						"/tag @s add eatFromInventoryCooldown"
+					],
+					"on_exit": [
+						"/tag @s remove eatFromInventoryCooldown"
+					]
+				}
+			}
 		}
 	}
 }

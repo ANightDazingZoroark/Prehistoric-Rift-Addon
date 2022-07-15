@@ -7,6 +7,10 @@
             "is_summonable": true,
             "is_experimental": false,
 			"properties": {
+				"rift:eat_from_inventory_cooldown": {
+					"type": "bool",
+					"default": false
+				},
 				"rift:forced_attack_mode": { //0 for nothing, 1 for bite, 2 for claw
 					"range": [
 						0,
@@ -34,6 +38,7 @@
                 }
 			},
 			"animations": {
+				"contEatFromInventoryCooldown": "controller.animation.general_eat_from_inventory_cooldown",
 				"contSwitchBetweenMeleeAttacks": "controller.animation.baryonyx_switch_between_melee_attacks",
 				"contTameTag": "controller.animation.add_tame_tag",
 				"contBabyTag": "controller.animation.add_baby_tag",
@@ -41,12 +46,14 @@
 				"contTameState": "controller.animation.manage_tame_state",
 				"contBehaviorState": "controller.animation.manage_tame_behavior",
 				"contForcedAttack": "controller.animation.baryonyx_forced_attack",
+				"animEatFromInventoryCooldown": "animation.eat_from_inventory_cooldown",
 				"animForcedAttackBite": "animation.forced_attack_baryonyx_bite",
 				"animForcedAttackSlashOne": "animation.forced_attack_baryonyx_slash_one",
 				"animForcedAttackSlashTwo": "animation.forced_attack_baryonyx_slash_two"
 			},
 			"scripts": {
 				"animate": [
+					"contEatFromInventoryCooldown",
 					"contSwitchBetweenMeleeAttacks",
 					"contTameTag",
 					"contBabyTag",
@@ -4377,6 +4384,16 @@
 			"rift:stop_forced_attack": {
 				"set_actor_property": {
 					"rift:forced_attack_mode": "0"
+				}
+			},
+			"rift:start_eat_from_inventory_cooldown": {
+				"set_actor_property": {
+					"rift:eat_from_inventory_cooldown": "true"
+				}
+			},
+			"rift:stop_eat_from_inventory_cooldown": {
+				"set_actor_property": {
+					"rift:eat_from_inventory_cooldown": "false"
 				}
 			},
 			"rift:manage_state": {

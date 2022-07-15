@@ -7,6 +7,14 @@
             "is_summonable": true,
             "is_experimental": false,
 			"properties": {
+				"rift:eat_from_inventory_cooldown": {
+					"type": "bool",
+					"default": false
+				},
+				"rift:light_blast_notify": {
+					"type": "bool",
+					"default": false
+				},
 				"rift:is_forced_attacking": {
 					"type": "bool",
 					"default": false
@@ -30,6 +38,8 @@
                 }
 			},
 			"animations": {
+				"contEatFromInventoryCooldown": "controller.animation.general_eat_from_inventory_cooldown",
+				"contManageTags": "controller.animation.sauro_manage_tags",
 				"contResetLightBlastChargeWhenWeakened": "controller.animation.sauro_reset_light_blast_charge_when_weakened",
 				"contTameTag": "controller.animation.add_tame_tag",
 				"contBabyTag": "controller.animation.add_baby_tag",
@@ -42,12 +52,15 @@
 				"contUnsittableWhenRidden": "controller.animation.become_unsittable_when_ridden",
 				"contTameState": "controller.animation.manage_tame_state",
 				"contBehaviorState": "controller.animation.manage_tame_behavior",
+				"animEatFromInventoryCooldown": "animation.eat_from_inventory_cooldown",
 				"animForcedAttack": "animation.forced_attack_saurophaganax",
 				"animResetLightBlastCharge": "animation.reset_saurophaganax_light_blast_charge",
 				"animUnriddenLightBlast": "animation.saurophaganax_activate_light_blast"
 			},
 			"scripts": {
 				"animate": [
+					"contEatFromInventoryCooldown",
+					"contManageTags",
 					"contResetLightBlastChargeWhenWeakened",
 					"contTameTag",
 					"contBabyTag",
@@ -4339,6 +4352,26 @@
 			"rift:stop_forced_attack": {
 				"set_actor_property": {
 					"rift:is_forced_attacking": "false"
+				}
+			},
+			"rift:can_notify": {
+				"set_actor_property": {
+					"rift:light_blast_notify": "true"
+				}
+			},
+			"rift:cannot_notify": {
+				"set_actor_property": {
+					"rift:light_blast_notify": "false"
+				}
+			},
+			"rift:start_eat_from_inventory_cooldown": {
+				"set_actor_property": {
+					"rift:eat_from_inventory_cooldown": "true"
+				}
+			},
+			"rift:stop_eat_from_inventory_cooldown": {
+				"set_actor_property": {
+					"rift:eat_from_inventory_cooldown": "false"
 				}
 			},
 			"rift:manage_state": {
