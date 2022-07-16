@@ -206,12 +206,25 @@
           "max_distance": 40
         }
       },
-      "minecraft:behavior.melee_attack": {
+      "minecraft:behavior.nearest_attackable_target": {
         "priority": 2,
+        "entity_types": [
+            {
+              "filters": {
+                "test": "is_family",
+                "subject": "other",
+                "value": "parasaurAngerer"
+              },
+              "max_dist": 64
+            }
+          ]
+      },
+      "minecraft:behavior.melee_attack": {
+        "priority": 3,
         "reach_multiplier":  0.0
       },
       "minecraft:behavior.random_swim": { // Randomly selects points to go to, even in water
-        "priority": 3,
+        "priority": 4,
         "speed_multiplier": 1.0,
         "xz_dist": 16,
         "y_dist": 4,
@@ -231,7 +244,20 @@
             "filters": {
               "any_of": [
                 {
-                  "test": "is_family", "subject": "other", "value": "player"
+                  "filters": {
+                    "all_of": [
+                      {
+                        "test": "is_family",
+                        "subject": "other",
+                        "value": "player"
+                      },
+                      {
+                        "test": "is_riding",
+                        "subject": "other",
+                        "value": false
+                      }
+                    ]
+                  }
                 },
                 {
                   "test": "is_family", "subject": "other", "value": "axolotl"

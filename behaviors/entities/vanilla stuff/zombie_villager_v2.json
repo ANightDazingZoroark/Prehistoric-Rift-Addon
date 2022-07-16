@@ -620,6 +620,22 @@
       "minecraft:behavior.random_look_around": {
         "priority": 11
       },
+      "minecraft:behavior.avoid_mob_type": {
+        "priority": 0,
+        "entity_types": [
+          {
+            "filters": {
+              "test": "is_family",
+              "value": "parasaurScary",
+              "subject": "other"
+            },
+            "max_dist": 12,
+            "must_see": true,
+            "walk_speed_multiplier": 1.2,
+            "sprint_speed_multiplier": 1.2
+          }
+        ]
+      },
       "minecraft:behavior.hurt_by_target": {
         "priority": 1
       },
@@ -631,7 +647,6 @@
           {
             "filters": {
               "any_of": [
-                { "test": "is_family", "subject": "other", "value": "player" },
                 { "test": "is_family", "subject": "other", "value": "snowgolem" },
                 { "test": "is_family", "subject": "other", "value": "irongolem" },
                 { "test": "is_family", "subject": "other", "value": "villager" },
@@ -648,6 +663,31 @@
               ]
             },
             "max_dist": 35
+          },
+          {
+            "filters": {
+              "all_of": [
+                {
+                  "test": "is_family",
+                  "subject": "other",
+                  "value": "player"
+                },
+                {
+                  "test": "is_riding",
+                  "subject": "other",
+                  "value": false
+                }
+              ]
+            },
+            "max_dist": 35
+          },
+          {
+            "filters": {
+              "test": "is_family",
+              "subject": "other",
+              "value": "parasaurAngerer"
+            },
+            "max_dist": 64
           }
         ]
       },

@@ -68,6 +68,21 @@
         },
         "minecraft:on_target_acquired": {
           "event": "minecraft:become_angry"
+        },
+        "minecraft:behavior.nearest_attackable_target": {
+          "priority": 3,
+          "must_see": true,
+          "attack_interval": 10,
+          "entity_types": [
+            {
+              "filters": {
+                "test": "is_family",
+                "subject": "other",
+                "value": "parasaurAngerer"
+              },
+              "max_dist": 64
+            }
+          ]
         }
       },
 
@@ -86,31 +101,43 @@
           "event": "minecraft:become_angry"
         },
         "minecraft:behavior.nearest_attackable_target": {
-          "priority": 2,
+          "priority": 3,
           "must_see": true,
           "attack_interval": 5,
           "entity_types": [
             {
               "filters": {
                 "any_of": [
+                  { "test" :  "is_family", "subject" : "other", "value" :  "snowgolem"},
+                  { "test" :  "is_family", "subject" : "other", "value" :  "irongolem"}
+                ]
+               },
+               "max_dist": 16
+            },
+            {
+              "filters": {
+                "all_of": [
                   {
                     "test": "is_family",
                     "subject": "other",
                     "value": "player"
                   },
                   {
-                    "test": "is_family",
+                    "test": "is_riding",
                     "subject": "other",
-                    "value": "snowgolem"
-                  },
-                  {
-                    "test": "is_family",
-                    "subject": "other",
-                    "value": "irongolem"
+                    "value": false
                   }
                 ]
               },
               "max_dist": 16
+            },
+            {
+              "filters": {
+                "test": "is_family",
+                "subject": "other",
+                "value": "parasaurAngerer"
+              },
+              "max_dist": 64
             }
           ]
         }
@@ -126,12 +153,12 @@
           }
         },
         "minecraft:behavior.leap_at_target": {
-          "priority": 4,
+          "priority": 5,
           "yd": 0.4,
           "must_be_on_ground": false
         },
         "minecraft:behavior.melee_attack": {
-          "priority": 3,
+          "priority": 4,
           "track_target": true,
           "reach_multiplier": 0.8
         }
@@ -192,28 +219,44 @@
         "despawn_from_distance": {}
       },
       "minecraft:behavior.float": {
-        "priority": 1
+        "priority": 0
       },
       "minecraft:behavior.mount_pathing": {
-        "priority": 5,
+        "priority": 6,
         "speed_multiplier": 1.25,
         "target_dist": 0.0,
         "track_target": true
       },
       "minecraft:behavior.random_stroll": {
-        "priority": 6,
+        "priority": 7,
         "speed_multiplier": 0.8
       },
       "minecraft:behavior.look_at_player": {
-        "priority": 7,
+        "priority": 8,
         "look_distance": 6.0,
         "probability": 0.02
       },
       "minecraft:behavior.random_look_around": {
-        "priority": 7
+        "priority": 8
+      },
+      "minecraft:behavior.avoid_mob_type": {
+        "priority": 1,
+        "entity_types": [
+          {
+            "filters": {
+              "test": "is_family",
+              "value": "parasaurScary",
+              "subject": "other"
+            },
+            "max_dist": 12,
+            "must_see": true,
+            "walk_speed_multiplier": 1.2,
+            "sprint_speed_multiplier": 1.2
+          }
+        ]
       },
       "minecraft:behavior.hurt_by_target": {
-        "priority": 1
+        "priority": 2
       },
       "minecraft:rideable": {
         "seat_count": 1,

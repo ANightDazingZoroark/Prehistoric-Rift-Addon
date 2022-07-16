@@ -36,6 +36,31 @@
     },
 
     "components": {
+      "minecraft:behavior.avoid_mob_type": {
+        "priority": 2,
+        "entity_types": [
+          {
+            "filters": {
+              "any_of": [
+                {
+                  "test": "is_family",
+                  "value": "parasaurScary",
+                  "subject": "other"
+                },
+                {
+                  "test": "is_family",
+                  "value": "carnivore",
+                  "subject": "other"
+                }
+              ]
+            },
+            "max_dist": 12,
+            "must_see": true,
+            "walk_speed_multiplier": 1.2,
+            "sprint_speed_multiplier": 1.2
+          }
+        ]
+       },
       "minecraft:is_hidden_when_invisible": {
       },
       "minecraft:experience_reward": {
@@ -95,18 +120,42 @@
         "priority": 5
       },
       "minecraft:behavior.nearest_attackable_target": {
-        "priority": 2,
+        "priority": 3,
         "attack_interval": 10,
         "entity_types": [
           {
             "filters": {
                 "any_of": [
-                  { "test" :  "is_family", "subject" : "other", "value" :  "player"},
                   { "test" :  "is_family", "subject" : "other", "value" :  "snowgolem"},
                   { "test" :  "is_family", "subject" : "other", "value" :  "irongolem"}
                 ]
             },
             "max_dist": 8
+          },
+          {
+            "filters": {
+              "all_of": [
+                {
+                  "test": "is_family",
+                  "subject": "other",
+                  "value": "player"
+                },
+                {
+                  "test": "is_riding",
+                  "subject": "other",
+                  "value": false
+                }
+              ]
+            },
+            "max_dist": 8
+          },
+          {
+            "filters": {
+              "test": "is_family",
+              "subject": "other",
+              "value": "parasaurAngerer"
+            },
+            "max_dist": 64
           }
         ]
       },

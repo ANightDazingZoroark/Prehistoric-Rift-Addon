@@ -10,7 +10,7 @@
     "component_groups": {
       "minecraft:celebrate": {
         "minecraft:behavior.celebrate": {
-          "priority": 5,
+          "priority": 6,
           "celebration_sound": "celebrate",
           "sound_interval": {
             "range_min": 2.0,
@@ -72,12 +72,12 @@
           "first_founding_reward": 0
         },
         "minecraft:behavior.move_to_village": {
-          "priority": 5,
+          "priority": 6,
           "speed_multiplier": 1.0,
           "goal_radius": 2.0
         },
         "minecraft:behavior.random_stroll": {
-          "priority": 6,
+          "priority": 7,
           "speed_multiplier": 1.0
         },
         "minecraft:ambient_sound_interval": {
@@ -94,7 +94,7 @@
           "value": 0.3
         },
         "minecraft:behavior.delayed_attack": {
-          "priority": 4,
+          "priority": 5,
           "attack_once": false,
           "track_target": true,
           "require_complete_path": false,
@@ -109,7 +109,7 @@
           "speed_multiplier": 0.4
         },
         "minecraft:behavior.look_at_player": {
-          "priority": 7,
+          "priority": 8,
           "look_distance": 6,
           "angle_of_view_horizontal": 45,
           "probability": 1
@@ -125,7 +125,7 @@
           }
         },
         "minecraft:behavior.hurt_by_target": {
-          "priority": 2,
+          "priority": 3,
           "entity_types": {
             "filters": {
               "test": "is_family",
@@ -137,7 +137,7 @@
           }
         },
         "minecraft:behavior.nearest_attackable_target": {
-          "priority": 3,
+          "priority": 4,
           "must_see": true,
           "within_radius": 16.0,
           "entity_types": [
@@ -147,17 +147,29 @@
                   {
                     "subject": "other",
                     "test": "is_family",
-                    "value": "player"
-                  },
-                  {
-                    "subject": "other",
-                    "test": "is_family",
                     "value": "irongolem"
                   },
                   {
                     "test": "is_family",
                     "subject": "other",
                     "value": "wandering_trader"
+                  }
+                ]
+              },
+              "max_dist": 16
+            },
+            {
+              "filters": {
+                "all_of": [
+                  {
+                    "test": "is_family",
+                    "subject": "other",
+                    "value": "player"
+                  },
+                  {
+                    "test": "is_riding",
+                    "subject": "other",
+                    "value": false
                   }
                 ]
               },
@@ -180,11 +192,19 @@
                 ]
               },
               "max_dist": 16
+            },
+            {
+              "filters": {
+                "test": "is_family",
+                "subject": "other",
+                "value": "parasaurAngerer"
+              },
+              "max_dist": 64
             }
           ]
         },
         "minecraft:behavior.mount_pathing": {
-          "priority": 5,
+          "priority": 6,
           "speed_multiplier": 1.25,
           "target_dist": 0.0,
           "track_target": true
@@ -203,7 +223,7 @@
       },
       "roaring": {
         "minecraft:behavior.knockback_roar": {
-          "priority": 1,
+          "priority": 2,
           "duration": 1,
           "attack_time": 0.5,
           "knockback_damage": 6,
@@ -237,6 +257,22 @@
       },
       "minecraft:behavior.float": {
         "priority": 0
+      },
+      "minecraft:behavior.avoid_mob_type": {
+        "priority": 1,
+        "entity_types": [
+          {
+            "filters": {
+              "test": "is_family",
+              "value": "parasaurScary",
+              "subject": "other"
+            },
+            "max_dist": 12,
+            "must_see": true,
+            "walk_speed_multiplier": 1.2,
+            "sprint_speed_multiplier": 1.2
+          }
+        ]
       },
       "minecraft:ravager_blocked": {
         "knockback_strength": 3.0,

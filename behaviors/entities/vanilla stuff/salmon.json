@@ -124,7 +124,18 @@
             "filters": {
               "any_of": [
                 {
-                  "test": "is_family", "subject": "other", "value": "player"
+                  "all_of": [
+                    {
+                      "test": "is_family",
+                      "subject": "other",
+                      "value": "player"
+                    },
+                    {
+                      "test": "is_riding",
+                      "subject": "other",
+                      "value": false
+                    }
+                  ]
                 },
                 {
                   "test": "is_family", "subject": "other", "value": "axolotl"
@@ -159,28 +170,41 @@
         ]
       },
       "minecraft:behavior.swim_idle": {
-        "priority": 5,
+        "priority": 6,
         "idle_time": 5.0,
         "success_rate": 0.1
       },
 
       "minecraft:behavior.random_swim": { // Randomly selects points to go to, even in water
         "speed_multiplier": 1.0,
-        "priority": 3,
+        "priority": 4,
         "xz_dist": 16,
         "y_dist": 4,
         "interval": 0
       },
 
       "minecraft:behavior.swim_wander": {
-        "priority": 4,
+        "priority": 5,
         "interval": 0.0166,
         "look_ahead": 5.0,
         "speed_multiplier": 0.014,
         "wander_time": 5.0
       },
+      "minecraft:behavior.nearest_attackable_target": {
+        "priority": 2,
+        "entity_types": [
+            {
+              "filters": {
+                "test": "is_family",
+                "subject": "other",
+                "value": "parasaurAngerer"
+              },
+              "max_dist": 64
+            }
+          ]
+      },
       "minecraft:behavior.melee_attack": {
-        "priority": 2
+        "priority": 3
       },
       "minecraft:flocking": {
         "in_water": true,

@@ -37,7 +37,7 @@
         "can_path_over_water": true
       },
       "minecraft:behavior.float_wander": {
-        "priority": 2,
+        "priority": 3,
         "must_reach": true
       },
       "minecraft:can_fly": {
@@ -65,8 +65,24 @@
       "minecraft:behavior.float": {
         "priority": 0
       },
-      "minecraft:behavior.ranged_attack": {
+      "minecraft:behavior.avoid_mob_type": {
         "priority": 1,
+        "entity_types": [
+          {
+            "filters": {
+              "test": "is_family",
+              "value": "parasaurScary",
+              "subject": "other"
+            },
+            "max_dist": 12,
+            "must_see": true,
+            "walk_speed_multiplier": 1.2,
+            "sprint_speed_multiplier": 1.2
+          }
+        ]
+      },
+      "minecraft:behavior.ranged_attack": {
+        "priority": 2,
         "attack_radius": 64,
         "charge_shoot_trigger": 2,
         "charge_charged_trigger": 1
@@ -76,18 +92,35 @@
         "max": 64
       },
       "minecraft:behavior.hurt_by_target": {
-        "priority": 1
+        "priority": 2
       },
       "minecraft:behavior.nearest_attackable_target": {
-        "priority": 2,
+        "priority": 3,
         "entity_types": [
+          {
+            "filters": {
+              "all_of": [
+                {
+                  "test": "is_family",
+                  "subject": "other",
+                  "value": "player"
+                },
+                {
+                  "test": "is_riding",
+                  "subject": "other",
+                  "value": false
+                }
+              ]
+            },
+            "max_dist": 28
+          },
           {
             "filters": {
               "test": "is_family",
               "subject": "other",
-              "value": "player"
+              "value": "parasaurAngerer"
             },
-            "max_dist": 28
+            "max_dist": 64
           }
         ],
         "must_see": true

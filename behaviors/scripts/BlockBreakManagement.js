@@ -1,4 +1,4 @@
-import { world } from "mojang-minecraft"
+import { Items, ItemStack, world } from "mojang-minecraft"
 
 let ores = [
     'minecraft:coal_ore',
@@ -19,9 +19,22 @@ let ores = [
     'minecraft:deepslate_emerald_ore'
 ]
 
+let tallPlants = [
+    'minecraft:double_plant',
+    'minecraft:tallgrass',
+    'minecraft:vine',
+    'minecraft:twisting_vines',
+    'minecraft:weeping_vines',
+    'minecraft:warped_roots',
+    'minecraft:crimson_roots'
+]
+
 world.events.blockBreak.subscribe(data => {
     if (ores.includes(data.brokenBlockPermutation.type.id) && Math.floor(Math.random() * 8) == 0) {
         world.getDimension('overworld').spawnEntity('rift:palaeocastor', data.block.location)
         world.getDimension('overworld').runCommand(`fill `+Math.trunc((data.block.location.x-1).toString())+` `+Math.trunc((data.block.location.y-1).toString())+` `+Math.trunc((data.block.location.z-1).toString())+` `+Math.trunc((data.block.location.x+1).toString())+` `+Math.trunc((data.block.location.y+1).toString())+` `+Math.trunc((data.block.location.z+1).toString())+` air 0 destroy`)
+    }
+    if (tallPlants.includes(data.brokenBlockPermutation.type.id) && Math.floor(Math.random() * 4) == 0) {
+        world.getDimension('overworld').spawnItem(new ItemStack(Items.get('rift:grass_fiber'), 1, 0), data.block.location)
     }
 })

@@ -28,7 +28,7 @@
           "def": "minecraft:small_fireball"
         },
         "minecraft:behavior.ranged_attack": {
-          "priority": 3,
+          "priority": 4,
           "burst_shots": 3,
           "burst_interval": 0.3,
           "charge_charged_trigger": 0.0,
@@ -43,7 +43,7 @@
           "damage": 6
         },
         "minecraft:behavior.melee_attack": {
-          "priority": 3
+          "priority": 4
         }
       }
     },
@@ -112,29 +112,62 @@
       "minecraft:behavior.float": {
         "priority": 0
       },
-      "minecraft:behavior.hurt_by_target": {
-        "priority": 1
-      },
-      "minecraft:behavior.nearest_attackable_target": {
-        "priority": 2,
-        "must_see": true,
+      "minecraft:behavior.avoid_mob_type": {
+        "priority": 1,
         "entity_types": [
           {
             "filters": {
               "test": "is_family",
-              "subject": "other",
-              "value": "player"
+              "value": "parasaurScary",
+              "subject": "other"
+            },
+            "max_dist": 12,
+            "must_see": true,
+            "walk_speed_multiplier": 1.2,
+            "sprint_speed_multiplier": 1.2
+          }
+        ]
+      },
+      "minecraft:behavior.hurt_by_target": {
+        "priority": 2
+      },
+      "minecraft:behavior.nearest_attackable_target": {
+        "priority": 3,
+        "must_see": true,
+        "entity_types": [
+          {
+            "filters": {
+              "all_of": [
+                {
+                  "test": "is_family",
+                  "subject": "other",
+                  "value": "player"
+                },
+                {
+                  "test": "is_riding",
+                  "subject": "other",
+                  "value": false
+                }
+              ]
             },
             "max_dist": 48.0
+          },
+          {
+            "filters": {
+              "test": "is_family",
+              "subject": "other",
+              "value": "parasaurAngerer"
+            },
+            "max_dist": 64
           }
         ]
       },
       "minecraft:behavior.random_stroll": {
-        "priority": 4,
+        "priority": 5,
         "speed_multiplier": 1.0
       },
       "minecraft:behavior.random_look_around": {
-        "priority": 5
+        "priority": 6
       },
       "minecraft:type_family": {
         "family": [ "blaze", "monster", "mob" ]
