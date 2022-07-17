@@ -71,6 +71,8 @@ execute @s[ry=45, rym=-45] ~ ~ ~ fill ~+2 ~ ~+2 ~-2 ~+4 ~+4 air 0 replace crimso
 execute @s[ry=45, rym=-45] ~ ~ ~ fill ~+2 ~ ~+2 ~-2 ~+4 ~+4 air 0 replace warped_slab
 execute @s[ry=45, rym=-45] ~ ~ ~ fill ~+2 ~ ~+2 ~-2 ~+4 ~+4 air 0 replace azalea_leaves
 execute @s[ry=45, rym=-45] ~ ~ ~ fill ~+2 ~ ~+2 ~-2 ~+4 ~+4 air 0 replace azalea_leaves_flowered
+execute @s[ry=45, rym=-45] ~ ~ ~ fill ~+2 ~ ~+2 ~-2 ~+4 ~+4 air 0 replace mangrove_leaves
+execute @s[ry=45, rym=-45] ~ ~ ~ fill ~+2 ~ ~+2 ~-2 ~+4 ~+4 air 0 replace mangrove_roots
 execute @s[ry=45, rym=-45] ~ ~ ~ fill ~+2 ~ ~+2 ~-2 ~+4 ~+4 air 0 replace rift:oak_thatch_block
 execute @s[ry=45, rym=-45] ~ ~ ~ fill ~+2 ~ ~+2 ~-2 ~+4 ~+4 air 0 replace rift:spruce_thatch_block
 execute @s[ry=45, rym=-45] ~ ~ ~ fill ~+2 ~ ~+2 ~-2 ~+4 ~+4 air 0 replace rift:birch_thatch_block
@@ -158,6 +160,8 @@ execute @s[ry=135, rym=45] ~ ~ ~ fill ~-2 ~ ~+2 ~-4 ~+4 ~-2 air 0 replace crimso
 execute @s[ry=135, rym=45] ~ ~ ~ fill ~-2 ~ ~+2 ~-4 ~+4 ~-2 air 0 replace warped_slab
 execute @s[ry=135, rym=45] ~ ~ ~ fill ~-2 ~ ~+2 ~-4 ~+4 ~-2 air 0 replace azalea_leaves
 execute @s[ry=135, rym=45] ~ ~ ~ fill ~-2 ~ ~+2 ~-4 ~+4 ~-2 air 0 replace azalea_leaves_flowered
+execute @s[ry=135, rym=45] ~ ~ ~ fill ~-2 ~ ~+2 ~-4 ~+4 ~-2 air 0 replace mangrove_leaves
+execute @s[ry=135, rym=45] ~ ~ ~ fill ~-2 ~ ~+2 ~-4 ~+4 ~-2 air 0 replace mangrove_roots
 execute @s[ry=135, rym=45] ~ ~ ~ fill ~-2 ~ ~+2 ~-4 ~+4 ~-2 air 0 replace rift:oak_thatch_block
 execute @s[ry=135, rym=45] ~ ~ ~ fill ~-2 ~ ~+2 ~-4 ~+4 ~-2 air 0 replace rift:spruce_thatch_block
 execute @s[ry=135, rym=45] ~ ~ ~ fill ~-2 ~ ~+2 ~-4 ~+4 ~-2 air 0 replace rift:birch_thatch_block
@@ -245,6 +249,8 @@ execute @s[ry=-45, rym=-135] ~ ~ ~ fill ~+2 ~ ~-2 ~+4 ~+4 ~+2 air 0 replace crim
 execute @s[ry=-45, rym=-135] ~ ~ ~ fill ~+2 ~ ~-2 ~+4 ~+4 ~+2 air 0 replace warped_slab
 execute @s[ry=-45, rym=-135] ~ ~ ~ fill ~+2 ~ ~-2 ~+4 ~+4 ~+2 air 0 replace azalea_leaves
 execute @s[ry=-45, rym=-135] ~ ~ ~ fill ~+2 ~ ~-2 ~+4 ~+4 ~+2 air 0 replace azalea_leaves_flowered
+execute @s[ry=-45, rym=-135] ~ ~ ~ fill ~+2 ~ ~-2 ~+4 ~+4 ~+2 air 0 replace mangrove_leaves
+execute @s[ry=-45, rym=-135] ~ ~ ~ fill ~+2 ~ ~-2 ~+4 ~+4 ~+2 air 0 replace mangrove_roots
 execute @s[ry=-45, rym=-135] ~ ~ ~ fill ~+2 ~ ~-2 ~+4 ~+4 ~+2 air 0 replace rift:oak_thatch_block
 execute @s[ry=-45, rym=-135] ~ ~ ~ fill ~+2 ~ ~-2 ~+4 ~+4 ~+2 air 0 replace rift:spruce_thatch_block
 execute @s[ry=-45, rym=-135] ~ ~ ~ fill ~+2 ~ ~-2 ~+4 ~+4 ~+2 air 0 replace rift:birch_thatch_block
@@ -332,6 +338,8 @@ execute @s[ry=180, rym=135] ~ ~ ~ fill ~-2 ~ ~-2 ~+2 ~+4 ~-4 air 0 replace crims
 execute @s[ry=180, rym=135] ~ ~ ~ fill ~-2 ~ ~-2 ~+2 ~+4 ~-4 air 0 replace warped_slab
 execute @s[ry=180, rym=135] ~ ~ ~ fill ~-2 ~ ~-2 ~+2 ~+4 ~-4 air 0 replace azalea_leaves
 execute @s[ry=180, rym=135] ~ ~ ~ fill ~-2 ~ ~-2 ~+2 ~+4 ~-4 air 0 replace azalea_leaves_flowered
+execute @s[ry=180, rym=135] ~ ~ ~ fill ~-2 ~ ~-2 ~+2 ~+4 ~-4 air 0 replace mangrove_leaves
+execute @s[ry=180, rym=135] ~ ~ ~ fill ~-2 ~ ~-2 ~+2 ~+4 ~-4 air 0 replace mangrove_roots
 execute @s[ry=180, rym=135] ~ ~ ~ fill ~-2 ~ ~-2 ~+2 ~+4 ~-4 air 0 replace rift:oak_thatch_block
 execute @s[ry=180, rym=135] ~ ~ ~ fill ~-2 ~ ~-2 ~+2 ~+4 ~-4 air 0 replace rift:spruce_thatch_block
 execute @s[ry=180, rym=135] ~ ~ ~ fill ~-2 ~ ~-2 ~+2 ~+4 ~-4 air 0 replace rift:birch_thatch_block
@@ -417,6 +425,8 @@ execute @s[ry=-135, rym=-180] ~ ~ ~ fill ~-2 ~ ~-2 ~+2 ~+4 ~-4 air 0 replace cri
 execute @s[ry=-135, rym=-180] ~ ~ ~ fill ~-2 ~ ~-2 ~+2 ~+4 ~-4 air 0 replace warped_slab
 execute @s[ry=-135, rym=-180] ~ ~ ~ fill ~-2 ~ ~-2 ~+2 ~+4 ~-4 air 0 replace azalea_leaves
 execute @s[ry=-135, rym=-180] ~ ~ ~ fill ~-2 ~ ~-2 ~+2 ~+4 ~-4 air 0 replace azalea_leaves_flowered
+execute @s[ry=-135, rym=-180] ~ ~ ~ fill ~-2 ~ ~-2 ~+2 ~+4 ~-4 air 0 replace mangrove_leaves
+execute @s[ry=-135, rym=-180] ~ ~ ~ fill ~-2 ~ ~-2 ~+2 ~+4 ~-4 air 0 replace mangrove_roots
 execute @s[ry=-135, rym=-180] ~ ~ ~ fill ~-2 ~ ~-2 ~+2 ~+4 ~-4 air 0 replace rift:oak_thatch_block
 execute @s[ry=-135, rym=-180] ~ ~ ~ fill ~-2 ~ ~-2 ~+2 ~+4 ~-4 air 0 replace rift:spruce_thatch_block
 execute @s[ry=-135, rym=-180] ~ ~ ~ fill ~-2 ~ ~-2 ~+2 ~+4 ~-4 air 0 replace rift:birch_thatch_block

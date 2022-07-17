@@ -1,1 +1,1 @@
-execute @e[type=rift:chair] ~ ~ ~ detect ~ ~ ~ air 0 kill @s
+execute as @e[type=rift:chair] positioned as @e[type=rift:chair] if block ~ ~ ~ air run kill @s

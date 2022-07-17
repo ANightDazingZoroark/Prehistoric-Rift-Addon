@@ -42,6 +42,7 @@ fill ~-3 ~ ~-3 ~+3 ~+8 ~+3 air 0 replace spruce_fence_gate
 fill ~-3 ~ ~-3 ~+3 ~+8 ~+3 air 0 replace wool
 fill ~-3 ~ ~-3 ~+3 ~+8 ~+3 air 0 replace crimson_planks
 fill ~-3 ~ ~-3 ~+3 ~+8 ~+3 air 0 replace warped_planks
+fill ~-3 ~ ~-3 ~+3 ~+8 ~+3 air 0 replace mangrove_planks
 fill ~-3 ~ ~-3 ~+3 ~+8 ~+3 air 0 replace crimson_stem
 fill ~-3 ~ ~-3 ~+3 ~+8 ~+3 air 0 replace warped_stem
 fill ~-3 ~ ~-3 ~+3 ~+8 ~+3 air 0 replace stripped_crimson_stem
@@ -70,6 +71,7 @@ fill ~-3 ~ ~-3 ~+3 ~+8 ~+3 air 0 replace crimson_slab
 fill ~-3 ~ ~-3 ~+3 ~+8 ~+3 air 0 replace warped_slab
 fill ~-3 ~ ~-3 ~+3 ~+8 ~+3 air 0 replace azalea_leaves
 fill ~-3 ~ ~-3 ~+3 ~+8 ~+3 air 0 replace azalea_leaves_flowered
+fill ~-3 ~ ~-3 ~+3 ~+8 ~+3 air 0 replace mangrove_leaves
 fill ~-3 ~ ~-3 ~+3 ~+8 ~+3 air 0 replace rift:oak_thatch_block
 fill ~-3 ~ ~-3 ~+3 ~+8 ~+3 air 0 replace rift:spruce_thatch_block
 fill ~-3 ~ ~-3 ~+3 ~+8 ~+3 air 0 replace rift:birch_thatch_block
