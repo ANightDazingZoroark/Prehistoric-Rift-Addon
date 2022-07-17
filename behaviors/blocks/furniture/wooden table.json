@@ -13,7 +13,8 @@
                     5, //wooden acacia
                     6, //wooden dark oak
                     7, //wooden crimson
-                    8 //wooden warped
+                    8, //wooden warped
+                    9 //wooden mangrove
                 ],
                 "rift:leg0_visibility": [
                     0,
@@ -286,21 +287,46 @@
                     "minecraft:destroy_time": 0.8,
                     "minecraft:loot": "loot_tables/blocks/wooden furniture warped.loot.json"
                 }
+            },
+            {
+                "condition": "query.block_property('rift:table_type') == 9",
+                "components": {
+                    "minecraft:material_instances": {
+                        "*": {
+                            "texture": "wooden_table_mangrove",
+                            "render_method": "alpha_test"
+                        }
+                    },
+                    "minecraft:entity_collision": {
+                        "origin": [
+                            -8,
+                            0,
+                            -8
+                        ],
+                        "size": [
+                            16,
+                            16,
+                            16
+                        ]
+                    },
+                    "minecraft:destroy_time": 0.8,
+                    "minecraft:loot": "loot_tables/blocks/wooden furniture mangrove.loot.json"
+                }
             }
         ],
         "components": {
             "minecraft:geometry": "geometry.table_base",
             "minecraft:part_visibility": {
-                "rules": {
+                "conditions": {
                     "leg0": "query.block_property('rift:leg0_visibility') == 1",
                     "leg1": "query.block_property('rift:leg1_visibility') == 1",
                     "leg2": "query.block_property('rift:leg2_visibility') == 1",
                     "leg3": "query.block_property('rift:leg3_visibility') == 1"
                 }
             },
-            "minecraft:ticking": {
+            "minecraft:queued_ticking": {
                 "looping": true,
-                "range": [
+                "interval_range": [
                     0,
                     0
                 ],
@@ -431,6 +457,18 @@
                         "condition": "query.get_equipped_item_name('main_hand') == 'warped_planks'",
                         "set_block_property": {
                             "rift:table_type": "8"
+                        },
+                        "decrement_stack": {},
+                        "run_command": {
+                            "command": [
+                                "playsound block.saw_sounds @a[r=2]"
+                            ]
+                        }
+                    },
+                    {
+                        "condition": "query.get_equipped_item_name('main_hand') == 'mangrove_planks'",
+                        "set_block_property": {
+                            "rift:table_type": "9"
                         },
                         "decrement_stack": {},
                         "run_command": {

@@ -13,7 +13,8 @@
                     5, //wooden acacia
                     6, //wooden dark oak
                     7, //wooden crimson
-                    8 //wooden warped
+                    8, //wooden warped
+                    9 //wooden mangrove
                 ],
                 "rift:facing_direction": [
                     0,
@@ -382,12 +383,41 @@
                     },
                     "minecraft:loot": "loot_tables/blocks/wooden furniture warped.loot.json"
                 }
+            },
+            {
+                "condition": "query.block_property('rift:bench_type') == 9",
+                "components": {
+                    "minecraft:material_instances": {
+                        "*": {
+                            "texture": "wooden_bench_mangrove",
+                            "render_method": "alpha_test"
+                        }
+                    },
+                    "minecraft:entity_collision": {
+                        "origin": [
+                            -5,
+                            0,
+                            -7
+                        ],
+                        "size": [
+                            10,
+                            8,
+                            14
+                        ]
+                    },
+                    "minecraft:destroy_time": 0.8,
+                    "minecraft:on_interact": {
+                        "condition": "!query.is_riding && query.is_sneaking",
+                        "event": "sit_down"
+                    },
+                    "minecraft:loot": "loot_tables/blocks/wooden furniture mangrove.loot.json"
+                }
             }
         ],
         "components": {
-            "minecraft:ticking": {
+            "minecraft:queued_ticking": {
                 "looping": true,
-                "range": [
+                "interval_range": [
                     0,
                     0
                 ],
@@ -517,6 +547,18 @@
                         "condition": "query.get_equipped_item_name('main_hand') == 'warped_planks'",
                         "set_block_property": {
                             "rift:bench_type": "8"
+                        },
+                        "run_command": {
+                            "command": [
+                                "playsound block.saw_sounds @a[r=2]"
+                            ]
+                        },
+                        "decrement_stack": {}
+                    },
+                    {
+                        "condition": "query.get_equipped_item_name('main_hand') == 'mangrove_planks'",
+                        "set_block_property": {
+                            "rift:bench_type": "9"
                         },
                         "run_command": {
                             "command": [
