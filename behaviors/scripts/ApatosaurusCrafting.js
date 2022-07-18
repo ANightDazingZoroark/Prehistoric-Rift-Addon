@@ -1,7 +1,7 @@
 import { world } from "mojang-minecraft"
 import { ActionFormData } from "mojang-minecraft-ui"
+import * as guiCrafting from "./ApatosaurusCraftingOptions"
 
-//for main
 const guiMainCraftingTable = new ActionFormData()
 .title('Apatosaurus Menu')
 .body('Choose an action')
@@ -18,15 +18,10 @@ const guiMainBoth = new ActionFormData()
 .button('Crafting Table')
 .button('Furnace')
 
-const guiMainNone = new ActionFormData()
-.title('Apatosaurus Menu')
-.body('Bruh there\'s nothing really much to do here...')
-.button('Exit')
-
 function mainCraftingTableGui(entity) {
     guiMainCraftingTable.show(entity).then(result => {
         if (result.selection == 0) {
-            mainGui(source)
+            guiCrafting.craftingTableMenuGui(entity)
         }
     })
 }
@@ -42,7 +37,7 @@ function mainFurnaceGui(entity) {
 function mainBothGui(entity) {
     guiMainBoth.show(entity).then(result => {
         if (result.selection == 0) {
-            mainGui(source)
+            guiCrafting.craftingTableMenuGui(entity)
         }
         if (result.selection == 1) {
             mainGui(source)
@@ -50,20 +45,19 @@ function mainBothGui(entity) {
     })
 }
 
+function furnaceMenuGui(entity) {}
+
 world.events.entityHit.subscribe(({ hitEntity, hitBlock, entity }) => {
-    if (hitEntity.id == 'rift:apatosaurus' && hitEntity.hasTag('hasCraftingTable') && !hitEntity.hasTag('hasCraftingTable')) {
-        mainCraftingTableGui(entity)
-        world.getDimension('overworld').runCommand(`say can craft`)
+    try {
+        if (hitEntity.id == 'rift:apatosaurus' && hitEntity.hasTag('hasCraftingTable') && !hitEntity.hasTag('hasFurnace')) {
+            mainCraftingTableGui(entity)
+        }
+        else if (hitEntity.id == 'rift:apatosaurus' && !hitEntity.hasTag('hasCraftingTable') && hitEntity.hasTag('hasFurnace')) {
+            mainFurnaceGui(entity)
+        }
+        else if (hitEntity.id == 'rift:apatosaurus' && hitEntity.hasTag('hasCraftingTable') && hitEntity.hasTag('hasFurnace')) {
+            mainBothGui(entity)
+        }
     }
-    else if (hitEntity.id == 'rift:apatosaurus' && !hitEntity.hasTag('hasCraftingTable') && hitEntity.hasTag('hasFurnace')) {
-        mainFurnaceGui(entity)
-        world.getDimension('overworld').runCommand(`say can burn`)
-    }
-    else if (hitEntity.id == 'rift:apatosaurus' && hitEntity.hasTag('hasCraftingTable') && hitEntity.hasTag('hasFurnace')) {
-        mainBothGui(entity)
-        world.getDimension('overworld').runCommand(`say can do both`)
-    }
-    else if (hitEntity.id == 'rift:apatosaurus' && !hitEntity.hasTag('hasCraftingTable') && !hitEntity.hasTag('hasFurnace')) {
-        guiMainNone.show(entity)
-    }
+    catch (e) {}
 })
