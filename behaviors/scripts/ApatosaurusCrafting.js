@@ -26,37 +26,35 @@ function mainCraftingTableGui(entity) {
     })
 }
 
-function mainFurnaceGui(entity) {
+function mainFurnaceGui(entity, hitEntity) {
     guiMainFurnace.show(entity).then(result => {
         if (result.selection == 0) {
-            mainGui(source)
+            guiCrafting.furnaceMenuGui(entity, hitEntity)
         }
     })
 }
 
-function mainBothGui(entity) {
+function mainBothGui(entity, hitEntity) {
     guiMainBoth.show(entity).then(result => {
         if (result.selection == 0) {
             guiCrafting.craftingTableMenuGui(entity)
         }
         if (result.selection == 1) {
-            mainGui(source)
+            guiCrafting.furnaceMenuGui(entity, hitEntity)
         }
     })
 }
 
-function furnaceMenuGui(entity) {}
-
-world.events.entityHit.subscribe(({ hitEntity, hitBlock, entity }) => {
+world.events.entityHit.subscribe(({ hitEntity, entity }) => {
     try {
         if (hitEntity.id == 'rift:apatosaurus' && hitEntity.hasTag('hasCraftingTable') && !hitEntity.hasTag('hasFurnace')) {
             mainCraftingTableGui(entity)
         }
         else if (hitEntity.id == 'rift:apatosaurus' && !hitEntity.hasTag('hasCraftingTable') && hitEntity.hasTag('hasFurnace')) {
-            mainFurnaceGui(entity)
+            mainFurnaceGui(entity, hitEntity)
         }
         else if (hitEntity.id == 'rift:apatosaurus' && hitEntity.hasTag('hasCraftingTable') && hitEntity.hasTag('hasFurnace')) {
-            mainBothGui(entity)
+            mainBothGui(entity, hitEntity)
         }
     }
     catch (e) {}
