@@ -1,5 +1,6 @@
 import "scripts/AbilityManagement.js"
 import "scripts/ApatosaurusCrafting.js"
+import "scripts/ApatosaurusSmelting.js"
 import "scripts/ApatosaurusWeaponManagement.js"
 import "scripts/BlockBreakManagement.js"
 import "scripts/DirewolfSniff.js"

@@ -268,6 +268,104 @@ export const apatosaurusCraftables = [
     }
 ]
 
+export const apatosaurusSmeltables = [
+    {
+        itemId: 'minecraft:porkchop',
+        itemData: 0,
+        outputId: 'minecraft:cooked_porkchop',
+        outputData: 0
+    },
+    {
+        itemId: 'minecraft:beef',
+        itemData: 0,
+        outputId: 'minecraft:cooked_beef',
+        outputData: 0
+    },
+    {
+        itemId: 'minecraft:chicken',
+        itemData: 0,
+        outputId: 'minecraft:cooked_chicken',
+        outputData: 0
+    },
+    {
+        itemId: 'minecraft:cod',
+        itemData: 0,
+        outputId: 'minecraft:cooked_cod',
+        outputData: 0
+    },
+    {
+        itemId: 'minecraft:salmon',
+        itemData: 0,
+        outputId: 'minecraft:cooked_salmon',
+        outputData: 0
+    },
+    {
+        itemId: 'minecraft:potato',
+        itemData: 0,
+        outputId: 'minecraft:baked_potato',
+        outputData: 0
+    },
+    {
+        itemId: 'minecraft:mutton',
+        itemData: 0,
+        outputId: 'minecraft:cooked_mutton',
+        outputData: 0
+    },
+    {
+        itemId: 'minecraft:rabbit',
+        itemData: 0,
+        outputId: 'minecraft:cooked_rabbit',
+        outputData: 0
+    },
+    {
+        itemId: 'minecraft:kelp',
+        itemData: 0,
+        outputId: 'minecraft:dried_kelp',
+        outputData: 0
+    },
+    {
+        itemId: 'rift:raw_dodo_meat',
+        itemData: 0,
+        outputId: 'rift:cooked_dodo_meat',
+        outputData: 0
+    },
+    {
+        itemId: 'rift:raw_exotic_meat',
+        itemData: 0,
+        outputId: 'rift:cooked_exotic_meat',
+        outputData: 0
+    },
+    {
+        itemId: 'rift:raw_hadrosaur_meat',
+        itemData: 0,
+        outputId: 'rift:cooked_hadrosaur_meat',
+        outputData: 0
+    }
+]
+
+export const apatosaurusFuel = [
+    {
+        itemId: 'minecraft:coal',
+        itemData: 0,
+        burnAmount: 8
+    },
+    {
+        itemId: 'minecraft:charcoal',
+        itemData: 0,
+        burnAmount: 8
+    },
+    {
+        itemId: 'minecraft:blaze_rod',
+        itemData: 0,
+        burnAmount: 12
+    },
+    {
+        itemId: 'minecraft:stick',
+        itemData: 0,
+        burnAmount: 0.5
+    }
+]
+
 export const guiCraftingIndex = new ActionFormData()
 .title('Crafting Menu')
 .button('Search')

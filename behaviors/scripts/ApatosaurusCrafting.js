@@ -1,6 +1,10 @@
-import { world } from "mojang-minecraft"
+import { EntityQueryOptions, world } from "mojang-minecraft"
 import { ActionFormData } from "mojang-minecraft-ui"
 import * as guiCrafting from "./ApatosaurusCraftingOptions"
+
+let apatosaurusFilter = new EntityQueryOptions()
+apatosaurusFilter.type = 'rift:apatosaurus'
+apatosaurusFilter.tags = ['hasFurnace']
 
 const guiMainCraftingTable = new ActionFormData()
 .title('Apatosaurus Menu')
