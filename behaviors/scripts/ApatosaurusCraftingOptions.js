@@ -340,6 +340,426 @@ export const apatosaurusSmeltables = [
         itemData: 0,
         outputId: 'rift:cooked_hadrosaur_meat',
         outputData: 0
+    },
+    {
+        itemId: 'rift:raw_hemolymph',
+        itemData: 0,
+        outputId: 'rift:boiled_hemolymph',
+        outputData: 0
+    },
+    {
+        itemId: 'rift:raw_megapiranha',
+        itemData: 0,
+        outputId: 'rift:cooked_megapiranha',
+        outputData: 0
+    },
+    {
+        itemId: 'minecraft:raw_copper',
+        itemData: 0,
+        outputId: 'minecraft:copper_ingot',
+        outputData: 0
+    },
+    {
+        itemId: 'minecraft:raw_iron',
+        itemData: 0,
+        outputId: 'minecraft:iron_ingot',
+        outputData: 0
+    },
+    {
+        itemId: 'minecraft:raw_gold',
+        itemData: 0,
+        outputId: 'minecraft:gold_ingot',
+        outputData: 0
+    },
+    {
+        itemId: 'minecraft:nether_gold_ore',
+        itemData: 0,
+        outputId: 'minecraft:raw_gold',
+        outputData: 0
+    },
+    {
+        itemId: 'minecraft:ancient_debris',
+        itemData: 0,
+        outputId: 'minecraft:netherite_scrap',
+        outputData: 0
+    },
+    {
+        itemId: 'minecraft:copper_ore',
+        itemData: 0,
+        outputId: 'minecraft:copper_ingot',
+        outputData: 0
+    },
+    {
+        itemId: 'minecraft:deepslate_copper_ore',
+        itemData: 0,
+        outputId: 'minecraft:copper_ingot',
+        outputData: 0
+    },
+    {
+        itemId: 'minecraft:diamond_ore',
+        itemData: 0,
+        outputId: 'minecraft:diamond',
+        outputData: 0
+    },
+    {
+        itemId: 'minecraft:deepslate_diamond_ore',
+        itemData: 0,
+        outputId: 'minecraft:diamond',
+        outputData: 0
+    },
+    {
+        itemId: 'minecraft:gold_ore',
+        itemData: 0,
+        outputId: 'minecraft:gold_ingot',
+        outputData: 0
+    },
+    {
+        itemId: 'minecraft:deepslate_gold_ore',
+        itemData: 0,
+        outputId: 'minecraft:gold_ingot',
+        outputData: 0
+    },
+    {
+        itemId: 'minecraft:iron_ore',
+        itemData: 0,
+        outputId: 'minecraft:iron_ingot',
+        outputData: 0
+    },
+    {
+        itemId: 'minecraft:deepslate_iron_ore',
+        itemData: 0,
+        outputId: 'minecraft:iron_ingot',
+        outputData: 0
+    },
+    {
+        itemId: 'minecraft:lapis_ore',
+        itemData: 0,
+        outputId: 'minecraft:lapis_lazuli',
+        outputData: 0
+    },
+    {
+        itemId: 'minecraft:deepslate_lapis_ore',
+        itemData: 0,
+        outputId: 'minecraft:lapis_lazuli',
+        outputData: 0
+    },
+    {
+        itemId: 'minecraft:redstone_ore',
+        itemData: 0,
+        outputId: 'minecraft:redstone',
+        outputData: 0
+    },
+    {
+        itemId: 'minecraft:deepslate_redstone_ore',
+        itemData: 0,
+        outputId: 'minecraft:redstone',
+        outputData: 0
+    },
+    {
+        itemId: 'minecraft:coal_ore',
+        itemData: 0,
+        outputId: 'minecraft:coal',
+        outputData: 0
+    },
+    {
+        itemId: 'minecraft:deepslate_coal_ore',
+        itemData: 0,
+        outputId: 'minecraft:coal',
+        outputData: 0
+    },
+    {
+        itemId: 'minecraft:emeral_ore',
+        itemData: 0,
+        outputId: 'minecraft:emerald',
+        outputData: 0
+    },
+    {
+        itemId: 'minecraft:deepslate_emerald_ore',
+        itemData: 0,
+        outputId: 'minecraft:emerald',
+        outputData: 0
+    },
+    {
+        itemId: 'minecraft:quartz_ore',
+        itemData: 0,
+        outputId: 'minecraft:quartz',
+        outputData: 0
+    },
+    {
+        itemId: 'minecraft:sand',
+        itemData: -1,
+        outputId: 'minecraft:glass',
+        outputData: 0
+    },
+    {
+        itemId: 'minecraft:cobblestone',
+        itemData: 0,
+        outputId: 'minecraft:stone',
+        outputData: 0
+    },
+    {
+        itemId: 'minecraft:sandstone',
+        itemData: 0,
+        outputId: 'minecraft:sandstone',
+        outputData: 3
+    },
+    {
+        itemId: 'minecraft:red_sandstone',
+        itemData: 0,
+        outputId: 'minecraft:red_sandstone',
+        outputData: 3
+    },
+    {
+        itemId: 'minecraft:stone',
+        itemData: 0,
+        outputId: 'minecraft:smooth_stone',
+        outputData: 0
+    },
+    {
+        itemId: 'minecraft:quartz_block',
+        itemData: 0,
+        outputId: 'minecraft:quartz_block',
+        outputData: 3
+    },
+    {
+        itemId: 'minecraft:clay_ball',
+        itemData: 0,
+        outputId: 'minecraft:brick',
+        outputData: 0
+    },
+    {
+        itemId: 'minecraft:netherrack',
+        itemData: 0,
+        outputId: 'minecraft:netherbrick',
+        outputData: 0
+    },
+    {
+        itemId: 'minecraft:nether_brick',
+        itemData: 0,
+        outputId: 'minecraft:cracked_nether_bricks',
+        outputData: 0
+    },
+    {
+        itemId: 'minecraft:basalt',
+        itemData: 0,
+        outputId: 'minecraft:smooth_basalt',
+        outputData: 0
+    },
+    {
+        itemId: 'minecraft:clay',
+        itemData: 0,
+        outputId: 'minecraft:hardened_clay',
+        outputData: 0
+    },
+    {
+        itemId: 'minecraft:stonebrick',
+        itemData: 0,
+        outputId: 'minecraft:stonebrick',
+        outputData: 2
+    },
+    {
+        itemId: 'minecraft:polished_blackstone_bricks',
+        itemData: 0,
+        outputId: 'minecraft:cracked_polished_blackstone_bricks',
+        outputData: 0
+    },
+    {
+        itemId: 'minecraft:cobbled_deepslate',
+        itemData: 0,
+        outputId: 'minecraft:deepslate',
+        outputData: 0
+    },
+    {
+        itemId: 'minecraft:deepslate_bricks',
+        itemData: 0,
+        outputId: 'minecraft:cracked_deepslate_bricks',
+        outputData: 0
+    },
+    {
+        itemId: 'minecraft:deepslate_tiles',
+        itemData: 0,
+        outputId: 'minecraft:cracked_deepslate_tiles',
+        outputData: 0
+    },
+    {
+        itemId: 'minecraft:stained_hardened_clay',
+        itemData: 0,
+        outputId: 'minecraft:white_glazed_terracotta',
+        outputData: 0
+    },
+    {
+        itemId: 'minecraft:stained_hardened_clay',
+        itemData: 1,
+        outputId: 'minecraft:orange_glazed_terracotta',
+        outputData: 0
+    },
+    {
+        itemId: 'minecraft:stained_hardened_clay',
+        itemData: 2,
+        outputId: 'minecraft:magenta_glazed_terracotta',
+        outputData: 0
+    },
+    {
+        itemId: 'minecraft:stained_hardened_clay',
+        itemData: 3,
+        outputId: 'minecraft:light_blue_glazed_terracotta',
+        outputData: 0
+    },
+    {
+        itemId: 'minecraft:stained_hardened_clay',
+        itemData: 4,
+        outputId: 'minecraft:yellow_glazed_terracotta',
+        outputData: 0
+    },
+    {
+        itemId: 'minecraft:stained_hardened_clay',
+        itemData: 5,
+        outputId: 'minecraft:lime_glazed_terracotta',
+        outputData: 0
+    },
+    {
+        itemId: 'minecraft:stained_hardened_clay',
+        itemData: 6,
+        outputId: 'minecraft:pink_glazed_terracotta',
+        outputData: 0
+    },
+    {
+        itemId: 'minecraft:stained_hardened_clay',
+        itemData: 7,
+        outputId: 'minecraft:gray_glazed_terracotta',
+        outputData: 0
+    },
+    {
+        itemId: 'minecraft:stained_hardened_clay',
+        itemData: 8,
+        outputId: 'minecraft:silver_glazed_terracotta',
+        outputData: 0
+    },
+    {
+        itemId: 'minecraft:stained_hardened_clay',
+        itemData: 9,
+        outputId: 'minecraft:cyan_glazed_terracotta',
+        outputData: 0
+    },
+    {
+        itemId: 'minecraft:stained_hardened_clay',
+        itemData: 10,
+        outputId: 'minecraft:purple_glazed_terracotta',
+        outputData: 0
+    },
+    {
+        itemId: 'minecraft:stained_hardened_clay',
+        itemData: 11,
+        outputId: 'minecraft:blue_glazed_terracotta',
+        outputData: 0
+    },
+    {
+        itemId: 'minecraft:stained_hardened_clay',
+        itemData: 12,
+        outputId: 'minecraft:brown_glazed_terracotta',
+        outputData: 0
+    },
+    {
+        itemId: 'minecraft:stained_hardened_clay',
+        itemData: 13,
+        outputId: 'minecraft:green_glazed_terracotta',
+        outputData: 0
+    },
+    {
+        itemId: 'minecraft:stained_hardened_clay',
+        itemData: 14,
+        outputId: 'minecraft:red_glazed_terracotta',
+        outputData: 0
+    },
+    {
+        itemId: 'minecraft:stained_hardened_clay',
+        itemData: 15,
+        outputId: 'minecraft:black_glazed_terracotta',
+        outputData: 0
+    },
+    {
+        itemId: 'minecraft:cactus',
+        itemData: 0,
+        outputId: 'minecraft:green_dye',
+        outputData: 0
+    },
+    {
+        itemId: 'minecraft:log',
+        itemData: -1,
+        outputId: 'minecraft:charcoal',
+        outputData: 0
+    },
+    {
+        itemId: 'minecraft:log2',
+        itemData: -1,
+        outputId: 'minecraft:charcoal',
+        outputData: 0
+    },
+    {
+        itemId: 'minecraft:crimson_stem',
+        itemData: 0,
+        outputId: 'minecraft:charcoal',
+        outputData: 0
+    },
+    {
+        itemId: 'minecraft:warped_stem',
+        itemData: 0,
+        outputId: 'minecraft:charcoal',
+        outputData: 0
+    },
+    {
+        itemId: 'minecraft:mangrove_log',
+        itemData: 0,
+        outputId: 'minecraft:charcoal',
+        outputData: 0
+    },
+    {
+        itemId: 'minecraft:wood',
+        itemData: -1,
+        outputId: 'minecraft:charcoal',
+        outputData: 0
+    },
+    {
+        itemId: 'minecraft:crimson_hyphae',
+        itemData: 0,
+        outputId: 'minecraft:charcoal',
+        outputData: 0
+    },
+    {
+        itemId: 'minecraft:warped_hyphae',
+        itemData: 0,
+        outputId: 'minecraft:charcoal',
+        outputData: 0
+    },
+    {
+        itemId: 'minecraft:mangrove_wood',
+        itemData: 0,
+        outputId: 'minecraft:charcoal',
+        outputData: 0
+    },
+    {
+        itemId: 'minecraft:chorus_fruit',
+        itemData: 0,
+        outputId: 'minecraft:popped_chorus_fruit',
+        outputData: 0
+    },
+    {
+        itemId: 'minecraft:sponge',
+        itemData: 1,
+        outputId: 'minecraft:sponge',
+        outputData: 0
+    },
+    {
+        itemId: 'minecraft:sea_pickle',
+        itemData: 0,
+        outputId: 'minecraft:lime_dye',
+        outputData: 0
+    },
+    {
+        itemId: 'rift:crude_oil',
+        itemData: 0,
+        outputId: 'minecraft:plastic_frame',
+        outputData: 0
     }
 ]
 
@@ -362,7 +782,22 @@ export const apatosaurusFuel = [
     {
         itemId: 'minecraft:stick',
         itemData: 0,
-        burnAmount: 0.5
+        burnAmount: 1
+    },
+    {
+        itemId: 'minecraft:bamboo',
+        itemData: 0,
+        burnAmount: 1
+    },
+    {
+        itemId: 'minecraft:coal_block',
+        itemData: 0,
+        burnAmount: 80
+    },
+    {
+        itemId: 'minecraft:dried_kelp_block',
+        itemData: 0,
+        burnAmount: 20
     }
 ]
 

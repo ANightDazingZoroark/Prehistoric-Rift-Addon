@@ -1,6 +1,50 @@
 {
 	"format_version": "1.10.0",
 	"animation_controllers": {
+		"controller.animation.apato_furnace_smelting_cooldown": {
+			"initial_state": "default",
+			"states": {
+				"default": {
+					"transitions": [
+						{
+							"smelting": "query.actor_property('rift:is_smelting') == true"
+						}
+					],
+					"on_entry": [
+						"/tag @s remove smelting"
+					],
+					"on_exit": [
+						"/tag @s add smelting"
+					]
+				},
+				"smelting": {
+					"animations": [
+						"animSmeltFurnace"
+					],
+					"transitions": [
+						{
+							"smelt": "query.all_animations_finished"
+						},
+						{
+							"default": "query.actor_property('rift:is_smelting') == false"
+						}
+					]
+				},
+				"smelt": {
+					"transitions": [
+						{
+							"smelting": "(1.0)"
+						},
+						{
+							"default": "query.actor_property('rift:is_smelting') == false"
+						}
+					],
+					"on_entry": [
+						"/tag @s add startSmelt"
+					]
+				}
+			}
+		},
 		"controller.animation.apato_detect_stationary_weapon": {
 			"initial_state": "default",
 			"states": {
