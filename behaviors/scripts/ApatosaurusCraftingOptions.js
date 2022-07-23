@@ -1,6 +1,8 @@
 import { ActionFormData, ModalFormData } from "mojang-minecraft-ui"
+import { testForItem } from "./externals/itemmanagement"
 
-export const apatosaurusCraftables = [
+//boats are gonna be made craftable here soon
+const apatosaurusCraftables = [
     {
         itemName: "Stick",
         itemId: "minecraft:stick",
@@ -61,6 +63,19 @@ export const apatosaurusCraftables = [
             ]
         },
         outputAmount: 4,
+        outputData: 0
+    },
+    {
+        itemName: "Bucket",
+        itemId: "minecraft:bucket",
+        itemData: 0,
+        craftingItems: {
+            itemName: "Iron Ingot",
+            item: "minecraft:iron_ingot",
+            amount: 3,
+            itemData: 0
+        },
+        outputAmount: 1,
         outputData: 0
     },
     { //oak planks
@@ -264,6 +279,942 @@ export const apatosaurusCraftables = [
             ]
         },
         outputAmount: 4,
+        outputData: 0
+    },
+    { //oak slab
+        itemName: "Oak Wood Slab",
+        itemId: "minecraft:wooden_slab",
+        craftingItems: {
+            itemName: "Oak Planks",
+            item: "minecraft:planks",
+            amount: 1,
+            itemData: 0
+        },
+        outputAmount: 6,
+        outputData: 0
+    },
+    { //spruce slab
+        itemName: "Spruce Wood Slab",
+        itemId: "minecraft:wooden_slab",
+        craftingItems: {
+            itemName: "Spruce Planks",
+            item: "minecraft:planks",
+            amount: 1,
+            itemData: 1
+        },
+        outputAmount: 6,
+        outputData: 1
+    },
+    { //birch slab
+        itemName: "Birch Wood Slab",
+        itemId: "minecraft:wooden_slab",
+        craftingItems: {
+            itemName: "Birch Planks",
+            item: "minecraft:planks",
+            amount: 1,
+            itemData: 2
+        },
+        outputAmount: 6,
+        outputData: 2
+    },
+    { //jungle slab
+        itemName: "Jungle Wood Slab",
+        itemId: "minecraft:wooden_slab",
+        craftingItems: {
+            itemName: "Jungle Planks",
+            item: "minecraft:planks",
+            amount: 1,
+            itemData: 3
+        },
+        outputAmount: 6,
+        outputData: 3
+    },
+    { //acacia slab
+        itemName: "Acacia Wood Slab",
+        itemId: "minecraft:wooden_slab",
+        craftingItems: {
+            itemName: "Acacia Planks",
+            item: "minecraft:planks",
+            amount: 1,
+            itemData: 4
+        },
+        outputAmount: 6,
+        outputData: 4
+    },
+    { //dark oak slab
+        itemName: "Dark Oak Wood Slab",
+        itemId: "minecraft:wooden_slab",
+        craftingItems: {
+            itemName: "Dark Oak Planks",
+            item: "minecraft:planks",
+            amount: 1,
+            itemData: 5
+        },
+        outputAmount: 6,
+        outputData: 5
+    },
+    { //mangrove slab
+        itemName: "Mangrove Wood Slab",
+        itemId: "minecraft:mangrove_slab",
+        craftingItems: {
+            itemName: "Mangrove Planks",
+            item: "minecraft:mangrove_planks",
+            amount: 1,
+            itemData: 0
+        },
+        outputAmount: 6,
+        outputData: 0
+    },
+    { //crimson slab
+        itemName: "Crimson Slab",
+        itemId: "minecraft:crimson_slab",
+        craftingItems: {
+            itemName: "Crimson Planks",
+            item: "minecraft:crimson_planks",
+            amount: 1,
+            itemData: 0
+        },
+        outputAmount: 6,
+        outputData: 0
+    },
+    { //warped slab
+        itemName: "Warped Slab",
+        itemId: "minecraft:warped_slab",
+        craftingItems: {
+            itemName: "Warped Planks",
+            item: "minecraft:warped_planks",
+            amount: 1,
+            itemData: 0
+        },
+        outputAmount: 6,
+        outputData: 0
+    },
+    { //oak stairs
+        itemName: "Oak Wood Stairs",
+        itemId: "minecraft:oak_stairs",
+        craftingItems: {
+            itemName: "Oak Planks",
+            item: "minecraft:planks",
+            amount: 3,
+            itemData: 0
+        },
+        outputAmount: 6,
+        outputData: 0
+    },
+    { //spruce stairs
+        itemName: "Spruce Wood Stairs",
+        itemId: "minecraft:spruce_stairs",
+        craftingItems: {
+            itemName: "Spruce Planks",
+            item: "minecraft:planks",
+            amount: 3,
+            itemData: 1
+        },
+        outputAmount: 6,
+        outputData: 0
+    },
+    { //birch stairs
+        itemName: "Birch Wood Stairs",
+        itemId: "minecraft:birch_stairs",
+        craftingItems: {
+            itemName: "Birch Planks",
+            item: "minecraft:planks",
+            amount: 3,
+            itemData: 2
+        },
+        outputAmount: 6,
+        outputData: 0
+    },
+    { //jungle stairs
+        itemName: "Jungle Wood Stairs",
+        itemId: "minecraft:jungle_stairs",
+        craftingItems: {
+            itemName: "Jungle Planks",
+            item: "minecraft:planks",
+            amount: 3,
+            itemData: 3
+        },
+        outputAmount: 6,
+        outputData: 0
+    },
+    { //acacia stairs
+        itemName: "Acacia Wood Stairs",
+        itemId: "minecraft:acacia_stairs",
+        craftingItems: {
+            itemName: "Acacia Planks",
+            item: "minecraft:planks",
+            amount: 3,
+            itemData: 4
+        },
+        outputAmount: 6,
+        outputData: 0
+    },
+    { //dark oak stairs
+        itemName: "Dark Oak Wood Stairs",
+        itemId: "minecraft:dark_oak_stairs",
+        craftingItems: {
+            itemName: "Dark Oak Planks",
+            item: "minecraft:planks",
+            amount: 3,
+            itemData: 5
+        },
+        outputAmount: 6,
+        outputData: 0
+    },
+    { //mangrove stairs
+        itemName: "Mangrove Wood Stairs",
+        itemId: "minecraft:oak_stairs",
+        craftingItems: {
+            itemName: "Mangrove Planks",
+            item: "minecraft:mangrve_planks",
+            amount: 3,
+            itemData: 0
+        },
+        outputAmount: 6,
+        outputData: 0
+    },
+    { //crimson stairs
+        itemName: "Crimson Wood Stairs",
+        itemId: "minecraft:crimson_stairs",
+        craftingItems: {
+            itemName: "Crimson Planks",
+            item: "minecraft:crimson_planks",
+            amount: 3,
+            itemData: 0
+        },
+        outputAmount: 6,
+        outputData: 0
+    },
+    { //warped stairs
+        itemName: "Warped Wood Stairs",
+        itemId: "minecraft:warped_stairs",
+        craftingItems: {
+            itemName: "Warped Planks",
+            item: "minecraft:warped_planks",
+            amount: 3,
+            itemData: 0
+        },
+        outputAmount: 6,
+        outputData: 0
+    },
+    { //wooden axe
+        itemName: "Wooden Axe",
+        itemId: "minecraft:wooden_axe",
+        craftingItems: {
+            allOf: [
+                {
+                    anyOf: [
+                        {
+                            item: "minecraft:planks",
+                            amount: 1,
+                            itemData: -1
+                        },
+                        {
+                            item: "minecraft:crimson_planks",
+                            amount: 1,
+                            itemData: 0
+                        },
+                        {
+                            item: "minecraft:warped_planks",
+                            amount: 1,
+                            itemData: 0
+                        },
+                        {
+                            item: "minecraft:mangrove_planks",
+                            amount: 1,
+                            itemData: 0
+                        }
+                    ]
+                },
+                {
+                    itemName: "Stick",
+                    item: "minecraft:stick",
+                    amount: 1,
+                    itemData: 0
+                }
+            ]
+        },
+        outputAmount: 1,
+        outputData: 0
+    },
+    { //wooden hoe
+        itemName: "Wooden Hoe",
+        itemId: "minecraft:wooden_hoe",
+        craftingItems: {
+            allOf: [
+                {
+                    anyOf: [
+                        {
+                            item: "minecraft:planks",
+                            amount: 1,
+                            itemData: -1
+                        },
+                        {
+                            item: "minecraft:crimson_planks",
+                            amount: 1,
+                            itemData: 0
+                        },
+                        {
+                            item: "minecraft:warped_planks",
+                            amount: 1,
+                            itemData: 0
+                        },
+                        {
+                            item: "minecraft:mangrove_planks",
+                            amount: 1,
+                            itemData: 0
+                        }
+                    ]
+                },
+                {
+                    itemName: "Stick",
+                    item: "minecraft:stick",
+                    amount: 1,
+                    itemData: 0
+                }
+            ]
+        },
+        outputAmount: 1,
+        outputData: 0
+    },
+    { //wooden pickaxe
+        itemName: "Wooden Pickaxe",
+        itemId: "minecraft:wooden_pickaxe",
+        craftingItems: {
+            allOf: [
+                {
+                    anyOf: [
+                        {
+                            item: "minecraft:planks",
+                            amount: 1,
+                            itemData: -1
+                        },
+                        {
+                            item: "minecraft:crimson_planks",
+                            amount: 1,
+                            itemData: 0
+                        },
+                        {
+                            item: "minecraft:warped_planks",
+                            amount: 1,
+                            itemData: 0
+                        },
+                        {
+                            item: "minecraft:mangrove_planks",
+                            amount: 1,
+                            itemData: 0
+                        }
+                    ]
+                },
+                {
+                    itemName: "Stick",
+                    item: "minecraft:stick",
+                    amount: 1,
+                    itemData: 0
+                }
+            ]
+        },
+        outputAmount: 1,
+        outputData: 0
+    },
+    { //wooden shovel
+        itemName: "Wooden Shovel",
+        itemId: "minecraft:wooden_shovel",
+        craftingItems: {
+            allOf: [
+                {
+                    anyOf: [
+                        {
+                            item: "minecraft:planks",
+                            amount: 1,
+                            itemData: -1
+                        },
+                        {
+                            item: "minecraft:crimson_planks",
+                            amount: 1,
+                            itemData: 0
+                        },
+                        {
+                            item: "minecraft:warped_planks",
+                            amount: 1,
+                            itemData: 0
+                        },
+                        {
+                            item: "minecraft:mangrove_planks",
+                            amount: 1,
+                            itemData: 0
+                        }
+                    ]
+                },
+                {
+                    itemName: "Stick",
+                    item: "minecraft:stick",
+                    amount: 1,
+                    itemData: 0
+                }
+            ]
+        },
+        outputAmount: 1,
+        outputData: 0
+    },
+    { //wooden sword
+        itemName: "Wooden Sword",
+        itemId: "minecraft:wooden_sword",
+        craftingItems: {
+            allOf: [
+                {
+                    anyOf: [
+                        {
+                            item: "minecraft:planks",
+                            amount: 1,
+                            itemData: -1
+                        },
+                        {
+                            item: "minecraft:crimson_planks",
+                            amount: 1,
+                            itemData: 0
+                        },
+                        {
+                            item: "minecraft:warped_planks",
+                            amount: 1,
+                            itemData: 0
+                        },
+                        {
+                            item: "minecraft:mangrove_planks",
+                            amount: 1,
+                            itemData: 0
+                        }
+                    ]
+                },
+                {
+                    itemName: "Stick",
+                    item: "minecraft:stick",
+                    amount: 1,
+                    itemData: 0
+                }
+            ]
+        },
+        outputAmount: 1,
+        outputData: 0
+    },
+    { //stone axe
+        itemName: "Stone Axe",
+        itemId: "minecraft:stone_axe",
+        craftingItems: {
+            allOf: [
+                {
+                    anyOf: [
+                        {
+                            itemName: "Cobblestone",
+                            item: "minecraft:cobblestone",
+                            amount: 1,
+                            itemData: 0
+                        },
+                        {
+                            itemName: "Blackstone",
+                            item: "minecraft:blackstone",
+                            amount: 1,
+                            itemData: 0
+                        },
+                        {
+                            itemName: "Cobbled Deepslate",
+                            item: "minecraft:cobbled_deepslate",
+                            amount: 1,
+                            itemData: 0
+                        }
+                    ]
+                },
+                {
+                    itemName: "Stick",
+                    item: "minecraft:stick",
+                    amount: 1,
+                    itemData: 0
+                }
+            ]
+        },
+        outputAmount: 1,
+        outputData: 0
+    },
+    { //stone hoe
+        itemName: "Stone Hoe",
+        itemId: "minecraft:stone_hoe",
+        craftingItems: {
+            allOf: [
+                {
+                    anyOf: [
+                        {
+                            itemName: "Cobblestone",
+                            item: "minecraft:cobblestone",
+                            amount: 1,
+                            itemData: 0
+                        },
+                        {
+                            itemName: "Blackstone",
+                            item: "minecraft:blackstone",
+                            amount: 1,
+                            itemData: 0
+                        },
+                        {
+                            itemName: "Cobbled Deepslate",
+                            item: "minecraft:cobbled_deepslate",
+                            amount: 1,
+                            itemData: 0
+                        }
+                    ]
+                },
+                {
+                    itemName: "Stick",
+                    item: "minecraft:stick",
+                    amount: 1,
+                    itemData: 0
+                }
+            ]
+        },
+        outputAmount: 1,
+        outputData: 0
+    },
+    { //stone pickaxe
+        itemName: "Stone Pickaxe",
+        itemId: "minecraft:stone_pickaxe",
+        craftingItems: {
+            allOf: [
+                {
+                    anyOf: [
+                        {
+                            itemName: "Cobblestone",
+                            item: "minecraft:cobblestone",
+                            amount: 1,
+                            itemData: 0
+                        },
+                        {
+                            itemName: "Blackstone",
+                            item: "minecraft:blackstone",
+                            amount: 1,
+                            itemData: 0
+                        },
+                        {
+                            itemName: "Cobbled Deepslate",
+                            item: "minecraft:cobbled_deepslate",
+                            amount: 1,
+                            itemData: 0
+                        }
+                    ]
+                },
+                {
+                    itemName: "Stick",
+                    item: "minecraft:stick",
+                    amount: 1,
+                    itemData: 0
+                }
+            ]
+        },
+        outputAmount: 1,
+        outputData: 0
+    },
+    { //stone shovel
+        itemName: "Stone Shovel",
+        itemId: "minecraft:stone_shovel",
+        craftingItems: {
+            allOf: [
+                {
+                    anyOf: [
+                        {
+                            itemName: "Cobblestone",
+                            item: "minecraft:cobblestone",
+                            amount: 1,
+                            itemData: 0
+                        },
+                        {
+                            itemName: "Blackstone",
+                            item: "minecraft:blackstone",
+                            amount: 1,
+                            itemData: 0
+                        },
+                        {
+                            itemName: "Cobbled Deepslate",
+                            item: "minecraft:cobbled_deepslate",
+                            amount: 1,
+                            itemData: 0
+                        }
+                    ]
+                },
+                {
+                    itemName: "Stick",
+                    item: "minecraft:stick",
+                    amount: 1,
+                    itemData: 0
+                }
+            ]
+        },
+        outputAmount: 1,
+        outputData: 0
+    },
+    { //stone sword
+        itemName: "Stone Sword",
+        itemId: "minecraft:stone_sword",
+        craftingItems: {
+            allOf: [
+                {
+                    anyOf: [
+                        {
+                            itemName: "Cobblestone",
+                            item: "minecraft:cobblestone",
+                            amount: 1,
+                            itemData: 0
+                        },
+                        {
+                            itemName: "Blackstone",
+                            item: "minecraft:blackstone",
+                            amount: 1,
+                            itemData: 0
+                        },
+                        {
+                            itemName: "Cobbled Deepslate",
+                            item: "minecraft:cobbled_deepslate",
+                            amount: 1,
+                            itemData: 0
+                        }
+                    ]
+                },
+                {
+                    itemName: "Stick",
+                    item: "minecraft:stick",
+                    amount: 1,
+                    itemData: 0
+                }
+            ]
+        },
+        outputAmount: 1,
+        outputData: 0
+    },
+    { //iron axe
+        itemName: "Iron Axe",
+        itemId: "minecraft:iron_axe",
+        craftingItems: {
+            allOf: [
+                {
+                    itemName: "Iron Ingot",
+                    item: "minecraft:iron_ingot",
+                    amount: 1,
+                    itemData: 0
+                },
+                {
+                    itemName: "Stick",
+                    item: "minecraft:stick",
+                    amount: 1,
+                    itemData: 0
+                }
+            ]
+        },
+        outputAmount: 1,
+        outputData: 0
+    },
+    { //iron hoe
+        itemName: "Iron Hoe",
+        itemId: "minecraft:iron_hoe",
+        craftingItems: {
+            allOf: [
+                {
+                    itemName: "Iron Ingot",
+                    item: "minecraft:iron_ingot",
+                    amount: 1,
+                    itemData: 0
+                },
+                {
+                    itemName: "Stick",
+                    item: "minecraft:stick",
+                    amount: 1,
+                    itemData: 0
+                }
+            ]
+        },
+        outputAmount: 1,
+        outputData: 0
+    },
+    { //iron pickaxe
+        itemName: "Iron Pickaxe",
+        itemId: "minecraft:iron_pickaxe",
+        craftingItems: {
+            allOf: [
+                {
+                    itemName: "Iron Ingot",
+                    item: "minecraft:iron_ingot",
+                    amount: 1,
+                    itemData: 0
+                },
+                {
+                    itemName: "Stick",
+                    item: "minecraft:stick",
+                    amount: 1,
+                    itemData: 0
+                }
+            ]
+        },
+        outputAmount: 1,
+        outputData: 0
+    },
+    { //iron shovel
+        itemName: "Iron Shovel",
+        itemId: "minecraft:iron_shovel",
+        craftingItems: {
+            allOf: [
+                {
+                    itemName: "Iron Ingot",
+                    item: "minecraft:iron_ingot",
+                    amount: 1,
+                    itemData: 0
+                },
+                {
+                    itemName: "Stick",
+                    item: "minecraft:stick",
+                    amount: 1,
+                    itemData: 0
+                }
+            ]
+        },
+        outputAmount: 1,
+        outputData: 0
+    },
+    { //iron sword
+        itemName: "Iron Sword",
+        itemId: "minecraft:iron_sword",
+        craftingItems: {
+            allOf: [
+                {
+                    itemName: "Iron Ingot",
+                    item: "minecraft:iron_ingot",
+                    amount: 1,
+                    itemData: 0
+                },
+                {
+                    itemName: "Stick",
+                    item: "minecraft:stick",
+                    amount: 1,
+                    itemData: 0
+                }
+            ]
+        },
+        outputAmount: 1,
+        outputData: 0
+    },
+    { //gold axe
+        itemName: "Gold Axe",
+        itemId: "minecraft:gold_axe",
+        craftingItems: {
+            allOf: [
+                {
+                    itemName: "Gold Ingot",
+                    item: "minecraft:gold_ingot",
+                    amount: 1,
+                    itemData: 0
+                },
+                {
+                    itemName: "Stick",
+                    item: "minecraft:stick",
+                    amount: 1,
+                    itemData: 0
+                }
+            ]
+        },
+        outputAmount: 1,
+        outputData: 0
+    },
+    { //gold hoe
+        itemName: "Gold Hoe",
+        itemId: "minecraft:gold_hoe",
+        craftingItems: {
+            allOf: [
+                {
+                    itemName: "Gold Ingot",
+                    item: "minecraft:gold_ingot",
+                    amount: 1,
+                    itemData: 0
+                },
+                {
+                    itemName: "Stick",
+                    item: "minecraft:stick",
+                    amount: 1,
+                    itemData: 0
+                }
+            ]
+        },
+        outputAmount: 1,
+        outputData: 0
+    },
+    { //gold pickaxe
+        itemName: "Gold Pickaxe",
+        itemId: "minecraft:gold_pickaxe",
+        craftingItems: {
+            allOf: [
+                {
+                    itemName: "Gold Ingot",
+                    item: "minecraft:gold_ingot",
+                    amount: 1,
+                    itemData: 0
+                },
+                {
+                    itemName: "Stick",
+                    item: "minecraft:stick",
+                    amount: 1,
+                    itemData: 0
+                }
+            ]
+        },
+        outputAmount: 1,
+        outputData: 0
+    },
+    { //gold shovel
+        itemName: "Gold Shovel",
+        itemId: "minecraft:gold_shovel",
+        craftingItems: {
+            allOf: [
+                {
+                    itemName: "Gold Ingot",
+                    item: "minecraft:gold_ingot",
+                    amount: 1,
+                    itemData: 0
+                },
+                {
+                    itemName: "Stick",
+                    item: "minecraft:stick",
+                    amount: 1,
+                    itemData: 0
+                }
+            ]
+        },
+        outputAmount: 1,
+        outputData: 0
+    },
+    { //gold sword
+        itemName: "Gold Sword",
+        itemId: "minecraft:gold_sword",
+        craftingItems: {
+            allOf: [
+                {
+                    itemName: "Gold Ingot",
+                    item: "minecraft:gold_ingot",
+                    amount: 1,
+                    itemData: 0
+                },
+                {
+                    itemName: "Stick",
+                    item: "minecraft:stick",
+                    amount: 1,
+                    itemData: 0
+                }
+            ]
+        },
+        outputAmount: 1,
+        outputData: 0
+    },
+    { //diamond axe
+        itemName: "Diamond Axe",
+        itemId: "minecraft:diamond_axe",
+        craftingItems: {
+            allOf: [
+                {
+                    itemName: "Diamond",
+                    item: "minecraft:diamond",
+                    amount: 1,
+                    itemData: 0
+                },
+                {
+                    itemName: "Stick",
+                    item: "minecraft:stick",
+                    amount: 1,
+                    itemData: 0
+                }
+            ]
+        },
+        outputAmount: 1,
+        outputData: 0
+    },
+    { //diamond hoe
+        itemName: "Diamond Hoe",
+        itemId: "minecraft:diamond_hoe",
+        craftingItems: {
+            allOf: [
+                {
+                    itemName: "Diamond",
+                    item: "minecraft:diamond",
+                    amount: 1,
+                    itemData: 0
+                },
+                {
+                    itemName: "Stick",
+                    item: "minecraft:stick",
+                    amount: 1,
+                    itemData: 0
+                }
+            ]
+        },
+        outputAmount: 1,
+        outputData: 0
+    },
+    { //diamond pickaxe
+        itemName: "Diamond Pickaxe",
+        itemId: "minecraft:diamond_pickaxe",
+        craftingItems: {
+            allOf: [
+                {
+                    itemName: "Diamond",
+                    item: "minecraft:diamond",
+                    amount: 1,
+                    itemData: 0
+                },
+                {
+                    itemName: "Stick",
+                    item: "minecraft:stick",
+                    amount: 1,
+                    itemData: 0
+                }
+            ]
+        },
+        outputAmount: 1,
+        outputData: 0
+    },
+    { //diamond shovel
+        itemName: "Diamond Shovel",
+        itemId: "minecraft:diamond_shovel",
+        craftingItems: {
+            allOf: [
+                {
+                    itemName: "Diamond",
+                    item: "minecraft:diamond",
+                    amount: 1,
+                    itemData: 0
+                },
+                {
+                    itemName: "Stick",
+                    item: "minecraft:stick",
+                    amount: 1,
+                    itemData: 0
+                }
+            ]
+        },
+        outputAmount: 1,
+        outputData: 0
+    },
+    { //diamond sword
+        itemName: "Diamond Sword",
+        itemId: "minecraft:diamond_sword",
+        craftingItems: {
+            allOf: [
+                {
+                    itemName: "Diamond",
+                    item: "minecraft:diamond",
+                    amount: 1,
+                    itemData: 0
+                },
+                {
+                    itemName: "Stick",
+                    item: "minecraft:stick",
+                    amount: 1,
+                    itemData: 0
+                }
+            ]
+        },
+        outputAmount: 1,
         outputData: 0
     }
 ]
@@ -861,6 +1812,35 @@ function guiCraftingCrafterGui(entity, selectedItem) {
             }
         }
     }
+    else if (apatosaurusCraftables[selectedItem].craftingItems.hasOwnProperty('allOf')) {
+        for (let i = 0; i < apatosaurusCraftables[selectedItem].craftingItems.allOf.length; i++) {
+            if (apatosaurusCraftables[selectedItem].craftingItems.allOf[i].hasOwnProperty('anyOf')) {
+                let craftingItemsMap = apatosaurusCraftables[selectedItem].craftingItems.allOf[i].anyOf.map(x => x.item)
+                let planksVariants = ['minecraft:planks', 'minecraft:crimson_planks', 'minecraft:warped_planks', 'minecraft:mangrove_planks']
+                if (planksVariants.every(y => { return craftingItemsMap.includes(y) })) {
+                    craftingRequirements.push('Planks ('+apatosaurusCraftables[selectedItem].craftingItems.allOf[i].anyOf[0].amount+'x), and')
+                }
+                else {
+                    for (let j = 0; j < apatosaurusCraftables[selectedItem].craftingItems.allOf[i].anyOf.length; j++) {
+                        if (j == apatosaurusCraftables[selectedItem].craftingItems.allOf[i].anyOf.length - 1) {
+                            craftingRequirements.push(apatosaurusCraftables[selectedItem].craftingItems.allOf[i].anyOf[j].itemName+' ('+apatosaurusCraftables[selectedItem].craftingItems.allOf[i].anyOf[j].amount+'x), and')
+                        }
+                        else {
+                            craftingRequirements.push(apatosaurusCraftables[selectedItem].craftingItems.allOf[i].anyOf[j].itemName+' ('+apatosaurusCraftables[selectedItem].craftingItems.allOf[i].anyOf[j].amount+'x), or')
+                        }
+                    }
+                }
+            }
+            else {
+                if (i == apatosaurusCraftables[selectedItem].craftingItems.allOf.length - 1) {
+                    craftingRequirements.push(apatosaurusCraftables[selectedItem].craftingItems.allOf[i].itemName+' ('+apatosaurusCraftables[selectedItem].craftingItems.allOf[i].amount+'x)')
+                }
+                else {
+                    craftingRequirements.push(apatosaurusCraftables[selectedItem].craftingItems.allOf[i].itemName+' ('+apatosaurusCraftables[selectedItem].craftingItems.allOf[i].amount+'x), and')
+                }
+            }
+        }
+    }
     else {
         craftingRequirements.push(apatosaurusCraftables[selectedItem].craftingItems.itemName+' ('+apatosaurusCraftables[selectedItem].craftingItems.amount+'x)')
     }
@@ -878,155 +1858,77 @@ function guiCraftingCrafterGui(entity, selectedItem) {
 }
 
 function craftItem(entity, selectedItem) {
-    let craftingIngredients = []
-    let foundCraftingIngredients = []
-    let newFoundCraftingIngredients = []
-    let canCraft = false
-
-    //get array of required crafting ingredients
     if (apatosaurusCraftables[selectedItem].craftingItems.hasOwnProperty('anyOf')) {
-        for (let j = 0; j < apatosaurusCraftables[selectedItem].craftingItems.anyOf.length; j++) {
-            craftingIngredients.push({itemId: apatosaurusCraftables[selectedItem].craftingItems.anyOf[j].item, amount: apatosaurusCraftables[selectedItem].craftingItems.anyOf[j].amount, itemData: apatosaurusCraftables[selectedItem].craftingItems.anyOf[j].itemData})
-        }
-    }
-    else {
-        craftingIngredients.push({itemId: apatosaurusCraftables[selectedItem].craftingItems.item, amount: apatosaurusCraftables[selectedItem].craftingItems.amount, itemData: apatosaurusCraftables[selectedItem].craftingItems.itemData})
-    }
-
-    //get array of required crafting ingredients found in the player's inventory
-    for (let i = entity.getComponent('inventory').container.size - 1; i >= 0; i--) {
-        if (apatosaurusCraftables[selectedItem].craftingItems.hasOwnProperty('anyOf')) {
-            let craftingItemsMap = apatosaurusCraftables[selectedItem].craftingItems.anyOf.map(x => x.item)
-            try {
-                if (craftingItemsMap.includes(entity.getComponent('inventory').container.getItem(i).id)) {
-                    foundCraftingIngredients.push({itemId: entity.getComponent('inventory').container.getItem(i).id, amount: entity.getComponent('inventory').container.getItem(i).amount, itemData: entity.getComponent('inventory').container.getItem(i).data})
-                }
-                else {
-                    continue
-                }
+        let fails = 0
+        for (let i = 0; i < apatosaurusCraftables[selectedItem].craftingItems.anyOf.length; i++) {
+            if (testForItem(entity, apatosaurusCraftables[selectedItem].craftingItems.anyOf[i].item, apatosaurusCraftables[selectedItem].craftingItems.anyOf[i].itemData, '>=', apatosaurusCraftables[selectedItem].craftingItems.anyOf[i].amount)) {
+                entity.runCommand(`give @s `+apatosaurusCraftables[selectedItem].itemId+` `+apatosaurusCraftables[selectedItem].outputAmount+` `+ apatosaurusCraftables[selectedItem].outputData)
+                entity.runCommand(`clear @s `+apatosaurusCraftables[selectedItem].craftingItems.anyOf[i].item+` `+apatosaurusCraftables[selectedItem].craftingItems.anyOf[i].itemData+` `+apatosaurusCraftables[selectedItem].craftingItems.anyOf[i].amount)
             }
-            catch (e) {
-                continue
+            else {
+                fails += 1
             }
         }
-        else {
-            try {
-                if (apatosaurusCraftables[selectedItem].craftingItems.item == entity.getComponent('inventory').container.getItem(i).id) {
-                    foundCraftingIngredients.push({itemId: entity.getComponent('inventory').container.getItem(i).id, amount: entity.getComponent('inventory').container.getItem(i).amount, itemData: entity.getComponent('inventory').container.getItem(i).data})
+        if (fails >= apatosaurusCraftables[selectedItem].craftingItems.anyOf.length) {
+            guiCrafterFail.show(entity).then(result => {
+                if (result.selection == 0) {
+                    craftingTableMenuGui(entity)
                 }
-                else {
-                    continue
-                }
-            }
-            catch (e) {
-                continue
-            }
+            })
         }
     }
-
-    foundCraftingIngredients.forEach(item => {
-        const index = newFoundCraftingIngredients.findIndex(_item => _item.item === item.item && _item.id === item.id)
-        if (index === -1) newFoundCraftingIngredients.push(item)
-        else newFoundCraftingIngredients[index].amount += item.amount
-    })
-
-    //compare craftingIngredients and foundCraftingIngredients
-    if (apatosaurusCraftables[selectedItem].craftingItems.hasOwnProperty('anyOf')) {
-        for (let m = 0; m < craftingIngredients.length; m++) {
-            for (let n = 0; n < newFoundCraftingIngredients.length; n++) {
-                try {
-                    if ((newFoundCraftingIngredients[n].itemId == craftingIngredients[m].itemId) && ((craftingIngredients[m].itemData == -1) || (craftingIngredients[m].itemData == newFoundCraftingIngredients[n].itemData)) && (newFoundCraftingIngredients[n].amount >= craftingIngredients[m].amount)) {
-                        canCraft = true
-                    }
-                }
-                catch (e) {}
-            }
-        }
-    }
-    else {
-        for (let m = 0; m < newFoundCraftingIngredients.length; m++) {
-            try {
-                if (craftingIngredients[0].itemId == newFoundCraftingIngredients[m].itemId && (craftingIngredients[0].itemData == -1 ? true : (craftingIngredients[0].itemData == newFoundCraftingIngredients[m].itemData)) && craftingIngredients[0].amount <= newFoundCraftingIngredients[m].amount) {
-                    canCraft = true
-                }
-            }
-            catch (e) {}
-        }
-    }
-
-    if (canCraft == true) {
-        if (apatosaurusCraftables[selectedItem].craftingItems.hasOwnProperty('anyOf')) {
-            entity.runCommand(`give @s `+apatosaurusCraftables[selectedItem].itemId+` `+apatosaurusCraftables[selectedItem].outputAmount+` `+apatosaurusCraftables[selectedItem].outputData)
-            for (let i = 0; i < apatosaurusCraftables[selectedItem].craftingItems.anyOf.length; i++) {
-                try {
-                    if (entity.runCommand(`clear @s `+apatosaurusCraftables[selectedItem].craftingItems.anyOf[i].item+` `+apatosaurusCraftables[selectedItem].craftingItems.anyOf[i].itemData+` `+apatosaurusCraftables[selectedItem].craftingItems.anyOf[i].amount)) {
+    else if (apatosaurusCraftables[selectedItem].craftingItems.hasOwnProperty('allOf')) {
+        let elidgibleItems = 0
+        for (let i = 0; i < apatosaurusCraftables[selectedItem].craftingItems.allOf.length; i++) {
+            if (apatosaurusCraftables[selectedItem].craftingItems.allOf[i].hasOwnProperty('anyOf')) {
+                for (let j = 0; j < apatosaurusCraftables[selectedItem].craftingItems.allOf[i].anyOf.length; j++) {
+                    if (testForItem(entity, apatosaurusCraftables[selectedItem].craftingItems.allOf[i].anyOf[j].item, apatosaurusCraftables[selectedItem].craftingItems.allOf[i].anyOf[j].itemData, '>=', apatosaurusCraftables[selectedItem].craftingItems.allOf[i].anyOf[j].amount)) {
+                        elidgibleItems += 1
                         break
                     }
                 }
-                catch (e) {}
+            }
+            else {
+                if (testForItem(entity, apatosaurusCraftables[selectedItem].craftingItems.allOf[i].item, apatosaurusCraftables[selectedItem].craftingItems.allOf[i].itemData, '>=', apatosaurusCraftables[selectedItem].craftingItems.allOf[i].amount)) {
+                    elidgibleItems += 1
+                }
+            }
+        }
+        if (elidgibleItems >= apatosaurusCraftables[selectedItem].craftingItems.allOf.length) {
+            entity.runCommand(`give @s `+apatosaurusCraftables[selectedItem].itemId+` `+apatosaurusCraftables[selectedItem].outputAmount+` `+ apatosaurusCraftables[selectedItem].outputData)
+            for (let k = 0; k < apatosaurusCraftables[selectedItem].craftingItems.allOf.length; k++) {
+                if (apatosaurusCraftables[selectedItem].craftingItems.allOf[k].hasOwnProperty('anyOf')) {
+                    for (let l = 0; l < apatosaurusCraftables[selectedItem].craftingItems.allOf[k].anyOf.length; l++) {
+                        if (testForItem(entity, apatosaurusCraftables[selectedItem].craftingItems.allOf[k].anyOf[l].item, apatosaurusCraftables[selectedItem].craftingItems.allOf[k].anyOf[l].itemData, '>=', apatosaurusCraftables[selectedItem].craftingItems.allOf[k].anyOf[l].amount)) {
+                            entity.runCommand(`clear @s `+apatosaurusCraftables[selectedItem].craftingItems.allOf[k].anyOf[l].item+` `+apatosaurusCraftables[selectedItem].craftingItems.allOf[k].anyOf[l].itemData+` `+apatosaurusCraftables[selectedItem].craftingItems.allOf[k].anyOf[l].amount)
+                            break
+                        }
+                    }
+                }
+                else {
+                    entity.runCommand(`clear @s `+apatosaurusCraftables[selectedItem].craftingItems.allOf[k].item+` `+apatosaurusCraftables[selectedItem].craftingItems.allOf[k].itemData+` `+apatosaurusCraftables[selectedItem].craftingItems.allOf[k].amount)
+                }
             }
         }
         else {
-            entity.runCommand(`give @s `+apatosaurusCraftables[selectedItem].itemId+` `+apatosaurusCraftables[selectedItem].outputAmount+` `+apatosaurusCraftables[selectedItem].outputData)
-            entity.runCommand(`clear @s `+apatosaurusCraftables[selectedItem].craftingItems.item+` `+apatosaurusCraftables[selectedItem].craftingItems.itemData+` `+apatosaurusCraftables[selectedItem].craftingItems.amount)
+            guiCrafterFail.show(entity).then(result => {
+                if (result.selection == 0) {
+                    craftingTableMenuGui(entity)
+                }
+            })
         }
     }
     else {
-        guiCrafterFail.show(entity).then(result => {
-            if (result.selection == 0) {
-                craftingTableMenuGui(entity)
-            }
-        })
+        if (testForItem(entity, apatosaurusCraftables[selectedItem].craftingItems.item, apatosaurusCraftables[selectedItem].craftingItems.itemData, '>=', apatosaurusCraftables[selectedItem].craftingItems.amount)) {
+            entity.runCommand(`give @s `+apatosaurusCraftables[selectedItem].itemId+` `+apatosaurusCraftables[selectedItem].outputAmount+` `+ apatosaurusCraftables[selectedItem].outputData)
+            entity.runCommand(`clear @s `+apatosaurusCraftables[selectedItem].craftingItems.item+` `+apatosaurusCraftables[selectedItem].craftingItems.itemData+` `+apatosaurusCraftables[selectedItem].craftingItems.amount)
+        }
+        else {
+            guiCrafterFail.show(entity).then(result => {
+                if (result.selection == 0) {
+                    craftingTableMenuGui(entity)
+                }
+            })
+        }
     }
 }
-
-//other things that will be craftable later on
-// .button('Wooden Oak Slab')
-// .button('Wooden Spruce Slab')
-// .button('Wooden Birch Slab')
-// .button('Wooden Jungle Slab')
-// .button('Wooden Acacia Slab')
-// .button('Wooden Dark Oak Slab')
-// .button('Wooden Mangrove Slab')
-// .button('Wooden Crimson Slab')
-// .button('Wooden Warped Slab')
-
-// .button('Wooden Oak Stairs')
-// .button('Wooden Spruce Stairs')
-// .button('Wooden Birch Stairs')
-// .button('Wooden Jungle Stairs')
-// .button('Wooden Acacia Stairs')
-// .button('Wooden Dark Oak Stairs')
-// .button('Wooden Mangrove Stairs')
-// .button('Wooden Crimson Stairs')
-// .button('Wooden Warped Stairs')
-
-// .button('Wooden Axe')
-// .button('Wooden Hoe')
-// .button('Wooden Pickaxe')
-// .button('Wooden Shovel')
-// .button('Wooden Sword')
-
-// .button('Stone Axe')
-// .button('Stone Hoe')
-// .button('Stone Pickaxe')
-// .button('Stone Shovel')
-// .button('Stone Sword')
-
-// .button('Iron Axe')
-// .button('Iron Hoe')
-// .button('Iron Pickaxe')
-// .button('Iron Shovel')
-// .button('Iron Sword')
-
-// .button('Gold Axe')
-// .button('Gold Hoe')
-// .button('Gold Pickaxe')
-// .button('Gold Shovel')
-// .button('Gold Sword')
-
-// .button('Diamond Axe')
-// .button('Diamond Hoe')
-// .button('Diamond Pickaxe')
-// .button('Diamond Shovel')
-// .button('Diamond Sword')

@@ -1,6 +1,6 @@
 import { EntityQueryOptions, Items, ItemStack, world } from "mojang-minecraft"
 import * as guiCrafting from "./ApatosaurusCraftingOptions"
-import { clearEntity } from "./externals/entityclear"
+import { clearEntity } from "./externals/itemmanagement"
 
 let apatosaurusFilter = new EntityQueryOptions()
 apatosaurusFilter.type = 'rift:apatosaurus'
