@@ -28,6 +28,12 @@
                                             "test": "has_equipment",
                                             "subject": "other",
                                             "domain": "hand",
+                                            "value": "minecraft:mangrove_planks"
+                                        },
+                                        {
+                                            "test": "has_equipment",
+                                            "subject": "other",
+                                            "domain": "hand",
                                             "value": "minecraft:crimson_planks"
                                         },
                                         {
@@ -37,6 +43,28 @@
                                             "value": "minecraft:warped_planks"
                                         }
                                     ]
+                                },
+                                "event": "rift:build_to_step_two",
+                                "target": "self"
+                            },
+                            "use_item": true
+                        }
+                    ]
+                }
+            },
+            "rift:step_two": {
+                "minecraft:variant": {
+                    "value": 0
+                },
+                "minecraft:interact": {
+                    "interactions": [
+                        {
+                            "on_interact": {
+                                "filters": {
+                                    "test": "has_equipment",
+                                    "subject": "other",
+                                    "domain": "hand",
+                                    "value": "minecraft:cobblestone"
                                 },
                                 "event": "rift:build_taxidermy_stand",
                                 "target": "self"
@@ -1216,6 +1244,11 @@
             "rift:made_of_warped": {
                 "minecraft:variant": {
                     "value": 8
+                }
+            },
+            "rift:made_of_mangrove": {
+                "minecraft:variant": {
+                    "value": 9
                 }
             },
             "rift:no_taxidermy": {
@@ -2727,13 +2760,12 @@
                     ]
                 }
             },
-            "rift:build_taxidermy_stand": {
+            "rift:build_to_step_two": {
                 "sequence": [
                     {
                         "add": {
                             "component_groups": [
-                                "rift:is_built",
-                                "rift:no_taxidermy"
+                                "rift:step_two"
                             ]
                         },
                         "remove": {
@@ -2850,8 +2882,34 @@
                                 "rift:made_of_warped"
                             ]
                         }
+                    },
+                    {
+                        "filters": {
+                            "test": "has_equipment",
+                            "subject": "other",
+                            "domain": "hand",
+                            "value": "minecraft:mangrove_planks"
+                        },
+                        "add": {
+                            "component_groups": [
+                                "rift:made_of_mangrove"
+                            ]
+                        }
                     }
                 ]
+            },
+            "rift:build_taxidermy_stand": {
+                "add": {
+                    "component_groups": [
+                        "rift:is_built",
+                        "rift:no_taxidermy"
+                    ]
+                },
+                "remove": {
+                    "component_groups": [
+                        "rift:step_two"
+                    ]
+                }
             },
             "rift:on_destroyed": {
                 "add": {
