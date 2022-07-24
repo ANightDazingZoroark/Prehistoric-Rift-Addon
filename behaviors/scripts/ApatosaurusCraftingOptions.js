@@ -1,7 +1,6 @@
 import { ActionFormData, ModalFormData } from "mojang-minecraft-ui"
 import { testForItem } from "./externals/itemmanagement"
 
-//boats are gonna be made craftable here soon
 const apatosaurusCraftables = [
     {
         itemName: "Stick",
@@ -495,6 +494,275 @@ const apatosaurusCraftables = [
             itemData: 0
         },
         outputAmount: 6,
+        outputData: 0
+    },
+    { //chest
+        itemName: "Chest",
+        itemId: "minecraft:chest",
+        itemData: 0,
+        craftingItems: {
+            anyOf: [
+                {
+                    item: "minecraft:planks",
+                    amount: 4,
+                    itemData: -1
+                },
+                {
+                    item: "minecraft:crimson_planks",
+                    amount: 4,
+                    itemData: 0
+                },
+                {
+                    item: "minecraft:warped_planks",
+                    amount: 4,
+                    itemData: 0
+                },
+                {
+                    item: "minecraft:mangrove_planks",
+                    amount: 4,
+                    itemData: 0
+                }
+            ]
+        },
+        outputAmount: 1,
+        outputData: 0
+    },
+    { //oak boat
+        itemName: "Oak Boat",
+        itemId: "minecraft:oak_boat",
+        craftingItems: {
+            itemName: "Oak Planks",
+            item: "minecraft:planks",
+            amount: 1,
+            itemData: 0
+        },
+        outputAmount: 1,
+        outputData: 0
+    },
+    { //spruce boat
+        itemName: "Spruce Boat",
+        itemId: "minecraft:spruce_boat",
+        craftingItems: {
+            itemName: "Spruce Planks",
+            item: "minecraft:planks",
+            amount: 1,
+            itemData: 1
+        },
+        outputAmount: 1,
+        outputData: 0
+    },
+    { //birch boat
+        itemName: "Birch Boat",
+        itemId: "minecraft:birch_boat",
+        craftingItems: {
+            itemName: "Birch Planks",
+            item: "minecraft:planks",
+            amount: 1,
+            itemData: 2
+        },
+        outputAmount: 1,
+        outputData: 0
+    },
+    { //jungle boat
+        itemName: "Jungle Boat",
+        itemId: "minecraft:jungle_boat",
+        craftingItems: {
+            itemName: "Jungle Planks",
+            item: "minecraft:planks",
+            amount: 1,
+            itemData: 3
+        },
+        outputAmount: 1,
+        outputData: 0
+    },
+    { //acacia boat
+        itemName: "Acacia Boat",
+        itemId: "minecraft:acacia_boat",
+        craftingItems: {
+            itemName: "Acacia Planks",
+            item: "minecraft:planks",
+            amount: 1,
+            itemData: 4
+        },
+        outputAmount: 1,
+        outputData: 0
+    },
+    { //dark oak boat
+        itemName: "Dark Oak Boat",
+        itemId: "minecraft:dark_oak_boat",
+        craftingItems: {
+            itemName: "Oak Planks",
+            item: "minecraft:planks",
+            amount: 1,
+            itemData: 5
+        },
+        outputAmount: 1,
+        outputData: 0
+    },
+    { //mangrove boat
+        itemName: "Mangrove Boat",
+        itemId: "minecraft:mangrove_boat",
+        craftingItems: {
+            itemName: "Mangrove Planks",
+            item: "minecraft:mangrove_planks",
+            amount: 1,
+            itemData: 0
+        },
+        outputAmount: 1,
+        outputData: 0
+    },
+    { //oak boat with chest
+        itemName: "Oak Boat with Chest",
+        itemId: "minecraft:oak_chest_boat",
+        craftingItems: {
+            allOf: [
+                {
+                    itemName: "Oak Planks",
+                    item: "minecraft:planks",
+                    amount: 1,
+                    itemData: 0
+                },
+                {
+                    itemName: "Chest",
+                    item: "minecraft:chest",
+                    amount: 1,
+                    itemData: 0
+                }
+            ]
+        },
+        outputAmount: 1,
+        outputData: 0
+    },
+    { //spruce boat with chest
+        itemName: "Spruce Boat with Chest",
+        itemId: "minecraft:spruce_chest_boat",
+        craftingItems: {
+            allOf: [
+                {
+                    itemName: "Spruce Planks",
+                    item: "minecraft:planks",
+                    amount: 1,
+                    itemData: 1
+                },
+                {
+                    itemName: "Chest",
+                    item: "minecraft:chest",
+                    amount: 1,
+                    itemData: 0
+                }
+            ]
+        },
+        outputAmount: 1,
+        outputData: 0
+    },
+    { //birch boat with chest
+        itemName: "Birch Boat with Chest",
+        itemId: "minecraft:birch_chest_boat",
+        craftingItems: {
+            allOf: [
+                {
+                    itemName: "Birch Planks",
+                    item: "minecraft:planks",
+                    amount: 1,
+                    itemData: 2
+                },
+                {
+                    itemName: "Chest",
+                    item: "minecraft:chest",
+                    amount: 1,
+                    itemData: 0
+                }
+            ]
+        },
+        outputAmount: 1,
+        outputData: 0
+    },
+    { //jungle boat with chest
+        itemName: "Jungle Boat with Chest",
+        itemId: "minecraft:jungle_chest_boat",
+        craftingItems: {
+            allOf: [
+                {
+                    itemName: "Jungle Planks",
+                    item: "minecraft:planks",
+                    amount: 1,
+                    itemData: 3
+                },
+                {
+                    itemName: "Chest",
+                    item: "minecraft:chest",
+                    amount: 1,
+                    itemData: 0
+                }
+            ]
+        },
+        outputAmount: 1,
+        outputData: 0
+    },
+    { //acacia boat with chest
+        itemName: "Acacia Boat with Chest",
+        itemId: "minecraft:acacia_chest_boat",
+        craftingItems: {
+            allOf: [
+                {
+                    itemName: "Acacia Planks",
+                    item: "minecraft:planks",
+                    amount: 1,
+                    itemData: 4
+                },
+                {
+                    itemName: "Chest",
+                    item: "minecraft:chest",
+                    amount: 1,
+                    itemData: 0
+                }
+            ]
+        },
+        outputAmount: 1,
+        outputData: 0
+    },
+    { //dark oak boat with chest
+        itemName: "Dark Oak Boat with Chest",
+        itemId: "minecraft:dark_oak_chest_boat",
+        craftingItems: {
+            allOf: [
+                {
+                    itemName: "Dark Oak Planks",
+                    item: "minecraft:planks",
+                    amount: 1,
+                    itemData: 5
+                },
+                {
+                    itemName: "Chest",
+                    item: "minecraft:chest",
+                    amount: 1,
+                    itemData: 0
+                }
+            ]
+        },
+        outputAmount: 1,
+        outputData: 0
+    },
+    { //mangrove boat with chest
+        itemName: "Mangrove Boat with Chest",
+        itemId: "minecraft:mangrove_oak_chest_boat",
+        craftingItems: {
+            allOf: [
+                {
+                    itemName: "Mangrove Planks",
+                    item: "minecraft:mangrove_planks",
+                    amount: 1,
+                    itemData: 0
+                },
+                {
+                    itemName: "Chest",
+                    item: "minecraft:chest",
+                    amount: 1,
+                    itemData: 0
+                }
+            ]
+        },
+        outputAmount: 1,
         outputData: 0
     },
     { //wooden axe
@@ -1770,6 +2038,9 @@ const guiCrafterFail = new ActionFormData()
 
 export function craftingTableMenuGui(entity) {
     guiCraftingIndex.show(entity).then(result => {
+        if (result.selection == 0) {
+            guiCrafterSearch(entity)
+        }
         if (result.selection > 0) {
             guiCraftingCrafterGui(entity, result.selection - 1)
         }
@@ -1788,6 +2059,44 @@ export function furnaceMenuGui(entity, hitEntity) {
         else {
             hitEntity.removeTag('smelting')
             entity.runCommand(`tellraw @s {"rawtext":[{"text":"Smelting mode deactivated"}]}`)
+        }
+    })
+}
+
+function guiCrafterSearch(entity) {
+    let searchList = apatosaurusCraftables.map(x => x.itemName)
+    const guiCrafterSearch = new ModalFormData()
+    .title('Search')
+    .textField("Search", "(e.x., Sticks)")
+    .show(entity).then(result => {
+        guiCrafterSearchResults(entity, searchList.map(element => { return element.toLowerCase()+':'+searchList.indexOf(element) }).filter((element) => element.includes(result.formValues[0].toLowerCase())))
+    })
+}
+
+function guiCrafterSearchResults(entity, results) {
+    for (let i = 0; i < results.length; i++) {
+        results[i] = results[i].split(' ')
+        for (let j = 0; j < results[i].length; j++) {
+            results[i][j] = results[i][j].charAt(0).toUpperCase() + results[i][j].substring(1)
+        }
+        results[i] = results[i].join(' ')
+    }
+    const guiCrafterSearchResults = new ActionFormData()
+    .title('Search Results')
+    .button('Return to Search')
+    .button('Return to Index')
+    for (let k = 0; k < results.length; k++) {
+        guiCrafterSearchResults.button(results[k].split(':')[0])
+    }
+    guiCrafterSearchResults.show(entity).then(result => {
+        if (result.selection == 0) {
+            guiCrafterSearch(entity)
+        }
+        if (result.selection == 1) {
+            craftingTableMenuGui(entity)
+        }
+        if (result.selection >= 2) {
+            guiCraftingCrafterGui(entity, parseInt(results[result.selection - 2].substring(results[result.selection - 2].indexOf(':') + 1)))
         }
     })
 }
