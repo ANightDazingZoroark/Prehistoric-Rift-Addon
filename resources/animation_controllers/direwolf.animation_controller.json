@@ -46,50 +46,6 @@
 				}
 			}
         },
-		"controller.animation.direwolf_taming_progress": {
-			"initial_state": "default",
-			"states": {
-				"default": {
-					"transitions": [
-						{
-							"wait": "!query.is_tamed && query.is_stunned"
-						}
-					]
-				},
-				"wait": {
-                    "particle_effects": [
-                        {
-                            "effect": "clock",
-                            "locator": "particlelocator"
-                        }
-                    ],
-					"transitions": [
-						{
-							"default": "query.is_tamed"
-						},
-						{
-							"feedAgain": "!query.is_stunned && !query.is_tamed"
-						}
-					]
-				},
-				"feedAgain": {
-                    "particle_effects": [
-                        {
-                            "effect": "alert",
-                            "locator": "particlelocator"
-                        }
-                    ],
-					"transitions": [
-						{
-							"default": "query.is_tamed"
-						},
-						{
-							"wait": "query.is_stunned && !query.is_tamed"
-						}
-					]
-				}
-			}
-		},
 		"controller.animation.direwolf_show_werewolf_potential_particles": {
 			"initial_state": "default",
 			"states": {
@@ -195,6 +151,44 @@
 					]
 				}
 			}
-        }
+        },
+		"controller.animation.direwolf_taming_progress": {
+			"initial_state": "default",
+			"states": {
+				"default": {
+					"transitions": [
+						{
+							"wait": "!query.is_tamed && query.is_stunned"
+						}
+					]
+				},
+				"wait": {
+					"animations": [
+						"animClock"
+					],
+					"transitions": [
+						{
+							"default": "query.actor_property('rift:undergoing_taming') == false"
+						},
+						{
+							"feedAgain": "!query.is_stunned && !query.is_tamed"
+						}
+					]
+				},
+				"feedAgain": {
+					"animations": [
+						"animAlert"
+					],
+					"transitions": [
+						{
+							"default": "query.actor_property('rift:undergoing_taming') == false"
+						},
+						{
+							"wait": "query.is_stunned && !query.is_tamed"
+						}
+					]
+				}
+			}
+		}
     }
 }

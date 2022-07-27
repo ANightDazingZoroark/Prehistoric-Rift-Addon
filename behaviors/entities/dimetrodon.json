@@ -7,6 +7,11 @@
             "is_summonable": true,
             "is_experimental": false,
 			"properties": {
+				"rift:undergoing_taming": {
+					"type": "bool",
+					"default": false,
+					"client_sync": true
+				},
                 "rift:tame_state": { //0 for standing, 1 for sitting, 2 for wandering
                     "range": [
 						0,
@@ -3318,6 +3323,11 @@
 										"subject": "self",
 										"operator": "!=",
 										"value": "minecraft:is_tamed"
+									},
+									{
+										"test": "is_family",
+										"subject": "other",
+										"value": "player"
 									}
 								]
 							},
@@ -3486,7 +3496,6 @@
 					]
 				},
 				"set_actor_property": {
-					"rift:tame_progress": "'tamed'",
 					"rift:behavior_state": "3"
 				}
 			},
@@ -3511,7 +3520,7 @@
 					]
 				},
 				"set_actor_property": {
-					"rift:tame_progress": "'cooldown'"
+					"rift:undergoing_taming": "true"
 				}
 			},
 			"rift:reset_taming_progress": {
@@ -3536,7 +3545,7 @@
 					]
 				},
 				"set_actor_property": {
-					"rift:tame_progress": "'notTamed'"
+					"rift:undergoing_taming": "false"
 				}
 			},
 			"rift:can_be_tamed_again": {
@@ -3552,9 +3561,6 @@
 							"component_groups": [
 								"rift:dimetrodon_adult_waiting_for_tame"
 							]
-						},
-						"set_actor_property": {
-							"rift:tame_progress": "'canBeFed'"
 						}
 					},
 					{
@@ -3568,9 +3574,6 @@
 							"component_groups": [
 								"rift:dimetrodon_adult_waiting_for_tame"
 							]
-						},
-						"set_actor_property": {
-							"rift:tame_progress": "'canBeFed'"
 						}
 					}
 				]
@@ -3585,9 +3588,6 @@
 					"component_groups": [
 						"rift:dimetrodon_adult_chance_for_tame"
 					]
-				},
-				"set_actor_property": {
-					"rift:tame_progress": "'cooldown'"
 				},
 				"run_command": {
 					"command": [
@@ -3613,13 +3613,13 @@
 						"rift:temptable"
 					]
 				},
-				"set_actor_property": {
-					"rift:tame_progress": "'tamed'"
-				},
 				"run_command": {
 					"command": [
 						"tellraw @p {\"rawtext\":[{\"text\":\"You have succesfully tamed a Dimetrodon!\"}]}"
 					]
+				},
+				"set_actor_property": {
+					"rift:undergoing_taming": "false"
 				}
 			},
 			"rift:on_standing": {

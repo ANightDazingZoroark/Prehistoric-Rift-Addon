@@ -7,6 +7,11 @@
             "is_summonable": true,
             "is_experimental": false,
 			"properties": {
+				"rift:undergoing_taming": {
+					"type": "bool",
+					"default": false,
+					"client_sync": true
+				},
 				"rift:eat_from_inventory_cooldown": {
 					"type": "bool",
 					"default": true
@@ -595,9 +600,7 @@
                 "minecraft:trust": {}
             },
             "rift:anomalocaris_adult_waiting_for_tame": {
-				"minecraft:skin_id": {
-					"value": 1
-				},
+				"minecraft:out_of_control": {},
                 "minecraft:timer": {
 					"time": 10,
 					"time_down_event": {
@@ -607,15 +610,9 @@
 				}
             },
 			"rift:anomalocaris_adult_chance_for_tame": {
-				"minecraft:skin_id": {
-					"value": 0
-				},
                 "minecraft:is_sheared": {}
             },
 			"rift:anomalocaris_adult_tameable": {
-				"minecraft:skin_id": {
-					"value": 0
-				},
                 "minecraft:tameable": {
                     "probability": 1,
                     "tame_items": [
@@ -3370,6 +3367,11 @@
 										"subject": "self",
 										"operator": "!=",
 										"value": "minecraft:is_tamed"
+									},
+									{
+										"test": "is_family",
+										"subject": "other",
+										"value": "player"
 									}
 								]
 							},
@@ -3608,7 +3610,6 @@
 					]
 				},
 				"set_actor_property": {
-					"rift:tame_progress": "'tamed'",
 					"rift:behavior_state": "3"
 				}
 			},
@@ -3634,7 +3635,7 @@
 					]
 				},
 				"set_actor_property": {
-					"rift:tame_progress": "'cooldown'"
+					"rift:undergoing_taming": "true"
 				}
 			},
 			"rift:reset_taming_progress": {
@@ -3660,7 +3661,7 @@
 					]
 				},
 				"set_actor_property": {
-					"rift:tame_progress": "'notTamed'"
+					"rift:undergoing_taming": "false"
 				}
 			},
 			"rift:can_be_tamed_again": {
@@ -3676,9 +3677,6 @@
 							"component_groups": [
 								"rift:anomalocaris_adult_waiting_for_tame"
 							]
-						},
-						"set_actor_property": {
-							"rift:tame_progress": "'canBeFed'"
 						}
 					},
 					{
@@ -3692,9 +3690,6 @@
 							"component_groups": [
 								"rift:anomalocaris_adult_waiting_for_tame"
 							]
-						},
-						"set_actor_property": {
-							"rift:tame_progress": "'canBeFed'"
 						}
 					}
 				]
@@ -3709,9 +3704,6 @@
 					"component_groups": [
 						"rift:anomalocaris_adult_chance_for_tame"
 					]
-				},
-				"set_actor_property": {
-					"rift:tame_progress": "'cooldown'"
 				},
 				"run_command": {
 					"command": [
@@ -3738,13 +3730,13 @@
 						"rift:temptable"
 					]
 				},
-				"set_actor_property": {
-					"rift:tame_progress": "'tamed'"
-				},
 				"run_command": {
 					"command": [
 						"tellraw @p {\"rawtext\":[{\"text\":\"You have succesfully tamed an Anomalocaris!\"}]}"
 					]
+				},
+				"set_actor_property": {
+					"rift:undergoing_taming": "false"
 				}
 			},
 			"rift:attach_saddle": {

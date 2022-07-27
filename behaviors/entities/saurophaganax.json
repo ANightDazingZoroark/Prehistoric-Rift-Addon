@@ -7,6 +7,11 @@
             "is_summonable": true,
             "is_experimental": false,
 			"properties": {
+				"rift:undergoing_taming": {
+					"type": "bool",
+					"default": false,
+					"client_sync": true
+				},
 				"rift:eat_from_inventory_cooldown": {
 					"type": "bool",
 					"default": true
@@ -3120,6 +3125,32 @@
 							"filters": {
 								"all_of": [
 									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:trust"
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"operator": "!=",
+										"value": "minecraft:is_tamed"
+									},
+									{
+										"test": "is_family",
+										"subject": "other",
+										"value": "player"
+									}
+								]
+							},
+							"event": "rift:reset_taming_progress",
+							"target": "self"
+						}
+					},
+					{
+						"on_damage": {
+							"filters": {
+								"all_of": [
+									{
 										"test": "is_family",
 										"subject": "other",
 										"value": "saurophaganax"
@@ -3732,7 +3763,6 @@
 					]
 				},
 				"set_actor_property": {
-					"rift:tame_progress": "'tamed'",
 					"rift:behavior_state": "3"
 				}
 			},
@@ -3740,7 +3770,8 @@
 				"add": {
 					"component_groups": [
 						"rift:saurophaganax_adult_trusting",
-						"rift:saurophaganax_adult_waiting_for_tame"
+						"rift:saurophaganax_adult_waiting_for_tame",
+						"rift:temptable"
 					]
 				},
 				"remove": {
@@ -3755,7 +3786,27 @@
 					]
 				},
 				"set_actor_property": {
-					"rift:tame_progress": "'cooldown'"
+					"rift:undergoing_taming": "true"
+				}
+			},
+			"rift:reset_taming_progress": {
+				"add": {
+					"component_groups": [
+						"rift:saurophaganax_adult_wild_not_trusting",
+						"rift:default_targets"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:temptable",
+						"rift:saurophaganax_adult_trusting",
+						"rift:saurophaganax_adult_waiting_for_tame",
+						"rift:saurophaganax_adult_chance_for_tame",
+						"rift:saurophaganax_adult_tameable"
+					]
+				},
+				"set_actor_property": {
+					"rift:undergoing_taming": "false"
 				}
 			},
 			"rift:can_be_tamed_again": {
@@ -3771,9 +3822,6 @@
 							"component_groups": [
 								"rift:saurophaganax_adult_waiting_for_tame"
 							]
-						},
-						"set_actor_property": {
-							"rift:tame_progress": "'canBeFed'"
 						}
 					},
 					{
@@ -3787,9 +3835,6 @@
 							"component_groups": [
 								"rift:saurophaganax_adult_waiting_for_tame"
 							]
-						},
-						"set_actor_property": {
-							"rift:tame_progress": "'canBeFed'"
 						}
 					}
 				]
@@ -3804,9 +3849,6 @@
 					"component_groups": [
 						"rift:saurophaganax_adult_chance_for_tame"
 					]
-				},
-				"set_actor_property": {
-					"rift:tame_progress": "'cooldown'"
 				},
 				"run_command": {
 					"command": [
@@ -3829,7 +3871,8 @@
 						"rift:saurophaganax_adult_tameable",
 						"rift:saurophaganax_adult_chance_for_tame",
 						"rift:saurophaganax_adult_trusting",
-						"rift:wild_standing"
+						"rift:wild_standing",
+						"rift:temptable"
 					]
 				},
 				"run_command": {
@@ -3838,8 +3881,7 @@
 					]
 				},
 				"set_actor_property": {
-					"rift:tame_progress": "'tamed'",
-					"rift:behavior_state": "0"
+					"rift:undergoing_taming": "false"
 				}
 			},
 			"rift:attach_saddle": {

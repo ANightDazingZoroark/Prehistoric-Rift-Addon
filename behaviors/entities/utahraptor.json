@@ -7,6 +7,11 @@
             "is_summonable": true,
 			"is_experimental": false,
 			"properties": {
+				"rift:undergoing_taming": {
+					"type": "bool",
+					"default": false,
+					"client_sync": true
+				},
 				"rift:eat_from_inventory_cooldown": {
 					"type": "bool",
 					"default": true
@@ -15,7 +20,7 @@
 					"type": "bool",
 					"default": false
 				},
-                "rift:tame_state": {//0 for standing, 1 for sitting, 2 for wandering
+                "rift:tame_state": { //0 for standing, 1 for sitting, 2 for wandering
                     "range": [
 						0,
 						2
@@ -3725,6 +3730,11 @@
 										"subject": "self",
 										"operator": "!=",
 										"value": "minecraft:is_tamed"
+									},
+									{
+										"test": "is_family",
+										"subject": "other",
+										"value": "player"
 									}
 								]
 							},
@@ -4180,14 +4190,7 @@
 					]
 				},
 				"set_actor_property": {
-					"rift:tame_progress": "'tamed'",
 					"rift:behavior_state": "3"
-				},
-				"run_command": {
-					"command": [
-						"tellraw @p {{\"selector\": \"@s\"}, \"rawtext\":[{\"text\":\" is now standing\"}]}",
-						"tellraw @p {{\"selector\": \"@s\"}, \"rawtext\":[{\"text\":\" will now be passive\"}]}"
-					]
 				}
 			},
 			"rift:on_trust": {
@@ -4212,7 +4215,7 @@
 					]
 				},
 				"set_actor_property": {
-					"rift:tame_progress": "'cooldown'"
+					"rift:undergoing_taming": "true"
 				}
 			},
 			"rift:reset_taming_progress": {
@@ -4238,7 +4241,7 @@
 					]
 				},
 				"set_actor_property": {
-					"rift:tame_progress": "'notTamed'"
+					"rift:undergoing_taming": "false"
 				}
 			},
 			"rift:can_be_tamed_again": {
@@ -4254,9 +4257,6 @@
 							"component_groups": [
 								"rift:utahraptor_adult_waiting_for_tame"
 							]
-						},
-						"set_actor_property": {
-							"rift:tame_progress": "'canBeFed'"
 						}
 					},
 					{
@@ -4270,9 +4270,6 @@
 							"component_groups": [
 								"rift:utahraptor_adult_waiting_for_tame"
 							]
-						},
-						"set_actor_property": {
-							"rift:tame_progress": "'canBeFed'"
 						}
 					}
 				]
@@ -4287,9 +4284,6 @@
 					"component_groups": [
 						"rift:utahraptor_adult_chance_for_tame"
 					]
-				},
-				"set_actor_property": {
-					"rift:tame_progress": "'cooldown'"
 				},
 				"run_command": {
 					"command": [
@@ -4317,13 +4311,13 @@
 						"rift:temptable"
 					]
 				},
-				"set_actor_property": {
-					"rift:tame_progress": "'tamed'"
-				},
 				"run_command": {
 					"command": [
 						"tellraw @p {\"rawtext\":[{\"text\":\"You have succesfully tamed a Utahraptor!\"}]}"
 					]
+				},
+				"set_actor_property": {
+					"rift:undergoing_taming": "false"
 				}
 			},
 			"rift:attach_saddle": {
