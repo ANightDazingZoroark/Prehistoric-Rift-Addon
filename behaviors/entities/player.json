@@ -140,6 +140,9 @@
 			"rift:is_riding_stegosaurus": {
 				"minecraft:is_charged": {}
 			},
+			"rift:is_in_hard_mode": {
+				"minecraft:is_stunned": {}
+			},
 			"rift:has_no_planks": {
 				"minecraft:variant": {
 					"value": 0
@@ -479,6 +482,23 @@
 							"value": false
 						},
 						"event": "rift:on_not_riding"
+					},
+					{
+						"filters": {
+							"test": "is_difficulty",
+							"value": "hard"
+						},
+						"event": "rift:hard_mode",
+						"target": "self"
+					},
+					{
+						"filters": {
+							"test": "is_difficulty",
+							"operator": "!=",
+							"value": "hard"
+						},
+						"event": "rift:not_hard_mode",
+						"target": "self"
 					},
 					{
 						"filters": {
@@ -918,51 +938,6 @@
 					{
 						"on_damage": {
 							"filters": {
-								"all_of": [
-									{
-										"test": "is_family",
-										"subject": "other",
-										"value": "tyrannosaurus"
-									},
-									{
-										"test": "has_component",
-										"subject": "other",
-										"operator": "!=",
-										"value": "minecraft:baby"
-									}
-								]
-							}
-						},
-						"deals_damage": true,
-						"damage_multiplier": 2
-					},
-					{
-						"on_damage": {
-							"filters": {
-								"any_of": [
-									{
-										"test": "is_family",
-										"subject": "other",
-										"value": "playerRiding"
-									},
-									{
-										"test": "has_component",
-										"subject": "other",
-										"value": "minecraft:is_tamed"
-									},
-									{
-										"test": "is_family",
-										"subject": "other",
-										"value": "forcedAttack"
-									}
-								]
-							}
-						},
-						"deals_damage": false
-					},
-					{
-						"on_damage": {
-							"filters": {
 								"test": "has_component",
 								"subject": "self",
 								"value": "minecraft:is_charged"
@@ -970,28 +945,6 @@
 						},
 						"damage_multiplier": 0.25,
 						"cause": "entity_attack"
-					},
-					{
-						"on_damage": {
-							"filters": {
-								"test": "is_family",
-								"subject": "other",
-								"value": "sarcoSpinAttack"
-							},
-							"event": "rift:hit_by_sarco_spin",
-							"target": "self"
-						}
-					},
-					{
-						"on_damage": {
-						  	"filters": {
-								"test": "has_equipment",
-								"subject": "other",
-								"value": "rift:dimetrodon_frost_attack"
-						  	},
-						  	"event": "rift:hit_by_frost_dimetrodon",
-						  	"target": "self"
-						}
 					}
 				]
 			}
@@ -2667,6 +2620,20 @@
 				"remove": {
 					"component_groups": [
 						"rift:is_riding_general"
+					]
+				}
+			},
+			"rift:hard_mode": {
+				"add": {
+					"component_groups": [
+						"rift:is_in_hard_mode"
+					]
+				}
+			},
+			"rift:not_hard_mode": {
+				"remove": {
+					"component_groups": [
+						"rift:is_in_hard_mode"
 					]
 				}
 			}
