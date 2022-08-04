@@ -71,8 +71,6 @@ execute as @s[ry=45, rym=-45] positioned as @s[ry=45, rym=-45] run fill ~+2 ~ ~+
 execute as @s[ry=45, rym=-45] positioned as @s[ry=45, rym=-45] run fill ~+2 ~ ~+2 ~-2 ~+4 ~+4 air 0 replace warped_slab
 execute as @s[ry=45, rym=-45] positioned as @s[ry=45, rym=-45] run fill ~+2 ~ ~+2 ~-2 ~+4 ~+4 air 0 replace azalea_leaves
 execute as @s[ry=45, rym=-45] positioned as @s[ry=45, rym=-45] run fill ~+2 ~ ~+2 ~-2 ~+4 ~+4 air 0 replace azalea_leaves_flowered
-execute as @s[ry=45, rym=-45] positioned as @s[ry=45, rym=-45] run fill ~+2 ~ ~+2 ~-2 ~+4 ~+4 air 0 replace mangrove_leaves
-execute as @s[ry=45, rym=-45] positioned as @s[ry=45, rym=-45] run fill ~+2 ~ ~+2 ~-2 ~+4 ~+4 air 0 replace mangrove_roots
 execute as @s[ry=45, rym=-45] positioned as @s[ry=45, rym=-45] run fill ~+2 ~ ~+2 ~-2 ~+4 ~+4 air 0 replace rift:oak_thatch_block
 execute as @s[ry=45, rym=-45] positioned as @s[ry=45, rym=-45] run fill ~+2 ~ ~+2 ~-2 ~+4 ~+4 air 0 replace rift:spruce_thatch_block
 execute as @s[ry=45, rym=-45] positioned as @s[ry=45, rym=-45] run fill ~+2 ~ ~+2 ~-2 ~+4 ~+4 air 0 replace rift:birch_thatch_block
@@ -81,11 +79,12 @@ execute as @s[ry=45, rym=-45] positioned as @s[ry=45, rym=-45] run fill ~+2 ~ ~+
 execute as @s[ry=45, rym=-45] positioned as @s[ry=45, rym=-45] run fill ~+2 ~ ~+2 ~-2 ~+4 ~+4 air 0 replace rift:acacia_thatch_block
 execute as @s[ry=45, rym=-45] positioned as @s[ry=45, rym=-45] run fill ~+2 ~ ~+2 ~-2 ~+4 ~+4 air 0 replace rift:crimson_thatch_block
 execute as @s[ry=45, rym=-45] positioned as @s[ry=45, rym=-45] run fill ~+2 ~ ~+2 ~-2 ~+4 ~+4 air 0 replace rift:warped_thatch_block
+execute as @s[ry=45, rym=-45] positioned as @s[ry=45, rym=-45] run fill ~+2 ~ ~+2 ~-2 ~+4 ~+4 air 0 replace rift:mangrove_thatch_block
 execute as @s[ry=45, rym=-45] positioned as @s[ry=45, rym=-45] run fill ~+2 ~ ~+2 ~-2 ~+4 ~+4 air 0 replace rift:wooden_chair
 execute as @s[ry=45, rym=-45] positioned as @s[ry=45, rym=-45] run fill ~+2 ~ ~+2 ~-2 ~+4 ~+4 air 0 replace rift:wooden_table
-execute as @s[ry=45, rym=-45] positioned as @s[ry=45, rym=-45] run fill ~+2 ~ ~+2 ~-2 ~+4 ~+4 air 0 replace rift:glass_table
 execute as @s[ry=45, rym=-45] positioned as @s[ry=45, rym=-45] run fill ~+2 ~ ~+2 ~-2 ~+4 ~+4 air 0 replace rift:sofa
 execute as @s[ry=45, rym=-45] positioned as @s[ry=45, rym=-45] run fill ~+2 ~ ~+2 ~-2 ~+4 ~+4 air 0 replace rift:wooden_bench
+execute as @s[ry=45, rym=-45] positioned as @s[ry=45, rym=-45] run fill ~+2 ~ ~+2 ~-2 ~+4 ~+4 air 0 replace rift:wooden_spiked_wall
 
 #east
 execute as @s[ry=135, rym=45] positioned as @s[ry=135, rym=45] run fill ~-2 ~ ~+2 ~-4 ~+4 ~-2 air 0 replace planks
@@ -160,8 +159,6 @@ execute as @s[ry=135, rym=45] positioned as @s[ry=135, rym=45] run fill ~-2 ~ ~+
 execute as @s[ry=135, rym=45] positioned as @s[ry=135, rym=45] run fill ~-2 ~ ~+2 ~-4 ~+4 ~-2 air 0 replace warped_slab
 execute as @s[ry=135, rym=45] positioned as @s[ry=135, rym=45] run fill ~-2 ~ ~+2 ~-4 ~+4 ~-2 air 0 replace azalea_leaves
 execute as @s[ry=135, rym=45] positioned as @s[ry=135, rym=45] run fill ~-2 ~ ~+2 ~-4 ~+4 ~-2 air 0 replace azalea_leaves_flowered
-execute as @s[ry=135, rym=45] positioned as @s[ry=135, rym=45] run fill ~-2 ~ ~+2 ~-4 ~+4 ~-2 air 0 replace mangrove_leaves
-execute as @s[ry=135, rym=45] positioned as @s[ry=135, rym=45] run fill ~-2 ~ ~+2 ~-4 ~+4 ~-2 air 0 replace mangrove_roots
 execute as @s[ry=135, rym=45] positioned as @s[ry=135, rym=45] run fill ~-2 ~ ~+2 ~-4 ~+4 ~-2 air 0 replace rift:oak_thatch_block
 execute as @s[ry=135, rym=45] positioned as @s[ry=135, rym=45] run fill ~-2 ~ ~+2 ~-4 ~+4 ~-2 air 0 replace rift:spruce_thatch_block
 execute as @s[ry=135, rym=45] positioned as @s[ry=135, rym=45] run fill ~-2 ~ ~+2 ~-4 ~+4 ~-2 air 0 replace rift:birch_thatch_block
@@ -170,11 +167,12 @@ execute as @s[ry=135, rym=45] positioned as @s[ry=135, rym=45] run fill ~-2 ~ ~+
 execute as @s[ry=135, rym=45] positioned as @s[ry=135, rym=45] run fill ~-2 ~ ~+2 ~-4 ~+4 ~-2 air 0 replace rift:acacia_thatch_block
 execute as @s[ry=135, rym=45] positioned as @s[ry=135, rym=45] run fill ~-2 ~ ~+2 ~-4 ~+4 ~-2 air 0 replace rift:crimson_thatch_block
 execute as @s[ry=135, rym=45] positioned as @s[ry=135, rym=45] run fill ~-2 ~ ~+2 ~-4 ~+4 ~-2 air 0 replace rift:warped_thatch_block
+execute as @s[ry=135, rym=45] positioned as @s[ry=135, rym=45] run fill ~-2 ~ ~+2 ~-4 ~+4 ~-2 air 0 replace rift:mangrove_thatch_block
 execute as @s[ry=135, rym=45] positioned as @s[ry=135, rym=45] run fill ~-2 ~ ~+2 ~-4 ~+4 ~-2 air 0 replace rift:wooden_chair
 execute as @s[ry=135, rym=45] positioned as @s[ry=135, rym=45] run fill ~-2 ~ ~+2 ~-4 ~+4 ~-2 air 0 replace rift:wooden_table
-execute as @s[ry=135, rym=45] positioned as @s[ry=135, rym=45] run fill ~-2 ~ ~+2 ~-4 ~+4 ~-2 air 0 replace rift:glass_table
 execute as @s[ry=135, rym=45] positioned as @s[ry=135, rym=45] run fill ~-2 ~ ~+2 ~-4 ~+4 ~-2 air 0 replace rift:sofa
 execute as @s[ry=135, rym=45] positioned as @s[ry=135, rym=45] run fill ~-2 ~ ~+2 ~-4 ~+4 ~-2 air 0 replace rift:wooden_bench
+execute as @s[ry=135, rym=45] positioned as @s[ry=135, rym=45] run fill ~-2 ~ ~+2 ~-4 ~+4 ~-2 air 0 replace rift:wooden_spiked_wall
 
 #west
 execute as @s[ry=-45, rym=-135] positioned as @s[ry=-45, rym=-135] run fill ~+2 ~ ~-2 ~+4 ~+4 ~+2 air 0 replace planks
@@ -249,8 +247,6 @@ execute as @s[ry=-45, rym=-135] positioned as @s[ry=-45, rym=-135] run fill ~+2 
 execute as @s[ry=-45, rym=-135] positioned as @s[ry=-45, rym=-135] run fill ~+2 ~ ~-2 ~+4 ~+4 ~+2 air 0 replace warped_slab
 execute as @s[ry=-45, rym=-135] positioned as @s[ry=-45, rym=-135] run fill ~+2 ~ ~-2 ~+4 ~+4 ~+2 air 0 replace azalea_leaves
 execute as @s[ry=-45, rym=-135] positioned as @s[ry=-45, rym=-135] run fill ~+2 ~ ~-2 ~+4 ~+4 ~+2 air 0 replace azalea_leaves_flowered
-execute as @s[ry=-45, rym=-135] positioned as @s[ry=-45, rym=-135] run fill ~+2 ~ ~-2 ~+4 ~+4 ~+2 air 0 replace mangrove_leaves
-execute as @s[ry=-45, rym=-135] positioned as @s[ry=-45, rym=-135] run fill ~+2 ~ ~-2 ~+4 ~+4 ~+2 air 0 replace mangrove_roots
 execute as @s[ry=-45, rym=-135] positioned as @s[ry=-45, rym=-135] run fill ~+2 ~ ~-2 ~+4 ~+4 ~+2 air 0 replace rift:oak_thatch_block
 execute as @s[ry=-45, rym=-135] positioned as @s[ry=-45, rym=-135] run fill ~+2 ~ ~-2 ~+4 ~+4 ~+2 air 0 replace rift:spruce_thatch_block
 execute as @s[ry=-45, rym=-135] positioned as @s[ry=-45, rym=-135] run fill ~+2 ~ ~-2 ~+4 ~+4 ~+2 air 0 replace rift:birch_thatch_block
@@ -259,11 +255,12 @@ execute as @s[ry=-45, rym=-135] positioned as @s[ry=-45, rym=-135] run fill ~+2 
 execute as @s[ry=-45, rym=-135] positioned as @s[ry=-45, rym=-135] run fill ~+2 ~ ~-2 ~+4 ~+4 ~+2 air 0 replace rift:acacia_thatch_block
 execute as @s[ry=-45, rym=-135] positioned as @s[ry=-45, rym=-135] run fill ~+2 ~ ~-2 ~+4 ~+4 ~+2 air 0 replace rift:crimson_thatch_block
 execute as @s[ry=-45, rym=-135] positioned as @s[ry=-45, rym=-135] run fill ~+2 ~ ~-2 ~+4 ~+4 ~+2 air 0 replace rift:warped_thatch_block
+execute as @s[ry=-45, rym=-135] positioned as @s[ry=-45, rym=-135] run fill ~+2 ~ ~-2 ~+4 ~+4 ~+2 air 0 replace rift:mangrove_thatch_block
 execute as @s[ry=-45, rym=-135] positioned as @s[ry=-45, rym=-135] run fill ~+2 ~ ~-2 ~+4 ~+4 ~+2 air 0 replace rift:wooden_chair
 execute as @s[ry=-45, rym=-135] positioned as @s[ry=-45, rym=-135] run fill ~+2 ~ ~-2 ~+4 ~+4 ~+2 air 0 replace rift:wooden_table
-execute as @s[ry=-45, rym=-135] positioned as @s[ry=-45, rym=-135] run fill ~+2 ~ ~-2 ~+4 ~+4 ~+2 air 0 replace rift:glass_table
 execute as @s[ry=-45, rym=-135] positioned as @s[ry=-45, rym=-135] run fill ~+2 ~ ~-2 ~+4 ~+4 ~+2 air 0 replace rift:sofa
 execute as @s[ry=-45, rym=-135] positioned as @s[ry=-45, rym=-135] run fill ~+2 ~ ~-2 ~+4 ~+4 ~+2 air 0 replace rift:wooden_bench
+execute as @s[ry=-45, rym=-135] positioned as @s[ry=-45, rym=-135] run fill ~+2 ~ ~-2 ~+4 ~+4 ~+2 air 0 replace rift:wooden_spiked_wall
 
 #south
 execute as @s[ry=180, rym=135] positioned as @s[ry=180, rym=135] run fill ~-2 ~ ~-2 ~+2 ~+4 ~-4 air 0 replace planks
@@ -338,8 +335,6 @@ execute as @s[ry=180, rym=135] positioned as @s[ry=180, rym=135] run fill ~-2 ~ 
 execute as @s[ry=180, rym=135] positioned as @s[ry=180, rym=135] run fill ~-2 ~ ~-2 ~+2 ~+4 ~-4 air 0 replace warped_slab
 execute as @s[ry=180, rym=135] positioned as @s[ry=180, rym=135] run fill ~-2 ~ ~-2 ~+2 ~+4 ~-4 air 0 replace azalea_leaves
 execute as @s[ry=180, rym=135] positioned as @s[ry=180, rym=135] run fill ~-2 ~ ~-2 ~+2 ~+4 ~-4 air 0 replace azalea_leaves_flowered
-execute as @s[ry=180, rym=135] positioned as @s[ry=180, rym=135] run fill ~-2 ~ ~-2 ~+2 ~+4 ~-4 air 0 replace mangrove_leaves
-execute as @s[ry=180, rym=135] positioned as @s[ry=180, rym=135] run fill ~-2 ~ ~-2 ~+2 ~+4 ~-4 air 0 replace mangrove_roots
 execute as @s[ry=180, rym=135] positioned as @s[ry=180, rym=135] run fill ~-2 ~ ~-2 ~+2 ~+4 ~-4 air 0 replace rift:oak_thatch_block
 execute as @s[ry=180, rym=135] positioned as @s[ry=180, rym=135] run fill ~-2 ~ ~-2 ~+2 ~+4 ~-4 air 0 replace rift:spruce_thatch_block
 execute as @s[ry=180, rym=135] positioned as @s[ry=180, rym=135] run fill ~-2 ~ ~-2 ~+2 ~+4 ~-4 air 0 replace rift:birch_thatch_block
@@ -348,11 +343,12 @@ execute as @s[ry=180, rym=135] positioned as @s[ry=180, rym=135] run fill ~-2 ~ 
 execute as @s[ry=180, rym=135] positioned as @s[ry=180, rym=135] run fill ~-2 ~ ~-2 ~+2 ~+4 ~-4 air 0 replace rift:acacia_thatch_block
 execute as @s[ry=180, rym=135] positioned as @s[ry=180, rym=135] run fill ~-2 ~ ~-2 ~+2 ~+4 ~-4 air 0 replace rift:crimson_thatch_block
 execute as @s[ry=180, rym=135] positioned as @s[ry=180, rym=135] run fill ~-2 ~ ~-2 ~+2 ~+4 ~-4 air 0 replace rift:warped_thatch_block
+execute as @s[ry=180, rym=135] positioned as @s[ry=180, rym=135] run fill ~-2 ~ ~-2 ~+2 ~+4 ~-4 air 0 replace rift:mangrove_thatch_block
 execute as @s[ry=180, rym=135] positioned as @s[ry=180, rym=135] run fill ~-2 ~ ~-2 ~+2 ~+4 ~-4 air 0 replace rift:wooden_chair
 execute as @s[ry=180, rym=135] positioned as @s[ry=180, rym=135] run fill ~-2 ~ ~-2 ~+2 ~+4 ~-4 air 0 replace rift:wooden_table
-execute as @s[ry=180, rym=135] positioned as @s[ry=180, rym=135] run fill ~-2 ~ ~-2 ~+2 ~+4 ~-4 air 0 replace rift:glass_table
 execute as @s[ry=180, rym=135] positioned as @s[ry=180, rym=135] run fill ~-2 ~ ~-2 ~+2 ~+4 ~-4 air 0 replace rift:sofa
 execute as @s[ry=180, rym=135] positioned as @s[ry=180, rym=135] run fill ~-2 ~ ~-2 ~+2 ~+4 ~-4 air 0 replace rift:wooden_bench
+execute as @s[ry=180, rym=135] positioned as @s[ry=180, rym=135] run fill ~-2 ~ ~-2 ~+2 ~+4 ~-4 air 0 replace rift:wooden_spiked_wall
 execute as @s[ry=-135, rym=-180] positioned as @s[ry=-135, rym=-180] run fill ~-2 ~ ~-2 ~+2 ~+4 ~-4 air 0 replace planks
 execute as @s[ry=-135, rym=-180] positioned as @s[ry=-135, rym=-180] run fill ~-2 ~ ~-2 ~+2 ~+4 ~-4 air 0 replace leaves
 execute as @s[ry=-135, rym=-180] positioned as @s[ry=-135, rym=-180] run fill ~-2 ~ ~-2 ~+2 ~+4 ~-4 air 0 replace leaves2
@@ -425,8 +421,6 @@ execute as @s[ry=-135, rym=-180] positioned as @s[ry=-135, rym=-180] run fill ~-
 execute as @s[ry=-135, rym=-180] positioned as @s[ry=-135, rym=-180] run fill ~-2 ~ ~-2 ~+2 ~+4 ~-4 air 0 replace warped_slab
 execute as @s[ry=-135, rym=-180] positioned as @s[ry=-135, rym=-180] run fill ~-2 ~ ~-2 ~+2 ~+4 ~-4 air 0 replace azalea_leaves
 execute as @s[ry=-135, rym=-180] positioned as @s[ry=-135, rym=-180] run fill ~-2 ~ ~-2 ~+2 ~+4 ~-4 air 0 replace azalea_leaves_flowered
-execute as @s[ry=-135, rym=-180] positioned as @s[ry=-135, rym=-180] run fill ~-2 ~ ~-2 ~+2 ~+4 ~-4 air 0 replace mangrove_leaves
-execute as @s[ry=-135, rym=-180] positioned as @s[ry=-135, rym=-180] run fill ~-2 ~ ~-2 ~+2 ~+4 ~-4 air 0 replace mangrove_roots
 execute as @s[ry=-135, rym=-180] positioned as @s[ry=-135, rym=-180] run fill ~-2 ~ ~-2 ~+2 ~+4 ~-4 air 0 replace rift:oak_thatch_block
 execute as @s[ry=-135, rym=-180] positioned as @s[ry=-135, rym=-180] run fill ~-2 ~ ~-2 ~+2 ~+4 ~-4 air 0 replace rift:spruce_thatch_block
 execute as @s[ry=-135, rym=-180] positioned as @s[ry=-135, rym=-180] run fill ~-2 ~ ~-2 ~+2 ~+4 ~-4 air 0 replace rift:birch_thatch_block
@@ -435,8 +429,9 @@ execute as @s[ry=-135, rym=-180] positioned as @s[ry=-135, rym=-180] run fill ~-
 execute as @s[ry=-135, rym=-180] positioned as @s[ry=-135, rym=-180] run fill ~-2 ~ ~-2 ~+2 ~+4 ~-4 air 0 replace rift:acacia_thatch_block
 execute as @s[ry=-135, rym=-180] positioned as @s[ry=-135, rym=-180] run fill ~-2 ~ ~-2 ~+2 ~+4 ~-4 air 0 replace rift:crimson_thatch_block
 execute as @s[ry=-135, rym=-180] positioned as @s[ry=-135, rym=-180] run fill ~-2 ~ ~-2 ~+2 ~+4 ~-4 air 0 replace rift:warped_thatch_block
+execute as @s[ry=-135, rym=-180] positioned as @s[ry=-135, rym=-180] run fill ~-2 ~ ~-2 ~+2 ~+4 ~-4 air 0 replace rift:mangrove_thatch_block
 execute as @s[ry=-135, rym=-180] positioned as @s[ry=-135, rym=-180] run fill ~-2 ~ ~-2 ~+2 ~+4 ~-4 air 0 replace rift:wooden_chair
 execute as @s[ry=-135, rym=-180] positioned as @s[ry=-135, rym=-180] run fill ~-2 ~ ~-2 ~+2 ~+4 ~-4 air 0 replace rift:wooden_table
-execute as @s[ry=-135, rym=-180] positioned as @s[ry=-135, rym=-180] run fill ~-2 ~ ~-2 ~+2 ~+4 ~-4 air 0 replace rift:glass_table
 execute as @s[ry=-135, rym=-180] positioned as @s[ry=-135, rym=-180] run fill ~-2 ~ ~-2 ~+2 ~+4 ~-4 air 0 replace rift:sofa
 execute as @s[ry=-135, rym=-180] positioned as @s[ry=-135, rym=-180] run fill ~-2 ~ ~-2 ~+2 ~+4 ~-4 air 0 replace rift:wooden_bench
+execute as @s[ry=-135, rym=-180] positioned as @s[ry=-135, rym=-180] run fill ~-2 ~ ~-2 ~+2 ~+4 ~-4 air 0 replace rift:wooden_spiked_wall
