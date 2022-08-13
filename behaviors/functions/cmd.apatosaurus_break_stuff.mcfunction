@@ -1,3 +1,4 @@
+damage @e[family=woodenLargeGate, r=6] 30
 fill ~-3 ~ ~-3 ~+3 ~+8 ~+3 air 0 replace planks
 fill ~-3 ~ ~-3 ~+3 ~+8 ~+3 air 0 replace leaves
 fill ~-3 ~ ~-3 ~+3 ~+8 ~+3 air 0 replace leaves2

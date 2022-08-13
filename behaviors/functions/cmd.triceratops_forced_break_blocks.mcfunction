@@ -1,3 +1,4 @@
+damage @e[family=woodenLargeGate, r=5] 30
 #north
 execute as @s[ry=45, rym=-45] positioned as @s[ry=45, rym=-45] run fill ~+2 ~ ~+2 ~-2 ~+3 ~+4 air 0 replace planks
 execute as @s[ry=45, rym=-45] positioned as @s[ry=45, rym=-45] run fill ~+2 ~ ~+2 ~-2 ~+3 ~+4 air 0 replace leaves
