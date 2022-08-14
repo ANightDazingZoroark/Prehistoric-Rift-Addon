@@ -197,6 +197,50 @@
                     }
                 }
             },
+            "rift:not_on_ground_the_flood": {
+                "minecraft:environment_sensor": {
+                    "triggers": [
+                        {
+                            "filters": {
+                                "test": "on_ground",
+                                "subject": "self",
+                                "value": true
+                            },
+                            "event": "rift:execute_the_flood",
+                            "target": "self"
+                        }
+                    ]
+                }
+            },
+            "rift:on_ground_the_flood": {
+                "minecraft:spawn_entity": {
+					"entities": [
+						{
+							"spawn_entity": "rift:sarcosuchus",
+                            "spawn_event": "rift:spawn_for_the_flood",
+							"single_use": true,
+                            "num_to_spawn": 1,
+							"min_wait_time": 0,
+							"max_wait_time": 0
+						},
+						{
+							"spawn_entity": "rift:baryonyx",
+                            "spawn_event": "rift:spawn_for_the_flood",
+							"single_use": true,
+                            "num_to_spawn": 1,
+							"min_wait_time": 0,
+							"max_wait_time": 0
+						}
+					]
+                },
+                "minecraft:timer": {
+                    "time": 0.5,
+                    "time_down_event": {
+                        "event": "rift:die",
+                        "target": "self"
+                    }
+                }
+            },
             "rift:despawn": {
                 "minecraft:instant_despawn": {}
             }
@@ -311,6 +355,25 @@
                 "remove": {
                     "component_groups": [
                         "rift:not_on_ground_herbivore_stampede"
+                    ]
+                }
+            },
+            "rift:the_flood": {
+                "add": {
+                    "component_groups": [
+                        "rift:not_on_ground_the_flood"
+                    ]
+                }
+            },
+            "rift:execute_the_flood": {
+                "add": {
+                    "component_groups": [
+                        "rift:on_ground_the_flood"
+                    ]
+                },
+                "remove": {
+                    "component_groups": [
+                        "rift:not_on_ground_the_flood"
                     ]
                 }
             },

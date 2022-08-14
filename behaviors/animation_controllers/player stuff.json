@@ -194,7 +194,7 @@
                     ]
                 },
                 "noon": {
-                    "transitions": [
+                    "transitions": [                   
                         {
                             "mobEvents": "variable.choose_number = (math.floor(math.random(0,16))); return variable.choose_number == 0;"
                         },
@@ -206,7 +206,7 @@
                 "mobEvents": {
                     "transitions": [
                         {
-                            "raptorAttack": "variable.choose_event = (math.floor(math.random(0,4))); return variable.choose_event == 0;"
+                            "raptorAttack": "variable.choose_event = (math.floor(math.random(0,5))); return variable.choose_event == 0;"
                         },
                         {
                             "piranhaSwarm": "variable.choose_event == 1"
@@ -216,6 +216,9 @@
                         },
                         {
                             "herbivoreStampede": "variable.choose_event == 3"
+                        },
+                        {
+                            "theFlood": "variable.choose_event == 4"
                         }
                     ]
                 },
@@ -289,7 +292,27 @@
                         "/tellraw @a {\"rawtext\":[{\"text\":\"Herbivore Stampede event has started!\"}]}",
                         "/playsound raid.horn @a",
                         "/title @a title Herbivore Stampede!",
-                        "/titleraw @a subtitle {\"rawtext\": [{\"text\": \"Enraged herbivores are out \nto take their anger out on something!\"}]}"
+                        "/titleraw @a subtitle {\"rawtext\": [{\"text\": \"Enraged herbivores are out \nto take out their anger!\"}]}"
+                    ],
+                    "on_exit": [
+                        "/tellraw @a {\"rawtext\":[{\"text\":\"Herbivore Stampede is no longer spawning mobs!\"}]}"
+                    ]
+                },
+                "theFlood": {
+                    "animations": [
+                        "animTheFlood"
+                    ],
+                    "transitions": [
+                        {
+                            "limbo": "query.all_animations_finished"
+                        }
+                    ],
+                    "on_entry": [
+                        "/tellraw @a {\"rawtext\":[{\"text\":\"The Flood event has started!\"}]}",
+                        "/playsound raid.horn @a",
+                        "/title @a title The Flood!",
+                        "/titleraw @a subtitle {\"rawtext\": [{\"text\": \"Downpour and river monsters!\"}]}",
+                        "/weather thunder 1000"
                     ],
                     "on_exit": [
                         "/tellraw @a {\"rawtext\":[{\"text\":\"Herbivore Stampede is no longer spawning mobs!\"}]}"

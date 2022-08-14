@@ -3,12 +3,12 @@ import { ActionFormData } from "mojang-minecraft-ui"
 export const guiTutorialEntry = new ActionFormData()
 .title('How to Use')
 //.body("To fill up the journal, you need to insert this journal in a journal enscriber, then you need to place a tribute item to add the entry of that creature to this journal.\n\nNote that each player will access different entries depending on what they unlocked through this method.")
-.body("Since this is just a demo showing off the new GameTest related stuff you can read all the entries. Once the full update releases expect that the entries will be locked until you do certain things.")
+.body("For the time being you can read all the entries. Expect that by the next update all the entries will be locked until you do certain things.")
 .button('Return to Index')
 
 export const guiAnimalsEntry = new ActionFormData()
 .title('Animals')
-.body("I miss when it was just pigs and sheep and cows and other peaceful stuff. Now there's like giant mobs roaming around the place. All the poor things can even do is run away.\n\nThere still seems to be some hope. Polar Bears don’t seem to be frightened of the creatures of the Rift, but that doesn't mean anything when a giant carnivore can kill you in one hit. And most of the animals that give out food can at least be bred in captivity.\n\nMy research has shown that some of the creatures of the Rift drop meat that is far more nutritious than those of the regular animals. There's definitely no hope for the poor regular animals at all in the near future. Which is quite sad.")
+.body("I miss when it was just pigs and sheep and cows and other peaceful stuff. Now there's like giant mobs roaming around the place. All the poor things can even do is run away.\n\nThere still seems to be some hope. Polar Bears don't seem to be frightened of the creatures of the Rift, but that doesn't mean anything when a giant carnivore can kill you in one hit. And most of the animals that give out food can at least be bred in captivity.\n\nMy research has shown that some of the creatures of the Rift drop meat that is far more nutritious than those of the regular animals. There's definitely no hope for the poor regular animals at all in the near future. Which is quite sad.")
 .button('Return to Index')
 
 export const guiAnomalocarisEntry = new ActionFormData()
@@ -68,7 +68,7 @@ export const guiParasaurolophusEntry = new ActionFormData()
 
 export const guiSarcosuchusEntry = new ActionFormData()
 .title('Sarcosuchus')
-.body("\n\n\n\n\n\n\n\n\nDiet: Carnivore\nBehavior: Hostile\nTaming Tier: Tier 2\nFavorite Treats: Fish Treat\n\nYet another reason to not swim. At least Megapiranhas are scared of them. I should be thankful that boats are really easy to make and use, and that boats are inedible.\n\nThey're deadlier in water. They move faster when swimming than while walking, and their spin attacks do more damage.\n\nSpeaking of their spin attacks, anything hit by it gets slowed down.")
+.body("\n\n\n\n\n\n\n\n\nDiet: Carnivore\nBehavior: Hostile\nTaming Tier: Tier 2\nFavorite Treats: Fish Treat\n\nYet another reason to not swim. At least Megapiranhas are scared of them. I should be thankful that boats are really easy to make and use and are inedible.\n\nThey're deadlier in water. They move faster when swimming than while walking, and their spin attacks do more damage.\n\nSpeaking of their spin attacks, anything hit by it gets slowed down.")
 .button('Return to Index')
 
 export const guiSaurophaganaxEntry = new ActionFormData()
