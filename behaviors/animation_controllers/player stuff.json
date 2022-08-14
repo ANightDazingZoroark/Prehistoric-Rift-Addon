@@ -475,6 +475,50 @@
                     ]
                 }
             }
+        },
+        "controller.animation.inform_riding_command_staff_usability": {
+			"initial_state": "default",
+			"states": {
+				"default": {
+                    "transitions": [
+                        {
+                            "riding": "query.is_riding && ((query.get_ride -> query.owner_identifier) == 'rift:tyrannosaurus' || (query.get_ride -> query.owner_identifier) == 'rift:stegosaurus' || (query.get_ride -> query.owner_identifier) == 'rift:triceratops' || (query.get_ride -> query.owner_identifier) == 'rift:utahraptor' || (query.get_ride -> query.owner_identifier) == 'rift:apatosaurus' || (query.get_ride -> query.owner_identifier) == 'rift:parasaurolophus' || (query.get_ride -> query.owner_identifier) == 'rift:sarcosuchus' || (query.get_ride -> query.owner_identifier) == 'rift:anomalocaris' || (query.get_ride -> query.owner_identifier) == 'rift:saruophaganax' || (query.get_ride -> query.owner_identifier) == 'rift:direwolf' || (query.get_ride -> query.owner_identifier) == 'rift:megaloceros' || (query.get_ride -> query.owner_identifier) == 'rift:baryonyx')"
+                        }
+                    ]
+                },
+                "riding": {
+                    "transitions": [
+                        {
+                            "default": "!query.is_riding"
+                        }
+                    ],
+                    "on_entry": [
+                        "/tellraw @p {\"rawtext\":[{\"text\":\"Equip a command staff to be able to use this creature's ability, a harvest staff to make this creature harvest items from certain nearby blocks, or a command console to use the weapons on the back of this creature (if there are)!\"}]}"
+                    ]
+                }
+            }
+        },
+        "controller.animation.inform_riding_has_command_staff_usability": {
+			"initial_state": "default",
+			"states": {
+				"default": {
+                    "transitions": [
+                        {
+                            "riding": "query.is_riding && query.get_equipped_item_name('main_hand') == 'command_staff' && ((query.get_ride -> query.owner_identifier) == 'rift:tyrannosaurus' || (query.get_ride -> query.owner_identifier) == 'rift:stegosaurus' || (query.get_ride -> query.owner_identifier) == 'rift:triceratops' || (query.get_ride -> query.owner_identifier) == 'rift:utahraptor' || (query.get_ride -> query.owner_identifier) == 'rift:apatosaurus' || (query.get_ride -> query.owner_identifier) == 'rift:parasaurolophus' || (query.get_ride -> query.owner_identifier) == 'rift:sarcosuchus' || (query.get_ride -> query.owner_identifier) == 'rift:anomalocaris' || (query.get_ride -> query.owner_identifier) == 'rift:saruophaganax' || (query.get_ride -> query.owner_identifier) == 'rift:direwolf' || (query.get_ride -> query.owner_identifier) == 'rift:megaloceros' || (query.get_ride -> query.owner_identifier) == 'rift:baryonyx')"
+                        }
+                    ]
+                },
+                "riding": {
+                    "transitions": [
+                        {
+                            "default": "!query.is_riding || query.get_equipped_item_name('main_hand') != 'command_staff'"
+                        }
+                    ],
+                    "on_entry": [
+                        "/tellraw @p {\"rawtext\":[{\"text\":\"Right click/tap and hold once to activate an ability, and right click and hold/tap and hold for a long time, then release to change the ability to be used.\"}]}"
+                    ]
+                }
+            }
         }
 	}
 }
