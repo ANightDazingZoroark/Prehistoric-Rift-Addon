@@ -5,6 +5,7 @@ import "scripts/ApatosaurusWeaponManagement.js"
 import "scripts/BlockBreakManagement.js"
 import "scripts/DamageManagement.js"
 import "scripts/EatFromInventory.js"
+import "scripts/EffectManagement.js"
 import "scripts/JournalManagement.js"
 import { world } from "mojang-minecraft"
 
