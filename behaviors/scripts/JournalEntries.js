@@ -2,13 +2,17 @@ import { ActionFormData } from "mojang-minecraft-ui"
 
 export const guiTutorialEntry = new ActionFormData()
 .title('How to Use')
-//.body("To fill up the journal, you need to insert this journal in a journal enscriber, then you need to place a tribute item to add the entry of that creature to this journal.\n\nNote that each player will access different entries depending on what they unlocked through this method.")
-.body("For the time being you can read all the entries. Expect that by the next update all the entries will be locked until you do certain things.")
+.body("To fill up the journal, you need to insert this journal in a journal enscriber, then you need to place a tribute item to add the entry of that creature to this journal.\n\nNote that each player will access different entries depending on what they unlocked through this method.")
 .button('Return to Index')
 
 export const guiAnimalsEntry = new ActionFormData()
 .title('Animals')
 .body("I miss when it was just pigs and sheep and cows and other peaceful stuff. Now there's like giant mobs roaming around the place. All the poor things can even do is run away.\n\nThere still seems to be some hope. Polar Bears don't seem to be frightened of the creatures of the Rift, but that doesn't mean anything when a giant carnivore can kill you in one hit. And most of the animals that give out food can at least be bred in captivity.\n\nMy research has shown that some of the creatures of the Rift drop meat that is far more nutritious than those of the regular animals. There's definitely no hope for the poor regular animals at all in the near future. Which is quite sad.")
+.button('Return to Index')
+
+export const guiAnkylosaurusEntry = new ActionFormData()
+.title('Ankylosaurus')
+.body("TBA")
 .button('Return to Index')
 
 export const guiAnomalocarisEntry = new ActionFormData()
@@ -31,9 +35,24 @@ export const guiCoelacanthEntry = new ActionFormData()
 .body("\n\n\n\n\n\n\n\n\n\n\n\nDiet: n/a\nBehavior: Passive\nTaming Tier: Untameable\nFavorite Treats: n/a\n\nCoelacanths aren't any special. They just swim about just like nearly any other fish, doomed to be eaten someday by something else in the water. Or fished up.\n\nThe meat isn't safe for consumption for most creatures. It can however be converted into oil for various purposes.")
 .button('Return to Index')
 
+export const guiCoelophysisEntry = new ActionFormData()
+.title('Coelophysis')
+.body("TBA")
+.button('Return to Index')
+
+export const guiDilophosaurusEntry = new ActionFormData()
+.title('Dilophosaurus')
+.body("TBA")
+.button('Return to Index')
+
 export const guiDimetrodonEntry = new ActionFormData()
 .title('Dimetrodon')
 .body("\n\n\n\n\n\n\n\n\n\n\n\nDiet: Carnivore\nBehavior: Neutral\nTaming Tier: Tier 2\nFavorite Treats: Fish Treat, Flesh Treat\n\nI forgot how many times I have confused these things for Spinosauruses, yet here we are.\n\nThe sail inverts its internal and external temperature which also applies to its surroundings. The inverted temperature even gets redirected to the fangs, allowing it to slow down and weaken targets with a frost bite in hot temperatures and set targets aflame with overheating fangs in cold temperatures.\n\nBest used for egg incubation. Way better than having to manually bring eggs to random far off places.")
+.button('Return to Index')
+
+export const guiDirebearEntry = new ActionFormData()
+.title('Direbear')
+.body("TBA")
 .button('Return to Index')
 
 export const guiDirewolfEntry = new ActionFormData()
@@ -46,9 +65,19 @@ export const guiDodoEntry = new ActionFormData()
 .body("\n\n\n\n\n\n\n\n\n\n\nDiet: Herbivore\nBehavior: Passive\nTaming Tier: Untameable\nFavorite Treats: Berry Treat\n\nAre doomed to wander the world until they get eaten by something. They don't even run from attackers or panic upon getting hurt. The closest demonstration of self-preservation I have even seen from them is when they flap when falling.\n\nTheir meat, when cooked, provides absorption to those which consume it. Perfect for those wanting extra nutrition.")
 .button('Return to Index')
 
+export const guiGallimimusEntry = new ActionFormData()
+.title('Gallimimus')
+.body("TBA")
+.button('Return to Index')
+
 export const guiHumansEntry = new ActionFormData()
 .title('Humans')
 .body("I figured that writing weird stuff about us would be a good way to fill in some space in this book. It may be incredibly weird seeing that anyone who picks up a book knows that a human has wrote it, but I have a lot of spare time at the moment.\n\nWe humans are pretty much one of the few living things here that have a really big impact on this word. All the animals can do is make weird noises and eat grass while all the zombies can do is make more zombies by trying to kill us, but we can mine stuff and terraform land and even build stuff.\n\nProbably the biggest trait of us humans is the fact that we all want to do something that probably makes sense only to us. I want to study everything from the Rift, the Illagers want world domination, yeah those kinds of stuff.")
+.button('Return to Index')
+
+export const guiIllagersEntry = new ActionFormData()
+.title('Illagers')
+.body('Illagers have always been a force to be reckoned with, and are known to raid our villages every now and then while keeping knowledge about magic deep within the mansions of the wooden forest.\n\nBut ever since the Rift, they have become so dangerous. They adapted to the changes in less than a day, maybe even the moment that it all started, and they have since started using its creatures for their own use and have even created ranged weapons far more powerful than bows or crossbows.')
 .button('Return to Index')
 
 export const guiMegalocerosEntry = new ActionFormData()
@@ -61,9 +90,19 @@ export const guiMegapiranhaEntry = new ActionFormData()
 .body("\n\n\n\n\n\n\n\n\n\n\nDiet: Carnivore\nBehavior: Hostile\nTaming Tier: Untameable\nFavorite Treats: n/a\n\nProbably the first fish I've seen that is straight up hostile. They attack nearly everything, except for the other aquatic predators.\n\nThough they are pretty weak, they can be found in almost every body of water, from small innocuous ponds, aquifers underground, or riverbanks.\n\nTheir meat, when cooked, grants those who eat it regeneration. Really unfitting given their fragile build.")
 .button('Return to Index')
 
+export const guiMonstersEntry = new ActionFormData()
+.title('Monsters')
+.body("TBA")
+.button('Return to Index')
+
+export const guiPalaeocastorEntry = new ActionFormData()
+.title('Palaeocastor')
+.body("Diet: Saxumavore\nBehavior: Hostile\nTaming Tier: Untameable\nFavorite Treats: n/a\n\nMining trips don't seem to end well as long as you get jumpscared by these. They burrow deep underground preferring to hide within ores to eat them from within. Mining whatever they're eating angers them.\n\nThe Mining Fatigue they inflict really really hurts.")
+.button('Return to Index')
+
 export const guiParasaurolophusEntry = new ActionFormData()
 .title('Parasaurolophus')
-.body("\n\n\n\n\n\n\n\n\n\n\nDiet: Herbivore\nBehavior: Passive\nTaming Tier: Tier 1\nFavorite Treats: Rooted Treat, Grassy Treat, Berry Treat\n\nIf you see one, expect to see others in the area. They look out for each other, and protect each other from predators by using their horns to alert others about danger. Once there's danger, they'll run away.\n\nWhen in direct danger they might emit a shockwave that can paralyze mobs for a short time before fleeing.\n\nThey really like eating the truffles that have been appearing more frequently and can dig them up from grass. Though it seems they like uprooting rooted crops too")
+.body("\n\n\n\n\n\n\n\n\n\n\nDiet: Herbivore\nBehavior: Passive\nTaming Tier: Tier 1\nFavorite Treats: Rooted Treat, Grassy Treat, Berry Treat\n\nIf you see one, expect to see others in the area. They look out for each other, and protect each other from predators by using their horns to alert others about danger. Once there's danger, they'll run away.\n\nWhen in direct danger they might emit a shockwave that can paralyze mobs for a short time before fleeing.\n\nThey really like eating the truffles that have been appearing more frequently and can dig them up from grass. Though it seems they like uprooting rooted crops too.")
 .button('Return to Index')
 
 export const guiSarcosuchusEntry = new ActionFormData()
@@ -81,6 +120,11 @@ export const guiStegosaurusEntry = new ActionFormData()
 .body("\n\n\n\n\n\n\n\n\n\n\n\nDiet: Herbivore\nBehavior: Neutral\nTaming Tier: Tier 1\nFavorite Treats: Rooted Treat, Grassy Treat, Berry Treat\n\nPlates all over and spikes on the tail is enough to say that they're a tank. Which it is, in fact.\n\nIf given enough time, they can charge up their tail attacks to deal more damage. Usage tires them out easily.\n\nThe plates protect the rider from falling off and keeps them safe from most attacks. The tail is the main weapon of the creature. The spikes can puncture through skin, while the small plates can be thrown and can hurt the target.\n\nThe spikes also make for a great tool for farming wheat, berries, and even dyes from flowers.")
 .button('Return to Index')
 
+export const guiTenontosaurusEntry = new ActionFormData()
+.title('Tenontosaurus')
+.body("TBA")
+.button('Return to Index')
+
 export const guiTriceratopsEntry = new ActionFormData()
 .title('Triceratops')
 .body("\n\n\n\n\n\n\n\n\n\n\nDiet: Herbivore\nBehavior: Neutral\nTaming Tier: Tier 1\nFavorite Treats: Rooted Treat, Grassy Treat, Berry Treat\n\nTriceratopses are really friendly, and its best if one maintains that friendliness with them because those horns hurt quite a lot. And they can break blocks.\n\nThey like it if someone tickles the back of their frills near the neck. I think most Triceratopses agree with this part.\n\nUpon seeing an apex predator or anything really aggressive and threatening, it enters a rivalry buff mode that grants them strength and resistance.\n\nThe horns let them forage apples, leaves, and saplings from trees and rip off thatch from the bark.")
@@ -94,4 +138,9 @@ export const guiTyrannosaurusEntry = new ActionFormData()
 export const guiUtahraptorEntry = new ActionFormData()
 .title('Utahraptor')
 .body("\n\n\n\n\n\n\n\n\n\n\nDiet: Carnivore\nBehavior: Hostile\nTaming Tier: Tier 2\nFavorite Treats: Flesh Treat\n\nQuick, frail, and deadly. And they come in groups. Packs are far deadlier because one of the members will boost the damage and speed of all the others.\n\nThey attack in two ways. One is through their claws, and the other is through pouncing upon their target. Both are deadly.\n\nTaming them is relatively cheap. Nearly everyone I know relies on one because they're fast, are great swimmers, can climb walls, and do reliable damage.")
+.button('Return to Index')
+
+export const guiVillagersEntry = new ActionFormData()
+.title('Villagers')
+.body("TBA")
 .button('Return to Index')
