@@ -379,7 +379,6 @@ world.events.beforeItemUse.subscribe(data => {
 })
 
 world.events.beforeItemUseOn.subscribe(data => {
-    console.warn(data.item.id)
     if (unlockItemsList.includes(data.item.id) && world.getDimension('overworld').getBlock(data.blockLocation).id == 'rift:journal_enscriber' && world.getDimension('overworld').getBlock(data.blockLocation).permutation.getProperty('rift:has_book').value == true) {
         switch (data.item.id) {
             case 'rift:tyrannosaurus_arm':
