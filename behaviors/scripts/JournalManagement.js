@@ -1,5 +1,5 @@
 import { MinecraftBlockTypes } from "mojang-minecraft"
-import { Block, world } from "mojang-minecraft"
+import { world } from "mojang-minecraft"
 import { ActionFormData, ModalFormData } from "mojang-minecraft-ui"
 import * as guiEntry from "./JournalEntries"
 

@@ -6,6 +6,7 @@ import 'scripts/BlockBreakManagement.js'
 import 'scripts/DamageManagement.js'
 import 'scripts/EatFromInventory.js'
 import 'scripts/EffectManagement.js'
+import 'scripts/FirearmManagement.js'
 import 'scripts/JournalManagement.js'
 import { DynamicPropertiesDefinition, MinecraftEntityTypes, world } from 'mojang-minecraft'
 
