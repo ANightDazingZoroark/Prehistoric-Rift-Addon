@@ -713,6 +713,58 @@
 					]
 				}
 			},
+			"rift:tyrannosaurus_angry_because_of_fire": {
+				"minecraft:timer": {
+					"time": 15,
+					"time_down_event": {
+						"event": "rift:stop_being_angry_because_of_fire",
+						"target": "self"
+					}
+				},
+				"minecraft:behavior.nearest_attackable_target": {
+					"priority": 4,
+					"must_see": true,
+					"within_radius": 48.0,
+					"persist_time": 25,
+					"entity_types": [
+						{
+							"filters": {
+								"any_of": [
+									{
+										"test": "is_family",
+										"subject": "other",
+										"value": "mob"
+									},
+									{
+										"test": "is_family",
+										"subject": "other",
+										"operator": "!=",
+										"value": "tyrannosaurus"
+									}
+								]
+							},
+							"max_dist": 64
+						},
+						{
+							"filters": {
+								"all_of": [
+									{
+										"test": "is_family",
+										"subject": "other",
+										"value": "player"
+									},
+									{
+										"test": "is_riding",
+										"subject": "other",
+										"value": false
+									}
+								]
+							},
+							"max_dist": 64
+						}
+					]
+				}
+			},
 			"rift:aggravating_horn_attack": {
 				"minecraft:behavior.nearest_attackable_target": {
 					"priority": 4,
@@ -766,20 +818,17 @@
 					}
 				}
 			},
+			"rift:roar_in_wild_angered_by_fire": {
+				"minecraft:timer": {
+					"time": 2.08,
+					"time_down_event": {
+						"event": "rift:start_being_angered_by_fire",
+						"target": "self"
+					}
+				}
+			},
 			"rift:forced_bite": {
 				"minecraft:is_charged": {}
-			},
-			"rift:summon_forced_bite_entity": {
-				"minecraft:spawn_entity": {
-					"entities": [
-						{
-							"spawn_entity": "rift:tyrannosaurus_bite",
-							"single_use": true,
-							"min_wait_time": 0,
-							"max_wait_time": 0
-						}
-					]
-				}
 			},
 			"rift:tyrannosaurus_saddled": {
 				"minecraft:is_saddled": {},
@@ -4855,7 +4904,9 @@
 				},
 				"remove": {
 					"component_groups": [
-						"rift:pushable"
+						"rift:pushable",
+						"rift:tyrannosaurus_hunting",
+						"rift:tyrannosaurus_not_hunting"
 					]
 				},
 				"run_command": {
@@ -4868,41 +4919,14 @@
 			"rift:stop_wild_roaring": {
 				"add": {
 					"component_groups": [
-						"rift:pushable"
+						"rift:pushable",
+						"rift:tyrannosaurus_not_hunting"
 					]
 				},
 				"remove": {
 					"component_groups": [
 						"rift:roar_in_wild",
 						"rift:unpushable"
-					]
-				}
-			},
-			"rift:use_forced_bite": {
-				"add": {
-					"component_groups": [
-						"rift:forced_bite"
-					]
-				}
-			},
-			"rift:stop_forced_bite": {
-				"remove": {
-					"component_groups": [
-						"rift:forced_bite"
-					]
-				}
-			},
-			"rift:on_summon_forced_bite_entity": {
-				"add": {
-					"component_groups": [
-						"rift:summon_forced_bite_entity"
-					]
-				}
-			},
-			"rift:no_summon_forced_bite_entity": {
-				"remove": {
-					"component_groups": [
-						"rift:summon_forced_bite_entity"
 					]
 				}
 			},
@@ -5348,6 +5372,59 @@
 				"remove": {
 					"component_groups": [
 						"rift:tyrannosaurus_nest_dweller_awake"
+					]
+				}
+			},
+			"rift:angered_by_fire": {
+				"add": {
+					"component_groups": [
+						"rift:roar_in_wild_angered_by_fire",
+						"rift:unpushable"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:pushable",
+						"rift:tyrannosaurus_not_hunting",
+						"rift:tyrannosaurus_hunting"
+					]
+				},
+				"run_command": {
+					"command": [
+						"summon rift:tyrannosaurus_roar_wild",
+						"playanimation @s animation.tyrannosaurus.roar",
+						"tag @s add angeredByFire"
+					]
+				}
+			},
+			"rift:start_being_angered_by_fire": {
+				"add": {
+					"component_groups": [
+						"rift:tyrannosaurus_angry_because_of_fire",
+						"rift:pushable"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:roar_in_wild_angered_by_fire",
+						"rift:unpushable"
+					]
+				}
+			},
+			"rift:stop_being_angry_because_of_fire": {
+				"add": {
+					"component_groups": [
+						"rift:tyrannosaurus_not_hunting"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:tyrannosaurus_angry_because_of_fire"
+					]
+				},
+				"run_command": {
+					"command": [
+						"tag @s remove angeredByFire"
 					]
 				}
 			},
