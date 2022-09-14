@@ -13,7 +13,7 @@ world.events.tick.subscribe((ev) => {
     if (ev.currentTick % 5 == 0) {
         let entities = Array.from(world.getDimension('overworld').getEntities())
         mainloop: for (let e = 0; e < entities.length; e++) {
-            if (entities[e].id == 'rift:tyrannosaurus' && !entities[e].hasTag('tamed') && !entities[e].hasTag('angeredByFire') && !entities[e].hasTag('sleeping')) {
+            if (entities[e].id == 'rift:tyrannosaurus' && !entities[e].hasTag('tamed') && !entities[e].hasTag('angeredByFire') && !entities[e].hasTag('sleeping') && !entities[e].hasTag('baby')) {
                 for(let x = -12; x < 13; x++) {
                     for (let y = -2; y < 4; y++){
                         for (let z = -12; z < 13; z++) {

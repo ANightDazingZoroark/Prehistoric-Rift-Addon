@@ -86,7 +86,7 @@
 			"rift:stegosaurus_baby": {
 				"minecraft:is_baby": {},
 				"minecraft:behavior.delayed_attack": {
-					"priority": 7,
+					"priority": 9,
 					"attack_duration": 2,
 					"hit_delay_pct": 0.5,
 					"track_target": true,
@@ -135,7 +135,7 @@
 					"value": 30
 				},
 				"minecraft:behavior.follow_parent": {
-					"priority": 10
+					"priority": 12
 				},
 				"minecraft:tameable": {
 					"probability": 0.25,
@@ -170,8 +170,80 @@
 						]
 					}
 				},
+				"minecraft:behavior.avoid_block": {
+					"priority": 3,
+					"tick_interval": 5,
+					"search_range": 12,
+					"search_height": 4,
+					"walk_speed_modifier": 1.2,
+					"sprint_speed_modifier": 1.2,
+					"target_selection_method": "nearest",
+					"target_blocks": [
+						"minecraft:fire",
+						"minecraft:soul_fire",
+						"minecraft:item.campfire",
+						"minecraft:item.soul_campfire",
+					  	"minecraft:torch",
+					  	"minecraft:soul_torch"
+					]
+				},
+				"minecraft:behavior.avoid_mob_type": {
+					"priority": 2,
+					"entity_types": [
+						{
+							"filters": {
+								"all_of": [
+									{
+										"test": "is_family",
+										"value": "player",
+										"subject": "other"
+									},
+									{
+										"any_of": [
+											{
+												"test": "has_equipment",
+												"subject": "other",
+												"domain": "hand",
+												"value": "minecraft:torch"
+											},
+											{
+												"test": "has_equipment",
+												"subject": "other",
+												"domain": "hand",
+												"value": "minecraft:soul_torch"
+											}
+										]
+									}
+								]
+							},
+							"max_dist": 16,
+							"walk_speed_multiplier": 1.2,
+							"sprint_speed_multiplier": 1.2
+					  	}
+					]
+				},
 				"minecraft:behavior.hurt_by_target": {
-					"priority": 4
+					"priority": 6,
+					"entity_types": {
+						"filters": {
+							"all_of": [
+								{
+									"test": "has_equipment",
+									"subject": "other",
+									"domain": "hand",
+									"operator": "!=",
+									"value": "minecraft:torch"
+								},
+								{
+									"test": "has_equipment",
+									"subject": "other",
+									"domain": "hand",
+									"operator": "!=",
+									"value": "minecraft:soul_torch"
+								}
+							]
+						}
+					}
 				},
 				"minecraft:despawn": {
 					"despawn_from_distance": {}
@@ -299,11 +371,83 @@
 					"value": 48,
 					"max": 48
 				},
+				"minecraft:behavior.avoid_block": {
+					"priority": 3,
+					"tick_interval": 5,
+					"search_range": 12,
+					"search_height": 4,
+					"walk_speed_modifier": 1.2,
+					"sprint_speed_modifier": 1.2,
+					"target_selection_method": "nearest",
+					"target_blocks": [
+						"minecraft:fire",
+						"minecraft:soul_fire",
+						"minecraft:item.campfire",
+						"minecraft:item.soul_campfire",
+					  	"minecraft:torch",
+					  	"minecraft:soul_torch"
+					]
+				},
+				"minecraft:behavior.avoid_mob_type": {
+					"priority": 2,
+					"entity_types": [
+						{
+							"filters": {
+								"all_of": [
+									{
+										"test": "is_family",
+										"value": "player",
+										"subject": "other"
+									},
+									{
+										"any_of": [
+											{
+												"test": "has_equipment",
+												"subject": "other",
+												"domain": "hand",
+												"value": "minecraft:torch"
+											},
+											{
+												"test": "has_equipment",
+												"subject": "other",
+												"domain": "hand",
+												"value": "minecraft:soul_torch"
+											}
+										]
+									}
+								]
+							},
+							"max_dist": 16,
+							"walk_speed_multiplier": 1.2,
+							"sprint_speed_multiplier": 1.2
+					  	}
+					]
+				},
 				"minecraft:despawn": {
 					"despawn_from_distance": {}
 				},
 				"minecraft:behavior.hurt_by_target": {
-					"priority": 4
+					"priority": 6,
+					"entity_types": {
+						"filters": {
+							"all_of": [
+								{
+									"test": "has_equipment",
+									"subject": "other",
+									"domain": "hand",
+									"operator": "!=",
+									"value": "minecraft:torch"
+								},
+								{
+									"test": "has_equipment",
+									"subject": "other",
+									"domain": "hand",
+									"operator": "!=",
+									"value": "minecraft:soul_torch"
+								}
+							]
+						}
+					}
 				}
 			},
 			"rift:stegosaurus_adult_calm": {
@@ -338,7 +482,7 @@
 			},
 			"rift:stegosaurus_adult_ranged": {
 				"minecraft:behavior.ranged_attack": {
-					"priority": 6,
+					"priority": 8,
 					"burst_shots": 3,
 					"burst_interval": 0.3,
 					"charge_charged_trigger": 0.36,
@@ -353,7 +497,7 @@
 			},
 			"rift:stegosaurus_adult_melee": {
 				"minecraft:behavior.delayed_attack": {
-					"priority": 7,
+					"priority": 9,
 					"attack_duration": 2,
 					"hit_delay_pct": 0.5,
 					"track_target": true,
@@ -362,7 +506,7 @@
 			},
 			"rift:default_targets": {
 				"minecraft:behavior.nearest_attackable_target": {
-					"priority": 5,
+					"priority": 7,
 					"within_radius": 32.0,
 					"must_see": true,
 					"entity_types": [
@@ -379,7 +523,7 @@
 			},
 			"rift:herbivore_stampede_targets": {
 				"minecraft:behavior.nearest_attackable_target": {
-					"priority": 5,
+					"priority": 7,
 					"within_radius": 32.0,
 					"must_see": true,
 					"entity_types": [
@@ -398,6 +542,20 @@
 										"test": "is_family", 
 										"subject": "other", 
 										"value": "player"
+									},
+									{
+										"test": "has_equipment",
+										"subject": "other",
+										"domain": "hand",
+										"operator": "!=",
+										"value": "minecraft:torch"
+									},
+									{
+										"test": "has_equipment",
+										"subject": "other",
+										"domain": "hand",
+										"operator": "!=",
+										"value": "minecraft:soul_torch"
 									},
 									{
 										"test": "is_riding", 
@@ -457,7 +615,7 @@
 			},
 			"rift:aggravating_horn_attack": {
 				"minecraft:behavior.nearest_attackable_target": {
-					"priority": 5,
+					"priority": 7,
 					"within_radius": 32.0,
 					"must_see": true,
 					"entity_types": [
@@ -713,7 +871,7 @@
 			},
 			"rift:temptable": {
 				"minecraft:behavior.tempt": {
-					"priority": 8,
+					"priority": 10,
 					"within_radius": 16,
 					"speed_multiplier": 0.75,
 					"items": [
@@ -731,10 +889,10 @@
 			},
 			"rift:wild_standing": {
 				"minecraft:behavior.random_stroll": {
-					"priority": 11
+					"priority": 13
 				},
 				"minecraft:behavior.random_look_around": {
-					"priority": 12
+					"priority": 14
 				}
 			},
 			"rift:tamed_standing": {
@@ -744,7 +902,7 @@
 				"minecraft:behavior.follow_owner": {
 					"start_distance": 8,
 					"stop_distance": 40,
-					"priority": 9
+					"priority": 11
 				}
 			},
 			"rift:sitting": {
@@ -764,12 +922,12 @@
 					"priority": 1
 				},
 				"minecraft:behavior.random_stroll": {
-					"priority": 11
+					"priority": 13
 				}
 			},
 			"rift:assist_behavior": {
 				"minecraft:behavior.owner_hurt_by_target": {
-					"priority": 2,
+					"priority": 6,
 					"entity_types": [
 						{
 							"filters": {
@@ -782,7 +940,7 @@
 					]
 				},
 				"minecraft:behavior.owner_hurt_target": {
-					"priority": 3,
+					"priority": 5,
 					"entity_types": [
 						{
 							"filters": {
@@ -797,30 +955,20 @@
 			},
 			"rift:neutral_behavior": {
 				"minecraft:behavior.hurt_by_target": {
-					"priority": 4,
+					"priority": 6,
 					"entity_types": {
 						"filters": {
-							"all_of": [
-								{
-									"test": "is_family",
-									"subject": "other",
-									"operator": "!=",
-									"value": "forcedAttack"
-								},
-								{
-									"test": "has_component",
-									"subject": "self",
-									"operator": "!=",
-									"value": "minecraft:is_baby"
-								}
-							]
+							"test": "has_component",
+							"subject": "self",
+							"operator": "!=",
+							"value": "minecraft:is_baby"
 						}
 					}
 				}
 			},
 			"rift:aggressive_behavior": {
 				"minecraft:behavior.nearest_attackable_target": {
-					"priority": 5,
+					"priority": 7,
 					"within_radius": 32.0,
 					"must_see": true,
 					"entity_types": [
@@ -857,23 +1005,13 @@
 					]
 				},
 				"minecraft:behavior.hurt_by_target": {
-					"priority": 4,
+					"priority": 6,
 					"entity_types": {
 						"filters": {
-							"all_of": [
-								{
-									"test": "is_family",
-									"subject": "other",
-									"operator": "!=",
-									"value": "forcedAttack"
-								},
-								{
-									"test": "has_component",
-									"subject": "self",
-									"operator": "!=",
-									"value": "minecraft:is_baby"
-								}
-							]
+							"test": "has_component",
+							"subject": "self",
+							"operator": "!=",
+							"value": "minecraft:is_baby"
 						}
 					}
 				}

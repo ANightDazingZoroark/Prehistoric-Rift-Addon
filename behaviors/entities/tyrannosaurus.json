@@ -170,7 +170,88 @@
 					}
 				},
 				"minecraft:behavior.hurt_by_target": {
-					"priority": 2
+					"priority": 4,
+					"entity_types": {
+						"filters": {
+							"all_of": [
+								{
+									"test": "has_equipment",
+									"subject": "other",
+									"domain": "hand",
+									"operator": "!=",
+									"value": "minecraft:torch"
+								},
+								{
+									"test": "has_equipment",
+									"subject": "other",
+									"domain": "hand",
+									"operator": "!=",
+									"value": "minecraft:soul_torch"
+								}
+							]
+						}
+					}
+				},
+				"minecraft:behavior.avoid_block": {
+					"priority": 3,
+					"tick_interval": 5,
+					"search_range": 12,
+					"search_height": 4,
+					"walk_speed_modifier": 1.2,
+					"sprint_speed_modifier": 1.2,
+					"target_selection_method": "nearest",
+					"target_blocks": [
+						"minecraft:fire",
+						"minecraft:soul_fire",
+						"minecraft:item.campfire",
+						"minecraft:item.soul_campfire",
+					  	"minecraft:torch",
+					  	"minecraft:soul_torch"
+					]
+				},
+				"minecraft:behavior.avoid_mob_type": {
+					"priority": 2,
+					"entity_types": [
+						{
+							"filters": {
+								"any_of": [
+									{
+										"test": "is_family",
+										"value": "parasaurScary",
+										"subject": "other"
+									},
+									{
+										"all_of": [
+											{
+												"test": "is_family",
+												"value": "player",
+												"subject": "other"
+											},
+											{
+												"any_of": [
+													{
+														"test": "has_equipment",
+														"subject": "other",
+														"domain": "hand",
+														"value": "minecraft:torch"
+													},
+													{
+														"test": "has_equipment",
+														"subject": "other",
+														"domain": "hand",
+														"value": "minecraft:soul_torch"
+													}
+												]
+											}
+										]
+									}
+								]
+							},
+							"max_dist": 16,
+							"walk_speed_multiplier": 1.2,
+							"sprint_speed_multiplier": 1.2
+					  	}
+					]
 				},
 				"minecraft:despawn": {
 					"despawn_from_distance": {}
@@ -264,7 +345,7 @@
 					"despawn_from_distance": {}
 				},
 				"minecraft:behavior.hurt_by_target": {
-					"priority": 2
+					"priority": 4
 				},
 				"minecraft:shareables": {
 					"all_items_max_amount": 1,
@@ -357,14 +438,14 @@
 				  	]
 				},
 				"minecraft:behavior.pickup_items": {
-					"priority": 11,
+					"priority": 13,
 					"max_dist": 32,
 					"goal_radius": 2,
 					"speed_multiplier": 1,
 					"track_target": true
 				},
 				"minecraft:behavior.eat_carried_item": {
-					"priority": 12,
+					"priority": 14,
 					"delay_before_eating": 0
 				}
 			},
@@ -542,7 +623,7 @@
 					}
 				},
 				"minecraft:behavior.nearest_attackable_target": {
-					"priority": 4,
+					"priority": 6,
 					"reselect_targets": true,
 					"within_radius": 48.0,
 					"must_see": true,
@@ -606,7 +687,7 @@
 					}
 				},
 				"minecraft:behavior.nearest_attackable_target": {
-					"priority": 4,
+					"priority": 6,
 					"must_see": true,
 					"within_radius": 48.0,
 					"persist_time": 25,
@@ -722,7 +803,7 @@
 					}
 				},
 				"minecraft:behavior.nearest_attackable_target": {
-					"priority": 4,
+					"priority": 6,
 					"must_see": true,
 					"within_radius": 48.0,
 					"persist_time": 25,
@@ -767,7 +848,7 @@
 			},
 			"rift:aggravating_horn_attack": {
 				"minecraft:behavior.nearest_attackable_target": {
-					"priority": 4,
+					"priority": 6,
 					"must_see": true,
 					"within_radius": 48.0,
 					"persist_time": 25,
@@ -884,7 +965,7 @@
 			},
 			"rift:temptable": {
 				"minecraft:behavior.tempt": {
-					"priority": 9,
+					"priority": 11,
 					"items": [
 						"minecraft:beef",
 						"minecraft:cooked_beef",
@@ -909,10 +990,10 @@
 			},
 			"rift:wild_standing": {
 				"minecraft:behavior.random_stroll": {
-					"priority": 13
+					"priority": 15
 				},
 				"minecraft:behavior.random_look_around": {
-					"priority": 14
+					"priority": 16
 				}
 			},
 			"rift:tamed_standing": {
@@ -920,7 +1001,7 @@
 					"priority": 1
 				},
 				"minecraft:behavior.follow_owner": {
-					"priority": 10
+					"priority": 12
 				}
 			},
 			"rift:sitting": {
@@ -940,25 +1021,25 @@
 					"priority": 1
 				},
 				"minecraft:behavior.random_stroll": {
-					"priority": 13
+					"priority": 15
 				}
 			},
 			"rift:assist_behavior": {
 				"minecraft:behavior.owner_hurt_by_target": {
-					"priority": 5
+					"priority": 7
 				},
 				"minecraft:behavior.owner_hurt_target": {
-					"priority": 6
+					"priority": 8
 				}
 			},
 			"rift:neutral_behavior": {
 				"minecraft:behavior.hurt_by_target": {
-					"priority": 2
+					"priority": 4
 				}
 			},
 			"rift:aggressive_behavior": {
 				"minecraft:behavior.nearest_attackable_target": {
-					"priority": 4,
+					"priority": 6,
 					"must_see": true,
 					"within_radius": 48.0,
 					"persist_time": 25,
@@ -996,7 +1077,7 @@
 					]
 				},
 				"minecraft:behavior.hurt_by_target": {
-					"priority": 2
+					"priority": 4
 				}
 			},
 			"rift:variant_zero": {
@@ -1127,7 +1208,7 @@
 			},
 			"rift:can_attack": {
 				"minecraft:behavior.delayed_attack": {
-					"priority": 7,
+					"priority": 9,
 					"attack_duration": 0.5,
 					"hit_delay_pct": 1,
 					"track_target": true,
@@ -1140,13 +1221,13 @@
 					"max": 160
 				},
 				"minecraft:behavior.hurt_by_target": {
-					"priority": 2
+					"priority": 4
 				},
 				"minecraft:home": {}
 			},
 			"rift:tyrannosaurus_nest_dweller_sleeping": {
 				"minecraft:behavior.nap": {
-					"priority": 3,
+					"priority": 5,
 					"can_nap_filters": {
 						"all_of": [
 							{
@@ -1174,7 +1255,7 @@
 			},
 			"rift:tyrannosaurus_nest_dweller_awake": {
                 "minecraft:behavior.go_home": {
-                    "priority": 8,
+                    "priority": 10,
                     "goal_radius": 1.2,
                     "on_home": {
                         "event": "rift:go_back_home",
