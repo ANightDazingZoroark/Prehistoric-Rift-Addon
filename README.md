@@ -12,6 +12,7 @@ The following assets are excempt from the Creative Commons Zero v1.0 Universal L
 * Vivek (various tribute items, new exotic meats, new command staff)
 * Professor Squiggles (Utahraptor Claw, Harvest Staff, various journal drawings)
 * Koda Soda (apatosaurus platform, various journal drawings)
+* GabTheGabsterTNT (textures for the firearms and their ammunition)
 * Ducky (temporary stone and ice blocks)
 * The Gaming Baryonyx (Old Raw Dodo Meat textures, various journal drawings)
 * DTRaptor (Old Command Staff, old exotic meats)
