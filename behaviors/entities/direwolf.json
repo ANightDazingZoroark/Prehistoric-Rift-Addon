@@ -186,7 +186,7 @@
 					"value": 0.25
 				},
 				"minecraft:behavior.follow_parent": {
-					"priority": 16
+					"priority": 17
 				},
 				"minecraft:tameable": {
 					"probability": 0.25,
@@ -216,14 +216,60 @@
 						]
 					}
 				},
+				"minecraft:behavior.avoid_block": {
+					"priority": 4,
+					"tick_interval": 5,
+					"search_range": 12,
+					"search_height": 4,
+					"walk_speed_modifier": 1.2,
+					"sprint_speed_modifier": 1.2,
+					"target_selection_method": "nearest",
+					"target_blocks": [
+						"minecraft:fire",
+						"minecraft:soul_fire",
+						"minecraft:item.campfire",
+						"minecraft:item.soul_campfire",
+					  	"minecraft:torch",
+					  	"minecraft:soul_torch"
+					]
+				},
 				"minecraft:behavior.avoid_mob_type": {
 					"priority": 3,
 					"entity_types": [
 						{
 							"filters": {
-								"test": "is_family",
-								"value": "parasaurScary",
-								"subject": "other"
+								"any_of": [
+									{
+										"test": "is_family",
+										"value": "parasaurScary",
+										"subject": "other"
+									},
+									{
+										"all_of": [
+											{
+												"test": "is_family",
+												"value": "player",
+												"subject": "other"
+											},
+											{
+												"any_of": [
+													{
+														"test": "has_equipment",
+														"subject": "other",
+														"domain": "hand",
+														"value": "minecraft:torch"
+													},
+													{
+														"test": "has_equipment",
+														"subject": "other",
+														"domain": "hand",
+														"value": "minecraft:soul_torch"
+													}
+												]
+											}
+										]
+									}
+								]
 							},
 							"max_flee": 5,
 							"max_dist": 35,
@@ -233,7 +279,27 @@
 					]
 				},
 				"minecraft:behavior.hurt_by_target": {
-					"priority": 6
+					"priority": 7,
+					"entity_types": {
+						"filters": {
+							"all_of": [
+								{
+									"test": "has_equipment",
+									"subject": "other",
+									"domain": "hand",
+									"operator": "!=",
+									"value": "minecraft:torch"
+								},
+								{
+									"test": "has_equipment",
+									"subject": "other",
+									"domain": "hand",
+									"operator": "!=",
+									"value": "minecraft:soul_torch"
+								}
+							]
+						}
+					}
 				},
 				"minecraft:despawn": {
 					"despawn_from_distance": {}
@@ -337,14 +403,60 @@
                         ]
                     }
 				},
+				"minecraft:behavior.avoid_block": {
+					"priority": 4,
+					"tick_interval": 5,
+					"search_range": 12,
+					"search_height": 4,
+					"walk_speed_modifier": 1.2,
+					"sprint_speed_modifier": 1.2,
+					"target_selection_method": "nearest",
+					"target_blocks": [
+						"minecraft:fire",
+						"minecraft:soul_fire",
+						"minecraft:item.campfire",
+						"minecraft:item.soul_campfire",
+					  	"minecraft:torch",
+					  	"minecraft:soul_torch"
+					]
+				},
 				"minecraft:behavior.avoid_mob_type": {
 					"priority": 3,
 					"entity_types": [
 						{
 							"filters": {
-								"test": "is_family",
-								"value": "parasaurScary",
-								"subject": "other"
+								"any_of": [
+									{
+										"test": "is_family",
+										"value": "parasaurScary",
+										"subject": "other"
+									},
+									{
+										"all_of": [
+											{
+												"test": "is_family",
+												"value": "player",
+												"subject": "other"
+											},
+											{
+												"any_of": [
+													{
+														"test": "has_equipment",
+														"subject": "other",
+														"domain": "hand",
+														"value": "minecraft:torch"
+													},
+													{
+														"test": "has_equipment",
+														"subject": "other",
+														"domain": "hand",
+														"value": "minecraft:soul_torch"
+													}
+												]
+											}
+										]
+									}
+								]
 							},
 							"max_dist": 12,
 							"must_see": true,
@@ -354,7 +466,27 @@
 					]
 				},
 				"minecraft:behavior.hurt_by_target": {
-					"priority": 6
+					"priority": 7,
+					"entity_types": {
+						"filters": {
+							"all_of": [
+								{
+									"test": "has_equipment",
+									"subject": "other",
+									"domain": "hand",
+									"operator": "!=",
+									"value": "minecraft:torch"
+								},
+								{
+									"test": "has_equipment",
+									"subject": "other",
+									"domain": "hand",
+									"operator": "!=",
+									"value": "minecraft:soul_torch"
+								}
+							]
+						}
+					}
 				},
 				"minecraft:despawn": {
 					"despawn_from_distance": {}
@@ -445,14 +577,14 @@
 				  	]
 				},
 				"minecraft:behavior.pickup_items": {
-					"priority": 14,
+					"priority": 15,
 					"max_dist": 32,
 					"goal_radius": 2,
 					"speed_multiplier": 1,
 					"track_target": true
 				},
 				"minecraft:behavior.eat_carried_item": {
-					"priority": 15,
+					"priority": 16,
 					"delay_before_eating": 0
 				}
             },
@@ -494,7 +626,7 @@
                     }
 				},
 				"minecraft:behavior.hurt_by_target": {
-					"priority": 6
+					"priority": 7
 				},
 				"minecraft:despawn": {
 					"despawn_from_distance": {}
@@ -585,20 +717,20 @@
 				  	]
 				},
 				"minecraft:behavior.pickup_items": {
-					"priority": 14,
+					"priority": 15,
 					"max_dist": 32,
 					"goal_radius": 2,
 					"speed_multiplier": 1,
 					"track_target": true
 				},
 				"minecraft:behavior.eat_carried_item": {
-					"priority": 15,
+					"priority": 16,
 					"delay_before_eating": 0
 				}
 			},
 			"rift:normal_mode_attack": {
 				"minecraft:behavior.melee_attack": {
-					"priority": 11,
+					"priority": 12,
 					"track_target": true,
 					"reach_multiplier": 2.5,
 					"speed_multiplier": 1.5
@@ -615,7 +747,7 @@
                     "value": 0
                 },
 				"minecraft:behavior.delayed_attack": {
-					"priority": 10,
+					"priority": 11,
 					"attack_duration": 0.76,
 					"hit_delay_pct": 0.68,
 					"track_target": true,
@@ -630,7 +762,7 @@
                     "value": 1
                 },
 				"minecraft:behavior.delayed_attack": {
-					"priority": 10,
+					"priority": 11,
 					"attack_duration": 0.72,
 					"hit_delay_pct": 0.55,
 					"track_target": true,
@@ -639,7 +771,7 @@
 			},
 			"rift:can_pounce_attack_werewolf": {
 				"minecraft:behavior.stalk_and_pounce_on_target": {
-					"priority": 8,
+					"priority": 9,
 					"stalk_speed": 1.2,
 					"max_stalk_dist": 16,
 					"leap_height": 0.9,
@@ -651,30 +783,13 @@
 			},
 			"rift:can_breath_werewolf": {
 				"minecraft:behavior.sonic_boom": {
-					"priority": 9,
+					"priority": 10,
 					"duration": 3.0,
 					"speed_multiplier": 1.2,
 					"attack_damage": 0,
 					"attack_range_horizontal": 15,
 					"attack_range_vertical": 20,
 					"attack_cooldown": 10,
-					"knockback_vertical_strength": 0.5,
-					"knockback_horizontal_strength": 2.5,
-					"knockback_height_cap": 0.5,
-					"duration_until_attack_sound": 1.7,
-					"charge_sound": "sonic_charge",
-					"attack_sound": "sonic_boom"
-				}
-			},
-			"rift:forced_breath_werewolf": {
-				"minecraft:behavior.sonic_boom": {
-					"priority": 0,
-					"duration": 3.0,
-					"speed_multiplier": 1.2,
-					"attack_damage": 10,
-					"attack_range_horizontal": 15,
-					"attack_range_vertical": 20,
-					"attack_cooldown": 0,
 					"knockback_vertical_strength": 0.5,
 					"knockback_horizontal_strength": 2.5,
 					"knockback_height_cap": 0.5,
@@ -716,7 +831,7 @@
 			},
 			"rift:default_targets_normal": {
 				"minecraft:behavior.nearest_attackable_target": {
-					"priority": 7,
+					"priority": 8,
 					"within_radius": 32.0,
 					"entity_types": [
 						{
@@ -762,12 +877,54 @@
 									{
 										"test": "has_equipment",
 										"subject": "other",
-										"operator": "!=",
 										"domain": "hand",
+										"operator": "!=",
+										"value": "minecraft:torch"
+									},
+									{
+										"test": "has_equipment",
+										"subject": "other",
+										"domain": "hand",
+										"operator": "!=",
+										"value": "minecraft:soul_torch"
+									},
+									{
+										"test": "has_equipment",
+										"subject": "other",
+										"domain": "hand",
+										"operator": "!=",
 										"value": "rift:flesh_treat"
 									},
 									{
 										"test": "is_riding",
+										"subject": "other",
+										"value": false
+									},
+									{
+										"test": "is_sneaking",
+										"subject": "other",
+										"value": false
+									}
+								]
+							},
+							"max_dist": 48
+						},
+						{
+							"filters": {
+								"all_of": [
+									{
+										"test": "is_family",
+										"subject": "other",
+										"value": "player"
+									},
+									{
+										"test": "has_equipment",
+										"subject": "other",
+										"domain": "hand",
+										"value": "rift:flesh_treat"
+									},
+									{
+										"test": "is_sneaking",
 										"subject": "other",
 										"value": false
 									}
@@ -821,7 +978,7 @@
 			},
 			"rift:default_targets_werewolf": {
 				"minecraft:behavior.nearest_attackable_target": {
-					"priority": 7,
+					"priority": 8,
 					"within_radius": 48.0,
 					"entity_types": [
 						{
@@ -870,13 +1027,6 @@
 										"value": "player"
 									},
 									{
-										"test": "has_equipment",
-										"subject": "other",
-										"operator": "!=",
-										"domain": "hand",
-										"value": "rift:flesh_treat"
-									},
-									{
 										"test": "is_riding",
 										"subject": "other",
 										"value": false
@@ -911,9 +1061,65 @@
 					]
 				}
 			},
+			"rift:direwolf_adult_werewolf_angry_because_of_fire": {
+				"minecraft:timer": {
+					"time": 15,
+					"time_down_event": {
+						"event": "rift:stop_being_angry_because_of_fire",
+						"target": "self"
+					}
+				},
+				"minecraft:behavior.nearest_attackable_target": {
+					"priority": 8,
+					"within_radius": 48.0,
+					"entity_types": [
+						{
+							"filters": {
+								"all_of": [
+									{
+										"test": "is_family",
+										"subject": "other",
+										"value": "mob"
+									},
+									{
+										"test": "is_family",
+										"subject": "other",
+										"operator": "!=",
+										"value": "direwolf"
+									},
+									{
+										"test": "is_family",
+										"subject": "other",
+										"operator": "!=",
+										"value": "wolf"
+									}
+								]
+							},
+							"max_dist": 64
+						},
+						{
+							"filters": {
+								"all_of": [
+									{
+										"test": "is_family",
+										"subject": "other",
+										"value": "player"
+									},
+									{
+										"test": "is_riding",
+										"subject": "other",
+										"value": false
+									}
+								]
+							},
+							"max_dist": 64
+						}
+					]
+				}
+			},
 			"rift:aggravating_horn_attack": {
 				"minecraft:behavior.nearest_attackable_target": {
-					"priority": 7,
+					"priority": 8,
 					"within_radius": 48.0,
 					"entity_types": [
 						{
@@ -1400,7 +1606,7 @@
 			},
 			"rift:temptable": {
                 "minecraft:behavior.tempt": {
-                    "priority": 12,
+                    "priority": 13,
 					"within_radius": 16,
                     "items": [
                         "minecraft:beef",
@@ -1425,10 +1631,10 @@
 			},
 			"rift:wild_standing": {
                 "minecraft:behavior.random_stroll": {
-					"priority": 17
+					"priority": 18
 				},
 				"minecraft:behavior.random_look_around": {
-					"priority": 18
+					"priority": 19
 				}
 			},
 			"rift:tamed_standing": {
@@ -1436,7 +1642,7 @@
 					"priority": 2
 				},
 				"minecraft:behavior.follow_owner": {
-					"priority": 13
+					"priority": 14
 				}
 			},
 			"rift:wandering": {
@@ -1444,25 +1650,25 @@
 					"priority": 2
 				},
                 "minecraft:behavior.random_stroll": {
-					"priority": 17
+					"priority": 18
 				}
 			},
 			"rift:assist_behavior": {
 				"minecraft:behavior.owner_hurt_by_target": {
-					"priority": 4
+					"priority": 5
 				},
 				"minecraft:behavior.owner_hurt_target": {
-					"priority": 5
+					"priority": 6
 				}
 			},
 			"rift:neutral_behavior": {
 				"minecraft:behavior.hurt_by_target": {
-					"priority": 6
+					"priority": 7
 				}
 			},
 			"rift:aggressive_behavior": {
 				"minecraft:behavior.nearest_attackable_target": {
-					"priority": 7,
+					"priority": 8,
 					"within_radius": 48.0,
 					"entity_types": [
 						{
@@ -1498,7 +1704,7 @@
 					]
 				},
 				"minecraft:behavior.hurt_by_target": {
-					"priority": 6
+					"priority": 7
 				}
 			},
 			"rift:direwolf_tamed_pounceable": {
@@ -4336,7 +4542,13 @@
 						"remove": {
 							"component_groups": [
 								"rift:direwolf_adult_werewolf_wild",
-								"rift:default_targets_werewolf"
+								"rift:default_targets_werewolf",
+								"rift:direwolf_adult_werewolf_angry_because_of_fire"
+							]
+						},
+						"run_command": {
+							"command": [
+								"tag @s remove angeredByFire"
 							]
 						}
 					},
@@ -4561,7 +4773,13 @@
 						"rift:can_pounce_attack_werewolf",
 						"rift:can_breath_werewolf",
 						"rift:direwolf_adult_werewolf_wild",
-						"rift:default_targets_werewolf"
+						"rift:default_targets_werewolf",
+						"rift:direwolf_adult_werewolf_angry_because_of_fire"
+					]
+				},
+				"run_command": {
+					"command": [
+						"tag @s remove angeredByFire"
 					]
 				}
 			},
@@ -4587,7 +4805,13 @@
 						"rift:can_pounce_attack_werewolf",
 						"rift:can_breath_werewolf",
 						"rift:direwolf_adult_werewolf_wild",
-						"rift:default_targets_werewolf"
+						"rift:default_targets_werewolf",
+						"rift:direwolf_adult_werewolf_angry_because_of_fire"
+					]
+				},
+				"run_command": {
+					"command": [
+						"tag @s remove angeredByFire"
 					]
 				}
 			},
@@ -4613,7 +4837,13 @@
 						"rift:can_pounce_attack_werewolf",
 						"rift:can_breath_werewolf",
 						"rift:direwolf_adult_werewolf_wild",
-						"rift:default_targets_werewolf"
+						"rift:default_targets_werewolf",
+						"rift:direwolf_adult_werewolf_angry_because_of_fire"
+					]
+				},
+				"run_command": {
+					"command": [
+						"tag @s remove angeredByFire"
 					]
 				}
 			},
@@ -4639,7 +4869,13 @@
 						"rift:can_pounce_attack_werewolf",
 						"rift:can_breath_werewolf",
 						"rift:direwolf_adult_werewolf_wild",
-						"rift:default_targets_werewolf"
+						"rift:default_targets_werewolf",
+						"rift:direwolf_adult_werewolf_angry_because_of_fire"
+					]
+				},
+				"run_command": {
+					"command": [
+						"tag @s remove angeredByFire"
 					]
 				}
 			},
@@ -5398,6 +5634,41 @@
 					"command": [
 						"effect @s speed 0",
 						"effect @s strength 0"
+					]
+				}
+			},
+			"rift:angered_by_fire": {
+				"add": {
+					"component_groups": [
+						"rift:direwolf_adult_werewolf_angry_because_of_fire"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:default_targets_werewolf",
+						"rift:default_targets_normal"
+					]
+				},
+				"run_command": {
+					"command": [
+						"tag @s add angeredByFire"
+					]
+				}
+			},
+			"rift:stop_being_angry_because_of_fire": {
+				"add": {
+					"component_groups": [
+						"rift:default_targets_werewolf"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:direwolf_adult_werewolf_angry_because_of_fire"
+					]
+				},
+				"run_command": {
+					"command": [
+						"tag @s remove angeredByFire"
 					]
 				}
 			},

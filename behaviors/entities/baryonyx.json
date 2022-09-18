@@ -186,7 +186,7 @@
                     "value": 20
                 },
                 "minecraft:behavior.follow_parent": {
-                    "priority": 12
+                    "priority": 13
                 },
                 "minecraft:tameable": {
                     "probability": 0.25,
@@ -225,27 +225,36 @@
                     "value": 60,
                     "max": 60
                 },
-				"minecraft:behavior.avoid_mob_type": {
-					"priority": 2,
-					"entity_types": [
-						{
-							"filters": {
-						  		"test": "is_family",
-						  		"value": "parasaurScary",
-						  		"subject": "other"
-							},
-							"max_dist": 12,
-							"must_see": true,
-							"walk_speed_multiplier": 1.2,
-							"sprint_speed_multiplier": 1.2
-					  	}
-					]
-				},
 				"minecraft:despawn": {
 					"despawn_from_distance": {}
 				},
 				"minecraft:behavior.hurt_by_target": {
-					"priority": 3
+					"priority": 4,
+					"entity_types": {
+						"filters": {
+							"all_of": [
+								{
+									"test": "in_water",
+									"subject": "other",
+									"value": false
+								},
+								{
+									"test": "has_equipment",
+									"subject": "other",
+									"domain": "hand",
+									"operator": "!=",
+									"value": "minecraft:torch"
+								},
+								{
+									"test": "has_equipment",
+									"subject": "other",
+									"domain": "hand",
+									"operator": "!=",
+									"value": "minecraft:soul_torch"
+								}
+							]
+						}
+					}
 				},
 				"minecraft:shareables": {
 					"all_items_max_amount": 1,
@@ -368,14 +377,14 @@
 				  	]
 				},
 				"minecraft:behavior.pickup_items": {
-					"priority": 8,
+					"priority": 9,
 					"max_dist": 32,
 					"goal_radius": 2,
 					"speed_multiplier": 1,
 					"track_target": true
 				},
 				"minecraft:behavior.eat_carried_item": {
-					"priority": 9,
+					"priority": 10,
 					"delay_before_eating": 0
 				}
             },
@@ -420,7 +429,7 @@
             },
             "rift:default_targets": {
 				"minecraft:behavior.nearest_attackable_target": {
-					"priority": 4,
+					"priority": 5,
 					"within_radius": 32.0,
 					"must_see": true,
 					"entity_types": [
@@ -463,31 +472,27 @@
 										"subject": "other",
 										"value": "player"
 									},
-                                    {
-                                        "test": "in_water", 
-                                        "subject": "other", 
-                                        "value": true
-                                    },
+									{
+										"test": "in_water",
+										"subject": "other",
+										"value": true
+									},
 									{
 										"test": "has_equipment",
 										"subject": "other",
-										"operator": "!=",
 										"domain": "hand",
+										"operator": "!=",
 										"value": "rift:fish_treat"
 									},
 									{
-										"any_of": [
-											{
-												"test": "is_riding",
-												"subject": "other",
-												"value": false
-											},
-											{
-												"test": "trusts",
-												"subject": "other",
-												"value": false
-											}
-										]
+										"test": "is_riding",
+										"subject": "other",
+										"value": false
+									},
+									{
+										"test": "is_sneaking",
+										"subject": "other",
+										"value": false
 									}
 								]
 							},
@@ -578,7 +583,7 @@
 			},
             "rift:the_flood_targets": {
 				"minecraft:behavior.nearest_attackable_target": {
-					"priority": 4,
+					"priority": 5,
 					"within_radius": 32.0,
 					"must_see": true,
 					"entity_types": [
@@ -613,25 +618,26 @@
 										"value": "player"
 									},
 									{
+										"test": "in_water",
+										"subject": "other",
+										"value": true
+									},
+									{
 										"test": "has_equipment",
 										"subject": "other",
-										"operator": "!=",
 										"domain": "hand",
+										"operator": "!=",
 										"value": "rift:fish_treat"
 									},
 									{
-										"any_of": [
-											{
-												"test": "is_riding",
-												"subject": "other",
-												"value": false
-											},
-											{
-												"test": "trusts",
-												"subject": "other",
-												"value": false
-											}
-										]
+										"test": "is_riding",
+										"subject": "other",
+										"value": false
+									},
+									{
+										"test": "is_sneaking",
+										"subject": "other",
+										"value": false
 									}
 								]
 							},
@@ -693,7 +699,7 @@
 			},
 			"rift:aggravating_horn_attack": {
 				"minecraft:behavior.nearest_attackable_target": {
-				  	"priority": 4,
+				  	"priority": 5,
 					"within_radius": 32.0,
 					"must_see": true,
 				  	"entity_types": [
@@ -759,9 +765,77 @@
             },
 			"rift:baryonyx_land_dweller": {
 				"minecraft:behavior.move_to_land": {
-					"priority": 14,
+					"priority": 15,
 					"search_range": 64,
 					"search_height": 5
+				},
+				"minecraft:behavior.avoid_mob_type": {
+					"priority": 2,
+					"entity_types": [
+						{
+							"filters": {
+						  		"test": "is_family",
+						  		"value": "parasaurScary",
+						  		"subject": "other"
+							},
+							"max_dist": 12,
+							"must_see": true,
+							"walk_speed_multiplier": 1.2,
+							"sprint_speed_multiplier": 1.2
+					  	},
+						{
+							"filters": {
+								"all_of": [
+									{
+										"test": "is_family",
+										"value": "player",
+										"subject": "other"
+									},
+									{
+										"test": "in_water",
+										"subject": "other",
+										"value": false
+									},
+									{
+										"any_of": [
+											{
+												"test": "has_equipment",
+												"subject": "other",
+												"domain": "hand",
+												"value": "minecraft:torch"
+											},
+											{
+												"test": "has_equipment",
+												"subject": "other",
+												"domain": "hand",
+												"value": "minecraft:soul_torch"
+											}
+										]
+									}
+								]
+							},
+							"max_dist": 16,
+							"walk_speed_multiplier": 1.2,
+							"sprint_speed_multiplier": 1.2
+					  	}
+					]
+				},
+				"minecraft:behavior.avoid_block": {
+					"priority": 3,
+					"tick_interval": 5,
+					"search_range": 12,
+					"search_height": 4,
+					"walk_speed_modifier": 1.2,
+					"sprint_speed_modifier": 1.2,
+					"target_selection_method": "nearest",
+					"target_blocks": [
+						"minecraft:fire",
+						"minecraft:soul_fire",
+						"minecraft:item.campfire",
+						"minecraft:item.soul_campfire",
+					  	"minecraft:torch",
+					  	"minecraft:soul_torch"
+					]
 				},
 				"minecraft:attack_cooldown": {
 					"attack_cooldown_time": [ 
@@ -776,13 +850,13 @@
 			},
 			"rift:baryonyx_water_dweller": {
                 "minecraft:behavior.random_swim": {
-                    "priority": 15,
+                    "priority": 16,
                     "xz_dist": 20,
                     "y_dist": 2,
                     "speed_multiplier": 0.2
                 },
 				"minecraft:behavior.move_to_water": {
-					"priority": 13,
+					"priority": 14,
 					"search_range": 64,
 					"search_height": 5
 				},
@@ -1073,7 +1147,7 @@
             },
 			"rift:temptable": {
                 "minecraft:behavior.tempt": {
-                    "priority": 10,
+                    "priority": 11,
 					"within_radius": 16,
                     "items": [
                         "minecraft:beef",
@@ -1105,10 +1179,10 @@
 			},
 			"rift:wild_standing": {
 				"minecraft:behavior.random_stroll": {
-					"priority": 16
+					"priority": 17
 				},
 				"minecraft:behavior.random_look_around": {
-					"priority": 17
+					"priority": 18
 				},
 				"minecraft:movement": {
 					"value": 0.25
@@ -1127,7 +1201,7 @@
 				"minecraft:behavior.follow_owner": {
 					"start_distance": 8,
 					"stop_distance": 40,
-					"priority": 11
+					"priority": 12
 				},
 				"minecraft:movement": {
 					"value": 0.25
@@ -1174,7 +1248,7 @@
 					"priority": 1
 				},
 				"minecraft:behavior.random_stroll": {
-					"priority": 16
+					"priority": 17
 				},
 				"minecraft:movement": {
 					"value": 0.25
@@ -1188,15 +1262,15 @@
 			},
 			"rift:assist_behavior": {
 				"minecraft:behavior.owner_hurt_by_target": {
-					"priority": 5
+					"priority": 6
 				},
 				"minecraft:behavior.owner_hurt_target": {
-					"priority": 6
+					"priority": 7
 				}
             },
 			"rift:neutral_behavior": {
 				"minecraft:behavior.hurt_by_target": {
-					"priority": 3,
+					"priority": 4,
 					"entity_types": {
 						"filters": {
 							"test": "has_component",
@@ -1209,7 +1283,7 @@
 			},
 			"rift:aggressive_behavior": {
 				"minecraft:behavior.nearest_attackable_target": {
-				  	"priority": 4,
+				  	"priority": 5,
 					"within_radius": 32.0,
 					"must_see": true,
 				  	"entity_types": [
@@ -1241,7 +1315,7 @@
 				  	]
 				},
 				"minecraft:behavior.hurt_by_target": {
-					"priority": 3,
+					"priority": 4,
 					"entity_types": {
 						"filters": {
 							"test": "has_component",
@@ -1280,7 +1354,7 @@
                     "value": 0
                 },
 				"minecraft:behavior.delayed_attack": {
-					"priority": 7,
+					"priority": 8,
 					"attack_duration": 0.52,
 					"hit_delay_pct": 1,
 					"track_target": true,
@@ -1297,7 +1371,7 @@
                     "value": 1
                 },
 				"minecraft:behavior.melee_attack": {
-					"priority": 7,
+					"priority": 8,
 					"track_target": true,
 					"reach_multiplier": 5
 				}
