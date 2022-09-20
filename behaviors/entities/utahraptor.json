@@ -20,6 +20,15 @@
 					"type": "bool",
 					"default": false
 				},
+                "rift:energy": {
+                    "range": [
+						0,
+						150
+					],
+					"type": "int",
+					"default": 150,
+					"client_sync": true
+                },
                 "rift:tame_state": { //0 for standing, 1 for sitting, 2 for wandering
                     "range": [
 						0,
@@ -49,11 +58,19 @@
 				"contTameTag": "controller.animation.add_tame_tag",
 				"contBabyTag": "controller.animation.add_baby_tag",
 				"contRiddenTag": "controller.animation.add_ridden_tag",
+				"contMovingTag": "controller.animation.add_moving_tag",
 				"contTameState": "controller.animation.manage_tame_state",
+				"contEnergyUsage": "controller.animation.utahraptor_energy_movement_usage",
+				"contWarnLowEnergy": "controller.animation.warn_of_low_energy",
 				"contForcedAttack": "controller.animation.general_forced_attack",
 				"contBehaviorState": "controller.animation.manage_tame_behavior",
 				"contPackBuffed": "controller.animation.utah_pack_buffed",
 				"contPackBuffCountdown": "controller.animation.utah_pack_buff_countdown",
+				"animUseEnergyWhileMoving": "animation.utahraptor_decrease_energy_while_moving",
+				"animEnergyRegenDelay": "animation.regenerate_energy_delay",
+				"animRegenerateEnergy": "animation.utahraptor_regenerate_energy",
+				"animLowOnEnergyEffects": "animation.effects_while_low_on_energy",
+				"animNoEnergyEffects": "animation.effects_while_no_energy",
 				"animEatFromInventoryCooldown": "animation.eat_from_inventory_cooldown",
 				"animForcedAttack": "animation.forced_attack_utahraptor",
 				"animPackBuffed": "animation.pack_buffed",
@@ -67,7 +84,10 @@
 					"contTameTag",
 					"contBabyTag",
 					"contRiddenTag",
+					"contMovingTag",
 					"contTameState",
+					"contEnergyUsage",
+					"contWarnLowEnergy",
 					"contForcedAttack",
 					"contBehaviorState",
 					"contPackBuffed",
@@ -986,7 +1006,12 @@
 				}
             },
 			"rift:utahraptor_tamed": {
-				"minecraft:is_tamed": {}
+				"minecraft:is_tamed": {},
+				"minecraft:leashable": {
+					"soft_distance": 4,
+					"hard_distance": 10,
+					"max_distance": 16
+				}
             },
 			"rift:utahraptor_saddled": {
 				"minecraft:is_saddled": {},
@@ -1369,11 +1394,6 @@
 			"minecraft:breathable": {
 				"total_supply": 15,
 				"suffocate_time": 0
-			},
-			"minecraft:leashable": {
-				"soft_distance": 4,
-				"hard_distance": 10,
-				"max_distance": 16
 			},
 			"minecraft:interact": {
 				"interactions": [
@@ -5308,6 +5328,26 @@
 			"rift:manage_behavior": {
 				"set_property": {
 					"rift:behavior_state": "!query.is_baby ? ((query.property('rift:behavior_state') >= 0 && query.property('rift:behavior_state') <= 2) ? query.property('rift:behavior_state') + 1 : 0) : 3"
+				}
+			},
+			"rift:decrease_energy_while_moving": {
+				"set_property": {
+					"rift:energy": "query.property('rift:energy') >= 5 ? query.property('rift:energy') - 5 : 0"
+				}
+			},
+			"rift:decrease_energy_while_jumping": {
+				"set_property": {
+					"rift:energy": "query.property('rift:energy') >= 30 ? query.property('rift:energy') - 30 : 0"
+				}
+			},
+			"rift:decrease_energy_while_slashing": {
+				"set_property": {
+					"rift:energy": "query.property('rift:energy') >= 3 ? query.property('rift:energy') - 3 : 0"
+				}
+			},
+			"rift:regenerate_energy": {
+				"set_property": {
+					"rift:energy": "query.property('rift:energy') + 5 < 150 ? query.property('rift:energy') + 5 : 150"
 				}
 			},
 			//for potion effects

@@ -154,13 +154,16 @@ function searchGui(source) {
 
 function searchResultsGui(source, searchResults) {
     searchResults = searchResults.map(element => element.charAt(0).toUpperCase() + element.substring(1))
-
+    let newSearchResults = []
     const guiSearchResults = new ActionFormData()
     .title('Search Results')
     .button('Return to Search')
     .button('Return to Index')
     for (let i = 0; i < searchResults.length; i++) {
-        guiSearchResults.button(searchResults[i])
+        if (source.getDynamicProperty('Journal'+searchResults[i]) == true) {
+            guiSearchResults.button(searchResults[i])
+            newSearchResults.push(searchResults[i])
+        }
     }
     guiSearchResults.show(source).then(result => {
         if (result.selection === 0) {
@@ -170,7 +173,7 @@ function searchResultsGui(source, searchResults) {
             mainGui(source)
         }
         if (result.selection >= 2) {
-            eval("guiEntry.gui"+searchResults[result.selection-2]+"Entry.show(source).then(result => {if (result.selection == 0) {mainGui(source)}})")
+            eval("guiEntry.gui"+newSearchResults[result.selection-2]+"Entry.show(source).then(result => {if (result.selection == 0) {mainGui(source)}})")
         }
     })
 }
@@ -383,78 +386,78 @@ world.events.beforeItemUseOn.subscribe(data => {
         switch (data.item.id) {
             case 'rift:tyrannosaurus_arm':
                 data.source.setDynamicProperty('JournalTyrannosaurus', true)
-                data.source.runCommand(`tellraw @s {\"rawtext\":[{\"text\":\"You have unlocked the journal entry for the Tyrannosaurus!\"}]}`)
+                data.source.runCommand(`tellraw @s {\"rawtext\":[{\"text\":\"You have unlocked the journal entry for the Tyrannosaurus! Open your journal to read it!\"}]}`)
                 break
             case 'rift:stegosaurus_plate':
                 data.source.setDynamicProperty('JournalStegosaurus', true)
-                data.source.runCommand(`tellraw @s {\"rawtext\":[{\"text\":\"You have unlocked the journal entry for the Stegosaurus!\"}]}`)
+                data.source.runCommand(`tellraw @s {\"rawtext\":[{\"text\":\"You have unlocked the journal entry for the Stegosaurus! Open your journal to read it!\"}]}`)
                 break
             case 'rift:dodo_beak':
                 data.source.setDynamicProperty('JournalDodo', true)
-                data.source.runCommand(`tellraw @s {\"rawtext\":[{\"text\":\"You have unlocked the journal entry for the Dodo!\"}]}`)
+                data.source.runCommand(`tellraw @s {\"rawtext\":[{\"text\":\"You have unlocked the journal entry for the Dodo! Open your journal to read it!\"}]}`)
                 break
             case 'rift:triceratops_horn':
                 data.source.setDynamicProperty('JournalTriceratops', true)
-                data.source.runCommand(`tellraw @s {\"rawtext\":[{\"text\":\"You have unlocked the journal entry for the Triceratops!\"}]}`)
+                data.source.runCommand(`tellraw @s {\"rawtext\":[{\"text\":\"You have unlocked the journal entry for the Triceratops! Open your journal to read it!\"}]}`)
                 break
             case 'rift:utahraptor_claw':
                 data.source.setDynamicProperty('JournalUtahraptor', true)
-                data.source.runCommand(`tellraw @s {\"rawtext\":[{\"text\":\"You have unlocked the journal entry for the Utahraptor!\"}]}`)
+                data.source.runCommand(`tellraw @s {\"rawtext\":[{\"text\":\"You have unlocked the journal entry for the Utahraptor! Open your journal to read it!\"}]}`)
                 break
             case 'rift:apatosaurus_vertebrae':
                 data.source.setDynamicProperty('JournalApatosaurus', true)
-                data.source.runCommand(`tellraw @s {\"rawtext\":[{\"text\":\"You have unlocked the journal entry for the Apatosaurus!\"}]}`)
+                data.source.runCommand(`tellraw @s {\"rawtext\":[{\"text\":\"You have unlocked the journal entry for the Apatosaurus! Open your journal to read it!\"}]}`)
                 break
             case 'rift:parasaurolophus_horn':
                 data.source.setDynamicProperty('JournalParasaurolophus', true)
-                data.source.runCommand(`tellraw @s {\"rawtext\":[{\"text\":\"You have unlocked the journal entry for the Parasaurolophus!\"}]}`)
+                data.source.runCommand(`tellraw @s {\"rawtext\":[{\"text\":\"You have unlocked the journal entry for the Parasaurolophus! Open your journal to read it!\"}]}`)
                 break
             case 'rift:dimetrodon_sail':
                 data.source.setDynamicProperty('JournalDimetrodon', true)
-                data.source.runCommand(`tellraw @s {\"rawtext\":[{\"text\":\"You have unlocked the journal entry for the Dimetrodon!\"}]}`)
+                data.source.runCommand(`tellraw @s {\"rawtext\":[{\"text\":\"You have unlocked the journal entry for the Dimetrodon! Open your journal to read it!\"}]}`)
                 break
             case 'rift:coelacanth_scales':
                 data.source.setDynamicProperty('JournalCoelacanth', true)
-                data.source.runCommand(`tellraw @s {\"rawtext\":[{\"text\":\"You have unlocked the journal entry for the Coelacanth!\"}]}`)
+                data.source.runCommand(`tellraw @s {\"rawtext\":[{\"text\":\"You have unlocked the journal entry for the Coelacanth! Open your journal to read it!\"}]}`)
                 break
             case 'rift:megapiranha_scales':
                 data.source.setDynamicProperty('JournalMegapiranha', true)
-                data.source.runCommand(`tellraw @s {\"rawtext\":[{\"text\":\"You have unlocked the journal entry for the Megapiranha!\"}]}`)
+                data.source.runCommand(`tellraw @s {\"rawtext\":[{\"text\":\"You have unlocked the journal entry for the Megapiranha! Open your journal to read it!\"}]}`)
                 break
             case 'rift:sarcosuchus_snout':
                 data.source.setDynamicProperty('JournalSarcosuchus', true)
-                data.source.runCommand(`tellraw @s {\"rawtext\":[{\"text\":\"You have unlocked the journal entry for the Sarcosuchus!\"}]}`)
+                data.source.runCommand(`tellraw @s {\"rawtext\":[{\"text\":\"You have unlocked the journal entry for the Sarcosuchus! Open your journal to read it!\"}]}`)
                 break
             case 'rift:anomalocaris_appendage':
                 data.source.setDynamicProperty('JournalAnomalocaris', true)
-                data.source.runCommand(`tellraw @s {\"rawtext\":[{\"text\":\"You have unlocked the journal entry for the Anomalocaris!\"}]}`)
+                data.source.runCommand(`tellraw @s {\"rawtext\":[{\"text\":\"You have unlocked the journal entry for the Anomalocaris! Open your journal to read it!\"}]}`)
                 break
             case 'rift:saruophaganax_eye':
                 data.source.setDynamicProperty('JournalSaurophaganax', true)
-                data.source.runCommand(`tellraw @s {\"rawtext\":[{\"text\":\"You have unlocked the journal entry for the Saurophaganax!\"}]}`)
+                data.source.runCommand(`tellraw @s {\"rawtext\":[{\"text\":\"You have unlocked the journal entry for the Saurophaganax! Open your journal to read it!\"}]}`)
                 break
             case 'rift:direwolf_tail':
                 data.source.setDynamicProperty('JournalDirewolf', true)
-                data.source.runCommand(`tellraw @s {\"rawtext\":[{\"text\":\"You have unlocked the journal entry for the Direwolf!\"}]}`)
+                data.source.runCommand(`tellraw @s {\"rawtext\":[{\"text\":\"You have unlocked the journal entry for the Direwolf! Open your journal to read it!\"}]}`)
                 break
             case 'rift:megaloceros_antler':
                 data.source.setDynamicProperty('JournalMegaloceros', true)
-                data.source.runCommand(`tellraw @s {\"rawtext\":[{\"text\":\"You have unlocked the journal entry for the Megaloceros!\"}]}`)
+                data.source.runCommand(`tellraw @s {\"rawtext\":[{\"text\":\"You have unlocked the journal entry for the Megaloceros! Open your journal to read it!\"}]}`)
                 break
             case 'rift:baryonyx_claw':
                 data.source.setDynamicProperty('JournalBaryonyx', true)
-                data.source.runCommand(`tellraw @s {\"rawtext\":[{\"text\":\"You have unlocked the journal entry for the Baryonyx!\"}]}`)
+                data.source.runCommand(`tellraw @s {\"rawtext\":[{\"text\":\"You have unlocked the journal entry for the Baryonyx! Open your journal to read it!\"}]}`)
                 break
             case 'minecraft:diamond_sword':
                 data.source.setDynamicProperty('JournalHumans', true)
-                data.source.runCommand(`tellraw @s {\"rawtext\":[{\"text\":\"You have unlocked the journal entry for Humans!\"}]}`)
+                data.source.runCommand(`tellraw @s {\"rawtext\":[{\"text\":\"You have unlocked the journal entry for Humans! Open your journal to read it!\"}]}`)
                 break
             case 'minecraft:totem_of_undying':
                 data.source.setDynamicProperty('JournalIllagers', true)
-                data.source.runCommand(`tellraw @s {\"rawtext\":[{\"text\":\"You have unlocked the journal entry for Illagers!\"}]}`)
+                data.source.runCommand(`tellraw @s {\"rawtext\":[{\"text\":\"You have unlocked the journal entry for Illagers! Open your journal to read it!\"}]}`)
             case 'minecraft:emerald':
                 data.source.setDynamicProperty('JournalVillagers', true)
-                data.source.runCommand(`tellraw @s {\"rawtext\":[{\"text\":\"You have unlocked the journal entry for Villagers!\"}]}`)
+                data.source.runCommand(`tellraw @s {\"rawtext\":[{\"text\":\"You have unlocked the journal entry for Villagers! Open your journal to read it!\"}]}`)
         }
         world.getDimension('overworld').getBlock(data.blockLocation).setPermutation(MinecraftBlockTypes.get('rift:journal_enscriber').createDefaultBlockPermutation().clone())
     }

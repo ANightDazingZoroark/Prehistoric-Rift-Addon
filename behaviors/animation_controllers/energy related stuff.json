@@ -1,0 +1,228 @@
+{
+	"format_version": "1.10.0",
+	"animation_controllers": {
+        //for players
+        "controller.animation.energy_bar": {
+            "initial_state": "default",
+            "states": {
+                "default": {
+                    "animations": [
+                        {
+                            "animEnergyBarEmpty": "query.is_riding && (query.get_ride -> query.property('rift:energy'))/150 == 0"
+                        },
+                        {
+                            "animEnergyBarTen": "query.is_riding && (query.get_ride -> query.property('rift:energy'))/150 > 0 && (query.get_ride -> query.property('rift:energy'))/150 <= 0.10"
+                        },
+                        {
+                            "animEnergyBarTwenty": "query.is_riding && (query.get_ride -> query.property('rift:energy'))/150 > 0.10 && (query.get_ride -> query.property('rift:energy'))/150 <= 0.20"
+                        },
+                        {
+                            "animEnergyBarThirty": "query.is_riding && (query.get_ride -> query.property('rift:energy'))/150 > 0.20 && (query.get_ride -> query.property('rift:energy'))/150 <= 0.30"
+                        },
+                        {
+                            "animEnergyBarForty": "query.is_riding && (query.get_ride -> query.property('rift:energy'))/150 > 0.30 && (query.get_ride -> query.property('rift:energy'))/150 <= 0.40"
+                        },
+                        {
+                            "animEnergyBarFifty": "query.is_riding && (query.get_ride -> query.property('rift:energy'))/150 > 0.40 && (query.get_ride -> query.property('rift:energy'))/150 <= 0.50"
+                        },
+                        {
+                            "animEnergyBarSixty": "query.is_riding && (query.get_ride -> query.property('rift:energy'))/150 > 0.50 && (query.get_ride -> query.property('rift:energy'))/150 <= 0.60"
+                        },
+                        {
+                            "animEnergyBarSeventy": "query.is_riding && (query.get_ride -> query.property('rift:energy'))/150 > 0.60 && (query.get_ride -> query.property('rift:energy'))/150 <= 0.70"
+                        },
+                        {
+                            "animEnergyBarEighty": "query.is_riding && (query.get_ride -> query.property('rift:energy'))/150 > 0.70 && (query.get_ride -> query.property('rift:energy'))/150 <= 0.80"
+                        },
+                        {
+                            "animEnergyBarNinety": "query.is_riding && (query.get_ride -> query.property('rift:energy'))/150 > 0.80 && (query.get_ride -> query.property('rift:energy'))/150 <= 0.90"
+                        },
+                        {
+                            "animEnergyBarFull": "query.is_riding && (query.get_ride -> query.property('rift:energy'))/150 > 0.90 && (query.get_ride -> query.property('rift:energy'))/150 <= 1"
+                        }
+                    ]
+                }
+            }
+        },
+        //for creatures
+        "controller.animation.warn_of_low_energy": {
+            "initial_state": "default",
+            "states": {
+                "default": {
+                    "on_entry": [
+                        "/effect @s slowness 0",
+                        "/effect @s weakness 0",
+                        "@s rift:enable_jump"
+                    ],
+                    "transitions": [
+                        {
+                            "lowEnergy": "query.has_rider && query.property('rift:energy') <= 30"
+                        },
+                        {
+                            "noEnergyDelay": "query.has_rider && query.property('rift:energy') == 0"
+                        }
+                    ]
+                },
+                "lowEnergy": {
+                    "on_entry": [
+                        "/tellraw @p {\"rawtext\":[{\"selector\": \"@s\"}, {\"text\":\" is low on energy! It needs to rest in order for it to regenerate!\"}]}",
+                        "@s rift:disable_jump",
+                        "/effect @s slowness 0",
+                        "/effect @s weakness 0"
+                    ],
+                    "animations": [
+                        "animLowOnEnergyEffects"
+                    ],
+                    "transitions": [
+                        {
+                            "default": "query.property('rift:energy') > 30 || !query.has_rider"
+                        },
+                        {
+                            "noEnergyDelay": "query.property('rift:energy') == 0"
+                        }
+                    ]
+                },
+                "noEnergyDelay": {
+                    "on_entry": [
+                        "/tellraw @p {\"rawtext\":[{\"selector\": \"@s\"}, {\"text\":\" has no energy! It needs to rest!\"}]}",
+                        "@s rift:disable_jump",
+                        "/effect @s slowness 0",
+                        "/effect @s weakness 0",
+                        "/tag @s add regenDelay"
+                    ],
+                    "on_exit": [
+                        "/tag @s remove regenDelay"
+                    ],
+                    "animations": [
+                        "animEnergyRegenDelay",
+                        "animNoEnergyEffects"
+                    ],
+                    "transitions": [
+                        {
+                            "default": "!query.has_rider"
+                        },
+                        {
+                            "noEnergy": "query.all_animations_finished"
+                        }
+                    ]
+                },
+                "noEnergy": {
+                    "animations": [
+                        "animNoEnergyEffects"
+                    ],
+                    "transitions": [
+                        {
+                            "default": "query.property('rift:energy') > 30 || !query.has_rider"
+                        },
+                        {
+                            "lowEnergy": "query.property('rift:energy') > 0 && query.property('rift:energy') <= 30"
+                        }
+                    ]
+                }
+            }
+        },
+        "controller.animation.utahraptor_energy_movement_usage": {
+            "initial_state": "default",
+            "states": {
+                "default": {
+                    "animations": [
+                        {
+                            "animRegenerateEnergy": "query.is_tamed"
+                        }
+                    ],
+                    "transitions": [
+                        {
+                            "walk": "query.is_tamed && query.ground_speed > 0"
+                        },
+                        {
+                            "jumpDelay": "v.x = 0.0; for_each(t.rider, query.get_riders, { v.x = v.x + (t.rider -> query.is_jumping); }); return v.x > 0.0 && query.is_tamed && query.property('rift:energy') > 30;"
+                        },
+                        {
+                            "slashing": "query.is_tamed && query.is_delayed_attacking && query.property('rift:energy') >= 3"
+                        },
+                        {
+                            "leapAttacking": "query.is_tamed && variable.attack_time > 0 && !query.is_delayed_attacking && query.property('rift:energy') > 30"
+                        }
+                    ]
+                },
+                "walk": {
+                    "animations": [
+                        "animUseEnergyWhileMoving"
+                    ],
+                    "transitions": [
+                        {
+                            "default": "query.ground_speed == 0"
+                        },
+                        {
+                            "jumpDelay": "v.x = 0.0; for_each(t.rider, query.get_riders, { v.x = v.x + (t.rider -> query.is_jumping); }); return v.x > 0.0;"
+                        }
+                    ]
+                },
+                "jumpDelay": {
+                    "animations": [
+                        "animUseEnergyWhileMoving"
+                    ],
+                    "transitions": [
+                        {
+                            "default": "!query.has_rider || query.property('rift:energy') <= 30"
+                        },
+                        {
+                            "jump": "v.x = 0.0; for_each(t.rider, query.get_riders, { v.x = v.x + !(t.rider -> query.is_jumping); }); return v.x > 0.0;"
+                        }
+                    ]
+                },
+                "jump": {
+                    "on_entry": [
+                        "@s rift:decrease_energy_while_jumping"
+                    ],
+                    "transitions": [
+                        {
+                            "default": "query.is_on_ground"
+                        }
+                    ]
+                },
+                "slashing": {
+                    "on_exit": [
+                        "@s rift:decrease_energy_while_slashing"
+                    ],
+                    "transitions": [
+                        {
+                            "default": "!query.is_delayed_attacking"
+                        }
+                    ]
+                },
+                "leapAttackingPhaseOne": {
+                    "on_entry": [
+                        "/say start"
+                    ],
+                    "transitions": [
+                        {
+                            "leapAttackingPhaseTwo": "query.is_interested"
+                        }
+                    ]
+                },
+                "leapAttackingPhaseTwo": {
+                    "on_entry": [
+                        "/say middle"
+                    ],
+                    "transitions": [
+                        {
+                            "leapAttacking": "!query.is_on_ground"
+                        }
+                    ]
+                },
+                "leapAttacking": {
+                    "on_entry": [
+                        "@s rift:decrease_energy_while_jumping",
+                        "/say yeet"
+                    ],
+                    "transitions": [
+                        {
+                            "default": "query.is_on_ground"
+                        }
+                    ]
+                }
+            }
+        }
+    }
+}

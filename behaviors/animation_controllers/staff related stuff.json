@@ -541,7 +541,7 @@
 							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:utahraptor'"
 						},
 						{
-							"slashModeLimbo": "query.is_using_item && (query.get_ride -> query.is_saddled) && query.get_equipped_item_name('main_hand') == 'command_staff'"
+							"slashModeLimbo": "query.is_using_item && (query.get_ride -> query.property('rift:energy')) >= 3 && (query.get_ride -> query.is_saddled) && query.get_equipped_item_name('main_hand') == 'command_staff'"
 						}
 					]
 				},
@@ -568,7 +568,8 @@
 						}
 					],
 					"on_entry": [
-						"/event entity @e[type=rift:utahraptor, c=1, tag=tamed, tag=!baby] rift:start_forced_attack"
+						"/event entity @e[type=rift:utahraptor, c=1, tag=tamed, tag=!baby] rift:start_forced_attack",
+						"/event entity @e[type=rift:utahraptor, c=1, tag=tamed, tag=!baby] rift:decrease_energy_while_slashing"
 					]
 				},
 				"slashToCall": {

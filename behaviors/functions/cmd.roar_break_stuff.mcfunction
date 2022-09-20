@@ -1,4 +1,6 @@
 damage @e[family=woodenLargeGate, r=20] 30
+fill ~-10 ~ ~-10 ~+10 ~+15 ~+10 air 0 replace campfire
+fill ~-10 ~ ~-10 ~+10 ~+15 ~+10 air 0 replace soul_campfire
 fill ~-10 ~ ~-10 ~+10 ~+15 ~+10 air 0 replace planks
 fill ~-10 ~ ~-10 ~+10 ~+15 ~+10 air 0 replace leaves
 fill ~-10 ~ ~-10 ~+10 ~+15 ~+10 air 0 replace leaves2
