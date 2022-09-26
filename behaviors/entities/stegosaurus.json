@@ -15,10 +15,19 @@
 					"type": "bool",
 					"default": false
 				},
+                "rift:energy": {
+                    "range": [
+						0,
+						150
+					],
+					"type": "int",
+					"default": 150,
+					"client_sync": true
+                },
                 "rift:focused_stab_charge": {
                     "range": [
 						0, 
-						5
+						50
 					],
 					"type": "int",
 					"default": 0
@@ -52,10 +61,18 @@
 				"contRiddenTag": "controller.animation.add_ridden_tag",
 				"contForcedAttack": "controller.animation.general_forced_attack",
 				"contFocusedStab": "controller.animation.stegosaurus_focused_stab",
+				"contFocusedStabInform": "controller.animation.stegosaurus_focused_stab_inform",
 				"contStegoEndFocusedStabCooldown": "controller.animation.stego_end_focus_stab_cooldown",
 				"contTameState": "controller.animation.manage_tame_state",
 				"contBehaviorState": "controller.animation.manage_tame_behavior",
+				"contEnergyUsage": "controller.animation.stegosaurus_energy_movement_usage",
+				"contWarnLowEnergy": "controller.animation.warn_of_low_energy",
 				"animEatFromInventoryCooldown": "animation.eat_from_inventory_cooldown",
+				"animUseEnergyWhileMoving": "animation.stegosaurus_decrease_energy_while_moving",
+				"animEnergyRegenDelay": "animation.regenerate_energy_delay",
+				"animRegenerateEnergy": "animation.stegosaurus_regenerate_energy",
+				"animLowOnEnergyEffects": "animation.effects_while_low_on_energy",
+				"animNoEnergyEffects": "animation.effects_while_no_energy",
 				"animForcedAttack": "animation.forced_attack_stegosaurus",
 				"animStegoFocusStabOne": "animation.focused_stab_stegosaurus_one",
 				"animStegoFocusStabTwo": "animation.focused_stab_stegosaurus_two",
@@ -76,9 +93,12 @@
 					"contRiddenTag",
 					"contForcedAttack",
 					"contFocusedStab",
+					"contFocusedStabInform",
 					"contStegoEndFocusedStabCooldown",
 					"contTameState",
-					"contBehaviorState"
+					"contBehaviorState",
+					"contEnergyUsage",
+					"contWarnLowEnergy"
 				]
 			}
 		},
@@ -448,6 +468,16 @@
 							]
 						}
 					}
+				}
+			},
+			"rift:default_movement": {
+				"minecraft:movement": {
+					"value": 0.15
+				}
+			},
+			"rift:cannot_move": {
+				"minecraft:movement": {
+					"value": 0.0
 				}
 			},
 			"rift:stegosaurus_adult_calm": {
@@ -1080,15 +1110,15 @@
 					"outside_range": 12,
 					"must_see": true,
 					"on_inside_range": {
-					  "event": "rift:melee_attack_mode",
-					  "target": "self"
+						"event": "rift:melee_attack_mode",
+						"target": "self"
 					},
 					"on_outside_range": {
-					  "event": "rift:ranged_attack_mode",
-					  "target": "self"
+						"event": "rift:ranged_attack_mode",
+						"target": "self"
 					},
 					"on_vision_lost_inside_range": {
-					  "event": "rift:ranged_attack_mode",
+						"event": "rift:ranged_attack_mode",
 						"target": "self"
 					}
 			  	}
@@ -1319,6 +1349,12 @@
 										"test": "has_component",
 										"subject": "self",
 										"value": "minecraft:is_tamed"
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"operator": "!=",
+										"value": "minecraft:is_baby"
 									},
 									{
 										"test": "is_sneaking",
@@ -3805,6 +3841,27 @@
 					]
 				}
 			},
+			"rift:disable_ranged_attack_ability": {
+				"add": {
+					"component_groups": [
+						"rift:stegosaurus_adult_melee"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:stegosaurus_adult_ranged",
+						"rift:forced_plate_fling_pose",
+						"rift:can_attack"
+					]
+				}
+			},
+			"rift:reenable_ranged_attack_ability": {
+				"add": {
+					"component_groups": [
+						"rift:can_attack"
+					]
+				}
+			},
 			"rift:adult_on_tame": {
 				"add": {
 					"component_groups": [
@@ -4197,18 +4254,15 @@
 				"remove": {
 					"component_groups": [
 						"rift:pushable",
-						"rift:stegosaurus_adult_ranged",
-						"rift:stegosaurus_adult_melee",
 						"rift:aggravating_horn_attack",
-						"rift:can_attack"
+						"rift:forced_plate_fling_pose"
 					]
 				}
 			},
 			"rift:can_sit": {
 				"add": {
 					"component_groups": [
-						"rift:pushable",
-						"rift:can_attack"
+						"rift:pushable"
 					]
 				},
 				"remove": {
@@ -4258,6 +4312,30 @@
 				"run_command": {
 					"command": [
 						"kill @s"
+					]
+				}
+			},
+			"rift:disable_movement": {
+				"add": {
+					"component_groups": [
+						"rift:cannot_move"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:default_movement"
+					]
+				}
+			},
+			"rift:reenable_movement": {
+				"add": {
+					"component_groups": [
+						"rift:default_movement"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:cannot_move"
 					]
 				}
 			},
@@ -4475,34 +4553,14 @@
 					]
 				}
 			},
-			"rift:focused_stab_charge_zero": {
+			"rift:focused_stab_charge_reset": {
 				"set_property": {
 					"rift:focused_stab_charge": "0"
 				}
 			},
-			"rift:focused_stab_charge_one": {
+			"rift:focused_stab_charge_add": {
 				"set_property": {
-					"rift:focused_stab_charge": "1"
-				}
-			},
-			"rift:focused_stab_charge_two": {
-				"set_property": {
-					"rift:focused_stab_charge": "2"
-				}
-			},
-			"rift:focused_stab_charge_three": {
-				"set_property": {
-					"rift:focused_stab_charge": "3"
-				}
-			},
-			"rift:focused_stab_charge_four": {
-				"set_property": {
-					"rift:focused_stab_charge": "4"
-				}
-			},
-			"rift:focused_stab_charge_five": {
-				"set_property": {
-					"rift:focused_stab_charge": "5"
+					"rift:focused_stab_charge": "query.property('rift:focused_stab_charge') + 1"
 				}
 			},
 			"rift:start_forced_attack": {
@@ -4542,7 +4600,57 @@
 			},
 			"rift:manage_behavior": {
 				"set_property": {
-					"rift:behavior_state": "!query.is_baby ? ((query.property('rift:behavior_state') >= 0 && query.property('rift:behavior_state') <= 2) ? query.property('rift:behavior_state') + 1 : 0) : 3"
+					"rift:behavior_state": "(query.property('rift:behavior_state') >= 0 && query.property('rift:behavior_state') <= 2) ? query.property('rift:behavior_state') + 1 : 0"
+				}
+			},
+			"rift:decrease_energy_while_moving": {
+				"set_property": {
+					"rift:energy": "query.property('rift:energy') >= 5 ? query.property('rift:energy') - 15 : 0"
+				}
+			},
+			"rift:decrease_energy_while_stabbing": {
+				"set_property": {
+					"rift:energy": "query.property('rift:energy') >= 10 ? query.property('rift:energy') - 20 : 0"
+				}
+			},
+			"rift:decrease_energy_while_charging_focus": {
+				"set_property": {
+					"rift:energy": "query.property('rift:energy') >= 3 ? query.property('rift:energy') - 3 : 0"
+				}
+			},
+			"rift:decrease_energy_while_stabbing_charge_two": {
+				"set_property": {
+					"rift:energy": "query.property('rift:energy') >= 10 ? query.property('rift:energy') - 30 : 0"
+				}
+			},
+			"rift:decrease_energy_while_stabbing_charge_three": {
+				"set_property": {
+					"rift:energy": "query.property('rift:energy') >= 10 ? query.property('rift:energy') - 40 : 0"
+				}
+			},
+			"rift:decrease_energy_while_stabbing_charge_four": {
+				"set_property": {
+					"rift:energy": "query.property('rift:energy') >= 10 ? query.property('rift:energy') - 50 : 0"
+				}
+			},
+			"rift:decrease_energy_while_stabbing_charge_five": {
+				"set_property": {
+					"rift:energy": "query.property('rift:energy') >= 10 ? query.property('rift:energy') - 60 : 0"
+				}
+			},
+			"rift:decrease_energy_while_harvesting": {
+				"set_property": {
+					"rift:energy": "query.property('rift:energy') >= 10 ? query.property('rift:energy') - 10 : 0"
+				}
+			},
+			"rift:decrease_energy_while_plate_flinging": {
+				"set_property": {
+					"rift:energy": "query.property('rift:energy') >= 10 ? query.property('rift:energy') - 10 : 0"
+				}
+			},
+			"rift:regenerate_energy": {
+				"set_property": {
+					"rift:energy": "query.property('rift:energy') + 5 < 150 ? query.property('rift:energy') + 5 : 150"
 				}
 			},
 			//for potion effects

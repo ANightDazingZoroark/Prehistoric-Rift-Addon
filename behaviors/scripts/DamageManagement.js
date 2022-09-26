@@ -460,7 +460,6 @@ world.events.entityHurt.subscribe(({ hurtEntity, damagingEntity }) => {
         hurtEntity.runCommand(`ride @s evict_riders`)
     }
     if (damagingEntity.id == 'rift:utahraptor' && !damagingEntity.hasTag('ridden') && damagingEntity.getComponent('is_tamed') && damagingEntity.jumpAttacking > 10) {
-        console.warn('yeet')
         damagingEntity.triggerEvent('rift:decrease_energy_while_jumping')
         damagingEntity.jumpAttacking = 0
     }
@@ -498,7 +497,6 @@ world.events.tick.subscribe((ev) => {
         }
         if (mobs[i].id == 'rift:utahraptor' && mobs[i].getComponent('is_tamed') && !mobs[i].hasTag('ridden') && blockBelowAttacker.id == 'minecraft:air' && mobs[i].hasOwnProperty('jumpAttacking')) {
             mobs[i].jumpAttacking++
-            console.warn(mobs[i].jumpAttacking)
         }
     }
 })
