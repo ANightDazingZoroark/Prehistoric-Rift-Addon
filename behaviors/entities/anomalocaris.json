@@ -844,12 +844,7 @@
 				"minecraft:behavior.player_ride_tamed": {}
 			},
 			"rift:anomalocaris_tamed": {
-				"minecraft:is_tamed": {},
-				"minecraft:leashable": {
-					"soft_distance": 4,
-					"hard_distance": 8,
-					"max_distance": 12
-				}
+				"minecraft:is_tamed": {}
 			},
             "rift:anomalocaris_saddled": {
                 "minecraft:is_saddled": {},
@@ -1187,6 +1182,11 @@
                 "breathes_air": false,
                 "breathes_water": true
 			},
+			"minecraft:leashable": {
+				"soft_distance": 4,
+				"hard_distance": 8,
+				"max_distance": 12
+			},
 			"minecraft:interact": {
 				"interactions": [
 					{
@@ -1296,12 +1296,6 @@
 										"test": "has_component",
 										"subject": "self",
 										"value": "minecraft:is_tamed"
-									},
-									{
-										"test": "has_component",
-										"subject": "self",
-										"operator": "!=",
-										"value": "minecraft:is_baby"
 									},
 									{
 										"test": "is_sneaking",
@@ -4338,7 +4332,7 @@
 			},
 			"rift:manage_behavior": {
 				"set_property": {
-					"rift:behavior_state": "(query.property('rift:behavior_state') >= 0 && query.property('rift:behavior_state') <= 2) ? query.property('rift:behavior_state') + 1 : 0"
+					"rift:behavior_state": "!query.is_baby ? ((query.property('rift:behavior_state') >= 0 && query.property('rift:behavior_state') <= 2) ? query.property('rift:behavior_state') + 1 : 0) : 3"
 				}
 			},
 			//for potion effects

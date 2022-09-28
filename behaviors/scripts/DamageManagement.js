@@ -459,13 +459,6 @@ world.events.entityHurt.subscribe(({ hurtEntity, damagingEntity }) => {
     if (damagingEntity.id == 'rift:utahraptor' && blockBelowAttacker.id == 'minecraft:air' && Math.floor(Math.random() * 4) == 0) {
         hurtEntity.runCommand(`ride @s evict_riders`)
     }
-    if (damagingEntity.id == 'rift:utahraptor' && !damagingEntity.hasTag('ridden') && damagingEntity.getComponent('is_tamed') && damagingEntity.jumpAttacking > 10) {
-        damagingEntity.triggerEvent('rift:decrease_energy_while_jumping')
-        damagingEntity.jumpAttacking = 0
-    }
-    if (hurtEntity.id == 'rift:utahraptor' && !hurtEntity.hasTag('ridden') && hurtEntity.getComponent('is_tamed') && damagingEntity.jumpAttacking > 10) {
-        damagingEntity.jumpAttacking = 0
-    }
     if (damagingEntity.id == 'rift:dimetrodon' && damagingEntity.getComponent('is_charged')) {
         hurtEntity.runCommand(`effect @s weakness 20 2`)
         hurtEntity.runCommand(`effect @s slowness 20 2`)
@@ -484,19 +477,5 @@ world.events.entityHurt.subscribe(({ hurtEntity, damagingEntity }) => {
     }
     if (damagingEntity.id == 'rift:baryonyx' && damagingEntity.hasTag('forcedClaw')) {
         hurtEntity.runCommand(`effect @s poison 10`)
-    }
-})
-
-world.events.tick.subscribe((ev) => {
-    let mobs = Array.from(world.getDimension('overworld').getEntities())
-    for (let i = 0; i < mobs.length; i++) {
-        let blockBelowAttacker = mobs[i].dimension.getBlock(new BlockLocation(Math.trunc(mobs[i].location.x), Math.trunc(mobs[i].location.y) - 1, Math.trunc(mobs[i].location.z)))
-
-        if (mobs[i].id == 'rift:utahraptor' && mobs[i].getComponent('is_tamed') && !mobs[i].hasTag('ridden') && blockBelowAttacker.id == 'minecraft:air' && !mobs[i].hasOwnProperty('jumpAttacking')) {
-            mobs[i].jumpAttacking = 0
-        }
-        if (mobs[i].id == 'rift:utahraptor' && mobs[i].getComponent('is_tamed') && !mobs[i].hasTag('ridden') && blockBelowAttacker.id == 'minecraft:air' && mobs[i].hasOwnProperty('jumpAttacking')) {
-            mobs[i].jumpAttacking++
-        }
     }
 })

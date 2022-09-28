@@ -309,34 +309,6 @@
 								"value":  "carnivore"
 							},
 							"max_dist": 48
-					  	},
-					  	{
-							"filters": {
-								"all_of": [
-									{
-										"test":  "is_family", 
-										"subject": "other", 
-										"value":  "player"
-									},
-									{
-										"any_of": [
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "rift:torch"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "rift:soul_torch"
-											}
-										]
-									}
-								]
-							},
-							"max_dist": 48
 					  	}
 					]
 				}
@@ -483,12 +455,7 @@
 				"minecraft:behavior.player_ride_tamed": {}
             },
             "rift:parasaurolophus_tamed": {
-                "minecraft:is_tamed": {},
-				"minecraft:leashable": {
-					"soft_distance": 4,
-					"hard_distance": 8,
-					"max_distance": 12
-				}
+                "minecraft:is_tamed": {}
             },
 			"rift:temptable": {
 				"minecraft:behavior.tempt": {
@@ -789,6 +756,11 @@
 				"total_supply": 15,
 				"suffocate_time": 0
 			},
+			"minecraft:leashable": {
+				"soft_distance": 4,
+				"hard_distance": 8,
+				"max_distance": 12
+			},
             "minecraft:interact": {
 				"interactions": [
 					{
@@ -842,12 +814,6 @@
 										"test": "has_component",
 										"subject": "self",
 										"value": "minecraft:is_tamed"
-									},
-									{
-										"test": "has_component",
-										"subject": "self",
-										"operator": "!=",
-										"value": "minecraft:is_baby"
 									},
 									{
 										"test": "is_sneaking",
@@ -3235,7 +3201,6 @@
 										"rift:parasaurolophus_baby",
 										"rift:parasaurolophus_baby_wild",
 										"rift:parasaurolophus_baby_calm",
-										"rift:default_targets",
 										"rift:variant_one",
 										"rift:wild_standing",
 										"rift:pushable",
@@ -3250,7 +3215,6 @@
 										"rift:parasaurolophus_baby",
 										"rift:parasaurolophus_baby_wild",
 										"rift:parasaurolophus_baby_calm",
-										"rift:default_targets",
 										"rift:variant_two",
 										"rift:wild_standing",
 										"rift:pushable",
@@ -3265,7 +3229,6 @@
 										"rift:parasaurolophus_baby",
 										"rift:parasaurolophus_baby_wild",
 										"rift:parasaurolophus_baby_calm",
-										"rift:default_targets",
 										"rift:variant_three",
 										"rift:wild_standing",
 										"rift:pushable",
@@ -3280,7 +3243,6 @@
 										"rift:parasaurolophus_baby",
 										"rift:parasaurolophus_baby_wild",
 										"rift:parasaurolophus_baby_calm",
-										"rift:default_targets",
 										"rift:variant_four",
 										"rift:wild_standing",
 										"rift:pushable",
@@ -3362,7 +3324,6 @@
 						"rift:parasaurolophus_baby_scared",
 						"rift:parasaurolophus_baby_wild",
 						"rift:parasaurolophus_baby_calm",
-						"rift:default_targets",
 						"rift:wild_standing"
 					]
 				}
@@ -3388,11 +3349,6 @@
 				"remove": {
 					"component_groups": [
 						"rift:parasaurolophus_baby_scared"
-					]
-				},
-				"run_command": {
-					"command": [
-						"tag @s remove angeredByFire"
 					]
 				}
             },
@@ -3451,11 +3407,6 @@
 							"component_groups": [
 								"rift:parasaurolophus_adult_scared"
 							]
-						},
-						"run_command": {
-							"command": [
-								"tag @s remove angeredByFire"
-							]
 						}
 					},
 					{
@@ -3502,7 +3453,6 @@
 								"rift:parasaurolophus_baby",
 								"rift:parasaurolophus_baby_wild",
 								"rift:parasaurolophus_baby_calm",
-								"rift:default_targets",
 								"rift:wild_standing",
 								"rift:variant_one",
 								"rift:pushable",
@@ -3517,7 +3467,6 @@
 								"rift:parasaurolophus_baby",
 								"rift:parasaurolophus_baby_wild",
 								"rift:parasaurolophus_baby_calm",
-								"rift:default_targets",
 								"rift:wild_standing",
 								"rift:variant_two",
 								"rift:pushable",
@@ -3532,7 +3481,6 @@
 								"rift:parasaurolophus_baby",
 								"rift:parasaurolophus_baby_wild",
 								"rift:parasaurolophus_baby_calm",
-								"rift:default_targets",
 								"rift:wild_standing",
 								"rift:variant_three",
 								"rift:pushable",
@@ -3547,7 +3495,6 @@
 								"rift:parasaurolophus_baby",
 								"rift:parasaurolophus_baby_wild",
 								"rift:parasaurolophus_baby_calm",
-								"rift:default_targets",
 								"rift:wild_standing",
 								"rift:variant_four",
 								"rift:pushable",
@@ -4019,7 +3966,7 @@
 			},
 			"rift:manage_state": {
 				"set_property": {
-					"rift:tame_state": "(query.property('rift:tame_state') >= 0 && query.property('rift:tame_state') <= 1) ? query.property('rift:tame_state') + 1 : 0"
+					"rift:tame_state": "!query.is_sheared ? ((query.property('rift:tame_state') >= 0 && query.property('rift:tame_state') <= 1) ? query.property('rift:tame_state') + 1 : 0) : 1"
 				}
 			},
 			//for potion effects

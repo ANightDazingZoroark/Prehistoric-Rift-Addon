@@ -5,15 +5,7 @@
       "identifier": "minecraft:wolf",
       "is_spawnable": true,
       "is_summonable": true,
-      "is_experimental": false,
-			"animations": {
-				"contTameTag": "controller.animation.add_tame_tag"
-      },
-      "scripts": {
-        "animate": [
-          "contTameTag"
-        ]
-      }
+      "is_experimental": false
     },
 
     "component_groups": {
@@ -81,114 +73,6 @@
         }
       },
 
-      "rift:default_targets": {
-        "minecraft:behavior.nearest_attackable_target": {
-          "priority": 4,
-          "reselect_targets": true,
-          "must_see": true,
-          "entity_types": [
-            {
-              "filters": {
-                "any_of": [
-                  { "test" :  "is_family", "subject" : "other", "value" :  "skeleton"},
-                  { "test" :  "is_family", "subject" : "other", "value" :  "sheep"},
-                  { "test" :  "is_family", "subject" : "other", "value" :  "rabbit"},
-                  { "test" :  "is_family", "subject" : "other", "value" :  "fox"}
-                ] 
-              },
-              "max_dist": 16
-            },
-            {
-              "filters": {
-                "all_of": [
-                  {
-                    "test": "is_family",
-                    "subject": "other",
-                    "value": "baby_turtle"
-                  },
-                  {
-                    "test": "in_water",
-                    "subject": "other",
-                    "operator": "!=",
-                    "value": true
-                  }
-                ]
-              },
-              "max_dist": 16
-            },
-            {
-              "filters": {
-                "all_of": [
-                  {
-                    "test": "is_family",
-                    "subject": "other",
-                    "value": "skeleton"
-                  },
-                  {
-                    "test": "is_underwater",
-                    "subject": "other",
-                    "operator": "!=",
-                    "value": true
-                  }
-                ]
-              },
-              "max_dist": 16
-            },
-            {
-              "filters": {
-                "test": "is_family",
-                "subject": "other",
-                "value": "parasaurAngerer"
-              },
-              "max_dist": 64
-            }
-          ]
-        }
-      },
-      "rift:wolf_hunt_targets": {
-        "minecraft:behavior.nearest_attackable_target": {
-          "priority": 4,
-          "reselect_targets": true,
-          "must_see": true,
-          "entity_types": [
-            {
-              "filters": {
-                "any_of": [
-                  { "test" :  "is_family", "subject" : "other", "value" :  "animal"},
-                  { "test" :  "is_family", "subject" : "other", "value" :  "herbivore"}
-                ] 
-              },
-              "max_dist": 16
-            },
-            {
-              "filters": {
-                "all_of": [
-                  {
-                    "test": "is_family",
-                    "subject": "other",
-                    "value": "player"
-                  },
-                  {
-                    "test": "is_riding",
-                    "subject": "other",
-                    "value": false
-                  }
-                ]
-              },
-              "max_dist": 16
-            },
-            {
-              "filters": {
-                "test": "is_family",
-                "subject": "other",
-                "value": "parasaurAngerer"
-              },
-              "max_dist": 64
-            }
-          ]
-        }
-      },
-
       "minecraft:wolf_angry": {
         "minecraft:angry": {
           "duration": 25,
@@ -252,6 +136,69 @@
             "event": "minecraft:on_tame",
             "target": "self"
           }
+        },
+
+        "minecraft:behavior.nearest_attackable_target": {
+          "priority": 4,
+          "reselect_targets": true,
+          "must_see": true,
+          "entity_types": [
+            {
+              "filters": {
+                "any_of": [
+                  { "test" :  "is_family", "subject" : "other", "value" :  "skeleton"},
+                  { "test" :  "is_family", "subject" : "other", "value" :  "sheep"},
+                  { "test" :  "is_family", "subject" : "other", "value" :  "rabbit"},
+                  { "test" :  "is_family", "subject" : "other", "value" :  "fox"}
+                ] 
+              },
+              "max_dist": 16
+            },
+            {
+              "filters": {
+                "all_of": [
+                  {
+                    "test": "is_family",
+                    "subject": "other",
+                    "value": "baby_turtle"
+                  },
+                  {
+                    "test": "in_water",
+                    "subject": "other",
+                    "operator": "!=",
+                    "value": true
+                  }
+                ]
+              },
+              "max_dist": 16
+            },
+            {
+              "filters": {
+                "all_of": [
+                  {
+                    "test": "is_family",
+                    "subject": "other",
+                    "value": "skeleton"
+                  },
+                  {
+                    "test": "is_underwater",
+                    "subject": "other",
+                    "operator": "!=",
+                    "value": true
+                  }
+                ]
+              },
+              "max_dist": 16
+            },
+            {
+              "filters": {
+                "test": "is_family",
+                "subject": "other",
+                "value": "parasaurAngerer"
+              },
+              "max_dist": 64
+            }
+          ]
         },
         "minecraft:on_target_acquired": {
           "event": "minecraft:become_angry",
@@ -519,8 +466,7 @@
             "add": {
               "component_groups": [
                 "minecraft:wolf_adult",
-                "minecraft:wolf_wild",
-                "rift:default_targets"
+                "minecraft:wolf_wild"
               ]
             }
           },
@@ -531,8 +477,7 @@
             "add": {
               "component_groups": [
                 "minecraft:wolf_baby",
-                "minecraft:wolf_wild",
-                "rift:default_targets"
+                "minecraft:wolf_wild"
               ]
 
             }
@@ -547,15 +492,6 @@
           "component_groups": [
             "minecraft:wolf_baby",
             "minecraft:wolf_tame"
-          ]
-        }
-      },
-      "rift:spawn_for_wolf_hunt": {
-        "add": {
-          "component_groups": [
-            "minecraft:wolf_adult",
-            "minecraft:wolf_wild",
-            "rift:wolf_hunt_targets"
           ]
         }
       },
@@ -589,9 +525,7 @@
       "minecraft:on_tame": {
         "remove": {
           "component_groups": [
-            "minecraft:wolf_wild",
-            "rift:default_targets",
-            "rift:wolf_hunt_targets"
+            "minecraft:wolf_wild"
           ]
         },
         "add": {
