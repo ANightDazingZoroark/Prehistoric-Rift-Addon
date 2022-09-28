@@ -1453,8 +1453,43 @@
 							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:saurophaganax'"
 						},
 						{
-							"biteModeLimbo": "query.is_using_item && (query.get_ride -> query.is_saddled) && query.get_equipped_item_name('main_hand') == 'command_staff'"
+							"biteModeLimbo": "query.is_using_item && (query.get_ride -> query.property('rift:energy')) >= 10 && (query.get_ride -> query.is_saddled) && query.get_equipped_item_name('main_hand') == 'command_staff' && !(query.get_ride -> query.is_sheared)"
+						},
+						{
+							"biteModeFail": "query.is_using_item && (query.get_ride -> query.property('rift:energy')) < 10 && (query.get_ride -> query.is_saddled) && query.get_equipped_item_name('main_hand') == 'command_staff' && !(query.get_ride -> query.is_sheared)"
+						},
+						{
+							"biteModeWeakenedLimbo": "query.is_using_item && (query.get_ride -> query.property('rift:energy')) >= 50 && (query.get_ride -> query.is_saddled) && query.get_equipped_item_name('main_hand') == 'command_staff' && (query.get_ride -> query.is_sheared)"
+						},
+						{
+							"biteModeWeakenedFail": "query.is_using_item && (query.get_ride -> query.property('rift:energy')) < 50 && (query.get_ride -> query.is_saddled) && query.get_equipped_item_name('main_hand') == 'command_staff' && (query.get_ride -> query.is_sheared)"
 						}
+					]
+				},
+				"biteModeFail": {
+					"transitions": [
+						{
+							"biteMode": "!query.is_using_item"
+						},
+						{
+							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:saurophaganax'"
+						}
+					],
+					"on_entry": [
+						"/tellraw @s {\"rawtext\":[{\"text\":\"You don't have enough energy to perform this action!\"}]}"
+					]
+				},
+				"biteModeWeakenedFail": {
+					"transitions": [
+						{
+							"biteMode": "!query.is_using_item"
+						},
+						{
+							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:saurophaganax'"
+						}
+					],
+					"on_entry": [
+						"/tellraw @s {\"rawtext\":[{\"text\":\"You don't have enough energy to perform this action!\"}]}"
 					]
 				},
 				"biteModeLimbo": {
@@ -1483,6 +1518,32 @@
 						"/event entity @e[type=rift:saurophaganax, c=1, tag=tamed, tag=!baby] rift:start_forced_attack"
 					]
 				},
+				"biteModeWeakenedLimbo": {
+					"animations": [
+						"animAbilitySwitchCooldown"
+					],
+					"transitions": [
+						{
+							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:saurophaganax' || query.get_equipped_item_name('main_hand') != 'command_staff'"
+						},
+						{
+							"useBiteModeWeakened": "!query.is_using_item"
+						},
+						{
+							"biteToLightBlast": "query.all_animations_finished"
+						}
+					]
+				},
+				"useBiteModeWeakened": {
+					"transitions": [
+						{
+							"biteMode": "(1.0)"
+						}
+					],
+					"on_entry": [
+						"/event entity @e[type=rift:saurophaganax, c=1, tag=tamed, tag=!baby] rift:start_forced_attack"
+					]
+				},
 				"biteToLightBlast": {
 					"transitions": [
 						{
@@ -1502,8 +1563,24 @@
 							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:saurophaganax'"
 						},
 						{
-							"lightBlastModeLimbo": "query.is_using_item && (query.get_ride -> query.is_saddled) && query.get_equipped_item_name('main_hand') == 'command_staff'"
+							"lightBlastModeLimbo": "query.is_using_item && (query.get_ride -> query.property('rift:energy')) >= 15 && (query.get_ride -> query.is_saddled) && query.get_equipped_item_name('main_hand') == 'command_staff'"
+						},
+						{
+							"lightBlastModeFail": "query.is_using_item && (query.get_ride -> query.property('rift:energy')) < 15 && (query.get_ride -> query.is_saddled) && query.get_equipped_item_name('main_hand') == 'command_staff'"
 						}
+					]
+				},
+				"lightBlastModeFail": {
+					"transitions": [
+						{
+							"lightBlastMode": "!query.is_using_item"
+						},
+						{
+							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:saurophaganax'"
+						}
+					],
+					"on_entry": [
+						"/tellraw @s {\"rawtext\":[{\"text\":\"You don't have enough energy to perform this action!\"}]}"
 					]
 				},
 				"lightBlastModeLimbo": {

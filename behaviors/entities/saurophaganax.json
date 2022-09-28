@@ -24,6 +24,15 @@
 					"type": "bool",
 					"default": false
 				},
+                "rift:energy": {
+                    "range": [
+						0,
+						150
+					],
+					"type": "int",
+					"default": 150,
+					"client_sync": true
+                },
                 "rift:tame_state": { //0 for standing, 1 for sitting, 2 for wandering
                     "range": [
 						0,
@@ -53,12 +62,23 @@
 				"contSleepingTag": "controller.animation.add_sleeping_tag",
 				"contHasTargetTag": "controller.animation.add_has_target_tag",
 				"contShearedTag": "controller.animation.add_sheared_tag",
-				"contForcedAttack": "controller.animation.general_forced_attack",
+				"contForcedAttack": "controller.animation.saurophaganax_forced_attack",
 				"contUnsittableWhenRidden": "controller.animation.become_unsittable_when_ridden",
 				"contTameState": "controller.animation.manage_tame_state",
 				"contBehaviorState": "controller.animation.manage_tame_behavior",
+				"contEnergyUsage": "controller.animation.saurophaganax_energy_movement_usage",
+				"contWarnLowEnergy": "controller.animation.warn_of_low_energy",
+				"contForcedReturnToSleep": "controller.animation.saurophaganax_forced_sleep_when_no_energy",
 				"animEatFromInventoryCooldown": "animation.eat_from_inventory_cooldown",
+				"animUseEnergyWhileMoving": "animation.saurophaganax_decrease_energy_while_moving",
+				"animUseEnergyWhileMovingWeakened": "animation.saurophaganax_decrease_energy_while_moving_weakened",
+				"animEnergyRegenDelay": "animation.regenerate_energy_delay",
+				"animRegenerateEnergy": "animation.saurophaganax_regenerate_energy",
+				"animRefillEnergyWhileSleeping": "animation.saurophaganax_refill_energy_while_sleeping",
+				"animLowOnEnergyEffects": "animation.effects_while_low_on_energy",
+				"animNoEnergyEffects": "animation.effects_while_no_energy",
 				"animForcedAttack": "animation.forced_attack_saurophaganax",
+				"animForcedAttackWeakened": "animation.forced_attack_saurophaganax_weakened",
 				"animResetLightBlastCharge": "animation.reset_saurophaganax_light_blast_charge",
 				"animUnriddenLightBlast": "animation.saurophaganax_activate_light_blast"
 			},
@@ -78,6 +98,9 @@
 					"contUnsittableWhenRidden",
 					"contTameState",
 					"contBehaviorState",
+					"contEnergyUsage",
+					"contWarnLowEnergy",
+					"contForcedReturnToSleep",
 					"animUnriddenLightBlast"
 				]
 			}
@@ -219,13 +242,6 @@
 				}
 			},
 			"rift:saurophaganax_baby_forced_awake": {
-				"minecraft:timer": {
-					"time": 60,
-					"time_down_event": {
-						"event": "rift:baby_return_to_sleep",
-						"target": "self"
-					}
-				},
 				"minecraft:is_sheared": {},
 				"minecraft:out_of_control": {},
 				"minecraft:attack": {
@@ -746,13 +762,6 @@
 				}
 			},
 			"rift:saurophaganax_adult_forced_awake": {
-				"minecraft:timer": {
-					"time": 60,
-					"time_down_event": {
-						"event": "rift:adult_return_to_sleep",
-						"target": "self"
-					}
-				},
 				"minecraft:is_sheared": {},
 				"minecraft:out_of_control": {},
 				"minecraft:attack": {
@@ -4056,6 +4065,7 @@
 				},
 				"run_command": {
 					"command": [
+						"event entity @s rift:decrease_energy_while_light_blasting",
 						"scoreboard players set @s saurophLightBlst 0"
 					]
 				}
@@ -4437,6 +4447,36 @@
 			"rift:manage_behavior": {
 				"set_property": {
 					"rift:behavior_state": "(query.property('rift:behavior_state') >= 0 && query.property('rift:behavior_state') <= 2) ? query.property('rift:behavior_state') + 1 : 0"
+				}
+			},
+			"rift:decrease_energy_while_moving": {
+				"set_property": {
+					"rift:energy": "query.property('rift:energy') >= 5 ? query.property('rift:energy') - 15 : 0"
+				}
+			},
+			"rift:decrease_energy_while_biting": {
+				"set_property": {
+					"rift:energy": "query.property('rift:energy') >= 10 ? query.property('rift:energy') - 10 : 0"
+				}
+			},
+			"rift:decrease_energy_while_biting_weakened": {
+				"set_property": {
+					"rift:energy": "query.property('rift:energy') >= 50 ? query.property('rift:energy') - 50 : 0"
+				}
+			},
+			"rift:decrease_energy_while_light_blasting": {
+				"set_property": {
+					"rift:energy": "query.property('rift:energy') >= 15 ? query.property('rift:energy') - 15 : 0"
+				}
+			},
+			"rift:regenerate_energy": {
+				"set_property": {
+					"rift:energy": "query.property('rift:energy') + 5 < 150 ? query.property('rift:energy') + 5 : 150"
+				}
+			},
+			"rift:refill_energy": {
+				"set_property": {
+					"rift:energy": "150"
 				}
 			},
 			//for potion effects

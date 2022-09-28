@@ -130,6 +130,90 @@
                 }
             }
         },
+        "controller.animation.saurophaganax_energy_movement_usage": {
+            "initial_state": "default",
+            "states": {
+                "default": {
+                    "animations": [
+                        {
+                            "animRegenerateEnergy": "query.is_tamed && (query.time_of_day >= 0.75 || query.time_of_day <= 0.25)"
+                        }
+                    ],
+                    "transitions": [
+                        {
+                            "sleeping": "query.is_sleeping"
+                        },
+                        {
+                            "walk": "query.is_tamed && query.is_on_ground && query.ground_speed > 0 && query.property('rift:energy') > 0"
+                        },
+                        {
+                            "biting": "query.is_tamed && query.is_delayed_attacking && query.property('rift:energy') >= 10 && (query.time_of_day >= 0.75 || query.time_of_day <= 0.25)"
+                        },
+                        {
+                            "bitingWeakened": "query.is_tamed && query.is_delayed_attacking && query.property('rift:energy') >= 50 && !query.is_sheared"
+                        },
+                        {
+                            "lightBlasting": "query.is_tamed && query.is_roaring && query.property('rift:energy') >= 50 && !query.is_sheared"
+                        }
+                    ]
+                },
+                "sleeping": {
+                    "animations": [
+                        "animRefillEnergyWhileSleeping"
+                    ],
+                    "transitions": [
+                        {
+                            "default": "!query.is_sleeping"
+                        }
+                    ]
+                },
+                "walk": {
+                    "animations": [
+                        {
+                            "animUseEnergyWhileMoving": "!query.is_sheared"
+                        },
+                        {
+                            "animUseEnergyWhileMovingWeakened": "query.is_sheared"
+                        }
+                    ],
+                    "transitions": [
+                        {
+                            "default": "query.ground_speed == 0"
+                        }
+                    ]
+                },
+                "biting": {
+                    "on_exit": [
+                        "@s rift:decrease_energy_while_biting"
+                    ],
+                    "transitions": [
+                        {
+                            "default": "!query.is_delayed_attacking"
+                        }
+                    ]
+                },
+                "bitingWeakened": {
+                    "on_exit": [
+                        "@s rift:decrease_energy_while_biting_weakened"
+                    ],
+                    "transitions": [
+                        {
+                            "default": "!query.is_delayed_attacking"
+                        }
+                    ]
+                },
+                "lightBlasting": {
+                    "on_exit": [
+                        "@s rift:decrease_energy_while_biting_weakened"
+                    ],
+                    "transitions": [
+                        {
+                            "default": "!query.is_roaring"
+                        }
+                    ]
+                }
+            }
+        },
         "controller.animation.stegosaurus_energy_movement_usage": {
             "initial_state": "default",
             "states": {
