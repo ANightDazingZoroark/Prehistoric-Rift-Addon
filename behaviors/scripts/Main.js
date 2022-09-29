@@ -8,9 +8,6 @@ import "scripts/EatFromInventory.js"
 import "scripts/JournalManagement.js"
 import { world } from "mojang-minecraft"
 
-world.events.tick.subscribe((ev) => {
-    try {
-        world.getDimension('overworld').runCommand(`event entity @a rift:remove_warning`)
-    }
-    catch (e) {}
+world.events.playerJoin.subscribe((ev) => {
+    ev.player.triggerEvent(`rift:remove_warning`)
 })
