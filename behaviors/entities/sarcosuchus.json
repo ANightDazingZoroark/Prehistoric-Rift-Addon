@@ -20,6 +20,15 @@
 					"type": "bool",
 					"default": false
 				},
+                "rift:energy": {
+                    "range": [
+						0,
+						150
+					],
+					"type": "int",
+					"default": 150,
+					"client_sync": true
+                },
                 "rift:tame_state": { //0 for standing, 1 for sitting, 2 for wandering
                     "range": [
 						0,
@@ -49,7 +58,15 @@
 				"contSarcoEndSpinCooldown": "controller.animation.sarco_end_spin_cooldown",
 				"contTameState": "controller.animation.manage_tame_state",
 				"contBehaviorState": "controller.animation.manage_tame_behavior",
+				"contEnergyUsage": "controller.animation.sarcosuchus_energy_movement_usage",
+				"contWarnLowEnergy": "controller.animation.warn_of_low_energy",
 				"animEatFromInventoryCooldown": "animation.eat_from_inventory_cooldown",
+				"animUseEnergyWhileMoving": "animation.sarcosuchus_decrease_energy_while_moving",
+				"animEnergyRegenDelay": "animation.regenerate_energy_delay",
+				"animRegenerateEnergyLand": "animation.sarcosuchus_regenerate_energy_on_land",
+				"animRegenerateEnergyWater": "animation.sarcosuchus_regenerate_energy_in_water",
+				"animLowOnEnergyEffects": "animation.effects_while_low_on_energy",
+				"animNoEnergyEffects": "animation.effects_while_no_energy",
 				"animForcedAttack": "animation.forced_attack_sarcosuchus",
 				"animWildSpinAttackWater": "animation.sarco_spin_attack_wild_water",
 				"animTamedSpinAttackWater": "animation.sarco_spin_attack_tamed_water",
@@ -68,7 +85,9 @@
 					"contSpinAttack",
 					"contSarcoEndSpinCooldown",
 					"contTameState",
-					"contBehaviorState"
+					"contBehaviorState",
+					"contEnergyUsage",
+					"contWarnLowEnergy"
 				]
 			}
         },
@@ -4939,6 +4958,26 @@
 			"rift:manage_behavior": {
 				"set_property": {
 					"rift:behavior_state": "(query.property('rift:behavior_state') >= 0 && query.property('rift:behavior_state') <= 2) ? query.property('rift:behavior_state') + 1 : 0"
+				}
+			},
+			"rift:decrease_energy_while_moving": {
+				"set_property": {
+					"rift:energy": "query.property('rift:energy') >= 15 ? query.property('rift:energy') - 15 : 0"
+				}
+			},
+			"rift:decrease_energy_while_biting": {
+				"set_property": {
+					"rift:energy": "query.property('rift:energy') >= 10 ? query.property('rift:energy') - 10 : 0"
+				}
+			},
+			"rift:decrease_energy_while_spin_attacking": {
+				"set_property": {
+					"rift:energy": "query.property('rift:energy') >= 30 ? query.property('rift:energy') - 30 : 0"
+				}
+			},
+			"rift:regenerate_energy": {
+				"set_property": {
+					"rift:energy": "query.property('rift:energy') + 5 < 150 ? query.property('rift:energy') + 5 : 150"
 				}
 			},
 			//for potion effects

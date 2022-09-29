@@ -15,6 +15,15 @@
 					"type": "bool",
 					"default": false
 				},
+                "rift:energy": {
+                    "range": [
+						0,
+						150
+					],
+					"type": "int",
+					"default": 150,
+					"client_sync": true
+                },
                 "rift:tame_state": { //0 for standing, 1 for sitting, 2 for wandering
                     "range": [
 						0,
@@ -32,7 +41,14 @@
 				"contForcedAttack": "controller.animation.general_forced_attack",
 				"contRiddenTag": "controller.animation.add_ridden_tag",
 				"contTameState": "controller.animation.manage_tame_state",
+				"contEnergyUsage": "controller.animation.parasaurolophus_energy_movement_usage",
+				"contWarnLowEnergy": "controller.animation.warn_of_low_energy",
 				"animEatFromInventoryCooldown": "animation.eat_from_inventory_cooldown",
+				"animUseEnergyWhileMoving": "animation.parasaurolophus_decrease_energy_while_moving",
+				"animEnergyRegenDelay": "animation.regenerate_energy_delay",
+				"animRegenerateEnergy": "animation.parasaurolophus_regenerate_energy",
+				"animLowOnEnergyEffects": "animation.effects_while_low_on_energy",
+				"animNoEnergyEffects": "animation.effects_while_no_energy",
 				"animForcedAttack": "animation.forced_attack_parasaurolophus"
 			},
 			"scripts": {
@@ -42,7 +58,9 @@
 					"contBabyTag",
 					"contForcedAttack",
 					"contRiddenTag",
-					"contTameState"
+					"contTameState",
+					"contEnergyUsage",
+					"contWarnLowEnergy"
 				]
 			}
         },
@@ -902,6 +920,12 @@
 										"domain": "hand",
 										"operator": "!=",
 										"value": "rift:rooted_treat"
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"operator": "!=",
+										"value": "minecraft:is_sheared"
 									}
 								]
 							},
@@ -2892,6 +2916,18 @@
 									"subject": "self"
 								},
 								{
+									"test": "is_family",
+									"subject": "self",
+									"operator": "!=",
+									"value": "parasaurScary"
+								},
+								{
+									"test": "is_family",
+									"subject": "self",
+									"operator": "!=",
+									"value": "parasaurAngerer"
+								},
+								{
 									"test": "has_component",
 									"value": "minecraft:is_tamed",
 									"subject": "self"
@@ -2931,6 +2967,18 @@
 									"operator": ">",
 									"value": 0,
 									"subject": "self"
+								},
+								{
+									"test": "is_family",
+									"subject": "self",
+									"operator": "!=",
+									"value": "parasaurScary"
+								},
+								{
+									"test": "is_family",
+									"subject": "self",
+									"operator": "!=",
+									"value": "parasaurAngerer"
 								},
 								{
 									"test": "has_component",
@@ -3796,7 +3844,8 @@
 						"playanimation @s animation.parasaurolophus.call",
 						"playsound mob.parasaurolophus.sound_blasting @a[r=10]",
 						"camerashake add @a[r=10] 4",
-						"effect @e[r=10, tag=!tamed, family=!inanimate, tag=!riding] slowness 10 255"
+						"effect @e[r=10, tag=!tamed, family=!inanimate, tag=!riding] slowness 10 255",
+						"event entity @s rift:decrease_energy_while_sound_blasting"
 					]
 				}
 			},
@@ -3827,7 +3876,8 @@
 				"run_command": {
 					"command": [
 						"playanimation @s animation.parasaurolophus.call",
-						"playsound mob.parasaurolophus.calling @a[r=10]"
+						"playsound mob.parasaurolophus.calling @a[r=10]",
+						"event entity @s rift:decrease_energy_while_using_fear_horn"
 					]
 				}
 			},
@@ -3847,7 +3897,8 @@
 					"command": [
 						"playanimation @s animation.parasaurolophus.call",
 						"playsound mob.parasaurolophus.calling @a[r=10]",
-						"tag @s add parasaurAngerer"
+						"tag @s add parasaurAngerer",
+						"event entity @s rift:decrease_energy_while_using_aggravating_horn"
 					]
 				}
 			},
@@ -3880,6 +3931,7 @@
 				"run_command": {
 					"command": [
 						"playanimation @s animation.parasaurolophus.harvest",
+						"event entity @s rift:decrease_energy_while_harvesting",
 						"function cmd.parasaur_harvest_grass",
 						"function cmd.parasaur_harvest_wheat",
 						"function cmd.parasaur_harvest_carrot",
@@ -3920,9 +3972,6 @@
 					"command": [
 						"tellraw @p {\"rawtext\":[{\"text\":\"Turret Mode Enabled\"}]}"
 					]
-				},
-				"set_property": {
-					"rift:tame_state": "1"
 				}
 			},
 			"rift:disable_turret_mode": {
@@ -3961,7 +4010,8 @@
 				"run_command": {
 					"command": [
 						"playanimation @s animation.parasaurolophus.call",
-						"playsound mob.parasaurolophus.calling @a[r=10]"
+						"playsound mob.parasaurolophus.calling @a[r=10]",
+						"event entity @s rift:decrease_energy_while_using_fear_horn"
 					]
 				}
 			},
@@ -4020,6 +4070,41 @@
 			"rift:manage_state": {
 				"set_property": {
 					"rift:tame_state": "(query.property('rift:tame_state') >= 0 && query.property('rift:tame_state') <= 1) ? query.property('rift:tame_state') + 1 : 0"
+				}
+			},
+			"rift:decrease_energy_while_moving": {
+				"set_property": {
+					"rift:energy": "query.property('rift:energy') >= 15 ? query.property('rift:energy') - 15 : 0"
+				}
+			},
+			"rift:decrease_energy_while_attacking": {
+				"set_property": {
+					"rift:energy": "query.property('rift:energy') >= 5 ? query.property('rift:energy') - 5 : 0"
+				}
+			},
+			"rift:decrease_energy_while_harvesting": {
+				"set_property": {
+					"rift:energy": "query.property('rift:energy') >= 10 ? query.property('rift:energy') - 10 : 0"
+				}
+			},
+			"rift:decrease_energy_while_using_fear_horn": {
+				"set_property": {
+					"rift:energy": "query.property('rift:energy') >= 15 ? query.property('rift:energy') - 15 : 0"
+				}
+			},
+			"rift:decrease_energy_while_using_aggravating_horn": {
+				"set_property": {
+					"rift:energy": "query.property('rift:energy') >= 15 ? query.property('rift:energy') - 15 : 0"
+				}
+			},
+			"rift:decrease_energy_while_sound_blasting": {
+				"set_property": {
+					"rift:energy": "query.property('rift:energy') >= 30 ? query.property('rift:energy') - 30 : 0"
+				}
+			},
+			"rift:regenerate_energy": {
+				"set_property": {
+					"rift:energy": "query.property('rift:energy') + 5 < 150 ? query.property('rift:energy') + 5 : 150"
 				}
 			},
 			//for potion effects

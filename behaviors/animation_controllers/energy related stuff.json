@@ -130,6 +130,127 @@
                 }
             }
         },
+        "controller.animation.parasaurolophus_energy_movement_usage": {
+            "initial_state": "default",
+            "states": {
+                "default": {
+                    "animations": [
+                        {
+                            "animRegenerateEnergy": "query.is_tamed"
+                        }
+                    ],
+                    "transitions": [
+                        {
+                            "walk": "query.is_tamed && query.is_on_ground && query.ground_speed > 0 && query.property('rift:energy') > 0"
+                        },
+                        {
+                            "turretMode": "query.is_tamed && query.is_sheared && query.property('rift:energy') >= 15"
+                        }
+                    ]
+                },
+                "walk": {
+                    "animations": [
+                        "animUseEnergyWhileMoving"
+                    ],
+                    "transitions": [
+                        {
+                            "default": "query.ground_speed == 0"
+                        }
+                    ]
+                },
+                "turretMode": {
+                    "animations": [
+                        "animRegenerateEnergy"
+                    ],
+                    "transitions": [
+                        {
+                            "default": "query.property('rift:energy') < 15"
+                        }
+                    ]
+                }
+            }
+        },
+        "controller.animation.sarcosuchus_energy_movement_usage": {
+            "initial_state": "default",
+            "states": {
+                "default": {
+                    "animations": [
+                        {
+                            "animRegenerateEnergyLand": "query.is_tamed && !query.is_in_water"
+                        },
+                        {
+                            "animRegenerateEnergyWater": "query.is_tamed && query.is_in_water"
+                        }
+                    ],
+                    "transitions": [
+                        {
+                            "walk": "query.is_tamed && !query.is_in_water && query.is_on_ground && query.ground_speed > 0 && query.property('rift:energy') > 0"
+                        },
+                        {
+                            "swim": "query.is_tamed && query.is_in_water && query.ground_speed > 0 && query.property('rift:energy') > 0"
+                        },
+                        {
+                            "biting": "query.is_tamed && query.is_delayed_attacking && query.property('rift:energy') >= 10"
+                        },
+                        {
+                            "spinAttacking": "query.is_tamed && query.is_powered && query.property('rift:energy') >= 30"
+                        }
+                    ]
+                },
+                "walk": {
+                    "animations": [
+                        "animUseEnergyWhileMoving"
+                    ],
+                    "transitions": [
+                        {
+                            "default": "query.ground_speed == 0 || query.is_in_water"
+                        },
+                        {
+                            "biting": "query.is_tamed && query.is_delayed_attacking && query.property('rift:energy') >= 10"
+                        },
+                        {
+                            "spinAttacking": "query.is_tamed && query.is_powered && query.property('rift:energy') >= 30"
+                        }
+                    ]
+                },
+                "swim": {
+                    "animations": [
+                        "animUseEnergyWhileMoving"
+                    ],
+                    "transitions": [
+                        {
+                            "default": "query.ground_speed == 0 || !query.is_in_water"
+                        },
+                        {
+                            "biting": "query.is_tamed && query.is_delayed_attacking && query.property('rift:energy') >= 10"
+                        },
+                        {
+                            "spinAttacking": "query.is_tamed && query.is_powered && query.property('rift:energy') >= 30"
+                        }
+                    ]
+                },
+                "biting": {
+                    "on_exit": [
+                        "@s rift:decrease_energy_while_biting"
+                    ],
+                    "transitions": [
+                        {
+                            "default": "!query.is_delayed_attacking"
+                        }
+                    ]
+                },
+                "spinAttacking": {
+                    "on_exit": [
+                        "@s rift:decrease_energy_while_spin_attacking"
+                    ],
+                    "transitions": [
+                        {
+                            "default": "!query.is_powered"
+                        }
+                    ]
+                }
+            }
+        },
         "controller.animation.saurophaganax_energy_movement_usage": {
             "initial_state": "default",
             "states": {
@@ -179,6 +300,15 @@
                     "transitions": [
                         {
                             "default": "query.ground_speed == 0"
+                        },
+                        {
+                            "biting": "query.is_tamed && query.is_delayed_attacking && query.property('rift:energy') >= 10 && (query.time_of_day >= 0.75 || query.time_of_day <= 0.25)"
+                        },
+                        {
+                            "bitingWeakened": "query.is_tamed && query.is_delayed_attacking && query.property('rift:energy') >= 50 && !query.is_sheared"
+                        },
+                        {
+                            "lightBlasting": "query.is_tamed && query.is_roaring && query.property('rift:energy') >= 50 && !query.is_sheared"
                         }
                     ]
                 },
@@ -231,7 +361,7 @@
                             "stabbing": "query.is_tamed && query.is_delayed_attacking && query.property('rift:energy') >= 10 && query.property('rift:focused_stab_charge') == 0"
                         },
                         {
-                            "plateFlingPrepare": "query.is_charged"
+                            "plateFlingPrepare": "query.is_tamed && query.property('rift:energy') >= 10 && query.is_charged"
                         }
                     ]
                 },
@@ -242,6 +372,12 @@
                     "transitions": [
                         {
                             "default": "query.ground_speed == 0 || query.property('rift:focused_stab_charge') > 0"
+                        },
+                        {
+                            "stabbing": "query.is_tamed && query.is_delayed_attacking && query.property('rift:energy') >= 10 && query.property('rift:focused_stab_charge') == 0"
+                        },
+                        {
+                            "plateFlingPrepare": "query.is_tamed && query.property('rift:energy') >= 10 && query.is_charged"
                         }
                     ]
                 },
@@ -299,6 +435,9 @@
                     "transitions": [
                         {
                             "default": "query.ground_speed == 0 || query.is_powered"
+                        },
+                        {
+                            "stabbing": "query.is_tamed && variable.attack_time > 0 && query.property('rift:energy') >= 10"
                         }
                     ]
                 },
@@ -339,6 +478,9 @@
                     "transitions": [
                         {
                             "default": "query.ground_speed == 0"
+                        },
+                        {
+                            "biting": "query.is_tamed && query.is_delayed_attacking && query.property('rift:energy') >= 10"
                         }
                     ]
                 },
@@ -385,6 +527,9 @@
                         },
                         {
                             "jumpDelay": "v.x = 0.0; for_each(t.rider, query.get_riders, { v.x = v.x + (t.rider -> query.is_jumping); }); return v.x > 0.0;"
+                        },
+                        {
+                            "slashing": "query.is_tamed && query.is_delayed_attacking && query.property('rift:energy') >= 10"
                         }
                     ]
                 },
