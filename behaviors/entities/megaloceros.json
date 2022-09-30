@@ -15,6 +15,15 @@
 					"type": "bool",
 					"default": false
 				},
+                "rift:energy": {
+                    "range": [
+						0,
+						150
+					],
+					"type": "int",
+					"default": 150,
+					"client_sync": true
+                },
                 "rift:tame_state": { //0 for standing, 1 for sitting, 2 for wandering
                     "range": [
 						0,
@@ -43,9 +52,16 @@
 				"contTamedBreakStuff": "controller.animation.megaloceros_tamed_can_break_blocks",
 				"contTameState": "controller.animation.manage_tame_state",
 				"contBehaviorState": "controller.animation.manage_tame_behavior",
+				"contEnergyUsage": "controller.animation.megaloceros_energy_movement_usage",
+				"contWarnLowEnergy": "controller.animation.warn_of_low_energy",
 				"animEatFromInventoryCooldown": "animation.eat_from_inventory_cooldown",
 				"animBreakStuff": "animation.megaloceros_break_stuff",
-				"animForcedAttack": "animation.forced_attack_megaloceros"
+				"animForcedAttack": "animation.forced_attack_megaloceros",
+				"animUseEnergyWhileMoving": "animation.megaloceros_decrease_energy_while_moving",
+				"animEnergyRegenDelay": "animation.regenerate_energy_delay",
+				"animRegenerateEnergy": "animation.megaloceros_regenerate_energy",
+				"animLowOnEnergyEffects": "animation.effects_while_low_on_energy",
+				"animNoEnergyEffects": "animation.effects_while_no_energy"
 			},
 			"scripts": {
 				"animate": [
@@ -57,7 +73,9 @@
 					"contWildBreakStuff",
 					"contTamedBreakStuff",
 					"contTameState",
-					"contBehaviorState"
+					"contBehaviorState",
+					"contEnergyUsage",
+					"contWarnLowEnergy"
 				]
 			}
         },
@@ -3895,6 +3913,7 @@
 				"run_command": {
 					"command": [
 						"playanimation @s animation.megaloceros.headbutt",
+						"event entity @s rift:decrease_energy_while_harvesting",
 						"function cmd.megaloceros_harvest_oak_leaves",
 						"function cmd.megaloceros_harvest_spruce_leaves",
 						"function cmd.megaloceros_harvest_birch_leaves",
@@ -3938,6 +3957,13 @@
 				"add": {
 					"component_groups": [
 						"rift:megaloceros_chested"
+					]
+				}
+			},
+			"rift:commit_suicide": {
+				"run_command": {
+					"command": [
+						"kill @s"
 					]
 				}
 			},
@@ -4033,6 +4059,36 @@
 			"rift:manage_behavior": {
 				"set_property": {
 					"rift:behavior_state": "(query.property('rift:behavior_state') >= 0 && query.property('rift:behavior_state') <= 2) ? query.property('rift:behavior_state') + 1 : 0"
+				}
+			},
+			"rift:decrease_energy_while_moving": {
+				"set_property": {
+					"rift:energy": "query.property('rift:energy') >= 15 ? query.property('rift:energy') - 15 : 0"
+				}
+			},
+			"rift:decrease_energy_while_jumping": {
+				"set_property": {
+					"rift:energy": "query.property('rift:energy') >= 30 ? query.property('rift:energy') - 30 : 0"
+				}
+			},
+			"rift:decrease_energy_while_headbutting": {
+				"set_property": {
+					"rift:energy": "query.property('rift:energy') >= 10 ? query.property('rift:energy') - 10 : 0"
+				}
+			},
+			"rift:decrease_energy_while_harvesting": {
+				"set_property": {
+					"rift:energy": "query.property('rift:energy') >= 10 ? query.property('rift:energy') - 10 : 0"
+				}
+			},
+			"rift:decrease_energy_while_rage_mode": {
+				"set_property": {
+					"rift:energy": "query.property('rift:energy') >= 15 ? query.property('rift:energy') - 15 : 0"
+				}
+			},
+			"rift:regenerate_energy": {
+				"set_property": {
+					"rift:energy": "query.property('rift:energy') + 5 < 150 ? query.property('rift:energy') + 5 : 150"
 				}
 			},
 			//for potion effects

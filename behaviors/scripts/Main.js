@@ -7,7 +7,6 @@ import 'scripts/BlockDetectManagement.js'
 import 'scripts/DamageManagement.js'
 import 'scripts/EatFromInventory.js'
 import 'scripts/EffectManagement.js'
-import 'scripts/FirearmManagement.js'
 import 'scripts/JournalManagement.js'
 import { DynamicPropertiesDefinition, MinecraftEntityTypes, world } from 'mojang-minecraft'
 
@@ -45,6 +44,6 @@ world.events.worldInitialize.subscribe((ev) => {
     ev.propertyRegistry.registerEntityTypeDynamicProperties(playerData, MinecraftEntityTypes.player)
 })
 
-world.events.tick.subscribe((ev) => {
-    world.getDimension('overworld').runCommand(`event entity @a rift:remove_warning`)
+world.events.playerJoin.subscribe((ev) => {
+    ev.player.triggerEvent(`rift:remove_warning`)
 })

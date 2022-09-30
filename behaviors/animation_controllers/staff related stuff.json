@@ -2268,8 +2268,24 @@
 							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:megaloceros'"
 						},
 						{
-							"headbuttModeLimbo": "query.is_using_item && (query.get_ride -> query.is_saddled) && query.get_equipped_item_name('main_hand') == 'command_staff'"
+							"headbuttModeLimbo": "query.is_using_item && (query.get_ride -> query.property('rift:energy')) >= 10 && (query.get_ride -> query.is_saddled) && query.get_equipped_item_name('main_hand') == 'command_staff'"
+						},
+						{
+							"headbuttModeFail": "query.is_using_item && (query.get_ride -> query.property('rift:energy')) < 10 && (query.get_ride -> query.is_saddled) && query.get_equipped_item_name('main_hand') == 'command_staff'"
 						}
+					]
+				},
+				"headbuttModeFail": {
+					"transitions": [
+						{
+							"headbuttMode": "!query.is_using_item"
+						},
+						{
+							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:megaloceros'"
+						}
+					],
+					"on_entry": [
+						"/tellraw @s {\"rawtext\":[{\"text\":\"You don't have enough energy to perform this action!\"}]}"
 					]
 				},
 				"headbuttModeLimbo": {
@@ -2317,8 +2333,24 @@
 							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:megaloceros'"
 						},
 						{
-							"chargeModeLimbo": "query.is_using_item && (query.get_ride -> query.is_saddled) && query.get_equipped_item_name('main_hand') == 'command_staff'"
+							"chargeModeLimbo": "query.is_using_item && (query.get_ride -> query.property('rift:energy')) - 15 >= 15 && (query.get_ride -> query.is_saddled) && query.get_equipped_item_name('main_hand') == 'command_staff'"
+						},
+						{
+							"chargeModeFail": "query.is_using_item && (query.get_ride -> query.property('rift:energy')) - 15 < 15 && (query.get_ride -> query.is_saddled) && query.get_equipped_item_name('main_hand') == 'command_staff'"
 						}
+					]
+				},
+				"chargeModeFail": {
+					"transitions": [
+						{
+							"chargeMode": "!query.is_using_item"
+						},
+						{
+							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:megaloceros'"
+						}
+					],
+					"on_entry": [
+						"/tellraw @s {\"rawtext\":[{\"text\":\"You don't have enough energy to perform this action!\"}]}"
 					]
 				},
 				"chargeModeLimbo": {
@@ -2344,7 +2376,8 @@
 						}
 					],
 					"on_entry": [
-						"/tag @e[type=rift:megaloceros, c=1, tag=tamed, tag=!baby] add megalocerosCharge"
+						"/tag @e[type=rift:megaloceros, c=1, tag=tamed, tag=!baby] add megalocerosCharge",
+						"/event entity @e[type=rift:megaloceros, c=1, tag=tamed, tag=!baby] rift:decrease_energy_while_rage_mode"
 					]
 				},
 				"chargeToHeadbutt": {
