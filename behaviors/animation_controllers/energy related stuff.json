@@ -130,6 +130,139 @@
                 }
             }
         },
+        "controller.animation.direwolf_energy_movement_usage": {
+            "initial_state": "default",
+            "states": {
+                "default": {
+                    "animations": [
+                        {
+                            "animRegenerateEnergyNormal": "query.is_tamed && !query.is_ignited"
+                        },
+                        {
+                            "animRegenerateEnergyWerewolf": "query.is_tamed && query.is_ignited"
+                        }
+                    ],
+                    "transitions": [
+                        {
+                            "walk": "query.is_tamed && query.is_on_ground && query.ground_speed > 0 && query.property('rift:energy') > 0"
+                        },
+                        {
+                            "jumpDelay": "v.x = 0.0; for_each(t.rider, query.get_riders, { v.x = v.x + (t.rider -> query.is_jumping); }); return v.x > 0.0 && query.is_tamed && query.is_on_ground && query.has_rider && query.property('rift:energy') > 30 && query.is_ignited;"
+                        },
+                        {
+                            "bitingNormal": "query.is_tamed && variable.attack_time > 0 && query.property('rift:energy') >= 10 && !query.is_ignited"
+                        },
+                        {
+                            "bitingWerewolf": "query.is_tamed && query.is_delayed_attacking && query.mark_variant == 0 && query.property('rift:energy') >= 15 && query.is_ignited"
+                        },
+                        {
+                            "slashingWerewolf": "query.is_tamed && query.is_delayed_attacking && query.mark_variant == 1 && query.property('rift:energy') >= 10 && query.is_ignited"
+                        },
+                        {
+                            "breathingWerewolf": "query.is_tamed && query.is_sonic_boom && query.property('rift:energy') >= 30 && query.is_ignited"
+                        }
+                    ]
+                },
+                "jumpDelay": {
+                    "animations": [
+                        {
+                            "animUseEnergyWhileMovingNormal": "!query.is_ignited"
+                        },
+                        {
+                            "animUseEnergyWhileMovingWerewolf": "query.is_ignited"
+                        }
+                    ],
+                    "transitions": [
+                        {
+                            "default": "!query.has_rider || query.property('rift:energy') <= 30 || !query.is_ignited"
+                        },
+                        {
+                            "jump": "v.x = 0.0; for_each(t.rider, query.get_riders, { v.x = v.x + !(t.rider -> query.is_jumping); }); return v.x > 0.0;"
+                        }
+                    ]
+                },
+                "jump": {
+                    "on_entry": [
+                        "@s rift:decrease_energy_while_jumping"
+                    ],
+                    "transitions": [
+                        {
+                            "default": "query.is_on_ground"
+                        }
+                    ]
+                },
+                "walk": {
+                    "animations": [
+                        {
+                            "animUseEnergyWhileMovingNormal": "!query.is_ignited"
+                        },
+                        {
+                            "animUseEnergyWhileMovingWerewolf": "query.is_ignited"
+                        }
+                    ],
+                    "transitions": [
+                        {
+                            "default": "query.ground_speed == 0"
+                        },
+                        {
+                            "jumpDelay": "v.x = 0.0; for_each(t.rider, query.get_riders, { v.x = v.x + (t.rider -> query.is_jumping); }); return v.x > 0.0 && query.is_tamed && query.is_on_ground && query.has_rider && query.property('rift:energy') > 30 && query.is_ignited;"
+                        },
+                        {
+                            "bitingNormal": "query.is_tamed && variable.attack_time > 0 && query.property('rift:energy') >= 10 && !query.is_ignited"
+                        },
+                        {
+                            "bitingWerewolf": "query.is_tamed && query.is_delayed_attacking && query.mark_variant == 0 && query.property('rift:energy') >= 15 && query.is_ignited"
+                        },
+                        {
+                            "slashingWerewolf": "query.is_tamed && query.is_delayed_attacking && query.mark_variant == 1 && query.property('rift:energy') >= 10 && query.is_ignited"
+                        },
+                        {
+                            "breathingWerewolf": "query.is_tamed && query.is_sonic_boom && query.property('rift:energy') >= 30 && query.is_ignited"
+                        }
+                    ]
+                },
+                "bitingNormal": {
+                    "on_exit": [
+                        "@s rift:decrease_energy_while_biting_normal"
+                    ],
+                    "transitions": [
+                        {
+                            "default": "variable.attack_time <= 0 || query.is_ignited"
+                        }
+                    ]
+                },
+                "bitingWerewolf": {
+                    "on_exit": [
+                        "@s rift:decrease_energy_while_biting_werewolf"
+                    ],
+                    "transitions": [
+                        {
+                            "default": "!query.is_delayed_attacking || !query.is_ignited"
+                        }
+                    ]
+                },
+                "slashingWerewolf": {
+                    "on_exit": [
+                        "@s rift:decrease_energy_while_slashing_werewolf"
+                    ],
+                    "transitions": [
+                        {
+                            "default": "!query.is_delayed_attacking || !query.is_ignited"
+                        }
+                    ]
+                },
+                "breathingWerewolf": {
+                    "on_exit": [
+                        "@s rift:decrease_energy_while_breathing_werewolf"
+                    ],
+                    "transitions": [
+                        {
+                            "default": "!query.is_sonic_boom || !query.is_ignited"
+                        }
+                    ]
+                }
+            }
+        },
         "controller.animation.megaloceros_energy_movement_usage": {
             "initial_state": "default",
             "states": {

@@ -1740,8 +1740,24 @@
 							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:direwolf' || (query.get_ride -> query.is_ignited)"
 						},
 						{
-							"biteModeLimbo": "query.is_using_item && (query.get_ride -> query.is_saddled) && query.get_equipped_item_name('main_hand') == 'command_staff'"
+							"biteModeLimbo": "query.is_using_item && (query.get_ride -> query.property('rift:energy')) >= 10 && query.get_equipped_item_name('main_hand') == 'command_staff'"
+						},
+						{
+							"biteModeFail": "query.is_using_item && (query.get_ride -> query.property('rift:energy')) < 10 && query.get_equipped_item_name('main_hand') == 'command_staff'"
 						}
+					]
+				},
+				"biteModeFail": {
+					"transitions": [
+						{
+							"biteMode": "!query.is_using_item"
+						},
+						{
+							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:direwolf'"
+						}
+					],
+					"on_entry": [
+						"/tellraw @s {\"rawtext\":[{\"text\":\"You don't have enough energy to perform this action!\"}]}"
 					]
 				},
 				"biteModeLimbo": {
@@ -1789,8 +1805,24 @@
 							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:direwolf' || (query.get_ride -> query.is_ignited)"
 						},
 						{
-							"callModeLimbo": "query.is_using_item && (query.get_ride -> query.is_saddled) && query.get_equipped_item_name('main_hand') == 'command_staff'"
+							"callModeLimbo": "query.is_using_item && (query.get_ride -> query.property('rift:energy')) >= 7 && query.get_equipped_item_name('main_hand') == 'command_staff'"
+						},
+						{
+							"callModeFail": "query.is_using_item && (query.get_ride -> query.property('rift:energy')) < 7 && query.get_equipped_item_name('main_hand') == 'command_staff'"
 						}
+					]
+				},
+				"callModeFail": {
+					"transitions": [
+						{
+							"callMode": "!query.is_using_item"
+						},
+						{
+							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:direwolf'"
+						}
+					],
+					"on_entry": [
+						"/tellraw @s {\"rawtext\":[{\"text\":\"You don't have enough energy to perform this action!\"}]}"
 					]
 				},
 				"callModeLimbo": {
@@ -1838,8 +1870,24 @@
 							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:direwolf' || (query.get_ride -> query.is_ignited)"
 						},
 						{
-							"sniffModeLimbo": "query.is_using_item && (query.get_ride -> query.is_saddled) && query.get_equipped_item_name('main_hand') == 'command_staff'"
+							"sniffModeLimbo": "query.is_using_item && (query.get_ride -> query.property('rift:energy')) >= 5 && query.get_equipped_item_name('main_hand') == 'command_staff'"
+						},
+						{
+							"sniffModeFail": "query.is_using_item && (query.get_ride -> query.property('rift:energy')) < 5 && query.get_equipped_item_name('main_hand') == 'command_staff'"
 						}
+					]
+				},
+				"sniffModeFail": {
+					"transitions": [
+						{
+							"sniffMode": "!query.is_using_item"
+						},
+						{
+							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:direwolf'"
+						}
+					],
+					"on_entry": [
+						"/tellraw @s {\"rawtext\":[{\"text\":\"You don't have enough energy to perform this action!\"}]}"
 					]
 				},
 				"sniffModeLimbo": {
@@ -1865,7 +1913,8 @@
 						}
 					],
 					"on_entry": [
-						"/execute as @e[x=~-24, dx=48, y=~-4, dy=20, z=~-24, dz=48, c=16, type=!xp_orb, type=!player, type=!item, tag=!tamed, family=!inanimate] positioned as @e[x=~-24, dx=48, y=~-4, dy=20, z=~-24, dz=48, c=16, type=!xp_orb, type=!player, type=!item, tag=!tamed, family=!inanimate] run summon rift:direwolf_alert_icon "
+						"/execute as @e[x=~-24, dx=48, y=~-4, dy=20, z=~-24, dz=48, c=16, type=!xp_orb, type=!player, type=!item, tag=!tamed, family=!inanimate] positioned as @e[x=~-24, dx=48, y=~-4, dy=20, z=~-24, dz=48, c=16, type=!xp_orb, type=!player, type=!item, tag=!tamed, family=!inanimate] run summon rift:direwolf_alert_icon ",
+						"/event entity @e[type=rift:direwolf, c=1, tag=tamed, tag=!baby] rift:decrease_energy_while_sniffing"
 					]
 				},
 				"sniffToSnarl": {
@@ -1887,8 +1936,24 @@
 							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:direwolf' || (query.get_ride -> query.is_ignited)"
 						},
 						{
-							"snarlModeLimbo": "query.is_using_item && (query.get_ride -> query.is_saddled) && query.get_equipped_item_name('main_hand') == 'command_staff'"
+							"snarlModeLimbo": "query.is_using_item && (query.get_ride -> query.property('rift:energy')) >= 7 && query.get_equipped_item_name('main_hand') == 'command_staff'"
+						},
+						{
+							"snarlModeFail": "query.is_using_item && (query.get_ride -> query.property('rift:energy')) < 7 && query.get_equipped_item_name('main_hand') == 'command_staff'"
 						}
+					]
+				},
+				"snarlModeFail": {
+					"transitions": [
+						{
+							"snarlMode": "!query.is_using_item"
+						},
+						{
+							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:direwolf'"
+						}
+					],
+					"on_entry": [
+						"/tellraw @s {\"rawtext\":[{\"text\":\"You don't have enough energy to perform this action!\"}]}"
 					]
 				},
 				"snarlModeLimbo": {
@@ -1915,7 +1980,8 @@
 					],
 					"on_entry": [
 						"/playanimation @e[type=rift:direwolf, c=1, tag=tamed, tag=!baby] animation.direwolf.snarl",
-						"/execute as @e[type=rift:direwolf, c=1, tag=tamed, tag=!baby] run effect @e[type=!player, tag=!tamed, family=!inanimate, r=16] weakness 90"
+						"/execute as @e[type=rift:direwolf, c=1, tag=tamed, tag=!baby] run effect @e[type=!player, tag=!tamed, family=!inanimate, r=16] weakness 90",
+						"/event entity @e[type=rift:direwolf, c=1, tag=tamed, tag=!baby] rift:decrease_energy_while_snarling"
 					]
 				},
 				"snarlToBite": {
@@ -1952,8 +2018,24 @@
 							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:direwolf' || !(query.get_ride -> query.is_ignited)"
 						},
 						{
-							"biteModeLimbo": "query.is_using_item && query.get_equipped_item_name('main_hand') == 'command_staff'"
+							"biteModeLimbo": "query.is_using_item && (query.get_ride -> query.property('rift:energy')) >= 15 && query.get_equipped_item_name('main_hand') == 'command_staff'"
+						},
+						{
+							"biteModeFail": "query.is_using_item && (query.get_ride -> query.property('rift:energy')) < 15 && query.get_equipped_item_name('main_hand') == 'command_staff'"
 						}
+					]
+				},
+				"biteModeFail": {
+					"transitions": [
+						{
+							"biteMode": "!query.is_using_item"
+						},
+						{
+							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:direwolf'"
+						}
+					],
+					"on_entry": [
+						"/tellraw @s {\"rawtext\":[{\"text\":\"You don't have enough energy to perform this action!\"}]}"
 					]
 				},
 				"biteModeLimbo": {
@@ -2001,8 +2083,24 @@
 							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:direwolf' || !(query.get_ride -> query.is_ignited)"
 						},
 						{
-							"slashModeLimbo": "query.is_using_item && query.get_equipped_item_name('main_hand') == 'command_staff'"
+							"slashModeLimbo": "query.is_using_item && (query.get_ride -> query.property('rift:energy')) >= 10 && query.get_equipped_item_name('main_hand') == 'command_staff'"
+						},
+						{
+							"slashModeFail": "query.is_using_item && (query.get_ride -> query.property('rift:energy')) < 10 && query.get_equipped_item_name('main_hand') == 'command_staff'"
 						}
+					]
+				},
+				"slashModeFail": {
+					"transitions": [
+						{
+							"slashMode": "!query.is_using_item"
+						},
+						{
+							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:direwolf'"
+						}
+					],
+					"on_entry": [
+						"/tellraw @s {\"rawtext\":[{\"text\":\"You don't have enough energy to perform this action!\"}]}"
 					]
 				},
 				"slashModeLimbo": {
@@ -2050,11 +2148,27 @@
 							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:direwolf' || !(query.get_ride -> query.is_ignited)"
 						},
 						{
-							"breathModeLimbo": "query.is_using_item && query.get_equipped_item_name('main_hand') == 'command_staff'"
+							"breathModeLimbo": "query.is_using_item && (query.get_ride -> query.property('rift:energy')) >= 30 && query.get_equipped_item_name('main_hand') == 'command_staff'"
+						},
+						{
+							"breathModeFail": "query.is_using_item && (query.get_ride -> query.property('rift:energy')) < 30 && query.get_equipped_item_name('main_hand') == 'command_staff'"
 						}
 					],
 					"on_entry": [
 						"/effect @e[type=rift:direwolf, c=1, tag=tamed, tag=!baby] slowness 0"
+					]
+				},
+				"breathModeFail": {
+					"transitions": [
+						{
+							"breathMode": "!query.is_using_item"
+						},
+						{
+							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:direwolf'"
+						}
+					],
+					"on_entry": [
+						"/tellraw @s {\"rawtext\":[{\"text\":\"You don't have enough energy to perform this action!\"}]}"
 					]
 				},
 				"breathModeLimbo": {
@@ -2102,8 +2216,24 @@
 							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:direwolf' || !(query.get_ride -> query.is_ignited)"
 						},
 						{
-							"callModeLimbo": "query.is_using_item && query.get_equipped_item_name('main_hand') == 'command_staff'"
+							"callModeLimbo": "query.is_using_item && (query.get_ride -> query.property('rift:energy')) >= 7 && query.get_equipped_item_name('main_hand') == 'command_staff'"
+						},
+						{
+							"callModeFail": "query.is_using_item && (query.get_ride -> query.property('rift:energy')) < 7 && query.get_equipped_item_name('main_hand') == 'command_staff'"
 						}
+					]
+				},
+				"callModeFail": {
+					"transitions": [
+						{
+							"callMode": "!query.is_using_item"
+						},
+						{
+							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:direwolf'"
+						}
+					],
+					"on_entry": [
+						"/tellraw @s {\"rawtext\":[{\"text\":\"You don't have enough energy to perform this action!\"}]}"
 					]
 				},
 				"callModeLimbo": {
@@ -2151,11 +2281,24 @@
 							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:direwolf' || !(query.get_ride -> query.is_ignited)"
 						},
 						{
-							"sniffModeLimbo": "query.is_using_item && query.get_equipped_item_name('main_hand') == 'command_staff'"
+							"sniffModeLimbo": "query.is_using_item && (query.get_ride -> query.property('rift:energy')) >= 5 && query.get_equipped_item_name('main_hand') == 'command_staff'"
+						},
+						{
+							"sniffModeFail": "query.is_using_item && (query.get_ride -> query.property('rift:energy')) < 5 && query.get_equipped_item_name('main_hand') == 'command_staff'"
+						}
+					]
+				},
+				"sniffModeFail": {
+					"transitions": [
+						{
+							"sniffMode": "!query.is_using_item"
+						},
+						{
+							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:direwolf'"
 						}
 					],
 					"on_entry": [
-						"/execute as @e[type=rift:direwolf, c=1, tag=tamed, tag=!baby] run tag @e remove sniffedByDirewolf"
+						"/tellraw @s {\"rawtext\":[{\"text\":\"You don't have enough energy to perform this action!\"}]}"
 					]
 				},
 				"sniffModeLimbo": {
@@ -2181,7 +2324,8 @@
 						}
 					],
 					"on_entry": [
-						"/execute as @e[x=~-48, dx=96, y=~-4, dy=20, z=~-48, dz=96, c=16, type=!xp_orb, type=!player, type=!item, tag=!tamed, family=!inanimate] positioned as @e[x=~-48, dx=96, y=~-4, dy=20, z=~-48, dz=96, c=16, type=!xp_orb, type=!player, type=!item, tag=!tamed, family=!inanimate] run summon rift:direwolf_alert_icon "
+						"/execute as @e[x=~-48, dx=96, y=~-4, dy=20, z=~-48, dz=96, c=16, type=!xp_orb, type=!player, type=!item, tag=!tamed, family=!inanimate] positioned as @e[x=~-48, dx=96, y=~-4, dy=20, z=~-48, dz=96, c=16, type=!xp_orb, type=!player, type=!item, tag=!tamed, family=!inanimate] run summon rift:direwolf_alert_icon ",
+						"/event entity @e[type=rift:direwolf, c=1, tag=tamed, tag=!baby] rift:decrease_energy_while_sniffing"
 					]
 				},
 				"sniffToSnarl": {
@@ -2230,8 +2374,9 @@
 						}
 					],
 					"on_entry": [
-						"/playanimation @s[type=rift:direwolf, c=1, tag=tamed, tag=!baby] animation.direwolf_werewolf.snarl",
-						"/execute as @e[type=rift:direwolf, c=1, tag=tamed, tag=!baby] run effect @e[type=!player, tag=!tamed, family=!inanimate, r=16] weakness 30 1"
+						"/playanimation @e[type=rift:direwolf, c=1, tag=tamed, tag=!baby] animation.direwolf_werewolf.snarl",
+						"/execute as @e[type=rift:direwolf, c=1, tag=tamed, tag=!baby] run effect @e[type=!player, tag=!tamed, family=!inanimate, r=16] weakness 30 1",
+						"/event entity @e[type=rift:direwolf, c=1, tag=tamed, tag=!baby] rift:decrease_energy_while_snarling"
 					]
 				},
 				"snarlToBite": {

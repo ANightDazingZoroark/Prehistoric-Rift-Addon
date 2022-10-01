@@ -12,6 +12,12 @@
 				"max_durability": 1
 			},
 			"minecraft:use_animation": "bow",
+			"minecraft:on_use": {
+				"on_use": {
+					"event": "rift:shoot",
+					"target": "self"
+				}
+			},
 			"minecraft:weapon": {
 				"on_hurt_entity": {
 					"event": "rift:damage",
@@ -38,6 +44,24 @@
 			}
 		},
 		"events": {
+			"rift:shoot": {
+				"sequence": [
+					{
+						"condition": "query.remaining_durability > 0",
+						"damage": {
+							"type": "durability",
+							"amount": 1,
+							"target": "self"
+						},
+						"run_command": {
+							"command": [
+								"say pew pew"
+							],
+							"target": "holder"
+						}
+					}
+				]
+			},
 			"rift:damage": {
 				"sequence": [
 					{

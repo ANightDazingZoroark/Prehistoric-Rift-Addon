@@ -8,7 +8,7 @@ import 'scripts/DamageManagement.js'
 import 'scripts/EatFromInventory.js'
 import 'scripts/EffectManagement.js'
 import 'scripts/JournalManagement.js'
-import { DynamicPropertiesDefinition, MinecraftEntityTypes, world } from 'mojang-minecraft'
+import { DynamicPropertiesDefinition, MinecraftEntityTypes, /**system,**/ world } from 'mojang-minecraft'
 
 world.events.worldInitialize.subscribe((ev) => {
     //initialize journal related stuff so that you need to unlock journal entries b4 reading them
@@ -44,6 +44,6 @@ world.events.worldInitialize.subscribe((ev) => {
     ev.propertyRegistry.registerEntityTypeDynamicProperties(playerData, MinecraftEntityTypes.player)
 })
 
-world.events.playerJoin.subscribe((ev) => {
-    ev.player.triggerEvent(`rift:remove_warning`)
-})
+world.events.playerJoin.subscribe(ev => ev.player.triggerEvent(`rift:remove_warning`))
+
+// system.events.beforeWatchdogTerminate.subscribe(ev => ev.cancel = false)
