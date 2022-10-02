@@ -130,6 +130,176 @@
                 }
             }
         },
+        "controller.animation.baryonyx_energy_movement_usage": {
+            "initial_state": "default",
+            "states": {
+                "default": {
+                    "animations": [
+                        {
+                            "animRegenerateEnergyLand": "query.is_tamed && !query.is_in_water"
+                        },
+                        {
+                            "animRegenerateEnergyWater": "query.is_tamed && query.is_in_water"
+                        }
+                    ],
+                    "transitions": [
+                        {
+                            "walk": "query.is_tamed && !query.is_in_water && query.is_on_ground && query.ground_speed > 0 && query.property('rift:energy') > 0"
+                        },
+                        {
+                            "swim": "query.is_tamed && query.is_in_water && query.ground_speed > 0 && query.property('rift:energy') > 0"
+                        },
+                        {
+                            "biteAttacking": "query.is_tamed && query.is_delayed_attacking && query.mark_variant == 0 && query.property('rift:energy') >= 15"
+                        },
+                        {
+                            "clawAttacking": "query.is_tamed && variable.attack_time > 0 && query.mark_variant == 1 && query.property('rift:energy') >= 10"
+                        }
+                    ]
+                },
+                "walk": {
+                    "animations": [
+                        "animUseEnergyWhileMoving"
+                    ],
+                    "transitions": [
+                        {
+                            "default": "query.ground_speed == 0 || query.is_in_water"
+                        },
+                        {
+                            "biteAttacking": "query.is_tamed && query.is_delayed_attacking && query.mark_variant == 0 && query.property('rift:energy') >= 15"
+                        },
+                        {
+                            "clawAttacking": "query.is_tamed && variable.attack_time > 0 && query.mark_variant == 1 && query.property('rift:energy') >= 10"
+                        }
+                    ]
+                },
+                "swim": {
+                    "animations": [
+                        "animUseEnergyWhileMoving"
+                    ],
+                    "transitions": [
+                        {
+                            "default": "query.ground_speed == 0 || !query.is_in_water"
+                        },
+                        {
+                            "biteAttacking": "query.is_tamed && query.is_delayed_attacking && query.mark_variant == 0 && query.property('rift:energy') >= 15"
+                        },
+                        {
+                            "clawAttacking": "query.is_tamed && variable.attack_time > 0 && query.mark_variant == 1 && query.property('rift:energy') >= 10"
+                        }
+                    ]
+                },
+                "biteAttacking": {
+                    "on_exit": [
+                        "@s rift:decrease_energy_while_bite_attacking"
+                    ],
+                    "transitions": [
+                        {
+                            "default": "!query.is_delayed_attacking"
+                        }
+                    ]
+                },
+                "clawAttacking": {
+                    "on_exit": [
+                        "@s rift:decrease_energy_while_claw_attacking"
+                    ],
+                    "transitions": [
+                        {
+                            "default": "variable.attack_time <= 0"
+                        }
+                    ]
+                }
+            }
+        },
+        "controller.animation.dimetrodon_energy_movement_usage": {
+            "initial_state": "default",
+            "states": {
+                "default": {
+                    "animations": [
+                        {
+                            "animRegenerateEnergyNormal": "query.is_tamed && !query.is_charged && !query.is_ignited"
+                        },
+                        {
+                            "animRegenerateEnergyFrost": "query.is_tamed && query.is_charged && !query.is_ignited"
+                        },
+                        {
+                            "animRegenerateEnergyFlame": "query.is_tamed && !query.is_charged && query.is_ignited"
+                        }
+                    ],
+                    "transitions": [
+                        {
+                            "walk": "query.is_tamed && query.is_on_ground && query.ground_speed > 0 && query.property('rift:energy') > 0"
+                        },
+                        {
+                            "bitingNormal": "query.is_tamed && query.is_delayed_attacking && query.property('rift:energy') >= 10 && !query.is_charged && !query.is_ignited"
+                        },
+                        {
+                            "bitingFrost": "query.is_tamed && query.is_delayed_attacking && query.property('rift:energy') >= 12 && query.is_charged && !query.is_ignited"
+                        },
+                        {
+                            "bitingFlame": "query.is_tamed && query.is_delayed_attacking && query.property('rift:energy') >= 7 && !query.is_charged && query.is_ignited"
+                        }
+                    ]
+                },
+                "walk": {
+                    "animations": [
+                        {
+                            "animUseEnergyWhileMovingNormal": "!query.is_charged && !query.is_ignited"
+                        },
+                        {
+                            "animUseEnergyWhileMovingFrost": "query.is_charged && !query.is_ignited"
+                        },
+                        {
+                            "animUseEnergyWhileMovingFlame": "!query.is_charged && query.is_ignited"
+                        }
+                    ],
+                    "transitions": [
+                        {
+                            "default": "query.ground_speed == 0"
+                        },
+                        {
+                            "bitingNormal": "query.is_tamed && query.is_delayed_attacking && query.property('rift:energy') >= 10 && !query.is_charged && !query.is_ignited"
+                        },
+                        {
+                            "bitingFrost": "query.is_tamed && query.is_delayed_attacking && query.property('rift:energy') >= 12 && query.is_charged && !query.is_ignited"
+                        },
+                        {
+                            "bitingFlame": "query.is_tamed && query.is_delayed_attacking && query.property('rift:energy') >= 7 && !query.is_charged && query.is_ignited"
+                        }
+                    ]
+                },
+                "bitingNormal": {
+                    "on_exit": [
+                        "@s rift:decrease_energy_while_biting_normal"
+                    ],
+                    "transitions": [
+                        {
+                            "default": "!query.is_delayed_attacking"
+                        }
+                    ]
+                },
+                "bitingFrost": {
+                    "on_exit": [
+                        "@s rift:decrease_energy_while_biting_frost"
+                    ],
+                    "transitions": [
+                        {
+                            "default": "!query.is_delayed_attacking"
+                        }
+                    ]
+                },
+                "bitingFlame": {
+                    "on_exit": [
+                        "@s rift:decrease_energy_while_biting_flame"
+                    ],
+                    "transitions": [
+                        {
+                            "default": "!query.is_delayed_attacking"
+                        }
+                    ]
+                }
+            }
+        },
         "controller.animation.direwolf_energy_movement_usage": {
             "initial_state": "default",
             "states": {

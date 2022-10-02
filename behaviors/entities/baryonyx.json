@@ -40,6 +40,15 @@
 					],
 					"type": "int",
 					"default": 0
+                },
+                "rift:energy": {
+                    "range": [
+						0,
+						150
+					],
+					"type": "int",
+					"default": 150,
+					"client_sync": true
                 }
 			},
 			"animations": {
@@ -51,7 +60,15 @@
 				"contTameState": "controller.animation.manage_tame_state",
 				"contBehaviorState": "controller.animation.manage_tame_behavior",
 				"contForcedAttack": "controller.animation.baryonyx_forced_attack",
+				"contEnergyUsage": "controller.animation.baryonyx_energy_movement_usage",
+				"contWarnLowEnergy": "controller.animation.warn_of_low_energy",
 				"animEatFromInventoryCooldown": "animation.eat_from_inventory_cooldown",
+				"animUseEnergyWhileMoving": "animation.baryonyx_decrease_energy_while_moving",
+				"animEnergyRegenDelay": "animation.regenerate_energy_delay",
+				"animRegenerateEnergyLand": "animation.baryonyx_regenerate_energy_on_land",
+				"animRegenerateEnergyWater": "animation.baryonyx_regenerate_energy_in_water",
+				"animLowOnEnergyEffects": "animation.effects_while_low_on_energy",
+				"animNoEnergyEffects": "animation.effects_while_no_energy",
 				"animForcedAttackBite": "animation.forced_attack_baryonyx_bite",
 				"animForcedAttackSlashOne": "animation.forced_attack_baryonyx_slash_one",
 				"animForcedAttackSlashTwo": "animation.forced_attack_baryonyx_slash_two"
@@ -65,7 +82,9 @@
 					"contRiddenTag",
 					"contTameState",
 					"contBehaviorState",
-					"contForcedAttack"
+					"contForcedAttack",
+					"contEnergyUsage",
+					"contWarnLowEnergy"
 				]
 			}
         },
@@ -4669,6 +4688,26 @@
 			"rift:manage_behavior": {
 				"set_property": {
 					"rift:behavior_state": "(query.property('rift:behavior_state') >= 0 && query.property('rift:behavior_state') <= 2) ? query.property('rift:behavior_state') + 1 : 0"
+				}
+			},
+			"rift:decrease_energy_while_moving": {
+				"set_property": {
+					"rift:energy": "query.property('rift:energy') >= 15 ? query.property('rift:energy') - 15 : 0"
+				}
+			},
+			"rift:decrease_energy_while_bite_attacking": {
+				"set_property": {
+					"rift:energy": "query.property('rift:energy') >= 15 ? query.property('rift:energy') - 15 : 0"
+				}
+			},
+			"rift:decrease_energy_while_claw_attacking": {
+				"set_property": {
+					"rift:energy": "query.property('rift:energy') >= 10 ? query.property('rift:energy') - 10 : 0"
+				}
+			},
+			"rift:regenerate_energy": {
+				"set_property": {
+					"rift:energy": "query.property('rift:energy') + 5 < 150 ? query.property('rift:energy') + 5 : 150"
 				}
 			},
 			//for potion effects

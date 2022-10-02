@@ -12,6 +12,15 @@
 					"default": false,
 					"client_sync": true
 				},
+                "rift:energy": {
+                    "range": [
+						0,
+						150
+					],
+					"type": "int",
+					"default": 150,
+					"client_sync": true
+                },
                 "rift:tame_state": { //0 for standing, 1 for sitting, 2 for wandering
                     "range": [
 						0,
@@ -34,14 +43,27 @@
 				"contTameTag": "controller.animation.add_tame_tag",
 				"contBabyTag": "controller.animation.add_baby_tag",
 				"contTameState": "controller.animation.manage_tame_state",
-				"contBehaviorState": "controller.animation.manage_tame_behavior"
+				"contBehaviorState": "controller.animation.manage_tame_behavior",
+				"contEnergyUsage": "controller.animation.dimetrodon_energy_movement_usage",
+				"contWarnLowEnergy": "controller.animation.warn_of_low_energy",
+				"animRegenerateEnergyNormal": "animation.dimetrodon_decrease_energy_while_moving_normal",
+				"animRegenerateEnergyFrost": "animation.dimetrodon_decrease_energy_while_moving_frost",
+				"animRegenerateEnergyFlame": "animation.dimetrodon_decrease_energy_while_moving_flame",
+				"animEnergyRegenDelay": "animation.regenerate_energy_delay",
+				"animUseEnergyWhileMovingNormal": "animation.dimetrodon_regenerate_energy_normal",
+				"animUseEnergyWhileMovingFrost": "animation.dimetrodon_regenerate_energy_frost",
+				"animUseEnergyWhileMovingFlame": "animation.dimetrodon_regenerate_energy_flame",
+				"animLowOnEnergyEffects": "animation.effects_while_low_on_energy",
+				"animNoEnergyEffects": "animation.effects_while_no_energy"
 			},
 			"scripts": {
 				"animate": [
 					"contTameTag",
 					"contBabyTag",
 					"contTameState",
-					"contBehaviorState"
+					"contBehaviorState",
+					"contEnergyUsage",
+					"contWarnLowEnergy"
 				]
 			}
         },
@@ -4179,6 +4201,31 @@
 			"rift:manage_behavior": {
 				"set_property": {
 					"rift:behavior_state": "(query.property('rift:behavior_state') >= 0 && query.property('rift:behavior_state') <= 2) ? query.property('rift:behavior_state') + 1 : 0"
+				}
+			},
+			"rift:decrease_energy_while_moving": {
+				"set_property": {
+					"rift:energy": "query.property('rift:energy') >= 15 ? query.property('rift:energy') - 15 : 0"
+				}
+			},
+			"rift:decrease_energy_while_biting_normal": {
+				"set_property": {
+					"rift:energy": "query.property('rift:energy') + 10 < 150 ? query.property('rift:energy') + 10 : 150"
+				}
+			},
+			"rift:decrease_energy_while_biting_frost": {
+				"set_property": {
+					"rift:energy": "query.property('rift:energy') + 12 < 150 ? query.property('rift:energy') + 12 : 150"
+				}
+			},
+			"rift:decrease_energy_while_biting_flame": {
+				"set_property": {
+					"rift:energy": "query.property('rift:energy') + 7 < 150 ? query.property('rift:energy') + 7 : 150"
+				}
+			},
+			"rift:regenerate_energy": {
+				"set_property": {
+					"rift:energy": "query.property('rift:energy') + 5 < 150 ? query.property('rift:energy') + 5 : 150"
 				}
 			},
 			//for potion effects
