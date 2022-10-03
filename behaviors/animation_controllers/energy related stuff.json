@@ -130,6 +130,102 @@
                 }
             }
         },
+        "controller.animation.anomalocaris_energy_movement_usage": {
+            "initial_state": "default",
+            "states": {
+                "default": {
+                    "animations": [
+                        {
+                            "animRegenerateEnergy": "query.is_tamed && !query.is_ignited"
+                        }
+                    ],
+                    "transitions": [
+                        {
+                            "swim": "query.is_tamed && query.ground_speed > 0 && query.property('rift:energy') > 0"
+                        },
+                        {
+                            "slashing": "query.is_tamed && variable.attack_time > 0 && query.property('rift:energy') >= 10"
+                        }
+                    ]
+                },
+                "swim": {
+                    "animations": [
+                        {
+                            "animUseEnergyWhileMoving": "!query.is_ignited"
+                        },
+                        {
+                            "animUseEnergyWhileMovingInvisible": "query.is_ignited"
+                        }
+                    ],
+                    "transitions": [
+                        {
+                            "default": "query.ground_speed == 0"
+                        },
+                        {
+                            "slashing": "query.is_tamed && query.is_delayed_attacking && query.property('rift:energy') >= 10"
+                        }
+                    ]
+                },
+                "slashing": {
+                    "on_exit": [
+                        "@s rift:decrease_energy_while_slashing"
+                    ],
+                    "transitions": [
+                        {
+                            "default": "variable.attack_time <= 0"
+                        }
+                    ]
+                }
+            }
+        },
+        "controller.animation.apatosaurus_energy_movement_usage": {
+            "initial_state": "default",
+            "states": {
+                "default": {
+                    "animations": [
+                        {
+                            "animRegenerateEnergy": "query.is_tamed"
+                        }
+                    ],
+                    "transitions": [
+                        {
+                            "walk": "query.is_tamed && query.is_on_ground && query.ground_speed > 0 && query.property('rift:energy') > 0"
+                        },
+                        {
+                            "stomping": "query.is_tamed && query.is_delayed_attacking && query.property('rift:energy') >= 30"
+                        }
+                    ]
+                },
+                "walk": {
+                    "animations": [
+                        {
+                            "animUseEnergyWhileMoving": "!query.is_ignited"
+                        },
+                        {
+                            "animUseEnergyWhileMovingBulldoze": "query.is_ignited"
+                        }
+                    ],
+                    "transitions": [
+                        {
+                            "default": "query.ground_speed == 0"
+                        },
+                        {
+                            "stomping": "query.is_tamed && query.is_delayed_attacking && query.property('rift:energy') >= 30"
+                        }
+                    ]
+                },
+                "stomping": {
+                    "on_exit": [
+                        "@s rift:decrease_energy_while_stomping"
+                    ],
+                    "transitions": [
+                        {
+                            "default": "!query.is_delayed_attacking"
+                        }
+                    ]
+                }
+            }
+        },
         "controller.animation.baryonyx_energy_movement_usage": {
             "initial_state": "default",
             "states": {

@@ -812,8 +812,24 @@
 							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:apatosaurus'"
 						},
 						{
-							"stompModeLimbo": "query.is_using_item && (query.get_ride -> query.is_saddled) && query.get_equipped_item_name('main_hand') == 'command_staff'"
+							"stompModeLimbo": "query.is_using_item && (query.get_ride -> query.property('rift:energy')) >= 30 && (query.get_ride -> query.is_saddled) && query.get_equipped_item_name('main_hand') == 'command_staff'"
+						},
+						{
+							"stompModeFail": "query.is_using_item && (query.get_ride -> query.property('rift:energy')) < 30 && (query.get_ride -> query.is_saddled) && query.get_equipped_item_name('main_hand') == 'command_staff'"
 						}
+					]
+				},
+				"stompModeFail": {
+					"transitions": [
+						{
+							"stompMode": "!query.is_using_item"
+						},
+						{
+							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:apatosaurus'"
+						}
+					],
+					"on_entry": [
+						"/tellraw @s {\"rawtext\":[{\"text\":\"You don't have enough energy to perform this action!\"}]}"
 					]
 				},
 				"stompModeLimbo": {
@@ -861,8 +877,24 @@
 							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:apatosaurus'"
 						},
 						{
-							"tailWhipModeLimbo": "query.is_using_item && (query.get_ride -> query.is_saddled) && query.get_equipped_item_name('main_hand') == 'command_staff'"
+							"tailWhipModeLimbo": "query.is_using_item && (query.get_ride -> query.property('rift:energy')) >= 10 && (query.get_ride -> query.is_saddled) && query.get_equipped_item_name('main_hand') == 'command_staff'"
+						},
+						{
+							"tailWhipModeFail": "query.is_using_item && (query.get_ride -> query.property('rift:energy')) < 10 && (query.get_ride -> query.is_saddled) && query.get_equipped_item_name('main_hand') == 'command_staff'"
 						}
+					]
+				},
+				"tailWhipModeFail": {
+					"transitions": [
+						{
+							"tailWhipMode": "!query.is_using_item"
+						},
+						{
+							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:apatosaurus'"
+						}
+					],
+					"on_entry": [
+						"/tellraw @s {\"rawtext\":[{\"text\":\"You don't have enough energy to perform this action!\"}]}"
 					]
 				},
 				"tailWhipModeLimbo": {
@@ -890,7 +922,7 @@
 					"on_entry": [
 						"/execute as @e[type=rift:apatosaurus, c=1, tag=tamed, tag=!baby] positioned as @e[type=rift:apatosaurus, c=1, tag=tamed, tag=!baby] run summon rift:apatosaurus_tail_whip ~ ~ ~",
 						"/playanimation @e[type=rift:apatosaurus, c=1, tag=tamed, tag=!baby] animation.apatosaurus.tail_whip",
-						"/event entity @e[type=rift:apatosaurus, c=1, tag=tamed, tag=!baby] rift:on_forced_attack_family"
+						"/event entity @e[type=rift:apatosaurus, c=1, tag=tamed, tag=!baby] rift:decrease_energy_while_tail_whipping"
 					]
 				},
 				"tailWhipToBulldoze": {
@@ -916,14 +948,33 @@
 							"bulldozeToStomp": "query.is_using_item && (query.get_ride -> query.is_saddled) && query.get_equipped_item_name('main_hand') == 'command_staff'"
 						},
 						{
-							"useBulldozeMode": "(query.get_ride -> query.is_saddled) && query.get_equipped_item_name('main_hand') == 'command_staff' && query.is_jumping"
+							"useBulldozeMode": "(query.get_ride -> query.is_saddled) && (query.get_ride -> query.property('rift:energy')) >= 15 && query.get_equipped_item_name('main_hand') == 'command_staff' && query.is_jumping"
+						},
+						{
+							"useBulldozeModeFail": "(query.get_ride -> query.is_saddled) && (query.get_ride -> query.property('rift:energy')) < 15 && query.get_equipped_item_name('main_hand') == 'command_staff' && query.is_jumping"
 						}
+					]
+				},
+				"useBulldozeModeFail": {
+					"transitions": [
+						{
+							"bulldozeMode": "!query.is_jumping"
+						},
+						{
+							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:apatosaurus'"
+						}
+					],
+					"on_entry": [
+						"/tellraw @s {\"rawtext\":[{\"text\":\"You don't have enough energy to perform this action!\"}]}"
 					]
 				},
 				"useBulldozeMode": {
 					"transitions": [
 						{
 							"bulldozeMode": "query.get_equipped_item_name('main_hand') != 'command_staff' || !query.is_jumping"
+						},
+						{
+							"useBulldozeModeFail": "(query.get_ride -> query.property('rift:energy')) < 15"
 						}
 					],
 					"on_entry": [
@@ -1387,8 +1438,24 @@
 							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:anomalocaris'"
 						},
 						{
-							"slashModeLimbo": "query.is_using_item && (query.get_ride -> query.is_saddled) && query.get_equipped_item_name('main_hand') == 'command_staff'"
+							"slashModeLimbo": "query.is_using_item && (query.get_ride -> query.property('rift:energy')) >= 10 && (query.get_ride -> query.is_saddled) && query.get_equipped_item_name('main_hand') == 'command_staff'"
+						},
+						{
+							"slashModeFail": "query.is_using_item && (query.get_ride -> query.property('rift:energy')) < 10 && (query.get_ride -> query.is_saddled) && query.get_equipped_item_name('main_hand') == 'command_staff'"
 						}
+					]
+				},
+				"slashModeFail": {
+					"transitions": [
+						{
+							"slashMode": "!query.is_using_item"
+						},
+						{
+							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:anomalocaris'"
+						}
+					],
+					"on_entry": [
+						"/tellraw @s {\"rawtext\":[{\"text\":\"You don't have enough energy to perform this action!\"}]}"
 					]
 				},
 				"slashModeLimbo": {
@@ -1436,8 +1503,24 @@
 							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:anomalocaris'"
 						},
 						{
-							"carryModeLimbo": "query.is_using_item && (query.get_ride -> query.is_saddled) && query.get_equipped_item_name('main_hand') == 'command_staff'"
+							"carryModeLimbo": "query.is_using_item && (query.get_ride -> query.property('rift:energy')) >= 10 && (query.get_ride -> query.is_saddled) && query.get_equipped_item_name('main_hand') == 'command_staff'"
+						},
+						{
+							"carryModeFail": "query.is_using_item && (query.get_ride -> query.property('rift:energy')) < 10 && (query.get_ride -> query.is_saddled) && query.get_equipped_item_name('main_hand') == 'command_staff'"
 						}
+					]
+				},
+				"carryModeFail": {
+					"transitions": [
+						{
+							"carryMode": "!query.is_using_item"
+						},
+						{
+							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:baryonyx'"
+						}
+					],
+					"on_entry": [
+						"/tellraw @s {\"rawtext\":[{\"text\":\"You don't have enough energy to perform this action!\"}]}"
 					]
 				},
 				"carryModeLimbo": {

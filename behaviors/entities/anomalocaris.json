@@ -20,6 +20,15 @@
 					"type": "bool",
 					"default": false
 				},
+                "rift:energy": {
+                    "range": [
+						0,
+						150
+					],
+					"type": "int",
+					"default": 150,
+					"client_sync": true
+                },
                 "rift:tame_state": { //0 for standing, 1 for sitting, 2 for wandering
                     "range": [
 						0,
@@ -48,6 +57,14 @@
 				"contInvisibility": "controller.animation.anomalocaris_invisibility",
 				"contTameState": "controller.animation.manage_tame_state",
 				"contBehaviorState": "controller.animation.manage_tame_behavior",
+				"contEnergyUsage": "controller.animation.anomalocaris_energy_movement_usage",
+				"contWarnLowEnergy": "controller.animation.warn_of_low_energy",
+				"animUseEnergyWhileMoving": "animation.anomalocaris_decrease_energy_while_moving",
+				"animUseEnergyWhileMovingInvisible": "animation.anomalocaris_decrease_energy_while_moving_invisible",
+				"animEnergyRegenDelay": "animation.regenerate_energy_delay",
+				"animRegenerateEnergy": "animation.anomalocaris_regenerate_energy",
+				"animLowOnEnergyEffects": "animation.effects_while_low_on_energy",
+				"animNoEnergyEffects": "animation.effects_while_no_energy",
 				"animEatFromInventoryCooldown": "animation.eat_from_inventory_cooldown",
 				"animInvisibility": "animation.invisibility",
 				"animForcedAttack": "animation.forced_attack_anomalocaris",
@@ -63,7 +80,9 @@
 					"contInvisibility",
 					"contCarry",
 					"contTameState",
-					"contBehaviorState"
+					"contBehaviorState",
+					"contEnergyUsage",
+					"contWarnLowEnergy"
 				]
 			}
         },
@@ -4289,7 +4308,8 @@
 				},
 				"run_command": {
 					"command": [
-						"ride @e[c=1, r=5, type=!rift:anomalocaris, type=!player] summon_ride rift:anomalo_carry_stuff"
+						"ride @e[c=1, r=5, type=!rift:anomalocaris, type=!player] summon_ride rift:anomalo_carry_stuff",
+						"event entity @s rift:decrease_energy_while_slashing"
 					]
 				}
 			},
@@ -4340,6 +4360,21 @@
 			"rift:manage_behavior": {
 				"set_property": {
 					"rift:behavior_state": "(query.property('rift:behavior_state') >= 0 && query.property('rift:behavior_state') <= 2) ? query.property('rift:behavior_state') + 1 : 0"
+				}
+			},
+			"rift:decrease_energy_while_moving": {
+				"set_property": {
+					"rift:energy": "query.property('rift:energy') >= 15 ? query.property('rift:energy') - 15 : 0"
+				}
+			},
+			"rift:decrease_energy_while_slashing": {
+				"set_property": {
+					"rift:energy": "query.property('rift:energy') >= 10 ? query.property('rift:energy') - 10 : 0"
+				}
+			},
+			"rift:regenerate_energy": {
+				"set_property": {
+					"rift:energy": "query.property('rift:energy') + 5 < 150 ? query.property('rift:energy') + 5 : 150"
 				}
 			},
 			//for potion effects
