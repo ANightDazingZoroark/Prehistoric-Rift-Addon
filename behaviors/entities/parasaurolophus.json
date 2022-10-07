@@ -40,6 +40,7 @@
 				"contBabyTag": "controller.animation.add_baby_tag",
 				"contForcedAttack": "controller.animation.general_forced_attack",
 				"contRiddenTag": "controller.animation.add_ridden_tag",
+				"contShearedTag": "controller.animation.add_sheared_tag",
 				"contTameState": "controller.animation.manage_tame_state",
 				"contEnergyUsage": "controller.animation.parasaurolophus_energy_movement_usage",
 				"contWarnLowEnergy": "controller.animation.warn_of_low_energy",
@@ -58,6 +59,7 @@
 					"contBabyTag",
 					"contForcedAttack",
 					"contRiddenTag",
+					"contShearedTag",
 					"contTameState",
 					"contEnergyUsage",
 					"contWarnLowEnergy"
@@ -528,6 +530,9 @@
 				}
 			},
 			"rift:wild_standing": {
+				"minecraft:movement": {
+					"value": 0.25
+				},
 				"minecraft:behavior.random_stroll": {
 					"priority": 9
 				},
@@ -762,9 +767,19 @@
 					}
 				}
 			},
-			"rift:reset_movement": {
+			"rift:tamed_can_move": {
 				"minecraft:movement": {
 					"value": 0.25
+				}
+			},
+			"rift:tamed_can_move_low_energy": { //formula for speed reduction from slowness effect is speed * 0.15 * level
+				"minecraft:movement": {
+					"value": 0.1125
+				}
+			},
+			"rift:tamed_cannot_move": {
+				"minecraft:movement": {
+					"value": 0
 				}
 			},
 			"rift:pushable": {
@@ -795,9 +810,6 @@
 				"avoid_damage_blocks": true
 			},
             "minecraft:movement.basic": {},
-            "minecraft:movement": {
-                "value": 0.25
-            },
 			"minecraft:jump.static": {},
             "minecraft:behavior.move_to_land": {},
             "minecraft:behavior.float": {},
@@ -3407,7 +3419,8 @@
 					"component_groups": [
 						"rift:parasaurolophus_baby_tamed",
 						"rift:parasaurolophus_tamed",
-						"rift:parasaurolophus_not_in_turret_mode"
+						"rift:parasaurolophus_not_in_turret_mode",
+						"rift:tamed_can_move"
 					]
 				},
 				"remove": {
@@ -3455,7 +3468,8 @@
 						"rift:parasaurolophus_adult_tamed",
                         "rift:parasaurolophus_tamed",
 						"rift:is_rideable",
-						"rift:parasaurolophus_not_in_turret_mode"
+						"rift:parasaurolophus_not_in_turret_mode",
+						"rift:tamed_can_move"
 					]
 				},
 				"remove": {
@@ -3958,7 +3972,9 @@
 				"remove": {
 					"component_groups": [
 						"rift:is_rideable",
-						"rift:reset_movement"
+						"rift:tamed_can_move",
+						"rift:tamed_can_move_low_energy",
+						"rift:tamed_cannot_move"
 					]
 				},
 				"run_command": {
@@ -3970,8 +3986,7 @@
 			"rift:disable_turret_mode": {
 				"add": {
 					"component_groups": [
-						"rift:is_rideable",
-						"rift:reset_movement"
+						"rift:is_rideable"
 					]
 				},
 				"remove": {
@@ -4058,6 +4073,45 @@
 			"rift:stop_eat_from_inventory_cooldown": {
 				"set_property": {
 					"rift:eat_from_inventory_cooldown": false
+				}
+			},
+			"rift:moving_slowly_low_energy": {
+				"add": {
+					"component_groups": [
+						"rift:tamed_can_move_low_energy"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:tamed_can_move",
+						"rift:tamed_cannot_move"
+					]
+				}
+			},
+			"rift:stop_moving_low_energy": {
+				"add": {
+					"component_groups": [
+						"rift:tamed_cannot_move"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:tamed_can_move",
+						"rift:tamed_can_move_low_energy"
+					]
+				}
+			},
+			"rift:return_to_moving_normally": {
+				"add": {
+					"component_groups": [
+						"rift:tamed_can_move"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:tamed_cannot_move",
+						"rift:tamed_can_move_low_energy"
+					]
 				}
 			},
 			"rift:manage_state": {

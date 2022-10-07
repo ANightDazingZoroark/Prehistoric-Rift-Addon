@@ -202,9 +202,6 @@
 				"minecraft:health": {
 					"value": 15
 				},
-				"minecraft:movement": {
-					"value": 0.25
-				},
 				"minecraft:behavior.follow_parent": {
 					"priority": 17
 				},
@@ -393,9 +390,6 @@
                 },
 				"minecraft:attack": {
 					"damage": 8
-				},
-				"minecraft:movement": {
-					"value": 0.25
 				},
                 "minecraft:scale": {
                     "value": 1.25
@@ -614,9 +608,6 @@
                     "value": 100,
                     "max": 100
                 },
-				"minecraft:movement": {
-					"value": 0.25
-				},
                 "minecraft:scale": {
                     "value": 2
                 },
@@ -1227,9 +1218,6 @@
 				"minecraft:attack": {
 					"damage": 8
 				},
-				"minecraft:movement": {
-					"value": 0.25
-				},
                 "minecraft:scale": {
                     "value": 1.25
                 },
@@ -1373,9 +1361,6 @@
                     "value": 100,
                     "max": 100
                 },
-				"minecraft:movement": {
-					"value": 0.25
-				},
                 "minecraft:scale": {
                     "value": 2
                 },
@@ -1655,6 +1640,9 @@
 				}
 			},
 			"rift:wild_standing": {
+				"minecraft:movement": {
+					"value": 0.25
+				},
                 "minecraft:behavior.random_stroll": {
 					"priority": 18
 				},
@@ -1676,6 +1664,21 @@
 				},
                 "minecraft:behavior.random_stroll": {
 					"priority": 18
+				}
+			},
+			"rift:tamed_can_move": {
+				"minecraft:movement": {
+					"value": 0.25
+				}
+			},
+			"rift:tamed_can_move_low_energy": { //formula for speed reduction from slowness effect is speed * 0.15 * level
+				"minecraft:movement": {
+					"value": 0.1125
+				}
+			},
+			"rift:tamed_cannot_move": {
+				"minecraft:movement": {
+					"value": 0
 				}
 			},
 			"rift:assist_behavior": {
@@ -5092,14 +5095,16 @@
 				"add": {
 					"component_groups": [
 						"rift:direwolf_tamed_baby",
-						"rift:direwolf_tamed"
+						"rift:direwolf_tamed",
+						"rift:tamed_can_move"
 					]
 				},
 				"remove": {
 					"component_groups": [
 						"rift:direwolf_wild_baby",
 						"rift:direwolf_baby_calm",
-						"rift:direwolf_baby_scared"
+						"rift:direwolf_baby_scared",
+						"rift:wild_standing"
 					]
 				},
 				"set_property": {
@@ -5278,7 +5283,8 @@
 						"rift:direwolf_tamed",
 						"rift:direwolf_adult_tamed",
 						"rift:direwolf_normal_rideable",
-						"rift:cannot_power_jump"
+						"rift:cannot_power_jump",
+						"rift:tamed_can_move"
 					]
 				},
 				"remove": {
@@ -5288,7 +5294,8 @@
 						"rift:direwolf_adult_tameable",
 						"rift:direwolf_adult_chance_for_tame",
 						"rift:direwolf_adult_trusting",
-						"rift:temptable"
+						"rift:temptable",
+						"rift:wild_standing"
 					]
 				},
 				"run_command": {
@@ -5774,6 +5781,45 @@
 				"remove": {
 					"component_groups": [
 						"rift:breath_collision"
+					]
+				}
+			},
+			"rift:moving_slowly_low_energy": {
+				"add": {
+					"component_groups": [
+						"rift:tamed_can_move_low_energy"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:tamed_can_move",
+						"rift:tamed_cannot_move"
+					]
+				}
+			},
+			"rift:stop_moving_low_energy": {
+				"add": {
+					"component_groups": [
+						"rift:tamed_cannot_move"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:tamed_can_move",
+						"rift:tamed_can_move_low_energy"
+					]
+				}
+			},
+			"rift:return_to_moving_normally": {
+				"add": {
+					"component_groups": [
+						"rift:tamed_can_move"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:tamed_cannot_move",
+						"rift:tamed_can_move_low_energy"
 					]
 				}
 			},
