@@ -1,4 +1,4 @@
-import { BlockLocation, ItemStack, Items, MinecraftItemTypes, world, Location } from "mojang-minecraft"
+import { BlockLocation, ItemStack, Items, MinecraftItemTypes, world, Location, MinecraftEffectTypes } from "mojang-minecraft"
 
 let saurophaganaxFood = [
     'minecraft:blaze',
@@ -467,11 +467,11 @@ world.events.entityHurt.subscribe(({ hurtEntity, damagingEntity }) => {
         damagingEntity.jumpAttacking = 0
     }
     if (damagingEntity.id == 'rift:dimetrodon' && damagingEntity.getComponent('is_charged')) {
-        hurtEntity.runCommand(`effect @s weakness 20 2`)
-        hurtEntity.runCommand(`effect @s slowness 20 2`)
+        hurtEntity.addEffect(MinecraftEffectTypes.weakness, 400, 2)
+        hurtEntity.addEffect(MinecraftEffectTypes.slowness, 400, 2)
     }
     if (damagingEntity.id == 'rift:sarcosuchus' && damagingEntity.hasTag('powered')) {
-        hurtEntity.runCommand(`effect @s slowness 30 2`)
+        hurtEntity.addEffect(MinecraftEffectTypes.slowness, 600, 1)
     }
     if (damagingEntity.id == 'rift:anomalocaris') {
         damagingEntity.getComponent('health').setCurrent(damagingEntity.getComponent('health').current + 4)
@@ -483,7 +483,7 @@ world.events.entityHurt.subscribe(({ hurtEntity, damagingEntity }) => {
         hurtEntity.dimension.spawnEntity('rift:direwolf_explosion', hurtEntity.location)
     }
     if (damagingEntity.id == 'rift:baryonyx' && damagingEntity.hasTag('forcedClaw')) {
-        hurtEntity.runCommand(`effect @s poison 10`)
+        hurtEntity.addEffect(MinecraftEffectTypes.poison, 200)
     }
 })
 

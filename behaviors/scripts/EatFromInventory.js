@@ -57,7 +57,7 @@ world.events.tick.subscribe((ev) => {
                                     }
                                 }
                                 catch (e) {}
-                                entities[i].runCommand(`event entity @s rift:start_eat_from_inventory_cooldown`)
+                                entities[i].triggerEvent('rift:start_eat_from_inventory_cooldown')
                             }
                             break
                         }

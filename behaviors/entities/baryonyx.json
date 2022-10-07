@@ -1207,15 +1207,6 @@
 				},
 				"minecraft:behavior.random_look_around": {
 					"priority": 18
-				},
-				"minecraft:movement": {
-					"value": 0.25
-				},
-				"minecraft:underwater_movement": {
-					"value": 0.25
-				},
-				"minecraft:water_movement": {
-					"drag_factor": 0.5
 				}
 			},
 			"rift:tamed_standing": {
@@ -1226,42 +1217,15 @@
 					"start_distance": 8,
 					"stop_distance": 40,
 					"priority": 12
-				},
-				"minecraft:movement": {
-					"value": 0.25
-				},
-				"minecraft:underwater_movement": {
-					"value": 0.25
-				},
-				"minecraft:water_movement": {
-					"drag_factor": 0.5
 				}
 			},
 			"rift:sitting": {
-				"minecraft:movement": {
-					"value": 0.25
-				},
-				"minecraft:underwater_movement": {
-					"value": 0.25
-				},
-				"minecraft:water_movement": {
-					"drag_factor": 0.5
-				},
 				"minecraft:on_target_acquired": {
 					"event": "rift:sitting_on_anger",
 					"target": "self"
 				}
 			},
 			"rift:sitting_angered": {
-				"minecraft:movement": {
-					"value": 0.25
-				},
-				"minecraft:underwater_movement": {
-					"value": 0.25
-				},
-				"minecraft:water_movement": {
-					"drag_factor": 0.5
-				},
 				"minecraft:on_target_escape": {
 					"event": "rift:sitting_on_calm",
 				  	"target": "self"
@@ -1273,12 +1237,36 @@
 				},
 				"minecraft:behavior.random_stroll": {
 					"priority": 17
-				},
+				}
+			},
+			"rift:tamed_can_move": {
 				"minecraft:movement": {
 					"value": 0.25
 				},
 				"minecraft:underwater_movement": {
 					"value": 0.25
+				},
+				"minecraft:water_movement": {
+					"drag_factor": 0.5
+				}
+			},
+			"rift:tamed_can_move_low_energy": { //formula for speed reduction from slowness effect is speed * 0.15 * level
+				"minecraft:movement": {
+					"value": 0.1125
+				},
+				"minecraft:underwater_movement": {
+					"value": 0.1125
+				},
+				"minecraft:water_movement": {
+					"drag_factor": 0.5
+				}
+			},
+			"rift:tamed_cannot_move": {
+				"minecraft:movement": {
+					"value": 0
+				},
+				"minecraft:underwater_movement": {
+					"value": 0
 				},
 				"minecraft:water_movement": {
 					"drag_factor": 0.5
@@ -4156,7 +4144,8 @@
 				"add": {
 					"component_groups": [
 						"rift:baryonyx_baby_tamed",
-						"rift:baryonyx_tamed"
+						"rift:baryonyx_tamed",
+						"rift:tamed_can_move"
 					]
 				},
 				"remove": {
@@ -4272,7 +4261,8 @@
 						"rift:baryonyx_tamed",
 						"rift:rideable",
 						"rift:baryonyx_adult_tamed_poison_area",
-						"rift:tamed_standing"
+						"rift:tamed_standing",
+						"rift:tamed_can_move"
 					]
 				},
 				"remove": {
@@ -4680,14 +4670,63 @@
 					"rift:eat_from_inventory_cooldown": false
 				}
 			},
+			"rift:moving_slowly_low_energy": {
+				"add": {
+					"component_groups": [
+						"rift:tamed_can_move_low_energy"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:tamed_can_move",
+						"rift:tamed_cannot_move"
+					]
+				}
+			},
+			"rift:stop_moving_low_energy": {
+				"add": {
+					"component_groups": [
+						"rift:tamed_cannot_move"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:tamed_can_move",
+						"rift:tamed_can_move_low_energy"
+					]
+				}
+			},
+			"rift:return_to_moving_normally": {
+				"add": {
+					"component_groups": [
+						"rift:tamed_can_move"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:tamed_cannot_move",
+						"rift:tamed_can_move_low_energy"
+					]
+				}
+			},
 			"rift:manage_state": {
 				"set_property": {
-					"rift:tame_state": "(query.property('rift:tame_state') >= 0 && query.property('rift:tame_state') <= 1) ? query.property('rift:tame_state') + 1 : 0"
+					"rift:tame_state": "query.property('rift:energy') > 0 ? ((query.property('rift:tame_state') >= 0 && query.property('rift:tame_state') <= 1) ? query.property('rift:tame_state') + 1 : 0) : 1"
 				}
 			},
 			"rift:manage_behavior": {
 				"set_property": {
-					"rift:behavior_state": "(query.property('rift:behavior_state') >= 0 && query.property('rift:behavior_state') <= 2) ? query.property('rift:behavior_state') + 1 : 0"
+					"rift:behavior_state": "query.property('rift:energy') > 0 ? ((query.property('rift:behavior_state') >= 0 && query.property('rift:behavior_state') <= 2) ? query.property('rift:behavior_state') + 1 : 0) : 3"
+				}
+			},
+			"rift:sit_at_no_energy": {
+				"set_property": {
+					"rift:tame_state": "1"
+				}
+			},
+			"rift:passive_at_no_energy": {
+				"set_property": {
+					"rift:behavior_state": "3"
 				}
 			},
 			"rift:decrease_energy_while_moving": {

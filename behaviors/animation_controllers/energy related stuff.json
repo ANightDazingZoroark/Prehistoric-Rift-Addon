@@ -53,7 +53,9 @@
                         "/effect @s slowness 0",
                         "/effect @s weakness 0",
                         "@s rift:enable_jump",
-                        "@s rift:reenable_ranged_attack_ability"
+                        "@s rift:reenable_ranged_attack_ability",
+                        "@s rift:return_to_moving_normally",
+                        "/tag @s remove noEnergy"
                     ],
                     "transitions": [
                         {
@@ -69,15 +71,14 @@
                         "/execute as @s[tag=ridden] run tellraw @p {\"rawtext\":[{\"selector\": \"@s\"}, {\"text\":\" is low on energy! It needs to rest in order for it to regenerate!\"}]}",
                         "@s rift:disable_jump",
                         "@s rift:disable_ranged_attack_ability",
+                        "@s rift:moving_slowly_low_energy",
                         "/effect @s slowness 0",
                         "/effect @s weakness 0",
-                        "/tag @s add lowEnergy"
+                        "/tag @s add lowEnergy",
+                        "/tag @s remove noEnergy"
                     ],
                     "on_exit": [
                         "/tag @s remove lowEnergy"
-                    ],
-                    "animations": [
-                        "animLowOnEnergyEffects"
                     ],
                     "transitions": [
                         {
@@ -93,18 +94,19 @@
                         "/execute as @s[tag=ridden] run tellraw @p {\"rawtext\":[{\"selector\": \"@s\"}, {\"text\":\" has no energy! It needs to rest!\"}]}",
                         "@s rift:disable_jump",
                         "@s rift:disable_ranged_attack_ability",
+                        "@s rift:stop_moving_low_energy",
                         "/effect @s slowness 0",
                         "/effect @s weakness 0",
                         "/tag @s add regenDelay",
-                        "/tag @s add noEnergy"
+                        "/tag @s add noEnergy",
+                        "@s rift:sit_at_no_energy",
+                        "@s rift:passive_at_no_energy"
                     ],
                     "on_exit": [
-                        "/tag @s remove regenDelay",
-                        "/tag @s remove noEnergy"
+                        "/tag @s remove regenDelay"
                     ],
                     "animations": [
-                        "animEnergyRegenDelay",
-                        "animNoEnergyEffects"
+                        "animEnergyRegenDelay"
                     ],
                     "transitions": [
                         {
@@ -116,8 +118,8 @@
                     ]
                 },
                 "noEnergy": {
-                    "animations": [
-                        "animNoEnergyEffects"
+                    "on_entry": [
+                        "/tag @s add noEnergy"
                     ],
                     "transitions": [
                         {

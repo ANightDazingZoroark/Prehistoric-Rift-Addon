@@ -8,10 +8,10 @@ world.events.tick.subscribe((ev) => {
                 let score = world.scoreboard.getObjective('saurophLightBlst').getScore(entities[i].scoreboard)
                 if (score >= 10 && entities[i].hasTag('canNotify')) {
                     entities[i].runCommand(`execute as @s[tag=ridden] run tellraw @p {"rawtext":[{"text":"Light Blast Available!"}]}`)
-                    entities[i].runCommand(`event entity @s rift:cannot_notify`)
+                    entities[i].triggerEvent('rift:cannot_notify')
                 }
                 if (score < 10) {
-                    entities[i].runCommand(`event entity @s rift:can_notify`)
+                    entities[i].triggerEvent('rift:can_notify')
                 }
             }
         }

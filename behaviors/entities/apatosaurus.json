@@ -895,9 +895,6 @@
 					"start_distance": 8,
 					"stop_distance": 40,
 					"priority": 8
-				},
-                "minecraft:movement": {
-                    "value": 0.10
 				}
 			},
 			"rift:tamed_baby_standing": {
@@ -911,9 +908,6 @@
 				}
 			},
 			"rift:adult_sitting": {
-                "minecraft:movement": {
-                    "value": 0.10
-				},
 				"minecraft:on_target_acquired": {
 					"event": "rift:sitting_on_anger",
 					"target": "self"
@@ -925,9 +919,6 @@
 				}
 			},
 			"rift:adult_sitting_angered": {
-                "minecraft:movement": {
-                    "value": 0.10
-				},
 				"minecraft:on_target_escape": {
 					"event": "rift:sitting_on_calm",
 				  	"target": "self"
@@ -939,9 +930,6 @@
 				},
                 "minecraft:behavior.random_stroll": {
 					"priority": 10
-				},
-                "minecraft:movement": {
-                    "value": 0.10
 				}
 			},
 			"rift:baby_wandering": {
@@ -950,6 +938,21 @@
 				},
                 "minecraft:movement": {
                     "value": 0.25
+				}
+			},
+			"rift:tamed_adult_can_move": {
+				"minecraft:movement": {
+					"value": 0.10
+				}
+			},
+			"rift:tamed_adult_can_move_low_energy": { //formula for speed reduction from slowness effect is speed * 0.15 * level
+				"minecraft:movement": {
+					"value": 0.045
+				}
+			},
+			"rift:tamed_adult_cannot_move": {
+				"minecraft:movement": {
+					"value": 0.0
 				}
 			},
 			"rift:assist_behavior": {
@@ -4086,7 +4089,8 @@
 								"rift:apatosaurus_adult",
 								"rift:apatosaurus_adult_tamed",
 								"rift:apatosaurus_rideable",
-								"rift:tamed_adult_standing"
+								"rift:tamed_adult_standing",
+								"rift:tamed_adult_can_move"
 							]
 						},
 						"remove": {
@@ -4095,12 +4099,21 @@
 								"rift:apatosaurus_adult_calm",
 								"rift:tamed_baby_standing",
 								"rift:wild_adult_standing",
-								"rift:wild_baby_standing"
+								"rift:wild_baby_standing",
+								"rift:baby_sitting",
+								"rift:baby_wandering"
 							]
 						}
 					}
                 ]
             },
+			"rift:force_implement_adult_speed": {
+				"add": {
+					"component_groups": [
+						"rift:tamed_adult_can_move"
+					]
+				}
+			},
             "rift:baby_become_scared": {
                 "add": {
                     "component_groups": [
@@ -5065,12 +5078,61 @@
 			},
 			"rift:manage_state": {
 				"set_property": {
-					"rift:tame_state": "(query.property('rift:tame_state') >= 0 && query.property('rift:tame_state') <= 1) ? query.property('rift:tame_state') + 1 : 0"
+					"rift:tame_state": "query.property('rift:energy') > 0 ? ((query.property('rift:tame_state') >= 0 && query.property('rift:tame_state') <= 1) ? query.property('rift:tame_state') + 1 : 0) : 1"
 				}
 			},
 			"rift:manage_behavior": {
 				"set_property": {
-					"rift:behavior_state": "(query.property('rift:behavior_state') >= 0 && query.property('rift:behavior_state') <= 2) ? query.property('rift:behavior_state') + 1 : 0"
+					"rift:behavior_state": "query.property('rift:energy') > 0 ? ((query.property('rift:behavior_state') >= 0 && query.property('rift:behavior_state') <= 2) ? query.property('rift:behavior_state') + 1 : 0) : 3"
+				}
+			},
+			"rift:sit_at_no_energy": {
+				"set_property": {
+					"rift:tame_state": "1"
+				}
+			},
+			"rift:passive_at_no_energy": {
+				"set_property": {
+					"rift:behavior_state": "3"
+				}
+			},
+			"rift:moving_slowly_low_energy": {
+				"add": {
+					"component_groups": [
+						"rift:tamed_adult_can_move_low_energy"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:tamed_adult_can_move",
+						"rift:tamed_adult_cannot_move"
+					]
+				}
+			},
+			"rift:stop_moving_low_energy": {
+				"add": {
+					"component_groups": [
+						"rift:tamed_adult_cannot_move"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:tamed_adult_can_move",
+						"rift:tamed_adult_can_move_low_energy"
+					]
+				}
+			},
+			"rift:return_to_moving_normally": {
+				"add": {
+					"component_groups": [
+						"rift:tamed_adult_can_move"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:tamed_adult_cannot_move",
+						"rift:tamed_adult_can_move_low_energy"
+					]
 				}
 			},
 			"rift:decrease_energy_while_moving": {
