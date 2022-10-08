@@ -902,9 +902,6 @@
 					"start_distance": 8,
 					"stop_distance": 40,
 					"priority": 8
-				},
-                "minecraft:movement": {
-                    "value": 0.25
 				}
 			},
 			"rift:adult_sitting": {
@@ -913,11 +910,7 @@
 					"target": "self"
 				}
 			},
-			"rift:baby_sitting": {
-                "minecraft:movement": {
-                    "value": 0.25
-				}
-			},
+			"rift:baby_sitting": {},
 			"rift:adult_sitting_angered": {
 				"minecraft:on_target_escape": {
 					"event": "rift:sitting_on_calm",
@@ -935,9 +928,6 @@
 			"rift:baby_wandering": {
                 "minecraft:behavior.random_stroll": {
 					"priority": 10
-				},
-                "minecraft:movement": {
-                    "value": 0.25
 				}
 			},
 			"rift:tamed_adult_can_move": {
@@ -951,6 +941,21 @@
 				}
 			},
 			"rift:tamed_adult_cannot_move": {
+				"minecraft:movement": {
+					"value": 0.0
+				}
+			},
+			"rift:tamed_baby_can_move": {
+				"minecraft:movement": {
+					"value": 0.25
+				}
+			},
+			"rift:tamed_baby_can_move_low_energy": {
+				"minecraft:movement": {
+					"value": 0.1125
+				}
+			},
+			"rift:tamed_baby_cannot_move": {
 				"minecraft:movement": {
 					"value": 0.0
 				}
@@ -4827,7 +4832,8 @@
                                 "rift:variant_one",
 								"rift:pushable",
 								"rift:can_attack",
-								"rift:temptable"
+								"rift:temptable",
+								"rift:tamed_can_move"
                             ]
                         },
 						"set_property": {
@@ -4845,7 +4851,8 @@
                                 "rift:variant_two",
 								"rift:pushable",
 								"rift:can_attack",
-								"rift:temptable"
+								"rift:temptable",
+								"rift:tamed_can_move"
                             ]
                         },
 						"set_property": {
@@ -4863,7 +4870,8 @@
                                 "rift:variant_three",
 								"rift:pushable",
 								"rift:can_attack",
-								"rift:temptable"
+								"rift:temptable",
+								"rift:tamed_can_move"
                             ]
                         },
 						"set_property": {
@@ -4881,7 +4889,8 @@
                                 "rift:variant_four",
 								"rift:pushable",
 								"rift:can_attack",
-								"rift:temptable"
+								"rift:temptable",
+								"rift:tamed_can_move"
                             ]
                         },
 						"set_property": {
@@ -5097,43 +5106,148 @@
 				}
 			},
 			"rift:moving_slowly_low_energy": {
-				"add": {
-					"component_groups": [
-						"rift:tamed_adult_can_move_low_energy"
-					]
-				},
-				"remove": {
-					"component_groups": [
-						"rift:tamed_adult_can_move",
-						"rift:tamed_adult_cannot_move"
-					]
-				}
+				"sequence": [
+					{},
+					{
+						"filters": {
+							"test": "has_component",
+							"subject": "self",
+							"operator": "!=",
+							"value": "minecraft:is_baby"
+						},
+						"add": {
+							"component_groups": [
+								"rift:tamed_adult_can_move_low_energy"
+							]
+						},
+						"remove": {
+							"component_groups": [
+								"rift:tamed_adult_can_move",
+								"rift:tamed_adult_cannot_move",
+								"rift:tamed_baby_can_move",
+								"rift:tamed_baby_cannot_move",
+								"rift:tamed_baby_can_move_low_energy"
+							]
+						}
+					},
+					{
+						"filters": {
+							"test": "has_component",
+							"subject": "self",
+							"value": "minecraft:is_baby"
+						},
+						"add": {
+							"component_groups": [
+								"rift:tamed_baby_can_move_low_energy"
+							]
+						},
+						"remove": {
+							"component_groups": [
+								"rift:tamed_adult_can_move",
+								"rift:tamed_adult_can_move_low_energy",
+								"rift:tamed_adult_cannot_move",
+								"rift:tamed_baby_can_move",
+								"rift:tamed_baby_cannot_move"
+							]
+						}
+					}
+				]
 			},
 			"rift:stop_moving_low_energy": {
-				"add": {
-					"component_groups": [
-						"rift:tamed_adult_cannot_move"
-					]
-				},
-				"remove": {
-					"component_groups": [
-						"rift:tamed_adult_can_move",
-						"rift:tamed_adult_can_move_low_energy"
-					]
-				}
+				"sequence": [
+					{},
+					{
+						"filters": {
+							"test": "has_component",
+							"subject": "self",
+							"operator": "!=",
+							"value": "minecraft:is_baby"
+						},
+						"add": {
+							"component_groups": [
+								"rift:tamed_adult_cannot_move"
+							]
+						},
+						"remove": {
+							"component_groups": [
+								"rift:tamed_adult_can_move",
+								"rift:tamed_adult_can_move_low_energy",
+								"rift:tamed_baby_can_move",
+								"rift:tamed_baby_cannot_move",
+								"rift:tamed_baby_can_move_low_energy"
+							]
+						}
+					},
+					{
+						"filters": {
+							"test": "has_component",
+							"subject": "self",
+							"value": "minecraft:is_baby"
+						},
+						"add": {
+							"component_groups": [
+								"rift:tamed_baby_cannot_move"
+							]
+						},
+						"remove": {
+							"component_groups": [
+								"rift:tamed_adult_can_move",
+								"rift:tamed_adult_can_move_low_energy",
+								"rift:tamed_adult_cannot_move",
+								"rift:tamed_baby_can_move",
+								"rift:tamed_baby_can_move_low_energy"
+							]
+						}
+					}
+				]
 			},
 			"rift:return_to_moving_normally": {
-				"add": {
-					"component_groups": [
-						"rift:tamed_adult_can_move"
-					]
-				},
-				"remove": {
-					"component_groups": [
-						"rift:tamed_adult_cannot_move",
-						"rift:tamed_adult_can_move_low_energy"
-					]
-				}
+				"sequence": [
+					{},
+					{
+						"filters": {
+							"test": "has_component",
+							"subject": "self",
+							"operator": "!=",
+							"value": "minecraft:is_baby"
+						},
+						"add": {
+							"component_groups": [
+								"rift:tamed_adult_can_move"
+							]
+						},
+						"remove": {
+							"component_groups": [
+								"rift:tamed_adult_cannot_move",
+								"rift:tamed_adult_can_move_low_energy",
+								"rift:tamed_baby_can_move",
+								"rift:tamed_baby_cannot_move",
+								"rift:tamed_baby_can_move_low_energy"
+							]
+						}
+					},
+					{
+						"filters": {
+							"test": "has_component",
+							"subject": "self",
+							"value": "minecraft:is_baby"
+						},
+						"add": {
+							"component_groups": [
+								"rift:tamed_baby_can_move"
+							]
+						},
+						"remove": {
+							"component_groups": [
+								"rift:tamed_adult_can_move",
+								"rift:tamed_adult_cannot_move",
+								"rift:tamed_adult_can_move_low_energy",
+								"rift:tamed_baby_cannot_move",
+								"rift:tamed_baby_can_move_low_energy"
+							]
+						}
+					}
+				]
 			},
 			"rift:decrease_energy_while_moving": {
 				"set_property": {

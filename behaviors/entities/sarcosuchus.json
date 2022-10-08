@@ -1314,6 +1314,12 @@
                 }
 			},
 			"rift:wild_standing": {
+				"minecraft:movement": {
+					"value": 0.1
+				},
+				"minecraft:underwater_movement": {
+					"value": 0.3
+				},
 				"minecraft:behavior.random_look_around": {
 					"priority": 17
 				}
@@ -1346,6 +1352,30 @@
 				},
 				"minecraft:behavior.random_stroll": {
 					"priority": 16
+				}
+			},
+			"rift:tamed_can_move": {
+				"minecraft:movement": {
+					"value": 0.1
+				},
+				"minecraft:underwater_movement": {
+					"value": 0.3
+				}
+			},
+			"rift:tamed_can_move_low_energy": { //formula for speed reduction from slowness effect is speed * 0.15 * level
+				"minecraft:movement": {
+					"value": 0.045
+				},
+				"minecraft:underwater_movement": {
+					"value": 0.135
+				}
+			},
+			"rift:tamed_cannot_move": {
+				"minecraft:movement": {
+					"value": 0
+				},
+				"minecraft:underwater_movement": {
+					"value": 0
 				}
 			},
 			"rift:assist_behavior": {
@@ -1480,12 +1510,6 @@
 					"waterMount"
 				]
 			},
-			"minecraft:movement": {
-				"value": 0.1
-			},
-            "minecraft:underwater_movement": {
-                "value": 0.3
-            },
             "minecraft:water_movement": {
                 "drag_factor": 0.75
             },
@@ -4178,14 +4202,16 @@
 				"add": {
 					"component_groups": [
 						"rift:sarcosuchus_baby_tamed",
-						"rift:sarcosuchus_tamed"
+						"rift:sarcosuchus_tamed",
+						"rift:tamed_can_move"
 					]
 				},
 				"remove": {
 					"component_groups": [
 						"rift:sarcosuchus_baby_wild",
 						"rift:sarcosuchus_wild_in_water",
-						"rift:sarcosuchus_wild_not_in_water"
+						"rift:sarcosuchus_wild_not_in_water",
+						"rift:wild_standing"
 					]
 				},
 				"set_property": {
@@ -4293,7 +4319,8 @@
 					"component_groups": [
 						"rift:sarcosuchus_adult_tamed",
 						"rift:sarcosuchus_tamed",
-						"rift:rideable"
+						"rift:rideable",
+						"rift:tamed_can_move"
 					]
 				},
 				"remove": {
@@ -4306,7 +4333,8 @@
 						"rift:sarcosuchus_wild_in_water",
 						"rift:sarcosuchus_wild_not_in_water",
 						"rift:wild_standing",
-						"rift:temptable"
+						"rift:temptable",
+						"rift:wild_standing"
 					]
 				},
 				"run_command": {
@@ -4672,7 +4700,7 @@
 								"rift:can_bite_attack",
 								"rift:default_navigation",
                                 "rift:pushable",
-								"rift:wild_standing",
+								"rift:tamed_can_move",
                                 "rift:variant_zero",
 								"rift:temptable"
                             ]
@@ -4691,7 +4719,7 @@
 								"rift:can_bite_attack",
 								"rift:default_navigation",
                                 "rift:pushable",
-								"rift:wild_standing",
+								"rift:tamed_can_move",
                                 "rift:variant_one",
 								"rift:temptable"
                             ]
@@ -4710,7 +4738,7 @@
 								"rift:can_bite_attack",
 								"rift:default_navigation",
                                 "rift:pushable",
-								"rift:wild_standing",
+								"rift:tamed_can_move",
                                 "rift:variant_two",
 								"rift:temptable"
                             ]
@@ -4729,7 +4757,7 @@
 								"rift:can_bite_attack",
 								"rift:default_navigation",
                                 "rift:pushable",
-								"rift:wild_standing",
+								"rift:tamed_can_move",
                                 "rift:variant_three",
 								"rift:temptable"
                             ]
@@ -4949,6 +4977,45 @@
 			"rift:stop_eat_from_inventory_cooldown": {
 				"set_property": {
 					"rift:eat_from_inventory_cooldown": false
+				}
+			},
+			"rift:moving_slowly_low_energy": {
+				"add": {
+					"component_groups": [
+						"rift:tamed_can_move_low_energy"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:tamed_can_move",
+						"rift:tamed_cannot_move"
+					]
+				}
+			},
+			"rift:stop_moving_low_energy": {
+				"add": {
+					"component_groups": [
+						"rift:tamed_cannot_move"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:tamed_can_move",
+						"rift:tamed_can_move_low_energy"
+					]
+				}
+			},
+			"rift:return_to_moving_normally": {
+				"add": {
+					"component_groups": [
+						"rift:tamed_can_move"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:tamed_cannot_move",
+						"rift:tamed_can_move_low_energy"
+					]
 				}
 			},
 			"rift:manage_state": {

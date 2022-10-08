@@ -207,9 +207,6 @@
 				"minecraft:attack": {
 					"damage": 1
 				},
-				"minecraft:movement": {
-					"value": 0.15
-				},
 				"minecraft:behavior.nap": {
 					"priority": 3,
 					"can_nap_filters": {
@@ -236,9 +233,6 @@
 			"rift:saurophaganax_baby_prime": {
 				"minecraft:attack": {
 					"damage": 8
-				},
-				"minecraft:movement": {
-					"value": 0.25
 				}
 			},
 			"rift:saurophaganax_baby_forced_awake": {
@@ -246,9 +240,6 @@
 				"minecraft:out_of_control": {},
 				"minecraft:attack": {
 					"damage": 1
-				},
-				"minecraft:movement": {
-					"value": 0.15
 				}
 			},
             "rift:saurophaganax_adult": {
@@ -727,9 +718,6 @@
 				"minecraft:attack": {
 					"damage": 5
 				},
-				"minecraft:movement": {
-					"value": 0.05
-				},
 				"minecraft:behavior.nap": {
 					"priority": 3,
 					"can_nap_filters": {
@@ -756,9 +744,6 @@
 			"rift:saurophaganax_adult_prime": {
 				"minecraft:attack": {
 					"damage": 60
-				},
-				"minecraft:movement": {
-					"value": 0.25
 				}
 			},
 			"rift:saurophaganax_adult_forced_awake": {
@@ -766,9 +751,6 @@
 				"minecraft:out_of_control": {},
 				"minecraft:attack": {
 					"damage": 5
-				},
-				"minecraft:movement": {
-					"value": 0.05
 				}
 			},
 			"rift:saurophaganax_tamed": {
@@ -834,7 +816,21 @@
 					]
 				}
 			},
-			"rift:wild_standing": {
+			"rift:wild_standing_prime": {
+				"minecraft:movement": {
+					"value": 0.25
+				},
+				"minecraft:behavior.random_stroll": {
+					"priority": 14
+				},
+				"minecraft:behavior.random_look_around": {
+					"priority": 15
+				}
+			},
+			"rift:wild_standing_weakened": {
+				"minecraft:movement": {
+					"value": 0.05
+				},
 				"minecraft:behavior.random_stroll": {
 					"priority": 14
 				},
@@ -868,6 +864,36 @@
 				},
 				"minecraft:behavior.random_stroll": {
 					"priority": 14
+				}
+			},
+			"rift:tamed_can_move_prime": {
+				"minecraft:movement": {
+					"value": 0.25
+				}
+			},
+			"rift:tamed_can_move_low_energy_prime": { //formula for speed reduction from slowness effect is speed * 0.15 * level
+				"minecraft:movement": {
+					"value": 0.1125
+				}
+			},
+			"rift:tamed_cannot_move_prime": {
+				"minecraft:movement": {
+					"value": 0
+				}
+			},
+			"rift:tamed_can_move_weakened": {
+				"minecraft:movement": {
+					"value": 0.05
+				}
+			},
+			"rift:tamed_can_move_low_energy_weakened": {
+				"minecraft:movement": {
+					"value": 0.0225
+				}
+			},
+			"rift:tamed_cannot_move_weakened": {
+				"minecraft:movement": {
+					"value": 0
 				}
 			},
 			"rift:assist_behavior": {
@@ -3539,7 +3565,7 @@
 								"rift:saurophaganax_adult_wild",
 								"rift:saurophaganax_adult_wild_not_trusting",
 								"rift:default_targets",
-								"rift:wild_standing",
+								"rift:wild_standing_prime",
 								"rift:variant_zero",
 								"rift:pushable",
 								"rift:can_attack"
@@ -3559,7 +3585,7 @@
 								"rift:saurophaganax_adult_wild",
 								"rift:saurophaganax_adult_wild_not_trusting",
 								"rift:default_targets",
-								"rift:wild_standing",
+								"rift:wild_standing_prime",
 								"rift:variant_one",
 								"rift:pushable",
 								"rift:can_attack"
@@ -3579,7 +3605,7 @@
 								"rift:saurophaganax_adult_wild",
 								"rift:saurophaganax_adult_wild_not_trusting",
 								"rift:default_targets",
-								"rift:wild_standing",
+								"rift:wild_standing_prime",
 								"rift:variant_two",
 								"rift:pushable",
 								"rift:can_attack"
@@ -3599,7 +3625,7 @@
 								"rift:saurophaganax_adult_wild",
 								"rift:saurophaganax_adult_wild_not_trusting",
 								"rift:default_targets",
-								"rift:wild_standing",
+								"rift:wild_standing_prime",
 								"rift:variant_three",
 								"rift:pushable",
 								"rift:can_attack"
@@ -3614,17 +3640,39 @@
 				]
 			},
 			"rift:become_weakened_baby": {
-				"add": {
-					"component_groups": [
-						"rift:saurophaganax_baby_weakened"
-					]
-				},
-				"remove": {
-					"component_groups": [
-						"rift:saurophaganax_baby_prime",
-						"rift:saurophaganax_baby_tameable"
-					]
-				}
+				"sequence": [
+					{
+						"add": {
+							"component_groups": [
+								"rift:saurophaganax_baby_weakened"
+							]
+						},
+						"remove": {
+							"component_groups": [
+								"rift:saurophaganax_baby_prime",
+								"rift:saurophaganax_baby_tameable"
+							]
+						}
+					},
+					{
+						"filters": {
+							"test": "has_component",
+							"subject": "self",
+							"operator": "!=",
+							"value": "minecraft:is_tamed"
+						},
+						"add": {
+							"component_groups": [
+								"rift:wild_standing_weakened"
+							]
+						},
+						"remove": {
+							"component_groups": [
+								"rift:wild_standing_prime"
+							]
+						}
+					}
+				]
 			},
 			"rift:become_prime_baby": {
 				"sequence": [
@@ -3650,32 +3698,60 @@
 						},
 						"add": {
 							"component_groups": [
-								"rift:saurophaganax_baby_tameable"
+								"rift:saurophaganax_baby_tameable",
+								"rift:wild_standing_prime"
+							]
+						},
+						"remove": {
+							"component_groups": [
+								"rift:wild_standing_weakened"
 							]
 						}
 					}
 				]
 			},
 			"rift:become_weakened_adult": {
-				"add": {
-					"component_groups": [
-						"rift:saurophaganax_adult_weakened"
-					]
-				},
-				"remove": {
-					"component_groups": [
-						"rift:saurophaganax_adult_prime",
-						"rift:default_targets",
-						"rift:saurophaganax_adult_wild_not_trusting",
-						"rift:rideable",
-						"rift:aggravating_horn_attack"
-					]
-				},
-				"run_command": {
-					"command": [
-						"scoreboard players set @s saurophLightBlst 0"
-					]
-				}
+				"sequence": [
+					{
+						"add": {
+							"component_groups": [
+								"rift:saurophaganax_adult_weakened"
+							]
+						},
+						"remove": {
+							"component_groups": [
+								"rift:saurophaganax_adult_prime",
+								"rift:default_targets",
+								"rift:saurophaganax_adult_wild_not_trusting",
+								"rift:rideable",
+								"rift:aggravating_horn_attack"
+							]
+						},
+						"run_command": {
+							"command": [
+								"scoreboard players set @s saurophLightBlst 0"
+							]
+						}
+					},
+					{
+						"filters": {
+							"test": "has_component",
+							"subject": "self",
+							"operator": "!=",
+							"value": "minecraft:is_tamed"
+						},
+						"add": {
+							"component_groups": [
+								"rift:wild_standing_weakened"
+							]
+						},
+						"remove": {
+							"component_groups": [
+								"rift:wild_standing_prime"
+							]
+						}
+					}
+				]
 			},
 			"rift:become_prime_adult": {
 				"sequence": [
@@ -3703,7 +3779,13 @@
 						"add": {
 							"component_groups": [
 								"rift:default_targets",
-								"rift:saurophaganax_adult_wild_not_trusting"
+								"rift:saurophaganax_adult_wild_not_trusting",
+								"rift:wild_standing_prime"
+							]
+						},
+						"remove": {
+							"component_groups": [
+								"rift:wild_standing_weakened"
 							]
 						}
 					},
@@ -3782,7 +3864,9 @@
 				"remove": {
 					"component_groups": [
 						"rift:saurophaganax_baby_wild",
-						"rift:saurophaganax_baby_tameable"
+						"rift:saurophaganax_baby_tameable",
+						"rift:wild_standing_prime",
+						"rift:wild_standing_weakened"
 					]
 				},
 				"set_property": {
@@ -3894,8 +3978,10 @@
 						"rift:saurophaganax_adult_tameable",
 						"rift:saurophaganax_adult_chance_for_tame",
 						"rift:saurophaganax_adult_trusting",
-						"rift:wild_standing",
-						"rift:temptable"
+						"rift:wild_standing_prime",
+						"rift:temptable",
+						"rift:wild_standing_prime",
+						"rift:wild_standing_weakened"
 					]
 				},
 				"run_command": {
@@ -4081,7 +4167,7 @@
 						},
 						"remove": {
 							"component_groups": [
-								"rift:wild_standing",
+								"rift:wild_standing_prime",
 								"rift:sitting",
 								"rift:sitting_angered",
 								"rift:wandering"
@@ -4115,7 +4201,7 @@
 				},
 				"remove": {
 					"component_groups": [
-						"rift:wild_standing",
+						"rift:wild_standing_prime",
 						"rift:tamed_standing",
 						"rift:sitting_angered",
 						"rift:wandering",
@@ -4138,7 +4224,7 @@
 						},
 						"remove": {
 							"component_groups": [
-								"rift:wild_standing",
+								"rift:wild_standing_prime",
 								"rift:tamed_standing",
 								"rift:sitting",
 								"rift:sitting_angered"
@@ -4265,7 +4351,7 @@
 								"rift:saurophaganax_baby",
 								"rift:saurophaganax_baby_wild",
 								"rift:saurophaganax_baby_tameable",
-								"rift:wild_standing",
+								"rift:wild_standing_prime",
 								"rift:variant_zero",
 								"rift:pushable",
 								"rift:can_attack",
@@ -4280,7 +4366,7 @@
 								"rift:saurophaganax_baby",
 								"rift:saurophaganax_baby_wild",
 								"rift:saurophaganax_baby_tameable",
-								"rift:wild_standing",
+								"rift:wild_standing_prime",
 								"rift:variant_one",
 								"rift:pushable",
 								"rift:can_attack",
@@ -4295,7 +4381,7 @@
 								"rift:saurophaganax_baby",
 								"rift:saurophaganax_baby_wild",
 								"rift:saurophaganax_baby_tameable",
-								"rift:wild_standing",
+								"rift:wild_standing_prime",
 								"rift:variant_two",
 								"rift:pushable",
 								"rift:can_attack",
@@ -4310,7 +4396,7 @@
 								"rift:saurophaganax_baby",
 								"rift:saurophaganax_baby_wild",
 								"rift:saurophaganax_baby_tameable",
-								"rift:wild_standing",
+								"rift:wild_standing_prime",
 								"rift:variant_three",
 								"rift:pushable",
 								"rift:can_attack",
@@ -4329,7 +4415,7 @@
 								"rift:saurophaganax_baby",
 								"rift:saurophaganax_baby_tamed",
 								"rift:saurophaganax_tamed",
-								"rift:wild_standing",
+								"rift:tamed_can_move_prime",
 								"rift:variant_zero",
 								"rift:pushable",
 								"rift:can_attack",
@@ -4347,7 +4433,7 @@
 								"rift:saurophaganax_baby",
 								"rift:saurophaganax_baby_tamed",
 								"rift:saurophaganax_tamed",
-								"rift:wild_standing",
+								"rift:tamed_can_move_prime",
 								"rift:variant_one",
 								"rift:pushable",
 								"rift:can_attack",
@@ -4365,7 +4451,7 @@
 								"rift:saurophaganax_baby",
 								"rift:saurophaganax_baby_tamed",
 								"rift:saurophaganax_tamed",
-								"rift:wild_standing",
+								"rift:tamed_can_move_prime",
 								"rift:variant_two",
 								"rift:pushable",
 								"rift:can_attack",
@@ -4383,7 +4469,7 @@
 								"rift:saurophaganax_baby",
 								"rift:saurophaganax_baby_tamed",
 								"rift:saurophaganax_tamed",
-								"rift:wild_standing",
+								"rift:tamed_can_move_prime",
 								"rift:variant_three",
 								"rift:pushable",
 								"rift:can_attack",
@@ -4439,6 +4525,150 @@
 				"set_property": {
 					"rift:eat_from_inventory_cooldown": false
 				}
+			},
+			"rift:moving_slowly_low_energy": {
+				"sequence": [
+					{},
+					{
+						"filters": {
+							"test": "has_component",
+							"subject": "self",
+							"operator": "!=",
+							"value": "minecraft:is_sheared"
+						},
+						"add": {
+							"component_groups": [
+								"rift:tamed_can_move_low_energy_prime"
+							]
+						},
+						"remove": {
+							"component_groups": [
+								"rift:tamed_can_move_weakened",
+								"rift:tamed_can_move_low_energy_weakened",
+								"rift:tamed_cannot_move_weakened",
+								"rift:tamed_can_move_prime",
+								"rift:tamed_cannot_move_prime"
+							]
+						}
+					},
+					{
+						"filters": {
+							"test": "has_component",
+							"subject": "self",
+							"value": "minecraft:is_sheared"
+						},
+						"add": {
+							"component_groups": [
+								"rift:tamed_can_move_low_energy_weakened"
+							]
+						},
+						"remove": {
+							"component_groups": [
+								"rift:tamed_can_move_weakened",
+								"rift:tamed_cannot_move_weakened",
+								"rift:tamed_can_move_prime",
+								"rift:tamed_can_move_low_energy_prime",
+								"rift:tamed_cannot_move_prime"
+							]
+						}
+					}
+				]
+			},
+			"rift:stop_moving_low_energy": {
+				"sequence": [
+					{},
+					{
+						"filters": {
+							"test": "has_component",
+							"subject": "self",
+							"operator": "!=",
+							"value": "minecraft:is_sheared"
+						},
+						"add": {
+							"component_groups": [
+								"rift:tamed_cannot_move_prime"
+							]
+						},
+						"remove": {
+							"component_groups": [
+								"rift:tamed_can_move_weakened",
+								"rift:tamed_can_move_low_energy_weakened",
+								"rift:tamed_cannot_move_weakened",
+								"rift:tamed_can_move_prime",
+								"rift:tamed_can_move_low_energy_prime"
+							]
+						}
+					},
+					{
+						"filters": {
+							"test": "has_component",
+							"subject": "self",
+							"value": "minecraft:is_sheared"
+						},
+						"add": {
+							"component_groups": [
+								"rift:tamed_cannot_move_weakened"
+							]
+						},
+						"remove": {
+							"component_groups": [
+								"rift:tamed_can_move_weakened",
+								"rift:tamed_can_move_low_energy_weakened",
+								"rift:tamed_can_move_prime",
+								"rift:tamed_can_move_low_energy_prime",
+								"rift:tamed_cannot_move_prime"
+							]
+						}
+					}
+				]
+			},
+			"rift:return_to_moving_normally": {
+				"sequence": [
+					{},
+					{
+						"filters": {
+							"test": "has_component",
+							"subject": "self",
+							"operator": "!=",
+							"value": "minecraft:is_sheared"
+						},
+						"add": {
+							"component_groups": [
+								"rift:tamed_can_move_prime"
+							]
+						},
+						"remove": {
+							"component_groups": [
+								"rift:tamed_can_move_weakened",
+								"rift:tamed_can_move_low_energy_weakened",
+								"rift:tamed_cannot_move_weakened",
+								"rift:tamed_can_move_low_energy_prime",
+								"rift:tamed_cannot_move_prime"
+							]
+						}
+					},
+					{
+						"filters": {
+							"test": "has_component",
+							"subject": "self",
+							"value": "minecraft:is_sheared"
+						},
+						"add": {
+							"component_groups": [
+								"rift:tamed_can_move_weakened"
+							]
+						},
+						"remove": {
+							"component_groups": [
+								"rift:tamed_can_move_low_energy_weakened",
+								"rift:tamed_cannot_move_weakened",
+								"rift:tamed_can_move_prime",
+								"rift:tamed_can_move_low_energy_prime",
+								"rift:tamed_cannot_move_prime"
+							]
+						}
+					}
+				]
 			},
 			"rift:manage_state": {
 				"set_property": {
