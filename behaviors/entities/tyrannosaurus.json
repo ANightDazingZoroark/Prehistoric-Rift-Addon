@@ -1012,6 +1012,9 @@
 				}
 			},
 			"rift:wild_standing": {
+				"minecraft:movement": {
+					"value": 0.20
+				},
 				"minecraft:behavior.random_stroll": {
 					"priority": 15
 				},
@@ -1045,6 +1048,27 @@
 				},
 				"minecraft:behavior.random_stroll": {
 					"priority": 15
+				}
+			},
+			"rift:tamed_can_move": {
+				"minecraft:movement": {
+					"value": 0.2
+				}
+			},
+			"rift:tamed_can_move_low_energy": { //formula for speed reduction from slowness effect is speed * 0.15 * level
+				"minecraft:movement": {
+					"value": 0.09
+				}
+			},
+			"rift:tamed_cannot_move": {
+				"minecraft:movement": {
+					"value": 0
+				},
+				"minecraft:underwater_movement": {
+					"value": 0
+				},
+				"minecraft:water_movement": {
+					"drag_factor": 0
 				}
 			},
 			"rift:assist_behavior": {
@@ -1310,9 +1334,6 @@
 			"minecraft:breathable": {
 				"total_supply": 15,
 				"suffocate_time": 0
-			},
-			"minecraft:movement": {
-				"value": 0.20
 			},
 			"minecraft:interact": {
 				"interactions": [
@@ -4522,8 +4543,7 @@
 								{
 									"test": "has_component",
 									"subject": "self",
-									"value": "minecraft:is_tamed",
-									"operator": "=="
+									"value": "minecraft:is_tamed"
 								}
 							]
 						},
@@ -4537,7 +4557,8 @@
 							"component_groups": [
 								"rift:tyrannosaurus_adult_wild",
 								"rift:tyrannosaurus_hunting",
-								"rift:tyrannosaurus_not_hunting"
+								"rift:tyrannosaurus_not_hunting",
+								"rift:wild_standing"
 							]
 						}
 					}
@@ -4547,14 +4568,16 @@
 				"add": {
 					"component_groups": [
 						"rift:tyrannosaurus_baby_tamed",
-						"rift:tyrannosaurus_tamed"
+						"rift:tyrannosaurus_tamed",
+						"rift:tamed_can_move"
 					]
 				},
 				"remove": {
 					"component_groups": [
 						"rift:tyrannosaurus_baby_wild",
 						"rift:tyrannosaurus_hunting",
-						"rift:tyrannosaurus_not_hunting"
+						"rift:tyrannosaurus_not_hunting",
+						"rift:wild_standing"
 					]
 				},
 				"set_property": {
@@ -4941,7 +4964,8 @@
 								"rift:variant_zero",
 								"rift:pushable",
 								"rift:can_attack",
-								"rift:temptable"
+								"rift:temptable",
+								"rift:tamed_can_move"
 							]
 						},
 						"set_property": {
@@ -4958,7 +4982,8 @@
 								"rift:variant_one",
 								"rift:pushable",
 								"rift:can_attack",
-								"rift:temptable"
+								"rift:temptable",
+								"rift:tamed_can_move"
 							]
 						},
 						"set_property": {
@@ -4975,7 +5000,8 @@
 								"rift:variant_two",
 								"rift:pushable",
 								"rift:can_attack",
-								"rift:temptable"
+								"rift:temptable",
+								"rift:tamed_can_move"
 							]
 						},
 						"set_property": {
@@ -4992,7 +5018,8 @@
 								"rift:variant_three",
 								"rift:pushable",
 								"rift:can_attack",
-								"rift:temptable"
+								"rift:temptable",
+								"rift:tamed_can_move"
 							]
 						},
 						"set_property": {
@@ -5552,6 +5579,45 @@
 			"rift:stop_eat_from_inventory_cooldown": {
 				"set_property": {
 					"rift:eat_from_inventory_cooldown": false
+				}
+			},
+			"rift:moving_slowly_low_energy": {
+				"add": {
+					"component_groups": [
+						"rift:tamed_can_move_low_energy"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:tamed_can_move",
+						"rift:tamed_cannot_move"
+					]
+				}
+			},
+			"rift:stop_moving_low_energy": {
+				"add": {
+					"component_groups": [
+						"rift:tamed_cannot_move"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:tamed_can_move",
+						"rift:tamed_can_move_low_energy"
+					]
+				}
+			},
+			"rift:return_to_moving_normally": {
+				"add": {
+					"component_groups": [
+						"rift:tamed_can_move"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:tamed_cannot_move",
+						"rift:tamed_can_move_low_energy"
+					]
 				}
 			},
 			"rift:manage_state": {

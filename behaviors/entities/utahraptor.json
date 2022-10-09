@@ -1170,24 +1170,15 @@
 					"start_distance": 8,
 					"stop_distance": 40,
 					"priority": 10
-				},
-				"minecraft:movement": {
-					"value": 0.35
 				}
 			},
 			"rift:sitting": {
-				"minecraft:movement": {
-					"value": 0.35
-				},
 				"minecraft:on_target_acquired": {
 					"event": "rift:sitting_on_anger",
 					"target": "self"
 				}
 			},
 			"rift:sitting_angered": {
-				"minecraft:movement": {
-					"value": 0.35
-				},
 				"minecraft:on_target_escape": {
 					"event": "rift:sitting_on_calm",
 				  	"target": "self"
@@ -1199,9 +1190,27 @@
 				},
                 "minecraft:behavior.random_stroll": {
 					"priority": 15
-				},
+				}
+			},
+			"rift:tamed_can_move": {
 				"minecraft:movement": {
 					"value": 0.35
+				}
+			},
+			"rift:tamed_can_move_low_energy": { //formula for speed reduction from slowness effect is speed * 0.15 * level
+				"minecraft:movement": {
+					"value": 0.1575
+				}
+			},
+			"rift:tamed_cannot_move": {
+				"minecraft:movement": {
+					"value": 0
+				},
+				"minecraft:underwater_movement": {
+					"value": 0
+				},
+				"minecraft:water_movement": {
+					"drag_factor": 0
 				}
 			},
 			"rift:assist_behavior": {
@@ -1371,9 +1380,6 @@
 			}
         },
         "components": {
-			"minecraft:movement": {
-				"value": 0.35
-			},
 			"minecraft:type_family": {
 				"family": [
 					"riftCreature",
@@ -4375,14 +4381,16 @@
 				"add": {
 					"component_groups": [
 						"rift:utahraptor_baby_tamed",
-						"rift:utahraptor_tamed"
+						"rift:utahraptor_tamed",
+						"rift:tamed_can_move"
 					]
 				},
 				"remove": {
 					"component_groups": [
 						"rift:utahraptor_baby_wild",
 						"rift:utahraptor_baby_calm",
-						"rift:utahraptor_baby_scared"
+						"rift:utahraptor_baby_scared",
+						"rift:wild_standing"
 					]
 				},
 				"set_property": {
@@ -4493,7 +4501,8 @@
 						"rift:utahraptor_tamed",
 						"rift:utahraptor_adult_tamed",
 						"rift:tamed_standing",
-						"rift:rideable"
+						"rift:rideable",
+						"rift:tamed_can_move"
 					]
 				},
 				"remove": {
@@ -5269,6 +5278,45 @@
 			"rift:stop_eat_from_inventory_cooldown": {
 				"set_property": {
 					"rift:eat_from_inventory_cooldown": false
+				}
+			},
+			"rift:moving_slowly_low_energy": {
+				"add": {
+					"component_groups": [
+						"rift:tamed_can_move_low_energy"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:tamed_can_move",
+						"rift:tamed_cannot_move"
+					]
+				}
+			},
+			"rift:stop_moving_low_energy": {
+				"add": {
+					"component_groups": [
+						"rift:tamed_cannot_move"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:tamed_can_move",
+						"rift:tamed_can_move_low_energy"
+					]
+				}
+			},
+			"rift:return_to_moving_normally": {
+				"add": {
+					"component_groups": [
+						"rift:tamed_can_move"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:tamed_cannot_move",
+						"rift:tamed_can_move_low_energy"
+					]
 				}
 			},
 			"rift:manage_state": {

@@ -37,3 +37,15 @@ event entity @e[type=rift:saurophaganax, tag=tamed, tag=!lowEnergy, tag=noEnergy
 event entity @e[type=rift:stegosaurus, tag=!focusStabbing, tag=tamed, tag=!lowEnergy, tag=!noEnergy] rift:return_to_moving_normally
 event entity @e[type=rift:stegosaurus, tag=!focusStabbing, tag=tamed, tag=lowEnergy, tag=!noEnergy] rift:moving_slowly_low_energy
 event entity @e[type=rift:stegosaurus, tag=!focusStabbing, tag=tamed, tag=!lowEnergy, tag=noEnergy] rift:stop_moving_low_energy
+
+event entity @e[type=rift:triceratops, tag=tamed, tag=!lowEnergy, tag=!noEnergy] rift:return_to_moving_normally
+event entity @e[type=rift:triceratops, tag=tamed, tag=lowEnergy, tag=!noEnergy] rift:moving_slowly_low_energy
+event entity @e[type=rift:triceratops, tag=tamed, tag=!lowEnergy, tag=noEnergy] rift:stop_moving_low_energy
+
+event entity @e[type=rift:tyrannosaurus, tag=tamed, tag=!lowEnergy, tag=!noEnergy] rift:return_to_moving_normally
+event entity @e[type=rift:tyrannosaurus, tag=tamed, tag=lowEnergy, tag=!noEnergy] rift:moving_slowly_low_energy
+event entity @e[type=rift:tyrannosaurus, tag=tamed, tag=!lowEnergy, tag=noEnergy] rift:stop_moving_low_energy
+
+event entity @e[type=rift:utahraptor, tag=tamed, tag=!lowEnergy, tag=!noEnergy] rift:return_to_moving_normally
+event entity @e[type=rift:utahraptor, tag=tamed, tag=lowEnergy, tag=!noEnergy] rift:moving_slowly_low_energy
+event entity @e[type=rift:utahraptor, tag=tamed, tag=!lowEnergy, tag=noEnergy] rift:stop_moving_low_energy
