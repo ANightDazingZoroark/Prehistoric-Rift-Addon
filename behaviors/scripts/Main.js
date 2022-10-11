@@ -7,6 +7,7 @@ import 'scripts/BlockDetectManagement.js'
 import 'scripts/DamageManagement.js'
 import 'scripts/EatFromInventory.js'
 import 'scripts/EffectManagement.js'
+import 'scripts/ForcedAttackDamage.js'
 import 'scripts/JournalManagement.js'
 import { DynamicPropertiesDefinition, MinecraftEntityTypes, /**system,**/ world } from 'mojang-minecraft'
 
