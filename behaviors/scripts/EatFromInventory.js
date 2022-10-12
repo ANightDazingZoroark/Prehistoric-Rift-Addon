@@ -1,6 +1,6 @@
 import { EntityQueryOptions, MinecraftEffectTypes, world } from "mojang-minecraft"
 
-let filter = new EntityQueryOptions();
+let filter = new EntityQueryOptions()
 filter.excludeTags = ['eatFromInventoryCooldown']
 filter.tags = [
     'tamed'
