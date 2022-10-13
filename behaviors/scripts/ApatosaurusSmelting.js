@@ -1,13 +1,12 @@
-import { EntityQueryOptions, Items, ItemStack, world } from "mojang-minecraft"
+import { Items, ItemStack, world } from "mojang-minecraft"
 import * as guiCrafting from "./ApatosaurusCraftingOptions"
 import { clearEntity } from "./externals/itemmanagement"
 
-let apatosaurusFilter = new EntityQueryOptions()
-apatosaurusFilter.type = 'rift:apatosaurus'
-apatosaurusFilter.tags = ['tamed', 'hasFurnace', 'smelting']
-
 world.events.tick.subscribe((ev) => {
-    let apatosaurus = Array.from(world.getDimension('overworld').getEntities(apatosaurusFilter))
+    let apatosaurus = Array.from(world.getDimension('overworld').getEntities({
+        type: 'rift:apatosaurus',
+        tags: ['tamed', 'hasFurnace', 'smelting']
+    }))
     for (let i = 0; i < apatosaurus.length; i++) {
         try {
             apatosaurus[i].fuelStackAmount = 0

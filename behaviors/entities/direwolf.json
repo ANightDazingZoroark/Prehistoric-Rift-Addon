@@ -51,9 +51,10 @@
 					"type": "int",
 					"default": 0
                 },
-				"rift:is_pack_buffed": {
+				"rift:sonic_boom_cooldown": {
 					"type": "bool",
-					"default": false
+					"default": false,
+					"client_sync": true
                 }
 			},
 			"animations": {
@@ -91,7 +92,8 @@
 				"animForcedTransformCountdown": "animation.direwolf_forced_transform_countdown",
 				"animPackBuffed": "animation.pack_buffed",
 				"animPackBuffCountdown": "animation.buff_countdown",
-				"animStay": "animation.direwolf_werewolf_stay"
+				"animDirewolfBreathCountdown": "animation.direwolf_breath_countdown",
+				"animDirewolfBreathCooldown": "animation.direwolf_breath_cooldown"
 			},
 			"scripts": {
 				"animate": [
@@ -202,6 +204,11 @@
 				"minecraft:health": {
 					"value": 15
 				},
+				"minecraft:navigation.walk": {
+					"avoid_water": true,
+					"avoid_damage_blocks": true
+				},
+				"minecraft:movement.generic": {},
 				"minecraft:behavior.follow_parent": {
 					"priority": 17
 				},
@@ -354,6 +361,11 @@
                     "value": 15,
                     "max": 25
                 },
+				"minecraft:navigation.walk": {
+					"avoid_water": true,
+					"avoid_damage_blocks": true
+				},
+				"minecraft:movement.generic": {},
                 "minecraft:attack": {
                     "damage": 4
                 }
@@ -796,17 +808,30 @@
 				"minecraft:behavior.sonic_boom": {
 					"priority": 10,
 					"duration": 3.0,
-					"speed_multiplier": 1.2,
+					"speed_multiplier": 0,
 					"attack_damage": 0,
 					"attack_range_horizontal": 15,
 					"attack_range_vertical": 20,
-					"attack_cooldown": 10,
+					"attack_cooldown": 0,
 					"knockback_vertical_strength": 0.5,
 					"knockback_horizontal_strength": 2.5,
 					"knockback_height_cap": 0.5,
 					"duration_until_attack_sound": 1.7,
 					"charge_sound": "sonic_charge",
 					"attack_sound": "sonic_boom"
+				}
+			},
+			"rift:cannot_move_sonic_boom": {
+				"minecraft:movement": {
+					"value": 0
+				},
+				"minecraft:underwater_movement": {
+					"value": 0
+				}
+			},
+			"rift:reset_movement_sonic_boom": {
+				"minecraft:movement": {
+					"value": 0.25
 				}
 			},
 			"rift:direwolf_adult_calm": {
@@ -5048,6 +5073,58 @@
 					"rift:behavior_state": "0"
 				}
 			},
+			"rift:cannot_move_while_sonic_boom": {
+				"add": {
+					"component_groups": [
+						"rift:cannot_move_sonic_boom"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:reset_movement_sonic_boom"
+					]
+				}
+			},
+			"rift:can_move_after_sonic_boom": {
+				"add": {
+					"component_groups": [
+						"rift:reset_movement_sonic_boom"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:cannot_move_sonic_boom",
+						"rift:can_breath_werewolf"
+					]
+				},
+				"set_property": {
+					"rift:sonic_boom_cooldown": true
+				}
+			},
+			"rift:end_sonic_boom_cooldown": {
+				"add": {
+					"component_groups": [
+						"rift:can_breath_werewolf"
+					]
+				},
+				"set_property": {
+					"rift:sonic_boom_cooldown": false
+				}
+			},
+			"rift:disable_sonic_boom": {
+				"remove": {
+					"component_groups": [
+						"rift:can_breath_werewolf"
+					]
+				}
+			},
+			"rift:reenable_sonic_boom": {
+				"add": {
+					"component_groups": [
+						"rift:can_breath_werewolf"
+					]
+				}
+			},
 			"rift:forced_transform": {
 				"remove": {
 					"component_groups": [
@@ -5641,16 +5718,6 @@
 					}
 				]
 			},
-			"rift:start_self_pack_buff": {
-				"set_property": {
-					"rift:is_pack_buffed": true
-				}
-			},
-			"rift:stop_self_pack_buff": {
-				"set_property": {
-					"rift:is_pack_buffed": false
-				}
-			},
 			"rift:wild_direwolf_buffing": {
 				"sequence": [
 					{
@@ -5806,7 +5873,9 @@
 				"remove": {
 					"component_groups": [
 						"rift:tamed_can_move",
-						"rift:tamed_cannot_move"
+						"rift:tamed_cannot_move",
+						"rift:cannot_move_sonic_boom",
+						"rift:reset_movement_sonic_boom"
 					]
 				}
 			},
@@ -5819,7 +5888,9 @@
 				"remove": {
 					"component_groups": [
 						"rift:tamed_can_move",
-						"rift:tamed_can_move_low_energy"
+						"rift:tamed_can_move_low_energy",
+						"rift:cannot_move_sonic_boom",
+						"rift:reset_movement_sonic_boom"
 					]
 				}
 			},
@@ -5832,7 +5903,9 @@
 				"remove": {
 					"component_groups": [
 						"rift:tamed_cannot_move",
-						"rift:tamed_can_move_low_energy"
+						"rift:tamed_can_move_low_energy",
+						"rift:cannot_move_sonic_boom",
+						"rift:reset_movement_sonic_boom"
 					]
 				}
 			},

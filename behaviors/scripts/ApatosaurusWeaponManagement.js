@@ -1,10 +1,9 @@
-import { EntityQueryOptions, world } from "mojang-minecraft"
-
-let apatosaurusFilter = new EntityQueryOptions()
-apatosaurusFilter.type = 'rift:apatosaurus'
+import { world } from "mojang-minecraft"
 
 world.events.tick.subscribe((ev) => {
-    let apatosaurus = Array.from(world.getDimension('overworld').getEntities(apatosaurusFilter))
+    let apatosaurus = Array.from(world.getDimension('overworld').getEntities({
+        type: 'rift:apatosaurus'
+    }))
     for (let i = 0; i < apatosaurus.length; i++) {
         if (apatosaurus[i].hasTag('apatoUseBackWeapon') && apatosaurus[i].getComponent('skin_id').value == 1) {
             try {

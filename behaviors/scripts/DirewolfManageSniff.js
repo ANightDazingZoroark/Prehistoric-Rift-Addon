@@ -1,12 +1,5 @@
-import { BlockLocation, EntityQueryOptions, world } from 'mojang-minecraft'
+import { BlockLocation, world } from 'mojang-minecraft'
 import { ActionFormData } from "mojang-minecraft-ui"
-
-let filter = new EntityQueryOptions()
-filter.id = 'rift:direwolf'
-filter.tags = [
-    'tamed',
-    'useChestSniff'
-]
 
 function sniffMainGui(hitEntity, entity) {
     const sniffMainGui = new ActionFormData()
@@ -28,9 +21,9 @@ function sniffMainGui(hitEntity, entity) {
 
 function manualSniffGui(hitEntity, entity) {
     const manualSniffGui = new ActionFormData()
-    .title('Manual Sniff Mode')
-    .body('Choose what to sniff out manually')
-    .button('Entities')
+    .title('Instant Sniff Mode')
+    .body('Choose what to sniff out instantly')
+    .button('Mobs')
     .button('Dropped Items')
     .button('Chests')
     .show(entity).then(result => {
@@ -85,11 +78,12 @@ function manualSniffGui(hitEntity, entity) {
                     entity.runCommand(`tellraw @s {\"rawtext\":[{\"text\":\"Your Direwolf doesn't have enough energy to perform this action!\"}]}`)
                 }
                 else {
-                    for(let x = -12; x < 12; x++) {
+                    for(let x = -48; x < 48; x++) {
                         for (let y = -4; y < 16; y++) {
-                            for (let z = -12; z < 12; z++) {
+                            for (let z = -48; z < 48; z++) {
                                 if (hitEntity.dimension.getBlock(new BlockLocation(Math.trunc(hitEntity.location.x+x), Math.trunc(hitEntity.location.y+y), Math.trunc(hitEntity.location.z+z))).id == 'minecraft:chest') {
                                     world.getDimension('overworld').spawnEntity('rift:direwolf_alert_icon', new BlockLocation(Math.trunc(hitEntity.location.x+x), Math.trunc(hitEntity.location.y+y), Math.trunc(hitEntity.location.z+z))).nameTag = ''
+                                    console.warn('yay')
                                 }
                                 if (hitEntity.dimension.getBlock(new BlockLocation(Math.trunc(hitEntity.location.x+x), Math.trunc(hitEntity.location.y+y), Math.trunc(hitEntity.location.z+z))).id == 'minecraft:trapped_chest') {
                                     world.getDimension('overworld').spawnEntity('rift:direwolf_alert_icon', new BlockLocation(Math.trunc(hitEntity.location.x+x), Math.trunc(hitEntity.location.y+y), Math.trunc(hitEntity.location.z+z))).nameTag = ''
@@ -111,24 +105,27 @@ function manualSniffGui(hitEntity, entity) {
 
 function changeCommandStaffSniffGui(hitEntity, entity) {
     const changeCommandStaffSniffGui = new ActionFormData()
-    .title('Manual Sniff Mode')
+    .title('Change Command Staff Sniff')
     .body('Choose what sniff mode to use when activating sniff ability while riding')
-    .button('Entities')
+    .button('Mobs')
     .button('Dropped Items')
     .button('Chests')
     .show(entity).then(result => {
         switch (result.selection) {
             case 0:
+                entity.runCommand(`tellraw @s {\"rawtext\":[{\"text\":\"Your Direwolf will now sniff out mobs\"}]}`)
                 hitEntity.addTag('sniffMobs')
                 hitEntity.removeTag('sniffItems')
                 hitEntity.removeTag('sniffChests')
                 break
             case 1:
+                entity.runCommand(`tellraw @s {\"rawtext\":[{\"text\":\"Your Direwolf will now sniff out items that are on the ground\"}]}`)
                 hitEntity.addTag('sniffItems')
                 hitEntity.removeTag('sniffMobs')
                 hitEntity.removeTag('sniffChests')
                 break
             case 2:
+                entity.runCommand(`tellraw @s {\"rawtext\":[{\"text\":\"Your Direwolf will now sniff out chests\"}]}`)
                 hitEntity.addTag('sniffChests')
                 hitEntity.removeTag('sniffMobs')
                 hitEntity.removeTag('sniffItems')
@@ -138,7 +135,7 @@ function changeCommandStaffSniffGui(hitEntity, entity) {
 
 world.events.entityHit.subscribe(({ hitEntity, entity }) => {
     try {
-        if (hitEntity.id == 'rift:direwolf' && hitEntity.getComponent('is_tamed')) {
+        if (hitEntity.id == 'rift:direwolf' && hitEntity.getComponent('is_tamed') && !hitEntity.getComponent('is_baby')) {
             sniffMainGui(hitEntity, entity)
         }
     }
@@ -146,7 +143,13 @@ world.events.entityHit.subscribe(({ hitEntity, entity }) => {
 })
 
 world.events.tick.subscribe((ev) => {
-    let direwolves = Array.from(world.getDimension('overworld').getEntities(filter))
+    let direwolves = Array.from(world.getDimension('overworld').getEntities({
+        id: 'rift:direwolf',
+        tags: [
+            'tamed',
+            'useChestSniff'
+        ]
+    }))
     for (let d = 0; d < direwolves.length; d++) {
         for(let x = -12; x < 12; x++) {
             for (let y = -4; y < 16; y++) {

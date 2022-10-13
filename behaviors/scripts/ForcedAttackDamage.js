@@ -1,14 +1,4 @@
-import { EntityQueryOptions, MinecraftEffectTypes, world } from "mojang-minecraft"
-
-let filter = new EntityQueryOptions();
-filter.excludeTags = ['eatFromInventoryCooldown']
-filter.tags = [
-    'tamed',
-    'forcedAttack'
-]
-filter.families = [
-    'riftCreature'
-]
+import { MinecraftEffectTypes, world } from "mojang-minecraft"
 
 function damageOutput(entity, value) {
     if (entity.getEffect(MinecraftEffectTypes.strength) && !entity.hasTag('chargeOne') && !entity.hasTag('chargeTwo') && !entity.hasTag('chargeThree') && !entity.hasTag('chargeFour') && !entity.hasTag('chargeFive')) {
@@ -27,7 +17,15 @@ function damageOutput(entity, value) {
 }
 
 world.events.tick.subscribe((ev) => {
-    let entities = Array.from(world.getDimension('overworld').getEntities(filter))
+    let entities = Array.from(world.getDimension('overworld').getEntities({
+        tags: [
+            'tamed',
+            'forcedAttack'
+        ],
+        families: [
+            'riftCreature'
+        ]
+    }))
     for (let i = 0; i < entities.length; i++) {
         if (entities[i].id == 'rift:tyrannosaurus') {
             try {

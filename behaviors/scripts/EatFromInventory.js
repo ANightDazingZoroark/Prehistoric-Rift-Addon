@@ -1,16 +1,15 @@
-import { EntityQueryOptions, MinecraftEffectTypes, world } from "mojang-minecraft"
-
-let filter = new EntityQueryOptions()
-filter.excludeTags = ['eatFromInventoryCooldown']
-filter.tags = [
-    'tamed'
-]
-filter.families = [
-    'riftCreature'
-]
+import { MinecraftEffectTypes, world } from "mojang-minecraft"
 
 world.events.tick.subscribe((ev) => {
-    let entities = Array.from(world.getDimension('overworld').getEntities(filter))
+    let entities = Array.from(world.getDimension('overworld').getEntities({
+        excludeTags: ['eatFromInventoryCooldown'],
+        tags: [
+            'tamed'
+        ],
+        families: [
+            'riftCreature'
+        ]
+    }))
     for (let i = 0; i < entities.length; i++) {
         if (entities[i].getComponent('health').current < entities[i].getComponent('health').value){ 
             for (let j = entities[i].getComponent('inventory').inventorySize - 1; j >= 0; j--) {

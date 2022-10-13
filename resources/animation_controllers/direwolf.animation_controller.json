@@ -18,7 +18,7 @@
 							"sitting": "query.property('rift:tame_state') == 1 && !query.has_target && !query.has_rider && !query.is_ignited"
 						},
 						{
-							"notOnGround": "query.is_ignited && !query.is_on_ground"
+							"notOnGround": "query.is_ignited && !query.is_on_ground && !query.is_sonic_boom"
 						}
 					]
 				},
@@ -40,7 +40,7 @@
 					],
 					"transitions": [
 						{
-							"default": "!query.is_ignited || query.is_on_ground"
+							"default": "!query.is_ignited || query.is_on_ground || query.is_sonic_boom"
 						}
 					]
 				}
@@ -80,7 +80,7 @@
 							"attacking": "query.is_delayed_attacking"
 						},
 						{
-							"breath": "query.is_sonic_boom"
+							"breath": "query.is_sonic_boom && query.property('rift:sonic_boom_cooldown') == false"
 						}
 					]
 				},
@@ -146,7 +146,7 @@
 					],
 					"transitions": [
 						{
-							"default": "!query.is_sonic_boom"
+							"default": "query.all_animations_finished"
 						}
 					]
 				}

@@ -1909,6 +1909,9 @@
 					]
 				},
 				"callModeLimbo": {
+                    "on_entry": [
+                        "v.direwolfCall = 0.0; for_each(t.direwolf, query.get_nearby_entities_except_self(16, 'rift:direwolf'), { v.direwolfCall = v.direwolfCall + ((t.direwolf -> query.is_tamed) && !(t.direwolf -> query.is_baby)); });"
+                    ],
 					"animations": [
 						"animAbilitySwitchCooldown"
 					],
@@ -1917,7 +1920,10 @@
 							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:direwolf' || (query.get_ride -> query.is_ignited) || query.get_equipped_item_name('main_hand') != 'command_staff'"
 						},
 						{
-							"useCallMode": "!query.is_using_item"
+							"useCallMode": "!query.is_using_item && v.direwolfCall > 1"
+						},
+						{
+							"useCallModeFail": "!query.is_using_item && v.direwolfCall <= 1"
 						},
 						{
 							"callToSniff": "query.all_animations_finished"
@@ -1932,6 +1938,16 @@
 					],
 					"on_entry": [
 						"/tag @e[type=rift:direwolf, c=1, tag=tamed, tag=!baby] add direwolfBuff"
+					]
+				},
+				"useCallModeFail": {
+					"transitions": [
+						{
+							"callMode": "(1.0)"
+						}
+					],
+					"on_entry": [
+						"/tellraw @p {\"rawtext\":[{\"text\":\"There are no Direwolves nearby to activate this ability!\"}]}"
 					]
 				},
 				"callToSniff": {
@@ -2322,6 +2338,9 @@
 					]
 				},
 				"callModeLimbo": {
+                    "on_entry": [
+                        "v.direwolfCall = 0.0; for_each(t.direwolf, query.get_nearby_entities_except_self(16, 'rift:direwolf'), { v.direwolfCall = v.direwolfCall + ((t.direwolf -> query.is_tamed) && !(t.direwolf -> query.is_baby)); });"
+                    ],
 					"animations": [
 						"animAbilitySwitchCooldown"
 					],
@@ -2330,7 +2349,10 @@
 							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:direwolf' || !(query.get_ride -> query.is_ignited) || query.get_equipped_item_name('main_hand') != 'command_staff'"
 						},
 						{
-							"useCallMode": "!query.is_using_item"
+							"useCallMode": "!query.is_using_item && v.direwolfCall > 1"
+						},
+						{
+							"useCallModeFail": "!query.is_using_item && v.direwolfCall <= 1"
 						},
 						{
 							"callToSniff": "query.all_animations_finished"
@@ -2345,6 +2367,16 @@
 					],
 					"on_entry": [
 						"/tag @e[type=rift:direwolf, c=1, tag=tamed, tag=!baby] add direwolfBuff"
+					]
+				},
+				"useCallModeFail": {
+					"transitions": [
+						{
+							"callMode": "(1.0)"
+						}
+					],
+					"on_entry": [
+						"/tellraw @p {\"rawtext\":[{\"text\":\"There are no Direwolves nearby to activate this ability!\"}]}"
 					]
 				},
 				"callToSniff": {
