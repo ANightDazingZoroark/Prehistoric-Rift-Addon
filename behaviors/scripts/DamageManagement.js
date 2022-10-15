@@ -40,7 +40,8 @@ let exoticMeatDroppers = [
     'rift:saurophaganax',
     'rift:direwolf',
     'rift:megaloceros',
-    'rift:baryonyx'
+    'rift:baryonyx',
+    'rift:ankylosaurus'
 ]
 
 world.events.entityHurt.subscribe(({ hurtEntity, damagingEntity }) => {

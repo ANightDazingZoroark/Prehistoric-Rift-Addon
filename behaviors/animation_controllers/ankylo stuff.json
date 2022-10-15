@@ -1,0 +1,32 @@
+{
+	"format_version": "1.10.0",
+	"animation_controllers": {
+        "controller.animation.ankylosaurus_enter_shell": {
+            "initial_state": "default",
+            "states": {
+                "default": {
+                    "transitions": [
+                        {
+                            "inShell": "query.is_alive && ((query.health <= query.max_health * 0.25) || query.property('rift:energy') <= 0)"
+                        }
+                    ]
+                },
+                "inShell": {
+                    "transitions": [
+                        {
+                            "default": "query.is_alive && ((query.health == query.max_health) && query.property('rift:energy') >= 150)"
+                        }
+                    ],
+                    "on_entry": [
+                        "@s rift:enter_shell",
+                        "/effect @s regeneration 69420666 4 true"
+                    ],
+                    "on_exit": [
+                        "@s rift:exit_shell",
+                        "/effect @s regeneration 0"
+                    ]
+                }
+            }
+        }
+    }
+}

@@ -41,6 +41,27 @@
 					"type": "int",
 					"default": 0
                 }
+			},
+			"animations": {
+				"contEatFromInventoryCooldown": "controller.animation.general_eat_from_inventory_cooldown",
+				"contTameTag": "controller.animation.add_tame_tag",
+				"contBabyTag": "controller.animation.add_baby_tag",
+				"contRiddenTag": "controller.animation.add_ridden_tag",
+				"contTameState": "controller.animation.manage_tame_state",
+				"contBehaviorState": "controller.animation.manage_tame_behavior",
+				"contShellMode": "controller.animation.ankylosaurus_enter_shell",
+				"animEatFromInventoryCooldown": "animation.eat_from_inventory_cooldown"
+			},
+			"scripts": {
+				"animate": [
+					"contEatFromInventoryCooldown",
+					"contTameTag",
+					"contBabyTag",
+					"contRiddenTag",
+					"contTameState",
+					"contBehaviorState",
+					"contShellMode"
+				]
 			}
         },
         "component_groups": {
@@ -215,7 +236,7 @@
 					"value": 2
 				},
 				"minecraft:attack": {
-					"damage": 15
+					"damage": 25
 				},
 				"minecraft:experience_reward": {
 					"on_bred": "Math.Random(6,9)",
@@ -260,6 +281,29 @@
 					}
 				}
 			},
+			"rift:ankylosaurus_adult_hide_in_shell": {
+				"minecraft:is_sheared": {},
+				"minecraft:area_attack": {
+					"damage_range": 1,
+					"damage_per_tick": 5,
+					"cause": "entity_attack",
+					"entity_filter": {
+                        "all_of": [
+                            {
+                                "test": "is_owner",
+                                "subject": "other",
+								"value": false
+                            },
+							{
+								"test": "is_family",
+								"subject": "other",
+								"operator": "!=",
+								"value": "inanimate"
+							}
+                        ]
+					}
+                }
+			},
 			"rift:ankylosaurus_adult_calm": {
 				"minecraft:on_target_acquired": {
 					"event": "rift:adult_become_angry",
@@ -290,6 +334,36 @@
 					}
 				}
 			},
+            "rift:ankylosaurus_adult_trusting": {
+                "minecraft:trust": {}
+            },
+            "rift:ankylosaurus_adult_waiting_for_tame": {
+				"minecraft:is_ignited": {},
+                "minecraft:timer": {
+					"time": 10,
+					"time_down_event": {
+						"event": "rift:can_be_tamed_again",
+						"target": "self"
+					}
+				}
+            },
+			"rift:ankylosaurus_adult_chance_for_tame": {
+                "minecraft:is_charged": {}
+            },
+			"rift:ankylosaurus_adult_tameable": {
+                "minecraft:tameable": {
+                    "probability": 1,
+                    "tame_items": [
+						"rift:cactus_treat",
+						"rift:berry_treat",
+						"rift:rooted_treat"
+                    ],
+                    "tame_event": {
+                        "event": "rift:adult_on_tame",
+                        "target": "self"
+                    }
+                }
+            },
 			"rift:default_targets": {
 				"minecraft:behavior.nearest_attackable_target": {
 					"priority": 7,
@@ -574,6 +648,33 @@
 					"max_distance": 12
 				}
 			},
+			"rift:ankylosaurus_saddled": {
+				"minecraft:is_saddled": {},
+				"minecraft:input_ground_controlled": {},
+				"minecraft:can_power_jump": {},
+				"minecraft:horse.jump_strength": {
+					"value": {
+						"range_min": 0,
+						"range_max": 0
+					}
+				}
+			},
+			"rift:ankylosaurus_chested": {
+				"minecraft:is_chested": {}
+			},
+			"rift:rideable": {
+				"minecraft:rideable": {
+					"seats": [
+						{
+							"position": [
+								0, 
+								0.8, 
+								0.05
+							]
+						}
+					]
+				}
+			},
 			"rift:temptable": {
 				"minecraft:behavior.tempt": {
 					"priority": 10,
@@ -614,6 +715,14 @@
 					"priority": 14
 				}
 			},
+			"rift:wild_cannot_move": {
+				"minecraft:movement": {
+					"value": 0
+				},
+				"minecraft:underwater_movement": {
+					"value": 0
+				}
+			},
 			"rift:variant_zero": {
 				"minecraft:variant": {
 					"value": 0
@@ -632,6 +741,15 @@
 			"rift:variant_three": {
 				"minecraft:variant": {
 					"value": 3
+				}
+			},
+			"rift:can_attack": {
+				"minecraft:behavior.delayed_attack": {
+					"priority": 9,
+					"attack_duration": 2.08,
+					"hit_delay_pct": 0.5,
+					"track_target": true,
+					"reach_multiplier": 3
 				}
 			}
         },
@@ -671,14 +789,45 @@
 					{
 						"on_damage": {
 							"filters": {
-                                "test": "has_component",
-                                "subject": "self",
-                                "operator": "!=",
-                                "value": "minecraft:is_tamed"
-                            }
+								"all_of": [
+									{
+										"test": "has_component",
+										"subject": "self",
+										"operator": "!=",
+										"value": "minecraft:is_tamed"
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"operator": "!=",
+										"value": "minecraft:is_sheared"
+									}
+								]
+							}
 						},
 						"damage_multiplier": 0.5,
-						"cause": "attack"
+						"cause": "entity_attack"
+					},
+					{
+						"on_damage": {
+							"filters": {
+								"all_of": [
+									{
+										"test": "has_component",
+										"subject": "self",
+										"operator": "!=",
+										"value": "minecraft:is_tamed"
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_sheared"
+									}
+								]
+							}
+						},
+                        "deals_damage": false,
+						"cause": "entity_attack"
 					},
 					{
 						"on_damage": {
@@ -694,12 +843,18 @@
 										"test": "has_component",
 										"subject": "self",
 										"value": "minecraft:is_tamed"
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"operator": "!=",
+										"value": "minecraft:is_sheared"
 									}
 								]
 							}
 						},
 						"damage_multiplier": 0.5,
-						"cause": "attack"
+						"cause": "entity_attack"
 					},
 					{
 						"on_damage": {
@@ -714,12 +869,38 @@
 										"test": "has_component",
 										"subject": "self",
 										"value": "minecraft:is_tamed"
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"operator": "!=",
+										"value": "minecraft:is_sheared"
 									}
 								]
 							}
 						},
 						"damage_multiplier": 0.25,
-						"cause": "attack"
+						"cause": "entity_attack"
+					},
+					{
+						"on_damage": {
+							"filters": {
+								"all_of": [
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_tamed"
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_sheared"
+									}
+								]
+							}
+						},
+                        "deals_damage": false,
+						"cause": "entity_attack"
 					},
 					{
 						"on_damage": {
@@ -2529,7 +2710,9 @@
                                 "rift:ankylosaurus_adult",
                                 "rift:ankylosaurus_adult_wild",
                                 "rift:wild_standing_adult",
-                                "rift:variant_zero"
+                                "rift:variant_zero",
+								"rift:can_attack",
+								"rift:default_targets"
                             ]
                         }
                     },
@@ -2540,7 +2723,9 @@
                                 "rift:ankylosaurus_adult",
                                 "rift:ankylosaurus_adult_wild",
                                 "rift:wild_standing_adult",
-                                "rift:variant_one"
+                                "rift:variant_one",
+								"rift:can_attack",
+								"rift:default_targets"
                             ]
                         }
                     },
@@ -2551,7 +2736,9 @@
                                 "rift:ankylosaurus_adult",
                                 "rift:ankylosaurus_adult_wild",
                                 "rift:wild_standing_adult",
-                                "rift:variant_two"
+                                "rift:variant_two",
+								"rift:can_attack",
+								"rift:default_targets"
                             ]
                         }
                     },
@@ -2562,12 +2749,42 @@
                                 "rift:ankylosaurus_adult",
                                 "rift:ankylosaurus_adult_wild",
                                 "rift:wild_standing_adult",
-                                "rift:variant_three"
+                                "rift:variant_three",
+								"rift:can_attack",
+								"rift:default_targets"
                             ]
                         }
                     }
                 ]
             },
+			"rift:enter_shell": {
+				"add": {
+					"component_groups": [
+						"rift:ankylosaurus_adult_hide_in_shell",
+						"rift:wild_cannot_move"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:wild_standing_adult",
+						"rift:can_attack"
+					]
+				}
+			},
+			"rift:exit_shell": {
+				"add": {
+					"component_groups": [
+						"rift:wild_standing_adult",
+						"rift:can_attack"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:ankylosaurus_adult_hide_in_shell",
+						"rift:wild_cannot_move"
+					]
+				}
+			},
 			//for potion effects
 			"rift:drink_night_vision_potion_one": {
 				"run_command": {

@@ -13,6 +13,9 @@
 					"transitions": [
 						{
 							"sitting": "query.property('rift:tame_state') == 1 && !query.has_target && !query.has_rider"
+						},
+						{
+							"enterShell": "query.is_sheared"
 						}
 					]
 				},
@@ -23,6 +26,36 @@
 					"transitions": [
 						{
 							"default": "query.property('rift:tame_state') != 1 || query.has_target || query.has_rider"
+						}
+					]
+				},
+				"enterShell": {
+					"animations": [
+						"animEnterShell"
+					],
+					"transitions": [
+						{
+							"shellMode": "query.all_animations_finished"
+						}
+					]
+				},
+				"shellMode": {
+					"animations": [
+						"animShellMode"
+					],
+					"transitions": [
+						{
+							"exitShellMode": "!query.is_sheared"
+						}
+					]
+				},
+				"exitShellMode": {
+					"animations": [
+						"animExitShell"
+					],
+					"transitions": [
+						{
+							"default": "query.all_animations_finished"
 						}
 					]
 				}
