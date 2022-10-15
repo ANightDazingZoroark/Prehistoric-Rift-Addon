@@ -82,6 +82,44 @@
 					]
 				}
 			}
+		},
+		"controller.animation.ankylosaurus_taming_progress": {
+			"initial_state": "default",
+			"states": {
+				"default": {
+					"transitions": [
+						{
+							"wait": "!query.is_tamed && query.is_ignited"
+						}
+					]
+				},
+				"wait": {
+					"animations": [
+						"animClock"
+					],
+					"transitions": [
+						{
+							"default": "query.property('rift:undergoing_taming') == false"
+						},
+						{
+							"feedAgain": "!query.is_ignited && !query.is_tamed"
+						}
+					]
+				},
+				"feedAgain": {
+					"animations": [
+						"animAlert"
+					],
+					"transitions": [
+						{
+							"default": "query.property('rift:undergoing_taming') == false"
+						},
+						{
+							"wait": "query.is_ignited && !query.is_tamed"
+						}
+					]
+				}
+			}
 		}
     }
 }
