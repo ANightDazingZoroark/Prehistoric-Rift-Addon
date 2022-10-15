@@ -78,9 +78,9 @@ function manualSniffGui(hitEntity, entity) {
                     entity.runCommand(`tellraw @s {\"rawtext\":[{\"text\":\"Your Direwolf doesn't have enough energy to perform this action!\"}]}`)
                 }
                 else {
-                    for(let x = -48; x < 48; x++) {
+                    for(let x = -12; x < 13; x++) {
                         for (let y = -4; y < 16; y++) {
-                            for (let z = -48; z < 48; z++) {
+                            for (let z = -12; z < 13; z++) {
                                 if (hitEntity.dimension.getBlock(new BlockLocation(Math.trunc(hitEntity.location.x+x), Math.trunc(hitEntity.location.y+y), Math.trunc(hitEntity.location.z+z))).id == 'minecraft:chest') {
                                     world.getDimension('overworld').spawnEntity('rift:direwolf_alert_icon', new BlockLocation(Math.trunc(hitEntity.location.x+x), Math.trunc(hitEntity.location.y+y), Math.trunc(hitEntity.location.z+z))).nameTag = ''
                                     console.warn('yay')
@@ -151,9 +151,9 @@ world.events.tick.subscribe((ev) => {
         ]
     }))
     for (let d = 0; d < direwolves.length; d++) {
-        for(let x = -12; x < 12; x++) {
+        for(let x = -12; x < 13; x++) {
             for (let y = -4; y < 16; y++) {
-                for (let z = -12; z < 12; z++) {
+                for (let z = -12; z < 13; z++) {
                     if (direwolves[d].dimension.getBlock(new BlockLocation(Math.trunc(direwolves[d].location.x+x), Math.trunc(direwolves[d].location.y+y), Math.trunc(direwolves[d].location.z+z))).id == 'minecraft:chest') {
                         world.getDimension('overworld').spawnEntity('rift:direwolf_alert_icon', new BlockLocation(Math.trunc(direwolves[d].location.x+x), Math.trunc(direwolves[d].location.y+y), Math.trunc(direwolves[d].location.z+z))).nameTag = ''
                     }

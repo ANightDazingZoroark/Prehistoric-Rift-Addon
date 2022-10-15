@@ -752,6 +752,9 @@
 					]
 				},
 				"callModeLimbo": {
+                    "on_entry": [
+                        "v.utahraptorCall = 0.0; for_each(t.utahraptor, query.get_nearby_entities_except_self(16, 'rift:utahraptor'), { v.utahraptorCall = v.utahraptorCall + ((t.utahraptor -> query.is_tamed) && !(t.utahraptor -> query.is_baby)); });"
+                    ],
 					"animations": [
 						"animAbilitySwitchCooldown"
 					],
@@ -760,7 +763,10 @@
 							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:utahraptor' || query.get_equipped_item_name('main_hand') != 'command_staff'"
 						},
 						{
-							"useCallMode": "!query.is_using_item"
+							"useCallMode": "!query.is_using_item && v.utahraptorCall > 1"
+						},
+						{
+							"useCallModeFail": "!query.is_using_item && v.utahraptorCall <= 1"
 						},
 						{
 							"callToSlash": "query.all_animations_finished"
@@ -776,6 +782,16 @@
 					"on_entry": [
 						"/tag @e[type=rift:utahraptor, c=1, tag=tamed, tag=!baby] add utahBuff",
 						"/event entity @e[type=rift:utahraptor, c=1, tag=tamed, tag=!baby] rift:decrease_energy_while_pack_buffing"
+					]
+				},
+				"useCallModeFail": {
+					"transitions": [
+						{
+							"callMode": "(1.0)"
+						}
+					],
+					"on_entry": [
+						"/tellraw @p {\"rawtext\":[{\"text\":\"There are no Utahraptors nearby to activate this ability!\"}]}"
 					]
 				},
 				"callToSlash": {
