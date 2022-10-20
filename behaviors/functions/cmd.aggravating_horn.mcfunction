@@ -1,3 +1,4 @@
+execute as @s[tag=!inWater] run event entity @e[type=rift:ankylosaurus, r=64, tag=tamed, tag=!baby, tag=!sitting, tag=!hunting, tag=!ridden, tag=!hasTarget] rift:aggravated_via_aggravating_horn
 execute as @s[tag=inWater] run event entity @e[type=rift:anomalocaris, r=64, tag=tamed, tag=!baby, tag=!sitting, tag=!hunting, tag=!ridden, tag=!hasTarget] rift:aggravated_via_aggravating_horn
 execute as @s[tag=!inWater] run event entity @e[type=rift:apatosaurus, r=64, tag=tamed, tag=!baby, tag=!sitting, tag=!hunting, tag=!ridden, tag=!hasTarget] rift:aggravated_via_aggravating_horn
 event entity @e[type=rift:baryonyx, r=64, tag=tamed, tag=!baby, tag=!sitting, tag=!hunting, tag=!ridden, tag=!hasTarget] rift:aggravated_via_aggravating_horn

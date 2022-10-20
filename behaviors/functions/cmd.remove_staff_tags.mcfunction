@@ -23,3 +23,5 @@ tag @e remove direwolfBuff
 tag @e remove megalocerosCharge
 tag @e remove megalocerosHarvest
 tag @e remove baryonyxHarvest
+tag @e remove ankylosaurusShell
+tag @e remove ankyloHarvest

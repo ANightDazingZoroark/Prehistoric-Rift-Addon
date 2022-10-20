@@ -7,26 +7,126 @@
                 "default": {
                     "transitions": [
                         {
-                            "inShell": "query.is_alive && !query.is_tamed && !query.is_baby && ((query.health <= query.max_health * 0.25) || query.property('rift:energy') <= 0)"
+                            "inShell": "query.is_alive && !query.is_tamed && !query.is_baby && (query.health <= query.max_health * 0.25) && query.has_target"
                         }
                     ]
                 },
                 "inShell": {
                     "transitions": [
                         {
-                            "default": "query.is_alive && ((query.health == query.max_health) && query.property('rift:energy') >= 150)"
+                            "default": "query.is_alive && (!query.has_target || query.health > query.max_health * 0.25)"
                         }
                     ],
                     "on_entry": [
                         "@s rift:enter_shell",
-                        "/effect @s regeneration 69420666 4 true"
+						"/effect @s regeneration 69420666 2"
                     ],
                     "on_exit": [
                         "@s rift:exit_shell",
-                        "/effect @s regeneration 0"
+						"/effect @s regeneration 0"
                     ]
                 }
             }
-        }
+        },
+		"controller.animation.ankylo_manage_tame_state": {
+			"initial_state": "default",
+			"states": {
+				"default": {
+					"transitions": [
+						{
+							"standing": "query.is_tamed && query.property('rift:tame_state') == 0"
+						},
+						{
+							"sitting": "query.is_tamed && query.property('rift:tame_state') == 1"
+						},
+						{
+							"inShell": "query.is_tamed && query.property('rift:tame_state') == 2"
+						},
+						{
+							"wandering": "query.is_tamed && query.property('rift:tame_state') == 3"
+						}
+					]
+				},
+				"standing": {
+					"transitions": [
+						{
+							"default": "!query.is_tamed"
+						},
+						{
+							"sitting": "query.property('rift:tame_state') == 1"
+						},
+						{
+							"inShell": "query.property('rift:tame_state') == 2"
+						},
+						{
+							"wandering": "query.property('rift:tame_state') == 3"
+						}
+					],
+					"on_entry": [
+						"@s rift:on_standing"
+					]
+				},
+				"sitting": {
+					"transitions": [
+						{
+							"default": "!query.is_tamed"
+						},
+						{
+							"standing": "query.property('rift:tame_state') == 0"
+						},
+						{
+							"inShell": "query.property('rift:tame_state') == 2"
+						},
+						{
+							"wandering": "query.property('rift:tame_state') == 3"
+						}
+					],
+					"on_entry": [
+						"@s rift:on_sitting"
+					]
+				},
+				"inShell": {
+					"transitions": [
+						{
+							"default": "!query.is_tamed"
+						},
+						{
+							"standing": "query.property('rift:tame_state') == 0"
+						},
+						{
+							"sitting": "query.property('rift:tame_state') == 1"
+						},
+						{
+							"wandering": "query.property('rift:tame_state') == 3"
+						}
+					],
+					"on_entry": [
+						"@s rift:on_shell_mode"
+					],
+					"on_exit": [
+						"/effect @s regeneration 0"
+					]
+				},
+				"wandering": {
+					"transitions": [
+						{
+							"default": "!query.is_tamed"
+						},
+						{
+							"standing": "query.property('rift:tame_state') == 0"
+						},
+						{
+							"sitting": "query.property('rift:tame_state') == 1"
+						},
+						{
+							"inShell": "query.property('rift:tame_state') == 2"
+						}
+					],
+					"on_entry": [
+						"@s rift:on_wandering"
+					]
+				}
+			}
+		}
     }
 }

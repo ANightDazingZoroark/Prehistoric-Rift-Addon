@@ -1,6 +1,7 @@
-event entity @e[type=rift:ankylosaurus, tag=tamed, tag=!lowEnergy, tag=!noEnergy] rift:return_to_moving_normally
-event entity @e[type=rift:ankylosaurus, tag=tamed, tag=lowEnergy, tag=!noEnergy] rift:moving_slowly_low_energy
-event entity @e[type=rift:ankylosaurus, tag=tamed, tag=!lowEnergy, tag=noEnergy] rift:stop_moving_low_energy
+event entity @e[type=rift:ankylosaurus, tag=tamed, tag=!lowEnergy, tag=!noEnergy, tag=!sheared] rift:return_to_moving_normally
+event entity @e[type=rift:ankylosaurus, tag=tamed, tag=lowEnergy, tag=!noEnergy, tag=!sheared] rift:moving_slowly_low_energy
+event entity @e[type=rift:ankylosaurus, tag=tamed, tag=!lowEnergy, tag=noEnergy, tag=!sheared] rift:stop_moving_low_energy
+event entity @e[type=rift:ankylosaurus, tag=tamed, tag=sheared] rift:ankylosaurus_forced_cannot_move_shell_mode
 
 event entity @e[type=rift:anomalocaris, tag=tamed, tag=!lowEnergy, tag=!noEnergy] rift:return_to_moving_normally
 event entity @e[type=rift:anomalocaris, tag=tamed, tag=lowEnergy, tag=!noEnergy] rift:moving_slowly_low_energy

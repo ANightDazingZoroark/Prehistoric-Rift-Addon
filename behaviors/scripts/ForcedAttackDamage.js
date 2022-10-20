@@ -153,6 +153,12 @@ world.events.tick.subscribe((ev) => {
                 catch (e) {}
             }
         }
+        if (entities[i].id == 'rift:ankylosaurus') {
+            try {
+                entities[i].runCommand(`damage @e[tag=!tamed, family=!inanimate, type=!player, type=!item, r=10] `+damageOutput(entities[i], 25)+` entity_attack entity @s`)
+            }
+            catch (e) {}
+        }
         entities[i].removeTag('forcedAttack')
         entities[i].removeTag('chargeOne')
         entities[i].removeTag('chargeTwo')

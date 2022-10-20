@@ -2828,6 +2828,135 @@
 					]
 				}
 			}
+		},
+		"controller.animation.ankylosaurus_command_staff": {
+			"initial_state": "default",
+			"states": {
+				"default": {
+					"transitions": [
+						{
+							"clubSmashMode": "query.is_riding && (query.get_ride -> query.owner_identifier) == 'rift:ankylosaurus'"
+						}
+					],
+					"on_exit": [
+						"/tellraw @s {\"rawtext\":[{\"text\":\"Ability set to Club Smash Mode\"}]}"
+					]
+				},
+				"clubSmashMode": {
+					"transitions": [
+						{
+							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:ankylosaurus'"
+						},
+						{
+							"clubSmashModeLimbo": "query.is_using_item && (query.get_ride -> query.property('rift:energy')) >= 30 && (query.get_ride -> query.is_saddled) && query.get_equipped_item_name('main_hand') == 'command_staff'"
+						},
+						{
+							"clubSmashModeFail": "query.is_using_item && (query.get_ride -> query.property('rift:energy')) < 30 && (query.get_ride -> query.is_saddled) && query.get_equipped_item_name('main_hand') == 'command_staff'"
+						}
+					]
+				},
+				"clubSmashModeFail": {
+					"transitions": [
+						{
+							"clubSmashMode": "!query.is_using_item"
+						},
+						{
+							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:ankylosaurus'"
+						}
+					],
+					"on_entry": [
+						"/tellraw @s {\"rawtext\":[{\"text\":\"You don't have enough energy to perform this action!\"}]}"
+					]
+				},
+				"clubSmashModeLimbo": {
+					"animations": [
+						"animAbilitySwitchCooldown"
+					],
+					"transitions": [
+						{
+							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:ankylosaurus' || query.get_equipped_item_name('main_hand') != 'command_staff'"
+						},
+						{
+							"useClubSmash": "!query.is_using_item && !(query.get_ride -> query.is_sheared)"
+						},
+						{
+							"clubSmashToShell": "query.all_animations_finished"
+						}
+					]
+				},
+				"useClubSmash": {
+					"transitions": [
+						{
+							"clubSmashMode": "(1.0)"
+						}
+					],
+					"on_entry": [
+						"/event entity @e[type=rift:ankylosaurus, c=1, tag=tamed, tag=!baby] rift:start_forced_attack"
+					]
+				},
+				"clubSmashToShell": {
+					"transitions": [
+						{
+							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:ankylosaurus' || query.get_equipped_item_name('main_hand') != 'command_staff'"
+						},
+						{
+							"shellMode": "!query.is_using_item"
+						}
+					],
+					"on_exit": [
+						"/tellraw @s {\"rawtext\":[{\"text\":\"Ability set to Shell Mode\"}]}"
+					]
+				},
+				"shellMode": {
+					"transitions": [
+						{
+							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:ankylosaurus'"
+						},
+						{
+							"shellModeLimbo": "query.get_equipped_item_name('main_hand') == 'command_staff' && query.is_using_item && (query.get_ride -> query.is_saddled)"
+						}
+					]
+				},
+				"shellModeLimbo": {
+					"animations": [
+						"animAbilitySwitchCooldown"
+					],
+					"transitions": [
+						{
+							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:ankylosaurus' || query.get_equipped_item_name('main_hand') != 'command_staff'"
+						},
+						{
+							"useShellMode": "!query.is_using_item"
+						},
+						{
+							"shellToClubSmash": "query.all_animations_finished"
+						}
+					]
+				},
+				"useShellMode": {
+					"transitions": [
+						{
+							"shellMode": "(1.0)"
+						}
+					],
+					"on_entry": [
+						"/tag @e[type=rift:ankylosaurus, c=1, tag=tamed, tag=!baby] add ankylosaurusShell"
+					]
+				},
+				"shellToClubSmash": {
+					"transitions": [
+						{
+							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:ankylosaurus' || query.get_equipped_item_name('main_hand') != 'command_staff'"
+						},
+						{
+							"clubSmashMode": "!query.is_using_item"
+						}
+					],
+					"on_exit": [
+						"/tellraw @s {\"rawtext\":[{\"text\":\"Ability set to Club Smash Mode\"}]}"
+					]
+				}
+			}
 		}
 	}
 }
