@@ -1,3 +1,4 @@
+import 'scripts/AddOwner.js'
 import 'scripts/AbilityManagement.js'
 import 'scripts/ApatosaurusCrafting.js'
 import 'scripts/ApatosaurusSmelting.js'
@@ -10,6 +11,7 @@ import 'scripts/EatFromInventory.js'
 import 'scripts/EffectManagement.js'
 import 'scripts/ForcedAttackDamage.js'
 import 'scripts/JournalManagement.js'
+import 'scripts/RiftCommands.js'
 import { DynamicPropertiesDefinition, MinecraftEntityTypes, system, world } from 'mojang-minecraft'
 
 world.events.worldInitialize.subscribe((ev) => {

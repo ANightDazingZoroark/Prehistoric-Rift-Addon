@@ -62,6 +62,24 @@ world.events.tick.subscribe((ev) => {
                     }
                 }
             }
+            if (entities[e].id == 'rift:ankylosaurus' && !entities[e].getComponent('is_tamed') && !entities[e].getComponent('is_baby')) {
+                let fireBlockNum = 0
+                for(let x = -12; x < 13; x++) {
+                    for (let y = -2; y < 4; y++){
+                        for (let z = -12; z < 13; z++) {
+                            if (fireBlocks.includes(entities[e].dimension.getBlock(new BlockLocation(Math.trunc(entities[e].location.x+x), Math.trunc(entities[e].location.y+y), Math.trunc(entities[e].location.z+z))).id)) {
+                                fireBlockNum++
+                            }
+                        }
+                    }
+                }
+                if (fireBlockNum > 0) {
+                    entities[e].triggerEvent('rift:hide_in_shell_from_fire')
+                }
+                else {
+                    entities[e].triggerEvent('rift:end_hide_in_shell_from_fire')
+                }
+            }
         }
     }
 })

@@ -135,7 +135,7 @@
 				"minecraft:tameable": {
 					"probability": 0.25,
 					"tame_items": [
-						"rift:berry_treat",
+						"rift:grassy_treat",
 						"rift:cactus_treat",
 						"rift:rooted_treat"
 					],
@@ -266,6 +266,9 @@
 					"on_bred": "Math.Random(6,9)",
 					"on_death": "query.last_hit_by_player ? Math.Random(6,12) : 0"
 				},
+				"minecraft:equipment": {
+					"table": "loot_tables/entities/ankylosaurus knockback weapon.json"
+				},
 				"minecraft:loot": {
 					"table": "loot_tables/entities/ankylosaurus.loot.json"
 				},
@@ -363,6 +366,9 @@
 					}
                 }
 			},
+			"rift:ankylosaurus_hide_from_fire": {
+				"minecraft:is_illager_captain": {}
+			},
 			"rift:tamed_can_move_adult": {
 				"minecraft:movement": {
 					"value": 0.05
@@ -446,7 +452,7 @@
                     },
                     "trust_items": [
                         "rift:cactus_treat",
-						"rift:berry_treat",
+						"rift:grassy_treat",
 						"rift:rooted_treat"
                     ]
                 }            
@@ -472,7 +478,7 @@
                     "probability": 1,
                     "tame_items": [
 						"rift:cactus_treat",
-						"rift:berry_treat",
+						"rift:grassy_treat",
 						"rift:rooted_treat"
                     ],
                     "tame_event": {
@@ -648,7 +654,7 @@
 						}
 					},
 					"breed_items": [
-						"rift:berry_treat",
+						"rift:grassy_treat",
 						"rift:rooted_treat",
 						"rift:cactus_treat"
 					],
@@ -806,7 +812,7 @@
 						"minecraft:sweet_berries",
 						"rift:rooted_treat",
 						"rift:cactus_treat",
-						"rift:berry_treat"
+						"rift:grassy_treat"
 					]
 				}
 			},
@@ -1238,7 +1244,7 @@
 												"test": "has_equipment",
 												"subject": "other",
 												"domain": "hand",
-												"value": "rift:berry_treat"
+												"value": "rift:grassy_treat"
 											},
 											{
 												"test": "has_equipment",
@@ -1325,7 +1331,7 @@
 										"subject": "other",
 										"domain": "hand",
 										"operator": "!=",
-										"value": "rift:berry_treat"
+										"value": "rift:grassy_treat"
 									},
 									{
 										"test": "has_equipment",
@@ -1399,7 +1405,7 @@
 										"subject": "other",
 										"domain": "hand",
 										"operator": "!=",
-										"value": "rift:berry_treat"
+										"value": "rift:grassy_treat"
 									},
 									{
 										"test": "has_equipment",
@@ -1518,7 +1524,7 @@
 												"test": "has_equipment",
 												"subject": "other",
 												"domain": "hand",
-												"value": "rift:berry_treat"
+												"value": "rift:grassy_treat"
 											},
 											{
 												"test": "has_equipment",
@@ -3580,6 +3586,78 @@
 					}
 				]
 			},
+			"rift:hatched_from_egg": {
+				"randomize": [
+					{
+						"weight": 1,
+						"add": {
+							"component_groups": [
+								"rift:ankylosaurus_baby",
+								"rift:variant_zero",
+								"rift:temptable",
+								"rift:pushable",
+								"rift:ankylosaurus_baby_tamed",
+								"rift:ankylosaurus_tamed",
+								"rift:tamed_can_move_baby"
+							]
+						},
+						"set_property": {
+							"rift:behavior_state": "3"
+						}
+					},
+					{
+						"weight": 1,
+						"add": {
+							"component_groups": [
+								"rift:ankylosaurus_baby",
+								"rift:variant_one",
+								"rift:temptable",
+								"rift:pushable",
+								"rift:ankylosaurus_baby_tamed",
+								"rift:ankylosaurus_tamed",
+								"rift:tamed_can_move_baby"
+							]
+						},
+						"set_property": {
+							"rift:behavior_state": "3"
+						}
+					},
+					{
+						"weight": 1,
+						"add": {
+							"component_groups": [
+								"rift:ankylosaurus_baby",
+								"rift:variant_two",
+								"rift:temptable",
+								"rift:pushable",
+								"rift:ankylosaurus_baby_tamed",
+								"rift:ankylosaurus_tamed",
+								"rift:tamed_can_move_baby"
+							]
+						},
+						"set_property": {
+							"rift:behavior_state": "3"
+						}
+					},
+					{
+						"weight": 1,
+						"add": {
+							"component_groups": [
+								"rift:ankylosaurus_baby",
+								"rift:variant_three",
+								"rift:temptable",
+								"rift:pushable",
+								"rift:ankylosaurus_baby_tamed",
+								"rift:ankylosaurus_tamed",
+								"rift:tamed_can_move_baby"
+							]
+						},
+						"set_property": {
+							"rift:behavior_state": "3"
+						}
+					}
+				]
+			},
 			"rift:enter_shell": {
 				"add": {
 					"component_groups": [
@@ -3611,6 +3689,20 @@
 						"rift:ankylosaurus_adult_hide_in_shell",
 						"rift:cannot_move_shell_mode",
 						"rift:unpushable"
+					]
+				}
+			},
+			"rift:hide_in_shell_from_fire": {
+				"add": {
+					"component_groups": [
+						"rift:ankylosaurus_hide_from_fire"
+					]
+				}
+			},
+			"rift:end_hide_in_shell_from_fire": {
+				"remove": {
+					"component_groups": [
+						"rift:ankylosaurus_hide_from_fire"
 					]
 				}
 			},
@@ -3684,7 +3776,6 @@
 				},
 				"remove": {
 					"component_groups": [
-						"rift:ankylosaurus_wild",
 						"rift:ankylosaurus_baby_wild",
 						"rift:ankylosaurus_baby_calm",
 						"rift:ankylosaurus_baby_scared",
@@ -3761,7 +3852,7 @@
 				},
 				"run_command": {
 					"command": [
-						"tellraw @p {\"rawtext\":[{\"text\":\"You made a wild ankylosaurus trust you! Keep feeding it every once in a while to eventually tame it!\"}]}"
+						"tellraw @p {\"rawtext\":[{\"text\":\"You made a wild Ankylosaurus trust you! Keep feeding it every once in a while to eventually tame it!\"}]}"
 					]
 				},
 				"set_property": {
@@ -3859,7 +3950,8 @@
 						"rift:ankylosaurus_adult_chance_for_tame",
 						"rift:ankylosaurus_adult_trusting",
 						"rift:wild_standing_adult",
-						"rift:temptable"
+						"rift:temptable",
+						"rift:ankylosaurus_hide_from_fire"
 					]
 				},
 				"run_command": {
@@ -4076,7 +4168,7 @@
 			},
 			"rift:ankylosaurus_forced_exit_shell_mode": {
 				"set_property": {
-					"rift:tame_state": "1"
+					"rift:tame_state": "0"
 				}
 			},
 			"rift:ankylosaurus_harvesting": {
