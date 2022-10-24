@@ -351,6 +351,31 @@
 				}
 			}
 		},
+		"controller.animation.add_in_love_tag": {
+			"initial_state": "default",
+			"states": {
+				"default": {
+					"transitions": [
+						{
+							"hasTag": "query.is_in_love"
+						}
+					]
+				},
+				"hasTag": {
+					"transitions": [
+						{
+							"default": "!query.is_in_love"
+						}
+					],
+                    "on_entry": [
+                        "/tag @s add inLove"
+                    ],
+                    "on_exit": [
+                        "/tag @s remove inLove"
+                    ]
+				}
+			}
+		},
 		"controller.animation.become_unsittable_when_ridden": {
 			"initial_state": "default",
 			"states": {
@@ -407,10 +432,8 @@
 						}
 					],
 					"on_entry": [
-						"@s rift:on_standing"
-					],
-					"on_exit": [
-						"/tellraw @p {\"rawtext\":[{\"selector\": \"@s\"}, {\"text\":\" is now sitting\"}]}"
+						"@s rift:on_standing",
+						"/tellraw @p {\"rawtext\":[{\"selector\": \"@s\"}, {\"text\":\" is now following\"}]}"
 					]
 				},
 				"sitting": {
@@ -426,10 +449,8 @@
 						}
 					],
 					"on_entry": [
-						"@s rift:on_sitting"
-					],
-					"on_exit": [
-						"/tellraw @p {\"rawtext\":[{\"selector\": \"@s\"}, {\"text\":\" is now wandering\"}]}"
+						"@s rift:on_sitting",
+						"/tellraw @p {\"rawtext\":[{\"selector\": \"@s\"}, {\"text\":\" is now sitting\"}]}"
 					]
 				},
 				"wandering": {
@@ -445,10 +466,8 @@
 						}
 					],
 					"on_entry": [
-						"@s rift:on_wandering"
-					],
-					"on_exit": [
-						"/tellraw @p {\"rawtext\":[{\"selector\": \"@s\"}, {\"text\":\" is now following\"}]}"
+						"@s rift:on_wandering",
+						"/tellraw @p {\"rawtext\":[{\"selector\": \"@s\"}, {\"text\":\" is now wandering\"}]}"
 					]
 				}
 			}
@@ -488,10 +507,8 @@
 						}
 					],
 					"on_entry": [
-						"@s rift:on_assist_behavior"
-					],
-					"on_exit": [
-						"/tellraw @p {\"rawtext\":[{\"selector\": \"@s\"}, {\"text\":\" will now be neutral\"}]}"
+						"@s rift:on_assist_behavior",
+						"/tellraw @p {\"rawtext\":[{\"selector\": \"@s\"}, {\"text\":\" will now assist you in combat\"}]}"
 					]
 				},
 				"neutral": {
@@ -510,10 +527,8 @@
 						}
 					],
 					"on_entry": [
-						"@s rift:on_neutral_behavior"
-					],
-					"on_exit": [
-						"/tellraw @p {\"rawtext\":[{\"selector\": \"@s\"}, {\"text\":\" will now be aggressive\"}]}"
+						"@s rift:on_neutral_behavior",
+						"/tellraw @p {\"rawtext\":[{\"selector\": \"@s\"}, {\"text\":\" will now be neutral\"}]}"
 					]
 				},
 				"aggressive": {
@@ -532,10 +547,8 @@
 						}
 					],
 					"on_entry": [
-						"@s rift:on_aggressive_behavior"
-					],
-					"on_exit": [
-						"/tellraw @p {\"rawtext\":[{\"selector\": \"@s\"}, {\"text\":\" will now be passive\"}]}"
+						"@s rift:on_aggressive_behavior",
+						"/tellraw @p {\"rawtext\":[{\"selector\": \"@s\"}, {\"text\":\" will now be aggressive\"}]}"
 					]
 				},
 				"passive": {
@@ -554,10 +567,8 @@
 						}
 					],
 					"on_entry": [
-						"@s rift:on_passive_behavior"
-					],
-					"on_exit": [
-						"/tellraw @p {\"rawtext\":[{\"selector\": \"@s\"}, {\"text\":\" will now assist you in combat\"}]}"
+						"@s rift:on_passive_behavior",
+						"/tellraw @p {\"rawtext\":[{\"selector\": \"@s\"}, {\"text\":\" will now be passive\"}]}"
 					]
 				}
 			}

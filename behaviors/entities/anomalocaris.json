@@ -52,6 +52,7 @@
 				"contTameTag": "controller.animation.add_tame_tag",
 				"contBabyTag": "controller.animation.add_baby_tag",
 				"contRiddenTag": "controller.animation.add_ridden_tag",
+				"contInLoveTag": "controller.animation.add_in_love_tag",
 				"contForcedAttack": "controller.animation.general_forced_attack",
 				"contCarry": "controller.animation.anomalocaris_carrying",
 				"contInvisibility": "controller.animation.anomalocaris_invisibility",
@@ -76,6 +77,7 @@
 					"contTameTag",
 					"contBabyTag",
 					"contRiddenTag",
+					"contInLoveTag",
 					"contForcedAttack",
 					"contInvisibility",
 					"contCarry",
@@ -1238,6 +1240,58 @@
 										"test": "has_component",
 										"subject": "self",
 										"value": "minecraft:is_baby"
+									}
+								]
+							},
+							"event": "rift:lol2",
+							"target": "self"
+						},
+						"interact_text": "action.interact.tame"
+					},
+					{
+						"on_interact": {
+							"filters": {
+								"all_of": [
+									{
+										"any_of": [
+											{
+												"test": "has_equipment",
+												"subject": "other",
+												"domain": "hand",
+												"value": "rift:fish_treat"
+											},
+											{
+												"test": "has_equipment",
+												"subject": "other",
+												"domain": "hand",
+												"value": "rift:bug_treat"
+											}
+										]
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_tamed"
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"operator": "!=",
+										"value": "minecraft:is_baby"
+									},
+									{
+										"any_of": [
+											{
+												"test": "is_missing_health",
+												"subject": "self",
+												"value": true
+											},
+											{
+												"test": "has_tag",
+												"subject": "self",
+												"value": "inLove"
+											}
+										]
 									}
 								]
 							},
@@ -4701,7 +4755,14 @@
 			"rift:lol2": {
 				"run_command": {
 					"command": [
-						"tellraw @p {\"rawtext\":[{\"text\":\"Treats are for healing and breeding only! Use regular foods to heal adults or speed up growth for babies!\"}]}"
+						"tellraw @p {\"rawtext\":[{\"text\":\"Treats are for taming and breeding only! Use regular foods to heal adults or speed up growth for babies!\"}]}"
+					]
+				}
+			},
+			"rift:lol3": {
+				"run_command": {
+					"command": [
+						"tellraw @p {\"rawtext\":[{\"text\":\"Regular foods are for healing and boosting growth only! Use to tame or breed!\"}]}"
 					]
 				}
 			}

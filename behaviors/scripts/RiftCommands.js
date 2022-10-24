@@ -14,7 +14,12 @@ world.events.beforeChat.subscribe(async (ev) => {
                     break
                 case 'r!test':
                     // ev.sender.tell('Hi!')
-                    console.warn(JSON.stringify(ev.sender.runCommand(`testfor @s[hasitem={item=netherite_sword, location=slot.weapon.mainhand}]`)))
+                    let command = ev.sender.runCommand(`tag @s list`)
+                    let playerTags = command.statusMessage
+                    .split(": ")[1]
+                    .split(", ")
+                    .map(tag => tag.replace(/§./, ""))
+                    console.warn(playerTags)
                     ev.cancel = true
                     break
             }

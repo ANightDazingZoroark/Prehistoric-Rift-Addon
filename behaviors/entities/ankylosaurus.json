@@ -53,6 +53,7 @@
 				"contBabyTag": "controller.animation.add_baby_tag",
 				"contRiddenTag": "controller.animation.add_ridden_tag",
 				"contShearedTag": "controller.animation.add_sheared_tag",
+				"contInLoveTag": "controller.animation.add_in_love_tag",
 				"contForcedAttack": "controller.animation.general_forced_attack",
 				"contTameState": "controller.animation.ankylo_manage_tame_state",
 				"contBehaviorState": "controller.animation.manage_tame_behavior",
@@ -75,6 +76,7 @@
 					"contBabyTag",
 					"contRiddenTag",
 					"contShearedTag",
+					"contInLoveTag",
 					"contForcedAttack",
 					"contTameState",
 					"contBehaviorState",
@@ -659,6 +661,7 @@
 						"rift:cactus_treat"
 					],
 					"require_tame": true,
+					"require_full_health": true,
 					"breed_cooldown": 1200,
 					"inherit_tamed": true
 				},
@@ -1263,6 +1266,64 @@
 										"test": "has_component",
 										"subject": "self",
 										"value": "minecraft:is_baby"
+									}
+								]
+							},
+							"event": "rift:lol2",
+							"target": "self"
+						},
+						"interact_text": "action.interact.tame"
+					},
+					{
+						"on_interact": {
+							"filters": {
+								"all_of": [
+									{
+										"any_of": [
+											{
+												"test": "has_equipment",
+												"subject": "other",
+												"domain": "hand",
+												"value": "rift:cactus_treat"
+											},
+											{
+												"test": "has_equipment",
+												"subject": "other",
+												"domain": "hand",
+												"value": "rift:grassy_treat"
+											},
+											{
+												"test": "has_equipment",
+												"subject": "other",
+												"domain": "hand",
+												"value": "rift:rooted_treat"
+											}
+										]
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_tamed"
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"operator": "!=",
+										"value": "minecraft:is_baby"
+									},
+									{
+										"any_of": [
+											{
+												"test": "is_missing_health",
+												"subject": "self",
+												"value": true
+											},
+											{
+												"test": "has_tag",
+												"subject": "self",
+												"value": "inLove"
+											}
+										]
 									}
 								]
 							},
@@ -4041,8 +4102,7 @@
 						},
 						"run_command": {
 							"command": [
-								"tag @s remove sitting",
-								"tellraw @p {\"rawtext\":[{\"text\":\"Your Ankylosaurus is now following\"}]}"
+								"tag @s remove sitting"
 							]
 						}
 					},
@@ -4082,8 +4142,7 @@
 				},
 				"run_command": {
 					"command": [
-						"tag @s add sitting",
-						"tellraw @p {\"rawtext\":[{\"text\":\"Your Ankylosaurus is now sitting\"}]}"
+						"tag @s add sitting"
 					]
 				}
 			},
@@ -4113,7 +4172,6 @@
 				"run_command": {
 					"command": [
 						"tag @s add sitting",
-						"tellraw @p {\"rawtext\":[{\"text\":\"Your Ankylosaurus is now hiding in its shell\"}]}",
 						"effect @s regeneration 69420666 1 true"
 					]
 				}
@@ -4142,8 +4200,7 @@
 						},
 						"run_command": {
 							"command": [
-								"tag @s remove sitting",
-								"tellraw @p {\"rawtext\":[{\"text\":\"Your Ankylosaurus is now wandering\"}]}"
+								"tag @s remove sitting"
 							]
 						}
 					},
@@ -4814,7 +4871,14 @@
 			"rift:lol2": {
 				"run_command": {
 					"command": [
-						"tellraw @p {\"rawtext\":[{\"text\":\"Treats are for healing and breeding only! Use regular foods to heal adults or speed up growth for babies!\"}]}"
+						"tellraw @p {\"rawtext\":[{\"text\":\"Treats are for taming and breeding only! Use regular foods to heal adults or speed up growth for babies!\"}]}"
+					]
+				}
+			},
+			"rift:lol3": {
+				"run_command": {
+					"command": [
+						"tellraw @p {\"rawtext\":[{\"text\":\"Regular foods are for healing and boosting growth only! Use to tame or breed!\"}]}"
 					]
 				}
 			}
