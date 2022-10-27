@@ -1,10 +1,6 @@
-import { EntityQueryOptions, world } from "mojang-minecraft"
-import { ActionFormData } from "mojang-minecraft-ui"
+import { EntityQueryOptions, world } from "@minecraft/server"
+import { ActionFormData } from "@minecraft/server-ui"
 import * as guiCrafting from "./ApatosaurusCraftingOptions"
-
-let apatosaurusFilter = new EntityQueryOptions()
-apatosaurusFilter.type = 'rift:apatosaurus'
-apatosaurusFilter.tags = ['hasFurnace']
 
 const guiMainCraftingTable = new ActionFormData()
 .title('Apatosaurus Menu')
@@ -51,13 +47,13 @@ function mainBothGui(entity, hitEntity) {
 
 world.events.entityHit.subscribe(({ hitEntity, entity }) => {
     try {
-        if (hitEntity.id == 'rift:apatosaurus' && hitEntity.hasTag('hasCraftingTable') && !hitEntity.hasTag('hasFurnace')) {
+        if (hitEntity.typeId == 'rift:apatosaurus' && hitEntity.hasTag('hasCraftingTable') && !hitEntity.hasTag('hasFurnace')) {
             mainCraftingTableGui(entity)
         }
-        else if (hitEntity.id == 'rift:apatosaurus' && !hitEntity.hasTag('hasCraftingTable') && hitEntity.hasTag('hasFurnace')) {
+        else if (hitEntity.typeId == 'rift:apatosaurus' && !hitEntity.hasTag('hasCraftingTable') && hitEntity.hasTag('hasFurnace')) {
             mainFurnaceGui(entity, hitEntity)
         }
-        else if (hitEntity.id == 'rift:apatosaurus' && hitEntity.hasTag('hasCraftingTable') && hitEntity.hasTag('hasFurnace')) {
+        else if (hitEntity.typeId == 'rift:apatosaurus' && hitEntity.hasTag('hasCraftingTable') && hitEntity.hasTag('hasFurnace')) {
             mainBothGui(entity, hitEntity)
         }
     }

@@ -1,20 +1,20 @@
-import { EntityQueryOptions, world } from "mojang-minecraft"
+import { EntityQueryOptions, system, world } from "@minecraft/server"
 
-let apatosaurusFilter = new EntityQueryOptions()
-apatosaurusFilter.type = 'rift:apatosaurus'
-
-world.events.tick.subscribe((ev) => {
-    let apatosaurus = Array.from(world.getDimension('overworld').getEntities(apatosaurusFilter))
+system.run(function everyTick(tick) {
+    system.run(everyTick)
+    let apatosaurus = Array.from(world.getDimension('overworld').getEntities({
+        type: 'rift:apatosaurus'
+    }))
     for (let i = 0; i < apatosaurus.length; i++) {
         if (apatosaurus[i].hasTag('apatoUseBackWeapon') && apatosaurus[i].getComponent('skin_id').value == 1) {
             try {
                 if (apatosaurus[i].runCommand(`testfor @s[hasitem={item=rift:cannonball}]`)) {
                     for (let j = apatosaurus[i].getComponent('inventory').inventorySize - 1; j >= 0; j--) {
                         try {
-                            if (apatosaurus[i].getComponent('inventory').container.getItem(j).id == 'rift:cannonball') {
+                            if (apatosaurus[i].getComponent('inventory').container.getItem(j).typeId == 'rift:cannonball') {
                                 apatosaurus[i].runCommand(`event entity @s rift:apato_firing`)
                                 if (apatosaurus[i].getComponent('inventory').container.getItem(j).amount > 1) {
-                                    apatosaurus[i].runCommand(`replaceitem entity @s slot.inventory `+j+` `+apatosaurus[i].getComponent('inventory').container.getItem(j).id+` `+(apatosaurus[i].getComponent('inventory').container.getItem(j).amount-1).toString()+` 0`)
+                                    apatosaurus[i].runCommand(`replaceitem entity @s slot.inventory `+j+` `+apatosaurus[i].getComponent('inventory').container.getItem(j).typeId+` `+(apatosaurus[i].getComponent('inventory').container.getItem(j).amount-1).toString()+` 0`)
                                 }
                                 else {
                                     apatosaurus[i].runCommand(`replaceitem entity @s slot.inventory `+j+` air 1 0`)
@@ -41,10 +41,10 @@ world.events.tick.subscribe((ev) => {
                 if (apatosaurus[i].runCommand(`testfor @s[hasitem={item=rift:mortar_shell}]`)) {
                     for (let j = apatosaurus[i].getComponent('inventory').inventorySize - 1; j >= 0; j--) {
                         try {
-                            if (apatosaurus[i].getComponent('inventory').container.getItem(j).id == 'rift:mortar_shell') {
+                            if (apatosaurus[i].getComponent('inventory').container.getItem(j).typeId == 'rift:mortar_shell') {
                                 apatosaurus[i].runCommand(`event entity @s rift:apato_mortaring_not_underground`)
                                 if (apatosaurus[i].getComponent('inventory').container.getItem(j).amount > 1) {
-                                    apatosaurus[i].runCommand(`replaceitem entity @s slot.inventory `+j+` `+apatosaurus[i].getComponent('inventory').container.getItem(j).id+` `+(apatosaurus[i].getComponent('inventory').container.getItem(j).amount-1).toString()+` 0`)
+                                    apatosaurus[i].runCommand(`replaceitem entity @s slot.inventory `+j+` `+apatosaurus[i].getComponent('inventory').container.getItem(j).typeId+` `+(apatosaurus[i].getComponent('inventory').container.getItem(j).amount-1).toString()+` 0`)
                                 }
                                 else {
                                     apatosaurus[i].runCommand(`replaceitem entity @s slot.inventory `+j+` air 1 0`)
@@ -71,10 +71,10 @@ world.events.tick.subscribe((ev) => {
                 if (apatosaurus[i].runCommand(`testfor @s[hasitem={item=rift:catapult_boulder}]`)) {
                     for (let j = apatosaurus[i].getComponent('inventory').inventorySize - 1; j >= 0; j--) {
                         try {
-                            if (apatosaurus[i].getComponent('inventory').container.getItem(j).id == 'rift:catapult_boulder') {
+                            if (apatosaurus[i].getComponent('inventory').container.getItem(j).typeId == 'rift:catapult_boulder') {
                                 apatosaurus[i].runCommand(`event entity @s rift:apato_play_catapult_anim`)
                                 if (apatosaurus[i].getComponent('inventory').container.getItem(j).amount > 1) {
-                                    apatosaurus[i].runCommand(`replaceitem entity @s slot.inventory `+j+` `+apatosaurus[i].getComponent('inventory').container.getItem(j).id+` `+(apatosaurus[i].getComponent('inventory').container.getItem(j).amount-1).toString()+` 0`)
+                                    apatosaurus[i].runCommand(`replaceitem entity @s slot.inventory `+j+` `+apatosaurus[i].getComponent('inventory').container.getItem(j).typeId+` `+(apatosaurus[i].getComponent('inventory').container.getItem(j).amount-1).toString()+` 0`)
                                 }
                                 else {
                                     apatosaurus[i].runCommand(`replaceitem entity @s slot.inventory `+j+` air 1 0`)

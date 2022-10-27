@@ -1,12 +1,12 @@
-import "scripts/AbilityManagement.js"
-import "scripts/ApatosaurusCrafting.js"
-import "scripts/ApatosaurusSmelting.js"
-import "scripts/ApatosaurusWeaponManagement.js"
-import "scripts/BlockBreakManagement.js"
-import "scripts/DamageManagement.js"
-import "scripts/EatFromInventory.js"
-import "scripts/JournalManagement.js"
-import { world } from "mojang-minecraft"
+import "AbilityManagement.js"
+import "ApatosaurusCrafting.js"
+import "ApatosaurusSmelting.js"
+import "ApatosaurusWeaponManagement.js"
+import "BlockBreakManagement.js"
+import "DamageManagement.js"
+import "EatFromInventory.js"
+import "JournalManagement.js"
+import { world } from "@minecraft/server"
 
 world.events.playerJoin.subscribe((ev) => {
     ev.player.triggerEvent(`rift:remove_warning`)

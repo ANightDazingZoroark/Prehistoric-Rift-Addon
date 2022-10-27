@@ -1,5 +1,5 @@
-import { world } from "mojang-minecraft"
-import { ActionFormData, ModalFormData } from "mojang-minecraft-ui"
+import { world } from "@minecraft/server"
+import { ActionFormData, ModalFormData } from "@minecraft/server-ui"
 import * as guiEntry from "./JournalEntries"
 
 let creatureList = {
@@ -257,7 +257,7 @@ function othersGui(source) {
 
 world.events.beforeItemUse.subscribe(data => {
     const source = data.source
-    if (data.item.id === 'rift:journal') {
+    if (data.item.typeId === 'rift:journal') {
         mainGui(source)
     }
 })
