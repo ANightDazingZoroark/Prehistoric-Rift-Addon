@@ -1,4 +1,4 @@
-import { EntityQueryOptions, world } from "@minecraft/server"
+import { world } from "@minecraft/server"
 import { ActionFormData } from "@minecraft/server-ui"
 import * as guiCrafting from "./ApatosaurusCraftingOptions"
 

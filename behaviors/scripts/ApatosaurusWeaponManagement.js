@@ -1,4 +1,4 @@
-import { EntityQueryOptions, system, world } from "@minecraft/server"
+import { system, world } from "@minecraft/server"
 
 system.run(function everyTick(tick) {
     system.run(everyTick)

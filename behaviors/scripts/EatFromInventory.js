@@ -1,4 +1,4 @@
-import { EntityQueryOptions, system, world } from "@minecraft/server"
+import { system, world } from "@minecraft/server"
 
 const validMobs = [
     'rift:tyrannosaurus',
