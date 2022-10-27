@@ -1,4 +1,4 @@
-import { MinecraftEffectTypes, world } from "mojang-minecraft"
+import { MinecraftEffectTypes, system, world } from "@minecraft/server"
 
 function damageOutput(entity, value) {
     if (entity.getEffect(MinecraftEffectTypes.strength) && !entity.hasTag('chargeOne') && !entity.hasTag('chargeTwo') && !entity.hasTag('chargeThree') && !entity.hasTag('chargeFour') && !entity.hasTag('chargeFive')) {
@@ -12,19 +12,11 @@ function damageOutput(entity, value) {
         }
     }
     value = value.toString().split('.')[0]
-    console.warn(value)
     return value
 }
 
-function getOwner(entity) {
-    let command = entity.runCommand(`tag @s list`)
-    let tagList = command.statusMessage.split(": ")[1].split(", ").map(tag => tag.replace(/§./, ""))
-    let ownerName = tagList.filter(x => x.includes('Owner'))
-    console.warn(ownerName)
-    return ownerName
-}
-
-world.events.tick.subscribe((ev) => {
+system.run(function everyTick(tick) {
+    system.run(everyTick)
     let entities = Array.from(world.getDimension('overworld').getEntities({
         tags: [
             'tamed',
@@ -35,135 +27,135 @@ world.events.tick.subscribe((ev) => {
         ]
     }))
     for (let i = 0; i < entities.length; i++) {
-        if (entities[i].id == 'rift:tyrannosaurus') {
+        if (entities[i].typeId == 'rift:tyrannosaurus') {
             try {
-                entities[i].runCommand(`damage @e[tag=!`+getOwner(entities[i])+`, family=!inanimate, type=!player, type=!item, r=8] `+damageOutput(entities[i], 35)+` entity_attack entity @s`)
+                entities[i].runCommand(`damage @e[tag=!tamed, family=!inanimate, type=!player, type=!item, r=8] `+damageOutput(entities[i], 35)+` entity_attack entity @s`)
             }
             catch (e) {}
         }
-        if (entities[i].id == 'rift:stegosaurus') {
+        if (entities[i].typeId == 'rift:stegosaurus') {
             if (entities[i].hasTag('chargeOne')) {
                 try {
-                    entities[i].runCommand(`damage @e[tag=!`+getOwner(entities[i])+`, family=!inanimate, type=!player, type=!item, r=10] `+damageOutput(entities[i], 30)+` entity_attack entity @s`)
+                    entities[i].runCommand(`damage @e[tag=!tamed, family=!inanimate, type=!player, type=!item, r=10] `+damageOutput(entities[i], 30)+` entity_attack entity @s`)
                 }
                 catch (e) {}
             }
             else if (entities[i].hasTag('chargeTwo')) {
                 try {
-                    entities[i].runCommand(`damage @e[tag=!`+getOwner(entities[i])+`, family=!inanimate, type=!player, type=!item, r=10] `+damageOutput(entities[i], 40)+` entity_attack entity @s`)
+                    entities[i].runCommand(`damage @e[tag=!tamed, family=!inanimate, type=!player, type=!item, r=10] `+damageOutput(entities[i], 40)+` entity_attack entity @s`)
                 }
                 catch (e) {}
             }
             else if (entities[i].hasTag('chargeThree')) {
                 try {
-                    entities[i].runCommand(`damage @e[tag=!`+getOwner(entities[i])+`, family=!inanimate, type=!player, type=!item, r=10] `+damageOutput(entities[i], 50)+` entity_attack entity @s`)
+                    entities[i].runCommand(`damage @e[tag=!tamed, family=!inanimate, type=!player, type=!item, r=10] `+damageOutput(entities[i], 50)+` entity_attack entity @s`)
                 }
                 catch (e) {}
             }
             else if (entities[i].hasTag('chargeFour')) {
                 try {
-                    entities[i].runCommand(`damage @e[tag=!`+getOwner(entities[i])+`, family=!inanimate, type=!player, type=!item, r=10] `+damageOutput(entities[i], 60)+` entity_attack entity @s`)
+                    entities[i].runCommand(`damage @e[tag=!tamed, family=!inanimate, type=!player, type=!item, r=10] `+damageOutput(entities[i], 60)+` entity_attack entity @s`)
                 }
                 catch (e) {}
             }
             else if (entities[i].hasTag('chargeFive')) {
                 try {
-                    entities[i].runCommand(`damage @e[tag=!`+getOwner(entities[i])+`, family=!inanimate, type=!player, type=!item, r=10] `+damageOutput(entities[i], 70)+` entity_attack entity @s`)
+                    entities[i].runCommand(`damage @e[tag=!tamed, family=!inanimate, type=!player, type=!item, r=10] `+damageOutput(entities[i], 70)+` entity_attack entity @s`)
                 }
                 catch (e) {}
             }
             else {
                 try {
-                    entities[i].runCommand(`damage @e[tag=!`+getOwner(entities[i])+`, family=!inanimate, type=!player, type=!item, r=10] `+damageOutput(entities[i], 30)+` entity_attack entity @s`)
+                    entities[i].runCommand(`damage @e[tag=!tamed, family=!inanimate, type=!player, type=!item, r=10] `+damageOutput(entities[i], 30)+` entity_attack entity @s`)
                 }
                 catch (e) {}
             }
         }
-        if (entities[i].id == 'rift:triceratops') {
+        if (entities[i].typeId == 'rift:triceratops') {
             try {
-                entities[i].runCommand(`damage @e[tag=!`+getOwner(entities[i])+`, family=!inanimate, type=!player, type=!item, r=7] `+damageOutput(entities[i], 25)+` entity_attack entity @s`)
+                entities[i].runCommand(`damage @e[tag=!tamed, family=!inanimate, type=!player, type=!item, r=7] `+damageOutput(entities[i], 25)+` entity_attack entity @s`)
             }
             catch (e) {}
         }
-        if (entities[i].id == 'rift:utahraptor') {
+        if (entities[i].typeId == 'rift:utahraptor') {
             try {
-                entities[i].runCommand(`damage @e[tag=!`+getOwner(entities[i])+`, family=!inanimate, type=!player, type=!item, r=7] `+damageOutput(entities[i], 12)+` entity_attack entity @s`)
+                entities[i].runCommand(`damage @e[tag=!tamed, family=!inanimate, type=!player, type=!item, r=7] `+damageOutput(entities[i], 12)+` entity_attack entity @s`)
             }
             catch (e) {}
         }
-        if (entities[i].id == 'rift:apatosaurus') {
+        if (entities[i].typeId == 'rift:apatosaurus') {
             try {
-                entities[i].runCommand(`damage @e[tag=!`+getOwner(entities[i])+`, family=!inanimate, type=!player, type=!item, r=8] `+damageOutput(entities[i], 80)+` entity_attack entity @s`)
+                entities[i].runCommand(`damage @e[tag=!tamed, family=!inanimate, type=!player, type=!item, r=8] `+damageOutput(entities[i], 80)+` entity_attack entity @s`)
             }
             catch (e) {}
         }
-        if (entities[i].id == 'rift:sarcosuchus') {
+        if (entities[i].typeId == 'rift:sarcosuchus') {
             try {
-                entities[i].runCommand(`damage @e[tag=!`+getOwner(entities[i])+`, family=!inanimate, type=!player, type=!item, r=8] `+damageOutput(entities[i], 15)+` entity_attack entity @s`)
+                entities[i].runCommand(`damage @e[tag=!tamed, family=!inanimate, type=!player, type=!item, r=8] `+damageOutput(entities[i], 15)+` entity_attack entity @s`)
             }
             catch (e) {}
         }
-        if (entities[i].id == 'rift:anomalocaris') {
+        if (entities[i].typeId == 'rift:anomalocaris') {
             try {
-                entities[i].runCommand(`damage @e[tag=!`+getOwner(entities[i])+`, family=!inanimate, type=!player, type=!item, r=6] `+damageOutput(entities[i], 10)+` entity_attack entity @s`)
+                entities[i].runCommand(`damage @e[tag=!tamed, family=!inanimate, type=!player, type=!item, r=6] `+damageOutput(entities[i], 10)+` entity_attack entity @s`)
             }
             catch (e) {}
         }
-        if (entities[i].id == 'rift:saurophaganax' && !entities[i].getComponent('is_sheared')) {
+        if (entities[i].typeId == 'rift:saurophaganax' && !entities[i].getComponent('is_sheared')) {
             try {
-                entities[i].runCommand(`damage @e[tag=!`+getOwner(entities[i])+`, family=!inanimate, type=!player, type=!item, r=8] `+damageOutput(entities[i], 60)+` entity_attack entity @s`)
+                entities[i].runCommand(`damage @e[tag=!tamed, family=!inanimate, type=!player, type=!item, r=8] `+damageOutput(entities[i], 60)+` entity_attack entity @s`)
             }
             catch (e) {}
         }
-        if (entities[i].id == 'rift:saurophaganax' && entities[i].getComponent('is_sheared')) {
+        if (entities[i].typeId == 'rift:saurophaganax' && entities[i].getComponent('is_sheared')) {
             try {
-                entities[i].runCommand(`damage @e[tag=!`+getOwner(entities[i])+`, family=!inanimate, type=!player, type=!item, r=8] `+damageOutput(entities[i], 5)+` entity_attack entity @s`)
+                entities[i].runCommand(`damage @e[tag=!tamed, family=!inanimate, type=!player, type=!item, r=8] `+damageOutput(entities[i], 5)+` entity_attack entity @s`)
             }
             catch (e) {}
         }
-        if (entities[i].id == 'rift:direwolf' && !entities[i].getComponent('is_ignited')) {
+        if (entities[i].typeId == 'rift:direwolf' && !entities[i].getComponent('is_ignited')) {
             try {
-                entities[i].runCommand(`damage @e[tag=!`+getOwner(entities[i])+`, family=!inanimate, type=!player, type=!item, r=8] `+damageOutput(entities[i], 8)+` entity_attack entity @s`)
+                entities[i].runCommand(`damage @e[tag=!tamed, family=!inanimate, type=!player, type=!item, r=8] `+damageOutput(entities[i], 8)+` entity_attack entity @s`)
             }
             catch (e) {}
         }
-        if (entities[i].id == 'rift:direwolf' && entities[i].getComponent('is_ignited')) {
+        if (entities[i].typeId == 'rift:direwolf' && entities[i].getComponent('is_ignited')) {
             if (entities[i].hasTag('werewolfBite')) {
                 try {
-                    entities[i].runCommand(`damage @e[tag=!`+getOwner(entities[i])+`, family=!inanimate, type=!player, type=!item, r=8] `+damageOutput(entities[i], 16)+` entity_attack entity @s`)
+                    entities[i].runCommand(`damage @e[tag=!tamed, family=!inanimate, type=!player, type=!item, r=8] `+damageOutput(entities[i], 16)+` entity_attack entity @s`)
                 }
                 catch (e) {}
             }
             else if (entities[i].hasTag('werewolfSlash')) {
                 try {
-                    entities[i].runCommand(`damage @e[tag=!`+getOwner(entities[i])+`, family=!inanimate, type=!player, type=!item, r=8] `+damageOutput(entities[i], 12)+` entity_attack entity @s`)
+                    entities[i].runCommand(`damage @e[tag=!tamed, family=!inanimate, type=!player, type=!item, r=8] `+damageOutput(entities[i], 12)+` entity_attack entity @s`)
                 }
                 catch (e) {}
             }
         }
-        if (entities[i].id == 'rift:megaloceros') {
+        if (entities[i].typeId == 'rift:megaloceros') {
             try {
-                entities[i].runCommand(`damage @e[tag=!`+getOwner(entities[i])+`, family=!inanimate, type=!player, type=!item, r=7] `+damageOutput(entities[i], 5)+` entity_attack entity @s`)
+                entities[i].runCommand(`damage @e[tag=!tamed, family=!inanimate, type=!player, type=!item, r=7] `+damageOutput(entities[i], 5)+` entity_attack entity @s`)
             }
             catch (e) {}
         }
-        if (entities[i].id == 'rift:baryonyx') {
+        if (entities[i].typeId == 'rift:baryonyx') {
             if (entities[i].hasTag('baryonyxBite')) {
                 try {
-                    entities[i].runCommand(`damage @e[tag=!`+getOwner(entities[i])+`, family=!inanimate, type=!player, type=!item, r=8] `+damageOutput(entities[i], 10)+` entity_attack entity @s`)
+                    entities[i].runCommand(`damage @e[tag=!tamed, family=!inanimate, type=!player, type=!item, r=8] `+damageOutput(entities[i], 10)+` entity_attack entity @s`)
                 }
                 catch (e) {}
             }
             else if (entities[i].hasTag('baryonyxClaw')) {
                 try {
-                    entities[i].runCommand(`damage @e[tag=!`+getOwner(entities[i])+`, family=!inanimate, type=!player, type=!item, r=8] `+damageOutput(entities[i], 7)+` entity_attack entity @s`)
+                    entities[i].runCommand(`damage @e[tag=!tamed, family=!inanimate, type=!player, type=!item, r=8] `+damageOutput(entities[i], 7)+` entity_attack entity @s`)
                 }
                 catch (e) {}
             }
         }
-        if (entities[i].id == 'rift:ankylosaurus') {
+        if (entities[i].typeId == 'rift:ankylosaurus') {
             try {
-                entities[i].runCommand(`damage @e[tag=!`+getOwner(entities[i])+`, family=!inanimate, type=!player, type=!item, r=10] `+damageOutput(entities[i], 25)+` entity_attack entity @s`)
+                entities[i].runCommand(`damage @e[tag=!tamed, family=!inanimate, type=!player, type=!item, r=10] `+damageOutput(entities[i], 25)+` entity_attack entity @s`)
             }
             catch (e) {}
         }

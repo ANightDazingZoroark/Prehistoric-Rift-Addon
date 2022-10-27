@@ -1,4 +1,4 @@
-import { ActionFormData } from "mojang-minecraft-ui"
+import { ActionFormData } from "@minecraft/server-ui"
 
 export const guiTutorialEntry = new ActionFormData()
 .title('How to Use')
@@ -97,7 +97,7 @@ export const guiMonstersEntry = new ActionFormData()
 
 export const guiPalaeocastorEntry = new ActionFormData()
 .title('Palaeocastor')
-.body("Diet: Saxumavore\nBehavior: Hostile\nReaction to Fire: Fear\nTaming Tier: Untameable\nFavorite Treats: n/a\n\nMining trips don't seem to end well as long as you get jumpscared by these. They burrow deep underground preferring to hide within ores to eat them from within. Mining whatever they're eating angers them.\n\nThe Mining Fatigue they inflict really really hurts.")
+.body("\n\n\n\n\n\n\n\n\n\n\n\nDiet: Saxumavore\nBehavior: Hostile\nReaction to Fire: Fear\nTaming Tier: Untameable\nFavorite Treats: n/a\n\nMining trips don't seem to end well as long as you get jumpscared by these. They burrow deep underground preferring to hide within ores to eat them from within. Mining whatever they're eating angers them.\n\nThe Mining Fatigue they inflict really really hurts.")
 .button('Return to Index')
 
 export const guiParasaurolophusEntry = new ActionFormData()

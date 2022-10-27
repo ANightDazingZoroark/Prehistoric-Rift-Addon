@@ -1,4 +1,4 @@
-import { ActionFormData, ModalFormData } from "mojang-minecraft-ui"
+import { ActionFormData, ModalFormData } from "@minecraft/server-ui"
 import { testForItem } from "./externals/itemmanagement"
 
 const apatosaurusCraftables = [

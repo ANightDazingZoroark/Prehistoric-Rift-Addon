@@ -1,6 +1,7 @@
-import { MinecraftEffectTypes, world } from "mojang-minecraft"
+import { MinecraftEffectTypes, system, world } from "@minecraft/server"
 
-world.events.tick.subscribe((ev) => {
+system.run(function everyTick(tick) {
+    system.run(everyTick)
     let entities = Array.from(world.getDimension('overworld').getEntities({
         excludeTags: ['eatFromInventoryCooldown'],
         tags: [
@@ -14,19 +15,19 @@ world.events.tick.subscribe((ev) => {
         if (entities[i].getComponent('health').current < entities[i].getComponent('health').value){ 
             for (let j = entities[i].getComponent('inventory').inventorySize - 1; j >= 0; j--) {
                 try {
-                    if (entities[i].getComponent('healable').items.map(x => x.item).includes(entities[i].getComponent('inventory').container.getItem(j).id)) {
+                    if (entities[i].getComponent('healable').items.map(x => x.item).includes(entities[i].getComponent('inventory').container.getItem(j).typeId)) {
                         try {
                             for (let k = 0; k < Object.keys(entities[i].getComponent('healable').items).length; k++) {
-                                if (entities[i].getComponent('inventory').container.getItem(j).id == entities[i].getComponent('healable').items[k].item && entities[i].getComponent('inventory').container.getItem(j).amount > 1) {
+                                if (entities[i].getComponent('inventory').container.getItem(j).typeId == entities[i].getComponent('healable').items[k].item && entities[i].getComponent('inventory').container.getItem(j).amount > 1) {
                                     entities[i].getComponent('health').setCurrent(entities[i].getComponent('health').current + entities[i].getComponent('healable').items[k].healAmount)
                                     entities[i].runCommand(`replaceitem entity @s slot.inventory `+j+` `+entities[i].getComponent('healable').items[k].item+` `+(entities[i].getComponent('inventory').container.getItem(j).amount-1).toString()+` 0`)
                                 }
-                                else if (entities[i].getComponent('inventory').container.getItem(j).id == entities[i].getComponent('healable').items[k].item && entities[i].getComponent('inventory').container.getItem(j).amount == 1) {
+                                else if (entities[i].getComponent('inventory').container.getItem(j).typeId == entities[i].getComponent('healable').items[k].item && entities[i].getComponent('inventory').container.getItem(j).amount == 1) {
                                     entities[i].getComponent('health').setCurrent(entities[i].getComponent('health').current + entities[i].getComponent('healable').items[k].healAmount)
                                     entities[i].runCommand(`replaceitem entity @s slot.inventory `+j+` air 1 0`)
                                 }
                                 try {
-                                    switch (entities[i].getComponent('inventory').container.getItem(j).id) {
+                                    switch (entities[i].getComponent('inventory').container.getItem(j).typeId) {
                                         case "rift:cooked_dodo_meat":
                                             entities[i].addEffect(MinecraftEffectTypes.absorption, 600, 3)
                                             break

@@ -1,6 +1,7 @@
-import { world } from "mojang-minecraft"
+import { system, world } from "@minecraft/server"
 
-world.events.tick.subscribe((ev) => {
+system.run(function everyTick(tick) {
+    system.run(everyTick)
     let entities = Array.from(world.getDimension('overworld').getEntities())
     for (let i = 0; i < entities.length; i++) {
         try {

@@ -1,6 +1,6 @@
-import { MinecraftBlockTypes } from "mojang-minecraft"
-import { world } from "mojang-minecraft"
-import { ActionFormData, ModalFormData } from "mojang-minecraft-ui"
+import { MinecraftBlockTypes } from "@minecraft/server"
+import { system, world } from "@minecraft/server"
+import { ActionFormData, ModalFormData } from "@minecraft/server-ui"
 import * as guiEntry from "./JournalEntries"
 
 let unlockItemsList = [
@@ -376,14 +376,14 @@ function othersGui(source) {
 
 world.events.beforeItemUse.subscribe(data => {
     const source = data.source
-    if (data.item.id === 'rift:journal') {
+    if (data.item.typeId === 'rift:journal') {
         mainGui(source)
     }
 })
 
 world.events.beforeItemUseOn.subscribe(data => {
-    if (unlockItemsList.includes(data.item.id) && world.getDimension('overworld').getBlock(data.blockLocation).id == 'rift:journal_enscriber' && world.getDimension('overworld').getBlock(data.blockLocation).permutation.getProperty('rift:has_book').value == true) {
-        switch (data.item.id) {
+    if (unlockItemsList.includes(data.item.typeId) && world.getDimension('overworld').getBlock(data.blockLocation).typeId == 'rift:journal_enscriber' && world.getDimension('overworld').getBlock(data.blockLocation).permutation.getProperty('rift:has_book').value == true) {
+        switch (data.item.typeId) {
             case 'rift:tyrannosaurus_arm':
                 data.source.setDynamicProperty('JournalTyrannosaurus', true)
                 data.source.runCommand(`tellraw @s {\"rawtext\":[{\"text\":\"You have unlocked the journal entry for the Tyrannosaurus! Open your journal to read it!\"}]}`)
@@ -463,7 +463,8 @@ world.events.beforeItemUseOn.subscribe(data => {
     }
 })
 
-world.events.tick.subscribe((ev) => {
+system.run(function everyTick(tick) {
+    system.run(everyTick)
     let players = Array.from(world.getPlayers())
     for (let p = 0; p < players.length; p++) {
         if (players[p].getDynamicProperty('JournalAnimals') == null) {

@@ -1,4 +1,4 @@
-import { BlockLocation, ItemStack, Items, MinecraftItemTypes, world, Location, MinecraftEffectTypes } from "mojang-minecraft"
+import { BlockLocation, ItemStack, Items, MinecraftItemTypes, world, Location, MinecraftEffectTypes, system } from "@minecraft/server"
 
 let saurophaganaxFood = [
     'minecraft:blaze',
@@ -47,12 +47,12 @@ let exoticMeatDroppers = [
 world.events.entityHurt.subscribe(({ hurtEntity, damagingEntity }) => {
     let blockBelowAttacker = damagingEntity.dimension.getBlock(new BlockLocation(Math.trunc(damagingEntity.location.x), Math.trunc(damagingEntity.location.y) - 1, Math.trunc(damagingEntity.location.z)))
 
-    if (damagingEntity.id == 'rift:tyrannosaurus' && hurtEntity.getComponent('health').current <= 0) {
-        if (exoticMeatDroppers.includes(hurtEntity.id)) {
+    if (damagingEntity.typeId == 'rift:tyrannosaurus' && hurtEntity.getComponent('health').current <= 0) {
+        if (exoticMeatDroppers.includes(hurtEntity.typeId)) {
             hurtEntity.dimension.spawnItem(new ItemStack(Items.get('rift:raw_exotic_meat'), 5, 0), hurtEntity.location)
         }
         else {
-            switch (hurtEntity.id) {
+            switch (hurtEntity.typeId) {
                 case 'minecraft:pig':
                     hurtEntity.dimension.spawnItem(new ItemStack(MinecraftItemTypes.porkchop, 5, 0), hurtEntity.location)
                     break
@@ -104,12 +104,12 @@ world.events.entityHurt.subscribe(({ hurtEntity, damagingEntity }) => {
             }
         }
     }
-    if (damagingEntity.id == 'rift:utahraptor' && hurtEntity.getComponent('health').current <= 0) {
-        if (exoticMeatDroppers.includes(hurtEntity.id)) {
+    if (damagingEntity.typeId == 'rift:utahraptor' && hurtEntity.getComponent('health').current <= 0) {
+        if (exoticMeatDroppers.includes(hurtEntity.typeId)) {
             hurtEntity.dimension.spawnItem(new ItemStack(Items.get('rift:raw_exotic_meat'), 3, 0), hurtEntity.location)
         }
         else {
-            switch (hurtEntity.id) {
+            switch (hurtEntity.typeId) {
                 case 'minecraft:pig':
                     hurtEntity.dimension.spawnItem(new ItemStack(MinecraftItemTypes.porkchop, 3, 0), hurtEntity.location)
                     break
@@ -140,12 +140,12 @@ world.events.entityHurt.subscribe(({ hurtEntity, damagingEntity }) => {
             }
         }
     }
-    if (damagingEntity.id == 'rift:dimetrodon' && hurtEntity.getComponent('health').current <= 0) {
-        if (exoticMeatDroppers.includes(hurtEntity.id)) {
+    if (damagingEntity.typeId == 'rift:dimetrodon' && hurtEntity.getComponent('health').current <= 0) {
+        if (exoticMeatDroppers.includes(hurtEntity.typeId)) {
             hurtEntity.dimension.spawnItem(new ItemStack(Items.get('rift:raw_exotic_meat'), 3, 0), hurtEntity.location)
         }
         else {
-            switch (hurtEntity.id) {
+            switch (hurtEntity.typeId) {
                 case 'minecraft:pig':
                     hurtEntity.dimension.spawnItem(new ItemStack(MinecraftItemTypes.porkchop, 3, 0), hurtEntity.location)
                     break
@@ -188,12 +188,12 @@ world.events.entityHurt.subscribe(({ hurtEntity, damagingEntity }) => {
             }
         }
     }
-    if (damagingEntity.id == 'rift:sarcosuchus' && hurtEntity.getComponent('health').current <= 0) {
-        if (exoticMeatDroppers.includes(hurtEntity.id)) {
+    if (damagingEntity.typeId == 'rift:sarcosuchus' && hurtEntity.getComponent('health').current <= 0) {
+        if (exoticMeatDroppers.includes(hurtEntity.typeId)) {
             hurtEntity.dimension.spawnItem(new ItemStack(Items.get('rift:raw_exotic_meat'), 1, 0), hurtEntity.location)
         }
         else {
-            switch (hurtEntity.id) {
+            switch (hurtEntity.typeId) {
                 case 'minecraft:pig':
                     hurtEntity.dimension.spawnItem(new ItemStack(MinecraftItemTypes.porkchop, 1, 0), hurtEntity.location)
                     break
@@ -236,12 +236,12 @@ world.events.entityHurt.subscribe(({ hurtEntity, damagingEntity }) => {
             }
         }
     }
-    if (damagingEntity.id == 'rift:anomalocaris' && hurtEntity.getComponent('health').current <= 0) {
-        if (exoticMeatDroppers.includes(hurtEntity.id)) {
+    if (damagingEntity.typeId == 'rift:anomalocaris' && hurtEntity.getComponent('health').current <= 0) {
+        if (exoticMeatDroppers.includes(hurtEntity.typeId)) {
             hurtEntity.dimension.spawnItem(new ItemStack(Items.get('rift:raw_exotic_meat'), 1, 0), hurtEntity.location)
         }
         else {
-            switch (hurtEntity.id) {
+            switch (hurtEntity.typeId) {
                 case 'minecraft:pig':
                     hurtEntity.dimension.spawnItem(new ItemStack(MinecraftItemTypes.porkchop, 1, 0), hurtEntity.location)
                     break
@@ -299,8 +299,8 @@ world.events.entityHurt.subscribe(({ hurtEntity, damagingEntity }) => {
             }
         }
     }
-    if (damagingEntity.id == 'rift:saurophaganax' && hurtEntity.getComponent('health').current <= 0) {
-        switch (hurtEntity.id) {
+    if (damagingEntity.typeId == 'rift:saurophaganax' && hurtEntity.getComponent('health').current <= 0) {
+        switch (hurtEntity.typeId) {
             case 'minecraft:zombie':
                 hurtEntity.dimension.spawnItem(new ItemStack(MinecraftItemTypes.rottenFlesh, 5, 0), hurtEntity.location)
                 break
@@ -372,12 +372,12 @@ world.events.entityHurt.subscribe(({ hurtEntity, damagingEntity }) => {
                 break
         }
     }
-    if (damagingEntity.id == 'rift:direwolf' && hurtEntity.getComponent('health').current <= 0) {
-        if (exoticMeatDroppers.includes(hurtEntity.id)) {
+    if (damagingEntity.typeId == 'rift:direwolf' && hurtEntity.getComponent('health').current <= 0) {
+        if (exoticMeatDroppers.includes(hurtEntity.typeId)) {
             hurtEntity.dimension.spawnItem(new ItemStack(Items.get('rift:raw_exotic_meat'), 3, 0), hurtEntity.location)
         }
         else {
-            switch (hurtEntity.id) {
+            switch (hurtEntity.typeId) {
                 case 'minecraft:pig':
                     hurtEntity.dimension.spawnItem(new ItemStack(MinecraftItemTypes.porkchop, 3, 0), hurtEntity.location)
                     break
@@ -408,12 +408,12 @@ world.events.entityHurt.subscribe(({ hurtEntity, damagingEntity }) => {
             }
         }
     }
-    if (damagingEntity.id == 'rift:baryonyx' && hurtEntity.getComponent('health').current <= 0) {
-        if (exoticMeatDroppers.includes(hurtEntity.id)) {
+    if (damagingEntity.typeId == 'rift:baryonyx' && hurtEntity.getComponent('health').current <= 0) {
+        if (exoticMeatDroppers.includes(hurtEntity.typeId)) {
             hurtEntity.dimension.spawnItem(new ItemStack(Items.get('rift:raw_exotic_meat'), 3, 0), hurtEntity.location)
         }
         else {
-            switch (hurtEntity.id) {
+            switch (hurtEntity.typeId) {
                 case 'minecraft:pig':
                     hurtEntity.dimension.spawnItem(new ItemStack(MinecraftItemTypes.porkchop, 3, 0), hurtEntity.location)
                     break
@@ -457,46 +457,47 @@ world.events.entityHurt.subscribe(({ hurtEntity, damagingEntity }) => {
         }
     }
     
-    if (damagingEntity.id == 'rift:utahraptor' && blockBelowAttacker.id == 'minecraft:air' && Math.floor(Math.random() * 4) == 0) {
+    if (damagingEntity.typeId == 'rift:utahraptor' && blockBelowAttacker.typeId == 'minecraft:air' && Math.floor(Math.random() * 4) == 0) {
         hurtEntity.runCommand(`ride @s evict_riders`)
     }
-    if (damagingEntity.id == 'rift:utahraptor' && !damagingEntity.hasTag('ridden') && damagingEntity.getComponent('is_tamed') && damagingEntity.jumpAttacking > 10) {
+    if (damagingEntity.typeId == 'rift:utahraptor' && !damagingEntity.hasTag('ridden') && damagingEntity.getComponent('is_tamed') && damagingEntity.jumpAttacking > 10) {
         damagingEntity.triggerEvent('rift:decrease_energy_while_jumping')
         damagingEntity.jumpAttacking = 0
     }
-    if (hurtEntity.id == 'rift:utahraptor' && !hurtEntity.hasTag('ridden') && hurtEntity.getComponent('is_tamed') && damagingEntity.jumpAttacking > 10) {
+    if (hurtEntity.typeId == 'rift:utahraptor' && !hurtEntity.hasTag('ridden') && hurtEntity.getComponent('is_tamed') && damagingEntity.jumpAttacking > 10) {
         damagingEntity.jumpAttacking = 0
     }
-    if (damagingEntity.id == 'rift:dimetrodon' && damagingEntity.getComponent('is_charged')) {
+    if (damagingEntity.typeId == 'rift:dimetrodon' && damagingEntity.getComponent('is_charged')) {
         hurtEntity.addEffect(MinecraftEffectTypes.weakness, 400, 2)
         hurtEntity.addEffect(MinecraftEffectTypes.slowness, 400, 2)
     }
-    if (damagingEntity.id == 'rift:sarcosuchus' && damagingEntity.hasTag('powered')) {
+    if (damagingEntity.typeId == 'rift:sarcosuchus' && damagingEntity.hasTag('powered')) {
         hurtEntity.addEffect(MinecraftEffectTypes.slowness, 600, 1)
     }
-    if (damagingEntity.id == 'rift:anomalocaris') {
+    if (damagingEntity.typeId == 'rift:anomalocaris') {
         damagingEntity.getComponent('health').setCurrent(damagingEntity.getComponent('health').current + 4)
     }
-    if (damagingEntity.id == 'rift:saurophaganax' && !damagingEntity.hasTag('roaring') && saurophaganaxFood.includes(hurtEntity.id) && hurtEntity.getComponent('health').current <= 0) {
+    if (damagingEntity.typeId == 'rift:saurophaganax' && !damagingEntity.hasTag('roaring') && saurophaganaxFood.includes(hurtEntity.typeId) && hurtEntity.getComponent('health').current <= 0) {
         damagingEntity.runCommand(`scoreboard players add @s[scores={saurophLightBlst=!10}] saurophLightBlst 1`)
     }
-    if (damagingEntity.id == 'rift:direwolf' && damagingEntity.hasTag('sonicBoom')) {
+    if (damagingEntity.typeId == 'rift:direwolf' && damagingEntity.hasTag('sonicBoom')) {
         hurtEntity.dimension.spawnEntity('rift:direwolf_explosion', hurtEntity.location)
     }
-    if (damagingEntity.id == 'rift:baryonyx' && damagingEntity.hasTag('forcedClaw')) {
+    if (damagingEntity.typeId == 'rift:baryonyx' && damagingEntity.hasTag('forcedClaw')) {
         hurtEntity.addEffect(MinecraftEffectTypes.poison, 200)
     }
 })
 
-world.events.tick.subscribe((ev) => {
+system.run(function everyTick(tick) {
+    system.run(everyTick)
     let mobs = Array.from(world.getDimension('overworld').getEntities())
     for (let i = 0; i < mobs.length; i++) {
         let blockBelowAttacker = mobs[i].dimension.getBlock(new BlockLocation(Math.trunc(mobs[i].location.x), Math.trunc(mobs[i].location.y) - 1, Math.trunc(mobs[i].location.z)))
 
-        if (mobs[i].id == 'rift:utahraptor' && mobs[i].getComponent('is_tamed') && !mobs[i].hasTag('ridden') && blockBelowAttacker.id == 'minecraft:air' && !mobs[i].hasOwnProperty('jumpAttacking')) {
+        if (mobs[i].typeId == 'rift:utahraptor' && mobs[i].getComponent('is_tamed') && !mobs[i].hasTag('ridden') && blockBelowAttacker.typeId == 'minecraft:air' && !mobs[i].hasOwnProperty('jumpAttacking')) {
             mobs[i].jumpAttacking = 0
         }
-        if (mobs[i].id == 'rift:utahraptor' && mobs[i].getComponent('is_tamed') && !mobs[i].hasTag('ridden') && blockBelowAttacker.id == 'minecraft:air' && mobs[i].hasOwnProperty('jumpAttacking')) {
+        if (mobs[i].typeId == 'rift:utahraptor' && mobs[i].getComponent('is_tamed') && !mobs[i].hasTag('ridden') && blockBelowAttacker.typeId == 'minecraft:air' && mobs[i].hasOwnProperty('jumpAttacking')) {
             mobs[i].jumpAttacking++
         }
     }

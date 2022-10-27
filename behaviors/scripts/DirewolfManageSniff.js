@@ -1,5 +1,5 @@
-import { BlockLocation, world } from 'mojang-minecraft'
-import { ActionFormData } from "mojang-minecraft-ui"
+import { BlockLocation, system, world } from "@minecraft/server"
+import { ActionFormData } from "@minecraft/server-ui"
 
 function sniffMainGui(hitEntity, entity) {
     const sniffMainGui = new ActionFormData()
@@ -142,7 +142,8 @@ world.events.entityHit.subscribe(({ hitEntity, entity }) => {
     catch (e) {}
 })
 
-world.events.tick.subscribe((ev) => {
+system.run(function everyTick(tick) {
+    system.run(everyTick)
     let direwolves = Array.from(world.getDimension('overworld').getEntities({
         id: 'rift:direwolf',
         tags: [
