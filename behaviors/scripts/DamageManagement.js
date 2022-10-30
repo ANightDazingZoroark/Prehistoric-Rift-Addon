@@ -44,7 +44,7 @@ let exoticMeatDroppers = [
     'rift:ankylosaurus'
 ]
 
-world.events.entityHurt.subscribe(({ hurtEntity, damagingEntity }) => {
+world.events.entityHurt.subscribe(({ hurtEntity, damagingEntity, projectile }) => {
     let blockBelowAttacker = damagingEntity.dimension.getBlock(new BlockLocation(Math.trunc(damagingEntity.location.x), Math.trunc(damagingEntity.location.y) - 1, Math.trunc(damagingEntity.location.z)))
 
     if (damagingEntity.typeId == 'rift:tyrannosaurus' && hurtEntity.getComponent('health').current <= 0) {
@@ -455,6 +455,11 @@ world.events.entityHurt.subscribe(({ hurtEntity, damagingEntity }) => {
                     break
             }
         }
+    }
+    if (damagingEntity.typeId == 'rift:dilophosaurus' && projectile.typeId == 'rift:dilophosaurus_spit') {
+        hurtEntity.addEffect(MinecraftEffectTypes.poison, 200)
+        hurtEntity.addEffect(MinecraftEffectTypes.blindness, 200)
+        hurtEntity.addEffect(MinecraftEffectTypes.slowness, 200, 2)
     }
     
     if (damagingEntity.typeId == 'rift:utahraptor' && blockBelowAttacker.typeId == 'minecraft:air' && Math.floor(Math.random() * 4) == 0) {
