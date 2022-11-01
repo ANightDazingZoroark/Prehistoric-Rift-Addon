@@ -362,6 +362,65 @@
                 }
             }
         },
+        "controller.animation.dilophosaurus_energy_movement_usage": {
+            "initial_state": "default",
+            "states": {
+                "default": {
+                    "animations": [
+                        {
+                            "animRegenerateEnergy": "query.is_tamed"
+                        }
+                    ],
+                    "transitions": [
+                        {
+                            "walk": "query.is_tamed && query.is_on_ground && query.ground_speed > 0 && query.property('rift:energy') > 0"
+                        },
+                        {
+                            "biting": "query.is_tamed && query.is_delayed_attacking && query.property('rift:energy') >= 15"
+                        },
+                        {
+                            "spitting": "query.is_tamed && query.property('rift:energy') >= 10 && query.is_charged"
+                        }
+                    ]
+                },
+                "walk": {
+                    "animations": [
+                        "animUseEnergyWhileMoving"
+                    ],
+                    "transitions": [
+                        {
+                            "default": "query.ground_speed == 0"
+                        },
+                        {
+                            "biting": "query.is_tamed && query.is_delayed_attacking && query.property('rift:energy') >= 15"
+                        },
+                        {
+                            "spitting": "query.is_tamed && query.property('rift:energy') >= 10 && query.is_charged"
+                        }
+                    ]
+                },
+                "stabbing": {
+                    "on_exit": [
+                        "@s rift:decrease_energy_while_biting"
+                    ],
+                    "transitions": [
+                        {
+                            "default": "!query.is_delayed_attacking"
+                        }
+                    ]
+                },
+                "spitting": {
+                    "on_entry": [
+                        "@s rift:decrease_energy_while_spitting"
+                    ],
+                    "transitions": [
+                        {
+                            "default": "(1.0)"
+                        }
+                    ]
+                }
+            }
+        },
         "controller.animation.dimetrodon_energy_movement_usage": {
             "initial_state": "default",
             "states": {

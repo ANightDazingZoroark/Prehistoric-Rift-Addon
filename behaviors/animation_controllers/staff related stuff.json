@@ -2957,6 +2957,216 @@
 					]
 				}
 			}
+		},
+		"controller.animation.dilophosaurus_command_staff": {
+			"initial_state": "default",
+			"states": {
+				"default": {
+					"transitions": [
+						{
+							"biteMode": "query.is_riding && (query.get_ride -> query.owner_identifier) == 'rift:dilophosaurus'"
+						}
+					],
+					"on_exit": [
+						"/tellraw @s {\"rawtext\":[{\"text\":\"Ability set to Bite Mode\"}]}"
+					]
+				},
+				"biteMode": {
+					"transitions": [
+						{
+							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:dilophosaurus'"
+						},
+						{
+							"biteModeLimbo": "query.is_using_item && (query.get_ride -> query.property('rift:energy')) >= 15 && (query.get_ride -> query.is_saddled) && query.get_equipped_item_name('main_hand') == 'command_staff'"
+						},
+						{
+							"biteModeFail": "query.is_using_item && (query.get_ride -> query.property('rift:energy')) < 15 && (query.get_ride -> query.is_saddled) && query.get_equipped_item_name('main_hand') == 'command_staff'"
+						}
+					]
+				},
+				"biteModeFail": {
+					"transitions": [
+						{
+							"biteMode": "!query.is_using_item"
+						},
+						{
+							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:dilophosaurus'"
+						}
+					],
+					"on_entry": [
+						"/tellraw @s {\"rawtext\":[{\"text\":\"You don't have enough energy to perform this action!\"}]}"
+					]
+				},
+				"biteModeLimbo": {
+					"animations": [
+						"animAbilitySwitchCooldown"
+					],
+					"transitions": [
+						{
+							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:dilophosaurus' || query.get_equipped_item_name('main_hand') != 'command_staff'"
+						},
+						{
+							"useBiteMode": "!query.is_using_item"
+						},
+						{
+							"biteToSpit": "query.all_animations_finished"
+						}
+					]
+				},
+				"useBiteMode": {
+					"transitions": [
+						{
+							"biteMode": "(1.0)"
+						}
+					],
+					"on_entry": [
+						"/event entity @e[type=rift:dilophosaurus, c=1, tag=tamed, tag=!baby] rift:use_forced_bite"
+					]
+				},
+				"biteToSpit": {
+					"transitions": [
+						{
+							"default": "(query.get_equipped_item_name('main_hand') != 'command_staff') || !query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:dilophosaurus'"
+						},
+						{
+							"spitMode": "!query.is_using_item"
+						}
+					],
+					"on_exit": [
+						"/tellraw @s {\"rawtext\":[{\"text\":\"Ability set to Spit Mode\"}]}"
+					]
+				},
+				"spitMode": {
+					"transitions": [
+						{
+							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:dilophosaurus'"
+						},
+						{
+							"spitModeLimbo": "query.is_using_item && (query.get_ride -> query.property('rift:energy')) >= 10 && (query.get_ride -> query.is_saddled) && query.get_equipped_item_name('main_hand') == 'command_staff'"
+						},
+						{
+							"spitModeFail": "query.is_using_item && (query.get_ride -> query.property('rift:energy')) < 10 && (query.get_ride -> query.is_saddled) && query.get_equipped_item_name('main_hand') == 'command_staff'"
+						}
+					]
+				},
+				"spitModeFail": {
+					"transitions": [
+						{
+							"spitMode": "!query.is_using_item"
+						},
+						{
+							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:dilophosaurus'"
+						}
+					],
+					"on_entry": [
+						"/tellraw @s {\"rawtext\":[{\"text\":\"You don't have enough energy to perform this action!\"}]}"
+					]
+				},
+				"spitModeLimbo": {
+					"animations": [
+						"animAbilitySwitchCooldown"
+					],
+					"transitions": [
+						{
+							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:dilophosaurus' || query.get_equipped_item_name('main_hand') != 'command_staff'"
+						},
+						{
+							"useSpitMode": "!query.is_using_item"
+						},
+						{
+							"spitToTrapPlant": "query.all_animations_finished"
+						}
+					]
+				},
+				"useSpitMode": {
+					"transitions": [
+						{
+							"spitMode": "(1.0)"
+						}
+					],
+					"on_entry": [
+						"/event entity @e[type=rift:dilophosaurus, c=1, tag=tamed, tag=!baby] rift:use_forced_spit"
+					]
+				},
+				"spitToTrapPlant": {
+					"transitions": [
+						{
+							"default": "(query.get_equipped_item_name('main_hand') != 'command_staff') || !query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:dilophosaurus'"
+						},
+						{
+							"trapPlantMode": "!query.is_using_item"
+						}
+					],
+					"on_exit": [
+						"/tellraw @s {\"rawtext\":[{\"text\":\"Ability set to Poison Trap Mode\"}]}"
+					]
+				},
+				"trapPlantMode": {
+					"transitions": [
+						{
+							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:dilophosaurus'"
+						},
+						{
+							"trapPlantLimbo": "query.is_using_item && (query.get_ride -> query.property('rift:energy')) >= 30 && (query.get_ride -> query.is_saddled) && query.get_equipped_item_name('main_hand') == 'command_staff'"
+						},
+						{
+							"trapPlantFail": "query.is_using_item && (query.get_ride -> query.property('rift:energy')) < 30 && (query.get_ride -> query.is_saddled) && query.get_equipped_item_name('main_hand') == 'command_staff'"
+						}
+					]
+				},
+				"trapPlantFail": {
+					"transitions": [
+						{
+							"trapPlantMode": "!query.is_using_item"
+						},
+						{
+							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:dilophosaurus'"
+						}
+					],
+					"on_entry": [
+						"/tellraw @s {\"rawtext\":[{\"text\":\"You don't have enough energy to perform this action!\"}]}"
+					]
+				},
+				"trapPlantLimbo": {
+					"animations": [
+						"animAbilitySwitchCooldown"
+					],
+					"transitions": [
+						{
+							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:dilophosaurus' || query.get_equipped_item_name('main_hand') != 'command_staff'"
+						},
+						{
+							"useTrapPlantMode": "!query.is_using_item"
+						},
+						{
+							"trapPlantToBite": "query.all_animations_finished"
+						}
+					]
+				},
+				"useTrapPlantMode": {
+					"transitions": [
+						{
+							"trapPlantMode": "(1.0)"
+						}
+					],
+					"on_entry": [
+						"/event entity @e[type=rift:dilophosaurus, c=1, tag=tamed, tag=!baby] rift:start_place_trap"
+					]
+				},
+				"trapPlantToBite": {
+					"transitions": [
+						{
+							"default": "(query.get_equipped_item_name('main_hand') != 'command_staff') || !query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:dilophosaurus'"
+						},
+						{
+							"biteMode": "!query.is_using_item"
+						}
+					],
+					"on_exit": [
+						"/tellraw @s {\"rawtext\":[{\"text\":\"Ability set to Bite Mode\"}]}"
+					]
+				}
+			}
 		}
 	}
 }

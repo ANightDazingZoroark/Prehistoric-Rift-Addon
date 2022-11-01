@@ -22,6 +22,63 @@
                     ]
                 }
             }
+        },
+		"controller.animation.dilophosaurus_forced_attack": {
+			"initial_state": "default",
+			"states": {
+				"default": {
+					"transitions": [
+						{
+							"forcedBite": "query.property('rift:forced_attack_mode') == 1"
+						},
+						{
+							"forcedSpit": "query.property('rift:forced_attack_mode') == 2"
+						}
+					]
+				},
+				"forcedBite": {
+					"animations": [
+						"animForcedBiteAttack"
+					],
+					"transitions": [
+						{
+							"default": "query.all_animations_finished"
+						}
+					]
+				},
+				"forcedSpit": {
+					"animations": [
+						"animForcedSpitAttack"
+					],
+					"transitions": [
+						{
+							"default": "query.all_animations_finished"
+						}
+					]
+				}
+			}
+		},
+        "controller.animation.dilophosaurus_plant_trap": {
+            "initial_state": "default",
+            "states": {
+                "default": {
+                    "transitions": [
+                        {
+                            "plantTrap": "query.out_of_control"
+                        }
+                    ]
+                },
+                "plantTrap": {
+                    "animations": [
+                        "animPlantTrap"
+                    ],
+                    "transitions": [
+                        {
+                            "default": "!query.out_of_control"
+                        }
+                    ]
+                }
+            }
         }
     }
 }

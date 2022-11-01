@@ -159,6 +159,12 @@ system.run(function everyTick(tick) {
             }
             catch (e) {}
         }
+        if (entities[i].typeId == 'rift:dilophosaurus') {
+            try {
+                entities[i].runCommand(`damage @e[tag=!tamed, family=!inanimate, type=!player, type=!item, r=7] `+damageOutput(entities[i], 6)+` entity_attack entity @s`)
+            }
+            catch (e) {}
+        }
         entities[i].removeTag('forcedAttack')
         entities[i].removeTag('chargeOne')
         entities[i].removeTag('chargeTwo')

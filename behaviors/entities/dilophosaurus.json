@@ -16,9 +16,14 @@
 					"type": "bool",
 					"default": true
 				},
-				"rift:is_forced_attacking": {
-					"type": "bool",
-					"default": false
+				"rift:forced_attack_mode": { //0 for nothing, 1 for bite, 2 for spit
+                    "range": [
+						0,
+						2
+					],
+					"type": "int",
+					"default": 0,
+					"client_sync": true
 				},
                 "rift:energy": {
                     "range": [
@@ -55,10 +60,20 @@
 				"contRiddenTag": "controller.animation.add_ridden_tag",
 				"contInLoveTag": "controller.animation.add_in_love_tag",
 				"contShoot": "controller.animation.dilophosaurus_shoot",
+				"contForcedAttack": "controller.animation.dilophosaurus_forced_attack",
+				"contEnergyUsage": "controller.animation.dilophosaurus_energy_movement_usage",
+				"contWarnLowEnergy": "controller.animation.warn_of_low_energy",
+				"contPlantTrap": "controller.animation.dilophosaurus_plant_trap",
 				"contTameState": "controller.animation.manage_tame_state",
 				"contBehaviorState": "controller.animation.manage_tame_behavior",
 				"animEatFromInventoryCooldown": "animation.eat_from_inventory_cooldown",
-				"animSpit": "animation.dilophosaurus_spit"
+				"animUseEnergyWhileMoving": "animation.dilophosaurus_decrease_energy_while_moving",
+				"animEnergyRegenDelay": "animation.regenerate_energy_delay",
+				"animRegenerateEnergy": "animation.dilophosaurus_regenerate_energy",
+				"animSpit": "animation.dilophosaurus_spit",
+				"animForcedBiteAttack": "animation.forced_bite_attack_dilophosaurus",
+				"animForcedSpitAttack": "animation.forced_spit_attack_dilophosaurus",
+				"animPlantTrap": "animation.dilophosaurus_plant_trap"
             },
             "scripts": {
                 "animate": [
@@ -69,6 +84,10 @@
                     "contRiddenTag",
 					"contInLoveTag",
 					"contShoot",
+					"contForcedAttack",
+					"contEnergyUsage",
+					"contWarnLowEnergy",
+					"contPlantTrap",
 					"contTameState",
 					"contBehaviorState"
                 ]
@@ -543,11 +562,27 @@
 					"attack_radius": 64
 				}
 			},
+			"rift:can_spawn_trap": {
+				"minecraft:out_of_control": {}
+			},
 			"rift:shoot_projectile": {
 				"minecraft:spawn_entity": {
 					"entities": [
 						{
 							"spawn_entity": "rift:dilophosaurus_spit",
+							"single_use": true,
+							"min_wait_time": 0,
+							"max_wait_time": 0
+						}
+					]
+				}
+			},
+			"rift:spawn_trap": {
+				"minecraft:spawn_entity": {
+					"entities": [
+						{
+							"spawn_entity": "rift:dilophosaurus_trap",
+							"spawn_event": "rift:planted_by_tamed",
 							"single_use": true,
 							"min_wait_time": 0,
 							"max_wait_time": 0
@@ -1225,6 +1260,18 @@
 						"target": "self"
 					}
 			  	}
+			},
+			"rift:default_collision": {
+				"minecraft:collision_box": {
+					"width": 1,
+					"height": 1.75
+				}
+			},
+			"rift:spit_collision": {
+				"minecraft:collision_box": {
+					"width": 1,
+					"height": 0.25
+				}
 			}
         },
         "components": {
@@ -1237,10 +1284,6 @@
 					"dinosaur"
 				]
 			},
-            "minecraft:collision_box": {
-                "width": 1,
-                "height": 1.75
-            },
 			"minecraft:navigation.walk": {},
 			"minecraft:movement.basic": {},
 			"minecraft:jump.static": {},
@@ -3273,6 +3316,46 @@
 					}
 				]
             },
+			"minecraft:scheduler": {
+				"scheduled_events": [
+					{
+						"filters": {
+							"all_of": [
+								{
+									"test": "rider_count",
+									"subject": "self",
+									"operator": ">",
+									"value": 0
+								},
+								{
+									"test": "has_component",
+									"subject": "self",
+									"value": "minecraft:is_tamed"
+								}
+							]
+						},
+						"event": "rift:cannot_sit"
+					},
+					{
+						"filters": {
+							"all_of": [
+								{
+									"test": "rider_count",
+									"subject": "self",
+									"operator": "==",
+									"value": 0
+								},
+								{
+									"test": "has_component",
+									"subject": "self",
+									"value": "minecraft:is_tamed"
+								}
+							]
+						},
+						"event": "rift:can_sit"
+					}
+				]
+			},
 			"minecraft:damage_sensor": {
 				"triggers": [
 					{
@@ -3405,7 +3488,7 @@
 								"rift:wild_standing",
 								"rift:variant_zero",
 								"rift:wild_can_move",
-								"rift:pushable"
+								"rift:pushable","rift:default_collision"
 							]
 						}
 					},
@@ -3421,7 +3504,7 @@
 								"rift:wild_standing",
 								"rift:variant_one",
 								"rift:wild_can_move",
-								"rift:pushable"
+								"rift:pushable","rift:default_collision"
 							]
 						}
 					},
@@ -3437,7 +3520,7 @@
 								"rift:wild_standing",
 								"rift:variant_two",
 								"rift:wild_can_move",
-								"rift:pushable"
+								"rift:pushable","rift:default_collision"
 							]
 						}
 					},
@@ -3453,7 +3536,7 @@
 								"rift:wild_standing",
 								"rift:variant_three",
 								"rift:wild_can_move",
-								"rift:pushable"
+								"rift:pushable","rift:default_collision"
 							]
 						}
 					}
@@ -3640,6 +3723,13 @@
 					]
 				}
 			},
+			"rift:spawn_trap": {
+				"add": {
+					"component_groups": [
+						"rift:spawn_trap"
+					]
+				}
+			},
 			"rift:spawn_as_baby": {
 				"randomize": [
 					{
@@ -3652,7 +3742,7 @@
 								"rift:temptable",
 								"rift:pushable",
 								"rift:wild_can_move",
-								"rift:variant_zero"
+								"rift:variant_zero","rift:default_collision"
 							]
 						}
 					},
@@ -3666,7 +3756,7 @@
 								"rift:temptable",
 								"rift:pushable",
 								"rift:wild_can_move",
-								"rift:variant_one"
+								"rift:variant_one","rift:default_collision"
 							]
 						}
 					},
@@ -3680,7 +3770,7 @@
 								"rift:temptable",
 								"rift:pushable",
 								"rift:wild_can_move",
-								"rift:variant_two"
+								"rift:variant_two","rift:default_collision"
 							]
 						}
 					},
@@ -3694,7 +3784,7 @@
 								"rift:temptable",
 								"rift:pushable",
 								"rift:wild_can_move",
-								"rift:variant_three"
+								"rift:variant_three","rift:default_collision"
 							]
 						}
 					}
@@ -3790,6 +3880,37 @@
 				"remove": {
 					"component_groups": [
 						"rift:aggravating_horn_attack"
+					]
+				}
+			},
+			"rift:cannot_sit": {
+				"add": {
+					"component_groups": [
+						"rift:unpushable"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:pushable",
+						"rift:has_no_target",
+						"rift:can_attack",
+						"rift:ranged_attack",
+						"rift:can_melee_attack"
+					]
+				}
+			},
+			"rift:can_sit": {
+				"add": {
+					"component_groups": [
+						"rift:pushable",
+						"minecraft:collision_box",
+						"rift:has_no_target"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:unpushable",
+						"rift:spit_collision"
 					]
 				}
 			},
@@ -4172,6 +4293,63 @@
 					]
 				}
 			},
+			"rift:stop_moving_for_forced_spit": {
+				"add": {
+					"component_groups": [
+						"rift:tamed_cannot_move",
+						"rift:spit_collision"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:tamed_can_move",
+						"rift:default_collision"
+					]
+				}
+			},
+			"rift:move_again_for_forced_spit": {
+				"add": {
+					"component_groups": [
+						"rift:tamed_can_move",
+						"rift:default_collision"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:tamed_cannot_move",
+						"rift:spit_collision"
+					]
+				}
+			},
+			"rift:use_forced_bite": {
+				"set_property": {
+					"rift:forced_attack_mode": "1"
+				}
+			},
+			"rift:use_forced_spit": {
+				"set_property": {
+					"rift:forced_attack_mode": "2"
+				}
+			},
+			"rift:stop_forced_attack": {
+				"set_property": {
+					"rift:forced_attack_mode": "0"
+				}
+			},
+			"rift:start_place_trap": {
+				"add": {
+					"component_groups": [
+						"rift:can_spawn_trap"
+					]
+				}
+			},
+			"rift:stop_place_trap": {
+				"remove": {
+					"component_groups": [
+						"rift:can_spawn_trap"
+					]
+				}
+			},
 			"rift:start_eat_from_inventory_cooldown": {
 				"set_property": {
 					"rift:eat_from_inventory_cooldown": true
@@ -4180,6 +4358,31 @@
 			"rift:stop_eat_from_inventory_cooldown": {
 				"set_property": {
 					"rift:eat_from_inventory_cooldown": false
+				}
+			},
+			"rift:decrease_energy_while_moving": {
+				"set_property": {
+					"rift:energy": "query.property('rift:energy') - 15"
+				}
+			},
+			"rift:decrease_energy_while_biting": {
+				"set_property": {
+					"rift:energy": "query.property('rift:energy') - 15"
+				}
+			},
+			"rift:decrease_energy_while_spitting": {
+				"set_property": {
+					"rift:energy": "query.property('rift:energy') - 10"
+				}
+			},
+			"rift:decrease_energy_while_planting_trap": {
+				"set_property": {
+					"rift:energy": "query.property('rift:energy') - 30"
+				}
+			},
+			"rift:regenerate_energy": {
+				"set_property": {
+					"rift:energy": "query.property('rift:energy') + 5"
 				}
 			},
 			"rift:manage_state": {

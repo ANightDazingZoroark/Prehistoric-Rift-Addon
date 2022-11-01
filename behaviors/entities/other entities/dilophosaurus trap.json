@@ -37,6 +37,42 @@
                     "event": "rift:triggered"
                 }
             },
+            "rift:untriggered_tamed": {
+                "minecraft:is_charged": {},
+                "minecraft:entity_sensor": {
+                    "sensor_range": 3,
+                    "minimum_count": 1,
+                    "event_filters": {
+                        "all_of": [
+                            {
+                                "test": "is_family",
+                                "subject": "other",
+                                "operator": "!=",
+                                "value": "inanimate"
+                            },
+                            {
+                                "test": "has_component",
+                                "subject": "other",
+                                "operator": "!=",
+                                "value": "minecraft:is_tamed"
+                            },
+                            {
+                                "test": "has_component",
+                                "subject": "other",
+                                "operator": "!=",
+                                "value": "minecraft:projectile"
+                            },
+                            {
+                                "test": "is_family",
+                                "subject": "other",
+                                "operator": "!=",
+                                "value": "player"
+                            }
+                        ]
+                    },
+                    "event": "rift:triggered_tamed"
+                }
+            },
             "rift:triggered": {
                 "minecraft:spawn_entity": {
 					"entities": [
@@ -57,7 +93,24 @@
                     }
                 }
             },
+            "rift:triggered_tamed": {
+                "minecraft:timer": {
+                    "time": 0,
+                    "time_down_event": {
+                        "event": "rift:explode_tamed",
+                        "target": "self"
+                    }
+                }
+            },
             "rift:explode": {
+                "minecraft:explode": {
+                    "breaks_blocks": false,
+                    "fuse_length": 0,
+                    "fuse_lit": true,
+                    "power": 3
+                }
+            },
+            "rift:explode_tamed": {
                 "minecraft:explode": {
                     "breaks_blocks": false,
                     "fuse_length": 0,
@@ -168,6 +221,13 @@
                     ]
                 }
             },
+            "rift:planted_by_tamed": {
+                "add": {
+                    "component_groups": [
+                        "rift:untriggered_tamed"
+                    ]
+                }
+            },
             "rift:triggered": {
                 "add": {
                     "component_groups": [
@@ -180,6 +240,18 @@
                     ]
                 }
             },
+            "rift:triggered_tamed": {
+                "add": {
+                    "component_groups": [
+                        "rift:triggered_tamed"
+                    ]
+                },
+                "remove": {
+                    "component_groups": [
+                        "rift:untriggered_tamed"
+                    ]
+                }
+            },
             "rift:explode": {
                 "add": {
                     "component_groups": [
@@ -189,6 +261,32 @@
                 "remove": {
                     "component_groups": [
                         "rift:triggered"
+                    ]
+                },
+                "run_command": {
+                    "command": [
+                        "effect @e[type=!rift:dilophosaurus, family=!inanimate, r=12] poison 15 2",
+                        "effect @e[type=!rift:dilophosaurus, family=!inanimate, r=12] blindness 15 2",
+                        "effect @e[type=!rift:dilophosaurus, family=!inanimate, r=12] slowness 15 2"
+                    ]
+                }
+            },
+            "rift:explode_tamed": {
+                "add": {
+                    "component_groups": [
+                        "rift:explode_tamed"
+                    ]
+                },
+                "remove": {
+                    "component_groups": [
+                        "rift:triggered_tamed"
+                    ]
+                },
+                "run_command": {
+                    "command": [
+                        "effect @e[tag=!tamed, type=!player, family=!inanimate, r=12] poison 15 2",
+                        "effect @e[tag=!tamed, type=!player, family=!inanimate, r=12] blindness 15 2",
+                        "effect @e[tag=!tamed, type=!player, family=!inanimate, r=12] slowness 15 2"
                     ]
                 }
             },
