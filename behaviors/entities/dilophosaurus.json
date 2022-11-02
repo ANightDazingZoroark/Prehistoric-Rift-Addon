@@ -12,6 +12,11 @@
 					"default": false,
 					"client_sync": true
 				},
+				"rift:turret_mode": {
+					"type": "bool",
+					"default": false,
+					"client_sync": true
+				},
 				"rift:eat_from_inventory_cooldown": {
 					"type": "bool",
 					"default": true
@@ -43,17 +48,17 @@
 					"default": 0,
 					"client_sync": true
                 },
-                "rift:behavior_state": { //0 for assist, 1 for neutral, 2 for aggressive, 3 for passive
+                "rift:behavior_state": { //0 for assist, 1 for neutral, 2 for aggressive, 3 for passive, 4 for turret mode
                     "range": [
 						0,
-						3
+						4
 					],
 					"type": "int",
 					"default": 0
                 }
 			},
 			"animations": {
-				// "contEatFromInventoryCooldown": "controller.animation.general_eat_from_inventory_cooldown",
+				"contEatFromInventoryCooldown": "controller.animation.general_eat_from_inventory_cooldown",
 				"contShearedTag": "controller.animation.add_sheared_tag",
 				"contTameTag": "controller.animation.add_tame_tag",
 				"contBabyTag": "controller.animation.add_baby_tag",
@@ -65,9 +70,11 @@
 				"contWarnLowEnergy": "controller.animation.warn_of_low_energy",
 				"contPlantTrap": "controller.animation.dilophosaurus_plant_trap",
 				"contTameState": "controller.animation.manage_tame_state",
-				"contBehaviorState": "controller.animation.manage_tame_behavior",
+				"contBehaviorState": "controller.animation.dilophosaurus_manage_tame_behavior",
 				"animEatFromInventoryCooldown": "animation.eat_from_inventory_cooldown",
 				"animUseEnergyWhileMoving": "animation.dilophosaurus_decrease_energy_while_moving",
+				"animLowOnEnergyEffects": "animation.effects_while_low_on_energy",
+				"animNoEnergyEffects": "animation.effects_while_no_energy",
 				"animEnergyRegenDelay": "animation.regenerate_energy_delay",
 				"animRegenerateEnergy": "animation.dilophosaurus_regenerate_energy",
 				"animSpit": "animation.dilophosaurus_spit",
@@ -77,7 +84,7 @@
             },
             "scripts": {
                 "animate": [
-                    // "contEatFromInventoryCooldown",
+                    "contEatFromInventoryCooldown",
 					"contShearedTag",
                     "contTameTag",
                     "contBabyTag",
@@ -1235,6 +1242,18 @@
 			"rift:has_no_target": {
 				"minecraft:on_target_acquired": {
 					"event": "rift:start_attacking",
+					"target": "self"
+				}
+			},
+			"rift:has_no_target_turret_mode": {
+				"minecraft:on_target_acquired": {
+					"event": "rift:start_attacking_turret_mode",
+					"target": "self"
+				}
+			},
+			"rift:has_target_turret_mode": {
+				"minecraft:on_target_escape": {
+					"event": "rift:stop_attacking_turret_mode",
 					"target": "self"
 				}
 			},
@@ -3488,7 +3507,8 @@
 								"rift:wild_standing",
 								"rift:variant_zero",
 								"rift:wild_can_move",
-								"rift:pushable","rift:default_collision"
+								"rift:pushable",
+								"rift:default_collision"
 							]
 						}
 					},
@@ -3504,7 +3524,8 @@
 								"rift:wild_standing",
 								"rift:variant_one",
 								"rift:wild_can_move",
-								"rift:pushable","rift:default_collision"
+								"rift:pushable",
+								"rift:default_collision"
 							]
 						}
 					},
@@ -3520,7 +3541,8 @@
 								"rift:wild_standing",
 								"rift:variant_two",
 								"rift:wild_can_move",
-								"rift:pushable","rift:default_collision"
+								"rift:pushable",
+								"rift:default_collision"
 							]
 						}
 					},
@@ -3536,7 +3558,8 @@
 								"rift:wild_standing",
 								"rift:variant_three",
 								"rift:wild_can_move",
-								"rift:pushable","rift:default_collision"
+								"rift:pushable",
+								"rift:default_collision"
 							]
 						}
 					}
@@ -3615,13 +3638,13 @@
 						"add": {
 							"component_groups": [
 								"rift:ranged_attack",
-								"rift:pushable"
+								"rift:unpushable"
 							]
 						},
 						"remove": {
 							"component_groups": [
 								"rift:can_melee_attack",
-								"rift:unpushable",
+								"rift:pushable",
 								"rift:wild_can_move"
 							]
 						}
@@ -3669,13 +3692,13 @@
 						"add": {
 							"component_groups": [
 								"rift:can_melee_attack",
-								"rift:unpushable"
+								"rift:pushable"
 							]
 						},
 						"remove": {
 							"component_groups": [
 								"rift:ranged_attack",
-								"rift:pushable"
+								"rift:unpushable"
 							]
 						}
 					},
@@ -3730,6 +3753,32 @@
 					]
 				}
 			},
+			"rift:start_attacking_turret_mode": {
+				"add": {
+					"component_groups": [
+						"rift:ranged_attack",
+						"rift:has_target_turret_mode"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:has_no_target_turret_mode"
+					]
+				}
+			},
+			"rift:stop_attacking_turret_mode": {
+				"add": {
+					"component_groups": [
+						"rift:has_no_target_turret_mode"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:ranged_attack",
+						"rift:has_target_turret_mode"
+					]
+				}
+			},
 			"rift:spawn_as_baby": {
 				"randomize": [
 					{
@@ -3742,7 +3791,8 @@
 								"rift:temptable",
 								"rift:pushable",
 								"rift:wild_can_move",
-								"rift:variant_zero","rift:default_collision"
+								"rift:variant_zero",
+								"rift:default_collision"
 							]
 						}
 					},
@@ -3756,7 +3806,8 @@
 								"rift:temptable",
 								"rift:pushable",
 								"rift:wild_can_move",
-								"rift:variant_one","rift:default_collision"
+								"rift:variant_one",
+								"rift:default_collision"
 							]
 						}
 					},
@@ -3770,7 +3821,8 @@
 								"rift:temptable",
 								"rift:pushable",
 								"rift:wild_can_move",
-								"rift:variant_two","rift:default_collision"
+								"rift:variant_two",
+								"rift:default_collision"
 							]
 						}
 					},
@@ -3784,8 +3836,85 @@
 								"rift:temptable",
 								"rift:pushable",
 								"rift:wild_can_move",
-								"rift:variant_three","rift:default_collision"
+								"rift:variant_three",
+								"rift:default_collision"
 							]
+						}
+					}
+				]
+			},
+			"rift:hatched_from_egg": {
+				"randomize": [
+					{
+						"weight": 1,
+						"add": {
+							"component_groups": [
+								"rift:dilophosaurus_baby",
+								"rift:temptable",
+								"rift:pushable",
+								"rift:variant_zero",
+								"rift:default_collision",
+								"rift:dilophosaurus_tamed",
+								"rift:dilophosaurus_baby_tamed",
+								"rift:tamed_standing"
+							]
+						},
+						"set_property": {
+							"rift:behavior_state": "3"
+						}
+					},
+					{
+						"weight": 1,
+						"add": {
+							"component_groups": [
+								"rift:dilophosaurus_baby",
+								"rift:temptable",
+								"rift:pushable",
+								"rift:variant_one",
+								"rift:default_collision",
+								"rift:dilophosaurus_tamed",
+								"rift:dilophosaurus_baby_tamed",
+								"rift:tamed_standing"
+							]
+						},
+						"set_property": {
+							"rift:behavior_state": "3"
+						}
+					},
+					{
+						"weight": 1,
+						"add": {
+							"component_groups": [
+								"rift:dilophosaurus_baby",
+								"rift:temptable",
+								"rift:pushable",
+								"rift:variant_two",
+								"rift:default_collision",
+								"rift:dilophosaurus_tamed",
+								"rift:dilophosaurus_baby_tamed",
+								"rift:tamed_standing"
+							]
+						},
+						"set_property": {
+							"rift:behavior_state": "3"
+						}
+					},
+					{
+						"weight": 1,
+						"add": {
+							"component_groups": [
+								"rift:dilophosaurus_baby",
+								"rift:temptable",
+								"rift:pushable",
+								"rift:variant_three",
+								"rift:default_collision",
+								"rift:dilophosaurus_tamed",
+								"rift:dilophosaurus_baby_tamed",
+								"rift:tamed_standing"
+							]
+						},
+						"set_property": {
+							"rift:behavior_state": "3"
 						}
 					}
 				]
@@ -3820,7 +3949,8 @@
 						},
 						"add": {
 							"component_groups": [
-								"rift:dilophosaurus_adult_tamed"
+								"rift:dilophosaurus_adult_tamed",
+								"rift:rideable"
 							]
 						},
 						"remove": {
@@ -3932,7 +4062,7 @@
 				},
 				"run_command": {
 					"command": [
-						"tellraw @p {\"rawtext\":[{\"text\":\"You made a wild dilophosaurus trust you! Keep feeding it every once in a while to eventually tame it!\"}]}"
+						"tellraw @p {\"rawtext\":[{\"text\":\"You made a wild Dilophosaurus trust you! Keep feeding it every once in a while to eventually tame it!\"}]}"
 					]
 				},
 				"set_property": {
@@ -4189,69 +4319,150 @@
 			"rift:on_assist_behavior": {
 				"add": {
 					"component_groups": [
-						"rift:assist_behavior"
+						"rift:assist_behavior",
+						"rift:has_no_target",
+						"rift:rideable",
+						"rift:pushable"
 					]
 				},
 				"remove": {
 					"component_groups": [
 						"rift:neutral_behavior",
-						"rift:aggressive_behavior"
+						"rift:aggressive_behavior",
+						"rift:unpushable",
+						"rift:has_no_target_turret_mode",
+						"rift:has_target_turret_mode",
+						"rift:ranged_attack"
 					]
 				},
 				"run_command": {
 					"command": [
-						"tag @s remove hunting"
+						"tag @s remove hunting",
+						"tag @s remove turretMode"
 					]
+				},
+				"set_property": {
+					"rift:turret_mode": false
 				}
 			},
 			"rift:on_neutral_behavior": {
 				"add": {
 					"component_groups": [
-						"rift:neutral_behavior"
+						"rift:neutral_behavior",
+						"rift:has_no_target",
+						"rift:rideable",
+						"rift:pushable"
 					]
 				},
 				"remove": {
 					"component_groups": [
 						"rift:assist_behavior",
-						"rift:aggressive_behavior"
+						"rift:aggressive_behavior",
+						"rift:unpushable",
+						"rift:has_no_target_turret_mode",
+						"rift:has_target_turret_mode",
+						"rift:ranged_attack"
 					]
 				},
 				"run_command": {
 					"command": [
-						"tag @s remove hunting"
+						"tag @s remove hunting",
+						"tag @s remove turretMode"
 					]
+				},
+				"set_property": {
+					"rift:turret_mode": false
 				}
 			},
 			"rift:on_aggressive_behavior": {
 				"add": {
 					"component_groups": [
-						"rift:aggressive_behavior"
+						"rift:aggressive_behavior",
+						"rift:has_no_target",
+						"rift:rideable",
+						"rift:pushable"
 					]
 				},
-				"remove": {
-					"component_groups": [
-						"rift:assist_behavior",
-						"rift:neutral_behavior"
-					]
-				},
-				"run_command": {
-					"command": [
-						"tag @s add hunting"
-					]
-				}
-			},
-			"rift:on_passive_behavior": {
 				"remove": {
 					"component_groups": [
 						"rift:assist_behavior",
 						"rift:neutral_behavior",
-						"rift:aggressive_behavior"
+						"rift:unpushable",
+						"rift:has_no_target_turret_mode",
+						"rift:has_target_turret_mode",
+						"rift:ranged_attack"
 					]
 				},
 				"run_command": {
 					"command": [
-						"tag @s remove hunting"
+						"tag @s add hunting",
+						"tag @s remove turretMode"
 					]
+				},
+				"set_property": {
+					"rift:turret_mode": false
+				}
+			},
+			"rift:on_passive_behavior": {
+				"add": {
+					"component_groups": [
+						"rift:has_no_target",
+						"rift:rideable",
+						"rift:pushable"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:assist_behavior",
+						"rift:neutral_behavior",
+						"rift:aggressive_behavior",
+						"rift:unpushable",
+						"rift:has_no_target_turret_mode",
+						"rift:has_target_turret_mode",
+						"rift:ranged_attack"
+					]
+				},
+				"run_command": {
+					"command": [
+						"tag @s remove hunting",
+						"tag @s remove turretMode"
+					]
+				},
+				"set_property": {
+					"rift:turret_mode": false
+				}
+			},
+			"rift:on_turret_behavior": {
+				"add": {
+					"component_groups": [
+						"rift:aggressive_behavior",
+						"rift:tamed_cannot_move",
+						"rift:unpushable",
+						"rift:has_no_target_turret_mode"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:assist_behavior",
+						"rift:neutral_behavior",
+						"rift:tamed_can_move",
+						"rift:tamed_can_move_low_energy",
+						"rift:pushable",
+						"rift:rideable",
+						"rift:has_no_target",
+						"rift:can_melee_attack",
+						"rift:can_attack"
+					]
+				},
+				"run_command": {
+					"command": [
+						"tag @s add hunting",
+						"tag @s add turretMode"
+					]
+				},
+				"set_property": {
+					"rift:turret_mode": true,
+					"rift:tame_state": 1
 				}
 			},
 			"rift:moving_slowly_low_energy": {
@@ -4392,7 +4603,7 @@
 			},
 			"rift:manage_behavior": {
 				"set_property": {
-					"rift:behavior_state": "query.property('rift:energy') > 0 ? ((query.property('rift:behavior_state') >= 0 && query.property('rift:behavior_state') <= 2) ? query.property('rift:behavior_state') + 1 : 0) : 3"
+					"rift:behavior_state": "query.property('rift:energy') > 0 ? ((query.property('rift:behavior_state') >= 0 && query.property('rift:behavior_state') <= 3) ? query.property('rift:behavior_state') + 1 : 0) : 3"
 				}
 			},
 			//for potion effects

@@ -15,9 +15,9 @@ event entity @e[type=rift:baryonyx, tag=tamed, tag=!lowEnergy, tag=!noEnergy] ri
 event entity @e[type=rift:baryonyx, tag=tamed, tag=lowEnergy, tag=!noEnergy] rift:moving_slowly_low_energy
 event entity @e[type=rift:baryonyx, tag=tamed, tag=!lowEnergy, tag=noEnergy] rift:stop_moving_low_energy
 
-event entity @e[type=rift:dilophosaurus, tag=!sheared, tag=tamed, tag=!lowEnergy, tag=!noEnergy] rift:return_to_moving_normally
-event entity @e[type=rift:dilophosaurus, tag=!sheared, tag=tamed, tag=lowEnergy, tag=!noEnergy] rift:moving_slowly_low_energy
-event entity @e[type=rift:dilophosaurus, tag=!sheared, tag=tamed, tag=!lowEnergy, tag=noEnergy] rift:stop_moving_low_energy
+event entity @e[type=rift:dilophosaurus, tag=!sheared, tag=!turretMode, tag=tamed, tag=!lowEnergy, tag=!noEnergy] rift:return_to_moving_normally
+event entity @e[type=rift:dilophosaurus, tag=!sheared, tag=!turretMode, tag=tamed, tag=lowEnergy, tag=!noEnergy] rift:moving_slowly_low_energy
+event entity @e[type=rift:dilophosaurus, tag=!sheared, tag=!turretMode, tag=tamed, tag=!lowEnergy, tag=noEnergy] rift:stop_moving_low_energy
 
 event entity @e[type=rift:dimetrodon, tag=tamed, tag=!lowEnergy, tag=!noEnergy] rift:return_to_moving_normally
 event entity @e[type=rift:dimetrodon, tag=tamed, tag=lowEnergy, tag=!noEnergy] rift:moving_slowly_low_energy

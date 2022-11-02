@@ -79,6 +79,145 @@
                     ]
                 }
             }
-        }
+        },
+		"controller.animation.dilophosaurus_manage_tame_behavior": {
+			"initial_state": "default",
+			"states": {
+				"default": {
+					"transitions": [
+						{
+							"assist": "query.is_tamed && query.property('rift:behavior_state') == 0"
+						},
+						{
+							"neutral": "query.is_tamed && query.property('rift:behavior_state') == 1"
+						},
+						{
+							"aggressive": "query.is_tamed && query.property('rift:behavior_state') == 2"
+						},
+						{
+							"passive": "query.is_tamed && query.property('rift:behavior_state') == 3"
+						},
+						{
+							"turret": "query.is_tamed && query.property('rift:behavior_state') == 4"
+						}
+					]
+				},
+				"assist": {
+					"transitions": [
+						{
+							"default": "!query.is_tamed"
+						},
+						{
+							"neutral": "query.property('rift:behavior_state') == 1"
+						},
+						{
+							"aggressive": "query.property('rift:behavior_state') == 2"
+						},
+						{
+							"passive": "query.property('rift:behavior_state') == 3"
+						},
+						{
+							"turret": "query.is_tamed && query.property('rift:behavior_state') == 4"
+						}
+					],
+					"on_entry": [
+						"@s rift:on_assist_behavior",
+						"/tellraw @p {\"rawtext\":[{\"selector\": \"@s\"}, {\"text\":\" will now assist you in combat\"}]}"
+					]
+				},
+				"neutral": {
+					"transitions": [
+						{
+							"default": "!query.is_tamed"
+						},
+						{
+							"assist": "query.property('rift:behavior_state') == 0"
+						},
+						{
+							"aggressive": "query.property('rift:behavior_state') == 2"
+						},
+						{
+							"passive": "query.property('rift:behavior_state') == 3"
+						},
+						{
+							"turret": "query.is_tamed && query.property('rift:behavior_state') == 4"
+						}
+					],
+					"on_entry": [
+						"@s rift:on_neutral_behavior",
+						"/tellraw @p {\"rawtext\":[{\"selector\": \"@s\"}, {\"text\":\" will now be neutral\"}]}"
+					]
+				},
+				"aggressive": {
+					"transitions": [
+						{
+							"default": "!query.is_tamed"
+						},
+						{
+							"assist": "query.property('rift:behavior_state') == 0"
+						},
+						{
+							"neutral": "query.property('rift:behavior_state') == 1"
+						},
+						{
+							"passive": "query.property('rift:behavior_state') == 3"
+						},
+						{
+							"turret": "query.is_tamed && query.property('rift:behavior_state') == 4"
+						}
+					],
+					"on_entry": [
+						"@s rift:on_aggressive_behavior",
+						"/tellraw @p {\"rawtext\":[{\"selector\": \"@s\"}, {\"text\":\" will now be aggressive\"}]}"
+					]
+				},
+				"passive": {
+					"transitions": [
+						{
+							"default": "!query.is_tamed"
+						},
+						{
+							"assist": "query.property('rift:behavior_state') == 0"
+						},
+						{
+							"neutral": "query.property('rift:behavior_state') == 1"
+						},
+						{
+							"aggressive": "query.property('rift:behavior_state') == 2"
+						},
+						{
+							"turret": "query.is_tamed && query.property('rift:behavior_state') == 4"
+						}
+					],
+					"on_entry": [
+						"@s rift:on_passive_behavior",
+						"/tellraw @p {\"rawtext\":[{\"selector\": \"@s\"}, {\"text\":\" will now be passive\"}]}"
+					]
+				},
+				"turret": {
+					"transitions": [
+						{
+							"default": "!query.is_tamed"
+						},
+						{
+							"assist": "query.property('rift:behavior_state') == 0"
+						},
+						{
+							"neutral": "query.property('rift:behavior_state') == 1"
+						},
+						{
+							"aggressive": "query.property('rift:behavior_state') == 2"
+						},
+						{
+							"passive": "query.property('rift:behavior_state') == 3"
+						}
+					],
+					"on_entry": [
+						"@s rift:on_turret_behavior",
+						"/tellraw @p {\"rawtext\":[{\"selector\": \"@s\"}, {\"text\":\" will now be in turret mode\"}]}"
+					]
+				}
+			}
+		}
     }
 }
