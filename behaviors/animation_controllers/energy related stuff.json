@@ -643,6 +643,62 @@
                 }
             }
         },
+        "controller.animation.gallimimus_energy_movement_usage": {
+            "initial_state": "default",
+            "states": {
+                "default": {
+                    "animations": [
+                        {
+                            "animRegenerateEnergy": "query.is_tamed"
+                        }
+                    ],
+                    "transitions": [
+                        {
+                            "walk": "query.is_tamed && query.is_on_ground && query.ground_speed > 0 && query.property('rift:energy') > 0"
+                        },
+                        {
+                            "jumpDelay": "v.x = 0.0; for_each(t.rider, query.get_riders, { v.x = v.x + (t.rider -> query.is_jumping); }); return v.x > 0.0 && query.is_tamed && query.is_on_ground && query.has_rider && query.property('rift:energy') > 30;"
+                        }
+                    ]
+                },
+                "walk": {
+                    "animations": [
+                        "animUseEnergyWhileMoving"
+                    ],
+                    "transitions": [
+                        {
+                            "default": "query.ground_speed == 0"
+                        },
+                        {
+                            "jumpDelay": "v.x = 0.0; for_each(t.rider, query.get_riders, { v.x = v.x + (t.rider -> query.is_jumping); }); return v.x > 0.0;"
+                        }
+                    ]
+                },
+                "jumpDelay": {
+                    "animations": [
+                        "animUseEnergyWhileMoving"
+                    ],
+                    "transitions": [
+                        {
+                            "default": "!query.has_rider || query.property('rift:energy') <= 30"
+                        },
+                        {
+                            "jump": "v.x = 0.0; for_each(t.rider, query.get_riders, { v.x = v.x + !(t.rider -> query.is_jumping); }); return v.x > 0.0;"
+                        }
+                    ]
+                },
+                "jump": {
+                    "on_entry": [
+                        "@s rift:decrease_energy_while_jumping"
+                    ],
+                    "transitions": [
+                        {
+                            "default": "query.is_on_ground"
+                        }
+                    ]
+                }
+            }
+        },
         "controller.animation.megaloceros_energy_movement_usage": {
             "initial_state": "default",
             "states": {
