@@ -25,3 +25,4 @@ tag @e remove megalocerosHarvest
 tag @e remove baryonyxHarvest
 tag @e remove ankylosaurusShell
 tag @e remove ankyloHarvest
+tag @e remove galliSprint

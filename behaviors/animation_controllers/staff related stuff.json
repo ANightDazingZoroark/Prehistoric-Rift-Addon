@@ -3171,7 +3171,146 @@
 		"controller.animation.gallimimus_command_staff": {
 			"initial_state": "default",
 			"states": {
-				"default": {}
+				"default": {
+					"transitions": [
+						{
+							"attackMode": "query.is_riding && (query.get_ride -> query.owner_identifier) == 'rift:gallimimus'"
+						}
+					],
+					"on_exit": [
+						"/tellraw @s {\"rawtext\":[{\"text\":\"Ability set to Attack Mode\"}]}"
+					]
+				},
+				"attackMode": {
+					"transitions": [
+						{
+							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:gallimimus'"
+						},
+						{
+							"attackModeLimbo": "query.is_using_item && (query.get_ride -> query.property('rift:energy')) >= 10 && (query.get_ride -> query.is_saddled) && query.get_equipped_item_name('main_hand') == 'command_staff'"
+						},
+						{
+							"attackModeFail": "query.is_using_item && (query.get_ride -> query.property('rift:energy')) < 10 && (query.get_ride -> query.is_saddled) && query.get_equipped_item_name('main_hand') == 'command_staff'"
+						}
+					]
+				},
+				"attackModeFail": {
+					"transitions": [
+						{
+							"attackMode": "!query.is_using_item"
+						},
+						{
+							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:gallimimus'"
+						}
+					],
+					"on_entry": [
+						"/tellraw @s {\"rawtext\":[{\"text\":\"You don't have enough energy to perform this action!\"}]}"
+					]
+				},
+				"attackModeLimbo": {
+					"animations": [
+						"animAbilitySwitchCooldown"
+					],
+					"transitions": [
+						{
+							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:gallimimus' || query.get_equipped_item_name('main_hand') != 'command_staff'"
+						},
+						{
+							"useAttackMode": "!query.is_using_item"
+						},
+						{
+							"attackToSprint": "query.all_animations_finished"
+						}
+					]
+				},
+				"useAttackMode": {
+					"transitions": [
+						{
+							"attackMode": "(1.0)"
+						}
+					],
+					"on_entry": [
+						"/event entity @e[type=rift:gallimimus, c=1, tag=tamed, tag=!baby] rift:start_forced_attack"
+					]
+				},
+				"attackToSprint": {
+					"transitions": [
+						{
+							"default": "(query.get_equipped_item_name('main_hand') != 'command_staff') || !query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:gallimimus'"
+						},
+						{
+							"sprintMode": "!query.is_using_item"
+						}
+					],
+					"on_exit": [
+						"/tellraw @s {\"rawtext\":[{\"text\":\"Ability set to Sprint Mode\"}]}"
+					]
+				},
+				"sprintMode": {
+					"transitions": [
+						{
+							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:gallimimus'"
+						},
+						{
+							"sprintModeLimbo": "query.is_using_item && (query.get_ride -> query.property('rift:energy')) >= 30 && (query.get_ride -> query.is_saddled) && query.get_equipped_item_name('main_hand') == 'command_staff'"
+						},
+						{
+							"sprintModeFail": "query.is_using_item && (query.get_ride -> query.property('rift:energy')) < 30 && (query.get_ride -> query.is_saddled) && query.get_equipped_item_name('main_hand') == 'command_staff'"
+						}
+					]
+				},
+				"sprintModeFail": {
+					"transitions": [
+						{
+							"sprintMode": "!query.is_using_item"
+						},
+						{
+							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:gallimimus'"
+						}
+					],
+					"on_entry": [
+						"/tellraw @s {\"rawtext\":[{\"text\":\"You don't have enough energy to perform this action!\"}]}"
+					]
+				},
+				"sprintModeLimbo": {
+					"animations": [
+						"animAbilitySwitchCooldown"
+					],
+					"transitions": [
+						{
+							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:gallimimus' || query.get_equipped_item_name('main_hand') != 'command_staff'"
+						},
+						{
+							"useSprintMode": "!query.is_using_item"
+						},
+						{
+							"sprintToAttack": "query.all_animations_finished"
+						}
+					]
+				},
+				"useSprintMode": {
+					"transitions": [
+						{
+							"sprintMode": "(1.0)"
+						}
+					],
+					"on_entry": [
+						"/tag @e[type=rift:gallimimus, c=1, tag=tamed, tag=!baby] add galliSprint"
+					]
+				},
+				"sprintToAttack": {
+					"transitions": [
+						{
+							"default": "(query.get_equipped_item_name('main_hand') != 'command_staff') || !query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:gallimimus'"
+						},
+						{
+							"attackMode": "!query.is_using_item"
+						}
+					],
+					"on_exit": [
+						"/tellraw @s {\"rawtext\":[{\"text\":\"Ability set to Attack Mode\"}]}"
+					]
+				}
 			}
 		}
 	}
