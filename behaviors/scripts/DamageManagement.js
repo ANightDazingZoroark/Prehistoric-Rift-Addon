@@ -456,12 +456,48 @@ world.events.entityHurt.subscribe(({ hurtEntity, damagingEntity, projectile }) =
             }
         }
     }
+    if (damagingEntity.typeId == 'rift:dilophosaurus' && hurtEntity.getComponent('health').current <= 0) {
+        if (exoticMeatDroppers.includes(hurtEntity.typeId)) {
+            hurtEntity.dimension.spawnItem(new ItemStack(Items.get('rift:raw_exotic_meat'), 1, 0), hurtEntity.location)
+        }
+        else {
+            switch (hurtEntity.typeId) {
+                case 'minecraft:pig':
+                    hurtEntity.dimension.spawnItem(new ItemStack(MinecraftItemTypes.porkchop, 1, 0), hurtEntity.location)
+                    break
+                case 'minecraft:hoglin':
+                    hurtEntity.dimension.spawnItem(new ItemStack(MinecraftItemTypes.porkchop, 1, 0), hurtEntity.location)
+                    break
+                case 'minecraft:sheep':
+                    hurtEntity.dimension.spawnItem(new ItemStack(MinecraftItemTypes.mutton, 1, 0), hurtEntity.location)
+                    break
+                case 'minecraft:cow':
+                    hurtEntity.dimension.spawnItem(new ItemStack(MinecraftItemTypes.beef, 1, 0), hurtEntity.location)
+                    break
+                case 'minecraft:mooshroom':
+                    hurtEntity.dimension.spawnItem(new ItemStack(MinecraftItemTypes.beef, 1, 0), hurtEntity.location)
+                    break
+                case 'minecraft:chicken':
+                    hurtEntity.dimension.spawnItem(new ItemStack(MinecraftItemTypes.chicken, 1, 0), hurtEntity.location)
+                    break
+                case 'minecraft:rabbit':
+                    hurtEntity.dimension.spawnItem(new ItemStack(MinecraftItemTypes.rabbit, 1, 0), hurtEntity.location)
+                    break
+                case 'rift:dodo':
+                    hurtEntity.dimension.spawnItem(new ItemStack(Items.get('rift:raw_dodo_meat'), 1, 0), hurtEntity.location)
+                    break
+                case 'rift:parasaurolophus':
+                    hurtEntity.dimension.spawnItem(new ItemStack(Items.get('rift:raw_hadrosaur_meat'), 1, 0), hurtEntity.location)
+                    break
+            }
+        }
+    }
+
     if (damagingEntity.typeId == 'rift:dilophosaurus' && projectile.typeId == 'rift:dilophosaurus_spit') {
         hurtEntity.addEffect(MinecraftEffectTypes.poison, 200)
         hurtEntity.addEffect(MinecraftEffectTypes.blindness, 200)
         hurtEntity.addEffect(MinecraftEffectTypes.slowness, 200, 2)
     }
-    
     if (damagingEntity.typeId == 'rift:utahraptor' && blockBelowAttacker.typeId == 'minecraft:air' && Math.floor(Math.random() * 4) == 0) {
         hurtEntity.runCommand(`ride @s evict_riders`)
     }

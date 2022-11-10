@@ -23,7 +23,8 @@
                 "animBoostSaurophaganaxHatch": "animation.boosted_saurophaganax_hatch_time",
                 "animBoostBaryonyxHatch": "animation.boosted_baryonyx_hatch_time",
                 "animBoostAnkylosaurusHatch": "animation.boosted_ankylosaurus_hatch_time",
-                "animBoostDilophosaurusHatch": "animation.boosted_dilophosaurus_hatch_time"
+                "animBoostDilophosaurusHatch": "animation.boosted_dilophosaurus_hatch_time",
+                "animBoostGallimimusHatch": "animation.boosted_gallimimus_hatch_time"
             },
             "scripts": {
                 "animate": [
@@ -2929,6 +2930,419 @@
                     "keep_owner": true
                 }
             },
+            //galli egg
+            "rift:gallimimus_egg": {
+                "minecraft:variant": {
+                    "value": 13
+                },
+                "minecraft:interact": {
+                    "interactions": [
+                        {
+                            "on_interact": {
+                                "filters": {
+                                    "all_of": [
+                                        {
+                                            "test": "is_sneaking",
+                                            "subject": "other",
+                                            "value": true
+                                        },
+                                        {
+                                            "test": "is_owner",
+                                            "subject": "other",
+                                            "value": true
+                                        }
+                                    ]
+                                },
+                                "event": "rift:galli_egg_commit_disappear",
+                                "target": "self"
+                            },
+                            "spawn_items": {
+                                "table": "loot_tables/eggs/gallimimus egg.loot.json"
+                            }
+                        }
+                    ]
+                },
+                "minecraft:scale": {
+                    "value": 0.6
+                }
+            },
+            "rift:gallimimus_egg_not_hatching": {
+                "minecraft:environment_sensor": {
+                    "triggers": [
+                        {
+                            "filters": {
+                                "any_of": [
+                                    {
+                                        "all_of": [
+                                            {
+                                                "test": "is_altitude",
+                                                "operator": "<",
+                                                "value": 128
+                                            },
+                                            {
+                                                "test": "is_altitude",
+                                                "operator": ">",
+                                                "value": 32
+                                            },
+                                            {
+                                                "any_of": [
+                                                    {
+                                                        "all_of": [
+                                                            {
+                                                                "test": "in_water_or_rain",
+                                                                "value": true
+                                                            },
+                                                            {
+                                                                "any_of": [
+                                                                    {
+                                                                        "test": "has_biome_tag",
+                                                                        "value": "desert"
+                                                                    },
+                                                                    {
+                                                                        "test": "has_biome_tag",
+                                                                        "value": "mesa"
+                                                                    },
+                                                                    {
+                                                                        "test": "in_nether",
+                                                                        "value": true
+                                                                    },
+                                                                    {
+                                                                        "test": "has_biome_tag",
+                                                                        "value": "jungle"
+                                                                    },
+                                                                    {
+                                                                        "test": "has_biome_tag",
+                                                                        "value": "swamp"
+                                                                    },
+                                                                    {
+                                                                        "test": "has_biome_tag",
+                                                                        "value": "savanna"
+                                                                    }
+                                                                ]
+                                                            }
+                                                        ]
+                                                    },
+                                                    {
+                                                        "all_of": [
+                                                            {
+                                                                "test": "in_water_or_rain",
+                                                                "value": false
+                                                            },
+                                                            {
+                                                                "test": "has_biome_tag",
+                                                                "operator": "!=",
+                                                                "value": "desert"
+                                                            },
+                                                            {
+                                                                "test": "has_biome_tag",
+                                                                "operator": "!=",
+                                                                "value": "mesa"
+                                                            },
+                                                            {
+                                                                "test": "in_nether",
+                                                                "value": false
+                                                            },
+                                                            {
+                                                                "test": "has_biome_tag",
+                                                                "operator": "!=",
+                                                                "value": "jungle"
+                                                            },
+                                                            {
+                                                                "test": "has_biome_tag",
+                                                                "operator": "!=",
+                                                                "value": "swamp"
+                                                            },
+                                                            {
+                                                                "test": "has_biome_tag",
+                                                                "operator": "!=",
+                                                                "value": "savanna"
+                                                            },
+                                                            {
+                                                                "test": "has_biome_tag",
+                                                                "operator": "!=",
+                                                                "value": "cold"
+                                                            },
+                                                            {
+                                                                "test": "has_biome_tag",
+                                                                "operator": "!=",
+                                                                "value": "frozen"
+                                                            },
+                                                            {
+                                                                "test": "has_biome_tag",
+                                                                "operator": "!=",
+                                                                "value": "taiga"
+                                                            },
+                                                            {
+                                                                "test": "has_biome_tag",
+                                                                "operator": "!=",
+                                                                "value": "the_end"
+                                                            },
+                                                            {
+                                                                "test": "has_biome_tag",
+                                                                "operator": "!=",
+                                                                "value": "ocean"
+                                                            }
+                                                        ]
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "all_of": [
+                                            {
+                                                "test": "is_altitude",
+                                                "operator": ">=",
+                                                "value": 128
+                                            },
+                                            {
+                                                "test": "is_underground",
+                                                "value": true
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "all_of": [
+                                            {
+                                                "test": "is_altitude",
+                                                "operator": "<=",
+                                                "value": 32
+                                            },
+                                            {
+                                                "test": "is_underground",
+                                                "value": false
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            "event": "rift:gallimimus_egg_start_hatching",
+                            "target": "self"
+                        }
+                    ]
+                }
+            },
+            "rift:gallimimus_egg_hatching": {
+                "minecraft:is_sheared": {},
+                "minecraft:environment_sensor": {
+                    "triggers": [
+                        {
+                            "filters": {
+                                "any_of": [
+                                    {
+                                        "all_of": [
+                                            {
+                                                "test": "is_altitude",
+                                                "operator": ">",
+                                                "value": 32
+                                            },
+                                            {
+                                                "test": "is_altitude",
+                                                "operator": "<",
+                                                "value": 128
+                                            },
+                                            {
+                                                "any_of": [
+                                                    {
+                                                        "all_of": [
+                                                            {
+                                                                "test": "in_water_or_rain",
+                                                                "value": false
+                                                            },
+                                                            {
+                                                                "any_of": [
+                                                                    {
+                                                                        "test": "has_biome_tag",
+                                                                        "value": "desert"
+                                                                    },
+                                                                    {
+                                                                        "test": "has_biome_tag",
+                                                                        "value": "mesa"
+                                                                    },
+                                                                    {
+                                                                        "test": "in_nether",
+                                                                        "value": true
+                                                                    },
+                                                                    {
+                                                                        "test": "has_biome_tag",
+                                                                        "value": "jungle"
+                                                                    },
+                                                                    {
+                                                                        "test": "has_biome_tag",
+                                                                        "value": "swamp"
+                                                                    },
+                                                                    {
+                                                                        "test": "has_biome_tag",
+                                                                        "value": "savanna"
+                                                                    }
+                                                                ]
+                                                            }
+                                                        ]
+                                                    },
+                                                    {
+                                                        "all_of": [
+                                                            {
+                                                                "test": "in_water_or_rain",
+                                                                "value": true
+                                                            },
+                                                            {
+                                                                "test": "has_biome_tag",
+                                                                "operator": "!=",
+                                                                "value": "desert"
+                                                            },
+                                                            {
+                                                                "test": "has_biome_tag",
+                                                                "operator": "!=",
+                                                                "value": "mesa"
+                                                            },
+                                                            {
+                                                                "test": "in_nether",
+                                                                "value": false
+                                                            },
+                                                            {
+                                                                "test": "has_biome_tag",
+                                                                "operator": "!=",
+                                                                "value": "jungle"
+                                                            },
+                                                            {
+                                                                "test": "has_biome_tag",
+                                                                "operator": "!=",
+                                                                "value": "swamp"
+                                                            },
+                                                            {
+                                                                "test": "has_biome_tag",
+                                                                "operator": "!=",
+                                                                "value": "savanna"
+                                                            },
+                                                            {
+                                                                "test": "has_biome_tag",
+                                                                "operator": "!=",
+                                                                "value": "cold"
+                                                            },
+                                                            {
+                                                                "test": "has_biome_tag",
+                                                                "operator": "!=",
+                                                                "value": "frozen"
+                                                            },
+                                                            {
+                                                                "test": "has_biome_tag",
+                                                                "operator": "!=",
+                                                                "value": "taiga"
+                                                            },
+                                                            {
+                                                                "test": "has_biome_tag",
+                                                                "operator": "!=",
+                                                                "value": "the_end"
+                                                            },
+                                                            {
+                                                                "test": "has_biome_tag",
+                                                                "operator": "!=",
+                                                                "value": "ocean"
+                                                            }
+                                                        ]
+                                                    },
+                                                    {
+                                                        "any_of": [
+                                                            {
+                                                                "test": "has_biome_tag",
+                                                                "value": "desert"
+                                                            },
+                                                            {
+                                                                "test": "has_biome_tag",
+                                                                "value": "mesa"
+                                                            },
+                                                            {
+                                                                "test": "in_nether",
+                                                                "value": true
+                                                            },
+                                                            {
+                                                                "test": "has_biome_tag",
+                                                                "value": "jungle"
+                                                            },
+                                                            {
+                                                                "test": "has_biome_tag",
+                                                                "value": "swamp"
+                                                            },
+                                                            {
+                                                                "test": "has_biome_tag",
+                                                                "value": "savanna"
+                                                            },
+                                                            {
+                                                                "test": "has_biome_tag",
+                                                                "value": "cold"
+                                                            },
+                                                            {
+                                                                "test": "has_biome_tag",
+                                                                "value": "frozen"
+                                                            },
+                                                            {
+                                                                "test": "has_biome_tag",
+                                                                "value": "taiga"
+                                                            },
+                                                            {
+                                                                "test": "has_biome_tag",
+                                                                "value": "the_end"
+                                                            },
+                                                            {
+                                                                "test": "has_biome_tag",
+                                                                "value": "ocean"
+                                                            }
+                                                        ]
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "all_of": [
+                                            {
+                                                "test": "is_altitude",
+                                                "operator": "<=",
+                                                "value": 32
+                                            },
+                                            {
+                                                "test": "is_underground",
+                                                "value": true
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "all_of": [
+                                            {
+                                                "test": "is_altitude",
+                                                "operator": ">=",
+                                                "value": 128
+                                            },
+                                            {
+                                                "test": "is_underground",
+                                                "value": false
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            "event": "rift:gallimimus_egg_stop_hatching",
+                            "target": "self"
+                        }
+                    ]
+                },
+                "minecraft:timer": {
+                    "time": 180,
+                    "time_down_event": {
+                        "event": "rift:gallimimus_egg_hatched",
+                        "target": "self"
+                    }
+                }
+            },
+            "rift:gallimimus_egg_boosted_hatching": {
+                "minecraft:is_sheared": {}
+            },
+            "rift:gallimimus_egg_hatched": {
+                "minecraft:transformation": {
+                    "into": "rift:gallimimus<rift:hatched_from_egg>",
+                    "keep_owner": true
+                }
+            },
 
             "rift:commit_disappear": {
                 "minecraft:instant_despawn": {}
@@ -4065,6 +4479,78 @@
                 }
             },
             "rift:dilo_egg_commit_disappear": {
+                "add": {
+                    "component_groups": [
+                        "rift:commit_disappear"
+                    ]
+                }
+            },
+            //galli egg
+            "rift:summon_gallimimus_egg": {
+                "add": {
+                    "component_groups": [
+                        "rift:gallimimus_egg",
+                        "rift:gallimimus_egg_not_hatching"
+                    ]
+                }
+            },
+            "rift:gallimimus_egg_start_hatching": {
+                "add": {
+                    "component_groups": [
+                        "rift:gallimimus_egg_hatching"
+                    ]
+                },
+                "remove": {
+                    "component_groups": [
+                        "rift:gallimimus_egg_not_hatching"
+                    ]
+                }
+            },
+            "rift:gallimimus_egg_start_boosted_hatching": {
+                "add": {
+                    "component_groups": [
+                        "rift:gallimimus_egg_boosted_hatching"
+                    ]
+                },
+                "remove": {
+                    "component_groups": [
+                        "rift:gallimimus_egg_hatching",
+                        "rift:gallimimus_egg_not_hatching"
+                    ]
+                }
+            },
+            "rift:gallimimus_egg_stop_hatching": {
+                "add": {
+                    "component_groups": [
+                        "rift:gallimimus_egg_not_hatching"
+                    ]
+                },
+                "remove": {
+                    "component_groups": [
+                        "rift:gallimimus_egg_hatching"
+                    ]
+                }
+            },
+            "rift:gallimimus_egg_stop_boosted_hatching": {
+                "add": {
+                    "component_groups": [
+                        "rift:gallimimus_egg_not_hatching"
+                    ]
+                },
+                "remove": {
+                    "component_groups": [
+                        "rift:gallimimus_egg_boosted_hatching"
+                    ]
+                }
+            },
+            "rift:gallimimus_egg_hatched": {
+                "add": {
+                    "component_groups": [
+                        "rift:gallimimus_egg_hatched"
+                    ]
+                }
+            },
+            "rift:galli_egg_commit_disappear": {
                 "add": {
                     "component_groups": [
                         "rift:commit_disappear"
