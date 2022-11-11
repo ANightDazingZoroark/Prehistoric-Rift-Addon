@@ -46,4 +46,9 @@ world.events.beforeItemUseOn.subscribe(data => {
                 break
         }
     }
+
+    if (world.getDimension('overworld').getBlock(data.blockLocation).typeId == 'minecraft:end_portal_frame' && data.item.typeId == 'minecraft:ender_eye') {
+        data.source.tell('It doesn\'t seem to work anymore...')
+        data.cancel = true
+    }
 })

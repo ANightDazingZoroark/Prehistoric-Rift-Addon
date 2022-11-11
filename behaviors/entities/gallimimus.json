@@ -2909,7 +2909,7 @@
 							"all_of":[
 								{
 									"test": "has_tag",
-									"value": "trikeHarvest",
+									"value": "galliHarvest",
 									"subject": "self",
 									"operator": "=="
 								},
@@ -2937,7 +2937,7 @@
 								}
 							]
 						},
-						"event": "rift:triceratops_harvest"						
+						"event": "rift:gallimimus_harvest"
 					}
 				]
 			}
@@ -3572,6 +3572,15 @@
 					]
 				}
 			},
+			"rift:gallimimus_harvest": {
+				"run_command": {
+					"command": [
+						"playanimation @s animation.gallimimus.harvest",
+						"event entity @s rift:decrease_energy_while_harvesting",
+						"function cmd.gallimimus_harvest_grass"
+					]
+				}
+			},
 			"rift:manage_state": {
 				"set_property": {
 					"rift:tame_state": "query.property('rift:energy') > 0 ? ((query.property('rift:tame_state') >= 0 && query.property('rift:tame_state') <= 1) ? query.property('rift:tame_state') + 1 : 0) : 1"
@@ -3588,6 +3597,11 @@
 				}
 			},
 			"rift:decrease_energy_while_attacking": {
+				"set_property": {
+					"rift:energy": "query.property('rift:energy') - 10"
+				}
+			},
+			"rift:decrease_energy_while_harvesting": {
 				"set_property": {
 					"rift:energy": "query.property('rift:energy') - 10"
 				}
