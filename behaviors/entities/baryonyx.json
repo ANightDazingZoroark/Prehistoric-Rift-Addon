@@ -5089,14 +5089,115 @@
 				}
 			},
 			"rift:manage_state": {
-				"set_property": {
-					"rift:tame_state": "query.property('rift:energy') > 0 ? ((query.property('rift:tame_state') >= 0 && query.property('rift:tame_state') <= 1) ? query.property('rift:tame_state') + 1 : 0) : 1"
-				}
+				"sequence": [
+					{},
+					{
+						"filters": {
+							"test": "int_property",
+							"subject": "self",
+							"domain": "rift:tame_state",
+							"value": 0
+						},
+						"run_command": {
+							"command": [
+								"tellraw @a {\"rawtext\":[{\"translate\":\"reminder.state_sitting.text\",\"with\":{\"rawtext\":[{\"selector\":\"@s\"}]}}]}"
+							]
+						}
+					},
+					{
+						"filters": {
+							"test": "int_property",
+							"subject": "self",
+							"domain": "rift:tame_state",
+							"value": 1
+						},
+						"run_command": {
+							"command": [
+								"tellraw @a {\"rawtext\":[{\"translate\":\"reminder.state_wandering.text\",\"with\":{\"rawtext\":[{\"selector\":\"@s\"}]}}]}"
+							]
+						}
+					},
+					{
+						"filters": {
+							"test": "int_property",
+							"subject": "self",
+							"domain": "rift:tame_state",
+							"value": 2
+						},
+						"run_command": {
+							"command": [
+								"tellraw @a {\"rawtext\":[{\"translate\":\"reminder.state_standing.text\",\"with\":{\"rawtext\":[{\"selector\":\"@s\"}]}}]}"
+							]
+						}
+					},
+					{
+						"set_property": {
+							"rift:tame_state": "query.property('rift:energy') > 0 ? ((query.property('rift:tame_state') >= 0 && query.property('rift:tame_state') <= 1) ? query.property('rift:tame_state') + 1 : 0) : 1"
+						}
+					}
+				]
 			},
 			"rift:manage_behavior": {
-				"set_property": {
-					"rift:behavior_state": "query.property('rift:energy') > 0 ? ((query.property('rift:behavior_state') >= 0 && query.property('rift:behavior_state') <= 2) ? query.property('rift:behavior_state') + 1 : 0) : 3"
-				}
+				"sequence": [
+					{},
+					{
+						"filters": {
+							"test": "int_property",
+							"subject": "self",
+							"domain": "rift:behavior_state",
+							"value": 0
+						},
+						"run_command": {
+							"command": [
+								"tellraw @a {\"rawtext\":[{\"translate\":\"reminder.behavior_neutral.text\",\"with\":{\"rawtext\":[{\"selector\":\"@s\"}]}}]}"
+							]
+						}
+					},
+					{
+						"filters": {
+							"test": "int_property",
+							"subject": "self",
+							"domain": "rift:behavior_state",
+							"value": 1
+						},
+						"run_command": {
+							"command": [
+								"tellraw @a {\"rawtext\":[{\"translate\":\"reminder.behavior_aggressive.text\",\"with\":{\"rawtext\":[{\"selector\":\"@s\"}]}}]}"
+							]
+						}
+					},
+					{
+						"filters": {
+							"test": "int_property",
+							"subject": "self",
+							"domain": "rift:behavior_state",
+							"value": 2
+						},
+						"run_command": {
+							"command": [
+								"tellraw @a {\"rawtext\":[{\"translate\":\"reminder.behavior_passive.text\",\"with\":{\"rawtext\":[{\"selector\":\"@s\"}]}}]}"
+							]
+						}
+					},
+					{
+						"filters": {
+							"test": "int_property",
+							"subject": "self",
+							"domain": "rift:behavior_state",
+							"value": 3
+						},
+						"run_command": {
+							"command": [
+								"tellraw @a {\"rawtext\":[{\"translate\":\"reminder.behavior_assist.text\",\"with\":{\"rawtext\":[{\"selector\":\"@s\"}]}}]}"
+							]
+						}
+					},
+					{
+						"set_property": {
+							"rift:behavior_state": "query.property('rift:energy') > 0 ? ((query.property('rift:behavior_state') >= 0 && query.property('rift:behavior_state') <= 2) ? query.property('rift:behavior_state') + 1 : 0) : 3"
+						}
+					}
+				]
 			},
 			"rift:sit_at_no_energy": {
 				"set_property": {
