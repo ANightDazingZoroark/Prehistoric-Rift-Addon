@@ -2751,6 +2751,46 @@
 					}
 				]
             },
+            "minecraft:scheduler": {
+				"scheduled_events": [
+					{
+						"filters": {
+							"all_of": [
+								{
+									"test": "rider_count",
+									"subject": "self",
+									"operator": ">",
+									"value": 0
+								},
+								{
+									"test": "has_component",
+									"subject": "self",
+									"value": "minecraft:is_tamed"
+								}
+							]
+						},
+						"event": "rift:cannot_sit"
+					},
+					{
+						"filters": {
+							"all_of": [
+								{
+									"test": "rider_count",
+									"subject": "self",
+									"operator": "==",
+									"value": 0
+								},
+								{
+									"test": "has_component",
+									"subject": "self",
+									"value": "minecraft:is_tamed"
+								}
+							]
+						},
+						"event": "rift:can_sit"
+					}
+				]
+			},
 			"minecraft:damage_sensor": {
 				"triggers": [
 					{
@@ -3324,6 +3364,11 @@
 					"component_groups": [
 						"rift:gallimimus_adult_scared"
 					]
+				},
+				"run_command": {
+					"command": [
+						"tag @s remove angeredByFire"
+					]
 				}
 			},
 			"rift:attach_saddle": {
@@ -3520,6 +3565,30 @@
 					]
 				}
 			},
+            "rift:cannot_sit": {
+				"add": {
+					"component_groups": [
+						"rift:unpushable"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:pushable"
+					]
+				}
+			},
+			"rift:can_sit": {
+				"add": {
+					"component_groups": [
+						"rift:pushable"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:unpushable"
+					]
+				}
+            },
 			"rift:gallimimus_sprint": {
 				"add": {
 					"component_groups": [

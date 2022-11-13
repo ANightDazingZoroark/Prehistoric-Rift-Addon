@@ -102,7 +102,7 @@ export const guiPalaeocastorEntry = new ActionFormData()
 
 export const guiParasaurolophusEntry = new ActionFormData()
 .title('Parasaurolophus')
-.body("\n\n\n\n\n\n\n\n\n\n\nDiet: Herbivore\nBehavior: Passive\nReaction to Fire: Fear\nTaming Tier: Tier 1\nFavorite Treats: Rooted Treat, Grassy Treat, Berry Treat\n\nIf you see one, expect to see others in the area. They look out for each other, and protect each other from predators by using their horns to alert others about danger. Once there's danger, they'll run away.\n\nWhen in direct danger they might emit a shockwave that can paralyze mobs for a short time before fleeing.\n\nThey really like eating the truffles that have been appearing more frequently and can dig them up from grass. Though it seems they like uprooting rooted crops too.")
+.body("\n\n\n\n\n\n\n\n\n\n\nDiet: Herbivore\nBehavior: Passive\nReaction to Fire: Fear\nTaming Tier: Tier 1\nFavorite Treats: Rooted Treat, Grassy Treat, Fungus Treat\n\nIf you see one, expect to see others in the area. They look out for each other, and protect each other from predators by using their horns to alert others about danger. Once there's danger, they'll run away.\n\nWhen in direct danger they might emit a shockwave that can paralyze mobs for a short time before fleeing.\n\nThey really like eating the truffles that have been appearing more frequently and can dig them up from grass. Though it seems they like uprooting rooted crops too.")
 .button('Return to Index')
 
 export const guiSarcosuchusEntry = new ActionFormData()

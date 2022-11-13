@@ -81,6 +81,18 @@ system.run(function everyTick(tick) {
                     entities[e].triggerEvent('rift:end_hide_in_shell_from_fire')
                 }
             }
+            if (entities[e].typeId == 'rift:gallimimus' && !entities[e].getComponent('is_tamed') && !entities[e].hasTag('angeredByFire') && !entities[e].getComponent('is_baby') && !entities[e].target) {
+                for(let x = -12; x < 13; x++) {
+                    for (let y = -2; y < 4; y++){
+                        for (let z = -12; z < 13; z++) {
+                            if (fireBlocks.includes(entities[e].dimension.getBlock(new BlockLocation(Math.trunc(entities[e].location.x+x), Math.trunc(entities[e].location.y+y), Math.trunc(entities[e].location.z+z))).typeId)) {
+                                entities[e].triggerEvent('rift:adult_become_scared')
+                                continue mainloop
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 })
