@@ -409,7 +409,7 @@
             },
             "rift:tenontosaurus_adult_calm": {
 				"minecraft:on_target_acquired": {
-					"event": "rift:adult_call_and_become_angry",
+					"event": "rift:adult_become_angry",
 					"target": "self"
 				},
 				"minecraft:on_friendly_anger": {
@@ -420,22 +420,17 @@
             "rift:tenontosaurus_adult_angry": {
                 "minecraft:angry": {
 					"duration": 300,
-					"broadcast_anger": true,
+					"broadcast_anger": false,
 					"broadcast_range": 60,
-					"broadcast_filters": {
-						"test": "is_family",
-						"subject": "other",
-						"operator": "!=",
-						"value": "minecraft:is_tamed"
-					},
-					"broadcast_targets": [
-						"tenontosaurus"
-					],
 					"calm_event": {
 						"event": "rift:adult_on_calm",
 						"target": "self"
 					}
-                }
+                },
+				"minecraft:on_target_escape": {
+					"event": "rift:adult_on_calm",
+					"target": "self"
+				}
             },
 			"rift:default_targets": {
 				"minecraft:behavior.nearest_attackable_target": {
@@ -448,6 +443,14 @@
 								"test":  "is_family", 
 								"subject": "other", 
 								"value":  "parasaurAngerer"
+						 	},
+							"max_dist": 48
+						},
+						{
+							"filters": {
+								"test":  "is_family", 
+								"subject": "other", 
+								"value":  "ravager"
 						 	},
 							"max_dist": 48
 						}
@@ -627,7 +630,7 @@
 				},
 				"minecraft:behavior.player_ride_tamed": {}
             },
-            "rift:parasaurolophus_tamed": {
+            "rift:tenontosaurus_tamed": {
                 "minecraft:is_tamed": {},
 				"minecraft:leashable": {
 					"soft_distance": 4,
@@ -731,6 +734,22 @@
 			"minecraft:breathable": {
 				"total_supply": 15,
 				"suffocate_time": 0
+			},
+			"minecraft:damage_sensor": {
+				"triggers": [
+					{
+						"on_damage": {
+							"filters": {
+								"test": "bool_property",
+								"subject": "other",
+								"domain": "rift:is_hypnotized",
+								"value": true
+							}
+						},
+						"deals_damage": false,
+						"cause": "entity_attack"
+					}
+				]
 			}
 		},
 		"events": {
@@ -742,6 +761,7 @@
 							"component_groups": [
 								"rift:tenontosaurus_adult",
 								"rift:tenontosaurus_adult_wild",
+								"rift:tenontosaurus_adult_calm",
 								"rift:default_targets",
 								"rift:wild_standing",
 								"rift:variant_one",
@@ -755,6 +775,7 @@
 							"component_groups": [
 								"rift:tenontosaurus_adult",
 								"rift:tenontosaurus_adult_wild",
+								"rift:tenontosaurus_adult_calm",
 								"rift:default_targets",
 								"rift:wild_standing",
 								"rift:variant_two",
@@ -768,6 +789,7 @@
 							"component_groups": [
 								"rift:tenontosaurus_adult",
 								"rift:tenontosaurus_adult_wild",
+								"rift:tenontosaurus_adult_calm",
 								"rift:default_targets",
 								"rift:wild_standing",
 								"rift:variant_three",
@@ -781,6 +803,7 @@
 							"component_groups": [
 								"rift:tenontosaurus_adult",
 								"rift:tenontosaurus_adult_wild",
+								"rift:tenontosaurus_adult_calm",
 								"rift:default_targets",
 								"rift:wild_standing",
 								"rift:variant_four",
@@ -789,6 +812,41 @@
 						}
 					}
 				]
+			},
+			"rift:adult_become_angry": {
+				"add": {
+					"component_groups": [
+						"rift:tenontosaurus_adult_angry"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:tenontosaurus_adult_calm"
+					]
+				},
+				"run_command": {
+					"command": [
+						"say angy",
+						"event entity @e[r=24] rift:attack_for_tenontosaurus"
+					]
+				}
+			},
+			"rift:adult_on_calm": {
+				"add": {
+					"component_groups": [
+						"rift:tenontosaurus_adult_calm"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:tenontosaurus_adult_angry"
+					]
+				},
+				"run_command": {
+					"command": [
+						"say not angy"
+					]
+				}
 			}
 		}
     }

@@ -15,9 +15,9 @@ system.run(function everyTick(tick) {
         let entities = Array.from(world.getDimension('overworld').getEntities())
         mainloop: for (let e = 0; e < entities.length; e++) {
             if (entities[e].typeId == 'rift:tyrannosaurus' && !entities[e].getComponent('is_tamed') && !entities[e].hasTag('angeredByFire') && !entities[e].hasTag('sleeping') && !entities[e].getComponent('is_baby')) {
-                for(let x = -12; x < 13; x++) {
+                for(let x = -4; x < 5; x++) {
                     for (let y = -2; y < 4; y++) {
-                        for (let z = -12; z < 13; z++) {
+                        for (let z = -4; z < 5; z++) {
                             if (fireBlocks.includes(entities[e].dimension.getBlock(new BlockLocation(Math.trunc(entities[e].location.x+x), Math.trunc(entities[e].location.y+y), Math.trunc(entities[e].location.z+z))).typeId)) {
                                 entities[e].triggerEvent('rift:angered_by_fire')
                                 continue mainloop

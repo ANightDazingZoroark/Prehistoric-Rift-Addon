@@ -17,13 +17,21 @@ system.run(function everyTick(tick) {
             }
         }
         catch (e) {}
-        
         if (entities[i].typeId == 'rift:dilophosaurus' && entities[i].getComponent('is_sheared') && !!entities[i].target) {
             entities[i].target.addTag('diloTarget')
             entities[i].runCommand(`tp @s ~ ~ ~ facing @e[tag=diloTarget, c=1]`)
         }
         if (entities[i].typeId == 'rift:dilophosaurus' && entities[i].getComponent('is_sheared') && !entities[i].target) {
             entities[i].runCommand(`tag @e remove diloTarget`)
+        }
+        if (entities[i].typeId == 'rift:tenontosaurus' && !!entities[i].target) {
+            entities[i].target.addTag('tenontoTarget')
+        }
+        if (entities[i].typeId == 'rift:tenontosaurus' && !entities[i].target) {
+            try {
+                entities[i].runCommand(`tag @e remove tenontoTarget`)
+            }
+            catch (e) {}
         }
     }
 })
