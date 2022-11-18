@@ -27,11 +27,5 @@ system.run(function everyTick(tick) {
         if (entities[i].typeId == 'rift:tenontosaurus' && !!entities[i].target) {
             entities[i].target.addTag('tenontoTarget')
         }
-        if (entities[i].typeId == 'rift:tenontosaurus' && !entities[i].target) {
-            try {
-                entities[i].runCommand(`tag @e remove tenontoTarget`)
-            }
-            catch (e) {}
-        }
     }
 })

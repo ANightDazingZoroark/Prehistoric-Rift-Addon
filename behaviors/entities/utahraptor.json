@@ -61,6 +61,7 @@
 				"contRiddenTag": "controller.animation.add_ridden_tag",
 				"contMovingTag": "controller.animation.add_moving_tag",
 				"contInLoveTag": "controller.animation.add_in_love_tag",
+				"contHypnotizedTag": "controller.animation.add_hypnotized_tag",
 				"contTameState": "controller.animation.manage_tame_state",
 				"contEnergyUsage": "controller.animation.utahraptor_energy_movement_usage",
 				"contWarnLowEnergy": "controller.animation.warn_of_low_energy",
@@ -89,6 +90,7 @@
 					"contRiddenTag",
 					"contMovingTag",
 					"contInLoveTag",
+					"contHypnotizedTag",
 					"contTameState",
 					"contEnergyUsage",
 					"contWarnLowEnergy",
@@ -565,6 +567,19 @@
 				"minecraft:behavior.eat_carried_item": {
 					"priority": 12,
 					"delay_before_eating": 0
+				}
+            },
+            "rift:utahraptor_adult_hypnotized": {
+                "minecraft:health": {
+                    "value": 30,
+                    "max": 30
+                },
+				"minecraft:navigation.climb": {
+					"avoid_water": true,
+					"avoid_damage_blocks": true
+				},
+				"minecraft:despawn": {
+					"despawn_from_distance": {}
 				}
             },
 			"rift:utahraptor_adult_calm": {
@@ -1136,13 +1151,6 @@
 				}
 			},
 			"rift:wild_standing_hypnotized_by_tenontosaurus": {
-				"minecraft:behavior.ranged_attack": {
-					"priority": 15,
-					"attack_radius": 64
-				},
-				"minecraft:behavior.random_look_around": {
-					"priority": 17
-				},
 				"minecraft:movement": {
 					"value": 0.35
 				}
@@ -1215,7 +1223,6 @@
 				}
 			},
 			"rift:attacking_for_tenontosaurus": {
-				"minecraft:out_of_control": {},
 				"minecraft:behavior.stalk_and_pounce_on_target": {
 					"priority": 8,
 					"stalk_speed": 1.2,
@@ -1443,6 +1450,26 @@
 					"track_target": true,
 					"reach_multiplier": 2.5,
 					"speed_multiplier": 1.5
+				}
+			},
+			"rift:transform_into_hypnotized_variant_zero": {
+				"minecraft:transformation": {
+					"into": "rift:utahraptor<rift:transform_into_hypnotized_variant_zero>"
+				}
+			},
+			"rift:transform_into_hypnotized_variant_one": {
+				"minecraft:transformation": {
+					"into": "rift:utahraptor<rift:transform_into_hypnotized_variant_one>"
+				}
+			},
+			"rift:transform_into_hypnotized_variant_two": {
+				"minecraft:transformation": {
+					"into": "rift:utahraptor<rift:transform_into_hypnotized_variant_two>"
+				}
+			},
+			"rift:transform_into_hypnotized_variant_three": {
+				"minecraft:transformation": {
+					"into": "rift:utahraptor<rift:transform_into_hypnotized_variant_three>"
 				}
 			}
         },
@@ -4677,7 +4704,7 @@
 						"add": {
 							"component_groups": [
 								"rift:utahraptor_adult",
-								"rift:utahraptor_adult_wild",
+								"rift:utahraptor_adult_hypnotized",
 								"rift:variant_zero",
 								"rift:pushable",
 								"rift:wild_standing_hypnotized_by_tenontosaurus",
@@ -4694,7 +4721,7 @@
 						"add": {
 							"component_groups": [
 								"rift:utahraptor_adult",
-								"rift:utahraptor_adult_wild",
+								"rift:utahraptor_adult_hypnotized",
 								"rift:variant_one",
 								"rift:pushable",
 								"rift:wild_standing_hypnotized_by_tenontosaurus",
@@ -4711,7 +4738,7 @@
 						"add": {
 							"component_groups": [
 								"rift:utahraptor_adult",
-								"rift:utahraptor_adult_wild",
+								"rift:utahraptor_adult_hypnotized",
 								"rift:variant_two",
 								"rift:pushable",
 								"rift:wild_standing_hypnotized_by_tenontosaurus",
@@ -4728,7 +4755,7 @@
 						"add": {
 							"component_groups": [
 								"rift:utahraptor_adult",
-								"rift:utahraptor_adult_wild",
+								"rift:utahraptor_adult_hypnotized",
 								"rift:variant_three",
 								"rift:pushable",
 								"rift:wild_standing_hypnotized_by_tenontosaurus",
@@ -4769,6 +4796,123 @@
 					"component_groups": [
 						"rift:attacking_for_tenontosaurus"
 					]
+				}
+			},
+			"rift:hypnotized_by_tenontosaurus": {
+				"sequence": [
+					{},
+					{
+						"filters": {
+							"test": "is_variant",
+							"subject": "self",
+							"value": 0
+						},
+						"add": {
+							"component_groups": [
+								"rift:transform_into_hypnotized_variant_zero"
+							]
+						}
+					},
+					{
+						"filters": {
+							"test": "is_variant",
+							"subject": "self",
+							"value": 1
+						},
+						"add": {
+							"component_groups": [
+								"rift:transform_into_hypnotized_variant_one"
+							]
+						}
+					},
+					{
+						"filters": {
+							"test": "is_variant",
+							"subject": "self",
+							"value": 2
+						},
+						"add": {
+							"component_groups": [
+								"rift:transform_into_hypnotized_variant_two"
+							]
+						}
+					},
+					{
+						"filters": {
+							"test": "is_variant",
+							"subject": "self",
+							"value": 3
+						},
+						"add": {
+							"component_groups": [
+								"rift:transform_into_hypnotized_variant_three"
+							]
+						}
+					}
+				]
+			},
+			"rift:transform_into_hypnotized_variant_zero": {
+				"add": {
+					"component_groups": [
+						"rift:utahraptor_adult",
+						"rift:utahraptor_adult_hypnotized",
+						"rift:variant_zero",
+						"rift:pushable",
+						"rift:wild_standing_hypnotized_by_tenontosaurus",
+						"rift:follow_tenontosaurus",
+						"rift:follow_tenontosaurus_no_target"
+					]
+				},
+				"set_property": {
+					"rift:is_hypnotized": true
+				}
+			},
+			"rift:transform_into_hypnotized_variant_one": {
+				"add": {
+					"component_groups": [
+						"rift:utahraptor_adult",
+						"rift:utahraptor_adult_hypnotized",
+						"rift:variant_one",
+						"rift:pushable",
+						"rift:wild_standing_hypnotized_by_tenontosaurus",
+						"rift:follow_tenontosaurus",
+						"rift:follow_tenontosaurus_no_target"
+					]
+				},
+				"set_property": {
+					"rift:is_hypnotized": true
+				}
+			},
+			"rift:transform_into_hypnotized_variant_two": {
+				"add": {
+					"component_groups": [
+						"rift:utahraptor_adult",
+						"rift:utahraptor_adult_hypnotized",
+						"rift:variant_two",
+						"rift:pushable",
+						"rift:wild_standing_hypnotized_by_tenontosaurus",
+						"rift:follow_tenontosaurus",
+						"rift:follow_tenontosaurus_no_target"
+					]
+				},
+				"set_property": {
+					"rift:is_hypnotized": true
+				}
+			},
+			"rift:transform_into_hypnotized_variant_three": {
+				"add": {
+					"component_groups": [
+						"rift:utahraptor_adult",
+						"rift:utahraptor_adult_hypnotized",
+						"rift:variant_three",
+						"rift:pushable",
+						"rift:wild_standing_hypnotized_by_tenontosaurus",
+						"rift:follow_tenontosaurus",
+						"rift:follow_tenontosaurus_no_target"
+					]
+				},
+				"set_property": {
+					"rift:is_hypnotized": true
 				}
 			},
 			"rift:baby_grow_up": {

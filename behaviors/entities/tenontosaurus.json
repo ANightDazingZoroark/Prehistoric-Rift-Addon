@@ -51,7 +51,10 @@
 				"contForcedAttack": "controller.animation.general_forced_attack",
 				"contTameState": "controller.animation.manage_tame_state",
 				"contBehaviorState": "controller.animation.manage_tame_behavior",
-				"animEatFromInventoryCooldown": "animation.eat_from_inventory_cooldown"
+				"contCanTailSlap": "controller.animation.tenontosaurus_can_use_tail_slap",
+				"contUseHypnotize": "controller.animation.tenontosaurus_use_hypnotize",
+				"animEatFromInventoryCooldown": "animation.eat_from_inventory_cooldown",
+				"animDetectHypnotized": "animation.find_hypnotized"
 			},
 			"scripts": {
 				"animate": [
@@ -62,7 +65,9 @@
 					"contInLoveTag",
 					"contForcedAttack",
 					"contTameState",
-					"contBehaviorState"
+					"contBehaviorState",
+					"contCanTailSlap",
+					"contUseHypnotize"
 				]
 			}
         },
@@ -140,7 +145,7 @@
 					"value": 20
 				},
 				"minecraft:behavior.follow_parent": {
-					"priority": 8
+					"priority": 9
 				},
 				"minecraft:tameable": {
 					"probability": 0.25,
@@ -435,7 +440,7 @@
 			"rift:default_targets": {
 				"minecraft:behavior.nearest_attackable_target": {
 					"priority": 7,
-					"within_radius": 32.0,
+					"within_radius": 16.0,
 					"must_see": true,
 					"entity_types": [
 						{
@@ -444,15 +449,31 @@
 								"subject": "other", 
 								"value":  "parasaurAngerer"
 						 	},
-							"max_dist": 48
+							"max_dist": 16
 						},
 						{
 							"filters": {
-								"test":  "is_family", 
-								"subject": "other", 
-								"value":  "ravager"
-						 	},
-							"max_dist": 48
+								"all_of": [
+									{
+										"test":  "is_family", 
+										"subject": "other", 
+										"value":  "carnivore"
+									},
+									{
+										"test": "bool_property",
+										"subject": "other",
+										"domain": "rift:is_hypnotized",
+										"value": false
+									},
+									{
+										"test": "has_component",
+										"subject": "other",
+										"operator": "!=",
+										"value": "minecraft:is_tamed"
+									}
+								]
+							},
+							"max_dist": 16
 						}
 					]
 				}
@@ -667,10 +688,10 @@
 					"value": 0.25
 				},
 				"minecraft:behavior.random_stroll": {
-					"priority": 9
+					"priority": 10
 				},
 				"minecraft:behavior.random_look_around": {
-					"priority": 10
+					"priority": 11
 				}
 			},
             "rift:variant_one": {
@@ -703,6 +724,18 @@
 				"minecraft:pushable": {
 					"is_pushable": false,
 					"is_pushable_by_piston": false
+				}
+			},
+			"rift:can_attack": {
+				"minecraft:attack": {
+					"damage": 5
+				},
+				"minecraft:behavior.delayed_attack": {
+					"priority": 8,
+					"attack_duration": 0.76,
+					"hit_delay_pct": 0.158,
+					"track_target": true,
+					"reach_multiplier": 2.25
 				}
 			}
 		},
@@ -744,10 +777,11 @@
 								"subject": "other",
 								"domain": "rift:is_hypnotized",
 								"value": true
-							}
+							},
+							"event": "rift:stop_attacking_for_tenontosaurus",
+							"target": "other"
 						},
-						"deals_damage": false,
-						"cause": "entity_attack"
+						"deals_damage": false
 					}
 				]
 			}
@@ -827,7 +861,7 @@
 				"run_command": {
 					"command": [
 						"say angy",
-						"event entity @e[r=24] rift:attack_for_tenontosaurus"
+						"event entity @e[r=24, tag=!tamed, tag=hypnotized] rift:attack_for_tenontosaurus"
 					]
 				}
 			},
@@ -845,6 +879,20 @@
 				"run_command": {
 					"command": [
 						"say not angy"
+					]
+				}
+			},
+			"rift:can_attack": {
+				"add": {
+					"component_groups": [
+						"rift:can_attack"
+					]
+				}
+			},
+			"rift:cannot_attack": {
+				"remove": {
+					"component_groups": [
+						"rift:can_attack"
 					]
 				}
 			}

@@ -376,6 +376,31 @@
 				}
 			}
 		},
+		"controller.animation.add_hypnotized_tag": {
+			"initial_state": "default",
+			"states": {
+				"default": {
+					"transitions": [
+						{
+							"hasTag": "query.property('rift:is_hypnotized') == true"
+						}
+					]
+				},
+				"hasTag": {
+					"transitions": [
+						{
+							"default": "query.property('rift:is_hypnotized') == false"
+						}
+					],
+                    "on_entry": [
+                        "/tag @s add hypnotized"
+                    ],
+                    "on_exit": [
+                        "/tag @s remove hypnotized"
+                    ]
+				}
+			}
+		},
 		"controller.animation.become_unsittable_when_ridden": {
 			"initial_state": "default",
 			"states": {
@@ -625,7 +650,7 @@
 					],
 					"transitions": [
 						{
-							"timer": "v.tenonto == 0"
+							"timer": "v.tenonto == 0 && query.property('rift:is_hypnotized') == true"
 						}
 					]
 				},

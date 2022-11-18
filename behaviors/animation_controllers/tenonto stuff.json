@@ -1,0 +1,59 @@
+{
+	"format_version": "1.10.0",
+	"animation_controllers": {
+		"controller.animation.tenontosaurus_can_use_tail_slap": {
+			"initial_state": "default",
+			"states": {
+				"default": {
+                    "animations": [
+                        "animDetectHypnotized"
+                    ],
+                    "transitions": [
+                        {
+                            "canUseTailSlap": "!query.is_baby && v.hypnotized > 0"
+                        }
+                    ]
+                },
+                "canUseTailSlap": {
+                    "animations": [
+                        "animDetectHypnotized"
+                    ],
+                    "transitions": [
+                        {
+                            "default": "query.is_baby || v.hypnotized == 0"
+                        }
+                    ],
+                    "on_entry": [
+                        "@s rift:can_attack"
+                    ],
+                    "on_exit": [
+                        "@s rift:cannot_attack"
+                    ]
+                }
+            }
+        },
+        "controller.animation.tenontosaurus_use_hypnotize": {
+			"initial_state": "default",
+			"states": {
+				"default": {
+                    "transitions": [
+                        {
+                            "canHypnotize": "query.has_target && !query.is_tamed && !query.is_baby && v.hypnotized == 0"
+                        }
+                    ]
+                },
+                "canHypnotize": {
+                    "on_entry": [
+                        "/playanimation @s animation.tenontosaurus.emit_pheromones",
+                        "/event entity @e[type=rift:utahraptor, r=16, tag=!tamed, tag=!baby] rift:hypnotized_by_tenontosaurus"
+                    ],
+                    "transitions": [
+                        {
+                            "default": "v.hypnotized > 0"
+                        }
+                    ]
+                }
+            }
+        }
+    }
+}
