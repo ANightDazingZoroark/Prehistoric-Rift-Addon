@@ -48,10 +48,12 @@
 				"contTameTag": "controller.animation.add_tame_tag",
 				"contBabyTag": "controller.animation.add_baby_tag",
 				"contInLoveTag": "controller.animation.add_in_love_tag",
+				"contHypnotizedTag": "controller.animation.add_hypnotized_tag",
 				"contTameState": "controller.animation.manage_tame_state",
 				"contBehaviorState": "controller.animation.manage_tame_behavior",
 				"contEnergyUsage": "controller.animation.dimetrodon_energy_movement_usage",
 				"contWarnLowEnergy": "controller.animation.warn_of_low_energy",
+				"contDieWithoutTenontosaurus": "controller.animation.general_die_without_tenontosaurus",
 				"animRegenerateEnergyNormal": "animation.dimetrodon_decrease_energy_while_moving_normal",
 				"animRegenerateEnergyFrost": "animation.dimetrodon_decrease_energy_while_moving_frost",
 				"animRegenerateEnergyFlame": "animation.dimetrodon_decrease_energy_while_moving_flame",
@@ -60,17 +62,21 @@
 				"animUseEnergyWhileMovingFrost": "animation.dimetrodon_regenerate_energy_frost",
 				"animUseEnergyWhileMovingFlame": "animation.dimetrodon_regenerate_energy_flame",
 				"animLowOnEnergyEffects": "animation.effects_while_low_on_energy",
-				"animNoEnergyEffects": "animation.effects_while_no_energy"
+				"animNoEnergyEffects": "animation.effects_while_no_energy",
+				"animFindTenontosaurus": "animation.find_tenontosaurus",
+				"animDeathTimer": "animation.hypnosis_death_timer"
 			},
 			"scripts": {
 				"animate": [
 					"contTameTag",
 					"contBabyTag",
 					"contInLoveTag",
+					"contHypnotizedTag",
 					"contTameState",
 					"contBehaviorState",
 					"contEnergyUsage",
-					"contWarnLowEnergy"
+					"contWarnLowEnergy",
+					"contDieWithoutTenontosaurus"
 				]
 			}
         },
@@ -378,6 +384,15 @@
 				"minecraft:behavior.eat_carried_item": {
 					"priority": 9,
 					"delay_before_eating": 0
+				}
+			},
+            "rift:dimetrodon_adult_hypnotized": {
+				"minecraft:health": {
+                    "value": 40,
+                    "max": 40
+                },
+				"minecraft:despawn": {
+					"despawn_from_distance": {}
 				}
 			},
 			"rift:dimetrodon_adult_not_trusting": {
@@ -1082,10 +1097,90 @@
 			},
 			"rift:wild_standing": {
 				"minecraft:behavior.random_stroll": {
-					"priority": 13
+					"priority": 14
 				},
 				"minecraft:behavior.random_look_around": {
-					"priority": 14
+					"priority": 15
+				}
+			},
+			"rift:follow_tenontosaurus": {
+				"minecraft:behavior.nearest_prioritized_attackable_target": {
+					"priority": 6,
+					"within_radius": 32.0,
+					"entity_types": [
+						{
+							"filters": {
+								"all_of": [
+									{
+										"test": "has_tag",
+										"subject": "other",
+										"value": "tenontoTarget"
+									}
+								]
+							},
+							"max_dist": 48,
+							"priority": 0
+						},
+						{
+							"filters": {
+								"all_of": [
+									{
+										"test": "is_family",
+										"subject": "other",
+										"value": "tenontosaurus"
+									},
+									{
+										"test": "has_component",
+										"subject": "other",
+										"operator": "!=",
+										"value": "minecraft:is_tamed"
+									}
+								]
+							},
+							"max_dist": 48,
+							"priority": 1
+						}
+					]
+				}
+			},
+			"rift:follow_tenontosaurus_no_target": {
+				"minecraft:behavior.ranged_attack": {
+					"priority": 13,
+					"attack_radius": 8.0,
+					"attack_radius_min": 4
+				},
+				"minecraft:on_target_acquired": {
+					"filters": {
+						"all_of": [
+							{
+								"test": "has_component",
+								"subject": "target",
+								"operator": "!=",
+								"value": "minecraft:is_tamed"
+							},
+							{
+								"test": "is_family",
+								"subject": "target",
+								"operator": "!=",
+								"value": "tenontosaurus"
+							}
+						]
+					},
+					"event": "rift:attack_for_tenontosaurus",
+					"target": "self"
+				}
+			},
+			"rift:attacking_for_tenontosaurus": {
+				"minecraft:behavior.delayed_attack": {
+					"priority": 7,
+					"attack_duration": 0.52,
+					"hit_delay_pct": 1,
+					"track_target": true,
+					"reach_multiplier": 3
+				},
+				"minecraft:on_target_escape": {
+					"event": "rift:stop_attacking_for_tenontosaurus",
+					"target": "self"
 				}
 			},
 			"rift:tamed_standing": {
@@ -1115,7 +1210,7 @@
 					"priority": 1
 				},
 				"minecraft:behavior.random_stroll": {
-					"priority": 13
+					"priority": 14
 				}
 			},
 			"rift:tamed_can_move_normal": {
@@ -1291,6 +1386,35 @@
 				"minecraft:variant": {
 					"value": 3
 				}
+			},
+			"rift:can_attack": {
+				"minecraft:behavior.delayed_attack": {
+					"priority": 7,
+					"attack_duration": 0.52,
+					"hit_delay_pct": 1,
+					"track_target": true,
+					"reach_multiplier": 3
+				}
+			},
+			"rift:transform_into_hypnotized_variant_one": {
+				"minecraft:transformation": {
+					"into": "rift:dimetrodon<rift:transform_into_hypnotized_variant_one>"
+				}
+			},
+			"rift:transform_into_hypnotized_variant_two": {
+				"minecraft:transformation": {
+					"into": "rift:dimetrodon<rift:transform_into_hypnotized_variant_two>"
+				}
+			},
+			"rift:transform_into_hypnotized_variant_three": {
+				"minecraft:transformation": {
+					"into": "rift:dimetrodon<rift:transform_into_hypnotized_variant_three>"
+				}
+			},
+			"rift:transform_into_hypnotized_variant_four": {
+				"minecraft:transformation": {
+					"into": "rift:dimetrodon<rift:transform_into_hypnotized_variant_four>"
+				}
 			}
         },
         "components": {
@@ -1315,13 +1439,6 @@
 			"minecraft:movement.basic": {},
 			"minecraft:jump.static": {
 				"jump_power": 0.65
-			},
-			"minecraft:behavior.delayed_attack": {
-				"priority": 7,
-				"attack_duration": 0.52,
-				"hit_delay_pct": 1,
-				"track_target": true,
-				"reach_multiplier": 3
 			},
 			"minecraft:is_hidden_when_invisible": {},
 			"minecraft:pushable": {},
@@ -3867,7 +3984,8 @@
 								"rift:dimetrodon_default_temperature_mode",
 								"rift:wild_standing",
 								"rift:variant_one",
-								"rift:tamed_can_move_normal"
+								"rift:tamed_can_move_normal",
+								"rift:can_attack"
 							]
 						}
 					},
@@ -3882,7 +4000,8 @@
 								"rift:dimetrodon_default_temperature_mode",
 								"rift:wild_standing",
 								"rift:variant_two",
-								"rift:tamed_can_move_normal"
+								"rift:tamed_can_move_normal",
+								"rift:can_attack"
 							]
 						}
 					},
@@ -3897,7 +4016,8 @@
 								"rift:dimetrodon_default_temperature_mode",
 								"rift:wild_standing",
 								"rift:variant_three",
-								"rift:tamed_can_move_normal"
+								"rift:tamed_can_move_normal",
+								"rift:can_attack"
 							]
 						}
 					},
@@ -3912,11 +4032,230 @@
 								"rift:dimetrodon_default_temperature_mode",
 								"rift:wild_standing",
 								"rift:variant_four",
-								"rift:tamed_can_move_normal"
+								"rift:tamed_can_move_normal",
+								"rift:can_attack"
 							]
 						}
 					}
 				]
+			},
+			"rift:spawn_hypnotized_by_tenontosaurus": {
+				"randomize": [
+					{
+						"weight": 25,
+						"add": {
+							"component_groups": [
+								"rift:dimetrodon_adult",
+								"rift:dimetrodon_adult_hypnotized",
+								"rift:dimetrodon_default_temperature_mode",
+								"rift:variant_one",
+								"rift:tamed_can_move_normal",
+								"rift:follow_tenontosaurus",
+								"rift:follow_tenontosaurus_no_target"
+							]
+						},
+						"set_property": {
+							"rift:is_hypnotized": true
+						}
+					},
+					{
+						"weight": 25,
+						"add": {
+							"component_groups": [
+								"rift:dimetrodon_adult",
+								"rift:dimetrodon_adult_hypnotized",
+								"rift:dimetrodon_default_temperature_mode",
+								"rift:variant_two",
+								"rift:tamed_can_move_normal",
+								"rift:follow_tenontosaurus",
+								"rift:follow_tenontosaurus_no_target"
+							]
+						},
+						"set_property": {
+							"rift:is_hypnotized": true
+						}
+					},
+					{
+						"weight": 25,
+						"add": {
+							"component_groups": [
+								"rift:dimetrodon_adult",
+								"rift:dimetrodon_adult_hypnotized",
+								"rift:dimetrodon_default_temperature_mode",
+								"rift:variant_three",
+								"rift:tamed_can_move_normal",
+								"rift:follow_tenontosaurus",
+								"rift:follow_tenontosaurus_no_target"
+							]
+						},
+						"set_property": {
+							"rift:is_hypnotized": true
+						}
+					},
+					{
+						"weight": 25,
+						"add": {
+							"component_groups": [
+								"rift:dimetrodon_adult",
+								"rift:dimetrodon_adult_hypnotized",
+								"rift:dimetrodon_default_temperature_mode",
+								"rift:variant_four",
+								"rift:tamed_can_move_normal",
+								"rift:follow_tenontosaurus",
+								"rift:follow_tenontosaurus_no_target"
+							]
+						},
+						"set_property": {
+							"rift:is_hypnotized": true
+						}
+					}
+				]
+			},
+			"rift:attack_for_tenontosaurus": {
+				"add": {
+					"component_groups": [
+						"rift:attacking_for_tenontosaurus"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:follow_tenontosaurus_no_target"
+					]
+				},
+				"run_command": {
+					"command": [
+						"say FOR THE QUEEN"
+					]
+				}
+			},
+			"rift:stop_attacking_for_tenontosaurus": {
+				"add": {
+					"component_groups": [
+						"rift:follow_tenontosaurus_no_target"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:attacking_for_tenontosaurus"
+					]
+				}
+			},
+			"rift:hypnotized_by_tenontosaurus": {
+				"sequence": [
+					{},
+					{
+						"filters": {
+							"test": "is_variant",
+							"subject": "self",
+							"value": 0
+						},
+						"add": {
+							"component_groups": [
+								"rift:transform_into_hypnotized_variant_one"
+							]
+						}
+					},
+					{
+						"filters": {
+							"test": "is_variant",
+							"subject": "self",
+							"value": 1
+						},
+						"add": {
+							"component_groups": [
+								"rift:transform_into_hypnotized_variant_two"
+							]
+						}
+					},
+					{
+						"filters": {
+							"test": "is_variant",
+							"subject": "self",
+							"value": 2
+						},
+						"add": {
+							"component_groups": [
+								"rift:transform_into_hypnotized_variant_three"
+							]
+						}
+					},
+					{
+						"filters": {
+							"test": "is_variant",
+							"subject": "self",
+							"value": 3
+						},
+						"add": {
+							"component_groups": [
+								"rift:transform_into_hypnotized_variant_four"
+							]
+						}
+					}
+				]
+			},
+			"rift:transform_into_hypnotized_variant_one": {
+				"add": {
+					"component_groups": [
+						"rift:dimetrodon_adult",
+						"rift:dimetrodon_adult_hypnotized",
+						"rift:dimetrodon_default_temperature_mode",
+						"rift:variant_one",
+						"rift:tamed_can_move_normal",
+						"rift:follow_tenontosaurus",
+						"rift:follow_tenontosaurus_no_target"
+					]
+				},
+				"set_property": {
+					"rift:is_hypnotized": true
+				}
+			},
+			"rift:transform_into_hypnotized_variant_two": {
+				"add": {
+					"component_groups": [
+						"rift:dimetrodon_adult",
+						"rift:dimetrodon_adult_hypnotized",
+						"rift:dimetrodon_default_temperature_mode",
+						"rift:variant_two",
+						"rift:tamed_can_move_normal",
+						"rift:follow_tenontosaurus",
+						"rift:follow_tenontosaurus_no_target"
+					]
+				},
+				"set_property": {
+					"rift:is_hypnotized": true
+				}
+			},
+			"rift:transform_into_hypnotized_variant_three": {
+				"add": {
+					"component_groups": [
+						"rift:dimetrodon_adult",
+						"rift:dimetrodon_adult_hypnotized",
+						"rift:dimetrodon_default_temperature_mode",
+						"rift:variant_three",
+						"rift:tamed_can_move_normal",
+						"rift:follow_tenontosaurus",
+						"rift:follow_tenontosaurus_no_target"
+					]
+				},
+				"set_property": {
+					"rift:is_hypnotized": true
+				}
+			},
+			"rift:transform_into_hypnotized_variant_four": {
+				"add": {
+					"component_groups": [
+						"rift:dimetrodon_adult",
+						"rift:dimetrodon_adult_hypnotized",
+						"rift:dimetrodon_default_temperature_mode",
+						"rift:variant_four",
+						"rift:tamed_can_move_normal",
+						"rift:follow_tenontosaurus",
+						"rift:follow_tenontosaurus_no_target"
+					]
+				},
+				"set_property": {
+					"rift:is_hypnotized": true
+				}
 			},
 			"rift:baby_grow_up": {
 				"sequence": [
@@ -4298,7 +4637,8 @@
 								"rift:wild_standing",
 								"rift:variant_one",
 								"rift:temptable",
-								"rift:tamed_can_move_normal"
+								"rift:tamed_can_move_normal",
+								"rift:can_attack"
 							]
 						}
 					},
@@ -4311,7 +4651,8 @@
 								"rift:wild_standing",
 								"rift:variant_two",
 								"rift:temptable",
-								"rift:tamed_can_move_normal"
+								"rift:tamed_can_move_normal",
+								"rift:can_attack"
 							]
 						}
 					},
@@ -4324,7 +4665,8 @@
 								"rift:wild_standing",
 								"rift:variant_three",
 								"rift:temptable",
-								"rift:tamed_can_move_normal"
+								"rift:tamed_can_move_normal",
+								"rift:can_attack"
 							]
 						}
 					},
@@ -4337,7 +4679,8 @@
 								"rift:wild_standing",
 								"rift:variant_four",
 								"rift:temptable",
-								"rift:tamed_can_move_normal"
+								"rift:tamed_can_move_normal",
+								"rift:can_attack"
 							]
 						}
 					}
@@ -4354,7 +4697,8 @@
 								"rift:dimetrodon_tamed",
 								"rift:variant_one",
 								"rift:temptable",
-								"rift:tamed_can_move_normal"
+								"rift:tamed_can_move_normal",
+								"rift:can_attack"
 							]
 						},
 						"set_property": {
@@ -4370,7 +4714,8 @@
 								"rift:dimetrodon_tamed",
 								"rift:variant_two",
 								"rift:temptable",
-								"rift:tamed_can_move_normal"
+								"rift:tamed_can_move_normal",
+								"rift:can_attack"
 							]
 						},
 						"set_property": {
@@ -4386,7 +4731,8 @@
 								"rift:dimetrodon_tamed",
 								"rift:variant_three",
 								"rift:temptable",
-								"rift:tamed_can_move_normal"
+								"rift:tamed_can_move_normal",
+								"rift:can_attack"
 							]
 						},
 						"set_property": {
@@ -4402,7 +4748,8 @@
 								"rift:dimetrodon_tamed",
 								"rift:variant_four",
 								"rift:temptable",
-								"rift:tamed_can_move_normal"
+								"rift:tamed_can_move_normal",
+								"rift:can_attack"
 							]
 						},
 						"set_property": {
