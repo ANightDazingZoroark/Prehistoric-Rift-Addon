@@ -69,6 +69,7 @@
 				"contBabyTag": "controller.animation.add_baby_tag",
 				"contRiddenTag": "controller.animation.add_ridden_tag",
 				"contInLoveTag": "controller.animation.add_in_love_tag",
+				"contHypnotizedTag": "controller.animation.add_hypnotized_tag",
 				"contShoot": "controller.animation.dilophosaurus_shoot",
 				"contForcedAttack": "controller.animation.dilophosaurus_forced_attack",
 				"contEnergyUsage": "controller.animation.dilophosaurus_energy_movement_usage",
@@ -76,6 +77,7 @@
 				"contPlantTrap": "controller.animation.dilophosaurus_plant_trap",
 				"contTameState": "controller.animation.manage_tame_state",
 				"contBehaviorState": "controller.animation.dilophosaurus_manage_tame_behavior",
+				"contDieWithoutTenontosaurus": "controller.animation.general_die_without_tenontosaurus",
 				"animEatFromInventoryCooldown": "animation.eat_from_inventory_cooldown",
 				"animUseEnergyWhileMoving": "animation.dilophosaurus_decrease_energy_while_moving",
 				"animLowOnEnergyEffects": "animation.effects_while_low_on_energy",
@@ -85,7 +87,9 @@
 				"animSpit": "animation.dilophosaurus_spit",
 				"animForcedBiteAttack": "animation.forced_bite_attack_dilophosaurus",
 				"animForcedSpitAttack": "animation.forced_spit_attack_dilophosaurus",
-				"animPlantTrap": "animation.dilophosaurus_plant_trap"
+				"animPlantTrap": "animation.dilophosaurus_plant_trap",
+				"animFindTenontosaurus": "animation.find_tenontosaurus",
+				"animDeathTimer": "animation.hypnosis_death_timer"
             },
             "scripts": {
                 "animate": [
@@ -95,13 +99,15 @@
                     "contBabyTag",
                     "contRiddenTag",
 					"contInLoveTag",
+					"contHypnotizedTag",
 					"contShoot",
 					"contForcedAttack",
 					"contEnergyUsage",
 					"contWarnLowEnergy",
 					"contPlantTrap",
 					"contTameState",
-					"contBehaviorState"
+					"contBehaviorState",
+					"contDieWithoutTenontosaurus"
                 ]
             }
         },
@@ -556,6 +562,15 @@
 				"minecraft:behavior.eat_carried_item": {
 					"priority": 12,
 					"delay_before_eating": 0
+				}
+            },
+            "rift:dilophosaurus_adult_hypnotized": {
+                "minecraft:health": {
+                    "value": 40,
+                    "max": 40
+                },
+				"minecraft:despawn": {
+					"despawn_from_distance": {}
 				}
             },
 			"rift:can_melee_attack": {
@@ -1084,10 +1099,10 @@
 			},
 			"rift:wild_standing": {
                 "minecraft:behavior.random_stroll": {
-					"priority": 15
+					"priority": 16
 				},
 				"minecraft:behavior.random_look_around": {
-					"priority": 16
+					"priority": 17
 				}
 			},
 			"rift:wild_can_move": {
@@ -1099,6 +1114,96 @@
 				"minecraft:movement": {
 					"value": 0.0
 				}
+			},
+			"rift:follow_tenontosaurus": {
+				"minecraft:behavior.nearest_prioritized_attackable_target": {
+					"priority": 7,
+					"within_radius": 32.0,
+					"entity_types": [
+						{
+							"filters": {
+								"all_of": [
+									{
+										"test": "has_tag",
+										"subject": "other",
+										"value": "tenontoTarget"
+									}
+								]
+							},
+							"max_dist": 48,
+							"priority": 0
+						},
+						{
+							"filters": {
+								"all_of": [
+									{
+										"test": "is_family",
+										"subject": "other",
+										"value": "tenontosaurus"
+									},
+									{
+										"test": "has_component",
+										"subject": "other",
+										"operator": "!=",
+										"value": "minecraft:is_tamed"
+									}
+								]
+							},
+							"max_dist": 48,
+							"priority": 1
+						}
+					]
+				}
+			},
+			"rift:follow_tenontosaurus_no_target": {
+				"minecraft:behavior.ranged_attack": {
+					"priority": 15,
+					"attack_radius": 8.0,
+					"attack_radius_min": 4
+				},
+				"minecraft:on_target_acquired": {
+					"filters": {
+						"all_of": [
+							{
+								"test": "has_component",
+								"subject": "target",
+								"operator": "!=",
+								"value": "minecraft:is_tamed"
+							},
+							{
+								"test": "is_family",
+								"subject": "target",
+								"operator": "!=",
+								"value": "tenontosaurus"
+							}
+						]
+					},
+					"event": "rift:attack_for_tenontosaurus",
+					"target": "self"
+				}
+			},
+			"rift:attacking_for_tenontosaurus": {
+				"minecraft:on_target_escape": {
+					"event": "rift:stop_attacking_for_tenontosaurus",
+					"target": "self"
+				},
+				"minecraft:target_nearby_sensor": {
+					"inside_range": 3,
+					"outside_range": 6,
+					"must_see": true,
+					"on_inside_range": {
+						"event": "rift:melee_attack_mode",
+						"target": "self"
+					},
+					"on_outside_range": {
+						"event": "rift:ranged_attack_mode",
+						"target": "self"
+					},
+					"on_vision_lost_inside_range": {
+						"event": "rift:melee_attack_mode",
+						"target": "self"
+					}
+			  	}
 			},
 			"rift:tamed_standing": {
 				"minecraft:behavior.breed": {
@@ -1117,7 +1222,7 @@
 					"priority": 1
 				},
                 "minecraft:behavior.random_stroll": {
-					"priority": 15
+					"priority": 16
 				}
 			},
 			"rift:tamed_can_move": {
@@ -1295,6 +1400,26 @@
 				"minecraft:collision_box": {
 					"width": 1,
 					"height": 0.25
+				}
+			},
+			"rift:transform_into_hypnotized_variant_zero": {
+				"minecraft:transformation": {
+					"into": "rift:dilophosaurus<rift:transform_into_hypnotized_variant_zero>"
+				}
+			},
+			"rift:transform_into_hypnotized_variant_one": {
+				"minecraft:transformation": {
+					"into": "rift:dilophosaurus<rift:transform_into_hypnotized_variant_one>"
+				}
+			},
+			"rift:transform_into_hypnotized_variant_two": {
+				"minecraft:transformation": {
+					"into": "rift:dilophosaurus<rift:transform_into_hypnotized_variant_two>"
+				}
+			},
+			"rift:transform_into_hypnotized_variant_three": {
+				"minecraft:transformation": {
+					"into": "rift:dilophosaurus<rift:transform_into_hypnotized_variant_three>"
 				}
 			}
         },
@@ -3825,6 +3950,238 @@
 						}
 					}
 				]
+			},
+            "rift:spawn_hypnotized_by_tenontosaurus": {
+				"randomize": [
+					{
+						"weight": 1,
+						"add": {
+							"component_groups": [
+								"rift:dilophosaurus_adult",
+								"rift:dilophosaurus_adult_hypnotized",
+								"rift:variant_zero",
+								"rift:wild_can_move",
+								"rift:pushable",
+								"rift:default_collision",
+								"rift:follow_tenontosaurus",
+								"rift:follow_tenontosaurus_no_target"
+							]
+						},
+						"set_property": {
+							"rift:is_hypnotized": true
+						}
+					},
+					{
+						"weight": 1,
+						"add": {
+							"component_groups": [
+								"rift:dilophosaurus_adult",
+								"rift:dilophosaurus_adult_hypnotized",
+								"rift:variant_one",
+								"rift:wild_can_move",
+								"rift:pushable",
+								"rift:default_collision",
+								"rift:follow_tenontosaurus",
+								"rift:follow_tenontosaurus_no_target"
+							]
+						},
+						"set_property": {
+							"rift:is_hypnotized": true
+						}
+					},
+					{
+						"weight": 1,
+						"add": {
+							"component_groups": [
+								"rift:dilophosaurus_adult",
+								"rift:dilophosaurus_adult_hypnotized",
+								"rift:variant_two",
+								"rift:wild_can_move",
+								"rift:pushable",
+								"rift:default_collision",
+								"rift:follow_tenontosaurus",
+								"rift:follow_tenontosaurus_no_target"
+							]
+						},
+						"set_property": {
+							"rift:is_hypnotized": true
+						}
+					},
+					{
+						"weight": 1,
+						"add": {
+							"component_groups": [
+								"rift:dilophosaurus_adult",
+								"rift:dilophosaurus_adult_hypnotized",
+								"rift:variant_three",
+								"rift:wild_can_move",
+								"rift:pushable",
+								"rift:default_collision",
+								"rift:follow_tenontosaurus",
+								"rift:follow_tenontosaurus_no_target"
+							]
+						},
+						"set_property": {
+							"rift:is_hypnotized": true
+						}
+					}
+				]
+			},
+			"rift:attack_for_tenontosaurus": {
+				"add": {
+					"component_groups": [
+						"rift:attacking_for_tenontosaurus"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:follow_tenontosaurus_no_target"
+					]
+				},
+				"run_command": {
+					"command": [
+						"say FOR THE QUEEN"
+					]
+				}
+			},
+			"rift:stop_attacking_for_tenontosaurus": {
+				"add": {
+					"component_groups": [
+						"rift:follow_tenontosaurus_no_target",
+						"rift:pushable",
+						"rift:wild_can_move"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:attacking_for_tenontosaurus",
+						"rift:can_melee_attack",
+						"rift:ranged_attack",
+						"rift:unpushable",
+						"rift:wild_cannot_move"
+					]
+				}
+			},
+			"rift:hypnotized_by_tenontosaurus": {
+				"sequence": [
+					{},
+					{
+						"filters": {
+							"test": "is_variant",
+							"subject": "self",
+							"value": 0
+						},
+						"add": {
+							"component_groups": [
+								"rift:transform_into_hypnotized_variant_zero"
+							]
+						}
+					},
+					{
+						"filters": {
+							"test": "is_variant",
+							"subject": "self",
+							"value": 1
+						},
+						"add": {
+							"component_groups": [
+								"rift:transform_into_hypnotized_variant_one"
+							]
+						}
+					},
+					{
+						"filters": {
+							"test": "is_variant",
+							"subject": "self",
+							"value": 2
+						},
+						"add": {
+							"component_groups": [
+								"rift:transform_into_hypnotized_variant_two"
+							]
+						}
+					},
+					{
+						"filters": {
+							"test": "is_variant",
+							"subject": "self",
+							"value": 3
+						},
+						"add": {
+							"component_groups": [
+								"rift:transform_into_hypnotized_variant_three"
+							]
+						}
+					}
+				]
+			},
+			"rift:transform_into_hypnotized_variant_zero": {
+				"add": {
+					"component_groups": [
+						"rift:dilophosaurus_adult",
+						"rift:dilophosaurus_adult_hypnotized",
+						"rift:variant_zero",
+						"rift:wild_can_move",
+						"rift:pushable",
+						"rift:default_collision",
+						"rift:follow_tenontosaurus",
+						"rift:follow_tenontosaurus_no_target"
+					]
+				},
+				"set_property": {
+					"rift:is_hypnotized": true
+				}
+			},
+			"rift:transform_into_hypnotized_variant_one": {
+				"add": {
+					"component_groups": [
+						"rift:dilophosaurus_adult",
+						"rift:dilophosaurus_adult_hypnotized",
+						"rift:variant_one",
+						"rift:wild_can_move",
+						"rift:pushable",
+						"rift:default_collision",
+						"rift:follow_tenontosaurus",
+						"rift:follow_tenontosaurus_no_target"
+					]
+				},
+				"set_property": {
+					"rift:is_hypnotized": true
+				}
+			},
+			"rift:transform_into_hypnotized_variant_two": {
+				"add": {
+					"component_groups": [
+						"rift:dilophosaurus_adult",
+						"rift:dilophosaurus_adult_hypnotized",
+						"rift:variant_two",
+						"rift:wild_can_move",
+						"rift:pushable",
+						"rift:default_collision",
+						"rift:follow_tenontosaurus",
+						"rift:follow_tenontosaurus_no_target"
+					]
+				},
+				"set_property": {
+					"rift:is_hypnotized": true
+				}
+			},
+			"rift:transform_into_hypnotized_variant_three": {
+				"add": {
+					"component_groups": [
+						"rift:dilophosaurus_adult",
+						"rift:dilophosaurus_adult_hypnotized",
+						"rift:variant_three",
+						"rift:wild_can_move",
+						"rift:pushable",
+						"rift:default_collision",
+						"rift:follow_tenontosaurus",
+						"rift:follow_tenontosaurus_no_target"
+					]
+				},
+				"set_property": {
+					"rift:is_hypnotized": true
+				}
 			},
 			"rift:start_attacking": {
 				"add": {
