@@ -10,7 +10,7 @@
                     ],
                     "transitions": [
                         {
-                            "canUseTailSlap": "!query.is_baby && v.hypnotized > 0"
+                            "canUseTailSlap": "!query.is_baby && (v.hypnotized > 0 || query.is_in_water)"
                         }
                     ]
                 },
@@ -20,7 +20,7 @@
                     ],
                     "transitions": [
                         {
-                            "default": "query.is_baby || v.hypnotized == 0"
+                            "default": "query.is_baby || (v.hypnotized == 0 && !query.is_in_water)"
                         }
                     ],
                     "on_entry": [
@@ -38,7 +38,7 @@
 				"default": {
                     "transitions": [
                         {
-                            "canHypnotize": "query.has_target && !query.is_tamed && !query.is_baby && v.hypnotized == 0"
+                            "canHypnotize": "query.has_target && !query.is_tamed && !query.is_baby && v.hypnotized == 0 && !query.is_in_water"
                         }
                     ]
                 },
@@ -49,11 +49,12 @@
                         "/event entity @e[type=rift:sarcosuchus, r=16, tag=!tamed, tag=!baby] rift:hypnotized_by_tenontosaurus",
                         "/event entity @e[type=rift:direwolf, r=16, tag=!tamed, tag=!baby, tag=!outOfControl, tag=!ignited] rift:hypnotized_by_tenontosaurus",
                         "/event entity @e[type=rift:dimetrodon, r=16, tag=!tamed, tag=!baby] rift:hypnotized_by_tenontosaurus",
-                        "/event entity @e[type=rift:dilophosaurus, r=16, tag=!tamed, tag=!baby] rift:hypnotized_by_tenontosaurus"
+                        "/event entity @e[type=rift:dilophosaurus, r=16, tag=!tamed, tag=!baby] rift:hypnotized_by_tenontosaurus",
+                        "/event entity @e[type=rift:baryonyx, r=16, tag=!tamed, tag=!baby] rift:hypnotized_by_tenontosaurus"
                     ],
                     "transitions": [
                         {
-                            "default": "v.hypnotized > 0"
+                            "default": "(1.0)"
                         }
                     ]
                 }

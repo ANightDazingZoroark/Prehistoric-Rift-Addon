@@ -524,7 +524,7 @@ world.events.entityHurt.subscribe(({ hurtEntity, damagingEntity, projectile }) =
     if (damagingEntity.typeId == 'rift:direwolf' && damagingEntity.hasTag('sonicBoom')) {
         hurtEntity.dimension.spawnEntity('rift:direwolf_explosion', hurtEntity.location)
     }
-    if (damagingEntity.typeId == 'rift:baryonyx' && damagingEntity.hasTag('forcedClaw')) {
+    if (damagingEntity.typeId == 'rift:baryonyx' && (damagingEntity.hasTag('forcedClaw') || damagingEntity.getComponent('mark_variant').value == 1)) {
         hurtEntity.addEffect(MinecraftEffectTypes.poison, 200)
     }
 })
