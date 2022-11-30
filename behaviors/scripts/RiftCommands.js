@@ -2,7 +2,7 @@ import { world } from "@minecraft/server"
 
 world.events.beforeChat.subscribe(async (ev) => {
     try {
-        if (ev.sender.runCommand(`testfor @s[m=c]`)) {
+        if (ev.sender.runCommandAsync(`testfor @s[m=c]`)) {
             switch (ev.message) {
                 case 'r!commands':
                     ev.sender.tell('==Commands==')

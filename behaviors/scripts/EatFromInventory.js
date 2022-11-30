@@ -20,11 +20,11 @@ system.run(function everyTick(tick) {
                             for (let k = 0; k < Object.keys(entities[i].getComponent('healable').items).length; k++) {
                                 if (entities[i].getComponent('inventory').container.getItem(j).typeId == entities[i].getComponent('healable').items[k].item && entities[i].getComponent('inventory').container.getItem(j).amount > 1) {
                                     entities[i].getComponent('health').setCurrent(entities[i].getComponent('health').current + entities[i].getComponent('healable').items[k].healAmount)
-                                    entities[i].runCommand(`replaceitem entity @s slot.inventory `+j+` `+entities[i].getComponent('healable').items[k].item+` `+(entities[i].getComponent('inventory').container.getItem(j).amount-1).toString()+` 0`)
+                                    entities[i].runCommandAsync(`replaceitem entity @s slot.inventory `+j+` `+entities[i].getComponent('healable').items[k].item+` `+(entities[i].getComponent('inventory').container.getItem(j).amount-1).toString()+` 0`)
                                 }
                                 else if (entities[i].getComponent('inventory').container.getItem(j).typeId == entities[i].getComponent('healable').items[k].item && entities[i].getComponent('inventory').container.getItem(j).amount == 1) {
                                     entities[i].getComponent('health').setCurrent(entities[i].getComponent('health').current + entities[i].getComponent('healable').items[k].healAmount)
-                                    entities[i].runCommand(`replaceitem entity @s slot.inventory `+j+` air 1 0`)
+                                    entities[i].runCommandAsync(`replaceitem entity @s slot.inventory `+j+` air 1 0`)
                                 }
                                 try {
                                     switch (entities[i].getComponent('inventory').container.getItem(j).typeId) {

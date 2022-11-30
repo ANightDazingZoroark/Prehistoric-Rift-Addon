@@ -499,7 +499,7 @@ world.events.entityHurt.subscribe(({ hurtEntity, damagingEntity, projectile }) =
         hurtEntity.addEffect(MinecraftEffectTypes.slowness, 200, 2)
     }
     if (damagingEntity.typeId == 'rift:utahraptor' && blockBelowAttacker.typeId == 'minecraft:air' && Math.floor(Math.random() * 4) == 0) {
-        hurtEntity.runCommand(`ride @s evict_riders`)
+        hurtEntity.runCommandAsync(`ride @s evict_riders`)
     }
     if (damagingEntity.typeId == 'rift:utahraptor' && !damagingEntity.hasTag('ridden') && damagingEntity.getComponent('is_tamed') && damagingEntity.jumpAttacking > 10) {
         damagingEntity.triggerEvent('rift:decrease_energy_while_jumping')
@@ -519,7 +519,7 @@ world.events.entityHurt.subscribe(({ hurtEntity, damagingEntity, projectile }) =
         damagingEntity.getComponent('health').setCurrent(damagingEntity.getComponent('health').current + 4)
     }
     if (damagingEntity.typeId == 'rift:saurophaganax' && !damagingEntity.hasTag('roaring') && saurophaganaxFood.includes(hurtEntity.typeId) && hurtEntity.getComponent('health').current <= 0) {
-        damagingEntity.runCommand(`scoreboard players add @s[scores={saurophLightBlst=!10}] saurophLightBlst 1`)
+        damagingEntity.runCommandAsync(`scoreboard players add @s[scores={saurophLightBlst=!10}] saurophLightBlst 1`)
     }
     if (damagingEntity.typeId == 'rift:direwolf' && damagingEntity.hasTag('sonicBoom')) {
         hurtEntity.dimension.spawnEntity('rift:direwolf_explosion', hurtEntity.location)
