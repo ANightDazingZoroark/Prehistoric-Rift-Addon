@@ -457,25 +457,25 @@ world.events.entityHurt.subscribe(({ hurtEntity, damagingEntity }) => {
     }
     
     if (damagingEntity.typeId == 'rift:utahraptor' && blockBelowAttacker.typeId == 'minecraft:air' && Math.floor(Math.random() * 4) == 0) {
-        hurtEntity.runCommand(`ride @s evict_riders`)
+        hurtEntity.runCommandAsync(`ride @s evict_riders`)
     }
     if (damagingEntity.typeId == 'rift:dimetrodon' && damagingEntity.getComponent('is_charged')) {
-        hurtEntity.runCommand(`effect @s weakness 20 2`)
-        hurtEntity.runCommand(`effect @s slowness 20 2`)
+        hurtEntity.runCommandAsync(`effect @s weakness 20 2`)
+        hurtEntity.runCommandAsync(`effect @s slowness 20 2`)
     }
     if (damagingEntity.typeId == 'rift:sarcosuchus' && damagingEntity.hasTag('powered')) {
-        hurtEntity.runCommand(`effect @s slowness 30 2`)
+        hurtEntity.runCommandAsync(`effect @s slowness 30 2`)
     }
     if (damagingEntity.typeId == 'rift:anomalocaris') {
         damagingEntity.getComponent('health').setCurrent(damagingEntity.getComponent('health').current + 4)
     }
     if (damagingEntity.typeId == 'rift:saurophaganax' && !damagingEntity.hasTag('roaring') && saurophaganaxFood.includes(hurtEntity.typeId) && hurtEntity.getComponent('health').current <= 0) {
-        damagingEntity.runCommand(`scoreboard players add @s[scores={saurophLightBlst=!10}] saurophLightBlst 1`)
+        damagingEntity.runCommandAsync(`scoreboard players add @s[scores={saurophLightBlst=!10}] saurophLightBlst 1`)
     }
     if (damagingEntity.typeId == 'rift:direwolf' && damagingEntity.hasTag('sonicBoom')) {
         hurtEntity.dimension.spawnEntity('rift:direwolf_explosion', hurtEntity.location)
     }
     if (damagingEntity.typeId == 'rift:baryonyx' && damagingEntity.hasTag('forcedClaw')) {
-        hurtEntity.runCommand(`effect @s poison 10`)
+        hurtEntity.runCommandAsync(`effect @s poison 10`)
     }
 })

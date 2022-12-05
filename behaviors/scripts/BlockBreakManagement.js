@@ -35,7 +35,7 @@ world.events.blockBreak.subscribe(data => {
         for (let x = 0; x < spawnNum; x++) {
             world.getDimension('overworld').spawnEntity('rift:palaeocastor', data.block.location)
         }
-        world.getDimension('overworld').runCommand(`fill `+Math.trunc((data.block.location.x-1).toString())+` `+Math.trunc((data.block.location.y-1).toString())+` `+Math.trunc((data.block.location.z-1).toString())+` `+Math.trunc((data.block.location.x+1).toString())+` `+Math.trunc((data.block.location.y+1).toString())+` `+Math.trunc((data.block.location.z+1).toString())+` air 0 destroy`)
+        world.getDimension('overworld').runCommandAsync(`fill `+Math.trunc((data.block.location.x-1).toString())+` `+Math.trunc((data.block.location.y-1).toString())+` `+Math.trunc((data.block.location.z-1).toString())+` `+Math.trunc((data.block.location.x+1).toString())+` `+Math.trunc((data.block.location.y+1).toString())+` `+Math.trunc((data.block.location.z+1).toString())+` air 0 destroy`)
     }
     if (tallPlants.includes(data.brokenBlockPermutation.type.typeId) && Math.floor(Math.random() * 4) == 0) {
         world.getDimension('overworld').spawnItem(new ItemStack(Items.get('rift:grass_fiber'), 1, 0), data.block.location)

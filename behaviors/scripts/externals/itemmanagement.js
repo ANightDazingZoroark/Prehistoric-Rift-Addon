@@ -12,7 +12,7 @@ export function clearEntity(entity, item, data = -1, amount = function() {
 }) {
     if (item == undefined) {
         for (let i = 0; i < entity.getComponent('inventory').inventorySize; i++) {
-            entity.runCommand(`replaceitem entity @s slot.inventory `+i+` air 1 0`)
+            entity.runCommandAsync(`replaceitem entity @s slot.inventory `+i+` air 1 0`)
         }
     }
     else {
@@ -29,7 +29,7 @@ export function clearEntity(entity, item, data = -1, amount = function() {
             for (let i = 0; i < entity.getComponent('inventory').inventorySize; i++) {
                 try {
                     if (entity.getComponent('inventory').container.getItem(i).typeId == item && (data == -1 ? true : entity.getComponent('inventory').container.getItem(i).data == data)) {
-                        entity.runCommand(`replaceitem entity @s slot.inventory `+i+` air 1 0`)
+                        entity.runCommandAsync(`replaceitem entity @s slot.inventory `+i+` air 1 0`)
                     }
                 }
                 catch (e) {}
@@ -45,10 +45,10 @@ export function clearEntity(entity, item, data = -1, amount = function() {
                                 break
                             }
                             if (entity.getComponent('inventory').container.getItem(i).amount > 1) {
-                                entity.runCommand(`replaceitem entity @s slot.inventory `+i+` `+entity.getComponent('inventory').container.getItem(i).typeId+` `+(entity.getComponent('inventory').container.getItem(i).amount-1).toString()+` `+entity.getComponent('inventory').container.getItem(i).data)
+                                entity.runCommandAsync(`replaceitem entity @s slot.inventory `+i+` `+entity.getComponent('inventory').container.getItem(i).typeId+` `+(entity.getComponent('inventory').container.getItem(i).amount-1).toString()+` `+entity.getComponent('inventory').container.getItem(i).data)
                             }
                             else {
-                                entity.runCommand(`replaceitem entity @s slot.inventory `+i+` air 1 0`)
+                                entity.runCommandAsync(`replaceitem entity @s slot.inventory `+i+` air 1 0`)
                             }
                             reducAmount += 1
                         }
@@ -78,7 +78,7 @@ export function testForItem(entity, item, data = -1, operator = '==', amount = f
 }) {
     if (operator == '==') { //equal to amount
         try {
-            if (entity.runCommand(`testfor @s[hasitem={item=`+item+`, data=`+data+`, quantity=`+(typeof amount == 'function' ? amount() : amount)+`}]`)) {
+            if (entity.runCommandAsync(`testfor @s[hasitem={item=`+item+`, data=`+data+`, quantity=`+(typeof amount == 'function' ? amount() : amount)+`}]`)) {
                 return true
             }
         }

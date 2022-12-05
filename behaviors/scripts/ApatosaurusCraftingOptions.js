@@ -2054,11 +2054,11 @@ export function furnaceMenuGui(entity, hitEntity) {
     .show(entity).then(result => {
         if (result.formValues[0] == true) {
             hitEntity.addTag('smelting')
-            entity.runCommand(`tellraw @s {"rawtext":[{"text":"Smelting mode activated. All items in this creature's inventory will be used as both fuel and smelting materials at the same time"}]}`)
+            entity.runCommandAsync(`tellraw @s {"rawtext":[{"text":"Smelting mode activated. All items in this creature's inventory will be used as both fuel and smelting materials at the same time"}]}`)
         }
         else {
             hitEntity.removeTag('smelting')
-            entity.runCommand(`tellraw @s {"rawtext":[{"text":"Smelting mode deactivated"}]}`)
+            entity.runCommandAsync(`tellraw @s {"rawtext":[{"text":"Smelting mode deactivated"}]}`)
         }
     })
 }
@@ -2171,8 +2171,8 @@ function craftItem(entity, selectedItem) {
         let fails = 0
         for (let i = 0; i < apatosaurusCraftables[selectedItem].craftingItems.anyOf.length; i++) {
             if (testForItem(entity, apatosaurusCraftables[selectedItem].craftingItems.anyOf[i].item, apatosaurusCraftables[selectedItem].craftingItems.anyOf[i].itemData, '>=', apatosaurusCraftables[selectedItem].craftingItems.anyOf[i].amount)) {
-                entity.runCommand(`give @s `+apatosaurusCraftables[selectedItem].itemId+` `+apatosaurusCraftables[selectedItem].outputAmount+` `+ apatosaurusCraftables[selectedItem].outputData)
-                entity.runCommand(`clear @s `+apatosaurusCraftables[selectedItem].craftingItems.anyOf[i].item+` `+apatosaurusCraftables[selectedItem].craftingItems.anyOf[i].itemData+` `+apatosaurusCraftables[selectedItem].craftingItems.anyOf[i].amount)
+                entity.runCommandAsync(`give @s `+apatosaurusCraftables[selectedItem].itemId+` `+apatosaurusCraftables[selectedItem].outputAmount+` `+ apatosaurusCraftables[selectedItem].outputData)
+                entity.runCommandAsync(`clear @s `+apatosaurusCraftables[selectedItem].craftingItems.anyOf[i].item+` `+apatosaurusCraftables[selectedItem].craftingItems.anyOf[i].itemData+` `+apatosaurusCraftables[selectedItem].craftingItems.anyOf[i].amount)
             }
             else {
                 fails += 1
@@ -2204,18 +2204,18 @@ function craftItem(entity, selectedItem) {
             }
         }
         if (elidgibleItems >= apatosaurusCraftables[selectedItem].craftingItems.allOf.length) {
-            entity.runCommand(`give @s `+apatosaurusCraftables[selectedItem].itemId+` `+apatosaurusCraftables[selectedItem].outputAmount+` `+ apatosaurusCraftables[selectedItem].outputData)
+            entity.runCommandAsync(`give @s `+apatosaurusCraftables[selectedItem].itemId+` `+apatosaurusCraftables[selectedItem].outputAmount+` `+ apatosaurusCraftables[selectedItem].outputData)
             for (let k = 0; k < apatosaurusCraftables[selectedItem].craftingItems.allOf.length; k++) {
                 if (apatosaurusCraftables[selectedItem].craftingItems.allOf[k].hasOwnProperty('anyOf')) {
                     for (let l = 0; l < apatosaurusCraftables[selectedItem].craftingItems.allOf[k].anyOf.length; l++) {
                         if (testForItem(entity, apatosaurusCraftables[selectedItem].craftingItems.allOf[k].anyOf[l].item, apatosaurusCraftables[selectedItem].craftingItems.allOf[k].anyOf[l].itemData, '>=', apatosaurusCraftables[selectedItem].craftingItems.allOf[k].anyOf[l].amount)) {
-                            entity.runCommand(`clear @s `+apatosaurusCraftables[selectedItem].craftingItems.allOf[k].anyOf[l].item+` `+apatosaurusCraftables[selectedItem].craftingItems.allOf[k].anyOf[l].itemData+` `+apatosaurusCraftables[selectedItem].craftingItems.allOf[k].anyOf[l].amount)
+                            entity.runCommandAsync(`clear @s `+apatosaurusCraftables[selectedItem].craftingItems.allOf[k].anyOf[l].item+` `+apatosaurusCraftables[selectedItem].craftingItems.allOf[k].anyOf[l].itemData+` `+apatosaurusCraftables[selectedItem].craftingItems.allOf[k].anyOf[l].amount)
                             break
                         }
                     }
                 }
                 else {
-                    entity.runCommand(`clear @s `+apatosaurusCraftables[selectedItem].craftingItems.allOf[k].item+` `+apatosaurusCraftables[selectedItem].craftingItems.allOf[k].itemData+` `+apatosaurusCraftables[selectedItem].craftingItems.allOf[k].amount)
+                    entity.runCommandAsync(`clear @s `+apatosaurusCraftables[selectedItem].craftingItems.allOf[k].item+` `+apatosaurusCraftables[selectedItem].craftingItems.allOf[k].itemData+` `+apatosaurusCraftables[selectedItem].craftingItems.allOf[k].amount)
                 }
             }
         }
@@ -2229,8 +2229,8 @@ function craftItem(entity, selectedItem) {
     }
     else {
         if (testForItem(entity, apatosaurusCraftables[selectedItem].craftingItems.item, apatosaurusCraftables[selectedItem].craftingItems.itemData, '>=', apatosaurusCraftables[selectedItem].craftingItems.amount)) {
-            entity.runCommand(`give @s `+apatosaurusCraftables[selectedItem].itemId+` `+apatosaurusCraftables[selectedItem].outputAmount+` `+ apatosaurusCraftables[selectedItem].outputData)
-            entity.runCommand(`clear @s `+apatosaurusCraftables[selectedItem].craftingItems.item+` `+apatosaurusCraftables[selectedItem].craftingItems.itemData+` `+apatosaurusCraftables[selectedItem].craftingItems.amount)
+            entity.runCommandAsync(`give @s `+apatosaurusCraftables[selectedItem].itemId+` `+apatosaurusCraftables[selectedItem].outputAmount+` `+ apatosaurusCraftables[selectedItem].outputData)
+            entity.runCommandAsync(`clear @s `+apatosaurusCraftables[selectedItem].craftingItems.item+` `+apatosaurusCraftables[selectedItem].craftingItems.itemData+` `+apatosaurusCraftables[selectedItem].craftingItems.amount)
         }
         else {
             guiCrafterFail.show(entity).then(result => {

@@ -8,11 +8,11 @@ system.run(function everyTick(tick) {
             if (entities[i].typeId == 'rift:saurophaganax') {
                 let score = world.scoreboard.getObjective('saurophLightBlst').getScore(entities[i].scoreboard)
                 if (score >= 10 && entities[i].hasTag('canNotify')) {
-                    entities[i].runCommand(`tellraw @p {"rawtext":[{"text":"Light Blast Available!"}]}`)
-                    entities[i].runCommand(`event entity @s rift:cannot_notify`)
+                    entities[i].runCommandAsync(`tellraw @p {"rawtext":[{"text":"Light Blast Available!"}]}`)
+                    entities[i].runCommandAsync(`event entity @s rift:cannot_notify`)
                 }
                 if (score < 10) {
-                    entities[i].runCommand(`event entity @s rift:can_notify`)
+                    entities[i].runCommandAsync(`event entity @s rift:can_notify`)
                 }
             }
         }
