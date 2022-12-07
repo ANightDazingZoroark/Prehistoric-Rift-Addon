@@ -5,7 +5,26 @@
       "identifier": "minecraft:ravager",
       "is_spawnable": true,
       "is_summonable": true,
-      "is_experimental": false
+      "is_experimental": false,
+      "animations": {
+          "contHypnotizedTag": "controller.animation.add_hypnotized_tag",
+          "contDieWithoutTenontosaurus": "controller.animation.general_die_without_tenontosaurus",
+          "animFindTenontosaurus": "animation.find_tenontosaurus",
+          "animDeathTimer": "animation.hypnosis_death_timer"
+      },
+      "scripts": {
+          "animate": [
+              "contHypnotizedTag",
+              "contDieWithoutTenontosaurus"
+          ]
+      },
+      "properties": {
+          "rift:is_hypnotized": {
+              "type": "bool",
+              "default": false,
+              "client_sync": true
+          }
+      }
     },
     "component_groups": {
       "minecraft:celebrate": {
@@ -247,6 +266,118 @@
           },
           "cooldown_time": 0.1
         }
+      },
+      "rift:not_hypnotized": {
+        "minecraft:behavior.avoid_mob_type": {
+          "priority": 1,
+          "entity_types": [
+            {
+              "filters": {
+                "test": "is_family",
+                "value": "parasaurScary",
+                "subject": "other"
+              },
+              "max_dist": 12,
+              "must_see": true,
+              "walk_speed_multiplier": 1.2,
+              "sprint_speed_multiplier": 1.2
+            }
+          ]
+        }
+      },
+      "rift:hypnotized": {
+        "minecraft:movement": {
+          "value": 0.3
+        }
+      },
+      "rift:follow_tenontosaurus": {
+          "minecraft:behavior.nearest_prioritized_attackable_target": {
+              "priority": 4,
+              "within_radius": 32.0,
+              "entity_types": [
+                  {
+                      "filters": {
+                          "all_of": [
+                              {
+                                  "test": "has_tag",
+                                  "subject": "other",
+                                  "value": "tenontoTarget"
+                              }
+                          ]
+                      },
+                      "max_dist": 48,
+                      "priority": 0
+                  },
+                  {
+                      "filters": {
+                          "all_of": [
+                              {
+                                  "test": "is_family",
+                                  "subject": "other",
+                                  "value": "tenontosaurus"
+                              },
+                              {
+                                  "test": "has_component",
+                                  "subject": "other",
+                                  "operator": "!=",
+                                  "value": "minecraft:is_tamed"
+                              }
+                          ]
+                      },
+                      "max_dist": 48,
+                      "priority": 1
+                  }
+              ]
+          }
+      },
+      "rift:follow_tenontosaurus_no_target": {
+          "minecraft:behavior.ranged_attack": {
+              "priority": 7,
+              "attack_radius": 6.0,
+              "attack_radius_min": 4
+          },
+          "minecraft:on_target_acquired": {
+              "filters": {
+                  "all_of": [
+                      {
+                          "test": "has_component",
+                          "subject": "target",
+                          "operator": "!=",
+                          "value": "minecraft:is_tamed"
+                      },
+                      {
+                          "test": "is_family",
+                          "subject": "target",
+                          "operator": "!=",
+                          "value": "tenontosaurus"
+                      }
+                  ]
+              },
+              "event": "rift:attack_for_tenontosaurus",
+              "target": "self"
+          }
+      },
+      "rift:attacking_for_tenontosaurus": {
+        "minecraft:behavior.delayed_attack": {
+          "priority": 5,
+          "attack_once": false,
+          "track_target": true,
+          "require_complete_path": false,
+          "random_stop_interval": 0,
+          "reach_multiplier": 1.5,
+          "speed_multiplier": 1.0,
+          "attack_duration": 0.75,
+          "hit_delay_pct": 0.5
+        },
+          "minecraft:on_target_escape": {
+              "event": "rift:stop_attacking_for_tenontosaurus",
+              "target": "self"
+          }
+      },
+      "rift:transform_into_hypnotized": {
+          "minecraft:transformation": {
+              "into": "minecraft:ravager<rift:transform_into_hypnotized>"
+          }
       }
     },
     "components": {
@@ -257,22 +388,6 @@
       },
       "minecraft:behavior.float": {
         "priority": 0
-      },
-      "minecraft:behavior.avoid_mob_type": {
-        "priority": 1,
-        "entity_types": [
-          {
-            "filters": {
-              "test": "is_family",
-              "value": "parasaurScary",
-              "subject": "other"
-            },
-            "max_dist": 12,
-            "must_see": true,
-            "walk_speed_multiplier": 1.2,
-            "sprint_speed_multiplier": 1.2
-          }
-        ]
       },
       "minecraft:ravager_blocked": {
         "knockback_strength": 3.0,
@@ -409,7 +524,8 @@
       "minecraft:entity_spawned": {
         "add": {
           "component_groups": [
-            "minecraft:hostile"
+            "minecraft:hostile",
+            "rift:not_hypnotized"
           ]
         }
       },
@@ -418,7 +534,8 @@
           "component_groups": [
             "minecraft:hostile",
             "minecraft:raid_configuration",
-            "minecraft:raid_persistence"
+            "minecraft:raid_persistence",
+            "rift:not_hypnotized"
           ]
         }
       },
@@ -428,7 +545,8 @@
             "minecraft:hostile",
             "minecraft:evoker_rider_for_raid",
             "minecraft:raid_configuration",
-            "minecraft:raid_persistence"
+            "minecraft:raid_persistence",
+            "rift:not_hypnotized"
           ]
         }
       },
@@ -438,7 +556,8 @@
             "minecraft:hostile",
             "minecraft:pillager_rider_for_raid",
             "minecraft:raid_configuration",
-            "minecraft:raid_persistence"
+            "minecraft:raid_persistence",
+            "rift:not_hypnotized"
           ]
         }
       },
@@ -446,7 +565,8 @@
         "add": {
           "component_groups": [
             "minecraft:hostile",
-            "minecraft:pillager_rider"
+            "minecraft:pillager_rider",
+            "rift:not_hypnotized"
           ]
         }
       },
@@ -454,7 +574,8 @@
         "add": {
           "component_groups": [
             "minecraft:hostile",
-            "minecraft:pillager_captain_rider"
+            "minecraft:pillager_captain_rider",
+            "rift:not_hypnotized"
           ]
         }
       },
@@ -462,7 +583,8 @@
         "add": {
           "component_groups": [
             "minecraft:hostile",
-            "minecraft:vindicator_rider"
+            "minecraft:vindicator_rider",
+            "rift:not_hypnotized"
           ]
         }
       },
@@ -470,9 +592,70 @@
         "add": {
           "component_groups": [
             "minecraft:hostile",
-            "minecraft:vindicator_captain_rider"
+            "minecraft:vindicator_captain_rider",
+            "rift:not_hypnotized"
           ]
         }
+      },
+      "rift:spawn_hypnotized_by_tenontosaurus": {
+          "add": {
+              "component_groups": [
+                  "rift:follow_tenontosaurus",
+                  "rift:follow_tenontosaurus_no_target",
+                  "rift:hypnotized"
+              ]
+          },
+          "set_property": {
+              "rift:is_hypnotized": true
+          }
+      },
+      "rift:attack_for_tenontosaurus": {
+          "add": {
+              "component_groups": [
+                  "rift:attacking_for_tenontosaurus"
+              ]
+          },
+          "remove": {
+              "component_groups": [
+                  "rift:follow_tenontosaurus_no_target"
+              ]
+          },
+          "run_command": {
+              "command": [
+                  "say FOR THE QUEEN"
+              ]
+          }
+      },
+      "rift:stop_attacking_for_tenontosaurus": {
+          "add": {
+              "component_groups": [
+                  "rift:follow_tenontosaurus_no_target"
+              ]
+          },
+          "remove": {
+              "component_groups": [
+                  "rift:attacking_for_tenontosaurus"
+              ]
+          }
+      },
+      "rift:hypnotized_by_tenontosaurus": {
+          "add": {
+              "component_groups": [
+                  "rift:transform_into_hypnotized"
+              ]
+          }
+      },
+      "rift:transform_into_hypnotized": {
+          "add": {
+              "component_groups": [
+                  "rift:follow_tenontosaurus",
+                  "rift:follow_tenontosaurus_no_target",
+                  "rift:hypnotized"
+              ]
+          },
+          "set_property": {
+              "rift:is_hypnotized": true
+          }
       },
       "minecraft:become_stunned": {
         "add": {
