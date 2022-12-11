@@ -3312,6 +3312,152 @@
 					]
 				}
 			}
+		},
+		"controller.animation.tenontosaurus_command_staff": {
+			"initial_state": "default",
+			"states": {
+				"default": {
+					"transitions": [
+						{
+							"tailSlapMode": "query.is_riding && (query.get_ride -> query.owner_identifier) == 'rift:tenontosaurus'"
+						}
+					],
+					"on_exit": [
+						"/tellraw @s {\"rawtext\":[{\"text\":\"Ability set to Tail Slap Mode\"}]}"
+					]
+				},
+				"tailSlapMode": {
+					"transitions": [
+						{
+							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:tenontosaurus'"
+						},
+						{
+							"tailSlapModeLimbo": "query.is_using_item && (query.get_ride -> query.property('rift:energy')) >= 10 && (query.get_ride -> query.is_saddled) && query.get_equipped_item_name('main_hand') == 'command_staff'"
+						},
+						{
+							"tailSlapModeFail": "query.is_using_item && (query.get_ride -> query.property('rift:energy')) < 10 && (query.get_ride -> query.is_saddled) && query.get_equipped_item_name('main_hand') == 'command_staff'"
+						}
+					]
+				},
+				"tailSlapModeFail": {
+					"transitions": [
+						{
+							"tailSlapMode": "!query.is_using_item"
+						},
+						{
+							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:tenontosaurus'"
+						}
+					],
+					"on_entry": [
+						"/tellraw @s {\"rawtext\":[{\"text\":\"You don't have enough energy to perform this action!\"}]}"
+					]
+				},
+				"tailSlapModeLimbo": {
+					"animations": [
+						"animAbilitySwitchCooldown"
+					],
+					"transitions": [
+						{
+							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:tenontosaurus' || query.get_equipped_item_name('main_hand') != 'command_staff'"
+						},
+						{
+							"useTailSlapMode": "!query.is_using_item"
+						},
+						{
+							"tailSlapToHypnosis": "query.all_animations_finished"
+						}
+					]
+				},
+				"useTailSlapMode": {
+					"transitions": [
+						{
+							"tailSlapMode": "(1.0)"
+						}
+					],
+					"on_entry": [
+						"/event entity @e[type=rift:tenontosaurus, c=1, tag=tamed, tag=!baby] rift:start_forced_attack"
+					]
+				},
+				"tailSlapToHypnosis": {
+					"transitions": [
+						{
+							"default": "(query.get_equipped_item_name('main_hand') != 'command_staff') || !query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:tenontosaurus'"
+						},
+						{
+							"hypnosisMode": "!query.is_using_item"
+						}
+					],
+					"on_exit": [
+						"/tellraw @s {\"rawtext\":[{\"text\":\"Ability set to Hypnosis Mode\"}]}"
+					]
+				},
+				"hypnosisMode": {
+					"transitions": [
+						{
+							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:tenontosaurus'"
+						},
+						{
+							"hypnosisModeLimbo": "query.is_using_item && (query.get_ride -> query.property('rift:energy')) - 5 >= 5 && (query.get_ride -> query.is_saddled) && query.get_equipped_item_name('main_hand') == 'command_staff'"
+						},
+						{
+							"hypnosisModeFail": "query.is_using_item && (query.get_ride -> query.property('rift:energy')) - 5 < 5 && (query.get_ride -> query.is_saddled) && query.get_equipped_item_name('main_hand') == 'command_staff'"
+						}
+					]
+				},
+				"hypnosisModeFail": {
+					"transitions": [
+						{
+							"hypnosisMode": "!query.is_using_item"
+						},
+						{
+							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:tenontosaurus'"
+						}
+					],
+					"on_entry": [
+						"/tellraw @s {\"rawtext\":[{\"text\":\"You don't have enough energy to perform this action!\"}]}"
+					]
+				},
+				"hypnosisModeLimbo": {
+					"animations": [
+						"animAbilitySwitchCooldown"
+					],
+					"transitions": [
+						{
+							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:tenontosaurus' || query.get_equipped_item_name('main_hand') != 'command_staff'"
+						},
+						{
+							"useHypnosisMode": "!query.is_using_item"
+						},
+						{
+							"hypnosisToTailSlap": "query.all_animations_finished"
+						}
+					]
+				},
+				"useHypnosisMode": {
+					"transitions": [
+						{
+							"hypnosisMode": "(1.0)"
+						}
+					],
+					"on_entry": [
+						"/tag @e[type=rift:tenontosaurus, c=1, tag=tamed, tag=!baby] add tenontoHypno",
+						"/event entity @e[type=rift:tenontosaurus, c=1, tag=tamed, tag=!baby] rift:decrease_energy_while_hypnosis_mode"
+					]
+				},
+				"hypnosisToTailSlap": {
+					"transitions": [
+						{
+							"default": "(query.get_equipped_item_name('main_hand') != 'command_staff') || !query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:tenontosaurus'"
+						},
+						{
+							"tailSlapMode": "!query.is_using_item"
+						}
+					],
+					"on_exit": [
+						"/tellraw @s {\"rawtext\":[{\"text\":\"Ability set to Tail Slap Mode\"}]}"
+					]
+				}
+			}
 		}
 	}
 }

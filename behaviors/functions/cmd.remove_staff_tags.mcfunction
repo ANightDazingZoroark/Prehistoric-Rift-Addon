@@ -27,3 +27,4 @@ tag @e remove ankylosaurusShell
 tag @e remove ankyloHarvest
 tag @e remove galliSprint
 tag @e remove galliHarvest
+tag @e remove tenontoHypno
