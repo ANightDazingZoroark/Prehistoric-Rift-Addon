@@ -401,6 +401,31 @@
 				}
 			}
 		},
+		"controller.animation.add_hypnotized_by_tamed_tag": {
+			"initial_state": "default",
+			"states": {
+				"default": {
+					"transitions": [
+						{
+							"hasTag": "query.property('rift:is_hypnotized_tamed') == true"
+						}
+					]
+				},
+				"hasTag": {
+					"transitions": [
+						{
+							"default": "query.property('rift:is_hypnotized_tamed') == false"
+						}
+					],
+                    "on_entry": [
+                        "/tag @s add hypnotizedTamed"
+                    ],
+                    "on_exit": [
+                        "/tag @s remove hypnotizedTamed"
+                    ]
+				}
+			}
+		},
 		"controller.animation.add_out_of_control_tag": {
 			"initial_state": "default",
 			"states": {
@@ -688,6 +713,23 @@
 						{
 							"default": "v.tenonto > 0"
 						}
+					]
+				}
+			}
+		},
+		"controller.animation.general_death_timer_tamed_tenontosaurus": {
+			"initial_state": "default",
+			"states": {
+				"default": {
+					"transitions": [
+						{
+							"timer": "query.property('rift:is_hypnotized_tamed') == true"
+						}
+					]
+				},
+				"timer": {
+					"animations": [
+						"animTamedDeathTimer"
 					]
 				}
 			}

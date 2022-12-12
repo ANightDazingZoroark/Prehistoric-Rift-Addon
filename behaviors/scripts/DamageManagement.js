@@ -41,7 +41,8 @@ let exoticMeatDroppers = [
     'rift:direwolf',
     'rift:megaloceros',
     'rift:baryonyx',
-    'rift:ankylosaurus'
+    'rift:ankylosaurus',
+    'rift:dilophosaurus'
 ]
 
 world.events.entityHurt.subscribe(({ hurtEntity, damagingEntity, projectile }) => {
@@ -526,6 +527,14 @@ world.events.entityHurt.subscribe(({ hurtEntity, damagingEntity, projectile }) =
     }
     if (damagingEntity.typeId == 'rift:baryonyx' && (damagingEntity.hasTag('forcedClaw') || damagingEntity.getComponent('mark_variant').value == 1)) {
         hurtEntity.addEffect(MinecraftEffectTypes.poison, 200)
+    }
+    if (hurtEntity.typeId == 'rift:tenontosaurus' && hurtEntity.getComponent('is_tamed') && hurtEntity.hasTag('ridden')) {
+        damagingEntity.addTag('tenontoTamedTarget')
+        hurtEntity.runCommandAsync(`event entity @e[r=24, tag=!tamed, tag=hypnotizedTamed] rift:attack_for_tenontosaurus`)
+    }
+    if (damagingEntity.typeId == 'rift:tenontosaurus' && damagingEntity.getComponent('is_tamed') && damagingEntity.hasTag('ridden')) {
+        hurtEntity.addTag('tenontoTamedTarget')
+        damagingEntity.runCommandAsync(`event entity @e[r=24, tag=!tamed, tag=hypnotizedTamed] rift:attack_for_tenontosaurus`)
     }
 })
 

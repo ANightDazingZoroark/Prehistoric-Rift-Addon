@@ -55,7 +55,9 @@
 				"contWarnLowEnergy": "controller.animation.warn_of_low_energy",
 				"contCanTailSlap": "controller.animation.tenontosaurus_can_use_tail_slap",
 				"contUseHypnotize": "controller.animation.tenontosaurus_use_hypnotize",
-				"animUseEnergyWhileMoving": "animation.tenontosaurus_decrease_energy_while_moving",
+                "contForcedUseHypnotize": "controller.animation.tenontosaurus_forced_use_hypnotize",
+				"contTamedMakeMinionsAttack": "controller.animation.tenontosaurus_tamed_make_minions_attack",
+                "animUseEnergyWhileMoving": "animation.tenontosaurus_decrease_energy_while_moving",
 				"animEnergyRegenDelay": "animation.regenerate_energy_delay",
 				"animRegenerateEnergy": "animation.tenontosaurus_regenerate_energy",
 				"animLowOnEnergyEffects": "animation.effects_while_low_on_energy",
@@ -63,6 +65,7 @@
 				"animEatFromInventoryCooldown": "animation.eat_from_inventory_cooldown",
 				"animDetectHypnotized": "animation.find_hypnotized",
                 "animWildUseHypnosis": "animation.use_hypnosis_wild",
+                "animTamedUseHypnosis": "animation.use_hypnosis_tamed",
                 "animForcedAttack": "animation.forced_attack_tenontosaurus"
 			},
 			"scripts": {
@@ -78,7 +81,9 @@
                     "contEnergyUsage",
                     "contWarnLowEnergy",
 					"contCanTailSlap",
-					"contUseHypnotize"
+					"contUseHypnotize",
+                    "contForcedUseHypnotize",
+                    "contTamedMakeMinionsAttack"
 				]
 			}
         },
@@ -481,6 +486,12 @@
 										"subject": "other",
 										"operator": "!=",
 										"value": "inanimate"
+									},
+									{
+										"test": "bool_property",
+										"subject": "other",
+										"domain": "rift:is_hypnotized_tamed",
+										"value": false
 									}
 								]
 					  		},
@@ -811,6 +822,12 @@
 										"subject": "other",
 										"operator": "!=",
 										"value": "inanimate"
+									},
+									{
+										"test": "bool_property",
+										"subject": "other",
+										"domain": "rift:is_hypnotized_tamed",
+										"value": false
 									}
 								]
 					  		},
@@ -842,6 +859,9 @@
 					"is_pushable_by_piston": false
 				}
 			},
+            "rift:forced_hypnotizing": {
+                "minecraft:is_sheared": {}
+            },
 			"rift:can_attack": {
 				"minecraft:attack": {
 					"damage": 5
@@ -3026,6 +3046,45 @@
 					}
 				]
 			},
+			"minecraft:environment_sensor": {
+				"triggers": [
+					{
+						"filters": {
+							"all_of": [
+								{
+									"test": "has_tag",
+									"value": "tenontoHypno",
+									"subject": "self",
+									"operator": "=="
+								},
+								{
+									"test": "rider_count",
+									"operator": ">",
+									"value": 0,
+									"subject": "self"
+								},
+								{
+									"test": "has_component",
+									"value": "minecraft:is_tamed",
+									"subject": "self"
+								},
+								{
+									"test": "has_component",
+									"operator": "!=",
+									"value": "minecraft:is_baby",
+									"subject": "self"
+								},
+								{
+									"test": "has_component",
+									"value": "minecraft:is_saddled",
+									"subject": "self"
+								}
+							]
+						},
+						"event": "rift:tenonto_tamed_hypnosis"
+					}
+				]
+			},
             "minecraft:scheduler": {
 				"scheduled_events": [
 					{
@@ -3071,11 +3130,21 @@
 					{
 						"on_damage": {
 							"filters": {
-								"test": "bool_property",
-								"subject": "other",
-								"domain": "rift:is_hypnotized",
-								"value": true
-							},
+                                "any_of": [
+                                    {
+                                        "test": "bool_property",
+                                        "subject": "other",
+                                        "domain": "rift:is_hypnotized",
+                                        "value": true
+                                    },
+                                    {
+                                        "test": "bool_property",
+                                        "subject": "other",
+                                        "domain": "rift:is_hypnotized_tamed",
+                                        "value": true
+                                    }
+                                ]
+                            },
 							"event": "rift:stop_attacking_for_tenontosaurus",
 							"target": "other"
 						},
@@ -3611,6 +3680,20 @@
 					]
 				}
 			},
+            "rift:tenonto_tamed_hypnosis": {
+                "add": {
+                    "component_groups": [
+                        "rift:forced_hypnotizing"
+                    ]
+                }
+            },
+            "rift:tenonto_stop_tamed_hypnosis": {
+                "remove": {
+                    "component_groups": [
+                        "rift:forced_hypnotizing"
+                    ]
+                }
+            },
 			"rift:start_forced_attack": {
 				"set_property": {
 					"rift:is_forced_attacking": true

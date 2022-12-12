@@ -53,6 +53,50 @@
                     ]
                 }
             }
+        },
+        "controller.animation.tenontosaurus_forced_use_hypnotize": {
+			"initial_state": "default",
+			"states": {
+				"default": {
+                    "transitions": [
+                        {
+                            "canHypnotize": "query.is_sheared"
+                        }
+                    ]
+                },
+                "canHypnotize": {
+                    "animations": [
+                        "animTamedUseHypnosis"
+                    ],
+                    "transitions": [
+                        {
+                            "default": "query.all_animations_finished"
+                        }
+                    ]
+                }
+            }
+        },
+        "controller.animation.tenontosaurus_tamed_make_minions_attack": {
+            "initial_state": "default",
+            "states": {
+                "default": {
+                    "transitions": [
+                        {
+                            "attack": "query.is_tamed && !query.is_baby && query.has_target"
+                        }
+                    ]
+                },
+                "attack": {
+                    "transitions": [
+                        {
+                            "default": "!query.has_target"
+                        }
+                    ],
+                    "on_entry": [
+                        "/event entity @e[r=24, tag=!tamed, tag=hypnotizedTamed] rift:attack_for_tenontosaurus"
+                    ]
+                }
+            }
         }
     }
 }

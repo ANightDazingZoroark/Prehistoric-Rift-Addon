@@ -24,8 +24,11 @@ system.run(function everyTick(tick) {
         if (entities[i].typeId == 'rift:dilophosaurus' && entities[i].getComponent('is_sheared') && !entities[i].target) {
             entities[i].runCommandAsync(`tag @e remove diloTarget`)
         }
-        if (entities[i].typeId == 'rift:tenontosaurus' && !!entities[i].target) {
+        if (entities[i].typeId == 'rift:tenontosaurus' && !!entities[i].target && !entities[i].hasComponent('minecraft:is_tamed')) {
             entities[i].target.addTag('tenontoTarget')
+        }
+        if (entities[i].typeId == 'rift:tenontosaurus' && !!entities[i].target && entities[i].hasComponent('minecraft:is_tamed')) {
+            entities[i].target.addTag('tenontoTamedTarget')
         }
     }
 })
