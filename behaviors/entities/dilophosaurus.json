@@ -12,6 +12,11 @@
 					"default": false,
 					"client_sync": true
 				},
+				"rift:is_hypnotized_tamed": {
+					"type": "bool",
+					"default": false,
+					"client_sync": true
+				},
 				"rift:undergoing_taming": {
 					"type": "bool",
 					"default": false,
@@ -70,6 +75,7 @@
 				"contRiddenTag": "controller.animation.add_ridden_tag",
 				"contInLoveTag": "controller.animation.add_in_love_tag",
 				"contHypnotizedTag": "controller.animation.add_hypnotized_tag",
+				"contHypnotizedTamedTag": "controller.animation.add_hypnotized_by_tamed_tag",
 				"contShoot": "controller.animation.dilophosaurus_shoot",
 				"contForcedAttack": "controller.animation.dilophosaurus_forced_attack",
 				"contEnergyUsage": "controller.animation.dilophosaurus_energy_movement_usage",
@@ -78,6 +84,7 @@
 				"contTameState": "controller.animation.manage_tame_state",
 				"contBehaviorState": "controller.animation.dilophosaurus_manage_tame_behavior",
 				"contDieWithoutTenontosaurus": "controller.animation.general_die_without_tenontosaurus",
+                "contDieWithoutTamedTenontosaurus": "controller.animation.general_death_timer_tamed_tenontosaurus",
 				"animEatFromInventoryCooldown": "animation.eat_from_inventory_cooldown",
 				"animUseEnergyWhileMoving": "animation.dilophosaurus_decrease_energy_while_moving",
 				"animLowOnEnergyEffects": "animation.effects_while_low_on_energy",
@@ -89,7 +96,8 @@
 				"animForcedSpitAttack": "animation.forced_spit_attack_dilophosaurus",
 				"animPlantTrap": "animation.dilophosaurus_plant_trap",
 				"animFindTenontosaurus": "animation.find_tenontosaurus",
-				"animDeathTimer": "animation.hypnosis_death_timer"
+				"animDeathTimer": "animation.hypnosis_death_timer",
+                "animTamedDeathTimer": "animation.hypnosis_death_timer_tamed"
             },
             "scripts": {
                 "animate": [
@@ -100,6 +108,7 @@
                     "contRiddenTag",
 					"contInLoveTag",
 					"contHypnotizedTag",
+                    "contHypnotizedTamedTag",
 					"contShoot",
 					"contForcedAttack",
 					"contEnergyUsage",
@@ -107,7 +116,8 @@
 					"contPlantTrap",
 					"contTameState",
 					"contBehaviorState",
-					"contDieWithoutTenontosaurus"
+					"contDieWithoutTenontosaurus",
+                    "contDieWithoutTamedTenontosaurus"
                 ]
             }
         },
@@ -1182,6 +1192,61 @@
 					"target": "self"
 				}
 			},
+			"rift:follow_tamed_tenontosaurus": {
+				"minecraft:behavior.nearest_prioritized_attackable_target": {
+					"priority": 7,
+					"within_radius": 32.0,
+					"entity_types": [
+						{
+							"filters": {
+								"all_of": [
+									{
+										"test": "has_tag",
+										"subject": "other",
+										"value": "tenontoTamedTarget"
+									}
+								]
+							},
+							"max_dist": 48,
+							"priority": 0
+						},
+						{
+							"filters": {
+								"all_of": [
+									{
+										"test": "is_family",
+										"subject": "other",
+										"value": "tenontosaurus"
+									},
+									{
+										"test": "has_component",
+										"subject": "other",
+										"value": "minecraft:is_tamed"
+									}
+								]
+							},
+							"max_dist": 48,
+							"priority": 1
+						}
+					]
+				}
+			},
+			"rift:follow_tamed_tenontosaurus_no_target": {
+				"minecraft:behavior.ranged_attack": {
+					"priority": 15,
+					"attack_radius": 8.0,
+					"attack_radius_min": 4
+				},
+				"minecraft:on_target_acquired": {
+					"filters": {
+                        "test": "has_tag",
+                        "subject": "target",
+                        "value": "tenontoTamedTarget"
+                    },
+					"event": "rift:attack_for_tenontosaurus",
+					"target": "self"
+				}
+			},
 			"rift:attacking_for_tenontosaurus": {
 				"minecraft:on_target_escape": {
 					"event": "rift:stop_attacking_for_tenontosaurus",
@@ -1420,6 +1485,11 @@
 			"rift:transform_into_hypnotized_variant_three": {
 				"minecraft:transformation": {
 					"into": "rift:dilophosaurus<rift:transform_into_hypnotized_variant_three>"
+				}
+			},
+            "rift:transform_into_hypnotized_by_tamed": {
+				"minecraft:transformation": {
+					"into": "rift:dilophosaurus<rift:transform_into_hypnotized_by_tamed>"
 				}
 			}
         },
@@ -4035,7 +4105,8 @@
 				},
 				"remove": {
 					"component_groups": [
-						"rift:follow_tenontosaurus_no_target"
+						"rift:follow_tenontosaurus_no_target",
+                        "rift:follow_tamed_tenontosaurus_no_target"
 					]
 				},
 				"run_command": {
@@ -4045,23 +4116,72 @@
 				}
 			},
 			"rift:stop_attacking_for_tenontosaurus": {
-				"add": {
-					"component_groups": [
-						"rift:follow_tenontosaurus_no_target",
-						"rift:pushable",
-						"rift:wild_can_move"
-					]
-				},
-				"remove": {
-					"component_groups": [
-						"rift:attacking_for_tenontosaurus",
-						"rift:can_melee_attack",
-						"rift:ranged_attack",
-						"rift:unpushable",
-						"rift:wild_cannot_move"
-					]
-				}
-			},
+                "sequence": [
+                    {
+                        "add": {
+                            "component_groups": [
+                                "rift:pushable",
+                                "rift:wild_can_move"
+                            ]
+                        },
+                        "remove": {
+                            "component_groups": [
+                                "rift:attacking_for_tenontosaurus",
+                                "rift:can_melee_attack",
+                                "rift:ranged_attack",
+                                "rift:unpushable",
+                                "rift:wild_cannot_move"
+                            ]
+                        }
+                    },
+                    {
+                        "filters": {
+                            "all_of": [
+                                {
+                                    "test": "bool_property",
+                                    "subject": "self",
+                                    "domain": "rift:is_hypnotized",
+                                    "value": true
+                                },
+                                {
+                                    "test": "bool_property",
+                                    "subject": "self",
+                                    "domain": "rift:is_hypnotized_tamed",
+                                    "value": false
+                                }
+                            ]
+                        },
+                        "add": {
+                            "component_groups": [
+                                "rift:follow_tenontosaurus_no_target"
+                            ]
+                        }
+                    },
+                    {
+                        "filters": {
+                            "all_of": [
+                                {
+                                    "test": "bool_property",
+                                    "subject": "self",
+                                    "domain": "rift:is_hypnotized",
+                                    "value": false
+                                },
+                                {
+                                    "test": "bool_property",
+                                    "subject": "self",
+                                    "domain": "rift:is_hypnotized_tamed",
+                                    "value": true
+                                }
+                            ]
+                        },
+                        "add": {
+                            "component_groups": [
+                                "rift:follow_tamed_tenontosaurus_no_target"
+                            ]
+                        }
+                    }
+                ]
+            },
 			"rift:hypnotized_by_tenontosaurus": {
 				"sequence": [
 					{},
@@ -4183,6 +4303,82 @@
 					"rift:is_hypnotized": true
 				}
 			},
+            "rift:hypnotized_by_tamed_tenontosaurus": {
+                "add": {
+                    "component_groups": [
+                        "rift:transform_into_hypnotized_by_tamed"
+                    ]
+                }
+            },
+            "rift:transform_into_hypnotized_by_tamed": {
+                "sequence": [
+                    {
+                        "add": {
+                            "component_groups": [
+                                "rift:dilophosaurus_adult",
+                                "rift:dilophosaurus_adult_hypnotized",
+                                "rift:variant_three",
+                                "rift:wild_can_move",
+                                "rift:pushable",
+                                "rift:default_collision",
+                                "rift:follow_tamed_tenontosaurus",
+                                "rift:follow_tamed_tenontosaurus_no_target"
+                            ]
+                        },
+                        "set_property": {
+                            "rift:is_hypnotized_tamed": true
+                        }
+                    },
+                    {
+                        "filters": {
+                            "test": "is_variant",
+                            "subject": "other",
+                            "value": 0
+                        },
+                        "add": {
+                            "component_groups": [
+                                "rift:variant_zero"
+                            ]
+                        }
+                    },
+                    {
+                        "filters": {
+                            "test": "is_variant",
+                            "subject": "other",
+                            "value": 1
+                        },
+                        "add": {
+                            "component_groups": [
+                                "rift:variant_one"
+                            ]
+                        }
+                    },
+                    {
+                        "filters": {
+                            "test": "is_variant",
+                            "subject": "other",
+                            "value": 2
+                        },
+                        "add": {
+                            "component_groups": [
+                                "rift:variant_two"
+                            ]
+                        }
+                    },
+                    {
+                        "filters": {
+                            "test": "is_variant",
+                            "subject": "other",
+                            "value": 3
+                        },
+                        "add": {
+                            "component_groups": [
+                                "rift:variant_three"
+                            ]
+                        }
+                    }
+                ]
+            },
 			"rift:start_attacking": {
 				"add": {
 					"component_groups": [
