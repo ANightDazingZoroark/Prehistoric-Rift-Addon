@@ -11,21 +11,31 @@
                     "type": "bool",
                     "default": false,
                     "client_sync": true
+                },
+                "rift:is_hypnotized_tamed": {
+                    "type": "bool",
+                    "default": false,
+                    "client_sync": true
                 }
             },
             "animations": {
                 "contWithAggravatingHorn": "controller.animation.skeleton_with_aggravating_horn",
                 "contHypnotizedTag": "controller.animation.add_hypnotized_tag",
+                "contHypnotizedTamedTag": "controller.animation.add_hypnotized_by_tamed_tag",
                 "contDieWithoutTenontosaurus": "controller.animation.general_die_without_tenontosaurus",
+                "contDieWithoutTamedTenontosaurus": "controller.animation.general_death_timer_tamed_tenontosaurus",
+                "animUseAggravatingHorn": "animation.skeleton_use_aggravating_horn",
                 "animFindTenontosaurus": "animation.find_tenontosaurus",
                 "animDeathTimer": "animation.hypnosis_death_timer",
-                "animUseAggravatingHorn": "animation.skeleton_use_aggravating_horn"
+                "animTamedDeathTimer": "animation.hypnosis_death_timer_tamed"
             },
             "scripts": {
                 "animate": [
                     "contWithAggravatingHorn",
                     "contHypnotizedTag",
-                    "contDieWithoutTenontosaurus"
+                    "contHypnotizedTamedTag",
+                    "contDieWithoutTenontosaurus",
+                    "contDieWithoutTamedTenontosaurus"
                 ]
             }
         },
@@ -385,6 +395,85 @@
                     "duration": 60
                 }
             },
+            "rift:aggravator_attack_on_use_horn_hypnotized_by_tamed": {
+                "minecraft:behavior.knockback_roar": {
+                    "priority": 0,
+                    "duration": 1,
+                    "attack_time": 0.5,
+                    "knockback_damage": 3,
+                    "knockback_strength": 1,
+                    "knockback_range": 8,
+                    "damage_filters": {
+                        "all_of": [
+                            {
+                                "test": "bool_property",
+                                "subject": "other",
+                                "domain": "rift:is_hypnotized_tamed",
+                                "value": false
+                            },
+                            {
+                                "test": "is_family",
+                                "subject": "other",
+                                "operator": "!=",
+                                "value": "tenontosaurus"
+                            },
+                            {
+                                "test": "is_family",
+                                "subject": "other",
+                                "operator": "!=",
+                                "value": "inanimate"
+                            }
+                        ]
+                    },
+                    "knockback_filters": {
+                        "all_of": [
+                            {
+                                "test": "bool_property",
+                                "subject": "other",
+                                "domain": "rift:is_hypnotized_tamed",
+                                "value": false
+                            },
+                            {
+                                "test": "is_family",
+                                "subject": "other",
+                                "operator": "!=",
+                                "value": "tenontosaurus"
+                            },
+                            {
+                                "test": "is_family",
+                                "subject": "other",
+                                "operator": "!=",
+                                "value": "inanimate"
+                            }
+                        ]
+                    },
+                    "on_roar_end": {
+                        "event": "rift:aggravator_mode_stop_honking"
+                    }
+                },
+                "minecraft:angry": {
+                    "broadcast_anger": true,
+                    "broadcast_range": 16,
+                    "broadcast_filters": {
+                        "test": "has_component",
+                        "subject": "other",
+                        "operator": "!=",
+                        "value": "minecraft:is_tamed"
+                    },
+                    "broadcast_targets": [
+                        "stegosaurus",
+                        "triceratops",
+                        "apatosaurus",
+                        "megaloceros",
+                        "dimetrodon",
+                        "utahraptor",
+                        "tyrannosaurus",
+                        "direwolf",
+                        "wolf"
+                    ],
+                    "duration": 60
+                }
+            },
             "rift:default_targets": {
                 "minecraft:behavior.nearest_attackable_target": {
                     "priority": 6,
@@ -635,6 +724,57 @@
                     "target": "self"
                 }
             },
+            "rift:follow_tamed_tenontosaurus": {
+                "minecraft:behavior.nearest_prioritized_attackable_target": {
+                    "priority": 6,
+                    "within_radius": 32.0,
+                    "entity_types": [
+                        {
+                            "filters": {
+                                "test": "has_tag",
+                                "subject": "other",
+                                "value": "tenontoTamedTarget"
+                            },
+                            "max_dist": 48,
+                            "priority": 0
+                        },
+                        {
+                            "filters": {
+                                "all_of": [
+                                    {
+                                        "test": "is_family",
+                                        "subject": "other",
+                                        "value": "tenontosaurus"
+                                    },
+                                    {
+                                        "test": "has_component",
+                                        "subject": "other",
+                                        "value": "minecraft:is_tamed"
+                                    }
+                                ]
+                            },
+                            "max_dist": 48,
+                            "priority": 1
+                        }
+                    ]
+                }
+            },
+            "rift:follow_tamed_tenontosaurus_no_target": {
+                "minecraft:behavior.ranged_attack": {
+                    "priority": 8,
+                    "attack_radius": 6.0,
+                    "attack_radius_min": 4
+                },
+                "minecraft:on_target_acquired": {
+                    "filters": {
+                        "test": "has_tag",
+                        "subject": "target",
+                        "value": "tenontoTamedTarget"
+                    },
+                    "event": "rift:attack_for_tenontosaurus",
+                    "target": "self"
+                }
+            },
             "rift:attacking_for_tenontosaurus": {
                 "minecraft:environment_sensor": {
                     "triggers": [
@@ -706,6 +846,12 @@
             "rift:transform_into_hypnotized": {
                 "minecraft:transformation": {
                     "into": "minecraft:stray<rift:transform_into_hypnotized>",
+                    "preserve_equipment": true
+                }
+            },
+            "rift:transform_into_hypnotized_by_tamed": {
+                "minecraft:transformation": {
+                    "into": "minecraft:stray<rift:transform_into_hypnotized_by_tamed>",
                     "preserve_equipment": true
                 }
             }
@@ -1023,7 +1169,8 @@
                 },
                 "remove": {
                     "component_groups": [
-                        "rift:follow_tenontosaurus_no_target"
+                        "rift:follow_tenontosaurus_no_target",
+                        "rift:follow_tamed_tenontosaurus_no_target"
                     ]
                 },
                 "run_command": {
@@ -1033,22 +1180,68 @@
                 }
             },
             "rift:stop_attacking_for_tenontosaurus": {
-                "add": {
-                    "component_groups": [
-                        "rift:follow_tenontosaurus_no_target"
-                    ]
-                },
-                "remove": {
-                    "component_groups": [
-                        "rift:attacking_for_tenontosaurus",
-                        "minecraft:melee_attack", 
-                        "minecraft:ranged_attack", 
-                        "rift:aggravator_attack",
-                        "rift:aggravator_attack_attacking", 
-                        "rift:aggravator_attack_on_use_horn",
-                        "rift:aggravator_attack_on_use_horn_hypnotized"
-                    ]
-                }
+                "sequence": [
+                    {
+                        "remove": {
+                            "component_groups": [
+                                "rift:attacking_for_tenontosaurus",
+                                "minecraft:melee_attack", 
+                                "minecraft:ranged_attack", 
+                                "rift:aggravator_attack",
+                                "rift:aggravator_attack_attacking", 
+                                "rift:aggravator_attack_on_use_horn",
+                                "rift:aggravator_attack_on_use_horn_hypnotized",
+                                "rift:aggravator_attack_on_use_horn_hypnotized_by_tamed"
+                            ]
+                        }
+                    },
+                    {
+                        "filters": {
+                            "all_of": [
+                                {
+                                    "test": "bool_property",
+                                    "subject": "self",
+                                    "domain": "rift:is_hypnotized",
+                                    "value": true
+                                },
+                                {
+                                    "test": "bool_property",
+                                    "subject": "self",
+                                    "domain": "rift:is_hypnotized_tamed",
+                                    "value": false
+                                }
+                            ]
+                        },
+                        "add": {
+                            "component_groups": [
+                                "rift:follow_tenontosaurus_no_target"
+                            ]
+                        }
+                    },
+                    {
+                        "filters": {
+                            "all_of": [
+                                {
+                                    "test": "bool_property",
+                                    "subject": "self",
+                                    "domain": "rift:is_hypnotized",
+                                    "value": false
+                                },
+                                {
+                                    "test": "bool_property",
+                                    "subject": "self",
+                                    "domain": "rift:is_hypnotized_tamed",
+                                    "value": true
+                                }
+                            ]
+                        },
+                        "add": {
+                            "component_groups": [
+                                "rift:follow_tamed_tenontosaurus_no_target"
+                            ]
+                        }
+                    }
+                ]
             },
             "rift:hypnotized_by_tenontosaurus": {
                 "add": {
@@ -1066,6 +1259,24 @@
                 },
                 "set_property": {
                     "rift:is_hypnotized": true
+                }
+            },
+            "rift:hypnotized_by_tamed_tenontosaurus": {
+                "add": {
+                    "component_groups": [
+                        "rift:transform_into_hypnotized_by_tamed"
+                    ]
+                }
+            },
+            "rift:transform_into_hypnotized_by_tamed": {
+                "add": {
+                    "component_groups": [
+                        "rift:follow_tamed_tenontosaurus",
+                        "rift:follow_tamed_tenontosaurus_no_target"
+                    ]
+                },
+                "set_property": {
+                    "rift:is_hypnotized_tamed": true
                 }
             },
 
@@ -1106,7 +1317,8 @@
                         "rift:aggravator_attack", 
                         "rift:aggravator_attack_attacking", 
                         "rift:aggravator_attack_on_use_horn",
-                        "rift:aggravator_attack_on_use_horn_hypnotized"
+                        "rift:aggravator_attack_on_use_horn_hypnotized",
+                        "rift:aggravator_attack_on_use_horn_hypnotized_by_tamed"
                     ] 
                 },
                 "add": { 
@@ -1122,7 +1334,8 @@
                         "rift:aggravator_attack", 
                         "rift:aggravator_attack_attacking", 
                         "rift:aggravator_attack_on_use_horn",
-                        "rift:aggravator_attack_on_use_horn_hypnotized"
+                        "rift:aggravator_attack_on_use_horn_hypnotized",
+                        "rift:aggravator_attack_on_use_horn_hypnotized_by_tamed"
                     ] 
                 },
                 "add": { 
@@ -1138,7 +1351,8 @@
                         "minecraft:ranged_attack", 
                         "rift:aggravator_attack_attacking", 
                         "rift:aggravator_attack_on_use_horn",
-                        "rift:aggravator_attack_on_use_horn_hypnotized"
+                        "rift:aggravator_attack_on_use_horn_hypnotized",
+                        "rift:aggravator_attack_on_use_horn_hypnotized_by_tamed"
                     ] 
                 },
                 "add": { 
@@ -1166,10 +1380,20 @@
                     },
                     {
                         "filters": {
-                            "test": "bool_property",
-                            "subject": "self",
-                            "domain": "rift:is_hypnotized",
-                            "value": false
+                            "all_of": [
+                                {
+                                    "test": "bool_property",
+                                    "subject": "self",
+                                    "domain": "rift:is_hypnotized",
+                                    "value": false
+                                },
+                                {
+                                    "test": "bool_property",
+                                    "subject": "self",
+                                    "domain": "rift:is_hypnotized_tamed",
+                                    "value": false
+                                }
+                            ]
                         },
                         "add": {
                             "component_groups": [
@@ -1179,14 +1403,47 @@
                     },
                     {
                         "filters": {
-                            "test": "bool_property",
-                            "subject": "self",
-                            "domain": "rift:is_hypnotized",
-                            "value": true
+                            "all_of": [
+                                {
+                                    "test": "bool_property",
+                                    "subject": "self",
+                                    "domain": "rift:is_hypnotized",
+                                    "value": true
+                                },
+                                {
+                                    "test": "bool_property",
+                                    "subject": "self",
+                                    "domain": "rift:is_hypnotized_tamed",
+                                    "value": false
+                                }
+                            ]
                         },
                         "add": {
                             "component_groups": [
                                 "rift:aggravator_attack_on_use_horn_hypnotized"
+                            ]
+                        }
+                    },
+                    {
+                        "filters": {
+                            "all_of": [
+                                {
+                                    "test": "bool_property",
+                                    "subject": "self",
+                                    "domain": "rift:is_hypnotized",
+                                    "value": false
+                                },
+                                {
+                                    "test": "bool_property",
+                                    "subject": "self",
+                                    "domain": "rift:is_hypnotized_tamed",
+                                    "value": true
+                                }
+                            ]
+                        },
+                        "add": {
+                            "component_groups": [
+                                "rift:aggravator_attack_on_use_horn_hypnotized_by_tamed"
                             ]
                         }
                     }
@@ -1196,7 +1453,8 @@
                 "remove": {
                     "component_groups": [
                         "rift:aggravator_attack_on_use_horn",
-                        "rift:aggravator_attack_on_use_horn_hypnotized"
+                        "rift:aggravator_attack_on_use_horn_hypnotized",
+                        "rift:aggravator_attack_on_use_horn_hypnotized_by_tamed"
                     ]
                 }
             },
@@ -1211,7 +1469,8 @@
                     "component_groups": [
                         "rift:aggravator_attack_attacking",
                         "rift:aggravator_attack_on_use_horn",
-                        "rift:aggravator_attack_on_use_horn_hypnotized"
+                        "rift:aggravator_attack_on_use_horn_hypnotized",
+                        "rift:aggravator_attack_on_use_horn_hypnotized_by_tamed"
                     ]
                 }
             }
