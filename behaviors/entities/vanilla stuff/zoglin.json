@@ -1,551 +1,701 @@
 {
-  "format_version": "1.18.30",
-  "minecraft:entity": {
-    "description": {
-      "identifier": "minecraft:zoglin",
-      "is_spawnable": true,
-      "is_summonable": true,
-      "is_experimental": false,
-      "animations": {
-          "contHypnotizedTag": "controller.animation.add_hypnotized_tag",
-          "contDieWithoutTenontosaurus": "controller.animation.general_die_without_tenontosaurus",
-          "animFindTenontosaurus": "animation.find_tenontosaurus",
-          "animDeathTimer": "animation.hypnosis_death_timer"
-      },
-      "scripts": {
-          "animate": [
-              "contHypnotizedTag",
-              "contDieWithoutTenontosaurus"
-          ]
-      },
-      "properties": {
-          "rift:is_hypnotized": {
-              "type": "bool",
-              "default": false,
-              "client_sync": true
-          }
-      }
-    },
+    "format_version": "1.18.30",
+    "minecraft:entity": {
+        "description": {
+            "identifier": "minecraft:zoglin",
+            "is_spawnable": true,
+            "is_summonable": true,
+            "is_experimental": false,
+            "animations": {
+                "contHypnotizedTag": "controller.animation.add_hypnotized_tag",
+                "contHypnotizedTamedTag": "controller.animation.add_hypnotized_by_tamed_tag",
+                "contDieWithoutTenontosaurus": "controller.animation.general_die_without_tenontosaurus",
+                "contDieWithoutTamedTenontosaurus": "controller.animation.general_death_timer_tamed_tenontosaurus",
+                "animFindTenontosaurus": "animation.find_tenontosaurus",
+                "animDeathTimer": "animation.hypnosis_death_timer",
+                "animTamedDeathTimer": "animation.hypnosis_death_timer_tamed"
+            },
+            "scripts": {
+                "animate": [
+                    "contHypnotizedTag",
+                    "contHypnotizedTamedTag",
+                    "contDieWithoutTenontosaurus",
+                    "contDieWithoutTamedTenontosaurus"
+                ]
+            },
+            "properties": {
+                "rift:is_hypnotized": {
+                    "type": "bool",
+                    "default": false,
+                    "client_sync": true
+                },
+                "rift:is_hypnotized_tamed": {
+                    "type": "bool",
+                    "default": false,
+                    "client_sync": true
+                }
+            }
+        },
 
-    "component_groups": {
-      "zoglin_baby": {
-        "minecraft:type_family": {
-          "family": [ "zoglin", "zoglin_baby", "undead", "mob", "monster" ]
-        },
-        "minecraft:is_baby": {
-        },
-        "minecraft:attack": {
-          "damage": 0.5
-        },
-        "minecraft:scale": {
-          "value": 0.5
-        },
-        "minecraft:collision_box": {
-          "width": 0.85,
-          "height": 0.85
-        },
-        "minecraft:custom_hit_test": {
-          "hitboxes": [
-            {
-              "width": 1.0,
-              "height": 0.85,
-              "pivot": [ 0, 0.5, 0 ]
+        "component_groups": {
+            "zoglin_baby": {
+                "minecraft:type_family": {
+                "family": [ "zoglin", "zoglin_baby", "undead", "mob", "monster" ]
+                },
+                "minecraft:is_baby": {
+                },
+                "minecraft:attack": {
+                "damage": 0.5
+                },
+                "minecraft:scale": {
+                "value": 0.5
+                },
+                "minecraft:collision_box": {
+                "width": 0.85,
+                "height": 0.85
+                },
+                "minecraft:custom_hit_test": {
+                "hitboxes": [
+                    {
+                    "width": 1.0,
+                    "height": 0.85,
+                    "pivot": [ 0, 0.5, 0 ]
+                    }
+                ]
+                }
+            },
+            "zoglin_adult": {
+                "minecraft:type_family": {
+                "family": [ "zoglin", "zoglin_adult", "undead", "mob", "monster" ]
+                },
+                "minecraft:collision_box": {
+                "width": 0.9,
+                "height": 0.9
+                },
+                "minecraft:custom_hit_test": {
+                "hitboxes": [
+                    {
+                    "width": 2.0,
+                    "height": 1.75,
+                    "pivot": [ 0, 1, 0 ]
+                    }
+                ]
+                },
+                "minecraft:behavior.hurt_by_target": {
+                "priority": 1
+                },                
+                "minecraft:attack": {
+                "damage": [ 3, 8 ]
+                }
+            },
+            "rift:zoglin_adult_hypnotized": {
+                "minecraft:type_family": {
+                "family": [ "zoglin", "zoglin_adult", "undead", "mob", "monster" ]
+                },
+                "minecraft:collision_box": {
+                "width": 0.9,
+                "height": 0.9
+                },
+                "minecraft:custom_hit_test": {
+                "hitboxes": [
+                    {
+                    "width": 2.0,
+                    "height": 1.75,
+                    "pivot": [ 0, 1, 0 ]
+                    }
+                ]
+                },
+                "minecraft:attack": {
+                "damage": [ 3, 8 ]
+                }
+            },
+            "rift:not_hypnotized": {
+                "minecraft:behavior.avoid_mob_type": {
+                "priority": 0,
+                "entity_types": [
+                    {
+                    "filters": {
+                        "test": "is_family",
+                        "value": "parasaurScary",
+                        "subject": "other"
+                    },
+                    "max_dist": 12,
+                    "must_see": true,
+                    "walk_speed_multiplier": 1.2,
+                    "sprint_speed_multiplier": 1.2
+                    }
+                ]
+                },
+                "minecraft:behavior.nearest_attackable_target": {
+                "priority": 3,
+                "within_radius": 16.0,
+                "entity_types": [
+                    {
+                    "filters": {
+                        "all_of": [
+                        {
+                            "test": "is_family",
+                            "subject": "other",
+                            "operator": "!=",
+                            "value": "zoglin"
+                        },
+                        {
+                            "test": "is_family",
+                            "subject": "other",
+                            "operator": "!=",
+                            "value": "creeper"
+                        }
+                        ]
+                    },
+                    "max_dist": 16
+                    },
+                    {
+                    "filters": {
+                        "all_of": [
+                        {
+                            "test": "is_family",
+                            "subject": "other",
+                            "value": "player"
+                        },
+                        {
+                            "test": "is_riding",
+                            "subject": "other",
+                            "value": false
+                        }
+                        ]
+                    },
+                    "max_dist": 16
+                    },
+                    {
+                    "filters": {
+                        "test": "is_family",
+                        "subject": "other",
+                        "value": "parasaurAngerer"
+                    },
+                    "max_dist": 64
+                    }
+                ],
+                "must_see": true
+                },
+                "minecraft:behavior.melee_attack": {
+                "priority": 4,
+                "speed_multiplier": 1.4,
+                "track_target": true
+                },
+                "minecraft:behavior.random_stroll": {
+                "priority": 7,
+                "speed_multiplier": 1.0
+                },
+                "minecraft:behavior.random_look_around": {
+                "priority": 9
+                },
+                "minecraft:behavior.look_at_player": {
+                "priority": 8,
+                "look_distance": 6.0,
+                "probability": 0.02
+                }
+            },
+            "rift:follow_tenontosaurus": {
+                "minecraft:behavior.nearest_prioritized_attackable_target": {
+                    "priority": 3,
+                    "within_radius": 32.0,
+                    "entity_types": [
+                        {
+                            "filters": {
+                                "all_of": [
+                                    {
+                                        "test": "has_tag",
+                                        "subject": "other",
+                                        "value": "tenontoTarget"
+                                    }
+                                ]
+                            },
+                            "max_dist": 48,
+                            "priority": 0
+                        },
+                        {
+                            "filters": {
+                                "all_of": [
+                                    {
+                                        "test": "is_family",
+                                        "subject": "other",
+                                        "value": "tenontosaurus"
+                                    },
+                                    {
+                                        "test": "has_component",
+                                        "subject": "other",
+                                        "operator": "!=",
+                                        "value": "minecraft:is_tamed"
+                                    }
+                                ]
+                            },
+                            "max_dist": 48,
+                            "priority": 1
+                        }
+                    ]
+                }
+            },
+            "rift:follow_tenontosaurus_no_target": {
+                "minecraft:behavior.ranged_attack": {
+                    "priority": 7,
+                    "attack_radius": 6.0,
+                    "attack_radius_min": 4
+                },
+                "minecraft:on_target_acquired": {
+                    "filters": {
+                        "all_of": [
+                            {
+                                "test": "has_component",
+                                "subject": "target",
+                                "operator": "!=",
+                                "value": "minecraft:is_tamed"
+                            },
+                            {
+                                "test": "is_family",
+                                "subject": "target",
+                                "operator": "!=",
+                                "value": "tenontosaurus"
+                            }
+                        ]
+                    },
+                    "event": "rift:attack_for_tenontosaurus",
+                    "target": "self"
+                }
+            },
+            "rift:follow_tamed_tenontosaurus": {
+                "minecraft:behavior.nearest_prioritized_attackable_target": {
+                    "priority": 3,
+                    "within_radius": 32.0,
+                    "entity_types": [
+                        {
+                            "filters": {
+                                "test": "has_tag",
+                                "subject": "other",
+                                "value": "tenontoTamedTarget"
+                            },
+                            "max_dist": 48,
+                            "priority": 0
+                        },
+                        {
+                            "filters": {
+                                "all_of": [
+                                    {
+                                        "test": "is_family",
+                                        "subject": "other",
+                                        "value": "tenontosaurus"
+                                    },
+                                    {
+                                        "test": "has_component",
+                                        "subject": "other",
+                                        "value": "minecraft:is_tamed"
+                                    }
+                                ]
+                            },
+                            "max_dist": 48,
+                            "priority": 1
+                        }
+                    ]
+                }
+            },
+            "rift:follow_tamed_tenontosaurus_no_target": {
+                "minecraft:behavior.ranged_attack": {
+                    "priority": 7,
+                    "attack_radius": 6.0,
+                    "attack_radius_min": 4
+                },
+                "minecraft:on_target_acquired": {
+                    "filters": {
+                        "test": "has_tag",
+                        "subject": "target",
+                        "value": "tenontoTamedTarget"
+                    },
+                    "event": "rift:attack_for_tenontosaurus",
+                    "target": "self"
+                }
+            },
+            "rift:attacking_for_tenontosaurus": {
+                "minecraft:behavior.melee_attack": {
+                "priority": 4,
+                "speed_multiplier": 1.4,
+                "track_target": true
+                },
+                "minecraft:on_target_escape": {
+                    "event": "rift:stop_attacking_for_tenontosaurus",
+                    "target": "self"
+                }
+            },
+            "rift:transform_into_hypnotized": {
+                "minecraft:transformation": {
+                    "into": "minecraft:zoglin<rift:transform_into_hypnotized>"
+                }
+            },
+            "rift:transform_into_hypnotized_by_tamed": {
+                "minecraft:transformation": {
+                    "into": "minecraft:zoglin<rift:transform_into_hypnotized_by_tamed>"
+                }
             }
-          ]
-        }
-      },
-      "zoglin_adult": {
-        "minecraft:type_family": {
-          "family": [ "zoglin", "zoglin_adult", "undead", "mob", "monster" ]
         },
-        "minecraft:collision_box": {
-          "width": 0.9,
-          "height": 0.9
+
+        "components": {
+            "minecraft:is_hidden_when_invisible": {},
+            "minecraft:nameable": {},
+            "minecraft:loot": {
+                "table": "loot_tables/entities/zoglin.json"
+            },
+            "minecraft:experience_reward": {
+                "on_bred": "Math.Random(1,7)",
+                "on_death": "query.last_hit_by_player ? 5 : 0"
+            },
+            "minecraft:health": {
+                "value": 40,
+                "max": 40
+            },
+            "minecraft:knockback_resistance": {
+                "value": 0.6
+            },
+            "minecraft:breathable": {
+                "total_supply": 15,
+                "suffocate_time": 0,
+                "breathes_water": true
+            },
+            "minecraft:movement": {
+                "value": 0.25
+            },
+            "minecraft:navigation.walk": {
+                "is_amphibious": true,
+                "can_path_over_water": false,
+                "avoid_water": true,
+                "avoid_damage_blocks": true
+            },
+            "minecraft:movement.basic": {},
+            "minecraft:jump.static": {},
+            "minecraft:can_climb": {},
+            "minecraft:fire_immune": {},
+            "minecraft:leashable": {
+                "soft_distance": 4.0,
+                "hard_distance": 6.0,
+                "max_distance": 10.0
+            },
+            "minecraft:balloonable": {},
+            "minecraft:despawn": {
+                "filters": {
+                "any_of": [
+                    {
+                    "all_of": [
+                        {
+                        "test": "is_persistent",
+                        "value": false
+                        },
+                        {
+                        "test": "distance_to_nearest_player",
+                        "operator": ">",
+                        "value": 54
+                        }
+                    ]
+                    },
+                    {
+                    "all_of": [
+                        {
+                        "test": "is_persistent",
+                        "value": false
+                        },
+                        {
+                        "test": "inactivity_timer",
+                        "subject": "self",
+                        "value": 30
+                        },
+                        {
+                        "test": "random_chance",
+                        "value": 800
+                        },
+                        {
+                        "test": "distance_to_nearest_player",
+                        "operator": ">",
+                        "value": 32
+                        }
+                    ]
+                    }
+                ]
+                }
+            },
+            "minecraft:physics": {},
+            "minecraft:pushable": {
+                "is_pushable": true,
+                "is_pushable_by_piston": true
+            },
+            "minecraft:conditional_bandwidth_optimization": {}
         },
-        "minecraft:custom_hit_test": {
-          "hitboxes": [
-            {
-              "width": 2.0,
-              "height": 1.75,
-              "pivot": [ 0, 1, 0 ]
-            }
-          ]
-        },
-        "minecraft:behavior.hurt_by_target": {
-          "priority": 1
-        },                
-        "minecraft:attack": {
-          "damage": [ 3, 8 ]
-        }
-      },
-      "rift:zoglin_adult_hypnotized": {
-        "minecraft:type_family": {
-          "family": [ "zoglin", "zoglin_adult", "undead", "mob", "monster" ]
-        },
-        "minecraft:collision_box": {
-          "width": 0.9,
-          "height": 0.9
-        },
-        "minecraft:custom_hit_test": {
-          "hitboxes": [
-            {
-              "width": 2.0,
-              "height": 1.75,
-              "pivot": [ 0, 1, 0 ]
-            }
-          ]
-        },
-        "minecraft:attack": {
-          "damage": [ 3, 8 ]
-        }
-      },
-      "rift:not_hypnotized": {
-        "minecraft:behavior.avoid_mob_type": {
-          "priority": 0,
-          "entity_types": [
-            {
-              "filters": {
-                "test": "is_family",
-                "value": "parasaurScary",
-                "subject": "other"
-              },
-              "max_dist": 12,
-              "must_see": true,
-              "walk_speed_multiplier": 1.2,
-              "sprint_speed_multiplier": 1.2
-            }
-          ]
-        },
-        "minecraft:behavior.nearest_attackable_target": {
-          "priority": 3,
-          "within_radius": 16.0,
-          "entity_types": [
-            {
-              "filters": {
-                "all_of": [
-                  {
-                    "test": "is_family",
+
+        "events": {
+            "minecraft:entity_transformed": {
+                "sequence": [
+                {
+                    "filters": {
+                    "test": "has_component",
+                    "subject": "other",
+                    "value": "minecraft:is_baby"
+                    },
+                    "add": {
+                    "component_groups": [
+                        "zoglin_baby",
+                        "rift:not_hypnotized"
+                    ]
+                    }
+                },
+                {
+                    "filters": {
+                    "test": "has_component",
                     "subject": "other",
                     "operator": "!=",
-                    "value": "zoglin"
-                  },
-                  {
-                    "test": "is_family",
-                    "subject": "other",
-                    "operator": "!=",
-                    "value": "creeper"
-                  }
-                ]
-              },
-              "max_dist": 16
-            },
-            {
-              "filters": {
-                "all_of": [
-                  {
-                    "test": "is_family",
-                    "subject": "other",
-                    "value": "player"
-                  },
-                  {
-                    "test": "is_riding",
-                    "subject": "other",
-                    "value": false
-                  }
-                ]
-              },
-              "max_dist": 16
-            },
-            {
-              "filters": {
-                "test": "is_family",
-                "subject": "other",
-                "value": "parasaurAngerer"
-              },
-              "max_dist": 64
-            }
-          ],
-          "must_see": true
-        },
-        "minecraft:behavior.melee_attack": {
-          "priority": 4,
-          "speed_multiplier": 1.4,
-          "track_target": true
-        },
-        "minecraft:behavior.random_stroll": {
-          "priority": 7,
-          "speed_multiplier": 1.0
-        },
-        "minecraft:behavior.random_look_around": {
-          "priority": 9
-        },
-        "minecraft:behavior.look_at_player": {
-          "priority": 8,
-          "look_distance": 6.0,
-          "probability": 0.02
-        }
-      },
-      "rift:follow_tenontosaurus": {
-          "minecraft:behavior.nearest_prioritized_attackable_target": {
-              "priority": 3,
-              "within_radius": 32.0,
-              "entity_types": [
-                  {
-                      "filters": {
-                          "all_of": [
-                              {
-                                  "test": "has_tag",
-                                  "subject": "other",
-                                  "value": "tenontoTarget"
-                              }
-                          ]
-                      },
-                      "max_dist": 48,
-                      "priority": 0
-                  },
-                  {
-                      "filters": {
-                          "all_of": [
-                              {
-                                  "test": "is_family",
-                                  "subject": "other",
-                                  "value": "tenontosaurus"
-                              },
-                              {
-                                  "test": "has_component",
-                                  "subject": "other",
-                                  "operator": "!=",
-                                  "value": "minecraft:is_tamed"
-                              }
-                          ]
-                      },
-                      "max_dist": 48,
-                      "priority": 1
-                  }
-              ]
-          }
-      },
-      "rift:follow_tenontosaurus_no_target": {
-          "minecraft:behavior.ranged_attack": {
-              "priority": 7,
-              "attack_radius": 6.0,
-              "attack_radius_min": 4
-          },
-          "minecraft:on_target_acquired": {
-              "filters": {
-                  "all_of": [
-                      {
-                          "test": "has_component",
-                          "subject": "target",
-                          "operator": "!=",
-                          "value": "minecraft:is_tamed"
-                      },
-                      {
-                          "test": "is_family",
-                          "subject": "target",
-                          "operator": "!=",
-                          "value": "tenontosaurus"
-                      }
-                  ]
-              },
-              "event": "rift:attack_for_tenontosaurus",
-              "target": "self"
-          }
-      },
-      "rift:attacking_for_tenontosaurus": {
-        "minecraft:behavior.melee_attack": {
-          "priority": 4,
-          "speed_multiplier": 1.4,
-          "track_target": true
-        },
-          "minecraft:on_target_escape": {
-              "event": "rift:stop_attacking_for_tenontosaurus",
-              "target": "self"
-          }
-      },
-      "rift:transform_into_hypnotized": {
-        "minecraft:transformation": {
-            "into": "minecraft:zoglin<rift:transform_into_hypnotized>"
-        }
-      }
-    },
-
-    "components": {
-      "minecraft:is_hidden_when_invisible": {
-      },
-      "minecraft:nameable": {
-      },
-      "minecraft:loot": {
-        "table": "loot_tables/entities/zoglin.json"
-      },
-      "minecraft:experience_reward": {
-        "on_bred": "Math.Random(1,7)",
-        "on_death": "query.last_hit_by_player ? 5 : 0"
-      },
-      "minecraft:health": {
-        "value": 40,
-        "max": 40
-      },
-      "minecraft:knockback_resistance": {
-        "value": 0.6
-      },
-      "minecraft:breathable": {
-        "total_supply": 15,
-        "suffocate_time": 0,
-        "breathes_water": true
-      },
-      "minecraft:movement": {
-        "value": 0.25
-      },
-      "minecraft:navigation.walk": {
-        "is_amphibious": true,
-        "can_path_over_water": false,
-        "avoid_water": true,
-        "avoid_damage_blocks": true
-      },
-      "minecraft:movement.basic": {
-      },
-      "minecraft:jump.static": {
-      },
-      "minecraft:can_climb": {
-      },
-      "minecraft:fire_immune": {
-      },
-      "minecraft:leashable": {
-        "soft_distance": 4.0,
-        "hard_distance": 6.0,
-        "max_distance": 10.0
-      },
-      "minecraft:balloonable": {
-      },
-      "minecraft:despawn": {
-        "filters": {
-          "any_of": [
-            {
-              "all_of": [
-                {
-                  "test": "is_persistent",
-                  "value": false
-                },
-                {
-                  "test": "distance_to_nearest_player",
-                  "operator": ">",
-                  "value": 54
+                    "value": "minecraft:is_baby"
+                    },
+                    "add": {
+                    "component_groups": [
+                        "zoglin_adult",
+                        "rift:not_hypnotized"
+                    ]
+                    }
                 }
-              ]
+                ]
             },
-            {
-              "all_of": [
+            "minecraft:entity_spawned": {
+                "randomize": [
                 {
-                  "test": "is_persistent",
-                  "value": false
+                    "weight": 95,
+                    "add": {
+                    "component_groups": [
+                        "zoglin_adult",
+                        "rift:not_hypnotized"
+                    ]
+                    }
                 },
                 {
-                  "test": "inactivity_timer",
-                  "subject": "self",
-                  "value": 30
-                },
-                {
-                  "test": "random_chance",
-                  "value": 800
-                },
-                {
-                  "test": "distance_to_nearest_player",
-                  "operator": ">",
-                  "value": 32
+                    "weight": 5,
+                    "add": {
+                    "component_groups": [
+                        "zoglin_baby",
+                        "rift:not_hypnotized"
+                    ]
+                    }
                 }
-              ]
-            }
-          ]
-        }
-      },
-      "minecraft:physics": {
-      },
-      "minecraft:pushable": {
-        "is_pushable": true,
-        "is_pushable_by_piston": true
-      },
-      "minecraft:conditional_bandwidth_optimization": {
-      }
-    },
+                ]
+            },
 
-    "events": {
-      "minecraft:entity_transformed": {
-        "sequence": [
-          {
-            "filters": {
-              "test": "has_component",
-              "subject": "other",
-              "value": "minecraft:is_baby"
+            "minecraft:as_adult": {
+                "add": {
+                "component_groups": [
+                    "zoglin_adult",
+                    "rift:not_hypnotized"
+                ]
+                }
             },
-            "add": {
-              "component_groups": [
-                "zoglin_baby",
-                "rift:not_hypnotized"
-              ]
-            }
-          },
-          {
-            "filters": {
-              "test": "has_component",
-              "subject": "other",
-              "operator": "!=",
-              "value": "minecraft:is_baby"
+            "minecraft:as_baby": {
+                "add": {
+                "component_groups": [
+                    "zoglin_baby",
+                    "rift:not_hypnotized"
+                ]
+                }
             },
-            "add": {
-              "component_groups": [
-                "zoglin_adult",
-                "rift:not_hypnotized"
-              ]
+            
+            "rift:spawn_hypnotized_by_tenontosaurus": {
+                "randomize": [
+                {
+                    "weight": 95,
+                    "add": {
+                    "component_groups": [
+                        "rift:zoglin_adult_hypnotized",
+                        "rift:follow_tenontosaurus",
+                        "rift:follow_tenontosaurus_no_target"
+                    ]
+                    },
+                    "set_property": {
+                        "rift:is_hypnotized": true
+                    }
+                },
+                {
+                    "weight": 5,
+                    "add": {
+                    "component_groups": [
+                        "zoglin_baby",
+                        "rift:follow_tenontosaurus",
+                        "rift:follow_tenontosaurus_no_target"
+                    ]
+                    },
+                    "set_property": {
+                        "rift:is_hypnotized": true
+                    }
+                }
+                ]
+            },
+            "rift:attack_for_tenontosaurus": {
+                "add": {
+                    "component_groups": [
+                        "rift:attacking_for_tenontosaurus"
+                    ]
+                },
+                "remove": {
+                    "component_groups": [
+                        "rift:follow_tenontosaurus_no_target",
+                        "rift:follow_tamed_tenontosaurus_no_target"
+                    ]
+                },
+                "run_command": {
+                    "command": [
+                        "say FOR THE QUEEN"
+                    ]
+                }
+            },
+            "rift:stop_attacking_for_tenontosaurus": {
+                "sequence": [
+                    {
+                        "remove": {
+                            "component_groups": [
+                                "rift:attacking_for_tenontosaurus"
+                            ]
+                        }
+                    },
+                    {
+                        "filters": {
+                            "all_of": [
+                                {
+                                    "test": "bool_property",
+                                    "subject": "self",
+                                    "domain": "rift:is_hypnotized",
+                                    "value": true
+                                },
+                                {
+                                    "test": "bool_property",
+                                    "subject": "self",
+                                    "domain": "rift:is_hypnotized_tamed",
+                                    "value": false
+                                }
+                            ]
+                        },
+                        "add": {
+                            "component_groups": [
+                                "rift:follow_tenontosaurus_no_target"
+                            ]
+                        }
+                    },
+                    {
+                        "filters": {
+                            "all_of": [
+                                {
+                                    "test": "bool_property",
+                                    "subject": "self",
+                                    "domain": "rift:is_hypnotized",
+                                    "value": false
+                                },
+                                {
+                                    "test": "bool_property",
+                                    "subject": "self",
+                                    "domain": "rift:is_hypnotized_tamed",
+                                    "value": true
+                                }
+                            ]
+                        },
+                        "add": {
+                            "component_groups": [
+                                "rift:follow_tamed_tenontosaurus_no_target"
+                            ]
+                        }
+                    }
+                ]
+            },
+            "rift:hypnotized_by_tenontosaurus": {
+                "add": {
+                    "component_groups": [
+                        "rift:transform_into_hypnotized"
+                    ]
+                }
+            },
+            "rift:transform_into_hypnotized": {
+                "sequence": [
+                    {
+                        "filters": {
+                        "test": "has_component",
+                        "subject": "other",
+                        "value": "minecraft:is_baby"
+                        },
+                        "add": {
+                        "component_groups": [
+                            "zoglin_baby",
+                            "rift:follow_tenontosaurus",
+                            "rift:follow_tenontosaurus_no_target"
+                        ]
+                        },
+                        "set_property": {
+                            "rift:is_hypnotized": true
+                        }
+                    },
+                    {
+                        "filters": {
+                        "test": "has_component",
+                        "subject": "other",
+                        "operator": "!=",
+                        "value": "minecraft:is_baby"
+                        },
+                        "add": {
+                        "component_groups": [
+                            "rift:zoglin_adult_hypnotized",
+                            "rift:follow_tenontosaurus",
+                            "rift:follow_tenontosaurus_no_target"
+                        ]
+                        },
+                        "set_property": {
+                            "rift:is_hypnotized": true
+                        }
+                    }
+                ]
+            },
+            "rift:hypnotized_by_tamed_tenontosaurus": {
+                "add": {
+                    "component_groups": [
+                        "rift:transform_into_hypnotized_by_tamed"
+                    ]
+                }
+            },
+            "rift:transform_into_hypnotized_by_tamed": {
+                "sequence": [
+                    {
+                        "add": {
+                            "component_groups": [
+                                "rift:follow_tamed_tenontosaurus",
+                                "rift:follow_tamed_tenontosaurus_no_target"
+                            ]
+                        },
+                        "set_property": {
+                            "rift:is_hypnotized_tamed": true
+                        }
+                    },
+                    {
+                        "filters": {
+                            "test": "has_component",
+                            "subject": "other",
+                            "value": "minecraft:is_baby"
+                        },
+                        "add": {
+                            "component_groups": [
+                                "zoglin_baby"
+                            ]
+                        }
+                    },
+                    {
+                        "filters": {
+                            "test": "has_component",
+                            "subject": "other",
+                            "operator": "!=",
+                            "value": "minecraft:is_baby"
+                        },
+                        "add": {
+                            "component_groups": [
+                                "rift:zoglin_adult_hypnotized"
+                            ]
+                        }
+                    }
+                ]
             }
-          }
-        ]
-      },
-      "minecraft:entity_spawned": {
-        "randomize": [
-          {
-            "weight": 95,
-            "add": {
-              "component_groups": [
-                "zoglin_adult",
-                "rift:not_hypnotized"
-              ]
-            }
-          },
-          {
-            "weight": 5,
-            "add": {
-              "component_groups": [
-                "zoglin_baby",
-                "rift:not_hypnotized"
-              ]
-            }
-          }
-        ]
-      },
-
-      "minecraft:as_adult": {
-        "add": {
-          "component_groups": [
-            "zoglin_adult",
-            "rift:not_hypnotized"
-          ]
         }
-      },
-      "minecraft:as_baby": {
-        "add": {
-          "component_groups": [
-            "zoglin_baby",
-            "rift:not_hypnotized"
-          ]
-        }
-      },
-      
-      "rift:spawn_hypnotized_by_tenontosaurus": {
-        "randomize": [
-          {
-            "weight": 95,
-            "add": {
-              "component_groups": [
-                "zoglin_adult",
-                "rift:follow_tenontosaurus",
-                "rift:follow_tenontosaurus_no_target"
-              ]
-            },
-            "set_property": {
-                "rift:is_hypnotized": true
-            }
-          },
-          {
-            "weight": 5,
-            "add": {
-              "component_groups": [
-                "zoglin_baby",
-                "rift:follow_tenontosaurus",
-                "rift:follow_tenontosaurus_no_target"
-              ]
-            },
-            "set_property": {
-                "rift:is_hypnotized": true
-            }
-          }
-        ]
-      },
-      "rift:attack_for_tenontosaurus": {
-          "add": {
-              "component_groups": [
-                  "rift:attacking_for_tenontosaurus"
-              ]
-          },
-          "remove": {
-              "component_groups": [
-                  "rift:follow_tenontosaurus_no_target"
-              ]
-          },
-          "run_command": {
-              "command": [
-                  "say FOR THE QUEEN"
-              ]
-          }
-      },
-      "rift:stop_attacking_for_tenontosaurus": {
-          "add": {
-              "component_groups": [
-                  "rift:follow_tenontosaurus_no_target"
-              ]
-          },
-          "remove": {
-              "component_groups": [
-                  "rift:attacking_for_tenontosaurus"
-              ]
-          }
-      },
-      "rift:hypnotized_by_tenontosaurus": {
-        "add": {
-            "component_groups": [
-                "rift:transform_into_hypnotized"
-            ]
-        }
-      },
-      "rift:transform_into_hypnotized": {
-        "sequence": [
-          {
-            "filters": {
-              "test": "has_component",
-              "subject": "other",
-              "value": "minecraft:is_baby"
-            },
-            "add": {
-              "component_groups": [
-                "zoglin_baby",
-                "rift:follow_tenontosaurus",
-                "rift:follow_tenontosaurus_no_target"
-              ]
-            },
-            "set_property": {
-                "rift:is_hypnotized": true
-            }
-          },
-          {
-            "filters": {
-              "test": "has_component",
-              "subject": "other",
-              "operator": "!=",
-              "value": "minecraft:is_baby"
-            },
-            "add": {
-              "component_groups": [
-                "zoglin_adult",
-                "rift:follow_tenontosaurus",
-                "rift:follow_tenontosaurus_no_target"
-              ]
-            },
-            "set_property": {
-                "rift:is_hypnotized": true
-            }
-          }
-        ]
-      }
     }
-  }
 }
