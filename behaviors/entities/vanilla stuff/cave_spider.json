@@ -8,18 +8,28 @@
             "is_experimental": false,
             "animations": {
                 "contHypnotizedTag": "controller.animation.add_hypnotized_tag",
+                "contHypnotizedTamedTag": "controller.animation.add_hypnotized_by_tamed_tag",
                 "contDieWithoutTenontosaurus": "controller.animation.general_die_without_tenontosaurus",
+                "contDieWithoutTamedTenontosaurus": "controller.animation.general_death_timer_tamed_tenontosaurus",
                 "animFindTenontosaurus": "animation.find_tenontosaurus",
-                "animDeathTimer": "animation.hypnosis_death_timer"
+                "animDeathTimer": "animation.hypnosis_death_timer",
+                "animTamedDeathTimer": "animation.hypnosis_death_timer_tamed"
             },
             "scripts": {
                 "animate": [
                     "contHypnotizedTag",
-                    "contDieWithoutTenontosaurus"
+                    "contHypnotizedTamedTag",
+                    "contDieWithoutTenontosaurus",
+                    "contDieWithoutTamedTenontosaurus"
                 ]
             },
             "properties": {
                 "rift:is_hypnotized": {
+                    "type": "bool",
+                    "default": false,
+                    "client_sync": true
+                },
+                "rift:is_hypnotized_tamed": {
                     "type": "bool",
                     "default": false,
                     "client_sync": true
@@ -366,6 +376,57 @@
                     "target": "self"
                 }
             },
+            "rift:follow_tamed_tenontosaurus": {
+                "minecraft:behavior.nearest_prioritized_attackable_target": {
+                    "priority": 3,
+                    "within_radius": 32.0,
+                    "entity_types": [
+                        {
+                            "filters": {
+                                "test": "has_tag",
+                                "subject": "other",
+                                "value": "tenontoTamedTarget"
+                            },
+                            "max_dist": 48,
+                            "priority": 0
+                        },
+                        {
+                            "filters": {
+                                "all_of": [
+                                    {
+                                        "test": "is_family",
+                                        "subject": "other",
+                                        "value": "tenontosaurus"
+                                    },
+                                    {
+                                        "test": "has_component",
+                                        "subject": "other",
+                                        "value": "minecraft:is_tamed"
+                                    }
+                                ]
+                            },
+                            "max_dist": 48,
+                            "priority": 1
+                        }
+                    ]
+                }
+            },
+            "rift:follow_tamed_tenontosaurus_no_target": {
+                "minecraft:behavior.ranged_attack": {
+                    "priority": 7,
+                    "attack_radius": 6.0,
+                    "attack_radius_min": 4
+                },
+                "minecraft:on_target_acquired": {
+                    "filters": {
+                        "test": "has_tag",
+                        "subject": "target",
+                        "value": "tenontoTamedTarget"
+                    },
+                    "event": "rift:attack_for_tenontosaurus",
+                    "target": "self"
+                }
+            },
             "rift:attacking_for_tenontosaurus": {
                 "minecraft:behavior.leap_at_target": {
                     "priority": 5,
@@ -390,6 +451,16 @@
             "rift:transform_into_hypnotized_with_jockey": {
                 "minecraft:transformation": {
                     "into": "minecraft:cave_spider<rift:transform_into_hypnotized_with_jockey>"
+                }
+            },
+            "rift:transform_into_hypnotized_tamed": {
+                "minecraft:transformation": {
+                    "into": "minecraft:cave_spider<rift:transform_into_hypnotized_tamed>"
+                }
+            },
+            "rift:transform_into_hypnotized_tamed_with_jockey": {
+                "minecraft:transformation": {
+                    "into": "minecraft:cave_spider<rift:transform_into_hypnotized_tamed_with_jockey>"
                 }
             }
         },
@@ -640,7 +711,8 @@
                         },
                         "remove": {
                             "component_groups": [
-                                "rift:follow_tenontosaurus_no_target"
+                                "rift:follow_tenontosaurus_no_target",
+                                "rift:follow_tamed_tenontosaurus_no_target"
                             ]
                         },
                         "run_command": {
@@ -703,19 +775,64 @@
                 ]
             },
             "rift:stop_attacking_for_tenontosaurus": {
-                "add": {
-                    "component_groups": [
-                        "rift:follow_tenontosaurus_no_target"
-                    ]
-                },
-                "remove": {
-                    "component_groups": [
-                        "rift:attacking_for_tenontosaurus",
-                        "minecraft:spider_poison_easy", 
-                        "minecraft:spider_poison_normal",
-                        "minecraft:spider_poison_hard" 
-                    ]
-                }
+                "sequence": [
+                    {
+                        "remove": {
+                            "component_groups": [
+                                "rift:attacking_for_tenontosaurus",
+                                "minecraft:spider_poison_easy", 
+                                "minecraft:spider_poison_normal",
+                                "minecraft:spider_poison_hard" 
+                            ]
+                        }
+                    },
+                    {
+                        "filters": {
+                            "all_of": [
+                                {
+                                    "test": "bool_property",
+                                    "subject": "self",
+                                    "domain": "rift:is_hypnotized",
+                                    "value": true
+                                },
+                                {
+                                    "test": "bool_property",
+                                    "subject": "self",
+                                    "domain": "rift:is_hypnotized_tamed",
+                                    "value": false
+                                }
+                            ]
+                        },
+                        "add": {
+                            "component_groups": [
+                                "rift:follow_tenontosaurus_no_target"
+                            ]
+                        }
+                    },
+                    {
+                        "filters": {
+                            "all_of": [
+                                {
+                                    "test": "bool_property",
+                                    "subject": "self",
+                                    "domain": "rift:is_hypnotized",
+                                    "value": false
+                                },
+                                {
+                                    "test": "bool_property",
+                                    "subject": "self",
+                                    "domain": "rift:is_hypnotized_tamed",
+                                    "value": true
+                                }
+                            ]
+                        },
+                        "add": {
+                            "component_groups": [
+                                "rift:follow_tamed_tenontosaurus_no_target"
+                            ]
+                        }
+                    }
+                ]
             },
             "rift:hypnotized_by_tenontosaurus": {
                 "sequence": [
@@ -772,7 +889,71 @@
                 },
                 "run_command": {
                     "command": [
+                        "ride @e[family=skeleton, c=1, tag=hypnotized] start_riding @s teleport_rider until_full"
+                    ]
+                }
+            },
+            "rift:hypnotized_by_tamed_tenontosaurus": {
+                "sequence": [
+                    {},
+                    {
+                        "filters": {
+                            "test": "rider_count",
+                            "subject": "self",
+                            "operator": "==",
+                            "value": 0
+                        },
+                        "add": {
+                            "component_groups": [
+                                "rift:transform_into_hypnotized_tamed"
+                            ]
+                        }
+                    },
+                    {
+                        "filters": {
+                            "test": "rider_count",
+                            "subject": "self",
+                            "operator": ">",
+                            "value": 0
+                        },
+                        "add": {
+                            "component_groups": [
+                                "rift:transform_into_hypnotized_tamed_with_jockey"
+                            ]
+                        }
+                    }
+                ]
+            },
+            "rift:transform_into_hypnotized_tamed": {
+                "add": {
+                    "component_groups": [
+                        "rift:follow_tamed_tenontosaurus",
+                        "rift:follow_tamed_tenontosaurus_no_target",
+                        "rift:hypnotized_with_jockey"
+                    ]
+                },
+                "set_property": {
+                    "rift:is_hypnotized_tamed": true
+                },
+                "run_command": {
+                    "command": [
                         "ride @e[family=skeleton, c=1] start_riding @s teleport_rider until_full"
+                    ]
+                }
+            },
+            "rift:transform_into_hypnotized_tamed_with_jockey": {
+                "add": {
+                    "component_groups": [
+                        "rift:follow_tamed_tenontosaurus",
+                        "rift:follow_tamed_tenontosaurus_no_target"
+                    ]
+                },
+                "set_property": {
+                    "rift:is_hypnotized_tamed": true
+                },
+                "run_command": {
+                    "command": [
+                        "ride @e[family=skeleton, c=1, tag=hypnotizedTamed] start_riding @s teleport_rider until_full"
                     ]
                 }
             },

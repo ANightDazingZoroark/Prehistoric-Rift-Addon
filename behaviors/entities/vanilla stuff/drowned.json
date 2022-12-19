@@ -1,1022 +1,1210 @@
 {
-  "format_version": "1.17.20",
-  "minecraft:entity": {
-    "description": {
-      "identifier": "minecraft:drowned",
-      "is_spawnable": true,
-      "is_summonable": true,
-      "is_experimental": false,
-      "animations": {
-          "contHypnotizedTag": "controller.animation.add_hypnotized_tag",
-          "contDieWithoutTenontosaurus": "controller.animation.general_die_without_tenontosaurus",
-          "animFindTenontosaurus": "animation.find_tenontosaurus",
-          "animDeathTimer": "animation.hypnosis_death_timer"
-      },
-      "scripts": {
-          "animate": [
-              "contHypnotizedTag",
-              "contDieWithoutTenontosaurus"
-          ]
-      },
-      "properties": {
-		"rift:is_hypnotized": {
-		  "type": "bool",
-		  "default": false,
-		  "client_sync": true
-		}
-      }
-    },
-    "component_groups": {
-      "minecraft:baby_drowned": {
-        "minecraft:experience_reward": {
-          "on_death": "query.last_hit_by_player ? 12 + (query.equipment_count * Math.Random(1,3)) : 0"
-        },
-        "minecraft:is_baby": {},
-        "minecraft:scale": {
-          "value": 0.5
-        },
-        "minecraft:movement": {
-          "value": 0.25
-        },
-        "minecraft:underwater_movement": {
-          "value": 0.08
-        }
-      },
-
-      "minecraft:adult_drowned": {
-        "minecraft:experience_reward": {
-          "on_death": "query.last_hit_by_player ? 5 + (query.equipment_count * Math.Random(1,3)) : 0"
-        },
-        "minecraft:loot": {
-          "table": "loot_tables/entities/drowned.json"
-        }
-      },
-
-      "minecraft:mode_switcher": {
-        "minecraft:target_nearby_sensor": {
-          "inside_range": 3.0,
-          "outside_range": 5.0,
-          "on_inside_range": {
-            "event": "minecraft:switch_to_melee",
-            "target": "self"
-          },
-          "on_outside_range": {
-            "event": "minecraft:switch_to_ranged",
-            "target": "self"
-          }
-        },
-        "minecraft:equipment": {
-          "table": "loot_tables/entities/drowned_ranged_equipment.json",
-          "slot_drop_chance": [
-            {
-              "slot": "slot.weapon.offhand",
-              "drop_chance": 1.0
-            }
-          ]
-        }
-      },
-
-      "minecraft:ranged_mode": {
-        "minecraft:shooter": {
-          "def": "minecraft:thrown_trident"
-        },
-        "minecraft:behavior.ranged_attack": {
-          "priority": 3,
-          "attack_interval_min": 1.0,
-          "attack_interval_max": 3.0,
-          "attack_radius": 10.0,
-          "swing": true
-        }
-      },
-
-      "minecraft:melee_mode": {
-        "minecraft:attack": {
-          "damage": 3
-        },
-        "minecraft:behavior.melee_attack": {
-          "priority": 3,
-          "speed_multiplier": 1,
-          "track_target": false,
-          "require_complete_path": true
-        },
-        "minecraft:equipment": {
-          "table": "loot_tables/entities/drowned_equipment.json",
-          "slot_drop_chance": [
-            {
-              "slot": "slot.weapon.offhand",
-              "drop_chance": 1.0
-            }
-          ]
-        }
-      },
-
-      "minecraft:hunter_mode": {
-        "minecraft:navigation.generic": {
-          "is_amphibious": true,
-          "can_path_over_water": false,
-          "can_break_doors": true,
-          "can_swim": true,
-          "can_walk": true,
-          "avoid_sun": true
-        }
-      },
-
-      "minecraft:wander_mode": {
-        "minecraft:navigation.generic": {
-          "is_amphibious": true,
-          "can_path_over_water": false,
-          "can_break_doors": true,
-          "can_swim": false,
-          "can_walk": true,
-          "avoid_sun": true
-        }
-      },
-
-      "rift:not_hypnotized": {
-        "minecraft:on_target_acquired": {
-          "event": "minecraft:has_target",
-          "target": "self"
-        },
-        "minecraft:on_target_escape": {
-          "event": "minecraft:lost_target",
-          "target": "self"
-        },
-        "minecraft:behavior.flee_sun": {
-          "priority": 2,
-          "speed_multiplier": 1
-        },
-        "minecraft:behavior.equip_item": {
-          "priority": 3
-        },
-        "minecraft:behavior.stomp_turtle_egg": {
-          "priority": 4,
-          "speed_multiplier": 1,
-          "search_range": 10,
-          "search_height": 2,
-          "goal_radius": 1.14,
-          "interval": 20
-        },
-        "minecraft:behavior.pickup_items": {
-          "priority": 6,
-          "max_dist": 3,
-          "goal_radius": 2,
-          "speed_multiplier": 1.0,
-          "pickup_based_on_chance": true,
-          "can_pickup_any_item": true,
-          "excluded_items": [
-            "minecraft:glow_ink_sac"
-          ]
-        },
-        "minecraft:behavior.random_stroll": {
-          "priority": 7,
-          "speed_multiplier": 1
-        },
-        "minecraft:behavior.look_at_player": {
-          "priority": 8,
-          "look_distance": 6,
-          "probability": 0.02
-        },
-        "minecraft:behavior.random_look_around": {
-          "priority": 9
-        },
-        "minecraft:behavior.avoid_mob_type": {
-          "priority": 0,
-          "entity_types": [
-            {
-              "filters": {
-                "test": "is_family",
-                "value": "parasaurScary",
-                "subject": "other"
-              },
-              "max_dist": 12,
-              "must_see": true,
-              "walk_speed_multiplier": 1.2,
-              "sprint_speed_multiplier": 1.2
-            }
-          ]
-        },
-        "minecraft:behavior.hurt_by_target": {
-          "priority": 1
-        },
-        "minecraft:behavior.nearest_attackable_target": {
-          "priority": 2,
-          "reselect_targets": true,
-          "must_see": true,
-          "within_radius": 12.0,
-          "must_see_forget_duration": 17.0,
-          "persist_time": 0.5,
-          "entity_types": [
-            {
-              "filters": {
-                "all_of": [
-                  {
-                    "any_of": [
-                      { "test": "is_family", "subject": "other", "value": "snowgolem" },
-                      { "test": "is_family", "subject": "other", "value": "irongolem" },
-                      { "test": "is_family", "subject": "other", "value": "axolotl" }
-                    ]
-                  },
-                  {
-                    "any_of": [
-                      { "test": "in_water", "subject": "other", "value": true },
-                      { "test": "is_daytime", "value": false }
-                    ]
-                  }
-                ]
-              },
-              "max_dist": 20
+    "format_version": "1.17.20",
+    "minecraft:entity": {
+        "description": {
+            "identifier": "minecraft:drowned",
+            "is_spawnable": true,
+            "is_summonable": true,
+            "is_experimental": false,
+            "animations": {
+                "contHypnotizedTag": "controller.animation.add_hypnotized_tag",
+                "contHypnotizedTamedTag": "controller.animation.add_hypnotized_by_tamed_tag",
+                "contDieWithoutTenontosaurus": "controller.animation.general_die_without_tenontosaurus",
+                "contDieWithoutTamedTenontosaurus": "controller.animation.general_death_timer_tamed_tenontosaurus",
+                "animFindTenontosaurus": "animation.find_tenontosaurus",
+                "animDeathTimer": "animation.hypnosis_death_timer",
+                "animTamedDeathTimer": "animation.hypnosis_death_timer_tamed"
             },
-            {
-              "filters": {
-                "all_of": [
-                  {
-                    "test": "is_family",
-                    "subject": "other",
-                    "value": "player"
-                  },
-                  {
-                    "test": "is_riding",
-                    "subject": "other",
-                    "value": false
-                  }
+            "scripts": {
+                "animate": [
+                    "contHypnotizedTag",
+                    "contHypnotizedTamedTag",
+                    "contDieWithoutTenontosaurus",
+                    "contDieWithoutTamedTenontosaurus"
                 ]
-              },
-              "max_dist": 20
             },
-            {
-              "filters": {
-                "all_of": [
-                  {
-                    "any_of": [
-                      { "test": "is_family", "subject": "other", "value": "villager" },
-                      { "test": "is_family", "subject": "other", "value": "wandering_trader" }
-                    ]
-                  },
-                  {
-                    "any_of": [
-                      { "test": "in_water", "subject": "other", "value": true },
-                      { "test": "is_daytime", "value": false }
-                    ]
-                  }
-                ]
-              },
-              "max_dist": 20,
-              "must_see": false
-            },
-            {
-              "filters": {
-                "all_of": [
-                  { "test": "is_family", "subject": "other", "value": "baby_turtle" },
-                  { "test": "in_water", "subject": "other", "operator": "!=", "value": true }
-                ]
-              },
-              "max_dist": 20
-            },
-            {
-              "filters": {
-                "test": "is_family",
-                "subject": "other",
-                "value": "parasaurAngerer"
-              },
-              "max_dist": 64
+            "properties": {
+                "rift:is_hypnotized": {
+                    "type": "bool",
+                    "default": false,
+                    "client_sync": true
+                },
+                "rift:is_hypnotized_tamed": {
+                    "type": "bool",
+                    "default": false,
+                    "client_sync": true
+                }
             }
-          ]
-        }
-      },
-      "rift:hypnotized_no_trident": {
-        "minecraft:equipment": {
-          "table": "loot_tables/entities/drowned_equipment.json"
-        }
-      },
-      "rift:hypnotized_has_trident": {
-        "minecraft:equipment": {
-          "table": "loot_tables/entities/drowned_ranged_equipment.json"
-        }
-      },
-      "rift:follow_tenontosaurus": {
-        "minecraft:behavior.nearest_prioritized_attackable_target": {
-            "priority": 2,
-            "within_radius": 32.0,
-            "entity_types": [
-                {
+        },
+        "component_groups": {
+            "minecraft:baby_drowned": {
+                "minecraft:experience_reward": {
+                "on_death": "query.last_hit_by_player ? 12 + (query.equipment_count * Math.Random(1,3)) : 0"
+                },
+                "minecraft:is_baby": {},
+                "minecraft:scale": {
+                "value": 0.5
+                },
+                "minecraft:movement": {
+                "value": 0.25
+                },
+                "minecraft:underwater_movement": {
+                "value": 0.08
+                }
+            },
+
+            "minecraft:adult_drowned": {
+                "minecraft:experience_reward": {
+                "on_death": "query.last_hit_by_player ? 5 + (query.equipment_count * Math.Random(1,3)) : 0"
+                },
+                "minecraft:loot": {
+                "table": "loot_tables/entities/drowned.json"
+                }
+            },
+
+            "minecraft:mode_switcher": {
+                "minecraft:target_nearby_sensor": {
+                "inside_range": 3.0,
+                "outside_range": 5.0,
+                "on_inside_range": {
+                    "event": "minecraft:switch_to_melee",
+                    "target": "self"
+                },
+                "on_outside_range": {
+                    "event": "minecraft:switch_to_ranged",
+                    "target": "self"
+                }
+                },
+                "minecraft:equipment": {
+                "table": "loot_tables/entities/drowned_ranged_equipment.json",
+                "slot_drop_chance": [
+                    {
+                    "slot": "slot.weapon.offhand",
+                    "drop_chance": 1.0
+                    }
+                ]
+                }
+            },
+
+            "minecraft:ranged_mode": {
+                "minecraft:shooter": {
+                "def": "minecraft:thrown_trident"
+                },
+                "minecraft:behavior.ranged_attack": {
+                "priority": 3,
+                "attack_interval_min": 1.0,
+                "attack_interval_max": 3.0,
+                "attack_radius": 10.0,
+                "swing": true
+                }
+            },
+
+            "minecraft:melee_mode": {
+                "minecraft:attack": {
+                "damage": 3
+                },
+                "minecraft:behavior.melee_attack": {
+                "priority": 3,
+                "speed_multiplier": 1,
+                "track_target": false,
+                "require_complete_path": true
+                },
+                "minecraft:equipment": {
+                "table": "loot_tables/entities/drowned_equipment.json",
+                "slot_drop_chance": [
+                    {
+                    "slot": "slot.weapon.offhand",
+                    "drop_chance": 1.0
+                    }
+                ]
+                }
+            },
+
+            "minecraft:hunter_mode": {
+                "minecraft:navigation.generic": {
+                "is_amphibious": true,
+                "can_path_over_water": false,
+                "can_break_doors": true,
+                "can_swim": true,
+                "can_walk": true,
+                "avoid_sun": true
+                }
+            },
+
+            "minecraft:wander_mode": {
+                "minecraft:navigation.generic": {
+                "is_amphibious": true,
+                "can_path_over_water": false,
+                "can_break_doors": true,
+                "can_swim": false,
+                "can_walk": true,
+                "avoid_sun": true
+                }
+            },
+
+            "rift:not_hypnotized": {
+                "minecraft:on_target_acquired": {
+                "event": "minecraft:has_target",
+                "target": "self"
+                },
+                "minecraft:on_target_escape": {
+                "event": "minecraft:lost_target",
+                "target": "self"
+                },
+                "minecraft:behavior.flee_sun": {
+                "priority": 2,
+                "speed_multiplier": 1
+                },
+                "minecraft:behavior.equip_item": {
+                "priority": 3
+                },
+                "minecraft:behavior.stomp_turtle_egg": {
+                "priority": 4,
+                "speed_multiplier": 1,
+                "search_range": 10,
+                "search_height": 2,
+                "goal_radius": 1.14,
+                "interval": 20
+                },
+                "minecraft:behavior.pickup_items": {
+                "priority": 6,
+                "max_dist": 3,
+                "goal_radius": 2,
+                "speed_multiplier": 1.0,
+                "pickup_based_on_chance": true,
+                "can_pickup_any_item": true,
+                "excluded_items": [
+                    "minecraft:glow_ink_sac"
+                ]
+                },
+                "minecraft:behavior.random_stroll": {
+                "priority": 7,
+                "speed_multiplier": 1
+                },
+                "minecraft:behavior.look_at_player": {
+                "priority": 8,
+                "look_distance": 6,
+                "probability": 0.02
+                },
+                "minecraft:behavior.random_look_around": {
+                "priority": 9
+                },
+                "minecraft:behavior.avoid_mob_type": {
+                "priority": 0,
+                "entity_types": [
+                    {
+                    "filters": {
+                        "test": "is_family",
+                        "value": "parasaurScary",
+                        "subject": "other"
+                    },
+                    "max_dist": 12,
+                    "must_see": true,
+                    "walk_speed_multiplier": 1.2,
+                    "sprint_speed_multiplier": 1.2
+                    }
+                ]
+                },
+                "minecraft:behavior.hurt_by_target": {
+                "priority": 1
+                },
+                "minecraft:behavior.nearest_attackable_target": {
+                "priority": 2,
+                "reselect_targets": true,
+                "must_see": true,
+                "within_radius": 12.0,
+                "must_see_forget_duration": 17.0,
+                "persist_time": 0.5,
+                "entity_types": [
+                    {
+                    "filters": {
+                        "all_of": [
+                        {
+                            "any_of": [
+                            { "test": "is_family", "subject": "other", "value": "snowgolem" },
+                            { "test": "is_family", "subject": "other", "value": "irongolem" },
+                            { "test": "is_family", "subject": "other", "value": "axolotl" }
+                            ]
+                        },
+                        {
+                            "any_of": [
+                            { "test": "in_water", "subject": "other", "value": true },
+                            { "test": "is_daytime", "value": false }
+                            ]
+                        }
+                        ]
+                    },
+                    "max_dist": 20
+                    },
+                    {
+                    "filters": {
+                        "all_of": [
+                        {
+                            "test": "is_family",
+                            "subject": "other",
+                            "value": "player"
+                        },
+                        {
+                            "test": "is_riding",
+                            "subject": "other",
+                            "value": false
+                        }
+                        ]
+                    },
+                    "max_dist": 20
+                    },
+                    {
+                    "filters": {
+                        "all_of": [
+                        {
+                            "any_of": [
+                            { "test": "is_family", "subject": "other", "value": "villager" },
+                            { "test": "is_family", "subject": "other", "value": "wandering_trader" }
+                            ]
+                        },
+                        {
+                            "any_of": [
+                            { "test": "in_water", "subject": "other", "value": true },
+                            { "test": "is_daytime", "value": false }
+                            ]
+                        }
+                        ]
+                    },
+                    "max_dist": 20,
+                    "must_see": false
+                    },
+                    {
+                    "filters": {
+                        "all_of": [
+                        { "test": "is_family", "subject": "other", "value": "baby_turtle" },
+                        { "test": "in_water", "subject": "other", "operator": "!=", "value": true }
+                        ]
+                    },
+                    "max_dist": 20
+                    },
+                    {
+                    "filters": {
+                        "test": "is_family",
+                        "subject": "other",
+                        "value": "parasaurAngerer"
+                    },
+                    "max_dist": 64
+                    }
+                ]
+                }
+            },
+            "rift:hypnotized_no_trident": {
+                "minecraft:equipment": {
+                "table": "loot_tables/entities/drowned_equipment.json"
+                }
+            },
+            "rift:hypnotized_has_trident": {
+                "minecraft:equipment": {
+                "table": "loot_tables/entities/drowned_ranged_equipment.json"
+                }
+            },
+            "rift:follow_tenontosaurus": {
+                "minecraft:behavior.nearest_prioritized_attackable_target": {
+                    "priority": 2,
+                    "within_radius": 32.0,
+                    "entity_types": [
+                        {
+                            "filters": {
+                                "all_of": [
+                                    {
+                                        "test": "has_tag",
+                                        "subject": "other",
+                                        "value": "tenontoTarget"
+                                    }
+                                ]
+                            },
+                            "max_dist": 48,
+                            "priority": 0
+                        },
+                        {
+                            "filters": {
+                                "all_of": [
+                                    {
+                                        "test": "is_family",
+                                        "subject": "other",
+                                        "value": "tenontosaurus"
+                                    },
+                                    {
+                                        "test": "has_component",
+                                        "subject": "other",
+                                        "operator": "!=",
+                                        "value": "minecraft:is_tamed"
+                                    }
+                                ]
+                            },
+                            "max_dist": 48,
+                            "priority": 1
+                        }
+                    ]
+                }
+            },
+            "rift:follow_tenontosaurus_no_target": {
+                "minecraft:behavior.ranged_attack": {
+                    "priority": 7,
+                    "attack_radius": 6.0,
+                    "attack_radius_min": 4
+                },
+                "minecraft:on_target_acquired": {
                     "filters": {
                         "all_of": [
                             {
-                                "test": "has_tag",
-                                "subject": "other",
-                                "value": "tenontoTarget"
+                                "test": "has_component",
+                                "subject": "target",
+                                "operator": "!=",
+                                "value": "minecraft:is_tamed"
+                            },
+                            {
+                                "test": "is_family",
+                                "subject": "target",
+                                "operator": "!=",
+                                "value": "tenontosaurus"
                             }
                         ]
                     },
-                    "max_dist": 48,
+                    "event": "rift:attack_for_tenontosaurus",
+                    "target": "self"
+                }
+            },
+            "rift:follow_tamed_tenontosaurus": {
+                "minecraft:behavior.nearest_prioritized_attackable_target": {
+                    "priority": 2,
+                    "within_radius": 32.0,
+                    "entity_types": [
+                        {
+                            "filters": {
+                                "test": "has_tag",
+                                "subject": "other",
+                                "value": "tenontoTamedTarget"
+                            },
+                            "max_dist": 48,
+                            "priority": 0
+                        },
+                        {
+                            "filters": {
+                                "all_of": [
+                                    {
+                                        "test": "is_family",
+                                        "subject": "other",
+                                        "value": "tenontosaurus"
+                                    },
+                                    {
+                                        "test": "has_component",
+                                        "subject": "other",
+                                        "value": "minecraft:is_tamed"
+                                    }
+                                ]
+                            },
+                            "max_dist": 48,
+                            "priority": 1
+                        }
+                    ]
+                }
+            },
+            "rift:follow_tamed_tenontosaurus_no_target": {
+                "minecraft:behavior.ranged_attack": {
+                    "priority": 7,
+                    "attack_radius": 6.0,
+                    "attack_radius_min": 4
+                },
+                "minecraft:on_target_acquired": {
+                    "filters": {
+                        "test": "has_tag",
+                        "subject": "target",
+                        "value": "tenontoTamedTarget"
+                    },
+                    "event": "rift:attack_for_tenontosaurus",
+                    "target": "self"
+                }
+            },
+            "rift:attacking_for_tenontosaurus_no_trident": {
+                    "minecraft:attack": {
+                    "damage": 3
+                    },
+                "minecraft:behavior.melee_attack": {
+                    "priority": 3,
+                    "track_target": true
+                },
+                "minecraft:on_target_escape": {
+                    "event": "rift:stop_attacking_for_tenontosaurus",
+                    "target": "self"
+                }
+            },
+            "rift:attacking_for_tenontosaurus_has_trident": {
+                "minecraft:target_nearby_sensor": {
+                "inside_range": 3.0,
+                "outside_range": 5.0,
+                "on_inside_range": {
+                    "event": "minecraft:switch_to_melee",
+                    "target": "self"
+                },
+                "on_outside_range": {
+                    "event": "minecraft:switch_to_ranged",
+                    "target": "self"
+                }
+                },
+                "minecraft:on_target_escape": {
+                    "event": "rift:stop_attacking_for_tenontosaurus",
+                    "target": "self"
+                }
+            },
+            "rift:transform_into_hypnotized": {
+                "minecraft:transformation": {
+                "into": "minecraft:drowned<rift:transform_into_hypnotized>",
+                "preserve_equipment": true
+                }
+            },
+            "rift:transform_into_hypnotized_by_tamed": {
+                "minecraft:transformation": {
+                "into": "minecraft:drowned<rift:transform_into_hypnotized_by_tamed>",
+                "preserve_equipment": true
+                }
+            }
+        },
+
+        "components": {
+            "minecraft:nameable": {},
+
+            // Zombie Components
+            "minecraft:type_family": {
+                "family": [ "drowned", "zombie", "undead", "monster", "mob" ]
+            },
+            "minecraft:equip_item": {},
+            "minecraft:collision_box": {
+                "width": 0.6,
+                "height": 1.9
+            },
+            "minecraft:annotation.break_door": {},
+            "minecraft:underwater_movement": {
+                "value": 0.06
+            },
+            "minecraft:movement.generic": {},
+            "minecraft:jump.static": {},
+            "minecraft:can_climb": {},
+            "minecraft:health": {
+                "value": 20,
+                "max": 20
+            },
+            "minecraft:hurt_on_condition": {
+                "damage_conditions": [
+                {
+                    "filters": { "test": "in_lava", "subject": "self", "operator": "==", "value": true },
+                    "cause": "lava",
+                    "damage_per_tick": 4
+                }
+                ]
+            },
+            "minecraft:movement": {
+                "value": 0.23
+            },
+            "minecraft:burns_in_daylight": {},
+            "minecraft:breathable": {
+                "total_supply": 15,
+                "suffocate_time": 0,
+                "breathes_air": true,
+                "breathes_water": true
+            },
+            "minecraft:navigation.generic": {
+                "is_amphibious": true,
+                "can_path_over_water": false,
+                "can_break_doors": true,
+                "can_swim": false,
+                "can_walk": true,
+                "avoid_sun": true
+            },
+            "minecraft:shareables": {
+                "items": [
+                {
+                    "item": "minecraft:nautilus_shell",
+                    "want_amount": 1,
+                    "surplus_amount": 1,
                     "priority": 0
                 },
                 {
-                    "filters": {
-                        "all_of": [
-                            {
-                                "test": "is_family",
-                                "subject": "other",
-                                "value": "tenontosaurus"
-                            },
-                            {
-                                "test": "has_component",
-                                "subject": "other",
-                                "operator": "!=",
-                                "value": "minecraft:is_tamed"
-                            }
-                        ]
-                    },
-                    "max_dist": 48,
+                    "item": "minecraft:trident",
+                    "want_amount": 1,
+                    "surplus_amount": 1,
                     "priority": 1
+                },
+                {
+                    "item": "minecraft:netherite_sword",
+                    "want_amount": 1,
+                    "surplus_amount": 1,
+                    "priority": 2
+                },
+                {
+                    "item": "minecraft:diamond_sword",
+                    "want_amount": 1,
+                    "surplus_amount": 1,
+                    "priority": 3
+                },
+                {
+                    "item": "minecraft:iron_sword",
+                    "want_amount": 1,
+                    "surplus_amount": 1,
+                    "priority": 4
+                },
+                {
+                    "item": "minecraft:stone_sword",
+                    "want_amount": 1,
+                    "surplus_amount": 1,
+                    "priority": 5
+                },
+                {
+                    "item": "minecraft:golden_sword",
+                    "want_amount": 1,
+                    "surplus_amount": 1,
+                    "priority": 6
+                },
+                {
+                    "item": "minecraft:wooden_sword",
+                    "want_amount": 1,
+                    "surplus_amount": 1,
+                    "priority": 7
+                },
+                {
+                    "item": "minecraft:netherite_helmet",
+                    "want_amount": 1,
+                    "surplus_amount": 1,
+                    "priority": 0
+                },
+                {
+                    "item": "minecraft:diamond_helmet",
+                    "want_amount": 1,
+                    "surplus_amount": 1,
+                    "priority": 1
+                },
+                {
+                    "item": "minecraft:iron_helmet",
+                    "want_amount": 1,
+                    "surplus_amount": 1,
+                    "priority": 2
+                },
+                {
+                    "item": "minecraft:chainmail_helmet",
+                    "want_amount": 1,
+                    "surplus_amount": 1,
+                    "priority": 3
+                },
+                {
+                    "item": "minecraft:golden_helmet",
+                    "want_amount": 1,
+                    "surplus_amount": 1,
+                    "priority": 4
+                },
+                {
+                    "item": "minecraft:leather_helmet",
+                    "want_amount": 1,
+                    "surplus_amount": 1,
+                    "priority": 5
+                },
+                {
+                    "item": "minecraft:turtle_helmet",
+                    "want_amount": 1,
+                    "surplus_amount": 1,
+                    "priority": 6
+                },
+                {
+                    "item": "minecraft:skull:0",
+                    "want_amount": 1,
+                    "surplus_amount": 1,
+                    "priority": 7
+                },
+                {
+                    "item": "minecraft:skull:1",
+                    "want_amount": 1,
+                    "surplus_amount": 1,
+                    "priority": 7
+                },
+                {
+                    "item": "minecraft:carved_pumpkin",
+                    "want_amount": 1,
+                    "surplus_amount": 1,
+                    "priority": 7
+                },
+                {
+                    "item": "minecraft:netherite_chestplate",
+                    "want_amount": 1,
+                    "surplus_amount": 1,
+                    "priority": 0
+                },
+                {
+                    "item": "minecraft:diamond_chestplate",
+                    "want_amount": 1,
+                    "surplus_amount": 1,
+                    "priority": 1
+                },
+                {
+                    "item": "minecraft:iron_chestplate",
+                    "want_amount": 1,
+                    "surplus_amount": 1,
+                    "priority": 2
+                },
+                {
+                    "item": "minecraft:chainmail_chestplate",
+                    "want_amount": 1,
+                    "surplus_amount": 1,
+                    "priority": 3
+                },
+                {
+                    "item": "minecraft:golden_chestplate",
+                    "want_amount": 1,
+                    "surplus_amount": 1,
+                    "priority": 4
+                },
+                {
+                    "item": "minecraft:leather_chestplate",
+                    "want_amount": 1,
+                    "surplus_amount": 1,
+                    "priority": 5
+                },
+                {
+                    "item": "minecraft:netherite_leggings",
+                    "want_amount": 1,
+                    "surplus_amount": 1,
+                    "priority": 0
+                },
+                {
+                    "item": "minecraft:diamond_leggings",
+                    "want_amount": 1,
+                    "surplus_amount": 1,
+                    "priority": 1
+                },
+                {
+                    "item": "minecraft:iron_leggings",
+                    "want_amount": 1,
+                    "surplus_amount": 1,
+                    "priority": 2
+                },
+                {
+                    "item": "minecraft:chainmail_leggings",
+                    "want_amount": 1,
+                    "surplus_amount": 1,
+                    "priority": 3
+                },
+                {
+                    "item": "minecraft:golden_leggings",
+                    "want_amount": 1,
+                    "surplus_amount": 1,
+                    "priority": 4
+                },
+                {
+                    "item": "minecraft:leather_leggings",
+                    "want_amount": 1,
+                    "surplus_amount": 1,
+                    "priority": 5
+                },
+                {
+                    "item": "minecraft:netherite_boots",
+                    "want_amount": 1,
+                    "surplus_amount": 1,
+                    "priority": 0
+                },
+                {
+                    "item": "minecraft:diamond_boots",
+                    "want_amount": 1,
+                    "surplus_amount": 1,
+                    "priority": 1
+                },
+                {
+                    "item": "minecraft:iron_boots",
+                    "want_amount": 1,
+                    "surplus_amount": 1,
+                    "priority": 2
+                },
+                {
+                    "item": "minecraft:chainmail_boots",
+                    "want_amount": 1,
+                    "surplus_amount": 1,
+                    "priority": 3
+                },
+                {
+                    "item": "minecraft:golden_boots",
+                    "want_amount": 1,
+                    "surplus_amount": 1,
+                    "priority": 4
+                },
+                {
+                    "item": "minecraft:leather_boots",
+                    "want_amount": 1,
+                    "surplus_amount": 1,
+                    "priority": 5
                 }
-            ]
-        }
-      },
-      "rift:follow_tenontosaurus_no_target": {
-        "minecraft:behavior.ranged_attack": {
-            "priority": 7,
-            "attack_radius": 6.0,
-            "attack_radius_min": 4
+                ]
+            },
+            "minecraft:despawn": {
+                "despawn_from_distance": {}
+            },
+            "minecraft:physics": {},
+            "minecraft:pushable": {
+                "is_pushable": true,
+                "is_pushable_by_piston": true
+            },
+            "minecraft:conditional_bandwidth_optimization": {}
         },
-        "minecraft:on_target_acquired": {
-            "filters": {
-                "all_of": [
+
+        "events": {
+            "minecraft:entity_spawned": {
+                "randomize": [
+                {
+                    "weight": 15,
+                    "remove": {
+                    },
+                    "add": {
+                    "component_groups": [
+                        "minecraft:mode_switcher",
+                        "minecraft:ranged_mode",
+                        "minecraft:adult_drowned",
+                        "rift:not_hypnotized"
+                    ]
+                    }
+                },
+                {
+                    "weight": 85,
+                    "randomize": [
                     {
-                        "test": "has_component",
-                        "subject": "target",
-                        "operator": "!=",
-                        "value": "minecraft:is_tamed"
+                        "weight": 95,
+                        "remove": {
+                        },
+                        "add": {
+                        "component_groups": [
+                            "minecraft:melee_mode",
+                            "minecraft:adult_drowned",
+                            "rift:not_hypnotized"
+                        ]
+                        }
                     },
                     {
-                        "test": "is_family",
-                        "subject": "target",
-                        "operator": "!=",
-                        "value": "tenontosaurus"
+                        "weight": 5,
+                        "remove": {
+                        },
+                        "add": {
+                        "component_groups": [
+                            "minecraft:melee_mode",
+                            "minecraft:baby_drowned",
+                            "rift:not_hypnotized"
+                        ]
+                        }
+                    }
+                    ]
+                }
+                ]
+            },
+            "rift:spawn_hypnotized_by_tenontosaurus": {
+                "randomize": [
+                {
+                    "weight": 15,
+                    "add": {
+                    "component_groups": [
+                        "rift:hypnotized_has_trident",
+                        "minecraft:adult_drowned",
+                        "rift:follow_tenontosaurus",
+                        "rift:follow_tenontosaurus_no_target"
+                    ]
+                    },
+                    "set_property": {
+                        "rift:is_hypnotized": true
+                    }
+                },
+                {
+                    "weight": 85,
+                    "randomize": [
+                    {
+                        "weight": 95,
+                        "add": {
+                        "component_groups": [
+                            "rift:hypnotized_no_trident",
+                            "minecraft:adult_drowned",
+                            "rift:follow_tenontosaurus",
+                            "rift:follow_tenontosaurus_no_target"
+                        ]
+                        },
+                        "set_property": {
+                            "rift:is_hypnotized": true
+                        }
+                    },
+                    {
+                        "weight": 5,
+                        "add": {
+                        "component_groups": [
+                            "rift:hypnotized_no_trident",
+                            "minecraft:baby_drowned",
+                            "rift:follow_tenontosaurus",
+                            "rift:follow_tenontosaurus_no_target"
+                        ]
+                        },
+                        "set_property": {
+                            "rift:is_hypnotized": true
+                        }
+                    }
+                    ]
+                }
+                ]
+            },
+            "rift:attack_for_tenontosaurus": {
+                "sequence": [
+                    {
+                        "add": {
+                            "component_groups": [
+                                "minecraft:hunter_mode"
+                            ]
+                        },
+                        "remove": {
+                            "component_groups": [
+                                "rift:follow_tenontosaurus_no_target",
+                                "rift:follow_tamed_tenontosaurus_no_target",
+                                "minecraft:wander_mode"
+                            ]
+                        },
+                        "run_command": {
+                            "command": [
+                                "say FOR THE QUEEN"
+                            ]
+                        }
+                    },
+                    {
+                        "filters": {
+                            "test": "has_equipment",
+                            "subject": "self",
+                            "domain": "hand",
+                            "operator": "!=",
+                            "value": "minecraft:trident"
+                        },
+                        "add": {
+                            "component_groups": [
+                                "rift:attacking_for_tenontosaurus_no_trident"
+                            ]
+                        }
+                    },
+                    {
+                        "filters": {
+                            "test": "has_equipment",
+                            "subject": "self",
+                            "domain": "hand",
+                            "value": "minecraft:trident"
+                        },
+                        "add": {
+                            "component_groups": [
+                                "rift:attacking_for_tenontosaurus_has_trident"
+                            ]
+                        }
                     }
                 ]
             },
-            "event": "rift:attack_for_tenontosaurus",
-            "target": "self"
-        }
-      },
-      "rift:attacking_for_tenontosaurus_no_trident": {
-            "minecraft:attack": {
-            "damage": 3
+            "rift:stop_attacking_for_tenontosaurus": {
+                "sequence": [
+                    {
+                        "add": {
+                            "component_groups": [
+                                "minecraft:wander_mode"
+                            ]
+                        },
+                        "remove": {
+                            "component_groups": [
+                                "rift:attacking_for_tenontosaurus_no_trident",
+                                "rift:attacking_for_tenontosaurus_has_trident",
+                                "minecraft:hunter_mode",
+                                "minecraft:melee_mode",
+                                "minecraft:ranged_mode"
+                            ]
+                        }
+                    },
+                    {
+                        "filters": {
+                            "all_of": [
+                                {
+                                    "test": "bool_property",
+                                    "subject": "self",
+                                    "domain": "rift:is_hypnotized",
+                                    "value": true
+                                },
+                                {
+                                    "test": "bool_property",
+                                    "subject": "self",
+                                    "domain": "rift:is_hypnotized_tamed",
+                                    "value": false
+                                }
+                            ]
+                        },
+                        "add": {
+                            "component_groups": [
+                                "rift:follow_tenontosaurus_no_target"
+                            ]
+                        }
+                    },
+                    {
+                        "filters": {
+                            "all_of": [
+                                {
+                                    "test": "bool_property",
+                                    "subject": "self",
+                                    "domain": "rift:is_hypnotized",
+                                    "value": false
+                                },
+                                {
+                                    "test": "bool_property",
+                                    "subject": "self",
+                                    "domain": "rift:is_hypnotized_tamed",
+                                    "value": true
+                                }
+                            ]
+                        },
+                        "add": {
+                            "component_groups": [
+                                "rift:follow_tamed_tenontosaurus_no_target"
+                            ]
+                        }
+                    }
+                ]
             },
-          "minecraft:behavior.melee_attack": {
-              "priority": 3,
-              "track_target": true
-          },
-          "minecraft:on_target_escape": {
-              "event": "rift:stop_attacking_for_tenontosaurus",
-              "target": "self"
-          }
-      },
-      "rift:attacking_for_tenontosaurus_has_trident": {
-        "minecraft:target_nearby_sensor": {
-          "inside_range": 3.0,
-          "outside_range": 5.0,
-          "on_inside_range": {
-            "event": "minecraft:switch_to_melee",
-            "target": "self"
-          },
-          "on_outside_range": {
-            "event": "minecraft:switch_to_ranged",
-            "target": "self"
-          }
-        },
-        "minecraft:on_target_escape": {
-            "event": "rift:stop_attacking_for_tenontosaurus",
-            "target": "self"
-        }
-      },
-      "rift:transform_into_hypnotized": {
-        "minecraft:transformation": {
-          "into": "minecraft:drowned<rift:transform_into_hypnotized>",
-          "preserve_equipment": true
-        }
-      }
-    },
-
-    "components": {
-      "minecraft:nameable": {
-      },
-
-      // Zombie Components
-      "minecraft:type_family": {
-        "family": [ "drowned", "zombie", "undead", "monster", "mob" ]
-      },
-      "minecraft:equip_item": {
-      },
-      "minecraft:collision_box": {
-        "width": 0.6,
-        "height": 1.9
-      },
-      "minecraft:annotation.break_door": {
-      },
-      "minecraft:underwater_movement": {
-        "value": 0.06
-      },
-      "minecraft:movement.generic": {
-      },
-      "minecraft:jump.static": {
-      },
-      "minecraft:can_climb": {
-      },
-      "minecraft:health": {
-        "value": 20,
-        "max": 20
-      },
-      "minecraft:hurt_on_condition": {
-        "damage_conditions": [
-          {
-            "filters": { "test": "in_lava", "subject": "self", "operator": "==", "value": true },
-            "cause": "lava",
-            "damage_per_tick": 4
-          }
-        ]
-      },
-      "minecraft:movement": {
-        "value": 0.23
-      },
-      "minecraft:burns_in_daylight": {
-      },
-      "minecraft:breathable": {
-        "total_supply": 15,
-        "suffocate_time": 0,
-        "breathes_air": true,
-        "breathes_water": true
-      },
-      "minecraft:navigation.generic": {
-        "is_amphibious": true,
-        "can_path_over_water": false,
-        "can_break_doors": true,
-        "can_swim": false,
-        "can_walk": true,
-        "avoid_sun": true
-      },
-      "minecraft:shareables": {
-        "items": [
-          {
-            "item": "minecraft:nautilus_shell",
-            "want_amount": 1,
-            "surplus_amount": 1,
-            "priority": 0
-          },
-          {
-            "item": "minecraft:trident",
-            "want_amount": 1,
-            "surplus_amount": 1,
-            "priority": 1
-          },
-          {
-            "item": "minecraft:netherite_sword",
-            "want_amount": 1,
-            "surplus_amount": 1,
-            "priority": 2
-          },
-          {
-            "item": "minecraft:diamond_sword",
-            "want_amount": 1,
-            "surplus_amount": 1,
-            "priority": 3
-          },
-          {
-            "item": "minecraft:iron_sword",
-            "want_amount": 1,
-            "surplus_amount": 1,
-            "priority": 4
-          },
-          {
-            "item": "minecraft:stone_sword",
-            "want_amount": 1,
-            "surplus_amount": 1,
-            "priority": 5
-          },
-          {
-            "item": "minecraft:golden_sword",
-            "want_amount": 1,
-            "surplus_amount": 1,
-            "priority": 6
-          },
-          {
-            "item": "minecraft:wooden_sword",
-            "want_amount": 1,
-            "surplus_amount": 1,
-            "priority": 7
-          },
-          {
-            "item": "minecraft:netherite_helmet",
-            "want_amount": 1,
-            "surplus_amount": 1,
-            "priority": 0
-          },
-          {
-            "item": "minecraft:diamond_helmet",
-            "want_amount": 1,
-            "surplus_amount": 1,
-            "priority": 1
-          },
-          {
-            "item": "minecraft:iron_helmet",
-            "want_amount": 1,
-            "surplus_amount": 1,
-            "priority": 2
-          },
-          {
-            "item": "minecraft:chainmail_helmet",
-            "want_amount": 1,
-            "surplus_amount": 1,
-            "priority": 3
-          },
-          {
-            "item": "minecraft:golden_helmet",
-            "want_amount": 1,
-            "surplus_amount": 1,
-            "priority": 4
-          },
-          {
-            "item": "minecraft:leather_helmet",
-            "want_amount": 1,
-            "surplus_amount": 1,
-            "priority": 5
-          },
-          {
-            "item": "minecraft:turtle_helmet",
-            "want_amount": 1,
-            "surplus_amount": 1,
-            "priority": 6
-          },
-          {
-            "item": "minecraft:skull:0",
-            "want_amount": 1,
-            "surplus_amount": 1,
-            "priority": 7
-          },
-          {
-            "item": "minecraft:skull:1",
-            "want_amount": 1,
-            "surplus_amount": 1,
-            "priority": 7
-          },
-          {
-            "item": "minecraft:carved_pumpkin",
-            "want_amount": 1,
-            "surplus_amount": 1,
-            "priority": 7
-          },
-          {
-            "item": "minecraft:netherite_chestplate",
-            "want_amount": 1,
-            "surplus_amount": 1,
-            "priority": 0
-          },
-          {
-            "item": "minecraft:diamond_chestplate",
-            "want_amount": 1,
-            "surplus_amount": 1,
-            "priority": 1
-          },
-          {
-            "item": "minecraft:iron_chestplate",
-            "want_amount": 1,
-            "surplus_amount": 1,
-            "priority": 2
-          },
-          {
-            "item": "minecraft:chainmail_chestplate",
-            "want_amount": 1,
-            "surplus_amount": 1,
-            "priority": 3
-          },
-          {
-            "item": "minecraft:golden_chestplate",
-            "want_amount": 1,
-            "surplus_amount": 1,
-            "priority": 4
-          },
-          {
-            "item": "minecraft:leather_chestplate",
-            "want_amount": 1,
-            "surplus_amount": 1,
-            "priority": 5
-          },
-          {
-            "item": "minecraft:netherite_leggings",
-            "want_amount": 1,
-            "surplus_amount": 1,
-            "priority": 0
-          },
-          {
-            "item": "minecraft:diamond_leggings",
-            "want_amount": 1,
-            "surplus_amount": 1,
-            "priority": 1
-          },
-          {
-            "item": "minecraft:iron_leggings",
-            "want_amount": 1,
-            "surplus_amount": 1,
-            "priority": 2
-          },
-          {
-            "item": "minecraft:chainmail_leggings",
-            "want_amount": 1,
-            "surplus_amount": 1,
-            "priority": 3
-          },
-          {
-            "item": "minecraft:golden_leggings",
-            "want_amount": 1,
-            "surplus_amount": 1,
-            "priority": 4
-          },
-          {
-            "item": "minecraft:leather_leggings",
-            "want_amount": 1,
-            "surplus_amount": 1,
-            "priority": 5
-          },
-          {
-            "item": "minecraft:netherite_boots",
-            "want_amount": 1,
-            "surplus_amount": 1,
-            "priority": 0
-          },
-          {
-            "item": "minecraft:diamond_boots",
-            "want_amount": 1,
-            "surplus_amount": 1,
-            "priority": 1
-          },
-          {
-            "item": "minecraft:iron_boots",
-            "want_amount": 1,
-            "surplus_amount": 1,
-            "priority": 2
-          },
-          {
-            "item": "minecraft:chainmail_boots",
-            "want_amount": 1,
-            "surplus_amount": 1,
-            "priority": 3
-          },
-          {
-            "item": "minecraft:golden_boots",
-            "want_amount": 1,
-            "surplus_amount": 1,
-            "priority": 4
-          },
-          {
-            "item": "minecraft:leather_boots",
-            "want_amount": 1,
-            "surplus_amount": 1,
-            "priority": 5
-          }
-        ]
-      },
-      "minecraft:despawn": {
-        "despawn_from_distance": {}
-      },
-      "minecraft:physics": {
-      },
-      "minecraft:pushable": {
-        "is_pushable": true,
-        "is_pushable_by_piston": true
-      },
-      "minecraft:conditional_bandwidth_optimization": {
-      }
-    },
-
-    "events": {
-      "minecraft:entity_spawned": {
-        "randomize": [
-          {
-            "weight": 15,
-            "remove": {
-            },
-            "add": {
-              "component_groups": [
-                "minecraft:mode_switcher",
-                "minecraft:ranged_mode",
-                "minecraft:adult_drowned",
-                "rift:not_hypnotized"
-              ]
-            }
-          },
-          {
-            "weight": 85,
-            "randomize": [
-              {
-                "weight": 95,
-                "remove": {
-                },
-                "add": {
-                  "component_groups": [
-                    "minecraft:melee_mode",
-                    "minecraft:adult_drowned",
-                    "rift:not_hypnotized"
-                  ]
-                }
-              },
-              {
-                "weight": 5,
-                "remove": {
-                },
-                "add": {
-                  "component_groups": [
-                    "minecraft:melee_mode",
-                    "minecraft:baby_drowned",
-                    "rift:not_hypnotized"
-                  ]
-                }
-              }
-            ]
-          }
-        ]
-      },
-      "rift:spawn_hypnotized_by_tenontosaurus": {
-        "randomize": [
-          {
-            "weight": 15,
-            "add": {
-              "component_groups": [
-                "rift:hypnotized_has_trident",
-                "minecraft:adult_drowned",
-                "rift:follow_tenontosaurus",
-                "rift:follow_tenontosaurus_no_target"
-              ]
-            },
-            "set_property": {
-                "rift:is_hypnotized": true
-            }
-          },
-          {
-            "weight": 85,
-            "randomize": [
-              {
-                "weight": 95,
-                "add": {
-                  "component_groups": [
-                    "rift:hypnotized_no_trident",
-                    "minecraft:adult_drowned",
-                    "rift:follow_tenontosaurus",
-                    "rift:follow_tenontosaurus_no_target"
-                  ]
-                },
-                "set_property": {
-                    "rift:is_hypnotized": true
-                }
-              },
-              {
-                "weight": 5,
-                "add": {
-                  "component_groups": [
-                    "rift:hypnotized_no_trident",
-                    "minecraft:baby_drowned",
-                    "rift:follow_tenontosaurus",
-                    "rift:follow_tenontosaurus_no_target"
-                  ]
-                },
-                "set_property": {
-                    "rift:is_hypnotized": true
-                }
-              }
-            ]
-          }
-        ]
-      },
-      "rift:attack_for_tenontosaurus": {
-        "sequence": [
-            {
+            "rift:hypnotized_by_tenontosaurus": {
                 "add": {
                     "component_groups": [
-                        "minecraft:hunter_mode"
-                    ]
-                },
-                "remove": {
-                    "component_groups": [
-                        "rift:follow_tenontosaurus_no_target",
-                        "minecraft:wander_mode"
-                    ]
-                },
-                "run_command": {
-                    "command": [
-                        "say FOR THE QUEEN"
+                        "rift:transform_into_hypnotized"
                     ]
                 }
             },
-            {
-                "filters": {
-                    "test": "has_equipment",
-                    "subject": "self",
-                    "domain": "hand",
-                    "operator": "!=",
-                    "value": "minecraft:trident"
-                },
-                "add": {
-                    "component_groups": [
-                        "rift:attacking_for_tenontosaurus_no_trident"
-                    ]
-                },
-                "run_command": {
-                    "command": [
-                        "say no trident"
-                    ]
-                }
-            },
-            {
-                "filters": {
-                    "test": "has_equipment",
-                    "subject": "self",
-                    "domain": "hand",
-                    "value": "minecraft:trident"
-                },
-                "add": {
-                    "component_groups": [
-                        "rift:attacking_for_tenontosaurus_has_trident"
-                    ]
-                },
-                "run_command": {
-                    "command": [
-                        "say yes trident"
-                    ]
-                }
-            }
-        ]
-      },
-      "rift:stop_attacking_for_tenontosaurus": {
-          "add": {
-              "component_groups": [
-                  "rift:follow_tenontosaurus_no_target",
-                  "minecraft:wander_mode"
-              ]
-          },
-          "remove": {
-              "component_groups": [
-                "rift:attacking_for_tenontosaurus_no_trident",
-                "rift:attacking_for_tenontosaurus_has_trident",
-                "minecraft:hunter_mode",
-                "minecraft:melee_mode",
-                "minecraft:ranged_mode"
-              ]
-          }
-      },
-      "rift:hypnotized_by_tenontosaurus": {
-        "add": {
-            "component_groups": [
-                "rift:transform_into_hypnotized"
-            ]
-        }
-      },
-      "rift:transform_into_hypnotized": {
-        "sequence": [
-            {},
-            {
-                "filters": {
-                    "test": "has_equipment",
-                    "subject": "other",
-                    "domain": "hand",
-                    "value": "minecraft:trident"
-                },
-                "add": {
-                  "component_groups": [
-                    "rift:hypnotized_has_trident",
-                    "minecraft:adult_drowned",
-                    "rift:follow_tenontosaurus",
-                    "rift:follow_tenontosaurus_no_target"
-                  ]
-                },
-                "set_property": {
-                    "rift:is_hypnotized": true
-                }
-            },
-            {
-                "filters": {
-                    "all_of": [
-                        {
+            "rift:transform_into_hypnotized": {
+                "sequence": [
+                    {},
+                    {
+                        "filters": {
                             "test": "has_equipment",
                             "subject": "other",
                             "domain": "hand",
-                            "operator": "!=",
                             "value": "minecraft:trident"
                         },
-                        {
-                            "test": "has_component",
-                            "subject": "other",
-                            "operator": "!=",
-                            "value": "minecraft:is_baby"
+                        "add": {
+                            "component_groups": [
+                                "rift:hypnotized_has_trident",
+                                "minecraft:adult_drowned",
+                                "rift:follow_tenontosaurus",
+                                "rift:follow_tenontosaurus_no_target"
+                            ]
+                        },
+                        "set_property": {
+                            "rift:is_hypnotized": true
                         }
-                    ]
-                },
+                    },
+                    {
+                        "filters": {
+                            "all_of": [
+                                {
+                                    "test": "has_equipment",
+                                    "subject": "other",
+                                    "domain": "hand",
+                                    "operator": "!=",
+                                    "value": "minecraft:trident"
+                                },
+                                {
+                                    "test": "has_component",
+                                    "subject": "other",
+                                    "operator": "!=",
+                                    "value": "minecraft:is_baby"
+                                }
+                            ]
+                        },
+                        "add": {
+                            "component_groups": [
+                                "rift:hypnotized_no_trident",
+                                "minecraft:adult_drowned",
+                                "rift:follow_tenontosaurus",
+                                "rift:follow_tenontosaurus_no_target"
+                            ]
+                        },
+                        "set_property": {
+                            "rift:is_hypnotized": true
+                        }
+                    },
+                    {
+                        "filters": {
+                            "all_of": [
+                                {
+                                    "test": "has_equipment",
+                                    "subject": "other",
+                                    "domain": "hand",
+                                    "operator": "!=",
+                                    "value": "minecraft:trident"
+                                },
+                                {
+                                    "test": "has_component",
+                                    "subject": "other",
+                                    "value": "minecraft:is_baby"
+                                }
+                            ]
+                        },
+                        "add": {
+                            "component_groups": [
+                                "rift:hypnotized_no_trident",
+                                "minecraft:baby_drowned",
+                                "rift:follow_tenontosaurus",
+                                "rift:follow_tenontosaurus_no_target"
+                            ]
+                        },
+                        "set_property": {
+                            "rift:is_hypnotized": true
+                        }
+                    }
+                ]
+            },
+            "rift:hypnotized_by_tamed_tenontosaurus": {
                 "add": {
-                  "component_groups": [
-                    "rift:hypnotized_no_trident",
-                    "minecraft:adult_drowned",
-                    "rift:follow_tenontosaurus",
-                    "rift:follow_tenontosaurus_no_target"
-                  ]
-                },
-                "set_property": {
-                    "rift:is_hypnotized": true
+                    "component_groups": [
+                        "rift:transform_into_hypnotized_by_tamed"
+                    ]
                 }
             },
-            {
-                "filters": {
-                    "all_of": [
-                        {
+            "rift:transform_into_hypnotized_by_tamed": {
+                "sequence": [
+                    {},
+                    {
+                        "filters": {
                             "test": "has_equipment",
                             "subject": "other",
                             "domain": "hand",
-                            "operator": "!=",
                             "value": "minecraft:trident"
                         },
-                        {
-                            "test": "has_component",
-                            "subject": "other",
-                            "value": "minecraft:is_baby"
+                        "add": {
+                            "component_groups": [
+                                "rift:hypnotized_has_trident",
+                                "minecraft:adult_drowned",
+                                "rift:follow_tamed_tenontosaurus",
+                                "rift:follow_tamed_tenontosaurus_no_target"
+                            ]
+                        },
+                        "set_property": {
+                            "rift:is_hypnotized_tamed": true
                         }
-                    ]
+                    },
+                    {
+                        "filters": {
+                            "all_of": [
+                                {
+                                    "test": "has_equipment",
+                                    "subject": "other",
+                                    "domain": "hand",
+                                    "operator": "!=",
+                                    "value": "minecraft:trident"
+                                },
+                                {
+                                    "test": "has_component",
+                                    "subject": "other",
+                                    "operator": "!=",
+                                    "value": "minecraft:is_baby"
+                                }
+                            ]
+                        },
+                        "add": {
+                            "component_groups": [
+                                "rift:hypnotized_no_trident",
+                                "minecraft:adult_drowned",
+                                "rift:follow_tamed_tenontosaurus",
+                                "rift:follow_tamed_tenontosaurus_no_target"
+                            ]
+                        },
+                        "set_property": {
+                            "rift:is_hypnotized_tamed": true
+                        }
+                    },
+                    {
+                        "filters": {
+                            "all_of": [
+                                {
+                                    "test": "has_equipment",
+                                    "subject": "other",
+                                    "domain": "hand",
+                                    "operator": "!=",
+                                    "value": "minecraft:trident"
+                                },
+                                {
+                                    "test": "has_component",
+                                    "subject": "other",
+                                    "value": "minecraft:is_baby"
+                                }
+                            ]
+                        },
+                        "add": {
+                            "component_groups": [
+                                "rift:hypnotized_no_trident",
+                                "minecraft:baby_drowned",
+                                "rift:follow_tamed_tenontosaurus",
+                                "rift:follow_tamed_tenontosaurus_no_target"
+                            ]
+                        },
+                        "set_property": {
+                            "rift:is_hypnotized_tamed": true
+                        }
+                    }
+                ]
+            },
+            "minecraft:as_baby": {
+                "add": {
+                "component_groups": [
+                    "minecraft:melee_mode",
+                    "minecraft:baby_drowned"
+                ]
+                }
+            },
+            "minecraft:as_adult": {
+                "add": {
+                "component_groups": [
+                    "minecraft:melee_mode",
+                    "minecraft:adult_drowned"
+                ]
+                }
+            }, 
+            "minecraft:switch_to_melee": {
+                "remove": {
+                "component_groups": [
+                    "minecraft:ranged_mode"
+                ]
                 },
                 "add": {
-                  "component_groups": [
-                    "rift:hypnotized_no_trident",
-                    "minecraft:baby_drowned",
-                    "rift:follow_tenontosaurus",
-                    "rift:follow_tenontosaurus_no_target"
-                  ]
+                "component_groups": [
+                    "minecraft:melee_mode"
+                ]
+                }
+            },
+            "minecraft:switch_to_ranged": {
+                "remove": {
+                "component_groups": [
+                    "minecraft:melee_mode"
+                ]
                 },
-                "set_property": {
-                    "rift:is_hypnotized": true
+                "add": {
+                "component_groups": [
+                    "minecraft:ranged_mode"
+                ]
+                }
+            },
+            "minecraft:has_target": {
+                "remove": {
+                "component_groups": [
+                    "minecraft:wander_mode"
+                ]
+                },
+                "add": {
+                "component_groups": [
+                    "minecraft:hunter_mode"
+                ]
+                }
+            },
+            "minecraft:lost_target": {
+                "remove": {
+                "component_groups": [
+                    "minecraft:hunter_mode"
+                ]
+                },
+                "add": {
+                "component_groups": [
+                    "minecraft:wander_mode"
+                ]
                 }
             }
-        ]
-      },
-      "minecraft:as_baby": {
-        "add": {
-          "component_groups": [
-            "minecraft:melee_mode",
-            "minecraft:baby_drowned"
-          ]
         }
-      },
-      "minecraft:as_adult": {
-        "add": {
-          "component_groups": [
-            "minecraft:melee_mode",
-            "minecraft:adult_drowned"
-          ]
-        }
-      }, 
-      "minecraft:switch_to_melee": {
-        "remove": {
-          "component_groups": [
-            "minecraft:ranged_mode"
-          ]
-        },
-        "add": {
-          "component_groups": [
-            "minecraft:melee_mode"
-          ]
-        }
-      },
-      "minecraft:switch_to_ranged": {
-        "remove": {
-          "component_groups": [
-            "minecraft:melee_mode"
-          ]
-        },
-        "add": {
-          "component_groups": [
-            "minecraft:ranged_mode"
-          ]
-        }
-      },
-      "minecraft:has_target": {
-        "remove": {
-          "component_groups": [
-            "minecraft:wander_mode"
-          ]
-        },
-        "add": {
-          "component_groups": [
-            "minecraft:hunter_mode"
-          ]
-        }
-      },
-      "minecraft:lost_target": {
-        "remove": {
-          "component_groups": [
-            "minecraft:hunter_mode"
-          ]
-        },
-        "add": {
-          "component_groups": [
-            "minecraft:wander_mode"
-          ]
-        }
-      }
     }
-  }
 }
