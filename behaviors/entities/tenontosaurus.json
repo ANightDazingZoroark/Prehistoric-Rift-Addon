@@ -862,6 +862,16 @@
             "rift:forced_hypnotizing": {
                 "minecraft:is_sheared": {}
             },
+            "rift:hypnotize_cooldown": {
+                "minecraft:is_charged": {},
+                "minecraft:timer": {
+                    "time": 10,
+                    "time_down_event": {
+                        "event": "rift:end_hypnotize_cooldown",
+                        "target": "self"
+                    }
+                }
+            },
 			"rift:can_attack": {
 				"minecraft:attack": {
 					"damage": 5
@@ -3076,12 +3086,58 @@
 								},
 								{
 									"test": "has_component",
+									"operator": "!=",
+									"value": "minecraft:is_charged",
+									"subject": "self"
+								},
+								{
+									"test": "has_component",
 									"value": "minecraft:is_saddled",
 									"subject": "self"
 								}
 							]
 						},
 						"event": "rift:tenonto_tamed_hypnosis"
+					},
+					{
+						"filters": {
+							"all_of": [
+								{
+									"test": "has_tag",
+									"value": "tenontoHypno",
+									"subject": "self",
+									"operator": "=="
+								},
+								{
+									"test": "rider_count",
+									"operator": ">",
+									"value": 0,
+									"subject": "self"
+								},
+								{
+									"test": "has_component",
+									"value": "minecraft:is_tamed",
+									"subject": "self"
+								},
+								{
+									"test": "has_component",
+									"operator": "!=",
+									"value": "minecraft:is_baby",
+									"subject": "self"
+								},
+								{
+									"test": "has_component",
+									"value": "minecraft:is_charged",
+									"subject": "self"
+								},
+								{
+									"test": "has_component",
+									"value": "minecraft:is_saddled",
+									"subject": "self"
+								}
+							]
+						},
+						"event": "rift:tenonto_tamed_hypnosis_fail"
 					}
 				]
 			},
@@ -3688,11 +3744,35 @@
                 }
             },
             "rift:tenonto_stop_tamed_hypnosis": {
+                "add": {
+                    "component_groups": [
+                        "rift:hypnotize_cooldown"
+                    ]
+                },
                 "remove": {
                     "component_groups": [
                         "rift:forced_hypnotizing"
                     ]
                 }
+            },
+            "rift:tenonto_tamed_hypnosis_fail": {
+                "run_command": {
+                    "command": [
+                        "tellraw @p {\"rawtext\":[{\"text\":\"Cannot hypnotize for another 10 seconds!\"}]}"
+                    ]
+                }
+            },
+            "rift:end_hypnotize_cooldown": {
+                "remove": {
+                    "component_groups": [
+                        "rift:hypnotize_cooldown"
+                    ]
+                },
+				"run_command": {
+					"command": [
+						"tellraw @p {\"rawtext\":[{\"text\":\"Cooldown ended\"}]}"
+					]
+				}
             },
 			"rift:start_forced_attack": {
 				"set_property": {
