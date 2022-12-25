@@ -1,0 +1,100 @@
+{
+    "format_version": "1.10.0",
+    "animation_controllers": {
+        "controller.animation.direbear_movement": {
+            "initial_state": "default",
+            "states": {
+                "default": {
+                    "animations": [
+                        {
+                            "animWalk": "query.ground_speed > 0"
+                        }
+                    ],
+                    "transitions": [
+                        {
+                            "sitting": "query.property('rift:tame_state') == 1 && !query.has_target"
+                        }
+                    ]
+                },
+                "sitting": {
+                    "animations": [
+                        "animSit"
+                    ],
+                    "transitions": [
+                        {
+                            "default": "query.property('rift:tame_state') != 1 || query.has_target"
+                        }
+                    ]
+                }
+            }
+        },
+        "controller.animation.direbear_attack": {
+            "initial_state": "default",
+            "states": {
+                "default": {
+                    "transitions": [
+                        {
+                            "biteAttack": "query.is_delayed_attacking && query.mark_variant == 0"
+                        },
+                        {
+                            "stompAttack": "query.is_roaring && query.mark_variant == 1"
+                        },
+                        {
+                            "clawAttackChoose": "query.is_delayed_attacking && query.mark_variant == 2"
+                        }
+                    ]
+                },
+                "biteAttack": {
+                    "animations": [
+                        "animBite"
+                    ],
+                    "transitions": [
+                        {
+                            "default": "!query.is_delayed_attacking"
+                        }
+                    ]
+                },
+                "stompAttack": {
+                    "animations": [
+                        "animStomp"
+                    ],
+                    "transitions": [
+                        {
+                            "default": "!query.is_roaring"
+                        }
+                    ]
+                },
+                "clawAttackChoose": {
+                    "transitions": [
+                        {
+                            "clawAttackOne": "v.attackMode = (math.floor(math.random(0,2))); return v.attackMode == 0;"
+                        },
+                        {
+                            "clawAttackTwo": "v.attackMode == 1"
+                        }
+                    ]
+                },
+                "clawAttackOne": {
+                    "animations": [
+                        "animClawOne"
+                    ],
+                    "transitions": [
+                        {
+                            "default": "!query.is_delayed_attacking"
+                        }
+                    ]
+                },
+                "clawAttackTwo": {
+                    "animations": [
+                        "animClawTwo"
+                    ],
+                    "transitions": [
+                        {
+                            "default": "!query.is_delayed_attacking"
+                        }
+                    ]
+                }
+            }
+        }
+    }
+}

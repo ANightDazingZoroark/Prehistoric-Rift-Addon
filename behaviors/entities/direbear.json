@@ -67,12 +67,13 @@
 				"contHypnotizedTag": "controller.animation.add_hypnotized_tag",
 				"contHypnotizedTamedTag": "controller.animation.add_hypnotized_by_tamed_tag",
 				"contTameState": "controller.animation.manage_tame_state",
-				"contEnergyUsage": "controller.animation.direbear_energy_movement_usage",
+				// "contEnergyUsage": "controller.animation.direbear_energy_movement_usage",
 				"contWarnLowEnergy": "controller.animation.warn_of_low_energy",
 				"contBehaviorState": "controller.animation.manage_tame_behavior",
 				"contDieWithoutTenontosaurus": "controller.animation.general_die_without_tenontosaurus",
                 "contDieWithoutTamedTenontosaurus": "controller.animation.general_death_timer_tamed_tenontosaurus",
-				"animUseEnergyWhileMoving": "animation.direbear_decrease_energy_while_moving",
+				"contSwitchBetweenMeleeAttacks": "controller.animation.direbear_switch_between_melee_attacks",
+                "animUseEnergyWhileMoving": "animation.direbear_decrease_energy_while_moving",
 				"animEnergyRegenDelay": "animation.regenerate_energy_delay",
 				"animRegenerateEnergy": "animation.direbear_regenerate_energy",
 				"animLowOnEnergyEffects": "animation.effects_while_low_on_energy",
@@ -93,12 +94,13 @@
 					"contHypnotizedTag",
                     "contHypnotizedTamedTag",
 					"contTameState",
-					"contEnergyUsage",
+					// "contEnergyUsage",
 					"contWarnLowEnergy",
 					// "contForcedAttack",
 					"contBehaviorState",
 					"contDieWithoutTenontosaurus",
-                    "contDieWithoutTamedTenontosaurus"
+                    "contDieWithoutTamedTenontosaurus",
+                    "contSwitchBetweenMeleeAttacks"
 				]
 			}
         },
@@ -112,6 +114,31 @@
                         "target": "self"
                     },
                     "feed_items": [
+						{
+							"item": "minecraft:sweet_berries",
+							"growth": 0.1
+                        },
+                        {
+							"item": "minecraft:leaves",
+							"growth": 0.1
+                        },
+                        {
+							"item": "minecraft:leaves2",
+							"growth": 0.1
+                        },
+                        {
+							"item": "minecraft:azalea_leaves",
+							"growth": 0.1
+						},
+                        {
+							"item": "minecraft:azalea_leaves_flowered",
+							"growth": 0.1
+						},
+                        {
+							"item": "minecraft:mangrove_leaves",
+							"growth": 0.1
+						},
+
 						{
 							"item": "minecraft:beef",
 							"growth": 0.1
@@ -175,7 +202,46 @@
 						{
 							"item": "rift:cooked_hadrosaur_meat",
 							"growth": 0.125
-						}                    
+						},
+                        
+						{
+							"item": "minecraft:cod",
+							"growth": 0.1
+						},
+						{
+							"item": "minecraft:cooked_cod",
+							"growth": 0.125
+						},
+                        {
+							"item": "minecraft:salmon",
+							"growth": 0.1
+						},
+						{
+							"item": "minecraft:cooked_salmon",
+							"growth": 0.125
+						},
+                        {
+							"item": "minecraft:tropical_fish",
+							"growth": 0.1
+						},
+						{
+							"item": "rift:raw_megapiranha",
+							"growth": 0.1
+						},
+                        {
+							"item": "rift:cooked_megapiranha",
+							"growth": 0.125
+						},
+
+                        {
+                            "item": "minecraft:honey_bottle",
+                            "growth": 0.1,
+                            "transform_to_item": "minecraft:glass_bottle:0"
+                        },
+						{
+							"item": "minecraft:honeycomb",
+							"growth": 0.1
+						}
                     ]
                 },
                 "minecraft:scale_by_age": {
@@ -183,7 +249,7 @@
                     "end_scale": 1
                 },
                 "minecraft:navigation.walk": {
-					"avoid_water": true,
+                    "can_sink": false,
 					"avoid_damage_blocks": true
                 }
             },
@@ -345,8 +411,8 @@
             },
             "rift:direbear_adult_wild": {
                 "minecraft:health": {
-                    "value": 30,
-                    "max": 30
+                    "value": 80,
+                    "max": 80
                 },
 				"minecraft:behavior.hurt_by_target": {
 					"priority": 6,
@@ -390,7 +456,7 @@
                     }
 				},
 				"minecraft:navigation.climb": {
-					"avoid_water": true,
+                    "can_sink": false,
 					"avoid_damage_blocks": true
 				},
 				"minecraft:behavior.avoid_block": {
@@ -460,6 +526,37 @@
 				"minecraft:shareables": {
 					"all_items_max_amount": 1,
 					"items": [
+						{ 
+							"item": "minecraft:sweet_berries", 
+							"priority": 0, 
+							"max_amount": 1 
+						},
+						{ 
+							"item": "minecraft:leaves", 
+							"priority": 0, 
+							"max_amount": 1 
+						},
+						{ 
+							"item": "minecraft:leaves2", 
+							"priority": 0, 
+							"max_amount": 1 
+						},
+						{ 
+							"item": "minecraft:azalea_leaves", 
+							"priority": 0, 
+							"max_amount": 1 
+						},
+						{ 
+							"item": "minecraft:azalea_leaves_flowered", 
+							"priority": 0, 
+							"max_amount": 1 
+						},
+						{ 
+							"item": "minecraft:mangrove_leaves", 
+							"priority": 0, 
+							"max_amount": 1 
+						},
+
 						{ 
 							"item": "minecraft:beef", 
 							"priority": 0, 
@@ -537,6 +634,26 @@
 						},
 						{ 
 							"item": "rift:cooked_hadrosaur_meat", 
+							"priority": 0, 
+							"max_amount": 1 
+						},
+						{ 
+							"item": "rift:raw_megapiranha", 
+							"priority": 0, 
+							"max_amount": 1 
+						},
+						{ 
+							"item": "rift:cooked_megapiranha", 
+							"priority": 0, 
+							"max_amount": 1 
+						},
+						{ 
+							"item": "minecraft:honey_bottle", 
+							"priority": 0, 
+							"max_amount": 1 
+						},
+						{ 
+							"item": "minecraft:honeycomb", 
 							"priority": 0, 
 							"max_amount": 1 
 						}
@@ -690,8 +807,8 @@
 			},
             "rift:direbear_adult_tamed": {
                 "minecraft:health": {
-                    "value": 30,
-                    "max": 30
+                    "value": 80,
+                    "max": 80
                 },
                 "minecraft:breedable": {
                     "breeds_with": {
@@ -717,86 +834,32 @@
 					"force_use": true,
 					"items": [
 						{
-							"item": "minecraft:beef",
-							"heal_amount": 3
+							"item": "minecraft:sweet_berries",
+							"heal_amount": 5
 						},
 						{
-							"item": "minecraft:cooked_beef",
-							"heal_amount": 6
+							"item": "minecraft:leaves",
+							"heal_amount": 5
 						},
 						{
-							"item": "minecraft:porkchop",
-							"heal_amount": 3
+							"item": "minecraft:leaves2",
+							"heal_amount": 5
 						},
 						{
-							"item": "minecraft:cooked_porkchop",
-							"heal_amount": 6
+							"item": "minecraft:azalea_leaves",
+							"heal_amount": 5
 						},
 						{
-							"item": "minecraft:chicken",
-							"heal_amount": 3
+							"item": "minecraft:azalea_leaves_flowered",
+							"heal_amount": 5
 						},
 						{
-							"item": "minecraft:cooked_chicken",
-							"heal_amount": 6
+							"item": "minecraft:mangrove_leaves",
+							"heal_amount": 5
 						},
 						{
-							"item": "minecraft:mutton",
-							"heal_amount": 3
-						},
-						{
-							"item": "minecraft:cooked_mutton",
-							"heal_amount": 6
-						},
-						{
-							"item": "minecraft:rabbit",
-							"heal_amount": 3
-						},
-						{
-							"item": "minecraft:cooked_rabbit",
-							"heal_amount": 6
-						},
-						{
-							"item": "rift:raw_exotic_meat",
-							"heal_amount": 3
-						},
-						{
-							"item": "rift:cooked_exotic_meat",
-							"heal_amount": 6
-						},
-						{
-							"item": "rift:raw_dodo_meat",
-							"heal_amount": 3
-						},
-						{
-							"item": "rift:cooked_dodo_meat",
-							"heal_amount": 6,
-							"effects": [
-								{
-									"name": "absorption",
-									"duration": 30,
-									"amplifier": 3
-								}
-							]
-						},
-						{
-							"item": "rift:raw_hadrosaur_meat",
-							"heal_amount": 3
-						},
-						{
-							"item": "rift:cooked_hadrosaur_meat",
-							"heal_amount": 6,
-							"effects": [
-								{
-									"name": "resistance",
-									"duration": 60,
-									"amplifier": 3
-								}
-							]
-						},
-						{
-							"item": "rift:mixed_meat",
-							"heal_amount": 20,
+							"item": "minecraft:golden_apple",
+							"heal_amount": 10,
 							"effects": [
 								{
 									"name": "absorption",
@@ -811,8 +874,8 @@
 							]
 						},
 						{
-							"item": "rift:enchanted_mixed_meat",
-							"heal_amount": 20,
+							"item": "minecraft:enchanted_golden_apple",
+							"heal_amount": 10,
 							"effects": [
 								{
 									"name": "absorption",
@@ -835,6 +898,169 @@
 									"amplifier": 0
 								}
 							]
+						},
+						{
+							"item": "minecraft:beef",
+							"heal_amount": 5
+						},
+						{
+							"item": "minecraft:cooked_beef",
+							"heal_amount": 10
+						},
+						{
+							"item": "minecraft:porkchop",
+							"heal_amount": 5
+						},
+						{
+							"item": "minecraft:cooked_porkchop",
+							"heal_amount": 10
+						},
+						{
+							"item": "minecraft:chicken",
+							"heal_amount": 5
+						},
+						{
+							"item": "minecraft:cooked_chicken",
+							"heal_amount": 10
+						},
+						{
+							"item": "minecraft:mutton",
+							"heal_amount": 5
+						},
+						{
+							"item": "minecraft:cooked_mutton",
+							"heal_amount": 10
+						},
+						{
+							"item": "minecraft:rabbit",
+							"heal_amount": 5
+						},
+						{
+							"item": "minecraft:cooked_rabbit",
+							"heal_amount": 10
+						},
+						{
+							"item": "minecraft:cod",
+							"heal_amount": 5
+						},
+						{
+							"item": "minecraft:cooked_cod",
+							"heal_amount": 10
+						},
+						{
+							"item": "minecraft:salmon",
+							"heal_amount": 5
+						},
+						{
+							"item": "minecraft:cooked_salmon",
+							"heal_amount": 10
+						},
+						{
+							"item": "minecraft:tropical_fish",
+							"heal_amount": 5
+						},
+						{
+							"item": "rift:raw_exotic_meat",
+							"heal_amount": 5
+						},
+						{
+							"item": "rift:cooked_exotic_meat",
+							"heal_amount": 10
+						},
+						{
+							"item": "rift:raw_dodo_meat",
+							"heal_amount": 5
+						},
+						{
+							"item": "rift:cooked_dodo_meat",
+							"heal_amount": 10,
+							"effects": [
+								{
+									"name": "absorption",
+									"duration": 30,
+									"amplifier": 3
+								}
+							]
+						},
+						{
+							"item": "rift:raw_hadrosaur_meat",
+							"heal_amount": 5
+						},
+						{
+							"item": "rift:cooked_hadrosaur_meat",
+							"heal_amount": 10,
+							"effects": [
+								{
+									"name": "resistance",
+									"duration": 60,
+									"amplifier": 3
+								}
+							]
+						},
+						{
+							"item": "rift:raw_megapiranha",
+							"heal_amount": 5
+						},
+						{
+							"item": "rift:cooked_megapiranha",
+							"heal_amount": 10,
+							"effects": [
+								{
+									"name": "regeneration",
+									"duration": 15,
+									"amplifier": 3
+								}
+							]
+						},
+						{
+							"item": "rift:mixed_meat",
+							"heal_amount": 10,
+							"effects": [
+								{
+									"name": "absorption",
+									"duration": 120,
+									"amplifier": 0
+								},
+								{
+									"name": "regeneration",
+									"duration": 5,
+									"amplifier": 1
+								}
+							]
+						},
+						{
+							"item": "rift:enchanted_mixed_meat",
+							"heal_amount": 10,
+							"effects": [
+								{
+									"name": "absorption",
+									"duration": 120,
+									"amplifier": 3
+								},
+								{
+									"name": "regeneration",
+									"duration": 30,
+									"amplifier": 1
+								},
+								{
+									"name": "fire_resistance",
+									"duration": 300,
+									"amplifier": 0
+								},
+								{
+									"name": "resistance",
+									"duration": 300,
+									"amplifier": 0
+								}
+							]
+						},
+						{
+							"item": "minecraft:honeycomb",
+							"heal_amount": 5
+						},
+						{
+							"item": "minecraft:honey_bottle",
+							"heal_amount": 5
 						}
 					]
                 },
@@ -866,7 +1092,7 @@
 				},
 				"minecraft:behavior.player_ride_tamed": {},
 				"minecraft:navigation.walk": {
-					"avoid_water": true,
+                    "can_sink": false,
 					"avoid_damage_blocks": true
 				}
             },
@@ -897,6 +1123,13 @@
                     "priority": 13,
 					"within_radius": 16,
                     "items": [
+                        "minecraft:sweet_berries",
+                        "minecraft:leaves",
+                        "minecraft:leaves2",
+						"minecraft:azalea_leaves",
+						"minecraft:azalea_leaves_flowered",
+						"minecraft:mangrove_leaves",
+
                         "minecraft:beef",
 						"minecraft:cooked_beef",
 						"minecraft:porkchop",
@@ -907,17 +1140,42 @@
 						"minecraft:cooked_mutton",
 						"minecraft:rabbit",
 						"minecraft:cooked_rabbit",
-						"rift:flesh_treat",
+
+                        "minecraft:cod",
+                        "minecraft:cooked_cod",
+                        "minecraft:salmon",
+                        "minecraft:cooked_salmon",
+                        "minecraft:tropical_fish",
+
+                        "minecraft:honey_bottle",
+                        "minecraft:honeycomb",
+
 						"rift:raw_exotic_meat",
 						"rift:cooked_exotic_meat",
 						"rift:raw_dodo_meat",
 						"rift:cooked_dodo_meat",
 						"rift:raw_hadrosaur_meat",
-						"rift:cooked_hadrosaur_meat"
+						"rift:cooked_hadrosaur_meat",
+
+                        "rift:flesh_treat",
+                        "rift:fish_treat",
+                        "rift:berry_treat",
+                        "rift:leafy_treat",
+                        "rift:honey_treat"
                     ]
                 }
 			},
-            "rift:wild_standing": {},
+            "rift:wild_standing": {
+				"minecraft:movement": {
+					"value": 0.2
+				},
+                "minecraft:behavior.random_stroll": {
+					"priority": 16
+				},
+				"minecraft:behavior.random_look_around": {
+					"priority": 17
+				}
+            },
 			"rift:variant_one": {
 				"minecraft:variant": {
 					"value": 0
@@ -937,6 +1195,61 @@
 				"minecraft:variant": {
 					"value": 3
 				}
+            },
+            "rift:bite_attack": {
+                "minecraft:mark_variant": {
+                    "value": 0
+                },
+				"minecraft:behavior.delayed_attack": {
+					"priority": 9,
+					"attack_duration": 0.52,
+					"hit_delay_pct": 1,
+					"track_target": true,
+					"reach_multiplier": 2
+				},
+                "minecraft:attack": {
+                    "damage": 10
+                }
+            },
+            "rift:stomp_attack": {
+                "minecraft:mark_variant": {
+                    "value": 1
+                },
+				"minecraft:behavior.knockback_roar": {
+					"priority": 0,
+					"duration": 0.76,
+					"attack_time": 0.76,
+					"knockback_damage": 15,
+					"knockback_strength": 1,
+					"knockback_range": 8,
+					"damage_filters": {
+                        "test":  "is_family", 
+                        "subject": "other",
+                        "operator": "!=",
+                        "value":  "inanimate"
+                    },
+					"knockback_filters": {
+                        "test":  "is_family", 
+                        "subject": "other",
+                        "operator": "!=",
+                        "value":  "inanimate"
+                    }
+				}
+            },
+            "rift:claw_attack": {
+                "minecraft:mark_variant": {
+                    "value": 2
+                },
+				"minecraft:behavior.delayed_attack": {
+					"priority": 9,
+					"attack_duration": 0.48,
+					"hit_delay_pct": 0.5,
+					"track_target": true,
+					"reach_multiplier": 2
+				},
+                "minecraft:attack": {
+                    "damage": 10
+                }
             },
 			"rift:pushable": {
 				"minecraft:pushable": {
@@ -974,7 +1287,2549 @@
 				"total_supply": 15,
 				"suffocate_time": 0
 			},
-            "minecraft:behavior.float": {}
+            "minecraft:behavior.rise_to_liquid_level": {
+                "priority": 0,
+                "liquid_y_offset": 0.25,
+                "rise_delta": 0.01,
+                "sink_delta": 0.01
+            },
+            "minecraft:interact": {
+				"interactions": [
+					{
+						"on_interact": {
+							"filters": {
+								"all_of": [
+									{
+										"any_of": [
+											{
+												"test": "has_equipment",
+												"subject": "other",
+												"domain": "hand",
+												"value": "rift:flesh_treat"
+											},
+											{
+												"test": "has_equipment",
+												"subject": "other",
+												"domain": "hand",
+												"value": "rift:fish_treat"
+											},
+											{
+												"test": "has_equipment",
+												"subject": "other",
+												"domain": "hand",
+												"value": "rift:berry_treat"
+											},
+											{
+												"test": "has_equipment",
+												"subject": "other",
+												"domain": "hand",
+												"value": "rift:leafy_treat"
+											},
+											{
+												"test": "has_equipment",
+												"subject": "other",
+												"domain": "hand",
+												"value": "rift:honey_treat"
+											}
+										]
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_tamed"
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_baby"
+									}
+								]
+							},
+							"event": "rift:lol2",
+							"target": "self"
+						},
+						"interact_text": "action.interact.tame"
+					},
+					{
+						"on_interact": {
+							"filters": {
+								"all_of": [
+									{
+										"any_of": [
+											{
+												"test": "has_equipment",
+												"subject": "other",
+												"domain": "hand",
+												"value": "rift:flesh_treat"
+											},
+											{
+												"test": "has_equipment",
+												"subject": "other",
+												"domain": "hand",
+												"value": "rift:fish_treat"
+											},
+											{
+												"test": "has_equipment",
+												"subject": "other",
+												"domain": "hand",
+												"value": "rift:berry_treat"
+											},
+											{
+												"test": "has_equipment",
+												"subject": "other",
+												"domain": "hand",
+												"value": "rift:leafy_treat"
+											},
+											{
+												"test": "has_equipment",
+												"subject": "other",
+												"domain": "hand",
+												"value": "rift:honey_treat"
+											}
+										]
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_tamed"
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"operator": "!=",
+										"value": "minecraft:is_baby"
+									},
+									{
+										"any_of": [
+											{
+												"test": "is_missing_health",
+												"subject": "self",
+												"value": true
+											},
+											{
+												"test": "has_tag",
+												"subject": "self",
+												"value": "inLove"
+											}
+										]
+									}
+								]
+							},
+							"event": "rift:lol2",
+							"target": "self"
+						},
+						"interact_text": "action.interact.tame"
+					},
+					{
+						"on_interact": {
+							"filters": {
+								"all_of": [
+                                    {
+                                        "any_of": [
+											{
+												"test": "has_equipment",
+												"subject": "other",
+												"domain": "hand",
+												"value": "minecraft:sweet_berries"
+											},
+											{
+												"test": "has_equipment",
+												"subject": "other",
+												"domain": "hand",
+												"value": "minecraft:leaves"
+											},
+											{
+												"test": "has_equipment",
+												"subject": "other",
+												"domain": "hand",
+												"value": "minecraft:leaves2"
+											},
+											{
+												"test": "has_equipment",
+												"subject": "other",
+												"domain": "hand",
+												"value": "minecraft:azalea_leaves"
+											},
+											{
+												"test": "has_equipment",
+												"subject": "other",
+												"domain": "hand",
+												"value": "minecraft:azalea_leaves_flowered"
+											},
+											{
+												"test": "has_equipment",
+												"subject": "other",
+												"domain": "hand",
+												"value": "minecraft:mangrove_leaves"
+											},
+
+											{
+												"test": "has_equipment",
+												"subject": "other",
+												"domain": "hand",
+												"value": "minecraft:beef"
+											},
+											{
+												"test": "has_equipment",
+												"subject": "other",
+												"domain": "hand",
+												"value": "minecraft:cooked_beef"
+											},
+											{
+												"test": "has_equipment",
+												"subject": "other",
+												"domain": "hand",
+												"value": "minecraft:porkchop"
+											},
+											{
+												"test": "has_equipment",
+												"subject": "other",
+												"domain": "hand",
+												"value": "minecraft:cooked_porkchop"
+											},
+											{
+												"test": "has_equipment",
+												"subject": "other",
+												"domain": "hand",
+												"value": "minecraft:chicken"
+											},
+											{
+												"test": "has_equipment",
+												"subject": "other",
+												"domain": "hand",
+												"value": "minecraft:cooked_chicken"
+											},
+											{
+												"test": "has_equipment",
+												"subject": "other",
+												"domain": "hand",
+												"value": "minecraft:mutton"
+											},
+											{
+												"test": "has_equipment",
+												"subject": "other",
+												"domain": "hand",
+												"value": "minecraft:cooked_mutton"
+											},
+											{
+												"test": "has_equipment",
+												"subject": "other",
+												"domain": "hand",
+												"value": "minecraft:rabbit"
+											},
+											{
+												"test": "has_equipment",
+												"subject": "other",
+												"domain": "hand",
+												"value": "minecraft:cooked_rabbit"
+											},
+											{
+												"test": "has_equipment",
+												"subject": "other",
+												"domain": "hand",
+												"value": "minecraft:cod"
+											},
+											{
+												"test": "has_equipment",
+												"subject": "other",
+												"domain": "hand",
+												"value": "minecraft:cooked_cod"
+											},
+											{
+												"test": "has_equipment",
+												"subject": "other",
+												"domain": "hand",
+												"value": "minecraft:salmon"
+											},
+											{
+												"test": "has_equipment",
+												"subject": "other",
+												"domain": "hand",
+												"value": "minecraft:cooked_salmon"
+											},
+											{
+												"test": "has_equipment",
+												"subject": "other",
+												"domain": "hand",
+												"value": "minecraft:tropical_fish"
+											},
+											{
+												"test": "has_equipment",
+												"subject": "other",
+												"domain": "hand",
+												"value": "rift:raw_exotic_meat"
+											},
+											{
+												"test": "has_equipment",
+												"subject": "other",
+												"domain": "hand",
+												"value": "rift:cooked_exotic_meat"
+											},
+											{
+												"test": "has_equipment",
+												"subject": "other",
+												"domain": "hand",
+												"value": "rift:raw_dodo_meat"
+											},
+											{
+												"test": "has_equipment",
+												"subject": "other",
+												"domain": "hand",
+												"value": "rift:cooked_dodo_meat"
+											},
+											{
+												"test": "has_equipment",
+												"subject": "other",
+												"domain": "hand",
+												"value": "rift:raw_hadrosaur_meat"
+											},
+											{
+												"test": "has_equipment",
+												"subject": "other",
+												"domain": "hand",
+												"value": "rift:cooked_hadrosaur_meat"
+											},
+											{
+												"test": "has_equipment",
+												"subject": "other",
+												"domain": "hand",
+												"value": "rift:raw_megapiranha"
+											},
+											{
+												"test": "has_equipment",
+												"subject": "other",
+												"domain": "hand",
+												"value": "rift:cooked_megapiranha"
+											},
+
+											{
+												"test": "has_equipment",
+												"subject": "other",
+												"domain": "hand",
+												"value": "rift:flesh_treat"
+											},
+											{
+												"test": "has_equipment",
+												"subject": "other",
+												"domain": "hand",
+												"value": "rift:fish_treat"
+											},
+											{
+												"test": "has_equipment",
+												"subject": "other",
+												"domain": "hand",
+												"value": "rift:berry_treat"
+											},
+											{
+												"test": "has_equipment",
+												"subject": "other",
+												"domain": "hand",
+												"value": "rift:leafy_treat"
+											},
+											{
+												"test": "has_equipment",
+												"subject": "other",
+												"domain": "hand",
+												"value": "rift:honey_treat"
+											}
+                                        ]
+                                    },
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_tamed"
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"operator": "!=",
+										"value": "minecraft:is_baby"
+									},
+									{
+										"test": "is_missing_health",
+										"subject": "self",
+										"value": false
+									}
+								]
+							},
+							"event": "rift:lol3",
+							"target": "self"
+						},
+						"interact_text": "action.interact.tame"
+					},
+					{
+						"on_interact": {
+							"filters": {
+								"all_of": [
+                                    {
+                                        "any_of": [
+											{
+												"test": "has_equipment",
+												"subject": "other",
+												"domain": "hand",
+												"value": "minecraft:sweet_berries"
+											},
+											{
+												"test": "has_equipment",
+												"subject": "other",
+												"domain": "hand",
+												"value": "minecraft:leaves"
+											},
+											{
+												"test": "has_equipment",
+												"subject": "other",
+												"domain": "hand",
+												"value": "minecraft:leaves2"
+											},
+											{
+												"test": "has_equipment",
+												"subject": "other",
+												"domain": "hand",
+												"value": "minecraft:azalea_leaves"
+											},
+											{
+												"test": "has_equipment",
+												"subject": "other",
+												"domain": "hand",
+												"value": "minecraft:azalea_leaves_flowered"
+											},
+											{
+												"test": "has_equipment",
+												"subject": "other",
+												"domain": "hand",
+												"value": "minecraft:mangrove_leaves"
+											},
+
+											{
+												"test": "has_equipment",
+												"subject": "other",
+												"domain": "hand",
+												"value": "minecraft:beef"
+											},
+											{
+												"test": "has_equipment",
+												"subject": "other",
+												"domain": "hand",
+												"value": "minecraft:cooked_beef"
+											},
+											{
+												"test": "has_equipment",
+												"subject": "other",
+												"domain": "hand",
+												"value": "minecraft:porkchop"
+											},
+											{
+												"test": "has_equipment",
+												"subject": "other",
+												"domain": "hand",
+												"value": "minecraft:cooked_porkchop"
+											},
+											{
+												"test": "has_equipment",
+												"subject": "other",
+												"domain": "hand",
+												"value": "minecraft:chicken"
+											},
+											{
+												"test": "has_equipment",
+												"subject": "other",
+												"domain": "hand",
+												"value": "minecraft:cooked_chicken"
+											},
+											{
+												"test": "has_equipment",
+												"subject": "other",
+												"domain": "hand",
+												"value": "minecraft:mutton"
+											},
+											{
+												"test": "has_equipment",
+												"subject": "other",
+												"domain": "hand",
+												"value": "minecraft:cooked_mutton"
+											},
+											{
+												"test": "has_equipment",
+												"subject": "other",
+												"domain": "hand",
+												"value": "minecraft:rabbit"
+											},
+											{
+												"test": "has_equipment",
+												"subject": "other",
+												"domain": "hand",
+												"value": "minecraft:cooked_rabbit"
+											},
+											{
+												"test": "has_equipment",
+												"subject": "other",
+												"domain": "hand",
+												"value": "minecraft:cod"
+											},
+											{
+												"test": "has_equipment",
+												"subject": "other",
+												"domain": "hand",
+												"value": "minecraft:cooked_cod"
+											},
+											{
+												"test": "has_equipment",
+												"subject": "other",
+												"domain": "hand",
+												"value": "minecraft:salmon"
+											},
+											{
+												"test": "has_equipment",
+												"subject": "other",
+												"domain": "hand",
+												"value": "minecraft:cooked_salmon"
+											},
+											{
+												"test": "has_equipment",
+												"subject": "other",
+												"domain": "hand",
+												"value": "minecraft:tropical_fish"
+											},
+											{
+												"test": "has_equipment",
+												"subject": "other",
+												"domain": "hand",
+												"value": "rift:raw_exotic_meat"
+											},
+											{
+												"test": "has_equipment",
+												"subject": "other",
+												"domain": "hand",
+												"value": "rift:cooked_exotic_meat"
+											},
+											{
+												"test": "has_equipment",
+												"subject": "other",
+												"domain": "hand",
+												"value": "rift:raw_dodo_meat"
+											},
+											{
+												"test": "has_equipment",
+												"subject": "other",
+												"domain": "hand",
+												"value": "rift:cooked_dodo_meat"
+											},
+											{
+												"test": "has_equipment",
+												"subject": "other",
+												"domain": "hand",
+												"value": "rift:raw_hadrosaur_meat"
+											},
+											{
+												"test": "has_equipment",
+												"subject": "other",
+												"domain": "hand",
+												"value": "rift:cooked_hadrosaur_meat"
+											},
+											{
+												"test": "has_equipment",
+												"subject": "other",
+												"domain": "hand",
+												"value": "rift:raw_megapiranha"
+											},
+											{
+												"test": "has_equipment",
+												"subject": "other",
+												"domain": "hand",
+												"value": "rift:cooked_megapiranha"
+											},
+
+											{
+												"test": "has_equipment",
+												"subject": "other",
+												"domain": "hand",
+												"value": "rift:flesh_treat"
+											},
+											{
+												"test": "has_equipment",
+												"subject": "other",
+												"domain": "hand",
+												"value": "rift:fish_treat"
+											},
+											{
+												"test": "has_equipment",
+												"subject": "other",
+												"domain": "hand",
+												"value": "rift:berry_treat"
+											},
+											{
+												"test": "has_equipment",
+												"subject": "other",
+												"domain": "hand",
+												"value": "rift:leafy_treat"
+											},
+											{
+												"test": "has_equipment",
+												"subject": "other",
+												"domain": "hand",
+												"value": "rift:honey_treat"
+											}
+                                        ]
+                                    },
+									{
+										"test": "has_component",
+										"subject": "self",
+										"operator": "!=",
+										"value": "minecraft:is_tamed"
+									}
+								]
+							},
+							"event": "rift:lol3",
+							"target": "self"
+						},
+						"interact_text": "action.interact.tame"
+					},
+					{
+						"on_interact": {
+							"filters": {
+								"all_of": [
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_tamed"
+									},
+									{
+										"test": "is_sneaking",
+										"subject": "other",
+										"value": true
+									},
+									{
+										"test": "has_equipment",
+										"subject": "other",
+										"domain": "hand",
+										"operator": "!=",
+										"value": "rift:command_staff"
+									},
+									{
+										"test": "has_equipment",
+										"subject": "other",
+										"domain": "hand",
+										"operator": "!=",
+										"value": "minecraft:chest"
+									},
+									{
+										"test": "has_equipment",
+										"subject": "other",
+										"domain": "hand",
+										"operator": "!=",
+										"value": "rift:euthanasia"
+									},
+									{
+										"test": "has_equipment",
+										"subject": "other",
+										"domain": "hand",
+										"operator": "!=",
+										"value": "minecraft:potion"
+									},
+                                    {
+                                        "test": "has_equipment",
+                                        "subject": "other",
+                                        "domain": "hand",
+										"operator": "!=",
+                                        "value": "rift:flesh_treat"
+                                    },
+                                    {
+                                        "test": "has_equipment",
+                                        "subject": "other",
+                                        "domain": "hand",
+										"operator": "!=",
+                                        "value": "rift:fish_treat"
+                                    },
+                                    {
+                                        "test": "has_equipment",
+                                        "subject": "other",
+                                        "domain": "hand",
+										"operator": "!=",
+                                        "value": "rift:berry_treat"
+                                    },
+                                    {
+                                        "test": "has_equipment",
+                                        "subject": "other",
+                                        "domain": "hand",
+										"operator": "!=",
+                                        "value": "rift:leafy_treat"
+                                    },
+                                    {
+                                        "test": "has_equipment",
+                                        "subject": "other",
+                                        "domain": "hand",
+										"operator": "!=",
+                                        "value": "rift:honey_treat"
+                                    },
+									{
+										"test": "has_equipment",
+										"subject": "other",
+										"domain": "hand",
+										"operator": "!=",
+										"value": "minecraft:shears"
+									}
+								]
+							},
+							"event": "rift:manage_state",
+							"target": "self"
+						}
+					},
+					{
+						"on_interact": {
+							"filters": {
+								"all_of": [
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_tamed"
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"operator": "!=",
+										"value": "minecraft:is_baby"
+									},
+									{
+										"test": "is_sneaking",
+										"subject": "other",
+										"value": true
+									},
+									{
+										"test": "has_equipment",
+										"subject": "other",
+										"domain": "hand",
+										"value": "rift:command_staff"
+									}
+								]
+							},
+							"event": "rift:manage_behavior",
+							"target": "self"
+						}
+					},
+					{
+						"on_interact": {
+							"filters": {
+								"all_of": [
+									{
+										"test": "has_equipment",
+										"subject": "other",
+										"domain": "hand",
+										"value": "minecraft:chest"
+									},
+									{
+										"test": "is_owner",
+										"subject": "other",
+										"value": true
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_baby",
+										"operator": "!="
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_tamed"
+									},
+									{
+										"test": "is_sneaking",
+										"subject": "other",
+										"value": true
+									}
+								]
+							},
+							"event": "rift:attach_chest",
+							"target": "self"
+						},
+						"interact_text": "action.interact.attachchest",
+						"use_item": true
+					},
+					{
+						"on_interact": {
+							"filters": {
+								"all_of": [
+									{
+										"test": "has_component",
+										"subject": "self",
+										"operator": "!=",
+										"value": "minecraft:is_tamed"
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"operator": "!=",
+										"value": "minecraft:is_baby"
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_charged"
+									},
+									{
+										"test": "has_equipment",
+										"subject": "other",
+										"domain": "hand",
+										"value": "rift:flesh_treat"
+									}
+								]
+							},
+							"event": "rift:adult_failed_tame",
+							"target": "self"
+						},
+						"use_item": true
+					},
+					{
+						"on_interact": {
+							"filters": {
+								"all_of": [
+									{
+										"test": "has_equipment",
+										"subject": "other",
+										"domain": "hand",
+										"value": "rift:euthanasia"
+									},
+									{
+										"test": "is_owner",
+										"subject": "other",
+										"value": true
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_baby",
+										"operator": "!="
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_tamed"
+									},
+									{
+										"test": "is_sneaking",
+										"subject": "other",
+										"value": true
+									}
+								]
+							},
+							"event": "rift:commit_suicide",
+							"target": "self"
+						},
+						"use_item": true
+					},
+					//for drinking potions
+					{
+						"on_interact": {
+							"filters": {
+								"all_of": [
+									{
+										"test": "has_equipment",
+										"subject": "other",
+										"domain": "hand",
+										"value": "minecraft:potion:0"
+									},
+									{
+										"test": "is_owner",
+										"subject": "other",
+										"value": true
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_baby",
+										"operator": "!="
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_tamed"
+									},
+									{
+										"test": "is_sneaking",
+										"subject": "other",
+										"value": true
+									}
+								]
+							}
+						},
+						"use_item": true,
+						"play_sounds": "random.drink",
+						"transform_to_item": "minecraft:glass_bottle"
+					},
+					{
+						"on_interact": {
+							"filters": {
+								"all_of": [
+									{
+										"test": "has_equipment",
+										"subject": "other",
+										"domain": "hand",
+										"value": "minecraft:potion:1"
+									},
+									{
+										"test": "is_owner",
+										"subject": "other",
+										"value": true
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_baby",
+										"operator": "!="
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_tamed"
+									},
+									{
+										"test": "is_sneaking",
+										"subject": "other",
+										"value": true
+									}
+								]
+							}
+						},
+						"use_item": true,
+						"play_sounds": "random.drink",
+						"transform_to_item": "minecraft:glass_bottle"
+					},
+					{
+						"on_interact": {
+							"filters": {
+								"all_of": [
+									{
+										"test": "has_equipment",
+										"subject": "other",
+										"domain": "hand",
+										"value": "minecraft:potion:2"
+									},
+									{
+										"test": "is_owner",
+										"subject": "other",
+										"value": true
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_baby",
+										"operator": "!="
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_tamed"
+									},
+									{
+										"test": "is_sneaking",
+										"subject": "other",
+										"value": true
+									}
+								]
+							}
+						},
+						"use_item": true,
+						"play_sounds": "random.drink",
+						"transform_to_item": "minecraft:glass_bottle"
+					},
+					{
+						"on_interact": {
+							"filters": {
+								"all_of": [
+									{
+										"test": "has_equipment",
+										"subject": "other",
+										"domain": "hand",
+										"value": "minecraft:potion:3"
+									},
+									{
+										"test": "is_owner",
+										"subject": "other",
+										"value": true
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_baby",
+										"operator": "!="
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_tamed"
+									},
+									{
+										"test": "is_sneaking",
+										"subject": "other",
+										"value": true
+									}
+								]
+							}
+						},
+						"use_item": true,
+						"play_sounds": "random.drink",
+						"transform_to_item": "minecraft:glass_bottle"
+					},
+					{
+						"on_interact": {
+							"filters": {
+								"all_of": [
+									{
+										"test": "has_equipment",
+										"subject": "other",
+										"domain": "hand",
+										"value": "minecraft:potion:4"
+									},
+									{
+										"test": "is_owner",
+										"subject": "other",
+										"value": true
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_baby",
+										"operator": "!="
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_tamed"
+									},
+									{
+										"test": "is_sneaking",
+										"subject": "other",
+										"value": true
+									}
+								]
+							}
+						},
+						"use_item": true,
+						"play_sounds": "random.drink",
+						"transform_to_item": "minecraft:glass_bottle"
+					},
+					{
+						"on_interact": {
+							"filters": {
+								"all_of": [
+									{
+										"test": "has_equipment",
+										"subject": "other",
+										"domain": "hand",
+										"value": "minecraft:potion:5"
+									},
+									{
+										"test": "is_owner",
+										"subject": "other",
+										"value": true
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_baby",
+										"operator": "!="
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_tamed"
+									},
+									{
+										"test": "is_sneaking",
+										"subject": "other",
+										"value": true
+									}
+								]
+							},
+							"event": "rift:drink_night_vision_potion_one",
+							"target": "self"
+						},
+						"use_item": true,
+						"play_sounds": "random.drink",
+						"transform_to_item": "minecraft:glass_bottle"
+					},
+					{
+						"on_interact": {
+							"filters": {
+								"all_of": [
+									{
+										"test": "has_equipment",
+										"subject": "other",
+										"domain": "hand",
+										"value": "minecraft:potion:6"
+									},
+									{
+										"test": "is_owner",
+										"subject": "other",
+										"value": true
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_baby",
+										"operator": "!="
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_tamed"
+									},
+									{
+										"test": "is_sneaking",
+										"subject": "other",
+										"value": true
+									}
+								]
+							},
+							"event": "rift:drink_night_vision_potion_two",
+							"target": "self"
+						},
+						"use_item": true,
+						"play_sounds": "random.drink",
+						"transform_to_item": "minecraft:glass_bottle"
+					},
+					{
+						"on_interact": {
+							"filters": {
+								"all_of": [
+									{
+										"test": "has_equipment",
+										"subject": "other",
+										"domain": "hand",
+										"value": "minecraft:potion:7"
+									},
+									{
+										"test": "is_owner",
+										"subject": "other",
+										"value": true
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_baby",
+										"operator": "!="
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_tamed"
+									},
+									{
+										"test": "is_sneaking",
+										"subject": "other",
+										"value": true
+									}
+								]
+							},
+							"event": "rift:drink_invisibility_potion_one",
+							"target": "self"
+						},
+						"use_item": true,
+						"play_sounds": "random.drink",
+						"transform_to_item": "minecraft:glass_bottle"
+					},
+					{
+						"on_interact": {
+							"filters": {
+								"all_of": [
+									{
+										"test": "has_equipment",
+										"subject": "other",
+										"domain": "hand",
+										"value": "minecraft:potion:8"
+									},
+									{
+										"test": "is_owner",
+										"subject": "other",
+										"value": true
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_baby",
+										"operator": "!="
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_tamed"
+									},
+									{
+										"test": "is_sneaking",
+										"subject": "other",
+										"value": true
+									}
+								]
+							},
+							"event": "rift:drink_invisibility_potion_two",
+							"target": "self"
+						},
+						"use_item": true,
+						"play_sounds": "random.drink",
+						"transform_to_item": "minecraft:glass_bottle"
+					},
+					{
+						"on_interact": {
+							"filters": {
+								"all_of": [
+									{
+										"test": "has_equipment",
+										"subject": "other",
+										"domain": "hand",
+										"value": "minecraft:potion:9"
+									},
+									{
+										"test": "is_owner",
+										"subject": "other",
+										"value": true
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_baby",
+										"operator": "!="
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_tamed"
+									},
+									{
+										"test": "is_sneaking",
+										"subject": "other",
+										"value": true
+									}
+								]
+							},
+							"event": "rift:drink_leaping_potion_one",
+							"target": "self"
+						},
+						"use_item": true,
+						"play_sounds": "random.drink",
+						"transform_to_item": "minecraft:glass_bottle"
+					},
+					{
+						"on_interact": {
+							"filters": {
+								"all_of": [
+									{
+										"test": "has_equipment",
+										"subject": "other",
+										"domain": "hand",
+										"value": "minecraft:potion:10"
+									},
+									{
+										"test": "is_owner",
+										"subject": "other",
+										"value": true
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_baby",
+										"operator": "!="
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_tamed"
+									},
+									{
+										"test": "is_sneaking",
+										"subject": "other",
+										"value": true
+									}
+								]
+							},
+							"event": "rift:drink_leaping_potion_two",
+							"target": "self"
+						},
+						"use_item": true,
+						"play_sounds": "random.drink",
+						"transform_to_item": "minecraft:glass_bottle"
+					},
+					{
+						"on_interact": {
+							"filters": {
+								"all_of": [
+									{
+										"test": "has_equipment",
+										"subject": "other",
+										"domain": "hand",
+										"value": "minecraft:potion:11"
+									},
+									{
+										"test": "is_owner",
+										"subject": "other",
+										"value": true
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_baby",
+										"operator": "!="
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_tamed"
+									},
+									{
+										"test": "is_sneaking",
+										"subject": "other",
+										"value": true
+									}
+								]
+							},
+							"event": "rift:drink_leaping_potion_three",
+							"target": "self"
+						},
+						"use_item": true,
+						"play_sounds": "random.drink",
+						"transform_to_item": "minecraft:glass_bottle"
+					},
+					{
+						"on_interact": {
+							"filters": {
+								"all_of": [
+									{
+										"test": "has_equipment",
+										"subject": "other",
+										"domain": "hand",
+										"value": "minecraft:potion:12"
+									},
+									{
+										"test": "is_owner",
+										"subject": "other",
+										"value": true
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_baby",
+										"operator": "!="
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_tamed"
+									},
+									{
+										"test": "is_sneaking",
+										"subject": "other",
+										"value": true
+									}
+								]
+							},
+							"event": "rift:drink_fire_resistance_potion_one",
+							"target": "self"
+						},
+						"use_item": true,
+						"play_sounds": "random.drink",
+						"transform_to_item": "minecraft:glass_bottle"
+					},
+					{
+						"on_interact": {
+							"filters": {
+								"all_of": [
+									{
+										"test": "has_equipment",
+										"subject": "other",
+										"domain": "hand",
+										"value": "minecraft:potion:13"
+									},
+									{
+										"test": "is_owner",
+										"subject": "other",
+										"value": true
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_baby",
+										"operator": "!="
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_tamed"
+									},
+									{
+										"test": "is_sneaking",
+										"subject": "other",
+										"value": true
+									}
+								]
+							},
+							"event": "rift:drink_fire_resistance_potion_two",
+							"target": "self"
+						},
+						"use_item": true,
+						"play_sounds": "random.drink",
+						"transform_to_item": "minecraft:glass_bottle"
+					},
+					{
+						"on_interact": {
+							"filters": {
+								"all_of": [
+									{
+										"test": "has_equipment",
+										"subject": "other",
+										"domain": "hand",
+										"value": "minecraft:potion:14"
+									},
+									{
+										"test": "is_owner",
+										"subject": "other",
+										"value": true
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_baby",
+										"operator": "!="
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_tamed"
+									},
+									{
+										"test": "is_sneaking",
+										"subject": "other",
+										"value": true
+									}
+								]
+							},
+							"event": "rift:drink_swiftness_potion_one",
+							"target": "self"
+						},
+						"use_item": true,
+						"play_sounds": "random.drink",
+						"transform_to_item": "minecraft:glass_bottle"
+					},
+					{
+						"on_interact": {
+							"filters": {
+								"all_of": [
+									{
+										"test": "has_equipment",
+										"subject": "other",
+										"domain": "hand",
+										"value": "minecraft:potion:15"
+									},
+									{
+										"test": "is_owner",
+										"subject": "other",
+										"value": true
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_baby",
+										"operator": "!="
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_tamed"
+									},
+									{
+										"test": "is_sneaking",
+										"subject": "other",
+										"value": true
+									}
+								]
+							},
+							"event": "rift:drink_swiftness_potion_two",
+							"target": "self"
+						},
+						"use_item": true,
+						"play_sounds": "random.drink",
+						"transform_to_item": "minecraft:glass_bottle"
+					},
+					{
+						"on_interact": {
+							"filters": {
+								"all_of": [
+									{
+										"test": "has_equipment",
+										"subject": "other",
+										"domain": "hand",
+										"value": "minecraft:potion:16"
+									},
+									{
+										"test": "is_owner",
+										"subject": "other",
+										"value": true
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_baby",
+										"operator": "!="
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_tamed"
+									},
+									{
+										"test": "is_sneaking",
+										"subject": "other",
+										"value": true
+									}
+								]
+							},
+							"event": "rift:drink_swiftness_potion_three",
+							"target": "self"
+						},
+						"use_item": true,
+						"play_sounds": "random.drink",
+						"transform_to_item": "minecraft:glass_bottle"
+					},
+					{
+						"on_interact": {
+							"filters": {
+								"all_of": [
+									{
+										"test": "has_equipment",
+										"subject": "other",
+										"domain": "hand",
+										"value": "minecraft:potion:17"
+									},
+									{
+										"test": "is_owner",
+										"subject": "other",
+										"value": true
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_baby",
+										"operator": "!="
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_tamed"
+									},
+									{
+										"test": "is_sneaking",
+										"subject": "other",
+										"value": true
+									}
+								]
+							},
+							"event": "rift:drink_slowness_potion_one",
+							"target": "self"
+						},
+						"use_item": true,
+						"play_sounds": "random.drink",
+						"transform_to_item": "minecraft:glass_bottle"
+					},
+					{
+						"on_interact": {
+							"filters": {
+								"all_of": [
+									{
+										"test": "has_equipment",
+										"subject": "other",
+										"domain": "hand",
+										"value": "minecraft:potion:18"
+									},
+									{
+										"test": "is_owner",
+										"subject": "other",
+										"value": true
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_baby",
+										"operator": "!="
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_tamed"
+									},
+									{
+										"test": "is_sneaking",
+										"subject": "other",
+										"value": true
+									}
+								]
+							},
+							"event": "rift:drink_slowness_potion_two",
+							"target": "self"
+						},
+						"use_item": true,
+						"play_sounds": "random.drink",
+						"transform_to_item": "minecraft:glass_bottle"
+					},
+					{
+						"on_interact": {
+							"filters": {
+								"all_of": [
+									{
+										"test": "has_equipment",
+										"subject": "other",
+										"domain": "hand",
+										"value": "minecraft:potion:19"
+									},
+									{
+										"test": "is_owner",
+										"subject": "other",
+										"value": true
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_baby",
+										"operator": "!="
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_tamed"
+									},
+									{
+										"test": "is_sneaking",
+										"subject": "other",
+										"value": true
+									}
+								]
+							},
+							"event": "rift:drink_water_breathing_potion_one",
+							"target": "self"
+						},
+						"use_item": true,
+						"play_sounds": "random.drink",
+						"transform_to_item": "minecraft:glass_bottle"
+					},
+					{
+						"on_interact": {
+							"filters": {
+								"all_of": [
+									{
+										"test": "has_equipment",
+										"subject": "other",
+										"domain": "hand",
+										"value": "minecraft:potion:20"
+									},
+									{
+										"test": "is_owner",
+										"subject": "other",
+										"value": true
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_baby",
+										"operator": "!="
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_tamed"
+									},
+									{
+										"test": "is_sneaking",
+										"subject": "other",
+										"value": true
+									}
+								]
+							},
+							"event": "rift:drink_water_breathing_potion_two",
+							"target": "self"
+						},
+						"use_item": true,
+						"play_sounds": "random.drink",
+						"transform_to_item": "minecraft:glass_bottle"
+					},
+					{
+						"on_interact": {
+							"filters": {
+								"all_of": [
+									{
+										"test": "has_equipment",
+										"subject": "other",
+										"domain": "hand",
+										"value": "minecraft:potion:21"
+									},
+									{
+										"test": "is_owner",
+										"subject": "other",
+										"value": true
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_baby",
+										"operator": "!="
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_tamed"
+									},
+									{
+										"test": "is_sneaking",
+										"subject": "other",
+										"value": true
+									}
+								]
+							},
+							"event": "rift:drink_healing_potion_one",
+							"target": "self"
+						},
+						"use_item": true,
+						"play_sounds": "random.drink",
+						"transform_to_item": "minecraft:glass_bottle"
+					},
+					{
+						"on_interact": {
+							"filters": {
+								"all_of": [
+									{
+										"test": "has_equipment",
+										"subject": "other",
+										"domain": "hand",
+										"value": "minecraft:potion:22"
+									},
+									{
+										"test": "is_owner",
+										"subject": "other",
+										"value": true
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_baby",
+										"operator": "!="
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_tamed"
+									},
+									{
+										"test": "is_sneaking",
+										"subject": "other",
+										"value": true
+									}
+								]
+							},
+							"event": "rift:drink_healing_potion_two",
+							"target": "self"
+						},
+						"use_item": true,
+						"play_sounds": "random.drink",
+						"transform_to_item": "minecraft:glass_bottle"
+					},
+					{
+						"on_interact": {
+							"filters": {
+								"all_of": [
+									{
+										"test": "has_equipment",
+										"subject": "other",
+										"domain": "hand",
+										"value": "minecraft:potion:23"
+									},
+									{
+										"test": "is_owner",
+										"subject": "other",
+										"value": true
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_baby",
+										"operator": "!="
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_tamed"
+									},
+									{
+										"test": "is_sneaking",
+										"subject": "other",
+										"value": true
+									}
+								]
+							},
+							"event": "rift:drink_harming_potion_one",
+							"target": "self"
+						},
+						"use_item": true,
+						"play_sounds": "random.drink",
+						"transform_to_item": "minecraft:glass_bottle"
+					},
+					{
+						"on_interact": {
+							"filters": {
+								"all_of": [
+									{
+										"test": "has_equipment",
+										"subject": "other",
+										"domain": "hand",
+										"value": "minecraft:potion:24"
+									},
+									{
+										"test": "is_owner",
+										"subject": "other",
+										"value": true
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_baby",
+										"operator": "!="
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_tamed"
+									},
+									{
+										"test": "is_sneaking",
+										"subject": "other",
+										"value": true
+									}
+								]
+							},
+							"event": "rift:drink_harming_potion_two",
+							"target": "self"
+						},
+						"use_item": true,
+						"play_sounds": "random.drink",
+						"transform_to_item": "minecraft:glass_bottle"
+					},
+					{
+						"on_interact": {
+							"filters": {
+								"all_of": [
+									{
+										"test": "has_equipment",
+										"subject": "other",
+										"domain": "hand",
+										"value": "minecraft:potion:25"
+									},
+									{
+										"test": "is_owner",
+										"subject": "other",
+										"value": true
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_baby",
+										"operator": "!="
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_tamed"
+									},
+									{
+										"test": "is_sneaking",
+										"subject": "other",
+										"value": true
+									}
+								]
+							},
+							"event": "rift:drink_poison_potion_one",
+							"target": "self"
+						},
+						"use_item": true,
+						"play_sounds": "random.drink",
+						"transform_to_item": "minecraft:glass_bottle"
+					},
+					{
+						"on_interact": {
+							"filters": {
+								"all_of": [
+									{
+										"test": "has_equipment",
+										"subject": "other",
+										"domain": "hand",
+										"value": "minecraft:potion:26"
+									},
+									{
+										"test": "is_owner",
+										"subject": "other",
+										"value": true
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_baby",
+										"operator": "!="
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_tamed"
+									},
+									{
+										"test": "is_sneaking",
+										"subject": "other",
+										"value": true
+									}
+								]
+							},
+							"event": "rift:drink_poison_potion_two",
+							"target": "self"
+						},
+						"use_item": true,
+						"play_sounds": "random.drink",
+						"transform_to_item": "minecraft:glass_bottle"
+					},
+					{
+						"on_interact": {
+							"filters": {
+								"all_of": [
+									{
+										"test": "has_equipment",
+										"subject": "other",
+										"domain": "hand",
+										"value": "minecraft:potion:27"
+									},
+									{
+										"test": "is_owner",
+										"subject": "other",
+										"value": true
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_baby",
+										"operator": "!="
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_tamed"
+									},
+									{
+										"test": "is_sneaking",
+										"subject": "other",
+										"value": true
+									}
+								]
+							},
+							"event": "rift:drink_poison_potion_three",
+							"target": "self"
+						},
+						"use_item": true,
+						"play_sounds": "random.drink",
+						"transform_to_item": "minecraft:glass_bottle"
+					},
+					{
+						"on_interact": {
+							"filters": {
+								"all_of": [
+									{
+										"test": "has_equipment",
+										"subject": "other",
+										"domain": "hand",
+										"value": "minecraft:potion:28"
+									},
+									{
+										"test": "is_owner",
+										"subject": "other",
+										"value": true
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_baby",
+										"operator": "!="
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_tamed"
+									},
+									{
+										"test": "is_sneaking",
+										"subject": "other",
+										"value": true
+									}
+								]
+							},
+							"event": "rift:drink_regeneration_potion_one",
+							"target": "self"
+						},
+						"use_item": true,
+						"play_sounds": "random.drink",
+						"transform_to_item": "minecraft:glass_bottle"
+					},
+					{
+						"on_interact": {
+							"filters": {
+								"all_of": [
+									{
+										"test": "has_equipment",
+										"subject": "other",
+										"domain": "hand",
+										"value": "minecraft:potion:29"
+									},
+									{
+										"test": "is_owner",
+										"subject": "other",
+										"value": true
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_baby",
+										"operator": "!="
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_tamed"
+									},
+									{
+										"test": "is_sneaking",
+										"subject": "other",
+										"value": true
+									}
+								]
+							},
+							"event": "rift:drink_regeneration_potion_two",
+							"target": "self"
+						},
+						"use_item": true,
+						"play_sounds": "random.drink",
+						"transform_to_item": "minecraft:glass_bottle"
+					},
+					{
+						"on_interact": {
+							"filters": {
+								"all_of": [
+									{
+										"test": "has_equipment",
+										"subject": "other",
+										"domain": "hand",
+										"value": "minecraft:potion:30"
+									},
+									{
+										"test": "is_owner",
+										"subject": "other",
+										"value": true
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_baby",
+										"operator": "!="
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_tamed"
+									},
+									{
+										"test": "is_sneaking",
+										"subject": "other",
+										"value": true
+									}
+								]
+							},
+							"event": "rift:drink_regeneration_potion_three",
+							"target": "self"
+						},
+						"use_item": true,
+						"play_sounds": "random.drink",
+						"transform_to_item": "minecraft:glass_bottle"
+					},
+					{
+						"on_interact": {
+							"filters": {
+								"all_of": [
+									{
+										"test": "has_equipment",
+										"subject": "other",
+										"domain": "hand",
+										"value": "minecraft:potion:31"
+									},
+									{
+										"test": "is_owner",
+										"subject": "other",
+										"value": true
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_baby",
+										"operator": "!="
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_tamed"
+									},
+									{
+										"test": "is_sneaking",
+										"subject": "other",
+										"value": true
+									}
+								]
+							},
+							"event": "rift:drink_strength_potion_one",
+							"target": "self"
+						},
+						"use_item": true,
+						"play_sounds": "random.drink",
+						"transform_to_item": "minecraft:glass_bottle"
+					},
+					{
+						"on_interact": {
+							"filters": {
+								"all_of": [
+									{
+										"test": "has_equipment",
+										"subject": "other",
+										"domain": "hand",
+										"value": "minecraft:potion:32"
+									},
+									{
+										"test": "is_owner",
+										"subject": "other",
+										"value": true
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_baby",
+										"operator": "!="
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_tamed"
+									},
+									{
+										"test": "is_sneaking",
+										"subject": "other",
+										"value": true
+									}
+								]
+							},
+							"event": "rift:drink_strength_potion_two",
+							"target": "self"
+						},
+						"use_item": true,
+						"play_sounds": "random.drink",
+						"transform_to_item": "minecraft:glass_bottle"
+					},
+					{
+						"on_interact": {
+							"filters": {
+								"all_of": [
+									{
+										"test": "has_equipment",
+										"subject": "other",
+										"domain": "hand",
+										"value": "minecraft:potion:33"
+									},
+									{
+										"test": "is_owner",
+										"subject": "other",
+										"value": true
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_baby",
+										"operator": "!="
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_tamed"
+									},
+									{
+										"test": "is_sneaking",
+										"subject": "other",
+										"value": true
+									}
+								]
+							},
+							"event": "rift:drink_strength_potion_three",
+							"target": "self"
+						},
+						"use_item": true,
+						"play_sounds": "random.drink",
+						"transform_to_item": "minecraft:glass_bottle"
+					},
+					{
+						"on_interact": {
+							"filters": {
+								"all_of": [
+									{
+										"test": "has_equipment",
+										"subject": "other",
+										"domain": "hand",
+										"value": "minecraft:potion:34"
+									},
+									{
+										"test": "is_owner",
+										"subject": "other",
+										"value": true
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_baby",
+										"operator": "!="
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_tamed"
+									},
+									{
+										"test": "is_sneaking",
+										"subject": "other",
+										"value": true
+									}
+								]
+							},
+							"event": "rift:drink_weakness_potion_one",
+							"target": "self"
+						},
+						"use_item": true,
+						"play_sounds": "random.drink",
+						"transform_to_item": "minecraft:glass_bottle"
+					},
+					{
+						"on_interact": {
+							"filters": {
+								"all_of": [
+									{
+										"test": "has_equipment",
+										"subject": "other",
+										"domain": "hand",
+										"value": "minecraft:potion:35"
+									},
+									{
+										"test": "is_owner",
+										"subject": "other",
+										"value": true
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_baby",
+										"operator": "!="
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_tamed"
+									},
+									{
+										"test": "is_sneaking",
+										"subject": "other",
+										"value": true
+									}
+								]
+							},
+							"event": "rift:drink_weakness_potion_two",
+							"target": "self"
+						},
+						"use_item": true,
+						"play_sounds": "random.drink",
+						"transform_to_item": "minecraft:glass_bottle"
+					},
+					{
+						"on_interact": {
+							"filters": {
+								"all_of": [
+									{
+										"test": "has_equipment",
+										"subject": "other",
+										"domain": "hand",
+										"value": "minecraft:potion:36"
+									},
+									{
+										"test": "is_owner",
+										"subject": "other",
+										"value": true
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_baby",
+										"operator": "!="
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_tamed"
+									},
+									{
+										"test": "is_sneaking",
+										"subject": "other",
+										"value": true
+									}
+								]
+							},
+							"event": "rift:drink_decay_potion",
+							"target": "self"
+						},
+						"use_item": true,
+						"play_sounds": "random.drink",
+						"transform_to_item": "minecraft:glass_bottle"
+					},
+					{
+						"on_interact": {
+							"filters": {
+								"all_of": [
+									{
+										"test": "has_equipment",
+										"subject": "other",
+										"domain": "hand",
+										"value": "minecraft:potion:37"
+									},
+									{
+										"test": "is_owner",
+										"subject": "other",
+										"value": true
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_baby",
+										"operator": "!="
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_tamed"
+									},
+									{
+										"test": "is_sneaking",
+										"subject": "other",
+										"value": true
+									}
+								]
+							},
+							"event": "rift:drink_turtle_master_potion_one",
+							"target": "self"
+						},
+						"use_item": true,
+						"play_sounds": "random.drink",
+						"transform_to_item": "minecraft:glass_bottle"
+					},
+					{
+						"on_interact": {
+							"filters": {
+								"all_of": [
+									{
+										"test": "has_equipment",
+										"subject": "other",
+										"domain": "hand",
+										"value": "minecraft:potion:38"
+									},
+									{
+										"test": "is_owner",
+										"subject": "other",
+										"value": true
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_baby",
+										"operator": "!="
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_tamed"
+									},
+									{
+										"test": "is_sneaking",
+										"subject": "other",
+										"value": true
+									}
+								]
+							},
+							"event": "rift:drink_turtle_master_potion_two",
+							"target": "self"
+						},
+						"use_item": true,
+						"play_sounds": "random.drink",
+						"transform_to_item": "minecraft:glass_bottle"
+					},
+					{
+						"on_interact": {
+							"filters": {
+								"all_of": [
+									{
+										"test": "has_equipment",
+										"subject": "other",
+										"domain": "hand",
+										"value": "minecraft:potion:39"
+									},
+									{
+										"test": "is_owner",
+										"subject": "other",
+										"value": true
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_baby",
+										"operator": "!="
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_tamed"
+									},
+									{
+										"test": "is_sneaking",
+										"subject": "other",
+										"value": true
+									}
+								]
+							},
+							"event": "rift:drink_turtle_master_potion_three",
+							"target": "self"
+						},
+						"use_item": true,
+						"play_sounds": "random.drink",
+						"transform_to_item": "minecraft:glass_bottle"
+					},
+					{
+						"on_interact": {
+							"filters": {
+								"all_of": [
+									{
+										"test": "has_equipment",
+										"subject": "other",
+										"domain": "hand",
+										"value": "minecraft:potion:40"
+									},
+									{
+										"test": "is_owner",
+										"subject": "other",
+										"value": true
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_baby",
+										"operator": "!="
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_tamed"
+									},
+									{
+										"test": "is_sneaking",
+										"subject": "other",
+										"value": true
+									}
+								]
+							},
+							"event": "rift:drink_slow_falling_potion_one",
+							"target": "self"
+						},
+						"use_item": true,
+						"play_sounds": "random.drink",
+						"transform_to_item": "minecraft:glass_bottle"
+					},
+					{
+						"on_interact": {
+							"filters": {
+								"all_of": [
+									{
+										"test": "has_equipment",
+										"subject": "other",
+										"domain": "hand",
+										"value": "minecraft:potion:41"
+									},
+									{
+										"test": "is_owner",
+										"subject": "other",
+										"value": true
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_baby",
+										"operator": "!="
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_tamed"
+									},
+									{
+										"test": "is_sneaking",
+										"subject": "other",
+										"value": true
+									}
+								]
+							},
+							"event": "rift:drink_slow_falling_potion_two",
+							"target": "self"
+						},
+						"use_item": true,
+						"play_sounds": "random.drink",
+						"transform_to_item": "minecraft:glass_bottle"
+					},
+					{
+						"on_interact": {
+							"filters": {
+								"all_of": [
+									{
+										"test": "has_equipment",
+										"subject": "other",
+										"domain": "hand",
+										"value": "minecraft:milk_bucket"
+									},
+									{
+										"test": "is_owner",
+										"subject": "other",
+										"value": true
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_baby",
+										"operator": "!="
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_tamed"
+									},
+									{
+										"test": "is_sneaking",
+										"subject": "other",
+										"value": true
+									}
+								]
+							},
+							"event": "rift:drink_milk",
+							"target": "self"
+						},
+						"use_item": true,
+						"play_sounds": "random.drink",
+						"transform_to_item": "minecraft:bucket"
+					}
+                ]
+            }
         },
         "events": {
             "minecraft:entity_spawned": {
@@ -984,7 +3839,13 @@
                         "add": {
                             "component_groups": [
                                 "rift:direbear_adult",
-                                "rift:variant_one"
+                                "rift:direbear_adult_wild",
+                                "rift:direbear_adult_calm",
+                                "rift:default_targets",
+                                "rift:direbear_adult_wild_not_trusting",
+                                "rift:wild_standing",
+                                "rift:variant_one",
+                                "rift:pushable"
                             ]
                         }
                     },
@@ -993,7 +3854,13 @@
                         "add": {
                             "component_groups": [
                                 "rift:direbear_adult",
-                                "rift:variant_two"
+                                "rift:direbear_adult_wild",
+                                "rift:direbear_adult_calm",
+                                "rift:default_targets",
+                                "rift:direbear_adult_wild_not_trusting",
+                                "rift:wild_standing",
+                                "rift:variant_two",
+                                "rift:pushable"
                             ]
                         }
                     },
@@ -1002,7 +3869,13 @@
                         "add": {
                             "component_groups": [
                                 "rift:direbear_adult",
-                                "rift:variant_three"
+                                "rift:direbear_adult_wild",
+                                "rift:direbear_adult_calm",
+                                "rift:default_targets",
+                                "rift:direbear_adult_wild_not_trusting",
+                                "rift:wild_standing",
+                                "rift:variant_three",
+                                "rift:pushable"
                             ]
                         }
                     },
@@ -1011,11 +3884,83 @@
                         "add": {
                             "component_groups": [
                                 "rift:direbear_adult",
-                                "rift:variant_four"
+                                "rift:direbear_adult_wild",
+                                "rift:direbear_adult_calm",
+                                "rift:default_targets",
+                                "rift:direbear_adult_wild_not_trusting",
+                                "rift:wild_standing",
+                                "rift:variant_four",
+                                "rift:pushable"
                             ]
                         }
                     }
                 ]
+            },
+            "rift:can_use_bite": {
+                "add": {
+                    "component_groups": [
+                        "rift:bite_attack"
+                    ]
+                },
+                "remove": {
+                    "component_groups": [
+                        "rift:stomp_attack",
+                        "rift:claw_attack"
+                    ]
+                }
+            },
+            "rift:cannot_use_bite": {
+                "remove": {
+                    "component_groups": [
+                        "rift:bite_attack",
+                        "rift:stomp_attack",
+                        "rift:claw_attack"
+                    ]
+                }
+            },
+            "rift:can_use_stomp": {
+                "add": {
+                    "component_groups": [
+                        "rift:stomp_attack"
+                    ]
+                },
+                "remove": {
+                    "component_groups": [
+                        "rift:bite_attack",
+                        "rift:claw_attack"
+                    ]
+                }
+            },
+            "rift:cannot_use_stomp": {
+                "remove": {
+                    "component_groups": [
+                        "rift:bite_attack",
+                        "rift:stomp_attack",
+                        "rift:claw_attack"
+                    ]
+                }
+            },
+            "rift:can_use_claw": {
+                "add": {
+                    "component_groups": [
+                        "rift:claw_attack"
+                    ]
+                },
+                "remove": {
+                    "component_groups": [
+                        "rift:bite_attack",
+                        "rift:stomp_attack"
+                    ]
+                }
+            },
+            "rift:cannot_use_claw": {
+                "remove": {
+                    "component_groups": [
+                        "rift:bite_attack",
+                        "rift:stomp_attack",
+                        "rift:claw_attack"
+                    ]
+                }
             }
         }
     }
