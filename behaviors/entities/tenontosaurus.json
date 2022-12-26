@@ -161,7 +161,7 @@
 					"value": 20
 				},
 				"minecraft:behavior.follow_parent": {
-					"priority": 10
+					"priority": 11
 				},
 				"minecraft:tameable": {
 					"probability": 0.25,
@@ -671,15 +671,20 @@
 					"value": 0.25
 				},
 				"minecraft:behavior.random_stroll": {
-					"priority": 11
+					"priority": 12
 				},
 				"minecraft:behavior.random_look_around": {
-					"priority": 12
+					"priority": 13
 				}
 			},
 			"rift:tamed_standing": {
 				"minecraft:behavior.breed": {
 					"priority": 1
+				},
+                "minecraft:behavior.follow_owner": {
+					"start_distance": 7,
+					"stop_distance": 40,
+					"priority": 10
 				}
 			},
 			"rift:sitting": {
@@ -1167,12 +1172,6 @@
 										"test": "has_component",
 										"subject": "self",
 										"value": "minecraft:is_tamed"
-									},
-									{
-										"test": "has_component",
-										"subject": "self",
-										"operator": "!=",
-										"value": "minecraft:is_baby"
 									},
 									{
 										"test": "is_sneaking",
@@ -3408,6 +3407,77 @@
 					}
                 ]
             },
+            "rift:hatched_from_egg": {
+                "randomize": [
+                    {
+                        "weight": 1,
+                        "add": {
+                            "component_groups": [
+                                "rift:tenontosaurus_tamed",
+								"rift:tenontosaurus_baby",
+								"rift:tenontosaurus_baby_tamed",
+								"rift:tamed_can_move",
+                                "rift:temptable",
+								"rift:variant_one",
+								"rift:pushable"
+                            ]
+                        },
+						"set_property": {
+							"rift:behavior_state": "3"
+						}
+                    },
+                    {
+                        "weight": 1,
+                        "add": {
+                            "component_groups": [
+                                "rift:tenontosaurus_tamed",
+								"rift:tenontosaurus_baby",
+								"rift:tenontosaurus_baby_tamed",
+								"rift:tamed_can_move",
+                                "rift:temptable",
+								"rift:variant_two",
+								"rift:pushable"
+                            ]
+                        },
+						"set_property": {
+							"rift:behavior_state": "3"
+						}
+                    },
+                    {
+                        "weight": 1,
+                        "add": {
+                            "component_groups": [
+                                "rift:tenontosaurus_tamed",
+								"rift:tenontosaurus_baby",
+								"rift:tenontosaurus_baby_tamed",
+								"rift:tamed_can_move",
+                                "rift:temptable",
+								"rift:variant_three"
+                            ]
+                        },
+						"set_property": {
+							"rift:behavior_state": "3"
+						}
+                    },
+                    {
+                        "weight": 1,
+                        "add": {
+                            "component_groups": [
+                                "rift:tenontosaurus_tamed",
+								"rift:tenontosaurus_baby",
+								"rift:tenontosaurus_baby_tamed",
+								"rift:tamed_can_move",
+                                "rift:temptable",
+								"rift:variant_four",
+								"rift:pushable"
+                            ]
+                        },
+						"set_property": {
+							"rift:behavior_state": "3"
+						}
+                    }
+                ]
+            },
             "rift:grow_up": {
                 "sequence": [
                     {
@@ -3435,13 +3505,11 @@
                             "value": "minecraft:is_tamed"
                         },
                         "add": {
-                            "add": {
-                                "component_groups": [
-                                    "rift:tenontosaurus_adult_tamed",
-                                    "rift:is_rideable",
-                                    "rift:can_attack"
-                                ]
-                            }
+                            "component_groups": [
+                                "rift:tenontosaurus_adult_tamed",
+                                "rift:is_rideable",
+                                "rift:can_attack"
+                            ]
                         },
                         "remove": {
                             "component_groups": [
