@@ -3457,6 +3457,239 @@
 					]
 				}
 			}
-		}
+		},
+        "controller.animation.direbear_command_staff": {
+            "initial_state": "default",
+            "states": {
+                "default": {
+					"transitions": [
+						{
+							"biteMode": "query.is_riding && (query.get_ride -> query.owner_identifier) == 'rift:direbear'"
+						}
+					],
+                    "on_entry": [
+                        "/tag @e[type=rift:direbear, c=1, tag=tamed, tag=!baby] remove biteMode",
+                        "/tag @e[type=rift:direbear, c=1, tag=tamed, tag=!baby] remove stompMode",
+                        "/tag @e[type=rift:direbear, c=1, tag=tamed, tag=!baby] remove clawMode"
+                    ],
+					"on_exit": [
+						"/tellraw @s {\"rawtext\":[{\"text\":\"Ability set to Bite Mode\"}]}"
+					]
+				},
+                "biteMode": {
+					"transitions": [
+						{
+							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:direbear'"
+						},
+						{
+							"biteModeLimbo": "query.is_using_item && (query.get_ride -> query.property('rift:energy')) >= 10 && (query.get_ride -> query.is_saddled) && query.get_equipped_item_name('main_hand') == 'command_staff'"
+						},
+						{
+							"biteModeFail": "query.is_using_item && (query.get_ride -> query.property('rift:energy')) < 10 && (query.get_ride -> query.is_saddled) && query.get_equipped_item_name('main_hand') == 'command_staff'"
+						}
+					],
+                    "on_entry": [
+                        "/tag @e[type=rift:direbear, c=1, tag=tamed, tag=!baby] add biteMode"
+                    ]
+				},
+                "biteModeFail": {
+					"transitions": [
+						{
+							"biteMode": "!query.is_using_item"
+						},
+						{
+							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:direbear'"
+						}
+					],
+					"on_entry": [
+						"/tellraw @s {\"rawtext\":[{\"text\":\"You don't have enough energy to perform this action!\"}]}"
+					]
+				},
+                "biteModeLimbo": {
+					"animations": [
+						"animAbilitySwitchCooldown"
+					],
+					"transitions": [
+						{
+							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:direbear' || query.get_equipped_item_name('main_hand') != 'command_staff'"
+						},
+						{
+							"useBiteMode": "!query.is_using_item"
+						},
+						{
+							"biteToStomp": "query.all_animations_finished"
+						}
+					]
+				},
+                "useBiteMode": {
+					"transitions": [
+						{
+							"biteMode": "(1.0)"
+						}
+					],
+					"on_entry": [
+						"/event entity @e[type=rift:direbear, c=1, tag=tamed, tag=!baby] rift:start_forced_bite"
+					]
+				},
+                "biteToStomp": {
+					"transitions": [
+						{
+							"default": "(query.get_equipped_item_name('main_hand') != 'command_staff') || !query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:direbear'"
+						},
+						{
+							"stompMode": "!query.is_using_item"
+						}
+					],
+                    "on_entry": [
+                        "/tag @e[type=rift:direbear, c=1, tag=tamed, tag=!baby] remove biteMode"
+                    ],
+					"on_exit": [
+						"/tellraw @s {\"rawtext\":[{\"text\":\"Ability set to Stomp Mode\"}]}"
+					]
+				},
+                "stompMode": {
+					"transitions": [
+						{
+							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:direbear'"
+						},
+						{
+							"stompModeLimbo": "query.is_using_item && (query.get_ride -> query.property('rift:energy')) >= 20 && (query.get_ride -> query.is_saddled) && query.get_equipped_item_name('main_hand') == 'command_staff'"
+						},
+						{
+							"stompModeFail": "query.is_using_item && (query.get_ride -> query.property('rift:energy')) < 20 && (query.get_ride -> query.is_saddled) && query.get_equipped_item_name('main_hand') == 'command_staff'"
+						}
+					],
+                    "on_entry": [
+                        "/tag @e[type=rift:direbear, c=1, tag=tamed, tag=!baby] add stompMode"
+                    ]
+				},
+                "stompModeFail": {
+					"transitions": [
+						{
+							"stompMode": "!query.is_using_item"
+						},
+						{
+							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:direbear'"
+						}
+					],
+					"on_entry": [
+						"/tellraw @s {\"rawtext\":[{\"text\":\"You don't have enough energy to perform this action!\"}]}"
+					]
+				},
+                "stompModeLimbo": {
+					"animations": [
+						"animAbilitySwitchCooldown"
+					],
+					"transitions": [
+						{
+							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:direbear' || query.get_equipped_item_name('main_hand') != 'command_staff'"
+						},
+						{
+							"useStompMode": "!query.is_using_item"
+						},
+						{
+							"stompToClaw": "query.all_animations_finished"
+						}
+					]
+				},
+                "useStompMode": {
+					"transitions": [
+						{
+							"stompMode": "(1.0)"
+						}
+					],
+					"on_entry": [
+						"/event entity @e[type=rift:direbear, c=1, tag=tamed, tag=!baby] rift:start_forced_stomp"
+					]
+				},
+                "stompToClaw": {
+					"transitions": [
+						{
+							"default": "(query.get_equipped_item_name('main_hand') != 'command_staff') || !query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:direbear'"
+						},
+						{
+							"clawMode": "!query.is_using_item"
+						}
+					],
+                    "on_entry": [
+                        "/tag @e[type=rift:direbear, c=1, tag=tamed, tag=!baby] remove stompMode"
+                    ],
+					"on_exit": [
+						"/tellraw @s {\"rawtext\":[{\"text\":\"Ability set to Claw Mode\"}]}"
+					]
+				},
+                "clawMode": {
+					"transitions": [
+						{
+							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:direbear'"
+						},
+						{
+							"clawModeLimbo": "query.is_using_item && (query.get_ride -> query.property('rift:energy')) >= 15 && (query.get_ride -> query.is_saddled) && query.get_equipped_item_name('main_hand') == 'command_staff'"
+						},
+						{
+							"clawModeFail": "query.is_using_item && (query.get_ride -> query.property('rift:energy')) < 15 && (query.get_ride -> query.is_saddled) && query.get_equipped_item_name('main_hand') == 'command_staff'"
+						}
+					],
+                    "on_entry": [
+                        "/tag @e[type=rift:direbear, c=1, tag=tamed, tag=!baby] add clawMode"
+                    ]
+				},
+                "clawModeFail": {
+					"transitions": [
+						{
+							"clawMode": "!query.is_using_item"
+						},
+						{
+							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:direbear'"
+						}
+					],
+					"on_entry": [
+						"/tellraw @s {\"rawtext\":[{\"text\":\"You don't have enough energy to perform this action!\"}]}"
+					]
+				},
+                "clawModeLimbo": {
+					"animations": [
+						"animAbilitySwitchCooldown"
+					],
+					"transitions": [
+						{
+							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:direbear' || query.get_equipped_item_name('main_hand') != 'command_staff'"
+						},
+						{
+							"useClawMode": "!query.is_using_item"
+						},
+						{
+							"clawToBite": "query.all_animations_finished"
+						}
+					]
+				},
+                "useClawMode": {
+					"transitions": [
+						{
+							"clawMode": "(1.0)"
+						}
+					],
+					"on_entry": [
+						"/event entity @e[type=rift:direbear, c=1, tag=tamed, tag=!baby] rift:start_forced_claw"
+					]
+				},
+                "clawToBite": {
+					"transitions": [
+						{
+							"default": "(query.get_equipped_item_name('main_hand') != 'command_staff') || !query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:direbear'"
+						},
+						{
+							"biteMode": "!query.is_using_item"
+						}
+					],
+                    "on_entry": [
+                        "/tag @e[type=rift:direbear, c=1, tag=tamed, tag=!baby] remove clawMode"
+                    ],
+					"on_exit": [
+						"/tellraw @s {\"rawtext\":[{\"text\":\"Ability set to Bite Mode\"}]}"
+					]
+				}
+            }
+        }
 	}
 }

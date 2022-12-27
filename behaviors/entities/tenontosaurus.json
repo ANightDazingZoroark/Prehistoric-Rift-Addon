@@ -3225,7 +3225,47 @@
 						"deals_damage": false
 					}
 				]
-			}
+			},
+            "minecraft:scheduler": {
+                "scheduled_events": [
+					{
+						"filters": {
+							"all_of": [
+								{
+									"test": "rider_count",
+									"subject": "self",
+									"operator": ">",
+									"value": 0
+								},
+								{
+									"test": "has_component",
+									"subject": "self",
+									"value": "minecraft:is_tamed"
+								}
+							]
+						},
+						"event": "rift:has_rider"
+					},
+					{
+						"filters": {
+							"all_of": [
+								{
+									"test": "rider_count",
+									"subject": "self",
+									"operator": "==",
+									"value": 0
+								},
+								{
+									"test": "has_component",
+									"subject": "self",
+									"value": "minecraft:is_tamed"
+								}
+							]
+						},
+						"event": "rift:has_no_rider"
+					}
+				]
+            }
 		},
 		"events": {
 			"minecraft:entity_spawned": {
@@ -3581,6 +3621,32 @@
 					]
 				}
             },
+            "rift:has_rider": {
+                "add": {
+                    "component_groups": [
+                        "rift:unpushable"
+                    ]
+                },
+                "remove": {
+                    "component_groups": [
+                        "rift:pushable",
+                        "rift:can_attack"
+                    ]
+                }
+            },
+            "rift:has_no_rider": {
+                "add": {
+                    "component_groups": [
+                        "rift:pushable",
+                        "rift:can_attack"
+                    ]
+                },
+                "remove": {
+                    "component_groups": [
+                        "rift:unpushable"
+                    ]
+                }
+            },
 			"rift:on_standing": {
 				"sequence": [
 					{
@@ -3781,7 +3847,8 @@
 				},
 				"remove": {
 					"component_groups": [
-						"rift:pushable"
+						"rift:pushable",
+                        "rift:aggravating_horn_attack"
 					]
 				}
 			},
@@ -3797,6 +3864,13 @@
 					]
 				}
             },
+			"rift:aggravated_via_aggravating_horn": {
+				"add": {
+					"component_groups": [
+						"rift:aggravating_horn_attack"
+					]
+				}
+			},
 			"rift:stop_being_aggravated": {
 				"remove": {
 					"component_groups": [

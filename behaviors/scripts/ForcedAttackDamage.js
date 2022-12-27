@@ -107,6 +107,14 @@ system.run(function everyTick(tick) {
             case 'rift:tenontosaurus': 
                 entities[i].runCommandAsync(`damage @e[tag=!tamed, family=!inanimate, type=!player, type=!item, tag=!hypnotizedTamed, r=8] `+damageOutput(entities[i], 5)+` entity_attack entity @s`)
                 break
+            case 'rift:direbear':
+                if (entities[i].hasTag('biteMode')) {
+                    entities[i].runCommandAsync(`damage @e[tag=!tamed, family=!inanimate, type=!player, type=!item, tag=!hypnotizedTamed, r=6] `+damageOutput(entities[i], 10)+` entity_attack entity @s`)
+                }
+                else if (entities[i].hasTag('clawMode')) {
+                    entities[i].runCommandAsync(`damage @e[tag=!tamed, family=!inanimate, type=!player, type=!item, tag=!hypnotizedTamed, r=6] `+damageOutput(entities[i], 10)+` entity_attack entity @s`)
+                }
+                break
         }
         entities[i].removeTag('forcedAttack')
         entities[i].removeTag('chargeOne')

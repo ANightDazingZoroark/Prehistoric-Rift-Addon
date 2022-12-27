@@ -121,6 +121,67 @@
                     ]
                 }
             }
+        },
+        "controller.animation.direbear_forced_attack": {
+            "initial_state": "default",
+            "states": {
+                "default": {
+					"transitions": [
+						{
+							"biting": "query.property('rift:forced_attack_mode') == 1"
+						},
+						{
+							"stomping": "query.property('rift:forced_attack_mode') == 2"
+						},
+						{
+							"clawOne": "v.chooseArm = (math.floor(math.random(0,2))); return v.chooseArm == 0 && query.property('rift:forced_attack_mode') == 3;"
+						},
+						{
+							"clawTwo": "v.chooseArm == 1 && query.property('rift:forced_attack_mode') == 3"
+						}
+					]
+				},
+				"biting": {
+                    "animations": [
+                        "animForcedAttackBite"
+                    ],
+					"transitions": [
+						{
+							"default": "query.all_animations_finished"
+						}
+					]
+				},
+				"stomping": {
+                    "animations": [
+                        "animForcedAttackStomp"
+                    ],
+					"transitions": [
+						{
+							"default": "query.all_animations_finished"
+						}
+					]
+				},
+				"clawOne": {
+                    "animations": [
+                        "animForcedAttackClawOne"
+                    ],
+					"transitions": [
+						{
+							"default": "query.all_animations_finished"
+						}
+					]
+				},
+				"clawTwo": {
+                    "animations": [
+                        "animForcedAttackClawTwo"
+                    ],
+					"transitions": [
+						{
+							"default": "query.all_animations_finished"
+						}
+					]
+				}
+            }
         }
     }
 }

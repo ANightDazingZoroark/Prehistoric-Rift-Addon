@@ -74,6 +74,7 @@
 				// "contEnergyUsage": "controller.animation.direbear_energy_movement_usage",
 				"contWarnLowEnergy": "controller.animation.warn_of_low_energy",
 				"contBehaviorState": "controller.animation.manage_tame_behavior",
+				"contForcedAttack": "controller.animation.direbear_forced_attack",
 				"contDieWithoutTenontosaurus": "controller.animation.general_die_without_tenontosaurus",
                 "contDieWithoutTamedTenontosaurus": "controller.animation.general_death_timer_tamed_tenontosaurus",
 				"contSwitchBetweenMeleeAttacks": "controller.animation.direbear_switch_between_melee_attacks",
@@ -85,7 +86,11 @@
 				"animEatFromInventoryCooldown": "animation.eat_from_inventory_cooldown",
 				"animFindTenontosaurus": "animation.find_tenontosaurus",
 				"animDeathTimer": "animation.hypnosis_death_timer",
-                "animTamedDeathTimer": "animation.hypnosis_death_timer_tamed"
+                "animTamedDeathTimer": "animation.hypnosis_death_timer_tamed",
+				"animForcedAttackBite": "animation.forced_attack_direbear_bite",
+				"animForcedAttackStomp": "animation.forced_attack_direbear_stomp",
+				"animForcedAttackClawOne": "animation.forced_attack_direbear_slash_one",
+				"animForcedAttackClawTwo": "animation.forced_attack_direbear_slash_two"
 			},
 			"scripts": {
 				"animate": [
@@ -100,7 +105,7 @@
 					"contTameState",
 					// "contEnergyUsage",
 					"contWarnLowEnergy",
-					// "contForcedAttack",
+					"contForcedAttack",
 					"contBehaviorState",
 					"contDieWithoutTenontosaurus",
                     "contDieWithoutTamedTenontosaurus",
@@ -790,6 +795,49 @@
 					]
 				}
 			},
+			"rift:aggravating_horn_attack": {
+				"minecraft:behavior.nearest_attackable_target": {
+					"priority": 7,
+					"within_radius": 32.0,
+					"must_see": true,
+					"entity_types": [
+						{
+							"filters": {
+								"all_of": [
+									{
+										"test": "in_water",
+										"subject": "other",
+										"value": false
+									},
+									{
+										"test": "has_component",
+										"subject": "other",
+										"operator": "!=",
+										"value": "minecraft:is_tamed"
+									},
+									{
+										"test": "is_family",
+										"subject": "other",
+										"operator": "!=",
+										"value": "player"
+									},
+									{
+										"test": "is_family",
+										"subject": "other",
+										"operator": "!=",
+										"value": "inanimate"
+									}
+								]
+					  		},
+							"max_dist": 48
+						}
+					]
+				},
+				"minecraft:on_target_escape": {
+					"event": "rift:stop_being_aggravated",
+				  	"target": "self"
+				}
+			},
             "rift:direbear_adult_wild_not_trusting": {
                 "minecraft:trusting": {
                     "probability": 0.25,
@@ -1400,11 +1448,23 @@
 			"rift:tamed_can_move": {
 				"minecraft:movement": {
 					"value": 0.2
+				},
+				"minecraft:underwater_movement": {
+					"value": 0.15
+				},
+				"minecraft:water_movement": {
+					"drag_factor": 0.7
 				}
 			},
 			"rift:tamed_can_move_low_energy": { //formula for speed reduction from slowness effect is speed * 0.15 * level
 				"minecraft:movement": {
 					"value": 0.09
+				},
+				"minecraft:underwater_movement": {
+					"value": 0.0675
+				},
+				"minecraft:water_movement": {
+					"drag_factor": 0.7
 				}
 			},
 			"rift:tamed_cannot_move": {
@@ -1528,6 +1588,29 @@
                 "minecraft:mark_variant": {
                     "value": 1
                 },
+                "minecraft:behavior.melee_attack": {
+                    "priority": 8,
+                    "reach_multiplier": 0
+                },
+                "minecraft:attack": {
+                    "damage": 0
+                },
+                "minecraft:entity_sensor": {
+					"sensor_range": 4,
+					"relative_range": false,
+					"minimum_count": 1,
+					"event_filters": {
+                        "test": "is_target",
+                        "subject": "other",
+                        "value": true
+                    },
+                    "event": "rift:use_stomp_attack"
+                }
+            },
+            "rift:use_stomp_attack": {
+                "minecraft:mark_variant": {
+                    "value": 1
+                },
 				"minecraft:behavior.knockback_roar": {
 					"priority": 0,
 					"duration": 0.76,
@@ -1546,7 +1629,58 @@
                         "subject": "other",
                         "operator": "!=",
                         "value":  "inanimate"
-                    }
+                    },
+					"on_roar_end": {
+						"event": "rift:cannot_use_stomp"
+					}
+				}
+            },
+            "rift:use_stomp_attack_tamed": {
+                "minecraft:mark_variant": {
+                    "value": 1
+                },
+				"minecraft:behavior.knockback_roar": {
+					"priority": 0,
+					"duration": 0.76,
+					"attack_time": 0.76,
+					"knockback_damage": 15,
+					"knockback_strength": 1,
+					"knockback_range": 8,
+					"damage_filters": {
+                        "all_of": [
+                            {
+                                "test":  "is_family", 
+                                "subject": "other",
+                                "operator": "!=",
+                                "value":  "player"
+                            },
+                            {
+                                "test":  "has_component",
+                                "subject": "other",
+                                "operator": "!=",
+                                "value":  "minecraft:is_tamed"
+                            }
+                        ]
+                    },
+					"knockback_filters": {
+                        "all_of": [
+                            {
+                                "test":  "is_family", 
+                                "subject": "other",
+                                "operator": "!=",
+                                "value":  "player"
+                            },
+                            {
+                                "test":  "has_component",
+                                "subject": "other",
+                                "operator": "!=",
+                                "value":  "minecraft:is_tamed"
+                            }
+                        ]
+                    },
+					"on_roar_end": {
+						"event": "rift:cannot_use_stomp"
+					}
 				}
             },
             "rift:claw_attack": {
@@ -4195,7 +4329,47 @@
 						"deals_damage": false
 					}
 				]
-			}
+			},
+            "minecraft:scheduler": {
+                "scheduled_events": [
+					{
+						"filters": {
+							"all_of": [
+								{
+									"test": "rider_count",
+									"subject": "self",
+									"operator": ">",
+									"value": 0
+								},
+								{
+									"test": "has_component",
+									"subject": "self",
+									"value": "minecraft:is_tamed"
+								}
+							]
+						},
+						"event": "rift:has_rider"
+					},
+					{
+						"filters": {
+							"all_of": [
+								{
+									"test": "rider_count",
+									"subject": "self",
+									"operator": "==",
+									"value": 0
+								},
+								{
+									"test": "has_component",
+									"subject": "self",
+									"value": "minecraft:is_tamed"
+								}
+							]
+						},
+						"event": "rift:has_no_rider"
+					}
+				]
+            }
         },
         "events": {
             "minecraft:entity_spawned": {
@@ -4588,6 +4762,8 @@
                 "remove": {
                     "component_groups": [
                         "rift:stomp_attack",
+                        "rift:use_stomp_attack",
+                        "rift:use_stomp_attack_tamed",
                         "rift:claw_attack"
                     ]
                 }
@@ -4597,6 +4773,8 @@
                     "component_groups": [
                         "rift:bite_attack",
                         "rift:stomp_attack",
+                        "rift:use_stomp_attack",
+                        "rift:use_stomp_attack_tamed",
                         "rift:claw_attack"
                     ]
                 }
@@ -4610,7 +4788,9 @@
                 "remove": {
                     "component_groups": [
                         "rift:bite_attack",
-                        "rift:claw_attack"
+                        "rift:claw_attack",
+                        "rift:use_stomp_attack",
+                        "rift:use_stomp_attack_tamed"
                     ]
                 }
             },
@@ -4619,6 +4799,8 @@
                     "component_groups": [
                         "rift:bite_attack",
                         "rift:stomp_attack",
+                        "rift:use_stomp_attack",
+                        "rift:use_stomp_attack_tamed",
                         "rift:claw_attack"
                     ]
                 }
@@ -4632,7 +4814,9 @@
                 "remove": {
                     "component_groups": [
                         "rift:bite_attack",
-                        "rift:stomp_attack"
+                        "rift:stomp_attack",
+                        "rift:use_stomp_attack",
+                        "rift:use_stomp_attack_tamed"
                     ]
                 }
             },
@@ -4641,9 +4825,47 @@
                     "component_groups": [
                         "rift:bite_attack",
                         "rift:stomp_attack",
+                        "rift:use_stomp_attack",
+                        "rift:use_stomp_attack_tamed",
                         "rift:claw_attack"
                     ]
                 }
+            },
+            "rift:use_stomp_attack": {
+                "sequence": [
+                    {
+                        "remove": {
+                            "component_groups": [
+                                "rift:stomp_attack"
+                            ]
+                        }
+                    },
+                    {
+                        "filters": {
+                            "test": "has_component",
+                            "subject": "self",
+                            "operator": "!=",
+                            "value": "minecraft:is_tamed"
+                        },
+                        "add": {
+                            "component_groups": [
+                                "rift:use_stomp_attack"
+                            ]
+                        }
+                    },
+                    {
+                        "filters": {
+                            "test": "has_component",
+                            "subject": "self",
+                            "value": "minecraft:is_tamed"
+                        },
+                        "add": {
+                            "component_groups": [
+                                "rift:use_stomp_attack_tamed"
+                            ]
+                        }
+                    }
+                ]
             },
             "rift:spawn_as_baby": {
                 "randomize": [
@@ -4975,6 +5197,64 @@
                     ]
                 }
             },
+            "rift:start_forced_bite": {
+				"set_property": {
+					"rift:forced_attack_mode": "1"
+				}
+			},
+            "rift:start_forced_stomp": {
+				"set_property": {
+					"rift:forced_attack_mode": "2"
+				}
+			},
+            "rift:start_forced_claw": {
+				"set_property": {
+					"rift:forced_attack_mode": "3"
+				}
+			},
+			"rift:stop_forced_attack": {
+				"set_property": {
+					"rift:forced_attack_mode": "0"
+				}
+			},
+            "rift:has_rider": {
+				"add": {
+					"component_groups": [
+						"rift:unpushable"
+					]
+				},
+                "remove": {
+                    "component_groups": [
+                        "rift:pushable",
+						"rift:aggravating_horn_attack",
+                        "rift:bite_attack",
+                        "rift:stomp_attack",
+                        "rift:claw_attack"
+                    ]
+                },
+				"run_command": {
+					"command": [
+						"tag @s add climber"
+					]
+				}
+            },
+            "rift:has_no_rider": {
+                "add": {
+                    "component_groups": [
+                        "rift:pushable"
+                    ]
+                },
+                "remove": {
+                    "component_groups": [
+                        "rift:unpushable"
+                    ]
+                },
+                "run_command": {
+                    "command": [
+                        "tag @s remove climber"
+                    ]
+                }
+            },
 			"rift:on_standing": {
 				"sequence": [
 					{
@@ -5206,6 +5486,20 @@
 					"component_groups": [
 						"rift:tamed_cannot_move",
 						"rift:tamed_can_move_low_energy"
+					]
+				}
+			},
+			"rift:aggravated_via_aggravating_horn": {
+				"add": {
+					"component_groups": [
+						"rift:aggravating_horn_attack"
+					]
+				}
+			},
+			"rift:stop_being_aggravated": {
+				"remove": {
+					"component_groups": [
+						"rift:aggravating_horn_attack"
 					]
 				}
 			},
