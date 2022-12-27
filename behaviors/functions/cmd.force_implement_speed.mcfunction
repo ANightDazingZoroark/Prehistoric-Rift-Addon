@@ -23,9 +23,17 @@ event entity @e[type=rift:dimetrodon, tag=tamed, tag=!lowEnergy, tag=!noEnergy] 
 event entity @e[type=rift:dimetrodon, tag=tamed, tag=lowEnergy, tag=!noEnergy] rift:moving_slowly_low_energy
 event entity @e[type=rift:dimetrodon, tag=tamed, tag=!lowEnergy, tag=noEnergy] rift:stop_moving_low_energy
 
+event entity @e[type=rift:direbear, tag=tamed, tag=!lowEnergy, tag=!noEnergy] rift:return_to_moving_normally
+event entity @e[type=rift:direbear, tag=tamed, tag=lowEnergy, tag=!noEnergy] rift:moving_slowly_low_energy
+event entity @e[type=rift:direbear, tag=tamed, tag=!lowEnergy, tag=noEnergy] rift:stop_moving_low_energy
+
 event entity @e[type=rift:direwolf, tag=tamed, tag=!lowEnergy, tag=!noEnergy, tag=!sonicBoom] rift:return_to_moving_normally
 event entity @e[type=rift:direwolf, tag=tamed, tag=lowEnergy, tag=!noEnergy, tag=!sonicBoom] rift:moving_slowly_low_energy
 event entity @e[type=rift:direwolf, tag=tamed, tag=!lowEnergy, tag=noEnergy, tag=!sonicBoom] rift:stop_moving_low_energy
+
+event entity @e[type=rift:gallimimus, tag=tamed, tag=!lowEnergy, tag=!noEnergy] rift:return_to_moving_normally
+event entity @e[type=rift:gallimimus, tag=tamed, tag=lowEnergy, tag=!noEnergy] rift:moving_slowly_low_energy
+event entity @e[type=rift:gallimimus, tag=tamed, tag=!lowEnergy, tag=noEnergy] rift:stop_moving_low_energy
 
 event entity @e[type=rift:megaloceros, tag=tamed, tag=!lowEnergy, tag=!noEnergy] rift:return_to_moving_normally
 event entity @e[type=rift:megaloceros, tag=tamed, tag=lowEnergy, tag=!noEnergy] rift:moving_slowly_low_energy
@@ -46,6 +54,10 @@ event entity @e[type=rift:saurophaganax, tag=tamed, tag=!lowEnergy, tag=noEnergy
 event entity @e[type=rift:stegosaurus, tag=!focusStabbing, tag=tamed, tag=!lowEnergy, tag=!noEnergy] rift:return_to_moving_normally
 event entity @e[type=rift:stegosaurus, tag=!focusStabbing, tag=tamed, tag=lowEnergy, tag=!noEnergy] rift:moving_slowly_low_energy
 event entity @e[type=rift:stegosaurus, tag=!focusStabbing, tag=tamed, tag=!lowEnergy, tag=noEnergy] rift:stop_moving_low_energy
+
+event entity @e[type=rift:tenontosaurus, tag=tamed, tag=!lowEnergy, tag=!noEnergy] rift:return_to_moving_normally
+event entity @e[type=rift:tenontosaurus, tag=tamed, tag=lowEnergy, tag=!noEnergy] rift:moving_slowly_low_energy
+event entity @e[type=rift:tenontosaurus, tag=tamed, tag=!lowEnergy, tag=noEnergy] rift:stop_moving_low_energy
 
 event entity @e[type=rift:triceratops, tag=tamed, tag=!lowEnergy, tag=!noEnergy] rift:return_to_moving_normally
 event entity @e[type=rift:triceratops, tag=tamed, tag=lowEnergy, tag=!noEnergy] rift:moving_slowly_low_energy
