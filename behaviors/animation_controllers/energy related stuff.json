@@ -510,6 +510,81 @@
                 }
             }
         },
+        "controller.animation.direbear_energy_movement_usage": {
+            "initial_state": "default",
+            "states": {
+                "default": {
+                    "animations": [
+                        {
+                            "animRegenerateEnergy": "query.is_tamed"
+                        }
+                    ],
+                    "transitions": [
+                        {
+                            "walk": "query.is_tamed && query.is_on_ground && query.ground_speed > 0 && query.property('rift:energy') > 0"
+                        },
+                        {
+                            "biteAttacking": "query.is_tamed && query.mark_variant == 0 && query.is_delayed_attacking && query.property('rift:energy') > 10"
+                        },
+                        {
+                            "stompAttacking": "query.is_tamed && query.is_roaring && query.property('rift:energy') > 20"
+                        },
+                        {
+                            "clawAttacking": "query.is_tamed && query.mark_variant == 2 && query.is_delayed_attacking && query.property('rift:energy') > 15"
+                        }
+                    ]
+                },
+                "walk": {
+                    "animations": [
+                        "animUseEnergyWhileMoving"
+                    ],
+                    "transitions": [
+                        {
+                            "default": "query.ground_speed == 0"
+                        },
+                        {
+                            "biteAttacking": "query.is_tamed && query.mark_variant == 0 && query.is_delayed_attacking && query.property('rift:energy') > 10"
+                        },
+                        {
+                            "stompAttacking": "query.is_tamed && query.is_roaring && query.property('rift:energy') > 20"
+                        },
+                        {
+                            "clawAttacking": "query.is_tamed && query.mark_variant == 2 && query.is_delayed_attacking && query.property('rift:energy') > 15"
+                        }
+                    ]
+                },
+                "biteAttacking": {
+                    "on_entry": [
+                        "@s rift:decrease_energy_while_biting"
+                    ],
+                    "transitions": [
+                        {
+                            "default": "!query.is_delayed_attacking"
+                        }
+                    ]
+                },
+                "stompAttacking": {
+                    "on_entry": [
+                        "@s rift:decrease_energy_while_stomping"
+                    ],
+                    "transitions": [
+                        {
+                            "default": "!query.is_delayed_attacking"
+                        }
+                    ]
+                },
+                "clawAttacking": {
+                    "on_entry": [
+                        "@s rift:decrease_energy_while_claw_attacking"
+                    ],
+                    "transitions": [
+                        {
+                            "default": "!query.is_delayed_attacking"
+                        }
+                    ]
+                }
+            }
+        },
         "controller.animation.direwolf_energy_movement_usage": {
             "initial_state": "default",
             "states": {
