@@ -536,13 +536,16 @@ world.events.entityHurt.subscribe(({ hurtEntity, damagingEntity, projectile }) =
         hurtEntity.addTag('tenontoTamedTarget')
         damagingEntity.runCommandAsync(`event entity @e[r=24, tag=!tamed, tag=hypnotizedTamed] rift:attack_for_tenontosaurus`)
     }
-    if (damagingEntity.typeId == 'rift:direbear' && damagingEntity.getComponent('mark_variant').value == 1) {
+    if (damagingEntity.typeId == 'rift:direbear' && damagingEntity.hasTag('stompMode')) {
         hurtEntity.addEffect(MinecraftEffectTypes.slowness, 60, 255)
         hurtEntity.addEffect(MinecraftEffectTypes.weakness, 60, 255)
     }
     if (damagingEntity.typeId == 'rift:direbear_stomp') {
         hurtEntity.addEffect(MinecraftEffectTypes.slowness, 60, 255)
         hurtEntity.addEffect(MinecraftEffectTypes.weakness, 60, 255)
+    }
+    if (damagingEntity.typeId == 'rift:direbear' && damagingEntity.hasTag('clawMode')) {
+        hurtEntity.triggerEvent('rift:start_bleeding')
     }
 })
 

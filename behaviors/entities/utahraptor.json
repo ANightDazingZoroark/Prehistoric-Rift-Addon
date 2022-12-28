@@ -39,7 +39,7 @@
 					"default": 150,
 					"client_sync": true
                 },
-                "rift:tame_state": {
+                "rift:tame_state": { //0 for standing, 1 for sitting, 2 for wandering
                     "range": [
 						0,
 						2
@@ -48,13 +48,17 @@
 					"default": 0,
 					"client_sync": true
                 },
-                "rift:behavior_state": {
+                "rift:behavior_state": { //0 for assist, 1 for neutral, 2 for aggressive, 3 for passive
                     "range": [
 						0,
 						3
 					],
 					"type": "int",
 					"default": 0
+                },
+				"rift:bleeding": {
+					"type": "bool",
+					"default": false
                 }
 			},
 			"animations": {
@@ -75,6 +79,7 @@
 				"contBehaviorState": "controller.animation.manage_tame_behavior",
 				"contDieWithoutTenontosaurus": "controller.animation.general_die_without_tenontosaurus",
                 "contDieWithoutTamedTenontosaurus": "controller.animation.general_death_timer_tamed_tenontosaurus",
+				"contBleed": "controller.animation.general_manage_bleed",
 				"animUseEnergyWhileMoving": "animation.utahraptor_decrease_energy_while_moving",
 				"animEnergyRegenDelay": "animation.regenerate_energy_delay",
 				"animRegenerateEnergy": "animation.utahraptor_regenerate_energy",
@@ -86,7 +91,9 @@
 				"animPackBuffCountdown": "animation.buff_countdown",
 				"animFindTenontosaurus": "animation.find_tenontosaurus",
 				"animDeathTimer": "animation.hypnosis_death_timer",
-                "animTamedDeathTimer": "animation.hypnosis_death_timer_tamed"
+                "animTamedDeathTimer": "animation.hypnosis_death_timer_tamed",
+                "animBleed": "animation.general_bleed",
+                "animBleedCountdown": "animation.general_bleed_countdown"
 			},
 			"scripts": {
 				"animate": [
@@ -106,7 +113,8 @@
 					"contForcedAttack",
 					"contBehaviorState",
 					"contDieWithoutTenontosaurus",
-                    "contDieWithoutTamedTenontosaurus"
+                    "contDieWithoutTamedTenontosaurus",
+                    "contBleed"
 				]
 			}
         },
@@ -1346,7 +1354,7 @@
 					"value": 0.35
 				}
 			},
-			"rift:tamed_can_move_low_energy": {
+			"rift:tamed_can_move_low_energy": { //formula for speed reduction from slowness effect is speed * 0.15 * level
 				"minecraft:movement": {
 					"value": 0.1575
 				}
@@ -1453,6 +1461,7 @@
 					"value": 3
 				}
             },
+			//halloween costumes
 			"rift:variant_four": {
 				"minecraft:variant": {
 					"value": 4
@@ -1473,6 +1482,7 @@
 					"value": 7
 				}
 			},
+			//christmas costumes
 			"rift:variant_eight": {
 				"minecraft:variant": {
 					"value": 8
@@ -2651,6 +2661,7 @@
 						},
 						"hurt_item": 1
 					},
+					//for drinking potions
 					{
 						"on_interact": {
 							"filters": {
@@ -6250,6 +6261,7 @@
 					"rift:energy": "query.property('rift:energy') + 5"
 				}
 			},
+			//for potion effects
 			"rift:drink_night_vision_potion_one": {
 				"run_command": {
 					"command": [
@@ -6539,7 +6551,17 @@
 						"tellraw @p {\"rawtext\":[{\"text\":\"Costumes have been temporarily disabled until the next update.\"}]}"
 					]
 				}
-			}
+			},
+            "rift:start_bleeding": {
+                "set_property": {
+                    "rift:bleeding": true
+                }
+            },
+            "rift:stop_bleeding": {
+                "set_property": {
+                    "rift:bleeding": false
+                }
+            }
         }
     }
 }

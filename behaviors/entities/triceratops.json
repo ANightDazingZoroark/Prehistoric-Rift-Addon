@@ -24,7 +24,7 @@
 					"default": 150,
 					"client_sync": true
                 },
-                "rift:tame_state": {
+                "rift:tame_state": { //0 for standing, 1 for sitting, 2 for wandering
                     "range": [
 						0,
 						2
@@ -33,13 +33,17 @@
 					"default": 0,
 					"client_sync": true
                 },
-                "rift:behavior_state": {
+                "rift:behavior_state": { //0 for assist, 1 for neutral, 2 for aggressive, 3 for passive
                     "range": [
 						0,
 						3
 					],
 					"type": "int",
 					"default": 0
+                },
+				"rift:bleeding": {
+					"type": "bool",
+					"default": false
                 }
 			},
 			"animations": {
@@ -57,6 +61,7 @@
 				"contBreakStuff": "controller.animation.trike_break_stuff",
 				"contEnergyUsage": "controller.animation.triceratops_energy_movement_usage",
 				"contWarnLowEnergy": "controller.animation.warn_of_low_energy",
+				"contBleed": "controller.animation.general_manage_bleed",
 				"animEatFromInventoryCooldown": "animation.eat_from_inventory_cooldown",
 				"animUseEnergyWhileMoving": "animation.triceratops_decrease_energy_while_moving",
 				"animEnergyRegenDelay": "animation.regenerate_energy_delay",
@@ -68,7 +73,9 @@
 				"animRivalBuffEffects": "animation.trike_rival_buff_effects",
 				"animTrikeChargeCooldown": "animation.trike_charge_cooldown",
 				"animStayWhenForcedAttack": "animation.stay_when_forced_attack",
-				"animBreakLargeGate": "animation.break_wooden_large_gate"
+				"animBreakLargeGate": "animation.break_wooden_large_gate",
+                "animBleed": "animation.general_bleed",
+                "animBleedCountdown": "animation.general_bleed_countdown"
 			},
 			"scripts": {
 				"animate": [
@@ -85,7 +92,8 @@
 					"contBehaviorState",
 					"contBreakStuff",
 					"contEnergyUsage",
-					"contWarnLowEnergy"
+					"contWarnLowEnergy",
+                    "contBleed"
 				]
 			}
 		},
@@ -1182,6 +1190,7 @@
 					"value": 3
 				}
 			},
+			//halloween costumes
 			"rift:variant_four": {
 				"minecraft:variant": {
 					"value": 4
@@ -2231,6 +2240,7 @@
 						},
 						"hurt_item": 1
 					},
+					//for drinking potions
 					{
 						"on_interact": {
 							"filters": {
@@ -5563,6 +5573,7 @@
 					"rift:energy": "query.property('rift:energy') + 5"
 				}
 			},
+			//for potion effects
 			"rift:drink_night_vision_potion_one": {
 				"run_command": {
 					"command": [
@@ -5852,7 +5863,17 @@
 						"tellraw @p {\"rawtext\":[{\"text\":\"Costumes have been temporarily disabled until the next update.\"}]}"
 					]
 				}
-			}
+			},
+            "rift:start_bleeding": {
+                "set_property": {
+                    "rift:bleeding": true
+                }
+            },
+            "rift:stop_bleeding": {
+                "set_property": {
+                    "rift:bleeding": false
+                }
+            }
 		}
 	}
 }

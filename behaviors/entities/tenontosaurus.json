@@ -24,7 +24,7 @@
 					"default": 150,
 					"client_sync": true
                 },
-                "rift:tame_state": {
+                "rift:tame_state": { //0 for standing, 1 for sitting, 2 for wandering
                     "range": [
 						0,
 						2
@@ -33,13 +33,17 @@
 					"default": 0,
 					"client_sync": true
                 },
-                "rift:behavior_state": {
+                "rift:behavior_state": { //0 for assist, 1 for neutral, 2 for aggressive, 3 for passive
                     "range": [
 						0,
 						3
 					],
 					"type": "int",
 					"default": 0
+                },
+				"rift:bleeding": {
+					"type": "bool",
+					"default": false
                 }
 			},
 			"animations": {
@@ -57,6 +61,7 @@
 				"contUseHypnotize": "controller.animation.tenontosaurus_use_hypnotize",
                 "contForcedUseHypnotize": "controller.animation.tenontosaurus_forced_use_hypnotize",
 				"contTamedMakeMinionsAttack": "controller.animation.tenontosaurus_tamed_make_minions_attack",
+				"contBleed": "controller.animation.general_manage_bleed",
                 "animUseEnergyWhileMoving": "animation.tenontosaurus_decrease_energy_while_moving",
 				"animEnergyRegenDelay": "animation.regenerate_energy_delay",
 				"animRegenerateEnergy": "animation.tenontosaurus_regenerate_energy",
@@ -66,7 +71,9 @@
 				"animDetectHypnotized": "animation.find_hypnotized",
                 "animWildUseHypnosis": "animation.use_hypnosis_wild",
                 "animTamedUseHypnosis": "animation.use_hypnosis_tamed",
-                "animForcedAttack": "animation.forced_attack_tenontosaurus"
+                "animForcedAttack": "animation.forced_attack_tenontosaurus",
+                "animBleed": "animation.general_bleed",
+                "animBleedCountdown": "animation.general_bleed_countdown"
 			},
 			"scripts": {
 				"animate": [
@@ -83,7 +90,8 @@
 					"contCanTailSlap",
 					"contUseHypnotize",
                     "contForcedUseHypnotize",
-                    "contTamedMakeMinionsAttack"
+                    "contTamedMakeMinionsAttack",
+                    "contBleed"
 				]
 			}
         },
@@ -759,7 +767,7 @@
 					"value": 0.25
 				}
 			},
-			"rift:tamed_can_move_low_energy": {
+			"rift:tamed_can_move_low_energy": { //formula for speed reduction from slowness effect is speed * 0.15 * level
 				"minecraft:movement": {
 					"value": 0.1125
 				}
@@ -1342,6 +1350,7 @@
 						},
 						"use_item": true
 					},
+					//for drinking potions
 					{
 						"on_interact": {
 							"filters": {
@@ -4075,6 +4084,7 @@
 					"rift:energy": "query.property('rift:energy') + 5"
 				}
 			},
+			//for potion effects
 			"rift:drink_night_vision_potion_one": {
 				"run_command": {
 					"command": [
@@ -4357,7 +4367,17 @@
 						"tellraw @p {\"rawtext\":[{\"translate\":\"reminder.cannot_use_regular_food.text\"}]}"
 					]
 				}
-			}
+			},
+            "rift:start_bleeding": {
+                "set_property": {
+                    "rift:bleeding": true
+                }
+            },
+            "rift:stop_bleeding": {
+                "set_property": {
+                    "rift:bleeding": false
+                }
+            }
 		}
     }
 }

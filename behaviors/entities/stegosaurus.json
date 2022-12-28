@@ -36,7 +36,7 @@
 					"type": "bool",
 					"default": false
 				},
-                "rift:tame_state": {
+                "rift:tame_state": { //0 for standing, 1 for sitting, 2 for wandering
                     "range": [
 						0,
 						2
@@ -45,13 +45,17 @@
 					"default": 0,
 					"client_sync": true
                 },
-                "rift:behavior_state": {
+                "rift:behavior_state": { //0 for assist, 1 for neutral, 2 for aggressive, 3 for passive
                     "range": [
 						0,
 						3
 					],
 					"type": "int",
 					"default": 0
+                },
+				"rift:bleeding": {
+					"type": "bool",
+					"default": false
                 }
 			},
 			"animations": {
@@ -68,6 +72,7 @@
 				"contBehaviorState": "controller.animation.manage_tame_behavior",
 				"contEnergyUsage": "controller.animation.stegosaurus_energy_movement_usage",
 				"contWarnLowEnergy": "controller.animation.warn_of_low_energy",
+				"contBleed": "controller.animation.general_manage_bleed",
 				"animEatFromInventoryCooldown": "animation.eat_from_inventory_cooldown",
 				"animUseEnergyWhileMoving": "animation.stegosaurus_decrease_energy_while_moving",
 				"animEnergyRegenDelay": "animation.regenerate_energy_delay",
@@ -84,7 +89,9 @@
 				"animStegoFocusStabCooldownTwo": "animation.stego_focused_stab_cooldown_two",
 				"animStegoFocusStabCooldownThree": "animation.stego_focused_stab_cooldown_three",
 				"animStegoFocusStabCooldownFour": "animation.stego_focused_stab_cooldown_four",
-				"animStegoFocusStabCooldownFive": "animation.stego_focused_stab_cooldown_five"
+				"animStegoFocusStabCooldownFive": "animation.stego_focused_stab_cooldown_five",
+                "animBleed": "animation.general_bleed",
+                "animBleedCountdown": "animation.general_bleed_countdown"
 			},
 			"scripts": {
 				"animate": [
@@ -100,7 +107,8 @@
 					"contTameState",
 					"contBehaviorState",
 					"contEnergyUsage",
-					"contWarnLowEnergy"
+					"contWarnLowEnergy",
+                    "contBleed"
 				]
 			}
 		},
@@ -1118,6 +1126,7 @@
 					"value": 3
 				}
 			},
+			//birthday costumes
 			"rift:variant_four": {
 				"minecraft:variant": {
 					"value": 4
@@ -1955,6 +1964,7 @@
 						},
 						"hurt_item": 1
 					},
+					//for drinking potions
 					{
 						"on_interact": {
 							"filters": {
@@ -5136,6 +5146,7 @@
 					"rift:energy": "query.property('rift:energy') + 5"
 				}
 			},
+			//for potion effects
 			"rift:drink_night_vision_potion_one": {
 				"run_command": {
 					"command": [
@@ -5425,7 +5436,17 @@
 						"tellraw @p {\"rawtext\":[{\"text\":\"Costumes have been temporarily disabled until the next update.\"}]}"
 					]
 				}
-			}
+			},
+            "rift:start_bleeding": {
+                "set_property": {
+                    "rift:bleeding": true
+                }
+            },
+            "rift:stop_bleeding": {
+                "set_property": {
+                    "rift:bleeding": false
+                }
+            }
 		}
 	}
 }
