@@ -189,6 +189,47 @@
 					]
 				}
 			}
-		}
+		},
+        "controller.animation.direwolf_bleeding_particles": {
+			"initial_state": "default",
+			"states": {
+				"default": {
+                    "transitions": [
+                        {
+                            "bleedingMedium": "!query.is_ignited && query.property('rift:bleeding') == true"
+                        },
+                        {
+                            "bleedingLarge": "query.is_ignited && query.property('rift:bleeding') == true"
+                        }
+                    ]
+                },
+                "bleedingMedium": {
+                    "particle_effects": [
+                        {
+                            "effect": "bleedingMedium",
+                            "locator": "bleedlocator"
+                        }
+                    ],
+                    "transitions": [
+                        {
+                            "default": "query.property('rift:bleeding') == false"
+                        }
+                    ]
+                },
+                "bleedingLarge": {
+                    "particle_effects": [
+                        {
+                            "effect": "bleedingLarge",
+                            "locator": "bleedlocator"
+                        }
+                    ],
+                    "transitions": [
+                        {
+                            "default": "query.property('rift:bleeding') == false"
+                        }
+                    ]
+                }
+            }
+        }
     }
 }

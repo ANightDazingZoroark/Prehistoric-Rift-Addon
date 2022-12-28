@@ -545,6 +545,7 @@ world.events.entityHurt.subscribe(({ hurtEntity, damagingEntity, projectile }) =
         hurtEntity.addEffect(MinecraftEffectTypes.weakness, 60, 255)
     }
     if (damagingEntity.typeId == 'rift:direbear' && damagingEntity.hasTag('clawMode')) {
+        hurtEntity.triggerEvent('rift:stop_bleeding')
         hurtEntity.triggerEvent('rift:start_bleeding')
     }
 })
