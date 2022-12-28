@@ -54,11 +54,15 @@
                 "rift:energy": {
                     "range": [
 						0,
-						150
+						225
 					],
 					"type": "int",
-					"default": 150,
+					"default": 225,
 					"client_sync": true
+                },
+				"rift:bleeding": {
+					"type": "bool",
+					"default": false
                 }
 			},
 			"animations": {
@@ -77,6 +81,7 @@
 				"contWarnLowEnergy": "controller.animation.warn_of_low_energy",
 				"contDieWithoutTenontosaurus": "controller.animation.general_die_without_tenontosaurus",
                 "contDieWithoutTamedTenontosaurus": "controller.animation.general_death_timer_tamed_tenontosaurus",
+				"contBleed": "controller.animation.general_manage_bleed",
 				"animEatFromInventoryCooldown": "animation.eat_from_inventory_cooldown",
 				"animUseEnergyWhileMoving": "animation.baryonyx_decrease_energy_while_moving",
 				"animEnergyRegenDelay": "animation.regenerate_energy_delay",
@@ -89,7 +94,9 @@
 				"animForcedAttackSlashTwo": "animation.forced_attack_baryonyx_slash_two",
 				"animFindTenontosaurus": "animation.find_tenontosaurus",
 				"animDeathTimer": "animation.hypnosis_death_timer",
-                "animTamedDeathTimer": "animation.hypnosis_death_timer_tamed"
+                "animTamedDeathTimer": "animation.hypnosis_death_timer_tamed",
+                "animBleed": "animation.general_bleed",
+                "animBleedCountdown": "animation.general_bleed_countdown"
 			},
 			"scripts": {
 				"animate": [
@@ -107,7 +114,8 @@
 					"contEnergyUsage",
 					"contWarnLowEnergy",
 					"contDieWithoutTenontosaurus",
-                    "contDieWithoutTamedTenontosaurus"
+                    "contDieWithoutTamedTenontosaurus",
+                    "contBleed"
 				]
 			}
         },
@@ -5826,7 +5834,7 @@
 			},
 			"rift:regenerate_energy": {
 				"set_property": {
-					"rift:energy": "query.property('rift:energy') + 5"
+					"rift:energy": "query.property('rift:energy') + 10"
 				}
 			},
 			//for potion effects
@@ -6098,7 +6106,17 @@
 						"effect @s clear"
 					]
 				}
-			}
+			},
+            "rift:start_bleeding": {
+                "set_property": {
+                    "rift:bleeding": true
+                }
+            },
+            "rift:stop_bleeding": {
+                "set_property": {
+                    "rift:bleeding": false
+                }
+            }
 		}
     }
 }

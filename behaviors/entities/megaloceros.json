@@ -18,10 +18,10 @@
                 "rift:energy": {
                     "range": [
 						0,
-						150
+						225
 					],
 					"type": "int",
-					"default": 150,
+					"default": 225,
 					"client_sync": true
                 },
                 "rift:tame_state": { //0 for standing, 1 for sitting, 2 for wandering
@@ -40,6 +40,10 @@
 					],
 					"type": "int",
 					"default": 0
+                },
+				"rift:bleeding": {
+					"type": "bool",
+					"default": false
                 }
 			},
 			"animations": {
@@ -55,6 +59,7 @@
 				"contBehaviorState": "controller.animation.manage_tame_behavior",
 				"contEnergyUsage": "controller.animation.megaloceros_energy_movement_usage",
 				"contWarnLowEnergy": "controller.animation.warn_of_low_energy",
+				"contBleed": "controller.animation.general_manage_bleed",
 				"animEatFromInventoryCooldown": "animation.eat_from_inventory_cooldown",
 				"animBreakStuff": "animation.megaloceros_break_stuff",
 				"animForcedAttack": "animation.forced_attack_megaloceros",
@@ -62,7 +67,9 @@
 				"animEnergyRegenDelay": "animation.regenerate_energy_delay",
 				"animRegenerateEnergy": "animation.megaloceros_regenerate_energy",
 				"animLowOnEnergyEffects": "animation.effects_while_low_on_energy",
-				"animNoEnergyEffects": "animation.effects_while_no_energy"
+				"animNoEnergyEffects": "animation.effects_while_no_energy",
+                "animBleed": "animation.general_bleed",
+                "animBleedCountdown": "animation.general_bleed_countdown"
 			},
 			"scripts": {
 				"animate": [
@@ -77,7 +84,8 @@
 					"contTameState",
 					"contBehaviorState",
 					"contEnergyUsage",
-					"contWarnLowEnergy"
+					"contWarnLowEnergy",
+                    "contBleed"
 				]
 			}
         },
@@ -4452,7 +4460,7 @@
 			},
 			"rift:regenerate_energy": {
 				"set_property": {
-					"rift:energy": "query.property('rift:energy') + 5"
+					"rift:energy": "query.property('rift:energy') + 10"
 				}
 			},
 			//for potion effects
@@ -4739,16 +4747,16 @@
 					]
 				}
 			},
-			"rift:set_up_for_trailer": {
-				"add": {
-					"component_groups": [
-						"rift:megaloceros_adult",
-						"rift:variant_zero",
-						"rift:unpushable",
-						"rift:for_trailer"
-					]
-				}
-			}
+            "rift:start_bleeding": {
+                "set_property": {
+                    "rift:bleeding": true
+                }
+            },
+            "rift:stop_bleeding": {
+                "set_property": {
+                    "rift:bleeding": false
+                }
+            }
         }
     }
 }

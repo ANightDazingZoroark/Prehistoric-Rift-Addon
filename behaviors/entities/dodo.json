@@ -6,7 +6,23 @@
 			"is_spawnable": true,
 			"is_summonable": true,
 			"is_experimental": false,
-			"runtime_identifier": "minecraft:chicken"
+			"runtime_identifier": "minecraft:chicken",
+            "properties": {
+				"rift:bleeding": {
+					"type": "bool",
+					"default": false
+                }
+			},
+            "animations": {
+				"contBleed": "controller.animation.general_manage_bleed",
+                "animBleed": "animation.general_bleed",
+                "animBleedCountdown": "animation.general_bleed_countdown"
+            },
+            "scripts": {
+                "animate": [
+                    "contBleed"
+                ]
+            }
 		},
 		"component_groups": {
 			"rift:dodo_baby": {
@@ -1112,7 +1128,17 @@
 						"tellraw @p {\"rawtext\":[{\"text\":\"Costumes have been temporarily disabled until the next update.\"}]}"
 					]
 				}
-			}
+			},
+            "rift:start_bleeding": {
+                "set_property": {
+                    "rift:bleeding": true
+                }
+            },
+            "rift:stop_bleeding": {
+                "set_property": {
+                    "rift:bleeding": false
+                }
+            }
 		}
 	}
 }

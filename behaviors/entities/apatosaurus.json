@@ -32,10 +32,10 @@
                 "rift:energy": {
                     "range": [
 						0,
-						150
+						225
 					],
 					"type": "int",
-					"default": 150,
+					"default": 225,
 					"client_sync": true
                 },
                 "rift:tame_state": { //0 for standing, 1 for sitting, 2 for wandering
@@ -54,6 +54,10 @@
 					],
 					"type": "int",
 					"default": 0
+                },
+				"rift:bleeding": {
+					"type": "bool",
+					"default": false
                 }
 			},
 			"animations": {
@@ -72,6 +76,7 @@
 				"contBehaviorState": "controller.animation.manage_tame_behavior",
 				"contEnergyUsage": "controller.animation.apatosaurus_energy_movement_usage",
 				"contWarnLowEnergy": "controller.animation.warn_of_low_energy",
+				"contBleed": "controller.animation.general_manage_bleed",
 				"animSmeltFurnace": "animation.smelting_countdown",
 				"animEatFromInventoryCooldown": "animation.eat_from_inventory_cooldown",
 				"animUseEnergyWhileMoving": "animation.apatosaurus_decrease_energy_while_moving",
@@ -81,7 +86,9 @@
 				"animLowOnEnergyEffects": "animation.effects_while_low_on_energy",
 				"animNoEnergyEffects": "animation.effects_while_no_energy",
 				"animForcedAttack": "animation.forced_attack_apatosaurus",
-				"animBreakStuff": "animation.apato_break_stuff"
+				"animBreakStuff": "animation.apato_break_stuff",
+                "animBleed": "animation.general_bleed",
+                "animBleedCountdown": "animation.general_bleed_countdown"
 			},
 			"scripts": {
 				"animate": [
@@ -99,7 +106,8 @@
 					"contForcedAttack",
 					"contBehaviorState",
 					"contEnergyUsage",
-					"contWarnLowEnergy"
+					"contWarnLowEnergy",
+                    "contBleed"
 				]
 			}
         },
@@ -5642,7 +5650,7 @@
 			},
 			"rift:regenerate_energy": {
 				"set_property": {
-					"rift:energy": "query.property('rift:energy') + 5"
+					"rift:energy": "query.property('rift:energy') + 10"
 				}
 			},
             // for potion_effects
@@ -5935,7 +5943,17 @@
 						"tellraw @p {\"rawtext\":[{\"translate\":\"reminder.cannot_use_regular_food.text\"}]}"
 					]
 				}
-			}
+			},
+            "rift:start_bleeding": {
+                "set_property": {
+                    "rift:bleeding": true
+                }
+            },
+            "rift:stop_bleeding": {
+                "set_property": {
+                    "rift:bleeding": false
+                }
+            }
 		}
     }
 }

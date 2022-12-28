@@ -23,10 +23,10 @@
                 "rift:energy": {
                     "range": [
 						0,
-						150
+						225
 					],
 					"type": "int",
-					"default": 150,
+					"default": 225,
 					"client_sync": true
                 },
                 "rift:tame_state": { //0 for standing, 1 for sitting, 2 for hiding in shell, 3 for wandering
@@ -45,6 +45,10 @@
 					],
 					"type": "int",
 					"default": 0
+                },
+				"rift:bleeding": {
+					"type": "bool",
+					"default": false
                 }
 			},
 			"animations": {
@@ -60,6 +64,7 @@
 				"contEnergyUsage": "controller.animation.ankylosaurus_energy_movement_usage",
 				"contWarnLowEnergy": "controller.animation.warn_of_low_energy",
 				"contShellMode": "controller.animation.ankylosaurus_enter_shell",
+				"contBleed": "controller.animation.general_manage_bleed",
 				"animEatFromInventoryCooldown": "animation.eat_from_inventory_cooldown",
 				"animUseEnergyWhileMoving": "animation.ankylosaurus_decrease_energy_while_moving",
 				"animEnergyRegenDelay": "animation.regenerate_energy_delay",
@@ -67,7 +72,9 @@
 				"animRegenerateEnergyInShell": "animation.ankylosaurus_regenerate_energy_in_shell",
 				"animLowOnEnergyEffects": "animation.effects_while_low_on_energy",
 				"animNoEnergyEffects": "animation.effects_while_no_energy",
-				"animForcedAttack": "animation.forced_attack_ankylosaurus"
+				"animForcedAttack": "animation.forced_attack_ankylosaurus",
+                "animBleed": "animation.general_bleed",
+                "animBleedCountdown": "animation.general_bleed_countdown"
 			},
 			"scripts": {
 				"animate": [
@@ -82,7 +89,8 @@
 					"contBehaviorState",
 					"contEnergyUsage",
 					"contWarnLowEnergy",
-					"contShellMode"
+					"contShellMode",
+                    "contBleed"
 				]
 			}
         },
@@ -4872,7 +4880,7 @@
 			},
 			"rift:regenerate_energy": {
 				"set_property": {
-					"rift:energy": "query.property('rift:energy') + 5"
+					"rift:energy": "query.property('rift:energy') + 10"
 				}
 			},
 			"rift:refill_energy": {
@@ -5163,7 +5171,17 @@
 						"tellraw @p {\"rawtext\":[{\"translate\":\"reminder.cannot_use_regular_food.text\"}]}"
 					]
 				}
-			}
+			},
+            "rift:start_bleeding": {
+                "set_property": {
+                    "rift:bleeding": true
+                }
+            },
+            "rift:stop_bleeding": {
+                "set_property": {
+                    "rift:bleeding": false
+                }
+            }
         }
     }
 }
