@@ -1,0 +1,284 @@
+{
+    "format_version": "1.16.0",
+    "minecraft:entity": {
+        "component_groups": {
+            "emerging": {
+                "minecraft:behavior.emerge": {
+                    "duration": 7.0,
+                    "on_done": {
+                        "event": "minecraft:emerged",
+                        "target": "self"
+                    }
+                }
+            },
+            "pushable": {
+                "minecraft:pushable": {
+                    "is_pushable": true,
+                    "is_pushable_by_piston": true
+                }
+            }
+        },
+        "components": {
+            "minecraft:ambient_sound_interval": {
+                "event_name": "ambient",
+                "event_names": [
+                    {
+                        "condition": "query.anger_level(this) >= 80",
+                        "event_name": "angry"
+                    },
+                    {
+                        "condition": "query.anger_level(this) >= 40",
+                        "event_name": "agitated"
+                    }
+                ],
+                "range": 4.0,
+                "value": 2.0
+            },
+            "minecraft:anger_level": {
+                "anger_decrement_interval": 1.0,
+                "angry_boost": 20,
+                "angry_threshold": 80,
+                "default_annoyingness": 35,
+                "default_projectile_annoyingness": 10,
+                "max_anger": 150,
+                "nuisance_filter": {
+                    "all_of": [
+                        {
+                            "operator": "not",
+                            "subject": "other",
+                            "test": "is_family",
+                            "value": "warden"
+                        },
+                        {
+                            "operator": "not",
+                            "subject": "other",
+                            "test": "is_family",
+                            "value": "inanimate"
+                        }
+                    ]
+                },
+                "on_increase_sounds": [
+                    {
+                        "condition": "query.anger_level(this) >= 40",
+                        "sound": "listening_angry"
+                    },
+                    {
+                        "condition": "query.anger_level(this) >= 0",
+                        "sound": "listening"
+                    }
+                ],
+                "remove_targets_below_angry_threshold": true
+            },
+            "minecraft:attack": {
+                "damage": 30
+            },
+            "minecraft:behavior.dig": {
+                "digs_in_daylight": false,
+                "duration": 5.5,
+                "idle_time": 60.0,
+                "on_start": {
+                    "event": "on_digging_event",
+                    "target": "self"
+                },
+                "priority": 1,
+                "suspicion_is_disturbance": true,
+                "vibration_is_disturbance": true
+            },
+            "minecraft:behavior.float": {
+                "priority": 0
+            },
+            "minecraft:behavior.investigate_suspicious_location": {
+                "priority": 5,
+                "speed_multiplier": 0.7
+            },
+            "minecraft:behavior.melee_attack": {
+                "melee_fov": 360,
+                "priority": 4,
+                "speed_multiplier": 1.2
+            },
+            "minecraft:behavior.random_look_around": {
+                "priority": 11
+            },
+            "minecraft:behavior.random_stroll": {
+                "priority": 9,
+                "speed_multiplier": 0.5
+            },
+            "minecraft:behavior.roar": {
+                "duration": 4.2,
+                "priority": 2
+            },
+            "minecraft:behavior.sniff": {
+                "cooldown_range": [
+                    5.0,
+                    10.0
+                ],
+                "duration": 4.16,
+                "priority": 6,
+                "sniffing_radius": 24.0,
+                "suspicion_radius_horizontal": 6.0,
+                "suspicion_radius_vertical": 20.0
+            },
+            "minecraft:behavior.sonic_boom": {
+                "attack_cooldown": 2,
+                "attack_damage": 10,
+                "attack_range_horizontal": 15,
+                "attack_range_vertical": 20,
+                "attack_sound": "sonic_boom",
+                "charge_sound": "sonic_charge",
+                "duration": 3.0,
+                "duration_until_attack_sound": 1.7,
+                "knockback_height_cap": 0.5,
+                "knockback_horizontal_strength": 2.5,
+                "knockback_vertical_strength": 0.5,
+                "priority": 3,
+                "speed_multiplier": 1.2
+            },
+            "minecraft:breathable": {
+                "suffocate_time": 0,
+                "total_supply": 15
+            },
+            "minecraft:can_climb": {},
+            "minecraft:collision_box": {
+                "height": 2.9,
+                "width": 0.9
+            },
+            "minecraft:experience_reward": {
+                "on_bred": "Math.Random(1,7)",
+                "on_death": "query.last_hit_by_player ? 5 : 0"
+            },
+            "minecraft:fire_immune": {},
+            "minecraft:follow_range": 30,
+            "minecraft:health": {
+                "max": 500,
+                "value": 500
+            },
+            "minecraft:heartbeat": {
+                "interval": "2.0 - math.clamp(query.anger_level / 80 * 1.5, 0, 1.5)"
+            },
+            "minecraft:is_hidden_when_invisible": {},
+            "minecraft:jump.static": {},
+            "minecraft:knockback_resistance": {
+                "value": 1.0
+            },
+            "minecraft:loot": {
+                "table": "loot_tables/entities/warden.json"
+            },
+            "minecraft:mob_effect": {
+                "cooldown_time": 6,
+                "effect_range": 20,
+                "effect_time": 13,
+                "entity_filter": {
+                    "all_of": [
+                        {
+                            "subject": "other",
+                            "test": "is_family",
+                            "value": "player"
+                        },
+                        {
+                            "operator": "not",
+                            "subject": "other",
+                            "test": "has_ability",
+                            "value": "invulnerable"
+                        }
+                    ]
+                },
+                "mob_effect": "darkness"
+            },
+            "minecraft:movement": {
+                "value": 0.3
+            },
+            "minecraft:movement.basic": {},
+            "minecraft:movement_sound_distance_offset": {
+                "value": 0.55
+            },
+            "minecraft:nameable": {},
+            "minecraft:navigation.walk": {
+                "avoid_damage_blocks": true,
+                "can_path_over_lava": true,
+                "can_path_over_water": true
+            },
+            "minecraft:physics": {},
+            "minecraft:preferred_path": {
+                "max_fall_blocks": 20
+            },
+            "minecraft:suspect_tracking": {},
+            "minecraft:type_family": {
+                "family": [
+                    "warden",
+                    "monster",
+                    "mob"
+                ]
+            },
+            "minecraft:vibration_damper": {},
+            "minecraft:vibration_listener": {}
+        },
+        "description": {
+            "animations": {
+                "animBleed": "animation.general_bleed",
+                "animBleedCountdown": "animation.general_bleed_countdown",
+                "contBleed": "controller.animation.general_manage_bleed"
+            },
+            "identifier": "minecraft:warden",
+            "is_experimental": false,
+            "is_spawnable": true,
+            "is_summonable": true,
+            "properties": {
+                "rift:bleeding": {
+                    "client_sync": true,
+                    "default": false,
+                    "type": "bool"
+                }
+            },
+            "scripts": {
+                "animate": [
+                    "contBleed"
+                ]
+            }
+        },
+        "events": {
+            "minecraft:emerged": {
+                "add": {
+                    "component_groups": [
+                        "pushable"
+                    ]
+                },
+                "remove": {
+                    "component_groups": [
+                        "emerging"
+                    ]
+                }
+            },
+            "minecraft:entity_spawned": {
+                "add": {
+                    "component_groups": [
+                        "pushable"
+                    ]
+                }
+            },
+            "minecraft:spawn_emerging": {
+                "add": {
+                    "component_groups": [
+                        "emerging"
+                    ]
+                }
+            },
+            "on_digging_event": {
+                "remove": {
+                    "component_groups": [
+                        "pushable"
+                    ]
+                }
+            },
+            "rift:start_bleeding": {
+                "set_property": {
+                    "rift:bleeding": true
+                }
+            },
+            "rift:stop_bleeding": {
+                "set_property": {
+                    "rift:bleeding": false
+                }
+            }
+        }
+    }
+}

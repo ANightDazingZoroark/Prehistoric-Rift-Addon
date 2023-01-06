@@ -1,483 +1,508 @@
 {
-  "format_version": "1.18.10",
-  "minecraft:entity": {
-    "description": {
-      "identifier": "minecraft:goat",
-      "is_spawnable": true,
-      "is_summonable": true,
-      "is_experimental": false
-    },
-    "component_groups": {
-      "goat_baby": {
-        "minecraft:is_baby": {},
-        "minecraft:scale": {
-          "value": 0.5
-        },
-        "minecraft:behavior.follow_parent": {
-          "priority": 6,
-          "speed_multiplier": 1
-        },
-        "minecraft:ageable": {
-          "duration": 1200,
-          "feed_items": "wheat",
-          "grow_up": {
-            "event": "minecraft:ageable_grow_up",
-            "target": "self"
-          }
-        },
-        "minecraft:attack": {
-          "damage": 1
-        }
-      },
-      "goat_adult": {
-        "minecraft:experience_reward": {
-          "on_bred": "Math.Random(1,7)",
-          "on_death": "query.last_hit_by_player ? Math.Random(1,3) : 0"
-        },
-        "minecraft:loot": {
-          "table": "loot_tables/entities/goat.json"
-        },
-        "minecraft:behavior.breed": {
-          "priority": 3,
-          "speed_multiplier": 0.6
-        },
-        "minecraft:breedable": {
-          "require_tame": false,
-          "breed_items": "wheat",
-          "breeds_with": {
-            "mate_type": "minecraft:goat",
-            "baby_type": "minecraft:goat",
-            "breed_event": {
-              "event": "minecraft:entity_born",
-              "target": "baby"
-            }
-          },
-          "mutation_factor": {
-            "variant": 0
-          }
-        },
-        "minecraft:attack": {
-          "damage": 2
-        }
-      },
-      "goat_default": {
-        "minecraft:variant": {
-          "value": 0
-        }
-      },
-      "goat_screamer": {
-        "minecraft:variant": {
-          "value": 1
-        }
-      },
-      "interact_default": {
-        "minecraft:interact": {
-          "interactions": [
-            {
-              "on_interact": {
-                "filters": {
-                  "all_of": [
-                    {
-                      "test": "has_component",
-                      "subject": "self",
-                      "operator": "!=",
-                      "value": "minecraft:is_baby"
+    "format_version": "1.18.10",
+    "minecraft:entity": {
+        "component_groups": {
+            "attack_cooldown": {
+                "minecraft:attack_cooldown": {
+                    "attack_cooldown_complete_event": {
+                        "event": "attack_cooldown_complete_event",
+                        "target": "self"
                     },
-                    {
-                      "test": "is_family",
-                      "subject": "other",
-                      "value": "player"
+                    "attack_cooldown_time": [
+                        30,
+                        40
+                    ]
+                }
+            },
+            "goat_adult": {
+                "minecraft:attack": {
+                    "damage": 2
+                },
+                "minecraft:behavior.breed": {
+                    "priority": 3,
+                    "speed_multiplier": 0.6
+                },
+                "minecraft:breedable": {
+                    "breed_items": "wheat",
+                    "breeds_with": {
+                        "baby_type": "minecraft:goat",
+                        "breed_event": {
+                            "event": "minecraft:entity_born",
+                            "target": "baby"
+                        },
+                        "mate_type": "minecraft:goat"
                     },
-                    {
-                      "test": "has_equipment",
-                      "domain": "hand",
-                      "subject": "other",
-                      "value": "bucket:0"
+                    "mutation_factor": {
+                        "variant": 0
+                    },
+                    "require_tame": false
+                },
+                "minecraft:experience_reward": {
+                    "on_bred": "Math.Random(1,7)",
+                    "on_death": "query.last_hit_by_player ? Math.Random(1,3) : 0"
+                },
+                "minecraft:loot": {
+                    "table": "loot_tables/entities/goat.json"
+                }
+            },
+            "goat_baby": {
+                "minecraft:ageable": {
+                    "duration": 1200,
+                    "feed_items": "wheat",
+                    "grow_up": {
+                        "event": "minecraft:ageable_grow_up",
+                        "target": "self"
                     }
-                  ]
-                }
-              },
-              "use_item": true,
-              "transform_to_item": "bucket:1",
-              "play_sounds": "milk_suspiciously",
-              "interact_text": "action.interact.milk"
-            }
-          ]
-        }
-      },
-      "interact_screamer": {
-        "minecraft:interact": {
-          "interactions": [
-            {
-              "on_interact": {
-                "filters": {
-                  "all_of": [
-                    {
-                      "test": "has_component",
-                      "subject": "self",
-                      "operator": "!=",
-                      "value": "minecraft:is_baby"
-                    },
-                    {
-                      "test": "is_family",
-                      "subject": "other",
-                      "value": "player"
-                    },
-                    {
-                      "test": "has_equipment",
-                      "domain": "hand",
-                      "subject": "other",
-                      "value": "bucket:0"
-                    }
-                  ]
-                }
-              },
-              "use_item": true,
-              "transform_to_item": "bucket:1",
-              "play_sounds": "milk.screamer",
-              "interact_text": "action.interact.milk"
-            }
-          ]
-        }
-      },
-      "ram_default": {
-        "minecraft:behavior.ram_attack": {
-          "priority": 5,
-          "run_speed": 0.7,
-          "ram_speed": 1.8,
-          "min_ram_distance": 4,
-          "ram_distance": 7,
-          "knockback_force": 2.5,
-          "knockback_height": 0.04,
-          "pre_ram_sound": "pre_ram",
-          "ram_impact_sound": "ram_impact",
-          "cooldown_range": [
-            30,
-            300
-          ],
-          "on_start": [
-            {
-              "event": "start_event",
-              "target": "self"
-            }
-          ]
-        }
-      },
-      "ram_screamer": {
-        "minecraft:behavior.ram_attack": {
-          "priority": 5,
-          "run_speed": 0.7,
-          "ram_speed": 1.8,
-          "min_ram_distance": 4,
-          "ram_distance": 7,
-          "knockback_force": 2.5,
-          "knockback_height": 0.04,
-          "pre_ram_sound": "pre_ram.screamer",
-          "ram_impact_sound": "ram_impact.screamer",
-          "cooldown_range": [
-            5,
-            15
-          ],
-          "on_start": [
-            {
-              "event": "start_event",
-              "target": "self"
-            }
-          ]
-        }
-      },
-      "attack_cooldown": {
-        "minecraft:attack_cooldown": {
-          "attack_cooldown_time": [
-            30,
-            40
-          ],
-          "attack_cooldown_complete_event": {
-            "event": "attack_cooldown_complete_event",
-            "target": "self"
-          }
-        }
-      }
-    },
-    "components": {
-      "minecraft:is_hidden_when_invisible": {
-      },
-      "minecraft:behavior.jump_to_block": {
-        "priority": 8,
-        "search_width": 10,
-        "search_height": 10,
-        "minimum_path_length": 8,
-        "minimum_distance": 1,
-        "scale_factor": 0.6,
-        "cooldown_range": [
-          30,
-          60
-        ]
-      },
-      "minecraft:genetics": {
-        "mutation_rate": 0.02,
-        "genes": [
-          {
-            "name": "goat_variant",
-            "use_simplified_breeding": true,
-            "allele_range": {
-              "range_min": 1,
-              "range_max": 100
-            },
-            "genetic_variants": [
-              {
-                "main_allele": {
-                  "range_min": 1,
-                  "range_max": 2
                 },
-                "birth_event": {
-                  "event": "minecraft:born_screamer",
-                  "target": "self"
-                }
-              },
-              {
-                "main_allele": {
-                  "range_min": 3,
-                  "range_max": 100
+                "minecraft:attack": {
+                    "damage": 1
                 },
-                "birth_event": {
-                  "event": "minecraft:born_default",
-                  "target": "self"
-                }
-              }
-            ]
-          }
-        ]
-      },
-      "minecraft:type_family": {
-        "family": [
-          "goat",
-          "animal"
-        ]
-      },
-      "minecraft:breathable": {
-        "total_supply": 15,
-        "suffocate_time": 0
-      },
-      "minecraft:navigation.walk": {
-        "can_path_over_water": true,
-        "avoid_water": true,
-        "avoid_damage_blocks": true,
-        "blocks_to_avoid": [
-          {
-            "name": "minecraft:powder_snow"
-          }
-        ]
-      },
-      "minecraft:movement.basic": {},
-      "minecraft:jump.static": {},
-      "minecraft:can_climb": {},
-      "minecraft:collision_box": {
-        "width": 0.9,
-        "height": 1.3
-      },
-      "minecraft:nameable": {},
-      "minecraft:health": {
-        "value": 10,
-        "max": 10
-      },
-      "minecraft:hurt_on_condition": {
-        "damage_conditions": [
-          {
-            "filters": {
-              "test": "in_lava",
-              "subject": "self",
-              "operator": "==",
-              "value": true
-            },
-            "cause": "lava",
-            "damage_per_tick": 4
-          }
-        ]
-      },
-      "minecraft:movement": {
-        "value": 0.4
-      },
-      "minecraft:despawn": {
-        "despawn_from_distance": {}
-      },
-      "minecraft:behavior.float": {
-        "priority": 0
-      },
-      "minecraft:behavior.avoid_mob_type": {
-        "priority": 1,
-        "entity_types": [
-          {
-            "filters": {
-              "any_of": [
-                {
-                  "test": "is_family",
-                  "value": "parasaurScary",
-                  "subject": "other"
+                "minecraft:behavior.follow_parent": {
+                    "priority": 6,
+                    "speed_multiplier": 1
                 },
-                {
-                  "test": "is_family",
-                  "value": "carnivore",
-                  "subject": "other"
+                "minecraft:is_baby": {},
+                "minecraft:scale": {
+                    "value": 0.5
                 }
-              ]
             },
-            "max_dist": 12,
-            "must_see": true,
-            "walk_speed_multiplier": 1.2,
-            "sprint_speed_multiplier": 1.2
-          }
-        ]
-       },
-      "minecraft:behavior.panic": {
-        "priority": 2,
-        "speed_multiplier": 1
-      },
-      "minecraft:behavior.tempt": {
-        "priority": 4,
-        "speed_multiplier": 0.75,
-        "items": [
-          "wheat"
-        ]
-      },
-      "minecraft:behavior.nearest_attackable_target": {
-        "priority": 6,
-        "within_radius": 16,
-        "entity_types": [
-          {
-            "filters": {
-              "all_of": [
-                {
-                  "test": "is_family",
-                  "subject": "other",
-                  "operator": "!=",
-                  "value": "goat"
-                },
-                {
-                  "test": "has_component",
-                  "subject": "self",
-                  "operator": "!=",
-                  "value": "minecraft:attack_cooldown"
+            "goat_default": {
+                "minecraft:variant": {
+                    "value": 0
                 }
-              ]
             },
-            "max_dist": 16
-          },
-          {
-            "filters": {
-              "test": "is_family",
-              "subject": "other",
-              "value": "parasaurAngerer"
+            "goat_screamer": {
+                "minecraft:variant": {
+                    "value": 1
+                }
             },
-            "max_dist": 64
-          }
-        ],
-        "must_see": true
-      },
-      "minecraft:damage_sensor": {
-        "triggers": {
-          "cause": "fall",
-          "deals_damage": true,
-          "damage_modifier": -10
-        }
-      },
-      "minecraft:behavior.random_stroll": {
-        "priority": 9,
-        "speed_multiplier": 0.6
-      },
-      "minecraft:behavior.look_at_player": {
-        "priority": 10,
-        "look_distance": 6,
-        "probability": 0.02
-      },
-      "minecraft:behavior.random_look_around": {
-        "priority": 11
-      },
-      "minecraft:leashable": {
-        "soft_distance": 4,
-        "hard_distance": 6,
-        "max_distance": 10
-      },
-      "minecraft:balloonable": {
-      },
-      "minecraft:physics": {},
-      "minecraft:pushable": {
-        "is_pushable": true,
-        "is_pushable_by_piston": true
-      }
-    },
-    "events": {
-      "minecraft:entity_spawned": {
-        "randomize": [
-          {
-            "weight": 95,
-            "add": {
-              "component_groups": [
-                "goat_adult"
-              ]
+            "interact_default": {
+                "minecraft:interact": {
+                    "interactions": [
+                        {
+                            "interact_text": "action.interact.milk",
+                            "on_interact": {
+                                "filters": {
+                                    "all_of": [
+                                        {
+                                            "operator": "!=",
+                                            "subject": "self",
+                                            "test": "has_component",
+                                            "value": "minecraft:is_baby"
+                                        },
+                                        {
+                                            "subject": "other",
+                                            "test": "is_family",
+                                            "value": "player"
+                                        },
+                                        {
+                                            "domain": "hand",
+                                            "subject": "other",
+                                            "test": "has_equipment",
+                                            "value": "bucket:0"
+                                        }
+                                    ]
+                                }
+                            },
+                            "play_sounds": "milk_suspiciously",
+                            "transform_to_item": "bucket:1",
+                            "use_item": true
+                        }
+                    ]
+                }
+            },
+            "interact_screamer": {
+                "minecraft:interact": {
+                    "interactions": [
+                        {
+                            "interact_text": "action.interact.milk",
+                            "on_interact": {
+                                "filters": {
+                                    "all_of": [
+                                        {
+                                            "operator": "!=",
+                                            "subject": "self",
+                                            "test": "has_component",
+                                            "value": "minecraft:is_baby"
+                                        },
+                                        {
+                                            "subject": "other",
+                                            "test": "is_family",
+                                            "value": "player"
+                                        },
+                                        {
+                                            "domain": "hand",
+                                            "subject": "other",
+                                            "test": "has_equipment",
+                                            "value": "bucket:0"
+                                        }
+                                    ]
+                                }
+                            },
+                            "play_sounds": "milk.screamer",
+                            "transform_to_item": "bucket:1",
+                            "use_item": true
+                        }
+                    ]
+                }
+            },
+            "ram_default": {
+                "minecraft:behavior.ram_attack": {
+                    "cooldown_range": [
+                        30,
+                        300
+                    ],
+                    "knockback_force": 2.5,
+                    "knockback_height": 0.04,
+                    "min_ram_distance": 4,
+                    "on_start": [
+                        {
+                            "event": "start_event",
+                            "target": "self"
+                        }
+                    ],
+                    "pre_ram_sound": "pre_ram",
+                    "priority": 5,
+                    "ram_distance": 7,
+                    "ram_impact_sound": "ram_impact",
+                    "ram_speed": 1.8,
+                    "run_speed": 0.7
+                }
+            },
+            "ram_screamer": {
+                "minecraft:behavior.ram_attack": {
+                    "cooldown_range": [
+                        5,
+                        15
+                    ],
+                    "knockback_force": 2.5,
+                    "knockback_height": 0.04,
+                    "min_ram_distance": 4,
+                    "on_start": [
+                        {
+                            "event": "start_event",
+                            "target": "self"
+                        }
+                    ],
+                    "pre_ram_sound": "pre_ram.screamer",
+                    "priority": 5,
+                    "ram_distance": 7,
+                    "ram_impact_sound": "ram_impact.screamer",
+                    "ram_speed": 1.8,
+                    "run_speed": 0.7
+                }
             }
-          },
-          {
-            "weight": 5,
-            "add": {
-              "component_groups": [
-                "goat_baby"
-              ]
-            }
-          }
-        ]
-      },
-      "minecraft:entity_born": {
-        "add": {
-          "component_groups": [
-            "goat_baby"
-          ]
-        }
-      },
-      "minecraft:born_default": {
-        "add": {
-          "component_groups": [
-            "goat_default",
-            "ram_default",
-            "interact_default"
-          ]
-        }
-      },
-      "minecraft:born_screamer": {
-        "add": {
-          "component_groups": [
-            "goat_screamer",
-            "ram_screamer",
-            "interact_screamer"
-          ]
-        }
-      },
-      "minecraft:ageable_grow_up": {
-        "remove": {
-          "component_groups": [
-            "goat_baby"
-          ]
         },
-        "add": {
-          "component_groups": [
-            "goat_adult"
-          ]
+        "components": {
+            "minecraft:balloonable": {},
+            "minecraft:behavior.avoid_mob_type": {
+                "entity_types": [
+                    {
+                        "filters": {
+                            "any_of": [
+                                {
+                                    "subject": "other",
+                                    "test": "is_family",
+                                    "value": "parasaurScary"
+                                },
+                                {
+                                    "subject": "other",
+                                    "test": "is_family",
+                                    "value": "carnivore"
+                                }
+                            ]
+                        },
+                        "max_dist": 12,
+                        "must_see": true,
+                        "sprint_speed_multiplier": 1.2,
+                        "walk_speed_multiplier": 1.2
+                    }
+                ],
+                "priority": 1
+            },
+            "minecraft:behavior.float": {
+                "priority": 0
+            },
+            "minecraft:behavior.jump_to_block": {
+                "cooldown_range": [
+                    30,
+                    60
+                ],
+                "minimum_distance": 1,
+                "minimum_path_length": 8,
+                "priority": 8,
+                "scale_factor": 0.6,
+                "search_height": 10,
+                "search_width": 10
+            },
+            "minecraft:behavior.look_at_player": {
+                "look_distance": 6,
+                "priority": 10,
+                "probability": 0.02
+            },
+            "minecraft:behavior.nearest_attackable_target": {
+                "entity_types": [
+                    {
+                        "filters": {
+                            "all_of": [
+                                {
+                                    "operator": "!=",
+                                    "subject": "other",
+                                    "test": "is_family",
+                                    "value": "goat"
+                                },
+                                {
+                                    "operator": "!=",
+                                    "subject": "self",
+                                    "test": "has_component",
+                                    "value": "minecraft:attack_cooldown"
+                                }
+                            ]
+                        },
+                        "max_dist": 16
+                    },
+                    {
+                        "filters": {
+                            "subject": "other",
+                            "test": "is_family",
+                            "value": "parasaurAngerer"
+                        },
+                        "max_dist": 64
+                    }
+                ],
+                "must_see": true,
+                "priority": 6,
+                "within_radius": 16
+            },
+            "minecraft:behavior.panic": {
+                "priority": 2,
+                "speed_multiplier": 1
+            },
+            "minecraft:behavior.random_look_around": {
+                "priority": 11
+            },
+            "minecraft:behavior.random_stroll": {
+                "priority": 9,
+                "speed_multiplier": 0.6
+            },
+            "minecraft:behavior.tempt": {
+                "items": [
+                    "wheat"
+                ],
+                "priority": 4,
+                "speed_multiplier": 0.75
+            },
+            "minecraft:breathable": {
+                "suffocate_time": 0,
+                "total_supply": 15
+            },
+            "minecraft:can_climb": {},
+            "minecraft:collision_box": {
+                "height": 1.3,
+                "width": 0.9
+            },
+            "minecraft:damage_sensor": {
+                "triggers": {
+                    "cause": "fall",
+                    "damage_modifier": -10,
+                    "deals_damage": true
+                }
+            },
+            "minecraft:despawn": {
+                "despawn_from_distance": {}
+            },
+            "minecraft:genetics": {
+                "genes": [
+                    {
+                        "allele_range": {
+                            "range_max": 100,
+                            "range_min": 1
+                        },
+                        "genetic_variants": [
+                            {
+                                "birth_event": {
+                                    "event": "minecraft:born_screamer",
+                                    "target": "self"
+                                },
+                                "main_allele": {
+                                    "range_max": 2,
+                                    "range_min": 1
+                                }
+                            },
+                            {
+                                "birth_event": {
+                                    "event": "minecraft:born_default",
+                                    "target": "self"
+                                },
+                                "main_allele": {
+                                    "range_max": 100,
+                                    "range_min": 3
+                                }
+                            }
+                        ],
+                        "name": "goat_variant",
+                        "use_simplified_breeding": true
+                    }
+                ],
+                "mutation_rate": 0.02
+            },
+            "minecraft:health": {
+                "max": 10,
+                "value": 10
+            },
+            "minecraft:hurt_on_condition": {
+                "damage_conditions": [
+                    {
+                        "cause": "lava",
+                        "damage_per_tick": 4,
+                        "filters": {
+                            "operator": "==",
+                            "subject": "self",
+                            "test": "in_lava",
+                            "value": true
+                        }
+                    }
+                ]
+            },
+            "minecraft:is_hidden_when_invisible": {},
+            "minecraft:jump.static": {},
+            "minecraft:leashable": {
+                "hard_distance": 6,
+                "max_distance": 10,
+                "soft_distance": 4
+            },
+            "minecraft:movement": {
+                "value": 0.4
+            },
+            "minecraft:movement.basic": {},
+            "minecraft:nameable": {},
+            "minecraft:navigation.walk": {
+                "avoid_damage_blocks": true,
+                "avoid_water": true,
+                "blocks_to_avoid": [
+                    {
+                        "name": "minecraft:powder_snow"
+                    }
+                ],
+                "can_path_over_water": true
+            },
+            "minecraft:physics": {},
+            "minecraft:pushable": {
+                "is_pushable": true,
+                "is_pushable_by_piston": true
+            },
+            "minecraft:type_family": {
+                "family": [
+                    "goat",
+                    "animal"
+                ]
+            }
+        },
+        "description": {
+            "animations": {
+                "animBleed": "animation.general_bleed",
+                "animBleedCountdown": "animation.general_bleed_countdown",
+                "contBleed": "controller.animation.general_manage_bleed"
+            },
+            "identifier": "minecraft:goat",
+            "is_experimental": false,
+            "is_spawnable": true,
+            "is_summonable": true,
+            "properties": {
+                "rift:bleeding": {
+                    "client_sync": true,
+                    "default": false,
+                    "type": "bool"
+                }
+            },
+            "scripts": {
+                "animate": [
+                    "contBleed"
+                ]
+            }
+        },
+        "events": {
+            "attack_cooldown_complete_event": {
+                "remove": {
+                    "component_groups": [
+                        "attack_cooldown"
+                    ]
+                }
+            },
+            "minecraft:ageable_grow_up": {
+                "add": {
+                    "component_groups": [
+                        "goat_adult"
+                    ]
+                },
+                "remove": {
+                    "component_groups": [
+                        "goat_baby"
+                    ]
+                }
+            },
+            "minecraft:born_default": {
+                "add": {
+                    "component_groups": [
+                        "goat_default",
+                        "ram_default",
+                        "interact_default"
+                    ]
+                }
+            },
+            "minecraft:born_screamer": {
+                "add": {
+                    "component_groups": [
+                        "goat_screamer",
+                        "ram_screamer",
+                        "interact_screamer"
+                    ]
+                }
+            },
+            "minecraft:entity_born": {
+                "add": {
+                    "component_groups": [
+                        "goat_baby"
+                    ]
+                }
+            },
+            "minecraft:entity_spawned": {
+                "randomize": [
+                    {
+                        "add": {
+                            "component_groups": [
+                                "goat_adult"
+                            ]
+                        },
+                        "weight": 95
+                    },
+                    {
+                        "add": {
+                            "component_groups": [
+                                "goat_baby"
+                            ]
+                        },
+                        "weight": 5
+                    }
+                ]
+            },
+            "rift:start_bleeding": {
+                "set_property": {
+                    "rift:bleeding": true
+                }
+            },
+            "rift:stop_bleeding": {
+                "set_property": {
+                    "rift:bleeding": false
+                }
+            },
+            "start_event": {
+                "add": {
+                    "component_groups": [
+                        "attack_cooldown"
+                    ]
+                }
+            }
         }
-      },
-      "start_event": {
-        "add": {
-          "component_groups": [
-            "attack_cooldown"
-          ]
-        }
-      },
-      "attack_cooldown_complete_event": {
-        "remove": {
-          "component_groups": [
-            "attack_cooldown"
-          ]
-        }
-      }
     }
-  }
 }
