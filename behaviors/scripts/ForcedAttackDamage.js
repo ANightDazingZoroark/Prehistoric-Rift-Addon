@@ -117,11 +117,6 @@ system.run(function everyTick(tick) {
                 break
         }
         entities[i].removeTag('forcedAttack')
-        entities[i].removeTag('chargeOne')
-        entities[i].removeTag('chargeTwo')
-        entities[i].removeTag('chargeThree')
-        entities[i].removeTag('chargeFour')
-        entities[i].removeTag('chargeFive')
         entities[i].removeTag('werewolfBite')
         entities[i].removeTag('werewolfSlash')
         entities[i].removeTag('baryonyxBite')

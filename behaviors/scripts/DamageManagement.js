@@ -494,6 +494,15 @@ world.events.entityHurt.subscribe(({ hurtEntity, damagingEntity, projectile }) =
         }
     }
 
+    if (damagingEntity.typeId == 'rift:stegosaurus' && (damagingEntity.hasTag('chargeOne') || damagingEntity.hasTag('chargeTwo') || damagingEntity.hasTag('chargeThree') || damagingEntity.hasTag('chargeFour') || damagingEntity.hasTag('chargeFive'))) {
+        hurtEntity.triggerEvent('rift:stop_bleeding')
+        hurtEntity.triggerEvent('rift:start_bleeding')
+        damagingEntity.removeTag('chargeOne')
+        damagingEntity.removeTag('chargeTwo')
+        damagingEntity.removeTag('chargeThree')
+        damagingEntity.removeTag('chargeFour')
+        damagingEntity.removeTag('chargeFive')
+    }
     if (damagingEntity.typeId == 'rift:dilophosaurus' && projectile.typeId == 'rift:dilophosaurus_spit') {
         hurtEntity.addEffect(MinecraftEffectTypes.poison, 200)
         hurtEntity.addEffect(MinecraftEffectTypes.blindness, 200)
@@ -524,6 +533,10 @@ world.events.entityHurt.subscribe(({ hurtEntity, damagingEntity, projectile }) =
     }
     if (damagingEntity.typeId == 'rift:direwolf' && damagingEntity.hasTag('sonicBoom')) {
         hurtEntity.dimension.spawnEntity('rift:direwolf_explosion', hurtEntity.location)
+    }
+    if (damagingEntity.typeId == 'rift:direwolf' && damagingEntity.hasTag('clawAttack')) {
+        hurtEntity.triggerEvent('rift:stop_bleeding')
+        hurtEntity.triggerEvent('rift:start_bleeding')
     }
     if (damagingEntity.typeId == 'rift:baryonyx' && (damagingEntity.hasTag('forcedClaw') || damagingEntity.getComponent('mark_variant').value == 1)) {
         hurtEntity.addEffect(MinecraftEffectTypes.poison, 200)

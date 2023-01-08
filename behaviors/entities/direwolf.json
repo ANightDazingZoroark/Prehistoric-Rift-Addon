@@ -6276,23 +6276,34 @@
 				]
 			},
 			"rift:has_rider": {
-				"add": {
-					"component_groups": [
-						"rift:unpushable"
-					]
-				},
-				"remove": {
-					"component_groups": [
-						"rift:pushable",
-						"rift:aggravating_horn_attack"
-					]
-				},
-				"run_command": {
-					"command": [
-						"tag @s add climber"
-					]
-				}
-			},
+                "sequence": [
+                    {
+                        "add": {
+                            "component_groups": [
+                                "rift:unpushable"
+                            ]
+                        },
+                        "remove": {
+                            "component_groups": [
+                                "rift:pushable",
+                                "rift:aggravating_horn_attack"
+                            ]
+                        }
+                    },
+                    {
+                        "filters": {
+                            "test": "has_component",
+                            "subject": "self",
+                            "value": "minecraft:is_ignited"
+                        },
+                        "run_command": {
+                            "command": [
+                                "tag @s add climber"
+                            ]
+                        }
+                    }
+                ]
+            },
 			"rift:has_no_rider": {
 				"sequence": [
 					{
