@@ -7,14 +7,14 @@
 				"default": {
 					"transitions": [
 						{
-							"hasTag": "query.ground_speed > 0"
+							"hasTag": "query.is_moving"
 						}
 					]
 				},
 				"hasTag": {
 					"transitions": [
 						{
-							"default": "query.ground_speed == 0"
+							"default": "!query.is_moving"
 						}
 					],
                     "on_entry": [
@@ -740,8 +740,11 @@
                 "default": {
                     "transitions": [
                         {
-                            "bleeding": "query.property('rift:bleeding') == true"
+                            "bleeding": "query.property('rift:bleeding') == true && query.is_alive"
                         }
+                    ],
+                    "on_entry": [
+                        "@s rift:stop_bleeding"
                     ]
                 },
                 "bleeding": {
@@ -751,7 +754,7 @@
                     ],
                     "transitions": [
                         {
-                            "default": "query.property('rift:bleeding') == false"
+                            "default": "query.property('rift:bleeding') == false || !query.is_alive"
                         }
                     ]
                 }
