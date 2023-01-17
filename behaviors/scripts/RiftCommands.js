@@ -1,8 +1,8 @@
-import { world } from "@minecraft/server"
+import { BlockLocation, world } from "@minecraft/server"
 
 world.events.beforeChat.subscribe(async (ev) => {
-    try {
-        if (ev.sender.runCommandAsync(`testfor @s[m=c]`)) {
+    if (ev.message.substring(0,2) == 'r!') {
+        if (ev.sender.hasTag('canRiftCommands')) {
             switch (ev.message) {
                 case 'r!commands':
                     ev.sender.tell('==Commands==')
@@ -10,13 +10,9 @@ world.events.beforeChat.subscribe(async (ev) => {
                     ev.sender.tell('r!test: Generic "Hello World" message you\'d learn to make from a programming tutorial or class')
                     ev.sender.tell('r!journalunlock: Unlock all journal entries for the person using the command')
                     ev.sender.tell('r!journalrelock: Reset all unlocked journal entries for the person using the command')
-                    ev.sender.tell('r!mobevents <true|false>: Enable or disable mob events. By default the value is false')
-                    ev.sender.tell('r!pvp <true|false>: Changes up stuff so that you can use the addon for PvP situations (like attacking tamed dinos using your own tamed dinos while riding them). By default the value is false')
-                    ev.cancel = true
                     break
                 case 'r!test':
-                    ev.sender.tell('Hi!')
-                    ev.cancel = true
+                    ev.sender.tell('Hello World!')
                     break
                 case 'r!journalunlock':
                     ev.sender.tell('Unlocked all journal entries!')
@@ -48,7 +44,6 @@ world.events.beforeChat.subscribe(async (ev) => {
                     ev.sender.setDynamicProperty('JournalTyrannosaurus', true)
                     ev.sender.setDynamicProperty('JournalUtahraptor', true)
                     ev.sender.setDynamicProperty('JournalVillagers', true)
-                    ev.cancel = true
                     break
                 case 'r!journalrelock':
                     ev.sender.tell('Reset all journal entries!')
@@ -80,12 +75,12 @@ world.events.beforeChat.subscribe(async (ev) => {
                     ev.sender.setDynamicProperty('JournalTyrannosaurus', false)
                     ev.sender.setDynamicProperty('JournalUtahraptor', false)
                     ev.sender.setDynamicProperty('JournalVillagers', false)
-                    ev.cancel = true
                     break
             }
         }
-    }
-    catch (e) {
-        ev.sender.tell('You need to be in creative mode to use these commands!')
+        else {
+            ev.sender.tell('You can only use these special commands in creative mode!')
+        }
+        ev.cancel = true
     }
 })

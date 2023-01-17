@@ -164,11 +164,8 @@ system.run(function everyTick(tick) {
                 }
             }
         }
-        try {
-            direwolves[d].runCommandAsync(`execute as @e[x=~-12, dx=24, y=~-4, dy=20, z=~-12, dz=24, type=chest_boat] positioned as @e[x=~-12, dx=24, y=~-4, dy=20, z=~-12, dz=24, type=chest_boat] run summon rift:direwolf_alert_icon `)
-            direwolves[d].runCommandAsync(`execute as @e[x=~-12, dx=24, y=~-4, dy=20, z=~-12, dz=24, type=chest_minecart] positioned as @e[x=~-12, dx=24, y=~-4, dy=20, z=~-12, dz=24, type=chest_minecart] run summon rift:direwolf_alert_icon `)
-        }
-        catch (e) {}
+        direwolves[d].runCommandAsync(`execute as @e[x=~-12, dx=24, y=~-4, dy=20, z=~-12, dz=24, type=chest_boat] positioned as @e[x=~-12, dx=24, y=~-4, dy=20, z=~-12, dz=24, type=chest_boat] run summon rift:direwolf_alert_icon `)
+        direwolves[d].runCommandAsync(`execute as @e[x=~-12, dx=24, y=~-4, dy=20, z=~-12, dz=24, type=chest_minecart] positioned as @e[x=~-12, dx=24, y=~-4, dy=20, z=~-12, dz=24, type=chest_minecart] run summon rift:direwolf_alert_icon `)
         direwolves[d].removeTag('useChestSniff')
     }
 })
