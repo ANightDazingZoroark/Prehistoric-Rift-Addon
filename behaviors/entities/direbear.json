@@ -4336,6 +4336,45 @@
 					}
 				]
 			},
+            "minecraft:environment_sensor": {
+                "triggers": [
+					{
+						"filters": {
+							"all_of":[
+								{
+									"test": "has_tag",
+									"value": "direbearHarvest",
+									"subject": "self",
+									"operator": "=="
+								},
+								{
+									"test": "rider_count",
+									"operator": ">",
+									"value": 0,
+									"subject": "self"
+								},
+								{
+									"test": "has_component",
+									"value": "minecraft:is_tamed",
+									"subject": "self"
+								},
+								{
+									"test": "has_component",
+									"operator": "!=",
+									"value": "minecraft:is_baby",
+									"subject": "self"
+								},
+								{
+									"test": "has_component",
+									"value": "minecraft:is_saddled",
+									"subject": "self"
+								}
+							]
+						},
+						"event": "rift:direbear_harvest"
+					}
+                ]
+            },
             "minecraft:scheduler": {
                 "scheduled_events": [
 					{
@@ -5268,6 +5307,25 @@
                     ]
                 }
             },
+            "rift:direbear_harvest": {
+                "run_command": {
+                    "command": [
+						"playanimation @s animation.direbear.claw_one",
+						"event entity @s rift:decrease_energy_while_harvesting",
+						"function cmd.direbear_harvest_oak_leaves",
+						"function cmd.direbear_harvest_spruce_leaves",
+						"function cmd.direbear_harvest_birch_leaves",
+						"function cmd.direbear_harvest_jungle_leaves",
+						"function cmd.direbear_harvest_dark_oak_leaves",
+						"function cmd.direbear_harvest_acacia_leaves",
+						"function cmd.direbear_harvest_azalea_leaves",
+						"function cmd.direbear_harvest_flowered_azalea_leaves",
+						"function cmd.direbear_harvest_mangrove_leaves",
+						"function cmd.direbear_harvest_nether_wart_block",
+						"function cmd.direbear_harvest_warped_wart_block"
+                    ]
+                }
+            },
 			"rift:on_standing": {
 				"sequence": [
 					{
@@ -5645,6 +5703,11 @@
             "rift:decrease_energy_while_claw_attacking": {
 				"set_property": {
 					"rift:energy": "query.property('rift:energy') - 15"
+				}
+			},
+			"rift:decrease_energy_while_harvesting": {
+				"set_property": {
+					"rift:energy": "query.property('rift:energy') - 10"
 				}
 			},
 			"rift:regenerate_energy": {
