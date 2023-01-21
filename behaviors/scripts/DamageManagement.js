@@ -561,6 +561,15 @@ world.events.entityHurt.subscribe(({ hurtEntity, damagingEntity, projectile }) =
         hurtEntity.triggerEvent('rift:stop_bleeding')
         hurtEntity.triggerEvent('rift:start_bleeding')
     }
+    //code that tries to make it so wearing armor protects u from bleeding below
+    // if (damagingEntity.typeId == 'rift:direbear' && damagingEntity.hasTag('clawMode') && hurtEntity.typeId != 'minecraft:player') {
+    //     hurtEntity.triggerEvent('rift:stop_bleeding')
+    //     hurtEntity.triggerEvent('rift:start_bleeding')
+    // }
+    // if (damagingEntity.typeId == 'rift:direbear' && damagingEntity.hasTag('clawMode') && hurtEntity.typeId == 'minecraft:player' && hurtEntity.getComponent('inventory').container.) {
+    //     hurtEntity.triggerEvent('rift:stop_bleeding')
+    //     hurtEntity.triggerEvent('rift:start_bleeding')
+    // }
 })
 
 system.run(function everyTick(tick) {

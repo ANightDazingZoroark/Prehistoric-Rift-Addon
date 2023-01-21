@@ -22,10 +22,13 @@
                             "bite": "v.attackMode = (math.floor(math.random(0,3))); return v.attackMode == 0;"
                         },
                         {
-                            "stomp": "v.attackMode == 1"
+                            "stomp": "v.attackMode == 1 && !query.out_of_control"
                         },
                         {
                             "claw": "v.attackMode == 2"
+                        },
+                        {
+                            "default": "v.attackMode == 1 && query.out_of_control"
                         }
                     ]
                 },
@@ -51,13 +54,13 @@
                             "bite": "v.attackMode = (math.floor(math.random(0,3))); return !query.is_delayed_attacking && v.attackMode == 0;"
                         },
                         {
-                            "stomp": "!query.is_delayed_attacking && v.attackMode == 1"
+                            "stomp": "!query.is_delayed_attacking && v.attackMode == 1 && !query.out_of_control"
                         },
                         {
                             "claw": "!query.is_delayed_attacking && v.attackMode == 2"
                         },
                         {
-                            "default": "!query.has_target"
+                            "default": "!query.has_target || (v.attackMode == 1 && query.out_of_control)"
                         }
                     ],
                     "on_exit": [
@@ -87,17 +90,18 @@
                             "bite": "v.attackMode = (math.floor(math.random(0,3))); return !query.is_roaring && v.attackMode == 0;"
                         },
                         {
-                            "stomp": "!query.is_roaring && v.attackMode == 1"
+                            "stomp": "!query.is_roaring && v.attackMode == 1 && !query.out_of_control"
                         },
                         {
                             "claw": "!query.is_roaring && v.attackMode == 2"
                         },
                         {
-                            "default": "!query.has_target"
+                            "default": "!query.has_target || (v.attackMode == 1 && query.out_of_control)"
                         }
                     ],
                     "on_exit": [
                         "@s rift:cannot_use_stomp",
+                        "@s rift:start_stomp_cooldown",
                         "/tag @s remove stompMode"
                     ]
                 },
@@ -123,13 +127,13 @@
                             "bite": "v.attackMode = (math.floor(math.random(0,3))); return !query.is_delayed_attacking && v.attackMode == 0;"
                         },
                         {
-                            "stomp": "!query.is_delayed_attacking && v.attackMode == 1"
+                            "stomp": "!query.is_delayed_attacking && v.attackMode == 1 && !query.out_of_control"
                         },
                         {
                             "claw": "!query.is_delayed_attacking && v.attackMode == 2"
                         },
                         {
-                            "default": "!query.has_target"
+                            "default": "!query.has_target || (v.attackMode == 1 && query.out_of_control)"
                         }
                     ],
                     "on_exit": [
@@ -148,7 +152,10 @@
 							"biting": "query.property('rift:forced_attack_mode') == 1"
 						},
 						{
-							"stomping": "query.property('rift:forced_attack_mode') == 2"
+							"stomping": "query.property('rift:forced_attack_mode') == 2 && !query.out_of_control"
+						},
+						{
+							"stompingFail": "query.property('rift:forced_attack_mode') == 2 && query.out_of_control"
 						},
 						{
 							"clawOne": "v.chooseArm = (math.floor(math.random(0,2))); return v.chooseArm == 0 && query.property('rift:forced_attack_mode') == 3;"
@@ -172,12 +179,26 @@
                     "animations": [
                         "animForcedAttackStomp"
                     ],
+                    "on_exit": [
+                        "@s rift:start_stomp_cooldown"
+                    ],
 					"transitions": [
 						{
 							"default": "query.all_animations_finished"
 						}
 					]
 				},
+                "stompingFail": {
+                    "on_entry": [
+                        "/event entity @s rift:stop_forced_attack",
+						"/tellraw @p {\"rawtext\":[{\"text\":\"Cannot roar for another 10 seconds!\"}]}"
+                    ],
+                    "transitions": [
+                        {
+                            "default": "(1.0)"
+                        }
+                    ]
+                },
 				"clawOne": {
                     "animations": [
                         "animForcedAttackClawOne"
@@ -198,6 +219,35 @@
 						}
 					]
 				}
+            }
+        },
+        "controller.animation.direbear_fish_harvest_cooldown": {
+            "initial_state": "default",
+            "states": {
+                "default": {
+                    "transitions": [
+                        {
+                            "cooldown": "query.property('rift:fish_harvest_cooldown') == true"
+                        }
+                    ]
+                },
+                "cooldown": {
+                    "animations": [
+                        "animFishHarvestCooldown"
+                    ],
+                    "transitions": [
+                        {
+                            "default": "query.all_animations_finished"
+                        }
+                    ],
+                    "on_entry": [
+                        "/tag @s add fishHarvestCool"
+                    ],
+                    "on_exit": [
+                        "/tag @s remove fishHarvestCool",
+						"/tellraw @p {\"rawtext\":[{\"text\":\"Cooldown ended\"}]}"
+                    ]
+                }
             }
         }
     }

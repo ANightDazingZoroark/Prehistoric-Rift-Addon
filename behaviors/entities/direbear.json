@@ -26,6 +26,10 @@
 					"default": false,
 					"client_sync": true
 				},
+				"rift:fish_harvest_cooldown": {
+					"type": "bool",
+					"default": false
+				},
 				"rift:forced_attack_mode": { //0 for nothing, 1 for bite, 2 for stomp, 3 for claw
                     "range": [
 						0,
@@ -68,6 +72,7 @@
 			},
 			"animations": {
 				"contEatFromInventoryCooldown": "controller.animation.general_eat_from_inventory_cooldown",
+				"contInWaterTag": "controller.animation.add_in_water_tag",
 				"contTameTag": "controller.animation.add_tame_tag",
 				"contBabyTag": "controller.animation.add_baby_tag",
 				"contRiddenTag": "controller.animation.add_ridden_tag",
@@ -84,6 +89,7 @@
                 "contDieWithoutTamedTenontosaurus": "controller.animation.general_death_timer_tamed_tenontosaurus",
 				"contSwitchBetweenMeleeAttacks": "controller.animation.direbear_switch_between_melee_attacks",
 				"contBleed": "controller.animation.general_manage_bleed",
+                "contFishHarvestCooldown": "controller.animation.direbear_fish_harvest_cooldown",
                 "animUseEnergyWhileMoving": "animation.direbear_decrease_energy_while_moving",
 				"animEnergyRegenDelay": "animation.regenerate_energy_delay",
 				"animRegenerateEnergy": "animation.direbear_regenerate_energy",
@@ -98,11 +104,13 @@
 				"animForcedAttackClawOne": "animation.forced_attack_direbear_slash_one",
 				"animForcedAttackClawTwo": "animation.forced_attack_direbear_slash_two",
                 "animBleed": "animation.general_bleed",
-                "animBleedCountdown": "animation.general_bleed_countdown"
+                "animBleedCountdown": "animation.general_bleed_countdown",
+                "animFishHarvestCooldown": "animation.direbear_fish_harvest_cooldown"
 			},
 			"scripts": {
 				"animate": [
 					"contEatFromInventoryCooldown",
+                    "contInWaterTag",
 					"contTameTag",
 					"contBabyTag",
 					"contRiddenTag",
@@ -118,7 +126,8 @@
 					"contDieWithoutTenontosaurus",
                     "contDieWithoutTamedTenontosaurus",
                     "contSwitchBetweenMeleeAttacks",
-                    "contBleed"
+                    "contBleed",
+                    "contFishHarvestCooldown"
 				]
 			}
         },
@@ -847,7 +856,7 @@
                         "rift:leafy_treat",
                         "rift:honey_treat"
                     ]
-                }            
+                }
             },
             "rift:direbear_adult_trusting": {
                 "minecraft:trust": {}
@@ -1691,6 +1700,16 @@
 				},
                 "minecraft:attack": {
                     "damage": 10
+                }
+            },
+            "rift:stomp_attack_cooldown": {
+                "minecraft:out_of_control": {},
+                "minecraft:timer": {
+                    "time": 10,
+                    "time_down_event": {
+                        "event": "rift:stop_stomp_cooldown",
+                        "target": "self"
+                    }
                 }
             },
 			"rift:pushable": {
@@ -4309,7 +4328,7 @@
 							}
 						},
 						"damage_multiplier": 0.5,
-						"cause": "attack"
+						"cause": "entity_attack"
 					},
 					{
 						"cause": "fall",
@@ -5269,6 +5288,36 @@
 					"rift:forced_attack_mode": "0"
 				}
 			},
+            "rift:start_stomp_cooldown": {
+                "add": {
+                    "component_groups": [
+                        "rift:stomp_attack_cooldown"
+                    ]
+                }
+            },
+            "rift:stop_stomp_cooldown": {
+                "sequence": [
+                    {
+                        "remove": {
+                            "component_groups": [
+                                "rift:stomp_attack_cooldown"
+                            ]
+                        }
+                    },
+                    {
+                        "filters": {
+                            "test": "has_component",
+                            "subject": "self",
+                            "value": "minecraft:is_tamed"
+                        },
+                        "run_command": {
+                            "command": [
+                                "tellraw @p {\"rawtext\":[{\"text\":\"Cooldown ended\"}]}"
+                            ]
+                        }
+                    }
+                ]
+            },
             "rift:has_rider": {
 				"add": {
 					"component_groups": [
@@ -5308,22 +5357,83 @@
                 }
             },
             "rift:direbear_harvest": {
-                "run_command": {
-                    "command": [
-						"playanimation @s animation.direbear.claw_one",
-						"event entity @s rift:decrease_energy_while_harvesting",
-						"function cmd.direbear_harvest_oak_leaves",
-						"function cmd.direbear_harvest_spruce_leaves",
-						"function cmd.direbear_harvest_birch_leaves",
-						"function cmd.direbear_harvest_jungle_leaves",
-						"function cmd.direbear_harvest_dark_oak_leaves",
-						"function cmd.direbear_harvest_acacia_leaves",
-						"function cmd.direbear_harvest_azalea_leaves",
-						"function cmd.direbear_harvest_flowered_azalea_leaves",
-						"function cmd.direbear_harvest_mangrove_leaves",
-						"function cmd.direbear_harvest_nether_wart_block",
-						"function cmd.direbear_harvest_warped_wart_block"
-                    ]
+                "sequence": [
+                    {
+                        "run_command": {
+                            "command": [
+                                "playanimation @s[tag=!inWater] animation.direbear.claw_one",
+                                "playanimation @s[tag=inWater, tag=!fishHarvestCool] animation.direbear.claw_one",
+                                "event entity @s[tag=!inWater, tag=fishHarvestCool] rift:decrease_energy_while_harvesting",
+                                "event entity @s[tag=inWater, tag=!fishHarvestCool] rift:start_fish_harvest_cooldown",
+                                "execute as @s[tag=!inWater] positioned as @s[tag=!inWater] run function cmd.direbear_harvest_oak_leaves",
+                                "execute as @s[tag=!inWater] positioned as @s[tag=!inWater] run function cmd.direbear_harvest_spruce_leaves",
+                                "execute as @s[tag=!inWater] positioned as @s[tag=!inWater] run function cmd.direbear_harvest_birch_leaves",
+                                "execute as @s[tag=!inWater] positioned as @s[tag=!inWater] run function cmd.direbear_harvest_jungle_leaves",
+                                "execute as @s[tag=!inWater] positioned as @s[tag=!inWater] run function cmd.direbear_harvest_dark_oak_leaves",
+                                "execute as @s[tag=!inWater] positioned as @s[tag=!inWater] run function cmd.direbear_harvest_acacia_leaves",
+                                "execute as @s[tag=!inWater] positioned as @s[tag=!inWater] run function cmd.direbear_harvest_azalea_leaves",
+                                "execute as @s[tag=!inWater] positioned as @s[tag=!inWater] run function cmd.direbear_harvest_flowered_azalea_leaves",
+                                "execute as @s[tag=!inWater] positioned as @s[tag=!inWater] run function cmd.direbear_harvest_mangrove_leaves",
+                                "execute as @s[tag=!inWater] positioned as @s[tag=!inWater] run function cmd.direbear_harvest_nether_wart_block",
+                                "execute as @s[tag=!inWater] positioned as @s[tag=!inWater] run function cmd.direbear_harvest_warped_wart_block",
+                                "execute as @s[tag=!inWater] positioned as @s[tag=!inWater] run function cmd.direbear_harvest_sweet_berries",
+                                "execute as @s[tag=inWater, tag=fishHarvestCool] run tellraw @p {\"rawtext\":[{\"text\":\"Cannot harvest fish for another 10 seconds!\"}]}"
+                            ]
+                        }
+                    },
+                    {
+						"filters": {
+							"all_of": [
+								{
+									"test": "has_biome_tag",
+									"operator": "!=",
+									"value": "jungle"
+								},
+								{
+									"test": "has_biome_tag",
+									"operator": "!=",
+									"value": "ocean"
+								}
+							]
+						},
+                        "run_command": {
+                            "command": [
+                                "execute as @s[tag=inWater, tag=!fishHarvestCool] positioned as @s[tag=inWater, tag=!fishHarvestCool] run loot spawn ~ ~ ~ loot \"harvest results/direbear/general water drops\""
+                            ]
+                        }
+                    },
+					{
+						"filters": {
+							"test": "has_biome_tag",
+							"value": "jungle"
+						},
+						"run_command": {
+							"command": [
+								"execute as @s[tag=inWater, tag=!fishHarvestCool] positioned as @s[tag=inWater, tag=!fishHarvestCool] run loot spawn ~ ~ ~ loot \"harvest results/direbear/jungle water drops\""
+							]
+						}
+					},
+					{
+						"filters": {
+							"test": "has_biome_tag",
+							"value": "ocean"
+						},
+						"run_command": {
+							"command": [
+								"execute as @s[tag=inWater, tag=!fishHarvestCool] positioned as @s[tag=inWater, tag=!fishHarvestCool] run loot spawn ~ ~ ~ loot \"harvest results/direbear/ocean water drops\""
+							]
+						}
+					}
+                ]
+            },
+            "rift:start_fish_harvest_cooldown": {
+                "set_property": {
+                    "rift:fish_harvest_cooldown": true
+                }
+            },
+            "rift:stop_fish_harvest_cooldown": {
+                "set_property": {
+                    "rift:fish_harvest_cooldown": false
                 }
             },
 			"rift:on_standing": {

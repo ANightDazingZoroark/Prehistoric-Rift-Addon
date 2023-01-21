@@ -12,7 +12,18 @@ world.events.beforeChat.subscribe(async (ev) => {
                     ev.sender.tell('r!journalrelock: Reset all unlocked journal entries for the person using the command')
                     break
                 case 'r!test':
+                    // let armorCount = 0
                     ev.sender.tell('Hello World!')
+                    // ev.sender.runCommandAsync('testfor @s[hasitem={location=slot.armor.chest, item=netherite_chestplate}]').then(() =>{
+                    //     armorCount++
+                    //     console.warn('one')
+                    //     ev.sender.runCommandAsync('testfor @s[hasitem={location=slot.armor.chest, item=diamond_chestplate}]').then(() => {
+                    //         armorCount++
+                    //         console.warn('two')
+                    //     }).finally(()=> console.warn(armorCount))
+                    // })
+                    // await ev.sender.runCommandAsync('testfor @s[hasitem={location=slot.armor.chest, item=netherite_chestplate}]').then(x => armorCount++)
+                    // console.warn(armorCount)
                     break
                 case 'r!journalunlock':
                     ev.sender.tell('Unlocked all journal entries!')
