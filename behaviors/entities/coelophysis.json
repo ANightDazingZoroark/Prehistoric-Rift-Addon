@@ -63,6 +63,11 @@
 				"contDieWithoutTenontosaurus": "controller.animation.general_die_without_tenontosaurus",
                 "contDieWithoutTamedTenontosaurus": "controller.animation.general_death_timer_tamed_tenontosaurus",
 				"contBleed": "controller.animation.general_manage_bleed",
+                "animUseEnergyWhileMoving": "animation.coelophysis_decrease_energy_while_moving",
+                "animEnergyRegenDelay": "animation.regenerate_energy_delay",
+				"animRegenerateEnergy": "animation.coelophysis_regenerate_energy",
+				"animLowOnEnergyEffects": "animation.effects_while_low_on_energy",
+				"animNoEnergyEffects": "animation.effects_while_no_energy",
 				"contMovingTag": "controller.animation.add_moving_tag",
 				"animFindTenontosaurus": "animation.find_tenontosaurus",
 				"animDeathTimer": "animation.hypnosis_death_timer",
@@ -3801,10 +3806,7 @@
                         "rift:coelophysis_adult_wild",
                         "rift:wild_standing"
                     ]
-                },
-				"set_property": {
-					"rift:behavior_state": "3"
-				}
+                }
             },
 			"rift:on_standing": {
 				"sequence": [
@@ -3991,6 +3993,45 @@
 					]
 				}
 			},
+			"rift:moving_slowly_low_energy": {
+				"add": {
+					"component_groups": [
+						"rift:tamed_can_move_low_energy"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:tamed_can_move",
+						"rift:tamed_cannot_move"
+					]
+				}
+			},
+			"rift:stop_moving_low_energy": {
+				"add": {
+					"component_groups": [
+						"rift:tamed_cannot_move"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:tamed_can_move",
+						"rift:tamed_can_move_low_energy"
+					]
+				}
+			},
+			"rift:return_to_moving_normally": {
+				"add": {
+					"component_groups": [
+						"rift:tamed_can_move"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:tamed_cannot_move",
+						"rift:tamed_can_move_low_energy"
+					]
+				}
+			},
             "rift:commit_suicide": {
                 "run_command": {
                     "command": [
@@ -4122,6 +4163,31 @@
 						}
 					}
 				]
+			},
+			"rift:sit_at_no_energy": {
+				"set_property": {
+					"rift:tame_state": "1"
+				}
+			},
+			"rift:passive_at_no_energy": {
+				"set_property": {
+					"rift:behavior_state": "3"
+				}
+			},
+			"rift:decrease_energy_while_moving": {
+				"set_property": {
+					"rift:energy": "query.property('rift:energy') - 15"
+				}
+			},
+            "rift:decrease_energy_while_attacking": {
+				"set_property": {
+					"rift:energy": "query.property('rift:energy') - 10"
+				}
+			},
+			"rift:regenerate_energy": {
+				"set_property": {
+					"rift:energy": "query.property('rift:energy') + 10"
+				}
 			},
 			//for potion effects
 			"rift:drink_night_vision_potion_one": {

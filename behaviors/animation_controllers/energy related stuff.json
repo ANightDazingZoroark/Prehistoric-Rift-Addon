@@ -362,6 +362,49 @@
                 }
             }
         },
+        "controller.animation.coelophysis_energy_movement_usage": {
+            "initial_state": "default",
+            "states": {
+                "default": {
+                    "animations": [
+                        {
+                            "animRegenerateEnergy": "query.is_tamed"
+                        }
+                    ],
+                    "transitions": [
+                        {
+                            "walk": "query.is_tamed && query.is_on_ground && query.ground_speed > 0 && query.property('rift:energy') > 0"
+                        },
+                        {
+                            "attack": "query.is_tamed && variable.attack_time > 0 && query.property('rift:energy') >= 10"
+                        }
+                    ]
+                },
+                "walk": {
+                    "animations": [
+                        "animUseEnergyWhileMoving"
+                    ],
+                    "transitions": [
+                        {
+                            "default": "query.ground_speed == 0"
+                        },
+                        {
+                            "attack": "query.is_tamed && variable.attack_time > 0 && query.property('rift:energy') >= 10"
+                        }
+                    ]
+                },
+                "attack": {
+                    "on_exit": [
+                        "@s rift:decrease_energy_while_attacking"
+                    ],
+                    "transitions": [
+                        {
+                            "default": "variable.attack_time == 0"
+                        }
+                    ]
+                }
+            }
+        },
         "controller.animation.dilophosaurus_energy_movement_usage": {
             "initial_state": "default",
             "states": {
