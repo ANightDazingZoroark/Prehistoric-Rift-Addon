@@ -24,6 +24,15 @@
 					"default": 225,
 					"client_sync": true
                 },
+                "rift:addiction": {
+                    "range": [
+						0,
+						64
+					],
+					"type": "int",
+					"default": 0,
+					"client_sync": true
+                },
                 "rift:tame_state": { //0 for standing, 1 for sitting, 2 for wandering
                     "range": [
 						0,
@@ -1323,6 +1332,12 @@
 												"subject": "other",
 												"domain": "hand",
 												"value": "minecraft:sweet_berries"
+											},
+											{
+												"test": "has_equipment",
+												"subject": "other",
+												"domain": "hand",
+												"value": "rift:fiber_bar"
 											}
 										]
 									},
@@ -1401,7 +1416,14 @@
 										"domain": "hand",
 										"operator": "!=",
 										"value": "rift:berry_treat"
-									}
+									},
+                                    {
+                                        "test": "has_equipment",
+                                        "subject": "other",
+                                        "domain": "hand",
+                                        "operator": "!=",
+                                        "value": "rift:fiber_bar"
+                                    }
 								]
 							},
 							"event": "rift:manage_state",
@@ -1477,6 +1499,39 @@
 							"target": "self"
 						},
 						"interact_text": "action.interact.attachchest",
+						"use_item": true
+					},
+					{
+						"on_interact": {
+							"filters": {
+								"all_of": [
+									{
+										"test": "has_equipment",
+										"subject": "other",
+										"domain": "hand",
+										"value": "rift:fiber_bar"
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_baby",
+										"operator": "!="
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_tamed"
+									},
+									{
+										"test": "is_sneaking",
+										"subject": "other",
+										"value": true
+									}
+								]
+							},
+							"event": "rift:regenerate_energy_from_food",
+							"target": "self"
+						},
 						"use_item": true
 					},
 					{
@@ -4465,6 +4520,12 @@
 			"rift:regenerate_energy": {
 				"set_property": {
 					"rift:energy": "query.property('rift:energy') + 10"
+				}
+			},
+			"rift:regenerate_energy_from_food": {
+				"set_property": {
+					"rift:energy": "query.property('rift:energy') + 30",
+                    "rift:addiction": "query.property('rift:addiction') + 1"
 				}
 			},
 			//for potion effects

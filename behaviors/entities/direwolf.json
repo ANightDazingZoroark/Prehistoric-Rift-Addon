@@ -44,6 +44,15 @@
 					"default": 225,
 					"client_sync": true
                 },
+                "rift:addiction": {
+                    "range": [
+						0,
+						64
+					],
+					"type": "int",
+					"default": 0,
+					"client_sync": true
+                },
                 "rift:tame_state": { //0 for standing, 1 for sitting, 2 for wandering
 					"range": [
 						0,
@@ -613,6 +622,16 @@
 							"max_amount": 1 
 						},
 						{ 
+							"item": "rift:raw_fibrous_meat", 
+							"priority": 0, 
+							"max_amount": 1 
+						},
+						{ 
+							"item": "rift:cooked_fibrous_meat", 
+							"priority": 0, 
+							"max_amount": 1 
+						},
+						{ 
 							"item": "rift:raw_dodo_meat", 
 							"priority": 0, 
 							"max_amount": 1 
@@ -766,6 +785,16 @@
 						},
 						{ 
 							"item": "rift:cooked_exotic_meat", 
+							"priority": 0, 
+							"max_amount": 1 
+						},
+						{ 
+							"item": "rift:raw_fibrous_meat", 
+							"priority": 0, 
+							"max_amount": 1 
+						},
+						{ 
+							"item": "rift:cooked_fibrous_meat", 
 							"priority": 0, 
 							"max_amount": 1 
 						},
@@ -2369,6 +2398,18 @@
 												"domain": "hand",
 												"value": "rift:cooked_exotic_meat"
 											},
+                                            {
+                                                "test": "has_equipment",
+                                                "subject": "other",
+                                                "domain": "hand",
+                                                "value": "rift:raw_fibrous_meat"
+                                            },
+                                            {
+                                                "test": "has_equipment",
+                                                "subject": "other",
+                                                "domain": "hand",
+                                                "value": "rift:cooked_fibrous_meat"
+                                            },
 											{
 												"test": "has_equipment",
 												"subject": "other",
@@ -2463,7 +2504,21 @@
 										"domain": "hand",
 										"operator": "!=",
 										"value": "rift:lunar_stimulant"
-									}
+									},
+                                    {
+                                        "test": "has_equipment",
+                                        "subject": "other",
+                                        "domain": "hand",
+										"operator": "!=",
+                                        "value": "rift:raw_fibrous_meat"
+                                    },
+                                    {
+                                        "test": "has_equipment",
+                                        "subject": "other",
+                                        "domain": "hand",
+										"operator": "!=",
+                                        "value": "rift:cooked_fibrous_meat"
+                                    }
 								]
 							},
 							"event": "rift:manage_state",
@@ -2532,6 +2587,72 @@
 								]
 							},
 							"event": "rift:adult_failed_tame",
+							"target": "self"
+						},
+						"use_item": true
+					},
+					{
+						"on_interact": {
+							"filters": {
+								"all_of": [
+									{
+                                        "test": "has_equipment",
+                                        "subject": "other",
+                                        "domain": "hand",
+                                        "value": "rift:raw_fibrous_meat"
+                                    },
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_baby",
+										"operator": "!="
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_tamed"
+									},
+									{
+										"test": "is_sneaking",
+										"subject": "other",
+										"value": true
+									}
+								]
+							},
+							"event": "rift:regenerate_energy_from_raw_food",
+							"target": "self"
+						},
+						"use_item": true
+					},
+					{
+						"on_interact": {
+							"filters": {
+								"all_of": [
+									{
+                                        "test": "has_equipment",
+                                        "subject": "other",
+                                        "domain": "hand",
+                                        "value": "rift:cooked_fibrous_meat"
+                                    },
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_baby",
+										"operator": "!="
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_tamed"
+									},
+									{
+										"test": "is_sneaking",
+										"subject": "other",
+										"value": true
+									}
+								]
+							},
+							"event": "rift:regenerate_energy_from_cooked_food",
 							"target": "self"
 						},
 						"use_item": true
@@ -6911,6 +7032,18 @@
 			"rift:regenerate_energy": {
 				"set_property": {
 					"rift:energy": "query.property('rift:energy') + 10"
+				}
+			},
+			"rift:regenerate_energy_from_raw_food": {
+				"set_property": {
+					"rift:energy": "query.property('rift:energy') + 15",
+                    "rift:addiction": "query.property('rift:addiction') + 1"
+				}
+			},
+			"rift:regenerate_energy_from_cooked_food": {
+				"set_property": {
+					"rift:energy": "query.property('rift:energy') + 30",
+                    "rift:addiction": "query.property('rift:addiction') + 1"
 				}
 			},
 			//for potion effects
