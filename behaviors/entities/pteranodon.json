@@ -347,6 +347,9 @@
                 },
                 "minecraft:loot": {
                     "table": "loot_tables/entities/pteranodon.loot.json"
+                },
+                "minecraft:attack": {
+                    "damage": 4
                 }
             },
             "rift:pteranodon_adult_wild": {
@@ -422,6 +425,15 @@
 				"minecraft:behavior.eat_carried_item": {
 					"priority": 12,
 					"delay_before_eating": 0
+				}
+            },
+            "rift:pteranodon_adult_hypnotized": {
+                "minecraft:health": {
+                    "value": 10,
+                    "max": 10
+                },
+				"minecraft:despawn": {
+					"despawn_from_distance": {}
 				}
             },
             "rift:pteranodon_adult_calm": {
@@ -606,6 +618,19 @@
 					"priority": 16
 				}
             },
+            "rift:pteranodon_on_air_hypnotized": {
+                "minecraft:can_fly": {},
+                "minecraft:movement.hover": {},
+                "minecraft:navigation.hover": {
+                    "avoid_damage_blocks": true,
+                    "avoid_sun": false,
+                    "avoid_water": true,
+                    "can_pass_doors": false,
+                    "can_path_from_air": true,
+                    "can_path_over_water": true,
+                    "can_sink": false
+                }
+            },
             "rift:pteranodon_on_air_not_landing": {
                 "minecraft:timer": {
                     "time": 180,
@@ -656,6 +681,130 @@
                     "value": 0.35
                 }
 			},
+            "rift:follow_tenontosaurus": {
+				"minecraft:behavior.nearest_prioritized_attackable_target": {
+					"priority": 7,
+					"within_radius": 32.0,
+					"entity_types": [
+						{
+							"filters": {
+                                "test": "has_tag",
+                                "subject": "other",
+                                "value": "tenontoTarget"
+                            },
+							"max_dist": 48,
+							"priority": 0
+						},
+						{
+							"filters": {
+								"all_of": [
+									{
+										"test": "is_family",
+										"subject": "other",
+										"value": "tenontosaurus"
+									},
+									{
+										"test": "has_component",
+										"subject": "other",
+										"operator": "!=",
+										"value": "minecraft:is_tamed"
+									}
+								]
+							},
+							"max_dist": 48,
+							"priority": 1
+						}
+					]
+				}
+			},
+			"rift:follow_tenontosaurus_no_target": {
+				"minecraft:behavior.ranged_attack": {
+					"priority": 16,
+					"attack_radius": 8.0,
+					"attack_radius_min": 4
+				},
+				"minecraft:on_target_acquired": {
+					"filters": {
+						"all_of": [
+							{
+								"test": "has_component",
+								"subject": "target",
+								"operator": "!=",
+								"value": "minecraft:is_tamed"
+							},
+							{
+								"test": "is_family",
+								"subject": "target",
+								"operator": "!=",
+								"value": "tenontosaurus"
+							}
+						]
+					},
+					"event": "rift:attack_for_tenontosaurus",
+					"target": "self"
+				}
+			},
+			"rift:follow_tamed_tenontosaurus": {
+				"minecraft:behavior.nearest_prioritized_attackable_target": {
+					"priority": 7,
+					"within_radius": 32.0,
+					"entity_types": [
+						{
+							"filters": {
+                                "test": "has_tag",
+                                "subject": "other",
+                                "value": "tenontoTamedTarget"
+                            },
+							"max_dist": 48,
+							"priority": 0
+						},
+						{
+							"filters": {
+								"all_of": [
+									{
+										"test": "is_family",
+										"subject": "other",
+										"value": "tenontosaurus"
+									},
+									{
+										"test": "has_component",
+										"subject": "other",
+										"value": "minecraft:is_tamed"
+									}
+								]
+							},
+							"max_dist": 48,
+							"priority": 1
+						}
+					]
+				}
+			},
+			"rift:follow_tamed_tenontosaurus_no_target": {
+				"minecraft:behavior.ranged_attack": {
+					"priority": 16,
+					"attack_radius": 8.0,
+					"attack_radius_min": 4
+				},
+				"minecraft:on_target_acquired": {
+					"filters": {
+                        "test": "has_tag",
+                        "subject": "target",
+                        "value": "tenontoTamedTarget"
+                    },
+					"event": "rift:attack_for_tenontosaurus",
+					"target": "self"
+				}
+			},
+			"rift:attacking_for_tenontosaurus": {
+				"minecraft:behavior.melee_attack": {
+					"priority": 9,
+					"reach_multiplier": 1.5
+				},
+				"minecraft:on_target_escape": {
+					"event": "rift:stop_attacking_for_tenontosaurus",
+					"target": "self"
+				}
+			},
             "rift:variant_one": {
                 "minecraft:variant": {
                     "value": 0
@@ -686,6 +835,16 @@
 				"minecraft:pushable": {
 					"is_pushable": false,
 					"is_pushable_by_piston": false
+				}
+			},
+			"rift:transform_into_hypnotized": {
+				"minecraft:transformation": {
+					"into": "rift:pteranodon<rift:transform_into_hypnotized>"
+				}
+			},
+			"rift:transform_into_hypnotized_by_tamed": {
+				"minecraft:transformation": {
+					"into": "rift:pteranodon<rift:transform_into_hypnotized_by_tamed>"
 				}
 			}
         },
@@ -853,6 +1012,352 @@
                                 }
                             }
                         ]
+                    }
+                ]
+            },
+            "rift:spawn_hypnotized_by_tenontosaurus": {
+                "randomize": [
+                    {
+                        "weight": 1,
+                        "add": {
+                            "component_groups": [
+                                "rift:pteranodon_adult",
+                                "rift:pteranodon_adult_hypnotized",
+                                "rift:pteranodon_on_air_hypnotized",
+                                "rift:variant_one",
+                                "rift:wild_standing",
+                                "rift:pushable",
+								"rift:follow_tenontosaurus",
+								"rift:follow_tenontosaurus_no_target"
+                            ]
+                        },
+						"set_property": {
+							"rift:is_hypnotized": true
+						}
+                    },
+                    {
+                        "weight": 1,
+                        "add": {
+                            "component_groups": [
+                                "rift:pteranodon_adult",
+                                "rift:pteranodon_adult_hypnotized",
+                                "rift:pteranodon_on_air_hypnotized",
+                                "rift:variant_two",
+                                "rift:wild_standing",
+                                "rift:pushable",
+								"rift:follow_tenontosaurus",
+								"rift:follow_tenontosaurus_no_target"
+                            ]
+                        },
+						"set_property": {
+							"rift:is_hypnotized": true
+						}
+                    },
+                    {
+                        "weight": 1,
+                        "add": {
+                            "component_groups": [
+                                "rift:pteranodon_adult",
+                                "rift:pteranodon_adult_hypnotized",
+                                "rift:pteranodon_on_air_hypnotized",
+                                "rift:variant_three",
+                                "rift:wild_standing",
+                                "rift:pushable",
+								"rift:follow_tenontosaurus",
+								"rift:follow_tenontosaurus_no_target"
+                            ]
+                        },
+						"set_property": {
+							"rift:is_hypnotized": true
+						}
+                    },
+                    {
+                        "weight": 1,
+                        "add": {
+                            "component_groups": [
+                                "rift:pteranodon_adult",
+                                "rift:pteranodon_adult_hypnotized",
+                                "rift:pteranodon_on_air_hypnotized",
+                                "rift:variant_four",
+                                "rift:wild_standing",
+                                "rift:pushable",
+								"rift:follow_tenontosaurus",
+								"rift:follow_tenontosaurus_no_target"
+                            ]
+                        },
+						"set_property": {
+							"rift:is_hypnotized": true
+						}
+                    }
+                ]
+            },
+			"rift:attack_for_tenontosaurus": {
+				"add": {
+					"component_groups": [
+						"rift:attacking_for_tenontosaurus"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:follow_tenontosaurus_no_target",
+                        "rift:follow_tamed_tenontosaurus_no_target"
+					]
+				}
+			},
+			"rift:stop_attacking_for_tenontosaurus": {
+                "sequence": [
+                    {
+                        "remove": {
+                            "component_groups": [
+                                "rift:attacking_for_tenontosaurus"
+                            ]
+                        }
+                    },
+                    {
+                        "filters": {
+                            "all_of": [
+                                {
+                                    "test": "bool_property",
+                                    "subject": "self",
+                                    "domain": "rift:is_hypnotized",
+                                    "value": true
+                                },
+                                {
+                                    "test": "bool_property",
+                                    "subject": "self",
+                                    "domain": "rift:is_hypnotized_tamed",
+                                    "value": false
+                                }
+                            ]
+                        },
+                        "add": {
+                            "component_groups": [
+                                "rift:follow_tenontosaurus_no_target"
+                            ]
+                        }
+                    },
+                    {
+                        "filters": {
+                            "all_of": [
+                                {
+                                    "test": "bool_property",
+                                    "subject": "self",
+                                    "domain": "rift:is_hypnotized",
+                                    "value": false
+                                },
+                                {
+                                    "test": "bool_property",
+                                    "subject": "self",
+                                    "domain": "rift:is_hypnotized_tamed",
+                                    "value": true
+                                }
+                            ]
+                        },
+                        "add": {
+                            "component_groups": [
+                                "rift:follow_tamed_tenontosaurus_no_target"
+                            ]
+                        }
+                    }
+                ]
+            },
+            "rift:hypnotized_by_tenontosaurus": {
+                "add": {
+                    "component_groups": [
+                        "rift:transform_into_hypnotized"
+                    ]
+                }
+            },
+            "rift:transform_into_hypnotized": {
+                "sequence": [
+                    {},
+                    {
+                        "filters": {
+                            "test": "is_variant",
+                            "subject": "other",
+                            "value": 0
+                        },
+                        "add": {
+                            "component_groups": [
+                                "rift:pteranodon_adult",
+                                "rift:pteranodon_adult_hypnotized",
+                                "rift:pteranodon_on_air_hypnotized",
+                                "rift:variant_one",
+                                "rift:wild_standing",
+                                "rift:pushable",
+								"rift:follow_tenontosaurus",
+								"rift:follow_tenontosaurus_no_target"
+                            ]
+                        },
+						"set_property": {
+							"rift:is_hypnotized": true
+						}
+                    },
+                    {
+                        "filters": {
+                            "test": "is_variant",
+                            "subject": "other",
+                            "value": 1
+                        },
+                        "add": {
+                            "component_groups": [
+                                "rift:pteranodon_adult",
+                                "rift:pteranodon_adult_hypnotized",
+                                "rift:pteranodon_on_air_hypnotized",
+                                "rift:variant_two",
+                                "rift:wild_standing",
+                                "rift:pushable",
+								"rift:follow_tenontosaurus",
+								"rift:follow_tenontosaurus_no_target"
+                            ]
+                        },
+						"set_property": {
+							"rift:is_hypnotized": true
+						}
+                    },
+                    {
+                        "filters": {
+                            "test": "is_variant",
+                            "subject": "other",
+                            "value": 2
+                        },
+                        "add": {
+                            "component_groups": [
+                                "rift:pteranodon_adult",
+                                "rift:pteranodon_adult_hypnotized",
+                                "rift:pteranodon_on_air_hypnotized",
+                                "rift:variant_three",
+                                "rift:wild_standing",
+                                "rift:pushable",
+								"rift:follow_tenontosaurus",
+								"rift:follow_tenontosaurus_no_target"
+                            ]
+                        },
+						"set_property": {
+							"rift:is_hypnotized": true
+						}
+                    },
+                    {
+                        "filters": {
+                            "test": "is_variant",
+                            "subject": "other",
+                            "value": 3
+                        },
+                        "add": {
+                            "component_groups": [
+                                "rift:pteranodon_adult",
+                                "rift:pteranodon_adult_hypnotized",
+                                "rift:pteranodon_on_air_hypnotized",
+                                "rift:variant_four",
+                                "rift:wild_standing",
+                                "rift:pushable",
+								"rift:follow_tenontosaurus",
+								"rift:follow_tenontosaurus_no_target"
+                            ]
+                        },
+						"set_property": {
+							"rift:is_hypnotized": true
+						}
+                    }
+                ]
+            },
+            "rift:hypnotized_by_tamed_tenontosaurus": {
+                "add": {
+                    "component_groups": [
+                        "rift:transform_into_hypnotized_by_tamed"
+                    ]
+                }
+            },
+            "rift:transform_into_hypnotized_by_tamed": {
+                "sequence": [
+                    {},
+                    {
+                        "filters": {
+                            "test": "is_variant",
+                            "subject": "other",
+                            "value": 0
+                        },
+                        "add": {
+                            "component_groups": [
+                                "rift:pteranodon_adult",
+                                "rift:pteranodon_adult_hypnotized",
+                                "rift:pteranodon_on_air_hypnotized",
+                                "rift:variant_one",
+                                "rift:wild_standing",
+                                "rift:pushable",
+								"rift:follow_tamed_tenontosaurus",
+								"rift:follow_tamed_tenontosaurus_no_target"
+                            ]
+                        },
+						"set_property": {
+							"rift:is_hypnotized_tamed": true
+						}
+                    },
+                    {
+                        "filters": {
+                            "test": "is_variant",
+                            "subject": "other",
+                            "value": 1
+                        },
+                        "add": {
+                            "component_groups": [
+                                "rift:pteranodon_adult",
+                                "rift:pteranodon_adult_hypnotized",
+                                "rift:pteranodon_on_air_hypnotized",
+                                "rift:variant_two",
+                                "rift:wild_standing",
+                                "rift:pushable",
+								"rift:follow_tamed_tenontosaurus",
+								"rift:follow_tamed_tenontosaurus_no_target"
+                            ]
+                        },
+						"set_property": {
+							"rift:is_hypnotized_tamed": true
+						}
+                    },
+                    {
+                        "filters": {
+                            "test": "is_variant",
+                            "subject": "other",
+                            "value": 2
+                        },
+                        "add": {
+                            "component_groups": [
+                                "rift:pteranodon_adult",
+                                "rift:pteranodon_adult_hypnotized",
+                                "rift:pteranodon_on_air_hypnotized",
+                                "rift:variant_three",
+                                "rift:wild_standing",
+                                "rift:pushable",
+								"rift:follow_tamed_tenontosaurus",
+								"rift:follow_tamed_tenontosaurus_no_target"
+                            ]
+                        },
+						"set_property": {
+							"rift:is_hypnotized_tamed": true
+						}
+                    },
+                    {
+                        "filters": {
+                            "test": "is_variant",
+                            "subject": "other",
+                            "value": 3
+                        },
+                        "add": {
+                            "component_groups": [
+                                "rift:pteranodon_adult",
+                                "rift:pteranodon_adult_hypnotized",
+                                "rift:pteranodon_on_air_hypnotized",
+                                "rift:variant_four",
+                                "rift:wild_standing",
+                                "rift:pushable",
+								"rift:follow_tamed_tenontosaurus",
+								"rift:follow_tamed_tenontosaurus_no_target"
+                            ]
+                        },
+						"set_property": {
+							"rift:is_hypnotized_tamed": true
+						}
                     }
                 ]
             },
