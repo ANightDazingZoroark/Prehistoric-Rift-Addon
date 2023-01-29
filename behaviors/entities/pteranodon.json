@@ -54,6 +54,7 @@
                 }
 			},
 			"animations": {
+                "contLandingManage": "controller.animation.ptera_on_landing",
 				"contMovingTag": "controller.animation.add_moving_tag",
 				"contTameTag": "controller.animation.add_tame_tag",
 				"contBabyTag": "controller.animation.add_baby_tag",
@@ -70,7 +71,7 @@
 				"contDieWithoutTenontosaurus": "controller.animation.general_die_without_tenontosaurus",
                 "contDieWithoutTamedTenontosaurus": "controller.animation.general_death_timer_tamed_tenontosaurus",
 				"contBleed": "controller.animation.general_manage_bleed",
-				"animEatFromInventoryCooldown": "animation.eat_from_inventory_cooldown",
+                "animLanding": "animation.flying_mob_landing",
 				"animUseEnergyWhileMoving": "animation.pteranodon_decrease_energy_while_moving",
 				"animEnergyRegenDelay": "animation.regenerate_energy_delay",
 				"animRegenerateEnergy": "animation.pteranodon_regenerate_energy",
@@ -85,6 +86,7 @@
 			},
 			"scripts": {
 				"animate": [
+                    "contLandingManage",
                     "contMovingTag",
 					"contTameTag",
 					"contBabyTag",
@@ -105,30 +107,107 @@
 			}
         },
         "component_groups": {
-            "rift:pteranodon_baby": {},
-            "rift:pteranodon_baby_wild": {},
-            "rift:pteranodon_baby_calm": {},
-            "rift:pteranodon_baby_scared": {},
-            "rift:pteranodon_baby_tamed": {},
-            "rift:pteranodon_adult": {
-                "minecraft:scale": {
-                    "value": 2.25
-                }
-            },
-            "rift:pteranodon_adult_wild": {
-                "minecraft:health": {
-                    "value": 10,
-                    "max": 10
-                }
-            },
-            "rift:pteranodon_adult_calm": {
-				"minecraft:behavior.nearest_attackable_target": {
-					"priority": 7,
-					"within_radius": 32.0,
-					"must_see": true,
-					"entity_types": [
+            "rift:pteranodon_baby": {
+                "minecraft:is_baby": {},
+                "minecraft:ageable": {
+                    "duration": 1200,
+                    "grow_up": {
+                        "event": "rift:baby_grow_up",
+                        "target": "self"
+                    },
+                    "feed_items": [
 						{
-							"filters": {
+							"item": "minecraft:cod",
+							"growth": 0.1
+						},
+						{
+							"item": "minecraft:cooked_cod",
+							"growth": 0.125
+						},
+						{
+							"item": "minecraft:salmon",
+							"growth": 0.1
+						},
+						{
+							"item": "minecraft:cooked_salmon",
+							"growth": 0.125
+						},
+						{
+							"item": "minecraft:tropical_fish",
+							"growth": 0.1
+						},
+						{
+							"item": "minecraft:rotten_flesh",
+							"growth": 0.1
+						},
+						{
+							"item": "rift:raw_megapiranha",
+							"growth": 0.1
+						},
+						{
+							"item": "rift:cooked_megapiranha",
+							"growth": 0.125
+						}                 
+                    ]
+                },
+                "minecraft:scale_by_age": {
+                    "start_scale": 0.75,
+                    "end_scale": 1.75
+                }
+            },
+            "rift:pteranodon_baby_wild": {
+                "minecraft:health": {
+                    "value": 6
+                },
+                "minecraft:behavior.follow_parent": {
+                    "priority": 14
+                },
+                "minecraft:tameable": {
+                    "probability": 0.25,
+                    "tame_items": [
+                        "rift:fish_treat",
+                        "rift:carrion_treat"
+                    ],
+                    "tame_event": {
+                        "event": "rift:on_tame",
+                        "target": "self"
+                    }
+                },
+				"minecraft:despawn": {
+					"despawn_from_distance": {}
+				}
+            },
+            "rift:pteranodon_baby_calm": {
+                "minecraft:behavior.avoid_block": {
+                    "priority": 3,
+                    "tick_interval": 5,
+                    "search_range": 8,
+                    "search_height": 4,
+                    "walk_speed_modifier": 1.5,
+                    "sprint_speed_modifier": 1.5,
+                    "target_selection_method": "nearest",
+                    "target_blocks": [
+                        "minecraft:fire",
+                        "minecraft:soul_fire",
+                        "minecraft:item.campfire",
+                        "minecraft:item.soul_campfire",
+                        "minecraft:torch",
+                        "minecraft:soul_torch"
+                    ],
+                    "on_escape": [
+                        {
+                            "event": "rift:baby_become_scared",
+                            "target": "self"
+                        }
+                    ]
+                },
+                "minecraft:entity_sensor": {
+                    "minimum_count": 1,
+                    "relative_range": true,
+                    "sensor_range": 8,
+                    "event_filters": {
+                        "any_of": [
+                            {
 								"any_of": [
 									{
 										"test": "is_family",
@@ -156,11 +235,8 @@
                                         ]
                                     }
 								]
-							},
-							"max_dist": 48
-						},
-						{
-							"filters": {
+                            },
+                            {
 								"all_of": [
 									{
 										"test": "is_family",
@@ -185,11 +261,8 @@
 										"value": false
 									}
 								]
-							},
-							"max_dist": 48
-						},
-						{
-							"filters": {
+                            },
+                            {
 								"all_of": [
 									{
 										"test": "is_family",
@@ -208,17 +281,257 @@
 										"value": false
 									}
 								]
-							},
-							"max_dist": 48
-						}
-					]
-				},				
-                "minecraft:behavior.hurt_by_target": {
-					"priority": 6
+							}
+                        ]
+                    },
+                    "event": "rift:baby_become_scared"
+                }
+			},
+            "rift:pteranodon_baby_scared": {
+				"minecraft:angry": {
+					"broadcast_anger": true,
+					"broadcast_range": 30,
+					"broadcast_filters": {
+						"test": "has_component",
+						"subject": "other",
+						"operator": "!=",
+						"value": "minecraft:is_tamed"
+					},
+					"broadcast_targets": [
+						"pteranodon"
+					],
+					"duration": 15,
+					"calm_event": {
+						"event": "rift:baby_on_calm",
+						"target": "self"
+					}
 				},
-                "minecraft:on_target_acquired": {
-                    "event": "rift:adult_become_scared",
-                    "target": "self"
+                "minecraft:behavior.panic": {
+					"priority": 14,
+					"speed_multiplier": 3
+				},
+				"minecraft:behavior.avoid_mob_type": {
+					"priority": 15,
+					"entity_types": [
+						{
+							"filters": {
+								"all_of": [
+									{
+										"test": "is_family",
+										"subject": "other",
+										"value": "mob"
+									},
+									{
+										"test": "is_family",
+										"subject": "other",
+                                        "operator": "!=",
+										"value": "pteranodon"
+									}
+								]
+							},
+							"max_dist": 16,
+							"walk_speed_multiplier": 3,
+							"sprint_speed_multiplier": 3
+					  	}
+					]
+				}
+            },
+            "rift:pteranodon_baby_tamed": {},
+            "rift:pteranodon_adult": {
+                "minecraft:scale": {
+                    "value": 2.25
+                },
+                "minecraft:experience_reward": {
+                    "on_bred": "Math.random(3, 5)",
+                    "on_death": "query.last_hit_by_player ? Math.random(1, 3) : 0"
+                },
+                "minecraft:loot": {
+                    "table": "loot_tables/entities/pteranodon.loot.json"
+                }
+            },
+            "rift:pteranodon_adult_wild": {
+                "minecraft:health": {
+                    "value": 10,
+                    "max": 10
+                },
+				"minecraft:despawn": {
+					"despawn_from_distance": {}
+				},
+				"minecraft:shareables": {
+					"all_items_max_amount": 1,
+					"items": [
+						{ 
+							"item": "minecraft:cod", 
+							"priority": 0, 
+							"max_amount": 1 
+						},
+						{ 
+							"item": "minecraft:cooked_cod", 
+							"priority": 0, 
+							"max_amount": 1 
+						},
+						{ 
+							"item": "minecraft:salmon", 
+							"priority": 0, 
+							"max_amount": 1 
+						},
+						{ 
+							"item": "minecraft:cooked_salmon", 
+							"priority": 0, 
+							"max_amount": 1 
+						},
+						{ 
+							"item": "minecraft:tropical_fish", 
+							"priority": 0, 
+							"max_amount": 1 
+						},
+						{ 
+							"item": "minecraft:rotten_flesh", 
+							"priority": 0, 
+							"max_amount": 1 
+						},
+						{ 
+							"item": "rift:raw_fibrous_meat", 
+							"priority": 0, 
+							"max_amount": 1 
+						},
+						{ 
+							"item": "rift:cooked_fibrous_meat", 
+							"priority": 0, 
+							"max_amount": 1 
+						},
+						{ 
+							"item": "rift:raw_megapiranha", 
+							"priority": 0, 
+							"max_amount": 1 
+						},
+						{ 
+							"item": "rift:cooked_megapiranha", 
+							"priority": 0, 
+							"max_amount": 1 
+						}
+				  	]
+				},
+				"minecraft:behavior.pickup_items": {
+					"priority": 11,
+					"max_dist": 32,
+					"goal_radius": 2,
+					"speed_multiplier": 1,
+					"track_target": true
+				},
+				"minecraft:behavior.eat_carried_item": {
+					"priority": 12,
+					"delay_before_eating": 0
+				}
+            },
+            "rift:pteranodon_adult_calm": {
+                "minecraft:behavior.avoid_block": {
+                    "priority": 3,
+                    "tick_interval": 5,
+                    "search_range": 8,
+                    "search_height": 4,
+                    "walk_speed_modifier": 1.75,
+                    "sprint_speed_modifier": 1.75,
+                    "target_selection_method": "nearest",
+                    "target_blocks": [
+                        "minecraft:fire",
+                        "minecraft:soul_fire",
+                        "minecraft:item.campfire",
+                        "minecraft:item.soul_campfire",
+                        "minecraft:torch",
+                        "minecraft:soul_torch"
+                    ],
+                    "on_escape": [
+                        {
+                            "event": "rift:adult_become_scared",
+                            "target": "self"
+                        }
+                    ]
+                },
+                "minecraft:entity_sensor": {
+                    "minimum_count": 1,
+                    "relative_range": true,
+                    "sensor_range": 8,
+                    "event_filters": {
+                        "any_of": [
+                            {
+								"any_of": [
+									{
+										"test": "is_family",
+										"subject": "other",
+										"value": "wandering_trader"
+									},
+									{
+										"test": "is_family",
+										"subject": "other",
+										"value": "villager"
+									},
+									{
+                                        "all_of": [
+                                            {
+                                                "test": "is_family",
+                                                "subject": "other",
+                                                "value": "carnivore"
+                                            },
+                                            {
+                                                "test": "is_family",
+                                                "subject": "other",
+                                                "operator": "!=",
+                                                "value": "pteranodon"
+                                            }
+                                        ]
+                                    }
+								]
+                            },
+                            {
+								"all_of": [
+									{
+										"test": "is_family",
+										"subject": "other",
+										"value": "player"
+									},
+									{
+										"test": "has_equipment",
+										"subject": "other",
+										"domain": "hand",
+										"operator": "!=",
+										"value": "rift:flesh_treat"
+									},
+									{
+										"test": "is_riding",
+										"subject": "other",
+										"value": false
+									},
+									{
+										"test": "is_sneaking",
+										"subject": "other",
+										"value": false
+									}
+								]
+                            },
+                            {
+								"all_of": [
+									{
+										"test": "is_family",
+										"subject": "other",
+										"value": "player"
+									},
+									{
+										"test": "has_equipment",
+										"subject": "other",
+										"domain": "hand",
+										"value": "rift:flesh_treat"
+									},
+									{
+										"test": "is_sneaking",
+										"subject": "other",
+										"value": false
+									}
+								]
+							}
+                        ]
+                    },
+                    "event": "rift:adult_become_scared"
                 }
 			},
             "rift:pteranodon_adult_scared": {
@@ -273,33 +586,21 @@
             "rift:pteranodon_adult_tamed": {},
             "rift:pteranodon_on_air": {
                 "minecraft:can_fly": {},
-                "minecraft:movement.hover": {},
-                "minecraft:navigation.hover": {
-                    "avoid_damage_blocks": true,
-                    "avoid_sun": false,
-                    "avoid_water": true,
-                    "can_pass_doors": false,
-                    "can_path_from_air": true,
-                    "can_path_over_water": true,
-                    "can_sink": false
+                "minecraft:movement.fly": {},
+                "minecraft:navigation.float": {
+                    "can_path_over_water": true
                 },
-                "minecraft:behavior.random_hover": {
-                    "priority": 16,
-                    "hover_height": [
-                        4,
-                        16
-                    ],
-                    "interval": 1,
-                    "xz_dist": 12,
-                    "y_dist": 8,
-                    "y_offset": -1
+                "minecraft:behavior.float_wander": {
+                    "must_reach": true,
+                    "priority": 16
                 }
             },
             "rift:pteranodon_on_land": {
                 "minecraft:movement.basic": {},
                 "minecraft:navigation.walk": {
                     "can_path_over_water": false,
-                    "avoid_water": true
+                    "avoid_water": true,
+                    "can_path_from_air": false
                 },
                 "minecraft:behavior.random_stroll": {
 					"priority": 16
@@ -307,22 +608,43 @@
             },
             "rift:pteranodon_on_air_not_landing": {
                 "minecraft:timer": {
-                    "time": 5,
+                    "time": 180,
                     "time_down_event": {
                         "event": "rift:start_landing_procedure",
                         "target": "self"
                     }
                 }
             },
+            "rift:pteranadon_on_air_landing": {
+                "minecraft:is_sheared": {}
+            },
             "rift:pteranodon_on_land_has_landed": {
                 "minecraft:timer": {
-                    "time": 15,
+                    "time": 90,
                     "time_down_event": {
                         "event": "rift:start_flying_procedure",
                         "target": "self"
                     }
                 }
             },
+			"rift:temptable": {
+                "minecraft:behavior.tempt": {
+                    "priority": 13,
+					"within_radius": 16,
+                    "items": [
+                        "minecraft:cod",
+                        "minecraft:cooked_cod",
+                        "minecraft:salmon",
+                        "minecraft:cooked_salmon",
+                        "minecraft:tropical_fish",
+                        "minecraft:rotten_flesh",
+						"rift:raw_megapiranha",
+						"rift:cooked_megapiranha",
+                        "rift:carrion_treat",
+                        "rift:fish_treat"
+                    ]
+                }
+			},
 			"rift:wild_standing": {
 				"minecraft:behavior.random_look_around": {
 					"priority": 17
@@ -534,6 +856,70 @@
                     }
                 ]
             },
+            "rift:spawn_as_baby": {
+                "randomize": [
+                    {
+                        "weight": 1,
+                        "add": {
+                            "component_groups": [
+                                "rift:pteranodon_baby",
+                                "rift:pteranodon_baby_wild",
+                                "rift:pteranodon_baby_calm",
+                                "rift:pteranodon_on_land",
+                                "rift:temptable",
+                                "rift:variant_one",
+                                "rift:wild_standing",
+                                "rift:pushable"
+                            ]
+                        }
+                    },
+                    {
+                        "weight": 1,
+                        "add": {
+                            "component_groups": [
+                                "rift:pteranodon_baby",
+                                "rift:pteranodon_baby_wild",
+                                "rift:pteranodon_baby_calm",
+                                "rift:pteranodon_on_land",
+                                "rift:temptable",
+                                "rift:variant_two",
+                                "rift:wild_standing",
+                                "rift:pushable"
+                            ]
+                        }
+                    },
+                    {
+                        "weight": 1,
+                        "add": {
+                            "component_groups": [
+                                "rift:pteranodon_baby",
+                                "rift:pteranodon_baby_wild",
+                                "rift:pteranodon_baby_calm",
+                                "rift:pteranodon_on_land",
+                                "rift:temptable",
+                                "rift:variant_three",
+                                "rift:wild_standing",
+                                "rift:pushable"
+                            ]
+                        }
+                    },
+                    {
+                        "weight": 1,
+                        "add": {
+                            "component_groups": [
+                                "rift:pteranodon_baby",
+                                "rift:pteranodon_baby_wild",
+                                "rift:pteranodon_baby_calm",
+                                "rift:pteranodon_on_land",
+                                "rift:temptable",
+                                "rift:variant_four",
+                                "rift:wild_standing",
+                                "rift:pushable"
+                            ]
+                        }
+                    }
+                ]
+            },
             "rift:adult_become_scared": {
                 "add": {
                     "component_groups": [
@@ -545,19 +931,16 @@
                     "component_groups": [
                         "rift:pteranodon_adult_calm",
                         "rift:pteranodon_on_land",
-                        "rift:pteranodon_on_land_has_landed"
-                    ]
-                },
-                "run_command": {
-                    "command": [
-                        "say o no am scared"
+                        "rift:pteranodon_on_land_has_landed",
+                        "rift:pteranadon_on_air_landing"
                     ]
                 }
             },
             "rift:adult_on_calm": {
                 "add": {
                     "component_groups": [
-                        "rift:pteranodon_adult_calm"
+                        "rift:pteranodon_adult_calm",
+                        "rift:pteranodon_on_air_not_landing"
                     ]
                 },
                 "remove": {
@@ -566,18 +949,106 @@
                     ]
                 }
             },
+            "rift:start_landing_procedure": {
+                "add": {
+                    "component_groups": [
+                        "rift:pteranadon_on_air_landing",
+                        "rift:pteranodon_on_land"
+                    ]
+                },
+                "remove": {
+                    "component_groups": [
+                        "rift:pteranodon_on_air_not_landing",
+                        "rift:pteranodon_on_air"
+                    ]
+                }
+            },
             "rift:on_landed": {
                 "add": {
                     "component_groups": [
-                        "rift:pteranodon_on_land",
                         "rift:pteranodon_on_land_has_landed"
                     ]
                 },
                 "remove": {
                     "component_groups": [
-                        "rift:pteranodon_on_air"
+                        "rift:pteranadon_on_air_landing"
                     ]
                 }
+            },
+            "rift:start_flying_again": {
+                "add": {
+                    "component_groups": [
+                        "rift:pteranodon_on_air_not_landing",
+                        "rift:pteranodon_on_air"
+                    ]
+                },
+                "remove": {
+                    "component_groups": [
+                        "rift:pteranadon_on_air_landing",
+                        "rift:pteranodon_on_land"
+                    ]
+                }
+            },
+            "rift:start_flying_procedure": {
+                "add": {
+                    "component_groups": [
+                        "rift:pteranodon_on_air",
+                        "rift:pteranodon_on_air_not_landing"
+                    ]
+                },
+                "remove": {
+                    "component_groups": [
+                        "rift:pteranodon_on_land",
+                        "rift:pteranodon_on_land_has_landed"
+                    ]
+                }
+            },
+            "rift:baby_become_scared": {
+                "add": {
+                    "component_groups": [
+                        "rift:pteranodon_baby_scared"
+                    ]
+                },
+                "remove": {
+                    "component_groups": [
+                        "rift:pteranodon_baby_calm"
+                    ]
+                }
+            },
+            "rift:baby_on_calm": {
+                "add": {
+                    "component_groups": [
+                        "rift:pteranodon_baby_calm"
+                    ]
+                },
+                "remove": {
+                    "component_groups": [
+                        "rift:pteranodon_baby_scared"
+                    ]
+                }
+            },
+            "rift:baby_grow_up": {
+                "sequence": [
+                    {
+                        "add": {
+                            "component_groups": [
+                                "rift:pteranodon_adult",
+                                "rift:pteranodon_adult_wild",
+                                "rift:pteranodon_adult_calm",
+                                "rift:pteranodon_on_land_has_landed"
+                            ]
+                        },
+                        "remove": {
+                            "component_groups": [
+                                "rift:pteranodon_baby",
+                                "rift:pteranodon_baby_wild",
+                                "rift:pteranodon_baby_calm",
+                                "rift:pteranodon_baby_scared",
+                                "rift:temptable"
+                            ]
+                        }
+                    }
+                ]
             }
         }
     }
