@@ -60,7 +60,8 @@
 			},
 			"animations": {
                 "contLandingManage": "controller.animation.ptera_on_landing",
-				"contMovingTag": "controller.animation.add_moving_tag",
+                "contFasterWhenMountedFlying": "controller.animation.ptera_faster_when_mounted_flying",
+                "contMovingTag": "controller.animation.add_moving_tag",
 				"contTameTag": "controller.animation.add_tame_tag",
 				"contBabyTag": "controller.animation.add_baby_tag",
 				"contRiddenTag": "controller.animation.add_ridden_tag",
@@ -76,8 +77,9 @@
 				"contDieWithoutTenontosaurus": "controller.animation.general_die_without_tenontosaurus",
                 "contDieWithoutTamedTenontosaurus": "controller.animation.general_death_timer_tamed_tenontosaurus",
 				"contBleed": "controller.animation.general_manage_bleed",
+                "animFlyingWhileMounted": "animation.pteranodon_flying_while_mounted",
                 "animLanding": "animation.flying_mob_landing",
-				"animUseEnergyWhileMoving": "animation.pteranodon_decrease_energy_while_moving",
+                "animUseEnergyWhileMoving": "animation.pteranodon_decrease_energy_while_moving",
 				"animEnergyRegenDelay": "animation.regenerate_energy_delay",
 				"animRegenerateEnergy": "animation.pteranodon_regenerate_energy",
 				"animLowOnEnergyEffects": "animation.effects_while_low_on_energy",
@@ -92,6 +94,7 @@
 			"scripts": {
 				"animate": [
                     "contLandingManage",
+                    "contFasterWhenMountedFlying",
                     "contMovingTag",
 					"contTameTag",
 					"contBabyTag",
@@ -843,7 +846,7 @@
 						{
 							"position": [
 								0,
-								0.3,
+								0.4,
 								-0.2
 							]
 						}
@@ -894,19 +897,14 @@
                     "can_sink": false
                 }
             },
-            "rift:pteranodon_on_air_tamed": {
-                "minecraft:can_fly": {},
-                "minecraft:movement.hover": {},
-                "minecraft:navigation.hover": {
-                    "avoid_damage_blocks": true,
-                    "avoid_sun": false,
+            "rift:pteranodon_on_land_tamed": {
+                "minecraft:movement.basic": {},
+                "minecraft:navigation.walk": {
+                    "can_path_over_water": false,
                     "avoid_water": true,
-                    "can_pass_doors": false,
-                    "can_path_from_air": true,
-                    "can_path_over_water": true,
-                    "can_sink": false
+                    "can_path_from_air": false
                 }
-            },
+			},
             "rift:pteranodon_on_air_not_landing": {
                 "minecraft:timer": {
                     "time": 180,
@@ -1095,7 +1093,6 @@
 				},
 				"minecraft:behavior.follow_owner": {
 					"priority": 10,
-                    "speed_multiplier": 0.35,
 					"start_distance": 8,
 					"stop_distance": 40
 				}
@@ -1116,18 +1113,9 @@
 				"minecraft:behavior.breed": {
 					"priority": 1
 				},
-                "minecraft:behavior.random_hover": {
-                    "hover_height": [
-                        1,
-                        4
-                    ],
-                    "interval": 1,
-                    "priority": 16,
-                    "xz_dist": 8,
-                    "y_dist": 8,
-                    "y_offset": -1,
-                    "speed_multiplier": 0.35
-                }
+                "minecraft:behavior.random_stroll": {
+					"priority": 16
+				}
 			},
 			"rift:tamed_can_move": {
 				"minecraft:movement": {
@@ -1259,6 +1247,16 @@
 					"is_pushable_by_piston": false
 				}
 			},
+            "rift:has_gravity": {
+                "minecraft:physics": {
+                    "has_gravity": true
+                }
+            },
+            "rift:has_no_gravity": {
+                "minecraft:physics": {
+                    "has_gravity": false
+                }
+            },
 			"rift:transform_into_hypnotized": {
 				"minecraft:transformation": {
 					"into": "rift:pteranodon<rift:transform_into_hypnotized>"
@@ -1283,10 +1281,6 @@
 			},
             "minecraft:jump.static": {},
 			"minecraft:is_hidden_when_invisible": {},
-			"minecraft:physics": {
-				"has_collision": true,
-				"has_gravity": true
-			},
 			"minecraft:nameable": {},
 			"minecraft:breathable": {
 				"total_supply": 15,
@@ -3512,6 +3506,46 @@
 					}
 				]
             },
+            "minecraft:scheduler": {
+				"scheduled_events": [
+					{
+						"filters": {
+							"all_of": [
+								{
+									"test": "rider_count",
+									"subject": "self",
+									"operator": ">",
+									"value": 0
+								},
+								{
+									"test": "has_component",
+									"subject": "self",
+									"value": "minecraft:is_tamed"
+								}
+							]
+						},
+						"event": "rift:cannot_sit"
+					},
+					{
+						"filters": {
+							"all_of": [
+								{
+									"test": "rider_count",
+									"subject": "self",
+									"operator": "==",
+									"value": 0
+								},
+								{
+									"test": "has_component",
+									"subject": "self",
+									"value": "minecraft:is_tamed"
+								}
+							]
+						},
+						"event": "rift:can_sit"
+					}
+                ]
+            },
 			"minecraft:damage_sensor": {
                 "triggers": [
 					{
@@ -3585,7 +3619,8 @@
                                         "rift:pteranodon_adult_wild_not_trusting",
                                         "rift:variant_one",
                                         "rift:wild_standing",
-                                        "rift:pushable"
+                                        "rift:pushable",
+                                        "rift:has_gravity"
                                     ]
                                 }
                             },
@@ -3601,7 +3636,8 @@
                                         "rift:pteranodon_adult_wild_not_trusting",
                                         "rift:variant_two",
                                         "rift:wild_standing",
-                                        "rift:pushable"
+                                        "rift:pushable",
+                                        "rift:has_gravity"
                                     ]
                                 }
                             },
@@ -3617,7 +3653,8 @@
                                         "rift:pteranodon_adult_wild_not_trusting",
                                         "rift:variant_three",
                                         "rift:wild_standing",
-                                        "rift:pushable"
+                                        "rift:pushable",
+                                        "rift:has_gravity"
                                     ]
                                 }
                             },
@@ -3633,7 +3670,8 @@
                                         "rift:pteranodon_adult_wild_not_trusting",
                                         "rift:variant_four",
                                         "rift:wild_standing",
-                                        "rift:pushable"
+                                        "rift:pushable",
+                                        "rift:has_gravity"
                                     ]
                                 }
                             }
@@ -3654,7 +3692,8 @@
                                         "rift:pteranodon_adult_wild_not_trusting",
                                         "rift:variant_one",
                                         "rift:wild_standing",
-                                        "rift:pushable"
+                                        "rift:pushable",
+                                        "rift:has_gravity"
                                     ]
                                 }
                             },
@@ -3670,7 +3709,8 @@
                                         "rift:pteranodon_adult_wild_not_trusting",
                                         "rift:variant_two",
                                         "rift:wild_standing",
-                                        "rift:pushable"
+                                        "rift:pushable",
+                                        "rift:has_gravity"
                                     ]
                                 }
                             },
@@ -3686,7 +3726,8 @@
                                         "rift:pteranodon_adult_wild_not_trusting",
                                         "rift:variant_three",
                                         "rift:wild_standing",
-                                        "rift:pushable"
+                                        "rift:pushable",
+                                        "rift:has_gravity"
                                     ]
                                 }
                             },
@@ -3702,7 +3743,8 @@
                                         "rift:pteranodon_adult_wild_not_trusting",
                                         "rift:variant_four",
                                         "rift:wild_standing",
-                                        "rift:pushable"
+                                        "rift:pushable",
+                                        "rift:has_gravity"
                                     ]
                                 }
                             }
@@ -3722,6 +3764,7 @@
                                 "rift:variant_one",
                                 "rift:wild_standing_hypnotized_by_tenontosaurus",
                                 "rift:pushable",
+                                "rift:has_gravity",
 								"rift:follow_tenontosaurus",
 								"rift:follow_tenontosaurus_no_target"
                             ]
@@ -3740,6 +3783,7 @@
                                 "rift:variant_two",
                                 "rift:wild_standing_hypnotized_by_tenontosaurus",
                                 "rift:pushable",
+                                "rift:has_gravity",
 								"rift:follow_tenontosaurus",
 								"rift:follow_tenontosaurus_no_target"
                             ]
@@ -3758,6 +3802,7 @@
                                 "rift:variant_three",
                                 "rift:wild_standing_hypnotized_by_tenontosaurus",
                                 "rift:pushable",
+                                "rift:has_gravity",
 								"rift:follow_tenontosaurus",
 								"rift:follow_tenontosaurus_no_target"
                             ]
@@ -3776,6 +3821,7 @@
                                 "rift:variant_four",
                                 "rift:wild_standing_hypnotized_by_tenontosaurus",
                                 "rift:pushable",
+                                "rift:has_gravity",
 								"rift:follow_tenontosaurus",
 								"rift:follow_tenontosaurus_no_target"
                             ]
@@ -3880,6 +3926,7 @@
                                 "rift:variant_one",
                                 "rift:wild_standing_hypnotized_by_tenontosaurus",
                                 "rift:pushable",
+                                "rift:has_gravity",
 								"rift:follow_tenontosaurus",
 								"rift:follow_tenontosaurus_no_target"
                             ]
@@ -3902,6 +3949,7 @@
                                 "rift:variant_two",
                                 "rift:wild_standing_hypnotized_by_tenontosaurus",
                                 "rift:pushable",
+                                "rift:has_gravity",
 								"rift:follow_tenontosaurus",
 								"rift:follow_tenontosaurus_no_target"
                             ]
@@ -3924,6 +3972,7 @@
                                 "rift:variant_three",
                                 "rift:wild_standing_hypnotized_by_tenontosaurus",
                                 "rift:pushable",
+                                "rift:has_gravity",
 								"rift:follow_tenontosaurus",
 								"rift:follow_tenontosaurus_no_target"
                             ]
@@ -3946,6 +3995,7 @@
                                 "rift:variant_four",
                                 "rift:wild_standing_hypnotized_by_tenontosaurus",
                                 "rift:pushable",
+                                "rift:has_gravity",
 								"rift:follow_tenontosaurus",
 								"rift:follow_tenontosaurus_no_target"
                             ]
@@ -3980,6 +4030,7 @@
                                 "rift:variant_one",
                                 "rift:wild_standing_hypnotized_by_tenontosaurus",
                                 "rift:pushable",
+                                "rift:has_gravity",
 								"rift:follow_tamed_tenontosaurus",
 								"rift:follow_tamed_tenontosaurus_no_target"
                             ]
@@ -4002,6 +4053,7 @@
                                 "rift:variant_two",
                                 "rift:wild_standing_hypnotized_by_tenontosaurus",
                                 "rift:pushable",
+                                "rift:has_gravity",
 								"rift:follow_tamed_tenontosaurus",
 								"rift:follow_tamed_tenontosaurus_no_target"
                             ]
@@ -4024,6 +4076,7 @@
                                 "rift:variant_three",
                                 "rift:wild_standing_hypnotized_by_tenontosaurus",
                                 "rift:pushable",
+                                "rift:has_gravity",
 								"rift:follow_tamed_tenontosaurus",
 								"rift:follow_tamed_tenontosaurus_no_target"
                             ]
@@ -4046,6 +4099,7 @@
                                 "rift:variant_four",
                                 "rift:wild_standing_hypnotized_by_tenontosaurus",
                                 "rift:pushable",
+                                "rift:has_gravity",
 								"rift:follow_tamed_tenontosaurus",
 								"rift:follow_tamed_tenontosaurus_no_target"
                             ]
@@ -4069,7 +4123,8 @@
                                 "rift:temptable",
                                 "rift:variant_one",
                                 "rift:wild_standing",
-                                "rift:pushable"
+                                "rift:pushable",
+                                "rift:has_gravity"
                             ]
                         }
                     },
@@ -4084,7 +4139,8 @@
                                 "rift:temptable",
                                 "rift:variant_two",
                                 "rift:wild_standing",
-                                "rift:pushable"
+                                "rift:pushable",
+                                "rift:has_gravity"
                             ]
                         }
                     },
@@ -4099,7 +4155,8 @@
                                 "rift:temptable",
                                 "rift:variant_three",
                                 "rift:wild_standing",
-                                "rift:pushable"
+                                "rift:pushable",
+                                "rift:has_gravity"
                             ]
                         }
                     },
@@ -4114,7 +4171,8 @@
                                 "rift:temptable",
                                 "rift:variant_four",
                                 "rift:wild_standing",
-                                "rift:pushable"
+                                "rift:pushable",
+                                "rift:has_gravity"
                             ]
                         }
                     }
@@ -4278,7 +4336,8 @@
                     "component_groups": [
                         "rift:pteranodon_baby_tamed",
                         "rift:pteranodon_tamed",
-                        "rift:tamed_can_move"
+                        "rift:tamed_can_move",
+                        "rift:pteranodon_on_land_tamed"
                     ]
                 },
                 "remove": {
@@ -4286,7 +4345,8 @@
 						"rift:pteranodon_baby_wild",
 						"rift:pteranodon_baby_calm",
 						"rift:pteranodon_baby_scared",
-						"rift:wild_standing"
+						"rift:wild_standing",
+                        "rift:pteranodon_on_land"
                     ]
                 },
 				"set_property": {
@@ -4315,7 +4375,7 @@
 				},
 				"run_command": {
 					"command": [
-						"tellraw @p {\"rawtext\":[{\"text\":\"You made a wild pteranodon trust you! Keep feeding it every once in a while to eventually tame it!\"}]}"
+						"tellraw @p {\"rawtext\":[{\"text\":\"You made a wild Pteranodon trust you! Keep feeding it every once in a while to eventually tame it!\"}]}"
 					]
 				},
 				"set_property": {
@@ -4403,7 +4463,7 @@
 						"rift:tamed_standing",
 						"rift:rideable",
 						"rift:tamed_can_move",
-                        "rift:pteranodon_on_air_tamed"
+                        "rift:pteranodon_on_land_tamed"
 					]
 				},
 				"remove": {
@@ -4440,6 +4500,67 @@
 						"rift:pteranodon_saddled"
 					]
 				}
+            },
+			"rift:cannot_sit": {
+				"add": {
+					"component_groups": [
+						"rift:unpushable"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:pushable",
+						"rift:aggravating_horn_attack"
+					]
+				},
+				"run_command": {
+					"command": [
+						"tag @s add flyingMountHasRider"
+					]
+				}
+			},
+			"rift:can_sit": {
+				"add": {
+					"component_groups": [
+						"rift:pushable",
+                        "rift:has_gravity"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:unpushable",
+                        "rift:has_no_gravity"
+					]
+				},
+				"run_command": {
+					"command": [
+						"tag @s remove flyingMountHasRider"
+					]
+				}
+			},
+            "rift:hover_to_fly": {
+                "add": {
+                    "component_groups": [
+                        "rift:has_gravity"
+                    ]
+                },
+                "remove": {
+                    "component_groups": [
+                        "rift:has_no_gravity"
+                    ]
+                }
+            },
+            "rift:fly_to_hover": {
+                "add": {
+                    "component_groups": [
+                        "rift:has_no_gravity"
+                    ]
+                },
+                "remove": {
+                    "component_groups": [
+                        "rift:has_gravity"
+                    ]
+                }
             },
 			"rift:commit_suicide": {
 				"run_command": {
@@ -4485,26 +4606,26 @@
 				]
 			},
 			"rift:on_sitting": {
-				"add": {
-					"component_groups": [
-						"rift:sitting"
-					]
-				},
-				"remove": {
-					"component_groups": [
-						"rift:wild_standing",
-						"rift:tamed_standing",
-						"rift:sitting_angered",
-						"rift:wandering",
-						"rift:temptable"
-					]
-				},
-				"run_command": {
-					"command": [
-						"tag @s add sitting"
-					]
-				}
-			},
+                "add": {
+                    "component_groups": [
+                        "rift:sitting"
+                    ]
+                },
+                "remove": {
+                    "component_groups": [
+                        "rift:wild_standing",
+                        "rift:tamed_standing",
+                        "rift:sitting_angered",
+                        "rift:wandering",
+                        "rift:temptable"
+                    ]
+                },
+                "run_command": {
+                    "command": [
+                        "tag @s add sitting"
+                    ]
+                }
+            },
 			"rift:on_wandering": {
 				"sequence": [
 					{

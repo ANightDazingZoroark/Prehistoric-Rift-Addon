@@ -161,6 +161,91 @@
                 }
             }
         },
+        "controller.animation.flying_mount_toggle_hover_mode": {
+            "initial_state": "default",
+            "states": {
+                "default": {
+                    "transitions": [
+                        {
+                            "descending": "query.is_riding && (query.is_riding ? (query.get_ride -> query.owner_identifier) == 'rift:pteranodon') && (query.is_riding ? (query.get_ride -> query.is_saddled))"
+                        }
+                    ],
+                    "on_exit": [
+                        "/event entity @e[tag=flyingMountHasRider, c=1, tag=tamed] rift:hover_to_fly"
+                    ]
+                },
+                "descending": {
+                    "animations": [
+						"animFlyingMountDescend"
+					],
+                    "transitions": [
+                        {
+                            "default": "!query.is_riding || (query.is_riding ? (query.get_ride -> query.is_saddled) == 0)"
+                        },
+                        {
+                            "ascending": "query.is_jumping"
+                        }
+                    ],
+                    "on_entry": [
+                        "/effect @e[c=1, tag=flyingMountHasRider, tag=tamed] levitation 0 0"
+                    ]
+                },
+                "jumpCooldown": {
+                    "animations": [
+						"animFlyingMountDescend"
+					],
+					"transitions": [
+                        {
+							"hovering": "return query.is_jumping && query.life_time - variable.jump_cooldown < 0.5;"
+						},
+						{
+							"descending": "return !query.is_jumping && query.life_time - variable.jump_cooldown > 0.5;"
+						}
+					],
+                    "on_entry": [
+                        "/effect @e[c=1, tag=flyingMountHasRider, tag=tamed] levitation 0 0"
+                    ]
+                },
+                "ascending": {
+                    "animations": [
+						"animFlyingMountAscend"
+					],
+                    "transitions": [
+                        {
+                            "default": "!query.is_riding || (query.is_riding ? (query.get_ride -> query.is_saddled) == 0)"
+                        },
+                        {
+                            "jumpCooldown": "variable.jump_cooldown = query.life_time; return (!query.is_jumping);"
+                        }
+                    ],
+                    "on_entry": [
+                        "/effect @e[c=1, tag=flyingMountHasRider, tag=tamed] slow_falling 0 0"
+                    ]
+                },
+                "hovering": {
+                    "on_entry": [
+                        "/event entity @e[tag=flyingMountHasRider, c=1, tag=tamed] rift:fly_to_hover",
+                        "/tellraw @p {\"rawtext\":[{\"text\":\"Enabled hover mode\"}]}",
+                        "/event entity @e[tag=flyingMountHasRider, c=1, tag=tamed] rift:fly_to_hover",
+                        "/execute as @e[tag=flyingMountHasRider, c=1, tag=tamed] positioned as @e[tag=flyingMountHasRider, c=1, tag=tamed] run tp @s ~ ~ ~",
+                        "/effect @e[tag=flyingMountHasRider, c=1, tag=tamed] levitation 0 0",
+                        "/effect @e[tag=flyingMountHasRider, c=1, tag=tamed] slow_falling 0 0"
+                    ],
+                    "on_exit": [
+                        "/tellraw @p {\"rawtext\":[{\"text\":\"Disabled hover mode\"}]}",
+                        "/event entity @e[tag=flyingMountHasRider, c=1, tag=tamed] rift:hover_to_fly"
+                    ],
+                    "transitions": [
+                        {
+                            "ascending": "return query.life_time - variable.jump_cooldown > 1 && (query.is_jumping == 1.0);"
+                        },
+                        {
+                            "default": "!query.is_riding"
+                        }
+                    ]
+                }
+            }
+        },
         "controller.animation.pass_invisibility_to_player": {
             "initial_state": "default",
             "states": {
