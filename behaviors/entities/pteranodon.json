@@ -698,9 +698,11 @@
                     "value": 10,
                     "max": 12
                 },
-				"minecraft:behavior.melee_attack": {
+				"minecraft:behavior.delayed_attack": {
 					"priority": 9,
-					"reach_multiplier": 1.5
+					"reach_multiplier": 1.5,
+					"attack_duration": 0.52,
+					"hit_delay_pct": 0.46
 				},
                 "minecraft:breedable": {
                     "breeds_with": {
@@ -839,8 +841,37 @@
 			},
 			"rift:rideable": {
 				"minecraft:rideable": {
+					"seat_count": 2,
 					"family_types": [
-						"player"
+						"player",
+                        "human",
+						"pig",
+						"sheep",
+						"fox",
+						"wolf",
+						"cat",
+						"fox",
+						"turtle",
+						"llama",
+						"donkey",
+						"bee",
+						"ocelot",
+						"strider",
+						"turtle",
+						"snowgolem",
+						"zombie",
+						"husk",
+						"drowned",
+						"skeleton",
+						"stray",
+						"creeper",
+						"spider",
+						"cavespider",
+						"piglin",
+						"zombie_pigman",
+						"hoglin",
+                        "dodo",
+                        "coelophysis"
 					],
 					"seats": [
 						{
@@ -849,7 +880,14 @@
 								0.4,
 								-0.2
 							]
-						}
+						},
+                        {
+                            "position": [
+                                0, 
+                                -0.5, 
+                                -0.5
+                            ]
+                        }
 					],
 					"interact_text": "action.interact.mount"
 				}
@@ -1078,9 +1116,11 @@
 				}
 			},
 			"rift:attacking_for_tenontosaurus": {
-				"minecraft:behavior.melee_attack": {
+				"minecraft:behavior.delayed_attack": {
 					"priority": 9,
-					"reach_multiplier": 1.5
+					"reach_multiplier": 1.5,
+					"attack_duration": 0.52,
+					"hit_delay_pct": 0.46
 				},
 				"minecraft:on_target_escape": {
 					"event": "rift:stop_attacking_for_tenontosaurus",
@@ -4569,6 +4609,47 @@
 					]
 				}
 			},
+			"rift:start_forced_attack": {
+				"set_property": {
+					"rift:is_forced_attacking": true
+				}
+			},
+			"rift:stop_forced_attack": {
+				"set_property": {
+					"rift:is_forced_attacking": false
+				}
+			},
+            "rift:manage_carrying": {
+                "sequence": [
+                    {},
+                    {
+                        "filters": {
+                            "test": "rider_count",
+                            "subject": "self",
+                            "operator": "==",
+                            "value": 1
+                        },
+                        "run_command": {
+                            "command": [
+                                "ride @e[type=!player, r=4] start_riding @s"
+                            ]
+                        }
+                    },
+                    {
+                        "filters": {
+                            "test": "rider_count",
+                            "subject": "self",
+                            "operator": ">",
+                            "value": 1
+                        },
+                        "run_command": {
+                            "command": [
+                                "ride @e[type=!player, r=4] stop_riding"
+                            ]
+                        }
+                    }
+                ]
+            },
 			"rift:on_standing": {
 				"sequence": [
 					{

@@ -3690,6 +3690,151 @@
 					]
 				}
             }
+        },
+        "controller.animation.pteranodon_command_staff": {
+            "initial_state": "default",
+            "states": {
+                "default": {
+					"transitions": [
+						{
+							"attackMode": "query.is_riding && (query.get_ride -> query.owner_identifier) == 'rift:pteranodon'"
+						}
+					],
+					"on_exit": [
+						"/tellraw @s {\"rawtext\":[{\"text\":\"Ability set to Attack Mode\"}]}"
+					]
+                },
+                "attackMode": {
+					"transitions": [
+						{
+							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:pteranodon'"
+						},
+						{
+							"attackModeLimbo": "query.is_using_item && (query.get_ride -> query.property('rift:energy')) >= 10 && (query.get_ride -> query.is_saddled) && query.get_equipped_item_name('main_hand') == 'command_staff'"
+						},
+						{
+							"attackModeFail": "query.is_using_item && (query.get_ride -> query.property('rift:energy')) < 10 && (query.get_ride -> query.is_saddled) && query.get_equipped_item_name('main_hand') == 'command_staff'"
+						}
+					]
+                },
+                "attackModeFail": {
+					"transitions": [
+						{
+							"attackMode": "!query.is_using_item"
+						},
+						{
+							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:pteranodon'"
+						}
+					],
+					"on_entry": [
+						"/tellraw @s {\"rawtext\":[{\"text\":\"You don't have enough energy to perform this action!\"}]}"
+					]
+				},
+                "attackModeLimbo": {
+					"animations": [
+						"animAbilitySwitchCooldown"
+					],
+					"transitions": [
+						{
+							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:pteranodon' || query.get_equipped_item_name('main_hand') != 'command_staff'"
+						},
+						{
+							"useAttackMode": "!query.is_using_item"
+						},
+						{
+							"attackToCarry": "query.all_animations_finished"
+						}
+					]
+				},
+                "useAttackMode": {
+					"transitions": [
+						{
+							"attackMode": "(1.0)"
+						}
+					],
+					"on_entry": [
+						"/event entity @e[type=rift:pteranodon, c=1, tag=tamed, tag=!baby] rift:start_forced_attack"
+					]
+				},
+                "attackToCarry": {
+					"transitions": [
+						{
+							"default": "(query.get_equipped_item_name('main_hand') != 'command_staff') || !query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:pteranodon'"
+						},
+						{
+							"carryMode": "!query.is_using_item"
+						}
+					],
+					"on_exit": [
+						"/tellraw @s {\"rawtext\":[{\"text\":\"Ability set to Carry Mode\"}]}"
+					]
+				},
+                "carryMode": {
+					"transitions": [
+						{
+							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:pteranodon'"
+						},
+						{
+							"carryModeLimbo": "query.is_using_item && (query.get_ride -> query.property('rift:energy')) >= 5 && (query.get_ride -> query.is_saddled) && query.get_equipped_item_name('main_hand') == 'command_staff'"
+						},
+						{
+							"carryModeFail": "query.is_using_item && (query.get_ride -> query.property('rift:energy')) < 5 && (query.get_ride -> query.is_saddled) && query.get_equipped_item_name('main_hand') == 'command_staff'"
+						}
+					]
+				},
+                "carryModeFail": {
+					"transitions": [
+						{
+							"carryMode": "!query.is_using_item"
+						},
+						{
+							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:pteranodon'"
+						}
+					],
+					"on_entry": [
+						"/tellraw @s {\"rawtext\":[{\"text\":\"You don't have enough energy to perform this action!\"}]}"
+					]
+				},
+                "carryModeLimbo": {
+					"animations": [
+						"animAbilitySwitchCooldown"
+					],
+					"transitions": [
+						{
+							"default": "!query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:pteranodon' || query.get_equipped_item_name('main_hand') != 'command_staff'"
+						},
+						{
+							"useCarryMode": "!query.is_using_item"
+						},
+						{
+							"carryToAttack": "query.all_animations_finished"
+						}
+					]
+				},
+                "useCarryMode": {
+					"transitions": [
+						{
+							"carryMode": "(1.0)"
+						}
+					],
+					"on_entry": [
+						"/event entity @e[type=rift:pteranodon, c=1, tag=tamed, tag=!baby] rift:manage_carrying"
+					]
+				},
+                "carryToAttack": {
+					"transitions": [
+						{
+							"default": "(query.get_equipped_item_name('main_hand') != 'command_staff') || !query.is_riding || (query.get_ride -> query.owner_identifier) != 'rift:pteranodon'"
+						},
+						{
+							"attackMode": "!query.is_using_item"
+						}
+					],
+					"on_exit": [
+						"/tellraw @s {\"rawtext\":[{\"text\":\"Ability set to Attack Mode\"}]}"
+					]
+				}
+            }
         }
 	}
 }

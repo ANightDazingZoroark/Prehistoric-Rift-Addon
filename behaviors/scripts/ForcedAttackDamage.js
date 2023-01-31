@@ -115,6 +115,9 @@ system.run(function everyTick(tick) {
                     entities[i].runCommandAsync(`damage @e[tag=!tamed, family=!inanimate, type=!player, type=!item, tag=!hypnotizedTamed, r=6] `+damageOutput(entities[i], 10)+` entity_attack entity @s`)
                 }
                 break
+            case 'rift:pteranodon':
+                entities[i].runCommandAsync(`damage @e[tag=!tamed, family=!inanimate, type=!player, type=!item, tag=!hypnotizedTamed, r=4] `+damageOutput(entities[i], 4)+` entity_attack entity @s`)
+                break
         }
         entities[i].removeTag('forcedAttack')
         entities[i].removeTag('werewolfBite')
