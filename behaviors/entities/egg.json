@@ -26,7 +26,8 @@
                 "animBoostDilophosaurusHatch": "animation.boosted_dilophosaurus_hatch_time",
                 "animBoostGallimimusHatch": "animation.boosted_gallimimus_hatch_time",
                 "animBoostTenontosaurusHatch": "animation.boosted_tenontosaurus_hatch_time",
-                "animBoostCoelophysisHatch": "animation.boosted_coelophysis_hatch_time"
+                "animBoostCoelophysisHatch": "animation.boosted_coelophysis_hatch_time",
+                "animBoostPteranodonHatch": "animation.boosted_pteranodon_hatch_time"
             },
             "scripts": {
                 "animate": [
@@ -3751,6 +3752,186 @@
                     "keep_owner": true
                 }
             },
+            //ptera egg
+            "rift:pteranodon_egg": {
+                "minecraft:variant": {
+                    "value": 16
+                },
+                "minecraft:interact": {
+                    "interactions": [
+                        {
+                            "on_interact": {
+                                "filters": {
+                                    "all_of": [
+                                        {
+                                            "test": "is_sneaking",
+                                            "subject": "other",
+                                            "value": true
+                                        },
+                                        {
+                                            "test": "is_owner",
+                                            "subject": "other",
+                                            "value": true
+                                        }
+                                    ]
+                                },
+                                "event": "rift:ptera_egg_commit_disappear",
+                                "target": "self"
+                            },
+                            "spawn_items": {
+                                "table": "loot_tables/eggs/pteranodon egg.loot.json"
+                            }
+                        }
+                    ]
+                },
+                "minecraft:scale": {
+                    "value": 0.5
+                }
+            },
+            "rift:pteranodon_egg_not_hatching": {
+                "minecraft:environment_sensor": {
+                    "triggers": [
+                        {
+                            "filters": {
+                                "any_of": [
+                                    {
+                                        "all_of": [
+                                            {
+                                                "test": "in_water_or_rain",
+                                                "value": false
+                                            },
+                                            {
+                                                "any_of": [
+                                                    {
+                                                        "test": "has_biome_tag",
+                                                        "value": "desert"
+                                                    },
+                                                    {
+                                                        "test": "has_biome_tag",
+                                                        "value": "mesa"
+                                                    },
+                                                    {
+                                                        "test": "in_nether",
+                                                        "value": true
+                                                    },
+                                                    {
+                                                        "test": "has_biome_tag",
+                                                        "value": "jungle"
+                                                    },
+                                                    {
+                                                        "test": "has_biome_tag",
+                                                        "value": "swamp"
+                                                    },
+                                                    {
+                                                        "test": "has_biome_tag",
+                                                        "value": "savanna"
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "all_of": [
+                                            {
+                                                "test": "is_altitude",
+                                                "operator": "<=",
+                                                "value": 32
+                                            },
+                                            {
+                                                "test": "is_underground",
+                                                "value": true
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            "event": "rift:pteranodon_egg_start_hatching",
+                            "target": "self"
+                        }
+                    ]
+                }
+            },
+            "rift:pteranodon_egg_hatching": {
+                "minecraft:is_sheared": {},
+                "minecraft:environment_sensor": {
+                    "triggers": [
+                        {
+                            "filters": {
+                                "any_of": [
+                                    {
+                                        "all_of": [
+                                            {
+                                                "test": "has_biome_tag",
+                                                "operator": "!=",
+                                                "value": "desert"
+                                            },
+                                            {
+                                                "test": "has_biome_tag",
+                                                "operator": "!=",
+                                                "value": "mesa"
+                                            },
+                                            {
+                                                "test": "in_nether",
+                                                "value": false
+                                            },
+                                            {
+                                                "test": "in_water_or_rain",
+                                                "value": true
+                                            },
+                                            {
+                                                "test": "has_biome_tag",
+                                                "operator": "!=",
+                                                "value": "jungle"
+                                            },
+                                            {
+                                                "test": "has_biome_tag",
+                                                "operator": "!=",
+                                                "value": "swamp"
+                                            },
+                                            {
+                                                "test": "has_biome_tag",
+                                                "operator": "!=",
+                                                "value": "savanna"
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "any_of": [
+                                            {
+                                                "test": "is_altitude",
+                                                "operator": ">",
+                                                "value": 32
+                                            },
+                                            {
+                                                "test": "is_underground",
+                                                "value": false
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            "event": "rift:pteranodon_egg_stop_hatching",
+                            "target": "self"
+                        }
+                    ]
+                },
+                "minecraft:timer": {
+                    "time": 450,
+                    "time_down_event": {
+                        "event": "rift:pteranodon_egg_hatched",
+                        "target": "self"
+                    }
+                }
+            },
+            "rift:pteranodon_egg_boosted_hatching": {
+                "minecraft:is_sheared": {}
+            },
+            "rift:pteranodon_egg_hatched": {
+                "minecraft:transformation": {
+                    "into": "rift:pteranodon<rift:hatched_from_egg>",
+                    "keep_owner": true
+                }
+            },
 
             "rift:commit_disappear": {
                 "minecraft:instant_despawn": {}
@@ -5103,6 +5284,78 @@
                 }
             },
             "rift:coelo_egg_commit_disappear": {
+                "add": {
+                    "component_groups": [
+                        "rift:commit_disappear"
+                    ]
+                }
+            },
+            //ptera egg
+            "rift:summon_pteranodon_egg": {
+                "add": {
+                    "component_groups": [
+                        "rift:pteranodon_egg",
+                        "rift:pteranodon_egg_not_hatching"
+                    ]
+                }
+            },
+            "rift:pteranodon_egg_start_hatching": {
+                "add": {
+                    "component_groups": [
+                        "rift:pteranodon_egg_hatching"
+                    ]
+                },
+                "remove": {
+                    "component_groups": [
+                        "rift:pteranodon_egg_not_hatching"
+                    ]
+                }
+            },
+            "rift:pteranodon_egg_start_boosted_hatching": {
+                "add": {
+                    "component_groups": [
+                        "rift:pteranodon_egg_boosted_hatching"
+                    ]
+                },
+                "remove": {
+                    "component_groups": [
+                        "rift:pteranodon_egg_hatching",
+                        "rift:pteranodon_egg_not_hatching"
+                    ]
+                }
+            },
+            "rift:pteranodon_egg_stop_hatching": {
+                "add": {
+                    "component_groups": [
+                        "rift:pteranodon_egg_not_hatching"
+                    ]
+                },
+                "remove": {
+                    "component_groups": [
+                        "rift:pteranodon_egg_hatching"
+                    ]
+                }
+            },
+            "rift:pteranodon_egg_stop_boosted_hatching": {
+                "add": {
+                    "component_groups": [
+                        "rift:pteranodon_egg_not_hatching"
+                    ]
+                },
+                "remove": {
+                    "component_groups": [
+                        "rift:pteranodon_egg_boosted_hatching"
+                    ]
+                }
+            },
+            "rift:pteranodon_egg_hatched": {
+                "add": {
+                    "component_groups": [
+                        "rift:pteranodon_egg_hatched"
+                    ]
+                }
+            },
+            "rift:ptera_egg_commit_disappear": {
                 "add": {
                     "component_groups": [
                         "rift:commit_disappear"
