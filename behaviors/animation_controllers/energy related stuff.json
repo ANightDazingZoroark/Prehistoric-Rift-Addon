@@ -933,6 +933,49 @@
                 }
             }
         },
+        "controller.animation.pteranodon_energy_movement_usage": {
+            "initial_state": "default",
+            "states": {
+                "default": {
+                    "animations": [
+                        {
+                            "animRegenerateEnergy": "query.is_tamed && query.is_on_ground"
+                        }
+                    ],
+                    "transitions": [
+                        {
+                            "move": "query.is_tamed && query.is_moving"
+                        },
+                        {
+                            "attacking": "query.is_tamed && query.is_delayed_attacking && query.property('rift:energy') >= 10"
+                        }
+                    ]
+                },
+                "move": {
+                    "animations": [
+                        "animUseEnergyWhileMoving"
+                    ],
+                    "transitions": [
+                        {
+                            "default": "!query.is_moving"
+                        },
+                        {
+                            "attacking": "query.is_tamed && query.is_delayed_attacking > 0 && query.property('rift:energy') >= 10"
+                        }
+                    ]
+                },
+                "attacking": {
+                    "on_exit": [
+                        "@s rift:decrease_energy_while_attacking"
+                    ],
+                    "transitions": [
+                        {
+                            "default": "!query.is_delayed_attacking"
+                        }
+                    ]
+                }
+            }
+        },
         "controller.animation.sarcosuchus_energy_movement_usage": {
             "initial_state": "default",
             "states": {

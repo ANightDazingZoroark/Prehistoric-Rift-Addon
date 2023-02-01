@@ -183,7 +183,10 @@
                             "default": "!query.is_riding || (query.is_riding ? (query.get_ride -> query.is_saddled) == 0)"
                         },
                         {
-                            "ascending": "query.is_jumping"
+                            "ascending": "query.is_jumping && (query.get_ride -> query.property('rift:energy')) > 0"
+                        },
+                        {
+                            "notEnoughEnergy": "query.is_jumping && (query.get_ride -> query.property('rift:energy')) == 0"
                         }
                     ],
                     "on_entry": [
@@ -196,11 +199,14 @@
 					],
 					"transitions": [
                         {
-							"hovering": "return query.is_jumping && query.life_time - variable.jump_cooldown < 0.5;"
+							"hovering": "return (query.get_ride -> query.property('rift:energy')) > 0 && query.is_jumping && query.life_time - variable.jump_cooldown < 0.5;"
 						},
 						{
 							"descending": "return !query.is_jumping && query.life_time - variable.jump_cooldown > 0.5;"
-						}
+						},
+                        {
+                            "notEnoughEnergy": "return (query.get_ride -> query.property('rift:energy')) == 0 && query.is_jumping && query.life_time - variable.jump_cooldown < 0.5;"
+                        }
 					],
                     "on_entry": [
                         "/effect @e[c=1, tag=flyingMountHasRider, tag=tamed] levitation 0 0"
@@ -216,6 +222,9 @@
                         },
                         {
                             "jumpCooldown": "variable.jump_cooldown = query.life_time; return (!query.is_jumping);"
+                        },
+                        {
+                            "notEnoughEnergy": "query.is_riding && (query.is_riding ? (query.get_ride -> query.property('rift:energy')) == 0)"
                         }
                     ],
                     "on_entry": [
@@ -241,7 +250,27 @@
                         },
                         {
                             "default": "!query.is_riding"
+                        },
+                        {
+                            "notEnoughEnergy": "(query.get_ride -> query.property('rift:energy')) == 0"
                         }
+                    ]
+                },
+                "notEnoughEnergy": {
+                    "animations": [
+						"animFlyingMountDescend"
+					],
+                    "transitions": [
+                        {
+                            "descending": "!query.is_jumping"
+                        },
+                        {
+                            "default": "!query.is_riding || (query.is_riding ? (query.get_ride -> query.is_saddled) == 0)"
+                        }
+                    ],
+                    "on_entry": [
+                        "/tellraw @p {\"rawtext\":[{\"text\":\"Not enough energy to fly!\"}]}",
+                        "/effect @e[tag=flyingMountHasRider, c=1, tag=tamed] levitation 0"
                     ]
                 }
             }
