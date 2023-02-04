@@ -12,7 +12,7 @@ export const guiAnimalsEntry = new ActionFormData()
 
 export const guiAnkylosaurusEntry = new ActionFormData()
 .title('Ankylosaurus')
-.body("TBA")
+.body("\n\n\n\n\n\n\n\n\n\n\nDiet: Herbivore\nBehavior: Neutral\nReaction to Fire: Fear\nTaming Tier: Tier 2\nFavorite Treats: Grassy Treat, Cactus Treat, Rooted Treat\n\nThe shell it carries around is probably its only true home. It gets to hide inside it from all kinds of danger, for free, without any need to run to some safe zone. Best part is that the spikes that surround it serve as a defensive mechanism that hurts anything that tries to get close to it.\n\nThe tail happens to have a tough club, which it can use as a weapon. It's tough enough to smash stone and bones. Perfect for mining up mountains for stone and other valuable ores.\n\nThe shell is way too durable. Melee weapons and attacks from other mobs don't do a lot to it, and projectiles can't penetrate it. The only thing that can even penetrate that tough shell is TNT or splash potions.")
 .button('Return to Index')
 
 export const guiAnomalocarisEntry = new ActionFormData()
@@ -37,12 +37,12 @@ export const guiCoelacanthEntry = new ActionFormData()
 
 export const guiCoelophysisEntry = new ActionFormData()
 .title('Coelophysis')
-.body("TBA")
+.body("\n\n\n\n\n\n\n\n\n\nDiet: Carnivore\nBehavior: Passive\nReaction to Fire: Fear\nTaming Tier: Tier 2\nFavorite Treats: Flesh Treat, Bug Treat\n\nOne of the first creatures I have ever tamed ever since the Rift was the Coelophysis. And honestly, I'm probably never looking back on it. Most people in plains biomes can obtain the materials required for a flesh treat within a day or two, and have a couple of these things as companions later on.\n\nI reckon these to be the go-to tame for those who end up in the Plains biomes before being able to ride anything. They're easy to tame and are very friendly to humans.\n\nSurprisingly enough they're immune to poison.")
 .button('Return to Index')
 
 export const guiDilophosaurusEntry = new ActionFormData()
 .title('Dilophosaurus')
-.body("TBA")
+.body("\n\n\n\n\n\n\n\n\n\n\n\nDiet: Carnivore\nBehavior: Hostile\nReaction to Fire: Fear\nTaming Tier: Tier 2\nFavorite Treats: Flesh Treat, Carrion Treat\n\nWhen they raise their frills, it means that they're ready to attack. And it's through spitting a sticky substance that poisons and blinds their targets. Or through their not so impressive bite attacks.\n\nThey prefer to hide in thick forests where they're less likely to be seen and where their prey has less space to maneuver around their spits.\n\nOccasionally they vomit out poisonous puddles on the floor. It's basically a mixture of their poisonous saliva, mixed up food, and gunpowder. Anything that steps on them gets exploded on and gets poisoned. It's very obviously their vomit, but it looks like they know that it makes for a great trapping material too.")
 .button('Return to Index')
 
 export const guiDimetrodonEntry = new ActionFormData()
@@ -52,7 +52,7 @@ export const guiDimetrodonEntry = new ActionFormData()
 
 export const guiDirebearEntry = new ActionFormData()
 .title('Direbear')
-.body("TBA")
+.body("\n\n\n\n\n\n\n\n\n\nDiet: Omnivore\nBehavior: Neutral\nReaction to Fire: Fear\nTaming Tier: Tier 2\nFavorite Treats: Fish Treat, Flesh Treat, Berry Treat, Leafy Treat, Honey Treat\n\nThe Direbear excels at all forms of land transport, whether its walking over long distances on land without getting tired or swimming over the surfaces of the most dangerous waters.\n\nTheir sharp claws will cause their targets to bleed, making them rapidly lose health. And sometimes, their stomps can paralyze nearby mobs.\n\nThey eat just about anything I can think of. Berries, crops, leaves, meat, you name it. Anything.")
 .button('Return to Index')
 
 export const guiDirewolfEntry = new ActionFormData()
@@ -67,7 +67,7 @@ export const guiDodoEntry = new ActionFormData()
 
 export const guiGallimimusEntry = new ActionFormData()
 .title('Gallimimus')
-.body("TBA")
+.body("\n\n\n\n\n\n\n\n\n\n\n\nDiet: Herbivore\nBehavior: Passive\nReaction to Fire: Fear\nTaming Tier: Tier 1\nFavorite Treats: Fungus Treat, Rooted Treat, Bug Treat\n\nThe fastest land creature of the rift, capable of covering large distances within a few seconds. If they could jump they could go even faster, but their legs are too weak to do so.\n\nThough valued for their extreme speed, they're also very skittish. Nearly everything scares them, and having to chase them on foot or on a slower creature is troublesome.")
 .button('Return to Index')
 
 export const guiHumansEntry = new ActionFormData()
@@ -92,7 +92,7 @@ export const guiMegapiranhaEntry = new ActionFormData()
 
 export const guiMonstersEntry = new ActionFormData()
 .title('Monsters')
-.body("TBA")
+.body("Aside from the Zombies and Husks, nearly every one of them are mindless drones that just wander around the night. It's said that they will only attack one certain kind of human, but I'm still yet to see such.\n\nAt any given rate, some monsters have adapted to the rift. Skeletons and Strays have been known to use aggravating horns. Others aren't as lucky, as they sometimes end up as prey items for some creatures of the Rift.")
 .button('Return to Index')
 
 export const guiPalaeocastorEntry = new ActionFormData()
@@ -103,6 +103,11 @@ export const guiPalaeocastorEntry = new ActionFormData()
 export const guiParasaurolophusEntry = new ActionFormData()
 .title('Parasaurolophus')
 .body("\n\n\n\n\n\n\n\n\n\n\nDiet: Herbivore\nBehavior: Passive\nReaction to Fire: Fear\nTaming Tier: Tier 1\nFavorite Treats: Rooted Treat, Grassy Treat, Fungus Treat\n\nIf you see one, expect to see others in the area. They look out for each other, and protect each other from predators by using their horns to alert others about danger. Once there's danger, they'll run away.\n\nWhen in direct danger they might emit a shockwave that can paralyze mobs for a short time before fleeing.\n\nThey really like eating the truffles that have been appearing more frequently and can dig them up from grass. Though it seems they like uprooting rooted crops too.")
+.button('Return to Index')
+
+export const guiPteranodonEntry = new ActionFormData()
+.title('Pteranodon')
+.body("\n\n\n\n\n\n\n\n\n\n\n\n\nDiet: Carnivore\nReaction to Fire: Fear\nTaming Tier: Tier 2\nFavorite Treats: Fish Treat, Carrion Treat\n\nSkittish creatures with no real defensive or attacking capabilities. They hunt for fish, and flying away from anything they deem to be dangerous.\n\nWhile they're quite fragile, they happen to be a fast flying mount, but don't last that long in the air. Keep this in mind especially if you're flying over dangerous areas.\n\nThey're only capable of carrying one human at their back, but their claws can carry some smaller creatures.")
 .button('Return to Index')
 
 export const guiSarcosuchusEntry = new ActionFormData()
@@ -122,7 +127,7 @@ export const guiStegosaurusEntry = new ActionFormData()
 
 export const guiTenontosaurusEntry = new ActionFormData()
 .title('Tenontosaurus')
-.body("TBA")
+.body("\n\n\n\n\n\n\n\n\n\nDiet: Herbivore\nBehavior: Neutral\nReaction to Fire: Fear\nTaming Tier: Tier 1\nFavorite Treats: Fungus Treat, Grassy Treat, Rooted Treat\n\nDespite living in forests where predators are plentiful, the populations of the Tenontosaurus in those places remain constant. Their colorful feathers on their tails emit pheromones that can charm most mobs into defending them.\n\nThere's always a good chance that a wild Tenontosaurus will be accompanied by zombies or Utahraptors willing to fight for it mindlessly.\n\nHumans are immune to the hypnotic pheromones (but they smell bad), and Illagers have been known to utilize their pheromones to ensure that most carnivorous creatures will not attack them on sight.")
 .button('Return to Index')
 
 export const guiTriceratopsEntry = new ActionFormData()
@@ -142,5 +147,5 @@ export const guiUtahraptorEntry = new ActionFormData()
 
 export const guiVillagersEntry = new ActionFormData()
 .title('Villagers')
-.body("TBA")
+.body("It was weird enough to write an entry about us humans in general, but it's even weirder to write about my own kind in general. Nevertheless my boredom as of the time of writing this motivates me to do so.\n\nWe villagers are peaceful community dwellers. We all produce our own food and help out each other so that we cal all live for yet another day.\n\nThat is, of course, until the Rift happened. We've got monstrous creatures that not even our Iron Golems can protect us from, and our mortal enemy, the Illagers, have merely become stronger.")
 .button('Return to Index')
