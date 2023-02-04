@@ -20,6 +20,14 @@ let unlockItemsList = [
     'rift:direwolf_tail',
     'rift:megaloceros_antler',
     'rift:baryonyx_claw',
+    'rift:palaeocastor_tail',
+    'rift:ankylosaurus_club',
+    'rift:dilophosaurus_frill',
+    'rift:gallimimus_foot',
+    'rift:tenontosaurus_feather',
+    'rift:direbear_fur',
+    'rift:coelophysis_head',
+    'rift:pteranodon_crest',
     //for animals
     'minecraft:porkchop',
     'minecraft:chicken',
@@ -47,46 +55,47 @@ let unlockItemsList = [
 
 let creatureList = {
     dinosaurs: [
-        'Ankylosaurus',
-        'Apatosaurus',
-        'Baryonyx',
-        'Coelophysis',
-        'Dilophosaurus',
-        'Gallimimus',
-        'Parasaurolophus',
-        'Saurophaganax',
-        'Stegosaurus',
-        'Tenontosaurus',
-        'Triceratops',
-        'Tyrannosaurus',
-        'Utahraptor'
+        [0, 'Stegosaurus'],
+        [1, 'Tyrannosaurus'],
+        [3, 'Triceratops'],
+        [4, 'Utahraptor'],
+        [5, 'Apatosaurus'],
+        [6, 'Parasaurolophus'],
+        [12, 'Saurophaganax'],
+        [15, 'Baryonyx'],
+        [17, 'Ankylosaurus'],
+        [18, 'Dilophosaurus'],
+        [19, 'Gallimimus'],
+        [20, 'Tenontosaurus'],
+        [22, 'Coelophysis']
     ],
     mammals: [
-        'Dimetrodon',
-        'Direbear',
-        'Direwolf',
-        'Megaloceros',
-        'Palaeocastor'
+        [7, 'Dimetrodon'],
+        [13, 'Direwolf'],
+        [14, 'Megaloceros'],
+        [16, 'Palaeocastor'],
+        [21, 'Direbear']
     ],
     reptiles: [
-        'Sarcosuchus'
+        [10, 'Sarcosuchus'],
+        [23, 'Pteranodon']
     ],
     birds: [
-        'Dodo'
+        [2, 'Dodo']
     ],
     fishes: [
-        'Coelacanth',
-        'Megapiranha'
+        [8, 'Coelacanth'],
+        [9, 'Megapiranha']
     ],
     invertebrates: [
-        'Anomalocaris'
+        [11, 'Anomalocaris']
     ],
     others: [
-        'Animals',
-        'Humans',
-        'Illagers',
-        'Monsters',
-        'Villagers'
+        ['a', 'Animals'],
+        ['b', 'Monsters'],
+        ['c', 'Humans'],
+        ['d', 'Villagers'],
+        ['e', 'Illagers']
     ]
 }
 
@@ -142,26 +151,29 @@ function mainGui(source) {
 }
 
 function searchGui(source) {
-    let searchList = Object.values(creatureList)
-    searchList = [].concat(...searchList).sort()
+    let searchList = []
+    for (let i = 0; i < Object.keys(creatureList).length; i++) {
+        searchList = searchList.concat(Object.values(creatureList)[i])
+    }
+    searchList.sort((a, b) => a[1].localeCompare(b[1]))
     const guiSearch = new ModalFormData()
     .title('Search')
     .textField("Search Entry", "(e.x., Tyrannosaurus)")
     .show(source).then(result => {
-        searchResultsGui(source, searchList.map(element => { return element.toLowerCase() }).filter((element) => element.includes(result.formValues[0].toLowerCase())))
+        searchResultsGui(source, searchList.map(element => [element[0], element[1].toLowerCase()]).filter((element) => element[1].includes(result.formValues[0].toLowerCase())))
     })
 }
 
 function searchResultsGui(source, searchResults) {
-    searchResults = searchResults.map(element => element.charAt(0).toUpperCase() + element.substring(1))
+    searchResults = searchResults.map(element => [element[0], element[1].charAt(0).toUpperCase() + element[1].substring(1)])
     let newSearchResults = []
     const guiSearchResults = new ActionFormData()
     .title('Search Results')
     .button('Return to Search')
     .button('Return to Index')
     for (let i = 0; i < searchResults.length; i++) {
-        if (source.getDynamicProperty('Journal'+searchResults[i]) == true) {
-            guiSearchResults.button(searchResults[i])
+        if (source.getDynamicProperty(searchResults[i][0].toString()) == true) {
+            guiSearchResults.button(searchResults[i][1])
             newSearchResults.push(searchResults[i])
         }
     }
@@ -173,7 +185,7 @@ function searchResultsGui(source, searchResults) {
             mainGui(source)
         }
         if (result.selection >= 2) {
-            eval("guiEntry.gui"+newSearchResults[result.selection-2]+"Entry.show(source).then(result => {if (result.selection == 0) {mainGui(source)}})")
+            eval("guiEntry.gui"+newSearchResults[result.selection-2][1]+"Entry.show(source).then(result => {if (result.selection == 0) {mainGui(source)}})")
         }
     })
 }
@@ -185,9 +197,8 @@ function dinosaursGui(source) {
     .button('Return to Index')
     let failCount = 0;
     for (let i = 0; i < creatureList.dinosaurs.length; i++) {
-        if (source.getDynamicProperty('Journal'+creatureList.dinosaurs[i]) == true) {
-            guiDinosaurs.button(creatureList.dinosaurs[i])
-            dinosaursList.push(creatureList.dinosaurs[i])
+        if (source.getDynamicProperty(creatureList.dinosaurs[i][0].toString()) == true) {
+            dinosaursList.push(creatureList.dinosaurs[i][1])
         }
         else {
             failCount += 1
@@ -195,6 +206,10 @@ function dinosaursGui(source) {
     }
     if (failCount >= creatureList.dinosaurs.length) {
         guiDinosaurs.body('Looks like you need to unlock an entry here...')
+    }
+    dinosaursList.sort()
+    for (let i = 0; i < dinosaursList.length; i++) {
+        guiDinosaurs.button(dinosaursList[i])
     }
     guiDinosaurs.show(source).then(result => {
         if (result.selection == 0) {
@@ -213,9 +228,8 @@ function mammalsGui(source) {
     .button('Return to Index')
     let failCount = 0;
     for (let i = 0; i < creatureList.mammals.length; i++) {
-        if (source.getDynamicProperty('Journal'+creatureList.mammals[i]) == true) {
-            guiMammals.button(creatureList.mammals[i])
-            mammalsList.push(creatureList.mammals[i])
+        if (source.getDynamicProperty(creatureList.mammals[i][0].toString()) == true) {
+            mammalsList.push(creatureList.mammals[i][1])
         }
         else {
             failCount += 1
@@ -223,6 +237,10 @@ function mammalsGui(source) {
     }
     if (failCount >= creatureList.mammals.length) {
         guiMammals.body('Looks like you need to unlock an entry here...')
+    }
+    mammalsList.sort()
+    for (let i = 0; i < mammalsList.length; i++) {
+        guiMammals.button(mammalsList[i])
     }
     guiMammals.show(source).then(result => {
         if (result.selection == 0) {
@@ -241,9 +259,8 @@ function reptilesGui(source) {
     .button('Return to Index')
     let failCount = 0;
     for (let i = 0; i < creatureList.reptiles.length; i++) {
-        if (source.getDynamicProperty('Journal'+creatureList.reptiles[i]) == true) {
-            guiReptiles.button(creatureList.reptiles[i])
-            reptilesList.push(creatureList.reptiles[i])
+        if (source.getDynamicProperty(creatureList.reptiles[i][0].toString()) == true) {
+            reptilesList.push(creatureList.reptiles[i][1])
         }
         else {
             failCount += 1
@@ -251,6 +268,10 @@ function reptilesGui(source) {
     }
     if (failCount >= creatureList.reptiles.length) {
         guiReptiles.body('Looks like you need to unlock an entry here...')
+    }
+    reptilesList.sort()
+    for (let i = 0; i < reptilesList.length; i++) {
+        guiReptiles.button(reptilesList[i])
     }
     guiReptiles.show(source).then(result => {
         if (result.selection == 0) {
@@ -269,9 +290,8 @@ function birdsGui(source) {
     .button('Return to Index')
     let failCount = 0;
     for (let i = 0; i < creatureList.birds.length; i++) {
-        if (source.getDynamicProperty('Journal'+creatureList.birds[i]) == true) {
-            guiBirds.button(creatureList.birds[i])
-            birdsList.push(creatureList.birds[i])
+        if (source.getDynamicProperty(creatureList.birds[i][0].toString()) == true) {
+            birdsList.push(creatureList.birds[i][1])
         }
         else {
             failCount += 1
@@ -279,6 +299,10 @@ function birdsGui(source) {
     }
     if (failCount >= creatureList.birds.length) {
         guiBirds.body('Looks like you need to unlock an entry here...')
+    }
+    birdsList.sort()
+    for (let i = 0; i < birdsList.length; i++) {
+        guiBirds.button(birdsList[i])
     }
     guiBirds.show(source).then(result => {
         if (result.selection == 0) {
@@ -297,9 +321,8 @@ function fishesGui(source) {
     .button('Return to Index')
     let failCount = 0;
     for (let i = 0; i < creatureList.fishes.length; i++) {
-        if (source.getDynamicProperty('Journal'+creatureList.fishes[i]) == true) {
-            guiFishes.button(creatureList.fishes[i])
-            fishesList.push(creatureList.fishes[i])
+        if (source.getDynamicProperty(creatureList.fishes[i][0].toString()) == true) {
+            fishesList.push(creatureList.fishes[i][1])
         }
         else {
             failCount += 1
@@ -307,6 +330,10 @@ function fishesGui(source) {
     }
     if (failCount >= creatureList.fishes.length) {
         guiFishes.body('Looks like you need to unlock an entry here...')
+    }
+    fishesList.sort()
+    for (let i = 0; i < fishesList.length; i++) {
+        guiFishes.button(fishesList[i])
     }
     guiFishes.show(source).then(result => {
         if (result.selection == 0) {
@@ -324,17 +351,20 @@ function invertebratesGui(source) {
     .title('Invertebrates')
     .button('Return to Index')
     let failCount = 0;
-    for (let i = 0; i < creatureList.invertebrates.length; i++) {
-        if (source.getDynamicProperty('Journal'+creatureList.invertebrates[i]) == true) {
-            guiInvertebrates.button(creatureList.invertebrates[i])
-            invertebratesList.push(creatureList.invertebrates[i])
+    for (let i = 0; i < creatureList.fishes.length; i++) {
+        if (source.getDynamicProperty(creatureList.fishes[i][0].toString()) == true) {
+            invertebratesList.push(creatureList.fishes[i][1])
         }
         else {
             failCount += 1
         }
     }
-    if (failCount >= creatureList.invertebrates.length) {
+    if (failCount >= creatureList.fishes.length) {
         guiInvertebrates.body('Looks like you need to unlock an entry here...')
+    }
+    invertebratesList.sort()
+    for (let i = 0; i < invertebratesList.length; i++) {
+        guiInvertebrates.button(invertebratesList[i])
     }
     guiInvertebrates.show(source).then(result => {
         if (result.selection == 0) {
@@ -353,9 +383,8 @@ function othersGui(source) {
     .button('Return to Index')
     let failCount = 0;
     for (let i = 0; i < creatureList.others.length; i++) {
-        if (source.getDynamicProperty('Journal'+creatureList.others[i]) == true) {
-            guiOthers.button(creatureList.others[i])
-            othersList.push(creatureList.others[i])
+        if (source.getDynamicProperty(creatureList.others[i][0]) == true) {
+            othersList.push(creatureList.others[i][1])
         }
         else {
             failCount += 1
@@ -363,6 +392,10 @@ function othersGui(source) {
     }
     if (failCount >= creatureList.others.length) {
         guiOthers.body('Looks like you need to unlock an entry here...')
+    }
+    othersList.sort()
+    for (let i = 0; i < othersList.length; i++) {
+        guiOthers.button(othersList[i])
     }
     guiOthers.show(source).then(result => {
         if (result.selection == 0) {
@@ -384,172 +417,113 @@ world.events.beforeItemUse.subscribe(data => {
 world.events.beforeItemUseOn.subscribe(data => {
     if (unlockItemsList.includes(data.item.typeId) && world.getDimension('overworld').getBlock(data.blockLocation).typeId == 'rift:journal_enscriber' && world.getDimension('overworld').getBlock(data.blockLocation).permutation.getProperty('rift:has_book').value == true) {
         switch (data.item.typeId) {
-            case 'rift:tyrannosaurus_arm':
-                data.source.setDynamicProperty('JournalTyrannosaurus', true)
-                data.source.tell('You have unlocked the journal entry for the Tyrannosaurus! Open your journal to read it!')
-                break
             case 'rift:stegosaurus_plate':
-                data.source.setDynamicProperty('JournalStegosaurus', true)
+                data.source.setDynamicProperty('0', true)
                 data.source.tell('You have unlocked the journal entry for the Stegosaurus! Open your journal to read it!')
                 break
+            case 'rift:tyrannosaurus_arm':
+                data.source.setDynamicProperty('1', true)
+                data.source.tell('You have unlocked the journal entry for the Tyrannosaurus! Open your journal to read it!')
+                break
             case 'rift:dodo_beak':
-                data.source.setDynamicProperty('JournalDodo', true)
+                data.source.setDynamicProperty('2', true)
                 data.source.tell('You have unlocked the journal entry for the Dodo! Open your journal to read it!')
                 break
             case 'rift:triceratops_horn':
-                data.source.setDynamicProperty('JournalTriceratops', true)
+                data.source.setDynamicProperty('3', true)
                 data.source.tell('You have unlocked the journal entry for the Triceratops! Open your journal to read it!')
                 break
             case 'rift:utahraptor_claw':
-                data.source.setDynamicProperty('JournalUtahraptor', true)
+                data.source.setDynamicProperty('4', true)
                 data.source.tell('You have unlocked the journal entry for the Utahraptor! Open your journal to read it!')
                 break
             case 'rift:apatosaurus_vertebrae':
-                data.source.setDynamicProperty('JournalApatosaurus', true)
+                data.source.setDynamicProperty('5', true)
                 data.source.tell('You have unlocked the journal entry for the Apatosaurus! Open your journal to read it!')
                 break
             case 'rift:parasaurolophus_horn':
-                data.source.setDynamicProperty('JournalParasaurolophus', true)
+                data.source.setDynamicProperty('6', true)
                 data.source.tell('You have unlocked the journal entry for the Parasaurolophus! Open your journal to read it!')
                 break
             case 'rift:dimetrodon_sail':
-                data.source.setDynamicProperty('JournalDimetrodon', true)
+                data.source.setDynamicProperty('7', true)
                 data.source.tell('You have unlocked the journal entry for the Dimetrodon! Open your journal to read it!')
                 break
             case 'rift:coelacanth_scales':
-                data.source.setDynamicProperty('JournalCoelacanth', true)
+                data.source.setDynamicProperty('8', true)
                 data.source.tell('You have unlocked the journal entry for the Coelacanth! Open your journal to read it!')
                 break
             case 'rift:megapiranha_scales':
-                data.source.setDynamicProperty('JournalMegapiranha', true)
+                data.source.setDynamicProperty('9', true)
                 data.source.tell('You have unlocked the journal entry for the Megapiranha! Open your journal to read it!')
                 break
             case 'rift:sarcosuchus_snout':
-                data.source.setDynamicProperty('JournalSarcosuchus', true)
+                data.source.setDynamicProperty('10', true)
                 data.source.tell('You have unlocked the journal entry for the Sarcosuchus! Open your journal to read it!')
                 break
             case 'rift:anomalocaris_appendage':
-                data.source.setDynamicProperty('JournalAnomalocaris', true)
+                data.source.setDynamicProperty('11', true)
                 data.source.tell('You have unlocked the journal entry for the Anomalocaris! Open your journal to read it!')
                 break
             case 'rift:saruophaganax_eye':
-                data.source.setDynamicProperty('JournalSaurophaganax', true)
+                data.source.setDynamicProperty('12', true)
                 data.source.tell('You have unlocked the journal entry for the Saurophaganax! Open your journal to read it!')
                 break
             case 'rift:direwolf_tail':
-                data.source.setDynamicProperty('JournalDirewolf', true)
+                data.source.setDynamicProperty('13', true)
                 data.source.tell('You have unlocked the journal entry for the Direwolf! Open your journal to read it!')
                 break
             case 'rift:megaloceros_antler':
-                data.source.setDynamicProperty('JournalMegaloceros', true)
+                data.source.setDynamicProperty('14', true)
                 data.source.tell('You have unlocked the journal entry for the Megaloceros! Open your journal to read it!')
                 break
             case 'rift:baryonyx_claw':
-                data.source.setDynamicProperty('JournalBaryonyx', true)
+                data.source.setDynamicProperty('15', true)
                 data.source.tell('You have unlocked the journal entry for the Baryonyx! Open your journal to read it!')
                 break
+            case 'rift:palaeocastor_tail':
+                data.source.setDynamicProperty('16', true)
+                data.source.tell('You have unlocked the journal entry for the Baryonyx! Open your journal to read it!')
+                break
+            case 'rift:ankylosaurus_club':
+                data.source.setDynamicProperty('17', true)
+                data.source.tell('You have unlocked the journal entry for the Ankylosaurus! Open your journal to read it!')
+                break
+            case 'rift:dilophosaurus_frill':
+                data.source.setDynamicProperty('18', true)
+                data.source.tell('You have unlocked the journal entry for the Dilophosaurus! Open your journal to read it!')
+                break
+            case 'rift:gallimimus_foot':
+                data.source.setDynamicProperty('19', true)
+                data.source.tell('You have unlocked the journal entry for the Gallimimus! Open your journal to read it!')
+                break
+            case 'rift:tenontosaurus_feather':
+                data.source.setDynamicProperty('20', true)
+                data.source.tell('You have unlocked the journal entry for the Tenontosaurus! Open your journal to read it!')
+                break
+            case 'rift:direbear_fur':
+                data.source.setDynamicProperty('21', true)
+                data.source.tell('You have unlocked the journal entry for the Direbear! Open your journal to read it!')
+                break
+            case 'rift:coelophysis_head':
+                data.source.setDynamicProperty('22', true)
+                data.source.tell('You have unlocked the journal entry for the Coelophysis! Open your journal to read it!')
+                break
+            case 'rift:pteranodon_crest':
+                data.source.setDynamicProperty('23', true)
+                data.source.tell('You have unlocked the journal entry for the Pteranodon! Open your journal to read it!')
+                break
             case 'minecraft:diamond_sword':
-                data.source.setDynamicProperty('JournalHumans', true)
+                data.source.setDynamicProperty('c', true)
                 data.source.tell('You have unlocked the journal entry for Humans! Open your journal to read it!')
                 break
-            case 'minecraft:totem_of_undying':
-                data.source.setDynamicProperty('JournalIllagers', true)
-                data.source.tell('You have unlocked the journal entry for Illagers! Open your journal to read it!')
             case 'minecraft:emerald':
-                data.source.setDynamicProperty('JournalVillagers', true)
+                data.source.setDynamicProperty('d', true)
                 data.source.tell('You have unlocked the journal entry for Villagers! Open your journal to read it!')
+            case 'minecraft:totem_of_undying':
+                data.source.setDynamicProperty('e', true)
+                data.source.tell('You have unlocked the journal entry for Illagers! Open your journal to read it!')
         }
         world.getDimension('overworld').getBlock(data.blockLocation).setPermutation(MinecraftBlockTypes.get('rift:journal_enscriber').createDefaultBlockPermutation().clone())
-    }
-})
-
-system.run(function everyTick(tick) {
-    system.run(everyTick)
-    let players = Array.from(world.getPlayers())
-    for (let p = 0; p < players.length; p++) {
-        if (players[p].getDynamicProperty('JournalAnimals') == null) {
-            players[p].setDynamicProperty('JournalAnimals', false)
-        }
-        if (players[p].getDynamicProperty('JournalAnkylosaurus') == null) {
-            players[p].setDynamicProperty('JournalAnkylosaurus', false)
-        }
-        if (players[p].getDynamicProperty('JournalAnomalocaris') == null) {
-            players[p].setDynamicProperty('JournalAnomalocaris', false)
-        }
-        if (players[p].getDynamicProperty('JournalApatosaurus') == null) {
-            players[p].setDynamicProperty('JournalApatosaurus', false)
-        }
-        if (players[p].getDynamicProperty('JournalBaryonyx') == null) {
-            players[p].setDynamicProperty('JournalBaryonyx', false)
-        }
-        if (players[p].getDynamicProperty('JournalCoelacanth') == null) {
-            players[p].setDynamicProperty('JournalCoelacanth', false)
-        }
-        if (players[p].getDynamicProperty('JournalCoelophysis') == null) {
-            players[p].setDynamicProperty('JournalCoelophysis', false)
-        }
-        if (players[p].getDynamicProperty('JournalDilophosaurus') == null) {
-            players[p].setDynamicProperty('JournalDilophosaurus', false)
-        }
-        if (players[p].getDynamicProperty('JournalDimetrodon') == null) {
-            players[p].setDynamicProperty('JournalDimetrodon', false)
-        }
-        if (players[p].getDynamicProperty('JournalDirebear') == null) {
-            players[p].setDynamicProperty('JournalDirebear', false)
-        }
-        if (players[p].getDynamicProperty('JournalDirewolf') == null) {
-            players[p].setDynamicProperty('JournalDirewolf', false)
-        }
-        if (players[p].getDynamicProperty('JournalDodo') == null) {
-            players[p].setDynamicProperty('JournalDodo', false)
-        }
-        if (players[p].getDynamicProperty('JournalGallimimus') == null) {
-            players[p].setDynamicProperty('JournalGallimimus', false)
-        }
-        if (players[p].getDynamicProperty('JournalHumans') == null) {
-            players[p].setDynamicProperty('JournalHumans', false)
-        }
-        if (players[p].getDynamicProperty('JournalIllagers') == null) {
-            players[p].setDynamicProperty('JournalIllagers', false)
-        }
-        if (players[p].getDynamicProperty('JournalMegaloceros') == null) {
-            players[p].setDynamicProperty('JournalMegaloceros', false)
-        }
-        if (players[p].getDynamicProperty('JournalMegapiranha') == null) {
-            players[p].setDynamicProperty('JournalMegapiranha', false)
-        }
-        if (players[p].getDynamicProperty('JournalMonsters') == null) {
-            players[p].setDynamicProperty('JournalMonsters', false)
-        }
-        if (players[p].getDynamicProperty('JournalPalaeocastor') == null) {
-            players[p].setDynamicProperty('JournalPalaeocastor', false)
-        }
-        if (players[p].getDynamicProperty('JournalParasaurolophus') == null) {
-            players[p].setDynamicProperty('JournalParasaurolophus', false)
-        }
-        if (players[p].getDynamicProperty('JournalSarcosuchus') == null) {
-            players[p].setDynamicProperty('JournalSarcosuchus', false)
-        }
-        if (players[p].getDynamicProperty('JournalSaurophaganax') == null) {
-            players[p].setDynamicProperty('JournalSaurophaganax', false)
-        }
-        if (players[p].getDynamicProperty('JournalStegosaurus') == null) {
-            players[p].setDynamicProperty('JournalStegosaurus', false)
-        }
-        if (players[p].getDynamicProperty('JournalTenontosaurus') == null) {
-            players[p].setDynamicProperty('JournalTenontosaurus', false)
-        }
-        if (players[p].getDynamicProperty('JournalTriceratops') == null) {
-            players[p].setDynamicProperty('JournalTriceratops', false)
-        }
-        if (players[p].getDynamicProperty('JournalTyrannosaurus') == null) {
-            players[p].setDynamicProperty('JournalTyrannosaurus', false)
-        }
-        if (players[p].getDynamicProperty('JournalUtahraptor') == null) {
-            players[p].setDynamicProperty('JournalUtahraptor', false)
-        }
-        if (players[p].getDynamicProperty('JournalVillagers') == null) {
-            players[p].setDynamicProperty('JournalVillagers', false)
-        }
     }
 })

@@ -15,114 +15,103 @@ function damageOutput(entity, value) {
     return value
 }
 
-system.run(function everyTick(tick) {
-    system.run(everyTick)
-    let entities = Array.from(world.getDimension('overworld').getEntities({
-        tags: [
-            'tamed',
-            'forcedAttack'
-        ],
-        families: [
-            'riftCreature'
-        ]
-    }))
-    for (let i = 0; i < entities.length; i++) {
-        switch (entities[i].typeId) {
-            case 'rift:tyrannosaurus': 
-                entities[i].runCommandAsync(`damage @e[tag=!tamed, family=!inanimate, type=!player, type=!item, tag=!hypnotizedTamed, r=8] `+damageOutput(entities[i], 35)+` entity_attack entity @s`)
+world.events.beforeDataDrivenEntityTriggerEvent.subscribe(data => {
+    if (data.id == 'rift:using_forced_attack') {
+        switch (data.entity.typeId) {
+            case 'rift:tyrannosaurus':
+                data.entity.runCommandAsync(`damage @e[tag=!tamed, family=!inanimate, type=!player, type=!item, tag=!hypnotizedTamed, r=8] `+damageOutput(data.entity, 35)+` entity_attack entity @s`)
                 break
             case 'rift:stegosaurus': 
-                if (entities[i].hasTag('chargeOne')) {
-                    entities[i].runCommandAsync(`damage @e[tag=!tamed, family=!inanimate, type=!player, type=!item, tag=!hypnotizedTamed, r=10] `+damageOutput(entities[i], 30)+` entity_attack entity @s`)
+                if (data.entity.hasTag('chargeOne')) {
+                    data.entity.runCommandAsync(`damage @e[tag=!tamed, family=!inanimate, type=!player, type=!item, tag=!hypnotizedTamed, r=10] `+damageOutput(data.entity, 30)+` entity_attack entity @s`)
                 }
-                else if (entities[i].hasTag('chargeTwo')) {
-                    entities[i].runCommandAsync(`damage @e[tag=!tamed, family=!inanimate, type=!player, type=!item, tag=!hypnotizedTamed, r=10] `+damageOutput(entities[i], 40)+` entity_attack entity @s`)
+                else if (data.entity.hasTag('chargeTwo')) {
+                    data.entity.runCommandAsync(`damage @e[tag=!tamed, family=!inanimate, type=!player, type=!item, tag=!hypnotizedTamed, r=10] `+damageOutput(data.entity, 40)+` entity_attack entity @s`)
                 }
-                else if (entities[i].hasTag('chargeThree')) {
-                    entities[i].runCommandAsync(`damage @e[tag=!tamed, family=!inanimate, type=!player, type=!item, tag=!hypnotizedTamed, r=10] `+damageOutput(entities[i], 50)+` entity_attack entity @s`)
+                else if (data.entity.hasTag('chargeThree')) {
+                    data.entity.runCommandAsync(`damage @e[tag=!tamed, family=!inanimate, type=!player, type=!item, tag=!hypnotizedTamed, r=10] `+damageOutput(data.entity, 50)+` entity_attack entity @s`)
                 }
-                else if (entities[i].hasTag('chargeFour')) {
-                    entities[i].runCommandAsync(`damage @e[tag=!tamed, family=!inanimate, type=!player, type=!item, tag=!hypnotizedTamed, r=10] `+damageOutput(entities[i], 60)+` entity_attack entity @s`)
+                else if (data.entity.hasTag('chargeFour')) {
+                    data.entity.runCommandAsync(`damage @e[tag=!tamed, family=!inanimate, type=!player, type=!item, tag=!hypnotizedTamed, r=10] `+damageOutput(data.entity, 60)+` entity_attack entity @s`)
                 }
-                else if (entities[i].hasTag('chargeFive')) {
-                    entities[i].runCommandAsync(`damage @e[tag=!tamed, family=!inanimate, type=!player, type=!item, tag=!hypnotizedTamed, r=10] `+damageOutput(entities[i], 70)+` entity_attack entity @s`)
+                else if (data.entity.hasTag('chargeFive')) {
+                    data.entity.runCommandAsync(`damage @e[tag=!tamed, family=!inanimate, type=!player, type=!item, tag=!hypnotizedTamed, r=10] `+damageOutput(data.entity, 70)+` entity_attack entity @s`)
                 }
                 else {
-                    entities[i].runCommandAsync(`damage @e[tag=!tamed, family=!inanimate, type=!player, type=!item, tag=!hypnotizedTamed, r=10] `+damageOutput(entities[i], 30)+` entity_attack entity @s`)
+                    data.entity.runCommandAsync(`damage @e[tag=!tamed, family=!inanimate, type=!player, type=!item, tag=!hypnotizedTamed, r=10] `+damageOutput(data.entity, 30)+` entity_attack entity @s`)
                 }
                 break
             case 'rift:triceratops': 
-                entities[i].runCommandAsync(`damage @e[tag=!tamed, family=!inanimate, type=!player, type=!item, tag=!hypnotizedTamed, r=7] `+damageOutput(entities[i], 25)+` entity_attack entity @s`)
+                data.entity.runCommandAsync(`damage @e[tag=!tamed, family=!inanimate, type=!player, type=!item, tag=!hypnotizedTamed, r=7] `+damageOutput(data.entity, 25)+` entity_attack entity @s`)
                 break
             case 'rift:utahraptor': 
-                entities[i].runCommandAsync(`damage @e[tag=!tamed, family=!inanimate, type=!player, type=!item, tag=!hypnotizedTamed, r=7] `+damageOutput(entities[i], 12)+` entity_attack entity @s`)
+                data.entity.runCommandAsync(`damage @e[tag=!tamed, family=!inanimate, type=!player, type=!item, tag=!hypnotizedTamed, r=7] `+damageOutput(data.entity, 12)+` entity_attack entity @s`)
                 break
             case 'rift:apatosaurus': 
-                entities[i].runCommandAsync(`damage @e[tag=!tamed, family=!inanimate, type=!player, type=!item, tag=!hypnotizedTamed, r=8] `+damageOutput(entities[i], 80)+` entity_attack entity @s`)
+                data.entity.runCommandAsync(`damage @e[tag=!tamed, family=!inanimate, type=!player, type=!item, tag=!hypnotizedTamed, r=8] `+damageOutput(data.entity, 80)+` entity_attack entity @s`)
                 break
             case 'rift:sarcosuchus': 
-                entities[i].runCommandAsync(`damage @e[tag=!tamed, family=!inanimate, type=!player, type=!item, tag=!hypnotizedTamed, r=8] `+damageOutput(entities[i], 15)+` entity_attack entity @s`)
+                data.entity.runCommandAsync(`damage @e[tag=!tamed, family=!inanimate, type=!player, type=!item, tag=!hypnotizedTamed, r=8] `+damageOutput(data.entity, 15)+` entity_attack entity @s`)
                 break
             case 'rift:anomalocaris':
-                entities[i].runCommandAsync(`damage @e[tag=!tamed, family=!inanimate, type=!player, type=!item, tag=!hypnotizedTamed, r=6] `+damageOutput(entities[i], 10)+` entity_attack entity @s`)
+                data.entity.runCommandAsync(`damage @e[tag=!tamed, family=!inanimate, type=!player, type=!item, tag=!hypnotizedTamed, r=6] `+damageOutput(data.entity, 10)+` entity_attack entity @s`)
                 break
             case 'rift:saurophaganax':
-                if (!entities[i].getComponent('is_sheared')) {
-                    entities[i].runCommandAsync(`damage @e[tag=!tamed, family=!inanimate, type=!player, type=!item, tag=!hypnotizedTamed, r=8] `+damageOutput(entities[i], 60)+` entity_attack entity @s`)
+                if (!data.entity.getComponent('is_sheared')) {
+                    data.entity.runCommandAsync(`damage @e[tag=!tamed, family=!inanimate, type=!player, type=!item, tag=!hypnotizedTamed, r=8] `+damageOutput(data.entity, 60)+` entity_attack entity @s`)
                 }
                 else {
-                    entities[i].runCommandAsync(`damage @e[tag=!tamed, family=!inanimate, type=!player, type=!item, tag=!hypnotizedTamed, r=8] `+damageOutput(entities[i], 5)+` entity_attack entity @s`)
+                    data.entity.runCommandAsync(`damage @e[tag=!tamed, family=!inanimate, type=!player, type=!item, tag=!hypnotizedTamed, r=8] `+damageOutput(data.entity, 5)+` entity_attack entity @s`)
                 }
                 break
             case 'rift:direwolf': 
-                if (!entities[i].getComponent('is_ignited')) {
-                    entities[i].runCommandAsync(`damage @e[tag=!tamed, family=!inanimate, type=!player, type=!item, tag=!hypnotizedTamed, r=8] `+damageOutput(entities[i], 8)+` entity_attack entity @s`)
+                if (!data.entity.getComponent('is_ignited')) {
+                    data.entity.runCommandAsync(`damage @e[tag=!tamed, family=!inanimate, type=!player, type=!item, tag=!hypnotizedTamed, r=8] `+damageOutput(data.entity, 8)+` entity_attack entity @s`)
                 }
                 else {
-                    if (entities[i].hasTag('werewolfBite')) {
-                        entities[i].runCommandAsync(`damage @e[tag=!tamed, family=!inanimate, type=!player, type=!item, tag=!hypnotizedTamed, r=8] `+damageOutput(entities[i], 16)+` entity_attack entity @s`)
+                    if (data.entity.hasTag('werewolfBite')) {
+                        data.entity.runCommandAsync(`damage @e[tag=!tamed, family=!inanimate, type=!player, type=!item, tag=!hypnotizedTamed, r=8] `+damageOutput(data.entity, 16)+` entity_attack entity @s`)
                     }
-                    else if (entities[i].hasTag('werewolfSlash')) {
-                        entities[i].runCommandAsync(`damage @e[tag=!tamed, family=!inanimate, type=!player, type=!item, tag=!hypnotizedTamed, r=8] `+damageOutput(entities[i], 12)+` entity_attack entity @s`)
+                    else if (data.entity.hasTag('werewolfSlash')) {
+                        data.entity.runCommandAsync(`damage @e[tag=!tamed, family=!inanimate, type=!player, type=!item, tag=!hypnotizedTamed, r=8] `+damageOutput(data.entity, 12)+` entity_attack entity @s`)
                     }
                 }
                 break
             case 'rift:megaloceros': 
-                entities[i].runCommandAsync(`damage @e[tag=!tamed, family=!inanimate, type=!player, type=!item, tag=!hypnotizedTamed, r=7] `+damageOutput(entities[i], 5)+` entity_attack entity @s`)
+                data.entity.runCommandAsync(`damage @e[tag=!tamed, family=!inanimate, type=!player, type=!item, tag=!hypnotizedTamed, r=7] `+damageOutput(data.entity, 5)+` entity_attack entity @s`)
                 break
             case 'rift:baryonyx':
-                if (entities[i].hasTag('baryonyxBite')) {
-                    entities[i].runCommandAsync(`damage @e[tag=!tamed, family=!inanimate, type=!player, type=!item, tag=!hypnotizedTamed, r=8] `+damageOutput(entities[i], 10)+` entity_attack entity @s`)
+                if (data.entity.hasTag('baryonyxBite')) {
+                    data.entity.runCommandAsync(`damage @e[tag=!tamed, family=!inanimate, type=!player, type=!item, tag=!hypnotizedTamed, r=8] `+damageOutput(data.entity, 10)+` entity_attack entity @s`)
                 }
-                else if (entities[i].hasTag('baryonyxClaw')) {
-                    entities[i].runCommandAsync(`damage @e[tag=!tamed, family=!inanimate, type=!player, type=!item, tag=!hypnotizedTamed, r=8] `+damageOutput(entities[i], 7)+` entity_attack entity @s`)
+                else if (data.entity.hasTag('baryonyxClaw')) {
+                    data.entity.runCommandAsync(`damage @e[tag=!tamed, family=!inanimate, type=!player, type=!item, tag=!hypnotizedTamed, r=8] `+damageOutput(data.entity, 7)+` entity_attack entity @s`)
                 }
                 break
             case 'rift:ankylosaurus':
-                entities[i].runCommandAsync(`damage @e[tag=!tamed, family=!inanimate, type=!player, type=!item, tag=!hypnotizedTamed, r=10] `+damageOutput(entities[i], 25)+` entity_attack entity @s`)
+                data.entity.runCommandAsync(`damage @e[tag=!tamed, family=!inanimate, type=!player, type=!item, tag=!hypnotizedTamed, r=10] `+damageOutput(data.entity, 25)+` entity_attack entity @s`)
                 break
             case 'rift:dilophosaurus':
-                entities[i].runCommandAsync(`damage @e[tag=!tamed, family=!inanimate, type=!player, type=!item, tag=!hypnotizedTamed, r=7] `+damageOutput(entities[i], 6)+` entity_attack entity @s`)
+                data.entity.runCommandAsync(`damage @e[tag=!tamed, family=!inanimate, type=!player, type=!item, tag=!hypnotizedTamed, r=7] `+damageOutput(data.entity, 6)+` entity_attack entity @s`)
                 break
             case 'rift:tenontosaurus': 
-                entities[i].runCommandAsync(`damage @e[tag=!tamed, family=!inanimate, type=!player, type=!item, tag=!hypnotizedTamed, r=8] `+damageOutput(entities[i], 5)+` entity_attack entity @s`)
+                data.entity.runCommandAsync(`damage @e[tag=!tamed, family=!inanimate, type=!player, type=!item, tag=!hypnotizedTamed, r=8] `+damageOutput(data.entity, 5)+` entity_attack entity @s`)
                 break
             case 'rift:direbear':
-                if (entities[i].hasTag('biteMode')) {
-                    entities[i].runCommandAsync(`damage @e[tag=!tamed, family=!inanimate, type=!player, type=!item, tag=!hypnotizedTamed, r=6] `+damageOutput(entities[i], 10)+` entity_attack entity @s`)
+                if (data.entity.hasTag('biteMode')) {
+                    data.entity.runCommandAsync(`damage @e[tag=!tamed, family=!inanimate, type=!player, type=!item, tag=!hypnotizedTamed, r=6] `+damageOutput(data.entity, 10)+` entity_attack entity @s`)
                 }
-                else if (entities[i].hasTag('clawMode')) {
-                    entities[i].runCommandAsync(`damage @e[tag=!tamed, family=!inanimate, type=!player, type=!item, tag=!hypnotizedTamed, r=6] `+damageOutput(entities[i], 10)+` entity_attack entity @s`)
+                else if (data.entity.hasTag('clawMode')) {
+                    data.entity.runCommandAsync(`damage @e[tag=!tamed, family=!inanimate, type=!player, type=!item, tag=!hypnotizedTamed, r=6] `+damageOutput(data.entity, 10)+` entity_attack entity @s`)
                 }
                 break
             case 'rift:pteranodon':
-                entities[i].runCommandAsync(`damage @e[tag=!tamed, family=!inanimate, type=!player, type=!item, tag=!hypnotizedTamed, r=4] `+damageOutput(entities[i], 4)+` entity_attack entity @s`)
+                data.entity.runCommandAsync(`damage @e[tag=!tamed, family=!inanimate, type=!player, type=!item, tag=!hypnotizedTamed, r=4] `+damageOutput(data.entity, 4)+` entity_attack entity @s`)
                 break
         }
-        entities[i].removeTag('forcedAttack')
-        entities[i].removeTag('werewolfBite')
-        entities[i].removeTag('werewolfSlash')
-        entities[i].removeTag('baryonyxBite')
-        entities[i].removeTag('baryonyxClaw')
+        data.entity.removeTag('werewolfBite')
+        data.entity.removeTag('werewolfSlash')
+        data.entity.removeTag('baryonyxBite')
+        data.entity.removeTag('baryonyxClaw')
     }
 })
