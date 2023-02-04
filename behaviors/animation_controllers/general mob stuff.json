@@ -663,34 +663,6 @@
 				}
 			}
 		},
-		"controller.animation.general_eat_from_inventory_cooldown": {
-			"initial_state": "default",
-			"states": {
-				"default": {
-					"transitions": [
-						{
-							"cooldown": "query.property('rift:eat_from_inventory_cooldown') == true"
-						}
-					]
-				},
-				"cooldown": {
-					"animations": [
-						"animEatFromInventoryCooldown"
-					],
-					"transitions": [
-						{
-							"default": "query.all_animations_finished"
-						}
-					],
-					"on_entry": [
-						"/tag @s add eatFromInventoryCooldown"
-					],
-					"on_exit": [
-						"/tag @s remove eatFromInventoryCooldown"
-					]
-				}
-			}
-		},
 		"controller.animation.general_die_without_tenontosaurus": {
 			"initial_state": "default",
 			"states": {
@@ -755,6 +727,28 @@
                     "transitions": [
                         {
                             "default": "query.property('rift:bleeding') == false || !query.is_alive"
+                        }
+                    ]
+                }
+            }
+        },
+        "controller.animation.general_eat_from_inventory": {
+            "initial_state": "default",
+            "states": {
+                "default": {
+                    "transitions": [
+                        {
+                            "eating": "query.max_health > query.health"
+                        }
+                    ]
+                },
+                "eating": {
+                    "animations": [
+                        "animEatFromInventory"
+                    ],
+                    "transitions": [
+                        {
+                            "default": "query.max_health == query.health"
                         }
                     ]
                 }

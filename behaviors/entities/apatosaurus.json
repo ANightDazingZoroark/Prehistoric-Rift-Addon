@@ -11,10 +11,6 @@
 					"type": "bool",
 					"default": false
 				},
-				"rift:eat_from_inventory_cooldown": {
-					"type": "bool",
-					"default": true
-				},
 				"rift:is_forced_attacking": {
 					"type": "bool",
 					"default": false
@@ -62,8 +58,8 @@
                 }
 			},
 			"animations": {
+                "contEatFromInventory": "controller.animation.general_eat_from_inventory",
 				"contSmeltingCooldown": "controller.animation.apato_furnace_smelting_cooldown",
-				"contEatFromInventoryCooldown": "controller.animation.general_eat_from_inventory_cooldown",
 				"contMovingTag": "controller.animation.add_moving_tag",
 				"contTameTag": "controller.animation.add_tame_tag",
 				"contBabyTag": "controller.animation.add_baby_tag",
@@ -79,8 +75,8 @@
 				"contEnergyUsage": "controller.animation.apatosaurus_energy_movement_usage",
 				"contWarnLowEnergy": "controller.animation.warn_of_low_energy",
 				"contBleed": "controller.animation.general_manage_bleed",
+				"animEatFromInventory": "animation.use_eat_from_inventory",
 				"animSmeltFurnace": "animation.smelting_countdown",
-				"animEatFromInventoryCooldown": "animation.eat_from_inventory_cooldown",
 				"animUseEnergyWhileMoving": "animation.apatosaurus_decrease_energy_while_moving",
 				"animUseEnergyWhileMovingBulldoze": "animation.apatosaurus_decrease_energy_while_moving_bulldozing",
 				"animEnergyRegenDelay": "animation.regenerate_energy_delay",
@@ -94,8 +90,8 @@
 			},
 			"scripts": {
 				"animate": [
+                    "contEatFromInventory",
 					"contSmeltingCooldown",
-					"contEatFromInventoryCooldown",
                     "contMovingTag",
 					"contTameTag",
 					"contBabyTag",
@@ -4748,16 +4744,38 @@
 					]
 				}
 			},
-			"rift:apato_mortaring_not_underground": {
-				"run_command": {
-					"command": [
-						"execute as @s[ry=45, rym=-45] run execute as @e[tag=!tamed, type=!player, type=!item, type=!rift:mortar, type=!rift:mortar_shell, type=!rift:egg,  family=!inanimate, c=1, x=~-32, dx=64, y=~-8, dy=64, z=~+16, dz=64] positioned as @e[tag=!tamed, type=!player, type=!item, type=!rift:mortar, type=!rift:mortar_shell, type=!rift:egg,  family=!inanimate, c=1, x=~-32, dx=64, y=~-8, dy=64, z=~+16, dz=64] run summon rift:mortar_shell ~ ~+30 ~",
-						"execute as @s[ry=135, rym=45] run execute as @e[tag=!tamed, type=!player, type=!item, type=!rift:mortar, type=!rift:mortar_shell, type=!rift:egg,  family=!inanimate, c=1, x=~-16, dx=-64, y=~-8, dy=64, z=~32, dz=-64] positioned as @e[tag=!tamed, type=!player, type=!item, type=!rift:mortar, type=!rift:mortar_shell, type=!rift:egg,  family=!inanimate, c=1, x=~-16, dx=-64, y=~-8, dy=64, z=~32, dz=-64] run summon rift:mortar_shell ~ ~+30 ~",
-						"execute as @s[ry=180, rym=135] run execute as @e[tag=!tamed, type=!player, type=!item, type=!rift:mortar, type=!rift:mortar_shell, type=!rift:egg,  family=!inanimate, c=1, x=~-32, dx=64, y=~-8, dy=64, z=~-16, dz=-64] positioned as @e[tag=!tamed, type=!player, type=!item, type=!rift:mortar, type=!rift:mortar_shell, type=!rift:egg,  family=!inanimate, c=1, x=~-32, dx=64, y=~-8, dy=64, z=~-16, dz=-64] run summon rift:mortar_shell ~ ~+30 ~",
-						"execute as @s[ry=-135, rym=-180] run execute as @e[tag=!tamed, type=!player, type=!item, type=!rift:mortar, type=!rift:mortar_shell, type=!rift:egg,  family=!inanimate, c=1, x=~-32, dx=64, y=~-8, dy=64, z=~-16, dz=-64] positioned as @e[tag=!tamed, type=!player, type=!item, type=!rift:mortar, type=!rift:mortar_shell, type=!rift:egg,  family=!inanimate, c=1, x=~-32, dx=64, y=~-8, dy=64, z=~-16, dz=-64] run summon rift:mortar_shell ~ ~+30 ~",
-						"execute as @s[ry=-45, rym=-135] run execute as @e[tag=!tamed, type=!player, type=!item, type=!rift:mortar, type=!rift:mortar_shell, type=!rift:egg,  family=!inanimate, c=1, x=~16, dx=64, y=~-8, dy=64, z=~-32, dz=64] positioned as @e[tag=!tamed, type=!player, type=!item, type=!rift:mortar, type=!rift:mortar_shell, type=!rift:egg,  family=!inanimate, c=1, x=~16, dx=64, y=~-8, dy=64, z=~-32, dz=64] run summon rift:mortar_shell ~ ~+30 ~"
-					]
-				}
+			"rift:apato_mortaring": {
+                "sequence": [
+                    {},
+                    {
+                        "filters": {
+                            "test": "is_underground",
+                            "subject": "self",
+                            "value": false
+                        },
+                        "run_command": {
+                            "command": [
+                                "execute as @s[ry=45, rym=-45] run execute as @e[tag=!tamed, type=!player, type=!item, type=!rift:mortar, type=!rift:mortar_shell, type=!rift:egg,  family=!inanimate, c=1, x=~-32, dx=64, y=~-8, dy=64, z=~+16, dz=64] positioned as @e[tag=!tamed, type=!player, type=!item, type=!rift:mortar, type=!rift:mortar_shell, type=!rift:egg,  family=!inanimate, c=1, x=~-32, dx=64, y=~-8, dy=64, z=~+16, dz=64] run summon rift:mortar_shell ~ ~+30 ~",
+                                "execute as @s[ry=135, rym=45] run execute as @e[tag=!tamed, type=!player, type=!item, type=!rift:mortar, type=!rift:mortar_shell, type=!rift:egg,  family=!inanimate, c=1, x=~-16, dx=-64, y=~-8, dy=64, z=~32, dz=-64] positioned as @e[tag=!tamed, type=!player, type=!item, type=!rift:mortar, type=!rift:mortar_shell, type=!rift:egg,  family=!inanimate, c=1, x=~-16, dx=-64, y=~-8, dy=64, z=~32, dz=-64] run summon rift:mortar_shell ~ ~+30 ~",
+                                "execute as @s[ry=180, rym=135] run execute as @e[tag=!tamed, type=!player, type=!item, type=!rift:mortar, type=!rift:mortar_shell, type=!rift:egg,  family=!inanimate, c=1, x=~-32, dx=64, y=~-8, dy=64, z=~-16, dz=-64] positioned as @e[tag=!tamed, type=!player, type=!item, type=!rift:mortar, type=!rift:mortar_shell, type=!rift:egg,  family=!inanimate, c=1, x=~-32, dx=64, y=~-8, dy=64, z=~-16, dz=-64] run summon rift:mortar_shell ~ ~+30 ~",
+                                "execute as @s[ry=-135, rym=-180] run execute as @e[tag=!tamed, type=!player, type=!item, type=!rift:mortar, type=!rift:mortar_shell, type=!rift:egg,  family=!inanimate, c=1, x=~-32, dx=64, y=~-8, dy=64, z=~-16, dz=-64] positioned as @e[tag=!tamed, type=!player, type=!item, type=!rift:mortar, type=!rift:mortar_shell, type=!rift:egg,  family=!inanimate, c=1, x=~-32, dx=64, y=~-8, dy=64, z=~-16, dz=-64] run summon rift:mortar_shell ~ ~+30 ~",
+                                "execute as @s[ry=-45, rym=-135] run execute as @e[tag=!tamed, type=!player, type=!item, type=!rift:mortar, type=!rift:mortar_shell, type=!rift:egg,  family=!inanimate, c=1, x=~16, dx=64, y=~-8, dy=64, z=~-32, dz=64] positioned as @e[tag=!tamed, type=!player, type=!item, type=!rift:mortar, type=!rift:mortar_shell, type=!rift:egg,  family=!inanimate, c=1, x=~16, dx=64, y=~-8, dy=64, z=~-32, dz=64] run summon rift:mortar_shell ~ ~+30 ~"
+                            ]
+                        }
+                    },
+                    {
+                        "filters": {
+                            "test": "is_underground",
+                            "subject": "self",
+                            "value": true
+                        },
+                        "run_command": {
+                            "command": [
+                                "summon rift:mortar_shell ~ ~ ~ rift:spawned_while_underground"
+                            ]
+                        }
+                    }
+                ]
 			},
 			"rift:apato_mortaring_underground": {
 				"run_command": {
@@ -5409,16 +5427,9 @@
 				}
 			},
             "rift:using_forced_attack": {},
-			"rift:start_eat_from_inventory_cooldown": {
-				"set_property": {
-					"rift:eat_from_inventory_cooldown": true
-				}
-			},
-			"rift:stop_eat_from_inventory_cooldown": {
-				"set_property": {
-					"rift:eat_from_inventory_cooldown": false
-				}
-			},
+            "rift:eat_from_inventory": {},
+            "rift:use_mounted_weapon": {},
+            "rift:finish_smelt": {},
 			"rift:start_smelting": {
 				"set_property": {
 					"rift:is_smelting": true

@@ -1,4 +1,5 @@
 import { BlockLocation, world } from "@minecraft/server"
+import { clearEntity, testForItem } from "./externals/itemmanagement"
 
 let alphabet = 'abcdefghijklmnopqrstuvwxyz'.split('')
 
@@ -14,8 +15,8 @@ world.events.beforeChat.subscribe(async (ev) => {
                     ev.sender.tell('r!journalrelock: Reset all unlocked journal entries for the person using the command')
                     break
                 case 'r!test':
-                    // let armorCount = 0
                     ev.sender.tell('Hello World!')
+                    // let armorCount = 0
                     // ev.sender.runCommandAsync('testfor @s[hasitem={location=slot.armor.chest, item=netherite_chestplate}]').then(() =>{
                     //     armorCount++
                     //     console.warn('one')

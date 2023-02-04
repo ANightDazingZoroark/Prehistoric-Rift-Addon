@@ -142,30 +142,23 @@ world.events.entityHit.subscribe(({ hitEntity, entity }) => {
     catch (e) {}
 })
 
-system.run(function everyTick(tick) {
-    system.run(everyTick)
-    let direwolves = Array.from(world.getDimension('overworld').getEntities({
-        id: 'rift:direwolf',
-        tags: [
-            'tamed',
-            'useChestSniff'
-        ]
-    }))
-    for (let d = 0; d < direwolves.length; d++) {
-        for(let x = -12; x < 13; x++) {
+world.events.beforeDataDrivenEntityTriggerEvent.subscribe(data => {
+    if (data.id == 'rift:use_chest_sniff') {
+        console.warn('hello')
+        for (let x = -12; x < 13; x++) {
             for (let y = -4; y < 16; y++) {
                 for (let z = -12; z < 13; z++) {
-                    if (direwolves[d].dimension.getBlock(new BlockLocation(Math.trunc(direwolves[d].location.x+x), Math.trunc(direwolves[d].location.y+y), Math.trunc(direwolves[d].location.z+z))).typeId == 'minecraft:chest') {
-                        world.getDimension('overworld').spawnEntity('rift:direwolf_alert_icon', new BlockLocation(Math.trunc(direwolves[d].location.x+x), Math.trunc(direwolves[d].location.y+y), Math.trunc(direwolves[d].location.z+z))).nameTag = ''
+                    if (data.entity.dimension.getBlock(new BlockLocation(Math.trunc(data.entity.location.x+x), Math.trunc(data.entity.location.y+y), Math.trunc(data.entity.location.z+z))).typeId == 'minecraft:chest') {
+                        world.getDimension('overworld').spawnEntity('rift:direwolf_alert_icon', new BlockLocation(Math.trunc(data.entity.location.x+x), Math.trunc(data.entity.location.y+y), Math.trunc(data.entity.location.z+z))).nameTag = ''
                     }
-                    if (direwolves[d].dimension.getBlock(new BlockLocation(Math.trunc(direwolves[d].location.x+x), Math.trunc(direwolves[d].location.y+y), Math.trunc(direwolves[d].location.z+z))).typeId == 'minecraft:trapped_chest') {
-                        world.getDimension('overworld').spawnEntity('rift:direwolf_alert_icon', new BlockLocation(Math.trunc(direwolves[d].location.x+x), Math.trunc(direwolves[d].location.y+y), Math.trunc(direwolves[d].location.z+z))).nameTag = ''
+                    if (data.entity.dimension.getBlock(new BlockLocation(Math.trunc(data.entity.location.x+x), Math.trunc(data.entity.location.y+y), Math.trunc(data.entity.location.z+z))).typeId == 'minecraft:trapped_chest') {
+                        world.getDimension('overworld').spawnEntity('rift:direwolf_alert_icon', new BlockLocation(Math.trunc(data.entity.location.x+x), Math.trunc(data.entity.location.y+y), Math.trunc(data.entity.location.z+z))).nameTag = ''
                     }
                 }
             }
         }
-        direwolves[d].runCommandAsync(`execute as @e[x=~-12, dx=24, y=~-4, dy=20, z=~-12, dz=24, type=chest_boat] positioned as @e[x=~-12, dx=24, y=~-4, dy=20, z=~-12, dz=24, type=chest_boat] run summon rift:direwolf_alert_icon `)
-        direwolves[d].runCommandAsync(`execute as @e[x=~-12, dx=24, y=~-4, dy=20, z=~-12, dz=24, type=chest_minecart] positioned as @e[x=~-12, dx=24, y=~-4, dy=20, z=~-12, dz=24, type=chest_minecart] run summon rift:direwolf_alert_icon `)
-        direwolves[d].removeTag('useChestSniff')
+        data.entity.runCommandAsync(`execute as @e[x=~-12, dx=24, y=~-4, dy=20, z=~-12, dz=24, type=chest_boat] positioned as @e[x=~-12, dx=24, y=~-4, dy=20, z=~-12, dz=24, type=chest_boat] run summon rift:direwolf_alert_icon `)
+        data.entity.runCommandAsync(`execute as @e[x=~-12, dx=24, y=~-4, dy=20, z=~-12, dz=24, type=chest_minecart] positioned as @e[x=~-12, dx=24, y=~-4, dy=20, z=~-12, dz=24, type=chest_minecart] run summon rift:direwolf_alert_icon `)
+        data.entity.removeTag('useChestSniff')
     }
 })
