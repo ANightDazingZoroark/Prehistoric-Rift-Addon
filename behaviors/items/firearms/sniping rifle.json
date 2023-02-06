@@ -2,7 +2,7 @@
 	"format_version": "1.16.100",
 	"minecraft:item": {
 		"description": {
-			"identifier": "rift:shotgun",
+			"identifier": "rift:sniping_rifle",
 			"category": "Equipment"
 		},
 		"components": {
@@ -10,11 +10,11 @@
 			"minecraft:max_stack_size": 1,
 			"minecraft:can_destroy_in_creative": false,
 			"minecraft:durability": {
-				"max_durability": 8
+				"max_durability": 6
 			},
             "minecraft:cooldown": {
-                "category": "shotgun",
-                "duration": 1.5
+                "category": "sniping rifle",
+                "duration": 3
             },
 			"minecraft:on_use": {
 				"on_use": {
@@ -37,10 +37,10 @@
 				}
 			},
 			"minecraft:icon": {
-				"texture": "shotgun"
+				"texture": "sniping rifle"
 			},
 			"minecraft:display_name": {
-				"value": "item.rift:shotgun.name"
+				"value": "item.rift:sniping_rifle.name"
 			},
 			"minecraft:creative_category": {
 				"parent": "itemGroup.name.riftFirearms"
@@ -50,14 +50,32 @@
 			"rift:shoot": {
 				"sequence": [
 					{
-                        "condition": "query.remaining_durability > 0",
+                        "condition": "!query.is_sneaking && query.remaining_durability > 0",
                         "shoot": {
-                            "projectile": "rift:shotgun_shell",
+                            "projectile": "rift:sniping_rifle_bullet<rift:inaccurate>",
                             "launch_power": 1
                         },
 						"run_command": {
 							"command": [
-                                "say pew pew"
+                                "say bad pew pew"
+							],
+							"target": "holder"
+						},
+						"damage": {
+							"type": "durability",
+							"amount": 1,
+							"target": "self"
+						}
+					},
+					{
+                        "condition": "query.is_sneaking && query.remaining_durability > 0",
+                        "shoot": {
+                            "projectile": "rift:sniping_rifle_bullet<rift:accurate>",
+                            "launch_power": 1
+                        },
+						"run_command": {
+							"command": [
+                                "say accurate pew pew"
 							],
 							"target": "holder"
 						},

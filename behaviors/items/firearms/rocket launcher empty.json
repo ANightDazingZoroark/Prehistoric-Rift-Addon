@@ -2,20 +2,17 @@
 	"format_version": "1.16.100",
 	"minecraft:item": {
 		"description": {
-			"identifier": "rift:shotgun",
+			"identifier": "rift:rocket_launcher_empty",
 			"category": "Equipment"
 		},
 		"components": {
-			"minecraft:stacked_by_data": false,
 			"minecraft:max_stack_size": 1,
 			"minecraft:can_destroy_in_creative": false,
-			"minecraft:durability": {
-				"max_durability": 8
-			},
             "minecraft:cooldown": {
-                "category": "shotgun",
-                "duration": 1.5
+                "category": "rocket launcher",
+                "duration": 5
             },
+			"minecraft:use_animation": "bow",
 			"minecraft:on_use": {
 				"on_use": {
 					"event": "rift:shoot",
@@ -36,11 +33,12 @@
 					"target": "self"
 				}
 			},
+			"minecraft:hand_equipped": true,
 			"minecraft:icon": {
-				"texture": "shotgun"
+				"texture": "rocket launcher empty"
 			},
 			"minecraft:display_name": {
-				"value": "item.rift:shotgun.name"
+				"value": "item.rift:rocket_launcher.name"
 			},
 			"minecraft:creative_category": {
 				"parent": "itemGroup.name.riftFirearms"
@@ -50,32 +48,13 @@
 			"rift:shoot": {
 				"sequence": [
 					{
-                        "condition": "query.remaining_durability > 0",
-                        "shoot": {
-                            "projectile": "rift:shotgun_shell",
-                            "launch_power": 1
-                        },
+                        "condition": "query.is_sneaking",
 						"run_command": {
 							"command": [
-                                "say pew pew"
+								"replaceitem entity @s[hasitem={item=rift:rocket, quantity=!0}] slot.weapon.mainhand 0 rift:rocket_launcher",
+                                "clear @s rift:rocket 0 1"
 							],
 							"target": "holder"
-						},
-						"damage": {
-							"type": "durability",
-							"amount": 1,
-							"target": "self"
-						}
-					}
-				]
-			},
-			"rift:damage": {
-				"sequence": [
-					{
-						"damage": {
-							"type": "durability",
-							"amount": 0,
-							"target": "self"
 						}
 					}
 				]

@@ -2,7 +2,7 @@
 	"format_version": "1.16.100",
 	"minecraft:item": {
 		"description": {
-			"identifier": "rift:shotgun",
+			"identifier": "rift:pistol",
 			"category": "Equipment"
 		},
 		"components": {
@@ -10,11 +10,11 @@
 			"minecraft:max_stack_size": 1,
 			"minecraft:can_destroy_in_creative": false,
 			"minecraft:durability": {
-				"max_durability": 8
+				"max_durability": 14
 			},
             "minecraft:cooldown": {
-                "category": "shotgun",
-                "duration": 1.5
+                "category": "pistol",
+                "duration": 0.3
             },
 			"minecraft:on_use": {
 				"on_use": {
@@ -37,10 +37,10 @@
 				}
 			},
 			"minecraft:icon": {
-				"texture": "shotgun"
+				"texture": "pistol"
 			},
 			"minecraft:display_name": {
-				"value": "item.rift:shotgun.name"
+				"value": "item.rift:pistol.name"
 			},
 			"minecraft:creative_category": {
 				"parent": "itemGroup.name.riftFirearms"
@@ -50,14 +50,26 @@
 			"rift:shoot": {
 				"sequence": [
 					{
-                        "condition": "query.remaining_durability > 0",
+                        "condition": "query.remaining_durability > 1",
                         "shoot": {
-                            "projectile": "rift:shotgun_shell",
+                            "projectile": "rift:pistol_bullet",
+                            "launch_power": 1
+                        },
+						"damage": {
+							"type": "durability",
+							"amount": 1,
+							"target": "self"
+						}
+					},
+					{
+                        "condition": "query.remaining_durability == 1",
+                        "shoot": {
+                            "projectile": "rift:pistol_bullet",
                             "launch_power": 1
                         },
 						"run_command": {
 							"command": [
-                                "say pew pew"
+                                "tellraw @s[m=!c] {\"rawtext\":[{\"text\":\"Sneak and right click/tap and hold to reload! Make sure you have enough magazines to do so beforehand!\"}]}"
 							],
 							"target": "holder"
 						},
@@ -66,7 +78,10 @@
 							"amount": 1,
 							"target": "self"
 						}
-					}
+					},
+                    {
+                        "condition": "query.is_sneaking"
+                    }
 				]
 			},
 			"rift:damage": {
