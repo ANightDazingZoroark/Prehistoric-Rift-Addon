@@ -50,6 +50,7 @@
 			},
 			"animations": {
                 "contEatFromInventory": "controller.animation.general_eat_from_inventory",
+                "contRefillEnergyFromInventory": "controller.animation.general_refill_energy_from_inventory",
 				"contMovingTag": "controller.animation.add_moving_tag",
 				"contTameTag": "controller.animation.add_tame_tag",
 				"contBabyTag": "controller.animation.add_baby_tag",
@@ -64,6 +65,7 @@
 				"contShellMode": "controller.animation.ankylosaurus_enter_shell",
 				"contBleed": "controller.animation.general_manage_bleed",
 				"animEatFromInventory": "animation.use_eat_from_inventory",
+                "animRefillEnergyFromInventory": "animation.use_refill_energy_from_inventory",
                 "animUseEnergyWhileMoving": "animation.ankylosaurus_decrease_energy_while_moving",
 				"animEnergyRegenDelay": "animation.regenerate_energy_delay",
 				"animRegenerateEnergy": "animation.ankylosaurus_regenerate_energy",
@@ -77,6 +79,7 @@
 			"scripts": {
 				"animate": [
                     "contEatFromInventory",
+                    "contRefillEnergyFromInventory",
                     "contMovingTag",
 					"contTameTag",
 					"contBabyTag",
@@ -1729,10 +1732,56 @@
 										"test": "is_sneaking",
 										"subject": "other",
 										"value": true
-									}
+									},
+                                    {
+                                        "test": "int_property",
+                                        "subject": "self",
+                                        "domain": "rift:energy",
+                                        "operator": "<",
+                                        "value": 225
+                                    }
 								]
 							},
 							"event": "rift:regenerate_energy_from_food",
+							"target": "self"
+						},
+						"use_item": true
+					},
+					{
+						"on_interact": {
+							"filters": {
+								"all_of": [
+									{
+										"test": "has_equipment",
+										"subject": "other",
+										"domain": "hand",
+										"value": "rift:fiber_bar"
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_baby",
+										"operator": "!="
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_tamed"
+									},
+									{
+										"test": "is_sneaking",
+										"subject": "other",
+										"value": true
+									},
+                                    {
+                                        "test": "int_property",
+                                        "subject": "self",
+                                        "domain": "rift:energy",
+                                        "value": 225
+                                    }
+								]
+							},
+							"event": "rift:lol4",
 							"target": "self"
 						},
 						"use_item": true
@@ -4581,6 +4630,7 @@
 			},
             "rift:using_forced_attack": {},
             "rift:eat_from_inventory": {},
+            "rift:refill_energy_from_inventory": {},
 			"rift:moving_slowly_low_energy": {
 				"sequence": [
 					{},
@@ -4930,8 +4980,12 @@
 			},
 			"rift:regenerate_energy_from_food": {
 				"set_property": {
-					"rift:energy": "query.property('rift:energy') + 30",
-                    "rift:addiction": "query.property('rift:addiction') + 1"
+					"rift:energy": "query.property('rift:energy') + 30"
+				},
+				"run_command": {
+					"command": [
+						"playsound random.eat @a[r=4]"
+					]
 				}
 			},
 			//for potion effects
@@ -5215,6 +5269,13 @@
 				"run_command": {
 					"command": [
 						"tellraw @p {\"rawtext\":[{\"translate\":\"reminder.cannot_use_regular_food.text\"}]}"
+					]
+				}
+			},
+			"rift:lol4": {
+				"run_command": {
+					"command": [
+						"tellraw @p {\"rawtext\":[{\"translate\":\"reminder.cannot_use_energy_boosters.text\"}]}"
 					]
 				}
 			},

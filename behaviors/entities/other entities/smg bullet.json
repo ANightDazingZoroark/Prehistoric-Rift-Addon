@@ -9,47 +9,83 @@
 			"is_experimental": false
 		},
 		"component_groups": {
+            "rift:normal": {
+                "minecraft:projectile": {
+                    "on_hit": {
+                        "definition_event": {
+                            "event_trigger": {
+                                "event": "rift:commit_disappear",
+                                "target": "self"
+                            }
+                        },
+                        "impact_damage": {
+                            "damage": 8,
+                            "knockback": true,
+                            "destroy_on_hit": true,
+                            "semi_random_diff_damage": false,
+                            "filter": "query.has_any_family(bullet)"
+                        }
+                    },
+                    "power": 2.7,
+                    "gravity": 0.02,
+                    "anchor": 1,
+                    "destroy_on_hurt": true,
+                    "uncertainty_base": 1,
+                    "uncertainty_multiplier": 1,
+                    "should_bounce": false,
+                    "inertia": 1,
+                    "offset": [
+                        0,
+                        0,
+                        0
+                    ],
+                    "multiple_targets": true
+                }
+            },
+            "rift:explosive": {
+                "minecraft:projectile": {
+                    "on_hit": {
+                        "definition_event": {
+                            "event_trigger": {
+                                "event": "rift:explode",
+                                "target": "self"
+                            }
+                        }
+                    },
+                    "power": 1.75,
+                    "gravity": 0.02,
+                    "anchor": 1,
+                    "destroy_on_hurt": true,
+                    "uncertainty_base": 1,
+                    "uncertainty_multiplier": 1,
+                    "should_bounce": false,
+                    "inertia": 1,
+                    "offset": [
+                        0,
+                        0,
+                        0
+                    ],
+                    "multiple_targets": true
+                }
+            },
 			"rift:commit_disappear": {
 				"minecraft:instant_despawn": {
 					"remove_child_entities": true
 				}
+			},
+			"rift:explode": {
+                "minecraft:explode": {
+                    "breaks_blocks": false,
+                    "fuse_length": 0,
+                    "fuse_lit": true,
+                    "power": 2
+                }
 			}
 		},
 		"components": {
 			"minecraft:collision_box": {
 				"width": 0.25,
 				"height": 0.25
-			},
-			"minecraft:projectile": {
-				"on_hit": {
-					"definition_event": {
-						"event_trigger": {
-							"event": "rift:commit_disappear",
-							"target": "self"
-						}
-					},
-					"impact_damage": {
-						"damage": 8,
-						"knockback": true,
-						"destroy_on_hit": true,
-						"semi_random_diff_damage": false,
-						"filter": "query.has_any_family(bullet)"
-					}
-				},
-				"power": 2.7,
-				"gravity": 0.02,
-				"anchor": 1,
-				"destroy_on_hurt": true,
-				"uncertainty_base": 1,
-				"uncertainty_multiplier": 1,
-				"should_bounce": false,
-				"inertia": 1,
-				"offset": [
-					0,
-					0,
-					0
-				],
-				"multiple_targets": true
 			},
 			"minecraft:physics": {},
 			"minecraft:pushable": {
@@ -64,13 +100,34 @@
 			}
 		},
 		"events": {
+            "rift:normal": {
+                "add": {
+                    "component_groups": [
+                        "rift:normal"
+                    ]
+                }
+            },
+            "rift:explosive": {
+                "add": {
+                    "component_groups": [
+                        "rift:explosive"
+                    ]
+                }
+            },
 			"rift:commit_disappear": {
                 "add": {
                     "component_groups": [
                         "rift:commit_disappear"
                     ]
                 }
-			}
+			},
+            "rift:explode": {
+                "add": {
+                    "component_groups": [
+                        "rift:explode"
+                    ]
+                }
+            }
 		}
 	}
 }

@@ -9,6 +9,72 @@
 			"is_experimental": false
 		},
 		"component_groups": {
+            "rift:basic": {
+                "minecraft:projectile": {
+                    "on_hit": {
+                        "definition_event": {
+                            "event_trigger": {
+                                "event": "rift:commit_disappear",
+                                "target": "self"
+                            }
+                        },
+                        "impact_damage": {
+                            "damage": 20,
+                            "knockback": true,
+                            "destroy_on_hit": true,
+                            "semi_random_diff_damage": false,
+                            "filter": "query.has_any_family(bullet)"
+                        }
+                    },
+                    "power": 1,
+                    "gravity": 0.02,
+                    "anchor": 1,
+                    "destroy_on_hurt": true,
+                    "uncertainty_base": 5,
+                    "uncertainty_multiplier": 5,
+                    "should_bounce": false,
+                    "inertia": 1,
+                    "offset": [
+                        0,
+                        0,
+                        0
+                    ],
+                    "multiple_targets": true
+                }
+            },
+            "rift:powered": {
+                "minecraft:projectile": {
+                    "on_hit": {
+                        "definition_event": {
+                            "event_trigger": {
+                                "event": "rift:commit_disappear",
+                                "target": "self"
+                            }
+                        },
+                        "impact_damage": {
+                            "damage": 40,
+                            "knockback": true,
+                            "destroy_on_hit": true,
+                            "semi_random_diff_damage": false,
+                            "filter": "query.has_any_family(bullet)"
+                        }
+                    },
+                    "power": 1,
+                    "gravity": 0.02,
+                    "anchor": 1,
+                    "destroy_on_hurt": true,
+                    "uncertainty_base": 5,
+                    "uncertainty_multiplier": 5,
+                    "should_bounce": false,
+                    "inertia": 1,
+                    "offset": [
+                        0,
+                        0,
+                        0
+                    ],
+                    "multiple_targets": true
+                }
+            },
 			"rift:commit_disappear": {
 				"minecraft:instant_despawn": {
 					"remove_child_entities": true
@@ -19,37 +85,6 @@
 			"minecraft:collision_box": {
 				"width": 0.25,
 				"height": 0.25
-			},
-			"minecraft:projectile": {
-				"on_hit": {
-					"definition_event": {
-						"event_trigger": {
-							"event": "rift:commit_disappear",
-							"target": "self"
-						}
-					},
-					"impact_damage": {
-						"damage": 20,
-						"knockback": true,
-						"destroy_on_hit": true,
-						"semi_random_diff_damage": false,
-						"filter": "query.has_any_family(bullet)"
-					}
-				},
-				"power": 1,
-				"gravity": 0.02,
-				"anchor": 1,
-				"destroy_on_hurt": true,
-				"uncertainty_base": 5,
-				"uncertainty_multiplier": 5,
-				"should_bounce": false,
-				"inertia": 1,
-				"offset": [
-					0,
-					0,
-					0
-				],
-				"multiple_targets": true
 			},
 			"minecraft:physics": {},
 			"minecraft:pushable": {
@@ -64,6 +99,20 @@
 			}
 		},
 		"events": {
+            "rift:basic": {
+                "add": {
+                    "component_groups": [
+                        "rift:basic"
+                    ]
+                }
+            },
+            "rift:powered": {
+                "add": {
+                    "component_groups": [
+                        "rift:powered"
+                    ]
+                }
+            },
 			"rift:commit_disappear": {
                 "add": {
                     "component_groups": [

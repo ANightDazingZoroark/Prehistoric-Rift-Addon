@@ -1,4 +1,5 @@
 import { BlockLocation, ItemStack, Items, world, Location, MinecraftEffectTypes, system } from "@minecraft/server"
+import { setTimeout } from "./externals/timers"
 
 let saurophaganaxFood = [
     'minecraft:blaze',

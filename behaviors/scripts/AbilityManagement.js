@@ -1,4 +1,5 @@
 import { system, world } from "@minecraft/server"
+import { setTimeout } from "./externals/timers"
 
 system.run(function everyTick(tick) {
     system.run(everyTick)
@@ -23,9 +24,15 @@ system.run(function everyTick(tick) {
         }
         if (entities[i].typeId == 'rift:tenontosaurus' && !!entities[i].target && !entities[i].hasComponent('minecraft:is_tamed')) {
             entities[i].target.addTag('tenontoTarget')
+            setTimeout(() => {
+                entities[i].target.removeTag('tenontoTarget')
+            }, 1000)
         }
         if (entities[i].typeId == 'rift:tenontosaurus' && !!entities[i].target && entities[i].hasComponent('minecraft:is_tamed')) {
             entities[i].target.addTag('tenontoTamedTarget')
+            setTimeout(() => {
+                entities[i].target.removeTag('tenontoTamedTarget')
+            }, 1000)
         }
     }
 })

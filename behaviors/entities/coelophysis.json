@@ -1535,7 +1535,14 @@
 										"test": "is_sneaking",
 										"subject": "other",
 										"value": true
-									}
+									},
+                                    {
+                                        "test": "int_property",
+                                        "subject": "self",
+                                        "domain": "rift:energy",
+                                        "operator": "<",
+                                        "value": 225
+                                    }
 								]
 							},
 							"event": "rift:regenerate_energy_from_raw_food",
@@ -1568,10 +1575,66 @@
 										"test": "is_sneaking",
 										"subject": "other",
 										"value": true
-									}
+									},
+                                    {
+                                        "test": "int_property",
+                                        "subject": "self",
+                                        "domain": "rift:energy",
+                                        "operator": "<",
+                                        "value": 225
+                                    }
 								]
 							},
 							"event": "rift:regenerate_energy_from_cooked_food",
+							"target": "self"
+						},
+						"use_item": true
+					},
+					{
+						"on_interact": {
+							"filters": {
+								"all_of": [
+									{
+                                        "any_of": [
+                                            {
+                                                "test": "has_equipment",
+                                                "subject": "other",
+                                                "domain": "hand",
+                                                "value": "rift:raw_fibrous_meat"
+                                            },
+                                            {
+                                                "test": "has_equipment",
+                                                "subject": "other",
+                                                "domain": "hand",
+                                                "value": "rift:cooked_fibrous_meat"
+                                            }
+                                        ]
+                                    },
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_baby",
+										"operator": "!="
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"value": "minecraft:is_tamed"
+									},
+									{
+										"test": "is_sneaking",
+										"subject": "other",
+										"value": true
+									},
+                                    {
+                                        "test": "int_property",
+                                        "subject": "self",
+                                        "domain": "rift:energy",
+                                        "value": 225
+                                    }
+								]
+							},
+							"event": "rift:lol4",
 							"target": "self"
 						},
 						"use_item": true
@@ -4368,11 +4431,21 @@
 			"rift:regenerate_energy_from_raw_food": {
 				"set_property": {
 					"rift:energy": "query.property('rift:energy') + 15"
+				},
+				"run_command": {
+					"command": [
+						"playsound random.eat @a[r=4]"
+					]
 				}
 			},
 			"rift:regenerate_energy_from_cooked_food": {
 				"set_property": {
 					"rift:energy": "query.property('rift:energy') + 30"
+				},
+				"run_command": {
+					"command": [
+						"playsound random.eat @a[r=4]"
+					]
 				}
 			},
 			//for potion effects
@@ -4656,6 +4729,13 @@
 				"run_command": {
 					"command": [
 						"tellraw @p {\"rawtext\":[{\"translate\":\"reminder.cannot_use_regular_food.text\"}]}"
+					]
+				}
+			},
+			"rift:lol4": {
+				"run_command": {
+					"command": [
+						"tellraw @p {\"rawtext\":[{\"translate\":\"reminder.cannot_use_energy_boosters.text\"}]}"
 					]
 				}
 			},

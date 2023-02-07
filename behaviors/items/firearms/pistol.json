@@ -69,7 +69,7 @@
                         },
 						"run_command": {
 							"command": [
-                                "tellraw @s[m=!c] {\"rawtext\":[{\"text\":\"Sneak and right click/tap and hold to reload! Make sure you have enough magazines to do so beforehand!\"}]}"
+                                "tellraw @s[m=!c] {\"rawtext\":[{\"text\":\"Right click/tap and hold to reload! Make sure you have enough magazines to do so beforehand!\"}]}"
 							],
 							"target": "holder"
 						},
@@ -80,7 +80,23 @@
 						}
 					},
                     {
-                        "condition": "query.is_sneaking"
+                        "condition": "(t.index = 0;loop(27,{q.is_item_name_any('slot.inventory', t.index, 'rift:magazine') ? {return query.remaining_durability == 0;} : {t.index = t.index + 1;}; });t.index = 0;loop(9,{q.is_item_name_any('slot.hotbar', t.index, 'rift:magazine') ? {return query.remaining_durability == 0;} : {t.index = t.index + 1;};}); return 0;);",
+                        "run_command": {
+                            "command": [
+                                "replaceitem entity @s slot.weapon.mainhand 0 rift:pistol",
+                                "clear @s rift:magazine 0 1"
+                            ],
+							"target": "holder"
+                        }
+                    },
+                    {
+                        "condition": "(t.index = 0;loop(27,{q.is_item_name_any('slot.inventory', t.index, 'rift:magazine') ? {return 0;} : {t.index = t.index + 1;}; });t.index = 0;loop(9,{q.is_item_name_any('slot.hotbar', t.index, 'rift:magazine') ? {return 0;} : {t.index = t.index + 1;};}); return query.remaining_durability == 0;);",
+                        "run_command": {
+                            "command": [
+                                "tellraw @s {\"rawtext\":[{\"text\":\"You don't have enough magazines in your inventory to reload!\"}]}"
+                            ],
+							"target": "holder"
+                        }
                     }
 				]
 			},

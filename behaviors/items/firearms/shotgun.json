@@ -49,24 +49,104 @@
 		"events": {
 			"rift:shoot": {
 				"sequence": [
-					{
-                        "condition": "query.remaining_durability > 0",
-                        "shoot": {
-                            "projectile": "rift:shotgun_shell",
-                            "launch_power": 1
-                        },
-						"run_command": {
-							"command": [
-                                "say pew pew"
-							],
+                    {
+                        "condition": "!query.is_sneaking",
+                        "sequence": [
+                            {
+                                "condition": "query.remaining_durability > 1",
+                                "shoot": {
+                                    "projectile": "rift:shotgun_shell<rift:basic>",
+                                    "launch_power": 1
+                                },
+                                "damage": {
+                                    "type": "durability",
+                                    "amount": 1,
+                                    "target": "self"
+                                }
+                            },
+                            {
+                                "condition": "query.remaining_durability == 1",
+                                "shoot": {
+                                    "projectile": "rift:shotgun_shell<rift:basic>",
+                                    "launch_power": 1
+                                },
+                                "run_command": {
+                                    "command": [
+                                        "tellraw @s[m=!c] {\"rawtext\":[{\"text\":\"Right click/tap and hold to reload! Make sure you have enough shells to do so beforehand!\"}]}"
+                                    ],
+                                    "target": "holder"
+                                },
+                                "damage": {
+                                    "type": "durability",
+                                    "amount": 1,
+                                    "target": "self"
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "condition": "query.is_sneaking",
+                        "sequence": [
+                            {
+                                "condition": "query.remaining_durability > 2",
+                                "shoot": {
+                                    "projectile": "rift:shotgun_shell<rift:powered>",
+                                    "launch_power": 1
+                                },
+                                "damage": {
+                                    "type": "durability",
+                                    "amount": 2,
+                                    "target": "self"
+                                }
+                            },
+                            {
+                                "condition": "query.remaining_durability == 2",
+                                "shoot": {
+                                    "projectile": "rift:shotgun_shell<rift:powered>",
+                                    "launch_power": 1
+                                },
+                                "run_command": {
+                                    "command": [
+                                        "tellraw @s[m=!c] {\"rawtext\":[{\"text\":\"Right click/tap and hold to reload! Make sure you have enough shells to do so beforehand!\"}]}"
+                                    ],
+                                    "target": "holder"
+                                },
+                                "damage": {
+                                    "type": "durability",
+                                    "amount": 2,
+                                    "target": "self"
+                                }
+                            },
+                            {
+                                "condition": "query.remaining_durability < 2",
+                                "run_command": {
+                                    "command": [
+                                        "tellraw @s[m=!c] {\"rawtext\":[{\"text\":\"Your shotgun doesnt have enough loaded shells to use this!\"}]}"
+                                    ],
+                                    "target": "holder"
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "condition": "(t.index = 0;loop(27,{q.is_item_name_any('slot.inventory', t.index, 'rift:shotgun_shells') ? {return 1;} : {t.index = t.index + 1;}; });t.index = 0;loop(9,{q.is_item_name_any('slot.hotbar', t.index, 'rift:shotgun_shells') ? {return query.remaining_durability == 0;} : {t.index = t.index + 1;};}); return 0;);",
+                        "run_command": {
+                            "command": [
+                                "replaceitem entity @s slot.weapon.mainhand 0 rift:shotgun",
+                                "clear @s rift:shotgun_shells 0 1"
+                            ],
 							"target": "holder"
-						},
-						"damage": {
-							"type": "durability",
-							"amount": 1,
-							"target": "self"
-						}
-					}
+                        }
+                    },
+                    {
+                        "condition": "(t.index = 0;loop(27,{q.is_item_name_any('slot.inventory', t.index, 'rift:shotgun_shells') ? {return 0;} : {t.index = t.index + 1;}; });t.index = 0;loop(9,{q.is_item_name_any('slot.hotbar', t.index, 'rift:shotgun_shells') ? {return 0;} : {t.index = t.index + 1;};}); return query.remaining_durability == 0;);",
+                        "run_command": {
+                            "command": [
+                                "tellraw @s {\"rawtext\":[{\"text\":\"You don't have enough shells in your inventory to reload!\"}]}"
+                            ],
+							"target": "holder"
+                        }
+                    }
 				]
 			},
 			"rift:damage": {

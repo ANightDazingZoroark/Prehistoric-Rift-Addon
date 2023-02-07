@@ -48,15 +48,24 @@
 			"rift:shoot": {
 				"sequence": [
 					{
-                        "condition": "query.is_sneaking",
+                        "condition": "(t.index = 0;loop(27,{q.is_item_name_any('slot.inventory', t.index, 'rift:rocket') ? {return query.remaining_durability == 0;} : {t.index = t.index + 1;}; });t.index = 0;loop(9,{q.is_item_name_any('slot.hotbar', t.index, 'rift:rocket') ? {return query.remaining_durability == 0;} : {t.index = t.index + 1;};}); return 0;);",
 						"run_command": {
 							"command": [
-								"replaceitem entity @s[hasitem={item=rift:rocket, quantity=!0}] slot.weapon.mainhand 0 rift:rocket_launcher",
+								"replaceitem entity @s slot.weapon.mainhand 0 rift:rocket_launcher",
                                 "clear @s rift:rocket 0 1"
 							],
 							"target": "holder"
 						}
-					}
+					},
+                    {
+                        "condition": "(t.index = 0;loop(27,{q.is_item_name_any('slot.inventory', t.index, 'rift:rocket') ? {return 0;} : {t.index = t.index + 1;}; });t.index = 0;loop(9,{q.is_item_name_any('slot.hotbar', t.index, 'rift:rocket') ? {return 0;} : {t.index = t.index + 1;};}); return query.remaining_durability == 0;);",
+                        "run_command": {
+                            "command": [
+                                "tellraw @s[hasitem={item=rift:rocket, quantity=0}] {\"rawtext\":[{\"text\":\"You don't have enough rockets in your inventory to reload!\"}]}"
+                            ],
+							"target": "holder"
+                        }
+                    }
 				]
 			}
 		}

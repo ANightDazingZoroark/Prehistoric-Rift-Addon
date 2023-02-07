@@ -227,6 +227,71 @@
                 "minecraft:shooter": {
                     "def": "minecraft:arrow"
                 }
+            },
+            "rift:shotgunner": {
+                "minecraft:equipment": {
+                    "table": "loot_tables/entities/pillager shotgun equipment.json"
+                },
+                "minecraft:loot": {
+                    "table": "loot_tables/entities/pillager shotgunner.json"
+                }
+            },
+            "rift:smger": {
+                "minecraft:equipment": {
+                    "table": "loot_tables/entities/pillager smg equipment.json"
+                },
+                "minecraft:loot": {
+                    "table": "loot_tables/entities/pillager smger.json"
+                }
+            },
+            "rift:ranged_attack_shotgun": {
+                "minecraft:behavior.ranged_attack": {
+                    "attack_interval_max": 3.0,
+                    "attack_interval_min": 3.0,
+                    "attack_radius": 8.0,
+                    "attack_radius_min": 5,
+                    "priority": 4
+                },
+                "minecraft:environment_sensor": {
+                    "triggers": {
+                        "event": "minecraft:melee_mode",
+                        "filters": {
+                            "operator": "==",
+                            "subject": "self",
+                            "test": "is_underwater",
+                            "value": true
+                        }
+                    }
+                },
+                "minecraft:shooter": {
+                    "def": "rift:shotgun_shell<rift:basic>"
+                }
+            },
+            "rift:ranged_attack_smg": {
+                "minecraft:behavior.ranged_attack": {
+                    "attack_interval_max": 3.0,
+                    "attack_interval_min": 3.0,
+                    "attack_radius": 8.0,
+                    "priority": 4,
+                    "burst_interval": 0.3,
+                    "burst_shots": 6,
+                    "charge_charged_trigger": 0.0,
+                    "charge_shoot_trigger": 4.0
+                },
+                "minecraft:environment_sensor": {
+                    "triggers": {
+                        "event": "minecraft:melee_mode",
+                        "filters": {
+                            "operator": "==",
+                            "subject": "self",
+                            "test": "is_underwater",
+                            "value": true
+                        }
+                    }
+                },
+                "minecraft:shooter": {
+                    "def": "rift:smg_bullet<rift:normal>"
+                }
             }
         },
         "components": {
@@ -332,9 +397,6 @@
                 "despawn_from_distance": {}
             },
             "minecraft:equip_item": {},
-            "minecraft:equipment": {
-                "table": "loot_tables/entities/pillager_gear.json"
-            },
             "minecraft:experience_reward": {
                 "on_death": "query.last_hit_by_player ? (query.is_baby ? 12 : 5) + (Math.die_roll(query.equipment_count,1,3)) : 0"
             },
@@ -361,9 +423,6 @@
             },
             "minecraft:is_hidden_when_invisible": {},
             "minecraft:jump.static": {},
-            "minecraft:loot": {
-                "table": "loot_tables/entities/pillager.json"
-            },
             "minecraft:movement": {
                 "value": 0.35
             },
@@ -434,11 +493,26 @@
                 }
             },
             "minecraft:entity_spawned": {
-                "add": {
-                    "component_groups": [
-                        "minecraft:ranged_attack"
-                    ]
-                }
+                "randomize": [
+                    {
+                        "weight": 2,
+                        "add": {
+                            "component_groups": [
+                                "rift:smger",
+                                "rift:ranged_attack_smg"
+                            ]
+                        }
+                    },
+                    {
+                        "weight": 1,
+                        "add": {
+                            "component_groups": [
+                                "rift:shotgunner",
+                                "rift:ranged_attack_shotgun"
+                            ]
+                        }
+                    }
+                ]
             },
             "minecraft:melee_mode": {
                 "add": {
@@ -494,16 +568,64 @@
                 ]
             },
             "minecraft:ranged_mode": {
-                "add": {
-                    "component_groups": [
-                        "minecraft:ranged_attack"
-                    ]
-                },
-                "remove": {
-                    "component_groups": [
-                        "minecraft:melee_attack"
-                    ]
-                }
+                "sequence": [
+                    {
+                        "remove": {
+                            "component_groups": [
+                                "minecraft:melee_attack"
+                            ]
+                        }
+                    },
+                    {
+                        "filters": {
+                            "any_of": [
+                                {
+                                    "test": "has_equipment",
+                                    "subject": "self",
+                                    "domain": "hand",
+                                    "value": "minecraft:bow"
+                                },
+                                {
+                                    "test": "has_equipment",
+                                    "subject": "self",
+                                    "domain": "hand",
+                                    "value": "minecraft:crossbow"
+                                }
+                            ]
+                        },
+                        "add": {
+                            "component_groups": [
+                                "minecraft:ranged_attack"
+                            ]
+                        }
+                    },
+                    {
+                        "filters": {
+                            "test": "has_equipment",
+                            "subject": "self",
+                            "domain": "hand",
+                            "value": "rift:shotgun"
+                        },
+                        "add": {
+                            "component_groups": [
+                                "rift:ranged_attack_shotgun"
+                            ]
+                        }
+                    },
+                    {
+                        "filters": {
+                            "test": "has_equipment",
+                            "subject": "self",
+                            "domain": "hand",
+                            "value": "rift:smg"
+                        },
+                        "add": {
+                            "component_groups": [
+                                "rift:ranged_attack_smg"
+                            ]
+                        }
+                    }
+                ]
             },
             "minecraft:spawn_as_illager_captain": {
                 "add": {

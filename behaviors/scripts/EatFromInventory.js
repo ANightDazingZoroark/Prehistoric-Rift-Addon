@@ -1,4 +1,29 @@
 import { MinecraftEffectTypes, system, world } from "@minecraft/server"
+import { clearEntity } from "./externals/itemmanagement"
+
+let fiberBarEaters = [
+    'rift:ankylosaurus',
+    'rift:apatosaurus',
+    'rift:direbear',
+    'rift:gallimimus',
+    'rift:megaloceros',
+    'rift:parasaurolophus',
+    'rift:stegosaurus',
+    'rift:tenontosaurus',
+    'rift:triceratops'
+]
+
+let fibrousMeatEaters = [
+    'rift:anomalocaris',
+    'rift:baryonyx',
+    'rift:dilophosaurus',
+    'rift:direbear',
+    'rift:direwolf',
+    'rift:sarcosuchus',
+    'rift:saurophaganax',
+    'rift:tyrannosaurus',
+    'rift:utahraptor'
+]
 
 world.events.beforeDataDrivenEntityTriggerEvent.subscribe(data => {
     if (data.id == 'rift:eat_from_inventory') {
@@ -53,6 +78,33 @@ world.events.beforeDataDrivenEntityTriggerEvent.subscribe(data => {
                 }
                 else {
                     continue
+                }
+            }
+            catch (e) {}
+        }
+    }
+    if (data.id == 'rift:refill_energy_from_inventory') {
+        for (let j = data.entity.getComponent('inventory').inventorySize - 1; j >= 0; j--) {
+            try {
+                if (fiberBarEaters.includes(data.entity.typeId) && data.entity.getComponent('inventory').container.getItem(j).typeId == 'rift:fiber_bar') {
+                    data.entity.triggerEvent('rift:regenerate_energy_from_food')
+                    clearEntity(data.entity, 'rift:fiber_bar', -1, 1)
+                }
+            }
+            catch (e) {}
+
+            try {
+                if (fibrousMeatEaters.includes(data.entity.typeId) && data.entity.getComponent('inventory').container.getItem(j).typeId == 'rift:raw_fibrous_meat') {
+                    data.entity.triggerEvent('rift:regenerate_energy_from_raw_food')
+                    clearEntity(data.entity, 'rift:raw_fibrous_meat', -1, 1)
+                }
+            }
+            catch (e) {}
+
+            try {
+                if (fibrousMeatEaters.includes(data.entity.typeId) && data.entity.getComponent('inventory').container.getItem(j).typeId == 'rift:cooked_fibrous_meat') {
+                    data.entity.triggerEvent('rift:regenerate_energy_from_cooked_food')
+                    clearEntity(data.entity, 'rift:cooked_fibrous_meat', -1, 1)
                 }
             }
             catch (e) {}

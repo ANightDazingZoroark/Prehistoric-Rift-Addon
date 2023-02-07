@@ -12,6 +12,10 @@
 			"minecraft:durability": {
 				"max_durability": 45
 			},
+            "minecraft:cooldown": {
+                "category": "smg",
+                "duration": 0.001
+            },
 			"minecraft:on_use": {
 				"on_use": {
 					"event": "rift:shoot",
@@ -45,24 +49,104 @@
 		"events": {
 			"rift:shoot": {
 				"sequence": [
-					{
-                        "condition": "query.remaining_durability > 0",
-                        "shoot": {
-                            "projectile": "rift:smg_bullet",
-                            "launch_power": 1
-                        },
-						"run_command": {
-							"command": [
-                                "say pew pew"
-							],
+                    {
+                        "condition": "!query.is_sneaking",
+                        "sequence": [
+                            {
+                                "condition": "query.remaining_durability > 1",
+                                "shoot": {
+                                    "projectile": "rift:smg_bullet<rift:normal>",
+                                    "launch_power": 1
+                                },
+                                "damage": {
+                                    "type": "durability",
+                                    "amount": 1,
+                                    "target": "self"
+                                }
+                            },
+                            {
+                                "condition": "query.remaining_durability == 1",
+                                "shoot": {
+                                    "projectile": "rift:smg_bullet<rift:normal>",
+                                    "launch_power": 1
+                                },
+                                "run_command": {
+                                    "command": [
+                                        "tellraw @s[m=!c] {\"rawtext\":[{\"text\":\"Right click/tap and hold to reload! Make sure you have enough magazines to do so beforehand!\"}]}"
+                                    ],
+                                    "target": "holder"
+                                },
+                                "damage": {
+                                    "type": "durability",
+                                    "amount": 1,
+                                    "target": "self"
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "condition": "query.is_sneaking",
+                        "sequence": [
+                            {
+                                "condition": "query.remaining_durability > 15",
+                                "shoot": {
+                                    "projectile": "rift:smg_bullet<rift:explosive>",
+                                    "launch_power": 1
+                                },
+                                "damage": {
+                                    "type": "durability",
+                                    "amount": 15,
+                                    "target": "self"
+                                }
+                            },
+                            {
+                                "condition": "query.remaining_durability == 15",
+                                "shoot": {
+                                    "projectile": "rift:smg_bullet<rift:explosive>",
+                                    "launch_power": 1
+                                },
+                                "run_command": {
+                                    "command": [
+                                        "tellraw @s[m=!c] {\"rawtext\":[{\"text\":\"Right click/tap and hold to reload! Make sure you have enough magazines to do so beforehand!\"}]}"
+                                    ],
+                                    "target": "holder"
+                                },
+                                "damage": {
+                                    "type": "durability",
+                                    "amount": 15,
+                                    "target": "self"
+                                }
+                            },
+                            {
+                                "condition": "query.remaining_durability < 15",
+                                "run_command": {
+                                    "command": [
+                                        "tellraw @s[m=!c] {\"rawtext\":[{\"text\":\"Your smg doesnt have enough loaded ammunition to use this!\"}]}"
+                                    ],
+                                    "target": "holder"
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "condition": "(t.index = 0;loop(27,{q.is_item_name_any('slot.inventory', t.index, 'rift:magazine') ? {return query.remaining_durability == 0;} : {t.index = t.index + 1;}; });t.index = 0;loop(9,{q.is_item_name_any('slot.hotbar', t.index, 'rift:magazine') ? {return query.remaining_durability == 0;} : {t.index = t.index + 1;};}); return 0;);",
+                        "run_command": {
+                            "command": [
+                                "replaceitem entity @s slot.weapon.mainhand 0 rift:smg",
+                                "clear @s rift:magazine 0 1"
+                            ],
 							"target": "holder"
-						},
-						"damage": {
-							"type": "durability",
-							"amount": 1,
-							"target": "self"
-						}
-					}
+                        }
+                    },
+                    {
+                        "condition": "(t.index = 0;loop(27,{q.is_item_name_any('slot.inventory', t.index, 'rift:magazine') ? {return 0;} : {t.index = t.index + 1;}; });t.index = 0;loop(9,{q.is_item_name_any('slot.hotbar', t.index, 'rift:magazine') ? {return 0;} : {t.index = t.index + 1;};}); return query.remaining_durability == 0;);",
+                        "run_command": {
+                            "command": [
+                                "tellraw @s {\"rawtext\":[{\"text\":\"You don't have enough magazines in your inventory to reload!\"}]}"
+                            ],
+							"target": "holder"
+                        }
+                    }
 				]
 			},
 			"rift:damage": {
