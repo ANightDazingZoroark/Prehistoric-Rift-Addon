@@ -235,12 +235,54 @@
                     "priority": 2,
                     "within_radius": 12.0
                 }
+            },
+            "rift:change_attack_mode": {
+				"minecraft:target_nearby_sensor": {
+					"inside_range": 4,
+					"outside_range": 7,
+					"must_see": true,
+					"on_inside_range": {
+						"event": "rift:melee_attack_mode",
+						"target": "self"
+					},
+					"on_outside_range": {
+						"event": "rift:ranged_attack_mode",
+						"target": "self"
+					},
+					"on_vision_lost_inside_range": {
+						"event": "rift:ranged_attack_mode",
+						"target": "self"
+					}
+			  	}
+			},
+            "rift:ranged_mode": {
+                "minecraft:equipment": {
+                    "table": "loot_tables/entities/vindicator ranged.json"
+                },
+                "minecraft:behavior.ranged_attack": {
+                    "attack_interval_max": 1.0,
+                    "attack_interval_min": 1.0,
+                    "attack_radius": 8.0,
+                    "attack_radius_min": 6,
+                    "priority": 3
+                },
+                "minecraft:shooter": {
+                    "def": "rift:pistol_bullet"
+                }
+            },
+            "rift:melee_mode": {
+                "minecraft:equipment": {
+                    "table": "loot_tables/entities/vindicator melee.json"
+                },
+                "minecraft:attack": {
+                    "damage": 8
+                },
+                "minecraft:behavior.melee_attack": {
+                    "priority": 3
+                }
             }
         },
         "components": {
-            "minecraft:attack": {
-                "damage": 8
-            },
             "minecraft:behavior.float": {
                 "priority": 0
             },
@@ -251,9 +293,6 @@
                 "look_distance": 8,
                 "priority": 10,
                 "probability": 0.02
-            },
-            "minecraft:behavior.melee_attack": {
-                "priority": 3
             },
             "minecraft:behavior.random_stroll": {
                 "priority": 9,
@@ -268,9 +307,6 @@
                 "width": 0.6
             },
             "minecraft:conditional_bandwidth_optimization": {},
-            "minecraft:equipment": {
-                "table": "loot_tables/entities/vindicator_gear.json"
-            },
             "minecraft:experience_reward": {
                 "on_death": "query.last_hit_by_player ? (query.is_baby ? 12 : 5) + (Math.die_roll(query.equipment_count,1,3)) : 0"
             },
@@ -376,7 +412,8 @@
             "minecraft:become_aggro": {
                 "add": {
                     "component_groups": [
-                        "minecraft:vindicator_aggro"
+                        "minecraft:vindicator_aggro",
+                        "rift:change_attack_mode"
                     ]
                 }
             },
@@ -486,7 +523,15 @@
             "minecraft:stop_aggro": {
                 "remove": {
                     "component_groups": [
-                        "minecraft:vindicator_aggro"
+                        "minecraft:vindicator_aggro",
+                        "rift:change_attack_mode",
+                        "rift:ranged_mode",
+                        "rift:melee_mode"
+                    ]
+                },
+                "run_command": {
+                    "command": [
+                        "replaceitem entity @s slot.weapon.mainhand 0 air"
                     ]
                 }
             },
@@ -517,6 +562,42 @@
             "rift:stop_bleeding": {
                 "set_property": {
                     "rift:bleeding": false
+                }
+            },
+            "rift:melee_attack_mode": {
+                "add": {
+                    "component_groups": [
+                        "rift:melee_mode"
+                    ]
+                },
+                "remove": {
+                    "component_groups": [
+                        "rift:ranged_mode"
+                    ]
+                },
+                "run_command": {
+                    "command": [
+                        "replaceitem entity @s slot.weapon.mainhand 0 iron_axe",
+                        "say melee mode"
+                    ]
+                }
+            },
+            "rift:ranged_attack_mode": {
+                "add": {
+                    "component_groups": [
+                        "rift:ranged_mode"
+                    ]
+                },
+                "remove": {
+                    "component_groups": [
+                        "rift:melee_mode"
+                    ]
+                },
+                "run_command": {
+                    "command": [
+                        "replaceitem entity @s slot.weapon.mainhand 0 rift:pistol",
+                        "say range mode"
+                    ]
                 }
             }
         }

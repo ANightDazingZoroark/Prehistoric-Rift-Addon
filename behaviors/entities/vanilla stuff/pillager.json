@@ -52,6 +52,9 @@
                     ],
                     "table": "loot_tables/entities/pillager_captain_equipment.json"
                 },
+                "minecraft:loot": {
+                    "table": "loot_tables/entities/pillager smger.json"
+                },
                 "minecraft:is_illager_captain": {},
                 "minecraft:on_hurt": {
                     "event": "minecraft:ranged_mode",
@@ -132,6 +135,9 @@
                     ],
                     "table": "loot_tables/entities/pillager_captain_equipment.json"
                 },
+                "minecraft:loot": {
+                    "table": "loot_tables/entities/pillager smger.json"
+                },
                 "minecraft:is_illager_captain": {},
                 "minecraft:on_hurt": {
                     "event": "minecraft:ranged_mode",
@@ -198,9 +204,6 @@
                     "first_founding_reward": 0,
                     "update_interval_base": 60,
                     "update_interval_variant": 40
-                },
-                "minecraft:loot": {
-                    "table": "loot_tables/entities/pillager_raid.json"
                 }
             },
             "minecraft:raid_persistence": {
@@ -529,7 +532,7 @@
             "minecraft:promote_to_illager_captain": {
                 "add": {
                     "component_groups": [
-                        "minecraft:ranged_attack",
+                        "rift:ranged_attack_smg",
                         "minecraft:illager_squad_captain"
                     ]
                 },
@@ -542,13 +545,15 @@
             "minecraft:promote_to_patrol_captain": {
                 "add": {
                     "component_groups": [
-                        "minecraft:ranged_attack",
-                        "minecraft:patrol_captain"
+                        "minecraft:patrol_captain",
+                        "rift:ranged_attack_smg"
                     ]
                 },
                 "remove": {
                     "component_groups": [
-                        "minecraft:patrol_follower"
+                        "minecraft:patrol_follower",
+                        "rift:shotgunner",
+                        "rift:ranged_attack_shotgun"
                     ]
                 }
             },
@@ -630,27 +635,60 @@
             "minecraft:spawn_as_illager_captain": {
                 "add": {
                     "component_groups": [
-                        "minecraft:ranged_attack",
+                        "rift:ranged_attack_smg",
                         "minecraft:illager_squad_captain"
                     ]
                 }
             },
             "minecraft:spawn_as_patrol_follower": {
-                "add": {
-                    "component_groups": [
-                        "minecraft:ranged_attack",
-                        "minecraft:patrol_follower"
-                    ]
-                }
+                "randomize": [
+                    {
+                        "weight": 2,
+                        "add": {
+                            "component_groups": [
+                                "minecraft:patrol_follower",
+                                "rift:smger",
+                                "rift:ranged_attack_smg"
+                            ]
+                        }
+                    },
+                    {
+                        "weight": 1,
+                        "add": {
+                            "component_groups": [
+                                "minecraft:patrol_follower",
+                                "rift:shotgunner",
+                                "rift:ranged_attack_shotgun"
+                            ]
+                        }
+                    }
+                ]
             },
             "minecraft:spawn_for_raid": {
-                "add": {
-                    "component_groups": [
-                        "minecraft:ranged_attack",
-                        "minecraft:raid_configuration",
-                        "minecraft:raid_persistence"
-                    ]
-                }
+                "randomize": [
+                    {
+                        "weight": 2,
+                        "add": {
+                            "component_groups": [
+                                "rift:smger",
+                                "rift:ranged_attack_smg",
+                                "minecraft:raid_configuration",
+                                "minecraft:raid_persistence"
+                            ]
+                        }
+                    },
+                    {
+                        "weight": 1,
+                        "add": {
+                            "component_groups": [
+                                "rift:shotgunner",
+                                "rift:ranged_attack_shotgun",
+                                "minecraft:raid_configuration",
+                                "minecraft:raid_persistence"
+                            ]
+                        }
+                    }
+                ]
             },
             "minecraft:start_celebrating": {
                 "sequence": [
