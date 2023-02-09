@@ -192,7 +192,69 @@ function shotgunCraftingMain(source) {
     .body('Choose component')
     .button('Main', 'textures/items/shotgun')
     .button('Ammunition', 'textures/items/shotgun shells')
-    .show(source)
+    .show(source).then(result => {
+        switch(result.selection) {
+            case 0:
+                shotgunCraft(source)
+                break
+            case 1:
+                shotgunAmmoCraft(source)
+                break
+        }
+    })
+}
+
+function shotgunCraft(source) {
+    const shotgunCraft = new ActionFormData()
+    .title('Craft Shotgun')
+    .body('Crafting components:\n-4x Black Plastic Frames\n-6x Iron Ingots\n-3x Gold Nuggets\n-1x Redstone')
+    .button('Craft (x1)')
+    .button('Back')
+    .show(source).then(result => {
+        switch(result.selection) {
+            case 0:
+                if (testForItem(source, 'rift:black_plastic_frame', -1, '>=', function() {return 4}) && testForItem(source, 'minecraft:iron_ingot', -1, '>=', function() {return 6}) && testForItem(source, 'minecraft:gold_nugget', -1, '>=', function() {return 3}) && testForItem(source, 'minecraft:redstone', -1, '>=', function() {return 1})) {
+                    source.runCommandAsync('give @s rift:shotgun')
+                    source.runCommandAsync('clear @s rift:black_plastic_frame -1 4')
+                    source.runCommandAsync('clear @s minecraft:iron_ingot -1 6')
+                    source.runCommandAsync('clear @s minecraft:gold_nugget -1 3')
+                    source.runCommandAsync('clear @s minecraft:redstone -1 1')
+                }
+                else {
+                    craftFail(source)
+                }
+                break
+            case 1:
+                gunforgeGui(source)
+                break
+        }
+    })
+}
+
+function shotgunAmmoCraft(source) {
+    const shotgunAmmoCraft = new ActionFormData()
+    .title('Craft Shotgun Shells')
+    .body('Crafting components:\n-1x Leather\n-1x Gold Nugget\n-2x Gunpowder')
+    .button('Craft (x8)')
+    .button('Back')
+    .show(source).then(result => {
+        switch(result.selection) {
+            case 0:
+                if (testForItem(source, 'minecraft:leather', -1, '>=', function() {return 1}) && testForItem(source, 'minecraft:gold_nugget', -1, '>=', function() {return 1}) && testForItem(source, 'minecraft:gunpowder', -1, '>=', function() {return 2})) {
+                    source.runCommandAsync('give @s rift:shotgun_shells 8')
+                    source.runCommandAsync('clear @s minecraft:leather -1 1')
+                    source.runCommandAsync('clear @s minecraft:gold_nugget -1 1')
+                    source.runCommandAsync('clear @s minecraft:gunpowder -1 2')
+                }
+                else {
+                    craftFail(source)
+                }
+                break
+            case 1:
+                gunforgeGui(source)
+                break
+        }
+    })
 }
 
 function snipingRifleCraftingMain(source) {
@@ -201,7 +263,70 @@ function snipingRifleCraftingMain(source) {
     .body('Choose component')
     .button('Main', 'textures/items/sniping rifle')
     .button('Ammunition', 'textures/placeholder')
-    .show(source)
+    .show(source).then(result => {
+        switch(result.selection) {
+            case 0:
+                snipingRifleCraft(source)
+                break
+            case 1:
+                snipingRifleAmmoCraft(source)
+                break
+        }
+    })
+}
+
+function snipingRifleCraft(source) {
+    const snipingRifleCraft = new ActionFormData()
+    .title('Craft Sniping Rifle')
+    .body('Crafting components:\n-4x Orange Plastic Frames\n-1x Spyglass\n-4x Iron Ingots\n-3x Gold Nuggets\n-3x Redstone')
+    .button('Craft (x1)')
+    .button('Back')
+    .show(source).then(result => {
+        switch(result.selection) {
+            case 0:
+                if (testForItem(source, 'rift:orange_plastic_frame', -1, '>=', function() {return 4}) && testForItem(source, 'minecraft:spyglass', -1, '>=', function() {return 1}) && testForItem(source, 'minecraft:iron_ingot', -1, '>=', function() {return 4}) && testForItem(source, 'minecraft:gold_nugget', -1, '>=', function() {return 3}) && testForItem(source, 'minecraft:redstone', -1, '>=', function() {return 3})) {
+                    source.runCommandAsync('give @s rift:sniping_rifle')
+                    source.runCommandAsync('clear @s rift:orange_plastic_frame -1 4')
+                    source.runCommandAsync('clear @s minecraft:spyglass -1 1')
+                    source.runCommandAsync('clear @s minecraft:iron_ingot -1 4')
+                    source.runCommandAsync('clear @s minecraft:gold_nugget -1 3')
+                    source.runCommandAsync('clear @s minecraft:redstone -1 3')
+                }
+                else {
+                    craftFail(source)
+                }
+                break
+            case 1:
+                gunforgeGui(source)
+                break
+        }
+    })
+}
+
+function snipingRifleAmmoCraft(source) {
+    const snipingRifleAmmoCraft = new ActionFormData()
+    .title('Craft Rifle Magazine')
+    .body('Crafting components:\n-1x Orange Plastic Frame\n-1x Gold Ingot\n-4x Gunpowder')
+    .button('Craft (x8)')
+    .button('Back')
+    .show(source).then(result => {
+        switch(result.selection) {
+            case 0:
+                if (testForItem(source, 'rift:orange_plastic_frame', -1, '>=', function() {return 1}) && testForItem(source, 'minecraft:gold_ingot', -1, '>=', function() {return 1}) && testForItem(source, 'minecraft:gunpowder', -1, '>=', function() {return 4})) {
+                    source.runCommandAsync('give @s rift:rifle_magazine 8')
+                    source.runCommandAsync('clear @s rift:orange_plastic_frame -1 1')
+                    source.runCommandAsync('clear @s minecraft:gold_ingot -1 1')
+                    source.runCommandAsync('clear @s minecraft:gunpowder -1 4')
+                }
+                else {
+                    craftFail(source)
+                }
+                break
+            case 1:
+                gunforgeGui(source)
+                break
+        }
+    })
 }
 
 function rocketLauncherCraftingMain(source) {
@@ -210,7 +335,69 @@ function rocketLauncherCraftingMain(source) {
     .body('Choose component')
     .button('Main', 'textures/items/rocket launcher')
     .button('Ammunition', 'textures/items/rocket')
-    .show(source)
+    .show(source).then(result => {
+        switch(result.selection) {
+            case 0:
+                rocketLauncherCraft(source)
+                break
+            case 1:
+                rocketLauncherAmmoCraft(source)
+                break
+        }
+    })
+}
+
+function rocketLauncherCraft(source) {
+    const rocketLauncherCraft = new ActionFormData()
+    .title('Craft Rocket Launcher')
+    .body('Crafting components:\n-4x Black Plastic Frames\n-2x Orange Plastic Frames\n-8x Iron Ingots\n-4x Gold Nuggets\n-4x Redstone')
+    .button('Craft (x1)')
+    .button('Back')
+    .show(source).then(result => {
+        switch(result.selection) {
+            case 0:
+                if (testForItem(source, 'rift:black_plastic_frame', -1, '>=', function() {return 4}) && testForItem(source, 'rift:orange_plastic_frame', -1, '>=', function() {return 2}) && testForItem(source, 'minecraft:iron_ingot', -1, '>=', function() {return 8}) && testForItem(source, 'minecraft:gold_nugget', -1, '>=', function() {return 4}) && testForItem(source, 'minecraft:redstone', -1, '>=', function() {return 4})) {
+                    source.runCommandAsync('give @s rift:rocket_launcher')
+                    source.runCommandAsync('clear @s rift:black_plastic_frame -1 4')
+                    source.runCommandAsync('clear @s rift:orange_plastic_frame -1 2')
+                    source.runCommandAsync('clear @s minecraft:iron_ingot -1 8')
+                    source.runCommandAsync('clear @s minecraft:gold_nugget -1 4')
+                    source.runCommandAsync('clear @s minecraft:redstone -1 4')
+                }
+                else {
+                    craftFail(source)
+                }
+                break
+            case 1:
+                gunforgeGui(source)
+                break
+        }
+    })
+}
+
+function rocketLauncherAmmoCraft(source) {
+    const rocketLauncherAmmoCraft = new ActionFormData()
+    .title('Craft Rocket')
+    .body('Crafting components:\n-3x Green Plastic Frames\n-4x Gunpowder')
+    .button('Craft (x1)')
+    .button('Back')
+    .show(source).then(result => {
+        switch(result.selection) {
+            case 0:
+                if (testForItem(source, 'rift:green_plastic_frame', -1, '>=', function() {return 3}) && testForItem(source, 'minecraft:gunpowder', -1, '>=', function() {return 4})) {
+                    source.runCommandAsync('give @s rift:rocket 1')
+                    source.runCommandAsync('clear @s rift:green_plastic_frame -1 3')
+                    source.runCommandAsync('clear @s minecraft:gunpowder -1 4')
+                }
+                else {
+                    craftFail(source)
+                }
+                break
+            case 1:
+                gunforgeGui(source)
+                break
+        }
+    })
 }
 
 function craftFail(source) {
