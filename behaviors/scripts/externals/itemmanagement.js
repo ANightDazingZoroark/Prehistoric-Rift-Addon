@@ -1,3 +1,5 @@
+//i gotta need to make it so when entering amount you can use a regular number instead of a function
+//that returns a number, ffs
 export function clearEntity(entity, item, data = -1, amount = function() {
     let num = 0
     for (let x = 0; x < entity.getComponent('inventory').inventorySize; x++) {
