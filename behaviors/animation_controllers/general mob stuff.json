@@ -351,6 +351,31 @@
 				}
 			}
 		},
+        "controller.animation.add_on_ground_tag": {
+			"initial_state": "default",
+			"states": {
+				"default": {
+					"transitions": [
+						{
+							"hasTag": "query.is_on_ground"
+						}
+					]
+				},
+				"hasTag": {
+					"transitions": [
+						{
+							"default": "!query.is_on_ground"
+						}
+					],
+                    "on_entry": [
+                        "/tag @s add onGround"
+                    ],
+                    "on_exit": [
+                        "/tag @s remove onGround"
+                    ]
+				}
+			}
+		},
 		"controller.animation.add_in_love_tag": {
 			"initial_state": "default",
 			"states": {
@@ -760,7 +785,7 @@
                 "default": {
                     "transitions": [
                         {
-                            "eating": "query.is_tamed && (query.property('rift:energy') <= 180)"
+                            "eating": "query.is_tamed && (query.property('rift:energy') <= 450)"
                         }
                     ]
                 },
@@ -770,7 +795,7 @@
                     ],
                     "transitions": [
                         {
-                            "default": "query.property('rift:energy') == 225"
+                            "default": "query.property('rift:energy') == 450"
                         }
                     ]
                 }
