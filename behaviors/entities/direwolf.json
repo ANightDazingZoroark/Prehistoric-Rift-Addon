@@ -70,6 +70,10 @@
 					"type": "bool",
 					"default": false,
 					"client_sync": true
+                },
+				"rift:owned_by_illager": {
+					"type": "bool",
+					"default": false
                 }
 			},
 			"animations": {
@@ -676,6 +680,29 @@
 					"despawn_from_distance": {}
 				}
             },
+			"rift:direwolf_adult_illager_patrol": {
+                "minecraft:health": {
+                    "value": 30,
+                    "max": 30
+                },
+				"minecraft:attack": {
+					"damage": 8
+				},
+                "minecraft:scale": {
+                    "value": 1.25
+                },
+				"minecraft:navigation.walk": {
+					"avoid_water": true,
+					"avoid_damage_blocks": true
+				},
+				"minecraft:movement.generic": {},
+				"minecraft:behavior.hurt_by_target": {
+					"priority": 7
+				},
+				"minecraft:despawn": {
+					"despawn_from_distance": {}
+				}
+            },
 			"rift:direwolf_adult_werewolf_wild": {
 				"minecraft:is_ignited": {},
                 "minecraft:health": {
@@ -1169,6 +1196,78 @@
 					]
 				}
 			},
+			"rift:mounted_by_illager_targets": {
+				"minecraft:behavior.nearest_attackable_target": {
+					"priority": 8,
+					"within_radius": 12.0,
+					"entity_types": [
+						{
+							"filters": {
+								"any_of": [
+									{
+										"test": "is_family",
+										"subject": "other",
+										"value": "wandering_trader"
+									},
+									{
+										"test": "is_family",
+										"subject": "other",
+										"value": "iron_golem"
+									},
+									{
+                                        "all_of": [
+                                            {
+                                                "subject": "other",
+                                                "test": "is_family",
+                                                "value": "villager"
+                                            },
+                                            {
+                                                "operator": "!=",
+                                                "subject": "other",
+                                                "test": "has_component",
+                                                "value": "minecraft:is_baby"
+                                            }
+                                        ]
+									},
+                                    {
+                                        "all_of": [
+                                            {
+                                                "test": "is_family",
+                                                "subject": "other",
+                                                "value": "player"
+                                            },
+                                            {
+                                                "test": "is_riding",
+                                                "subject": "other",
+                                                "value": false
+                                            }
+                                        ]
+                                    }
+								]
+							},
+							"max_dist": 12
+						},
+						{
+							"filters": {
+								"all_of": [
+									{
+										"test": "has_component",
+										"subject": "other",
+										"value": "minecraft:is_tamed"
+									},
+									{
+										"test": "rider_count",
+										"subject": "other",
+										"operator": ">",
+										"value": 0
+									}
+								]
+							},
+							"max_dist": 12
+						}
+					]
+				}
+			},
 			"rift:direwolf_adult_werewolf_angry_because_of_fire": {
 				"minecraft:timer": {
 					"time": 15,
@@ -1645,6 +1744,23 @@
 				"minecraft:input_ground_controlled": {},
 				"minecraft:can_power_jump": {}
             },
+			"rift:has_illager_mount": {
+				"minecraft:is_saddled": {},
+				"minecraft:rideable": {
+					"family_types": [
+						"illager"
+					],
+					"seats": [
+						{
+							"position": [
+								0,
+								1,
+								-0.2
+							]
+						}
+					]
+				}
+            },
 			"rift:cannot_power_jump": {
 				"minecraft:horse.jump_strength": {
 					"value": {
@@ -1750,6 +1866,20 @@
 			"rift:wild_standing_hypnotized_by_tenontosaurus": {
 				"minecraft:movement": {
 					"value": 0.25
+				}
+			},
+			"rift:mounted_by_illager_standing": {
+                "minecraft:behavior.mount_pathing": {
+                    "priority": 18,
+                    "speed_multiplier": 1.0,
+                    "target_dist": 0.0,
+                    "track_target": true
+                },
+				"minecraft:movement": {
+					"value": 0.25
+				},
+                "minecraft:behavior.random_stroll": {
+					"priority": 19
 				}
 			},
 			"rift:follow_tenontosaurus": {
@@ -4615,11 +4745,6 @@
 												"test": "is_family",
 												"subject": "other",
 												"value": "player"
-											},
-											{
-												"test": "is_family",
-												"subject": "other",
-												"value": "forcedAttack"
 											}
 										]
 									},
@@ -4651,7 +4776,13 @@
 										"subject": "self",
 										"domain": "rift:is_hypnotized",
 										"value": false
-									}
+									},
+                                    {
+                                        "test": "is_family",
+                                        "subject": "other",
+                                        "operator": "!=",
+                                        "value": "illager"
+                                    }
 								]
 							},
 							"event": "rift:wild_snarl",
@@ -4676,7 +4807,70 @@
 							}
 						},
 						"deals_damage": false
-					}
+					},
+                    {
+                        "on_damage": {
+                            "filters": {
+                                "all_of": [
+                                    {
+                                        "test": "is_family",
+                                        "subject": "other",
+                                        "value": "illager"
+                                    },
+                                    {
+                                        "test": "bool_property",
+                                        "subject": "self",
+                                        "domain": "rift:owned_by_illager",
+                                        "value": true
+                                    },
+									{
+										"test": "has_damage",
+										"subject": "self",
+										"operator": "!=",
+										"value": "fatal"
+									},
+									{
+										"test": "random_chance",
+										"value": 3,
+										"subject": "self"
+									}
+                                ]
+                            }
+                        },
+						"deals_damage": false
+                    },
+                    {
+                        "on_damage": {
+                            "filters": {
+                                "all_of": [
+                                    {
+                                        "test": "is_family",
+                                        "subject": "other",
+                                        "value": "illager"
+                                    },
+                                    {
+                                        "test": "bool_property",
+                                        "subject": "self",
+                                        "domain": "rift:owned_by_illager",
+                                        "value": false
+                                    },
+									{
+										"test": "has_damage",
+										"subject": "self",
+										"operator": "!=",
+										"value": "fatal"
+									},
+									{
+										"test": "random_chance",
+										"value": 3,
+										"subject": "self"
+									}
+                                ]
+                            },
+							"event": "rift:wild_snarl",
+							"target": "self"
+                        }
+                    }
 				]
 			},
 			"minecraft:environment_sensor": {
@@ -5432,6 +5626,90 @@
 					}
 				]
 			},
+            "rift:spawn_as_illager_patrol_mount": {
+                "randomize": [
+                    {
+                        "weight": 1,
+                        "add": {
+                            "component_groups": [
+                                "rift:direwolf_adult",
+                                "rift:direwolf_adult_illager_patrol",
+                                "rift:has_illager_mount",
+								"rift:mounted_by_illager_targets",
+                                "rift:direwolf_adult_calm",
+                                "rift:normal_mode_attack",
+                                "rift:variant_one",
+                                "rift:pushable",
+                                "rift:mounted_by_illager_standing",
+                                "rift:default_collision"
+                            ]
+                        },
+                        "set_property": {
+                            "rift:owned_by_illager": true
+                        }
+                    },
+                    {
+                        "weight": 1,
+                        "add": {
+                            "component_groups": [
+                                "rift:direwolf_adult",
+                                "rift:direwolf_adult_illager_patrol",
+                                "rift:has_illager_mount",
+								"rift:mounted_by_illager_targets",
+                                "rift:direwolf_adult_calm",
+                                "rift:normal_mode_attack",
+                                "rift:variant_two",
+                                "rift:pushable",
+                                "rift:mounted_by_illager_standing",
+                                "rift:default_collision"
+                            ]
+                        },
+                        "set_property": {
+                            "rift:owned_by_illager": true
+                        }
+                    },
+                    {
+                        "weight": 1,
+                        "add": {
+                            "component_groups": [
+                                "rift:direwolf_adult",
+                                "rift:direwolf_adult_illager_patrol",
+                                "rift:has_illager_mount",
+								"rift:mounted_by_illager_targets",
+                                "rift:direwolf_adult_calm",
+                                "rift:normal_mode_attack",
+                                "rift:variant_three",
+                                "rift:pushable",
+                                "rift:mounted_by_illager_standing",
+                                "rift:default_collision"
+                            ]
+                        },
+                        "set_property": {
+                            "rift:owned_by_illager": true
+                        }
+                    },
+                    {
+                        "weight": 1,
+                        "add": {
+                            "component_groups": [
+                                "rift:direwolf_adult",
+                                "rift:direwolf_adult_illager_patrol",
+                                "rift:has_illager_mount",
+								"rift:mounted_by_illager_targets",
+                                "rift:direwolf_adult_calm",
+                                "rift:normal_mode_attack",
+                                "rift:variant_four",
+                                "rift:pushable",
+                                "rift:mounted_by_illager_standing",
+                                "rift:default_collision"
+                            ]
+                        },
+                        "set_property": {
+                            "rift:owned_by_illager": true
+                        }
+                    }
+                ]
+            },
 			"rift:baby_grow_up": {
 				"sequence": [
 					{

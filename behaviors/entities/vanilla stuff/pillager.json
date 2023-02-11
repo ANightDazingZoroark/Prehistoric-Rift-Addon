@@ -23,25 +23,47 @@
             },
             "minecraft:illager_squad_captain": {
                 "minecraft:damage_sensor": {
-                    "triggers": {
-                        "on_damage": {
-                            "event": "minecraft:gain_bad_omen",
-                            "filters": {
-                                "all_of": [
-                                    {
-                                        "test": "has_damage",
-                                        "value": "fatal"
-                                    },
-                                    {
-                                        "subject": "other",
-                                        "test": "is_family",
-                                        "value": "player"
-                                    }
-                                ]
+                    "triggers": [
+                        {
+                            "on_damage": {
+                                "event": "minecraft:gain_bad_omen",
+                                "filters": {
+                                    "all_of": [
+                                        {
+                                            "test": "has_damage",
+                                            "value": "fatal"
+                                        },
+                                        {
+                                            "subject": "other",
+                                            "test": "is_family",
+                                            "value": "player"
+                                        }
+                                    ]
+                                },
+                                "target": "other"
+                            }
+                        },
+                        {
+                            "on_damage": {
+                                "filters": {
+                                    "any_of": [
+                                        {
+                                            "test": "is_family",
+                                            "subject": "other",
+                                            "value": "illager"
+                                        },
+                                        {
+                                            "test": "bool_property",
+                                            "subject": "other",
+                                            "domain": "rift:owned_by_illager",
+                                            "value": true
+                                        }
+                                    ]
+                                }
                             },
-                            "target": "other"
+                            "deals_damage": false
                         }
-                    }
+                    ]
                 },
                 "minecraft:equipment": {
                     "slot_drop_chance": [
@@ -106,25 +128,47 @@
                     "within_radius": 8
                 },
                 "minecraft:damage_sensor": {
-                    "triggers": {
-                        "on_damage": {
-                            "event": "minecraft:gain_bad_omen",
-                            "filters": {
-                                "all_of": [
-                                    {
-                                        "test": "has_damage",
-                                        "value": "fatal"
-                                    },
-                                    {
-                                        "subject": "other",
-                                        "test": "is_family",
-                                        "value": "player"
-                                    }
-                                ]
+                    "triggers": [
+                        {
+                            "on_damage": {
+                                "event": "minecraft:gain_bad_omen",
+                                "filters": {
+                                    "all_of": [
+                                        {
+                                            "test": "has_damage",
+                                            "value": "fatal"
+                                        },
+                                        {
+                                            "subject": "other",
+                                            "test": "is_family",
+                                            "value": "player"
+                                        }
+                                    ]
+                                },
+                                "target": "other"
+                            }
+                        },
+                        {
+                            "on_damage": {
+                                "filters": {
+                                    "any_of": [
+                                        {
+                                            "test": "is_family",
+                                            "subject": "other",
+                                            "value": "illager"
+                                        },
+                                        {
+                                            "test": "bool_property",
+                                            "subject": "other",
+                                            "domain": "rift:owned_by_illager",
+                                            "value": true
+                                        }
+                                    ]
+                                }
                             },
-                            "target": "other"
+                            "deals_damage": false
                         }
-                    }
+                    ]
                 },
                 "minecraft:equipment": {
                     "slot_drop_chance": [
@@ -252,7 +296,6 @@
                     "attack_interval_max": 3.0,
                     "attack_interval_min": 3.0,
                     "attack_radius": 8.0,
-                    "attack_radius_min": 5,
                     "priority": 4
                 },
                 "minecraft:environment_sensor": {
@@ -348,7 +391,7 @@
                                 }
                             ]
                         },
-                        "max_dist": 16
+                        "max_dist": 12
                     },
                     {
                         "filters": {
@@ -366,13 +409,36 @@
                                 }
                             ]
                         },
-                        "max_dist": 16
+                        "max_dist": 12
                     }
                 ],
                 "must_see": true,
                 "priority": 2,
-                "reselect_targets": true,
-                "within_radius": 16.0
+                "within_radius": 12.0
+            },
+            "minecraft:damage_sensor": {
+                "triggers": [
+                    {
+                        "on_damage": {
+                            "filters": {
+                                "any_of": [
+                                    {
+                                        "test": "is_family",
+                                        "subject": "other",
+                                        "value": "illager"
+                                    },
+                                    {
+                                        "test": "bool_property",
+                                        "subject": "other",
+                                        "domain": "rift:owned_by_illager",
+                                        "value": true
+                                    }
+                                ]
+                            }
+                        },
+                        "deals_damage": false
+                    }
+                ]
             },
             "minecraft:behavior.pickup_items": {
                 "goal_radius": 2,
@@ -641,26 +707,105 @@
                 }
             },
             "minecraft:spawn_as_patrol_follower": {
-                "randomize": [
+                "sequence": [
                     {
-                        "weight": 2,
-                        "add": {
-                            "component_groups": [
-                                "minecraft:patrol_follower",
-                                "rift:smger",
-                                "rift:ranged_attack_smg"
-                            ]
-                        }
+                        "randomize": [
+                            {
+                                "weight": 2,
+                                "add": {
+                                    "component_groups": [
+                                        "minecraft:patrol_follower",
+                                        "rift:smger",
+                                        "rift:ranged_attack_smg"
+                                    ]
+                                }
+                            },
+                            {
+                                "weight": 1,
+                                "add": {
+                                    "component_groups": [
+                                        "minecraft:patrol_follower",
+                                        "rift:shotgunner",
+                                        "rift:ranged_attack_shotgun"
+                                    ]
+                                }
+                            }
+                        ]
                     },
                     {
-                        "weight": 1,
-                        "add": {
-                            "component_groups": [
-                                "minecraft:patrol_follower",
-                                "rift:shotgunner",
-                                "rift:ranged_attack_shotgun"
+                        "filters": {
+                            "all_of": [
+                                {
+                                    "test": "has_biome_tag",
+                                    "operator": "!=",
+                                    "value": "frozen"
+                                },
+                                {
+                                    "test": "has_biome_tag",
+                                    "operator": "!=",
+                                    "value": "cold"
+                                },
+                                {
+                                    "test": "has_biome_tag",
+                                    "operator": "!=",
+                                    "value": "taiga"
+                                }
                             ]
-                        }
+                        },
+                        "randomize": [
+                            {
+                                "weight": 2,
+                                "run_command": {
+                                    "command": [
+                                        "ride @s summon_ride rift:utahraptor no_ride_change rift:spawn_as_illager_patrol_mount"
+                                    ]
+                                }
+                            },
+                            {
+                                "weight": 1,
+                                "run_command": {
+                                    "command": [
+                                        "ride @s summon_ride rift:dilophosaurus no_ride_change rift:spawn_as_illager_patrol_mount"
+                                    ]
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "filters": {
+                            "any_of": [
+                                {
+                                    "test": "has_biome_tag",
+                                    "value": "frozen"
+                                },
+                                {
+                                    "test": "has_biome_tag",
+                                    "value": "cold"
+                                },
+                                {
+                                    "test": "has_biome_tag",
+                                    "value": "taiga"
+                                }
+                            ]
+                        },
+                        "randomize": [
+                            {
+                                "weight": 2,
+                                "run_command": {
+                                    "command": [
+                                        "ride @s summon_ride rift:direwolf no_ride_change rift:spawn_as_illager_patrol_mount"
+                                    ]
+                                }
+                            },
+                            {
+                                "weight": 1,
+                                "run_command": {
+                                    "command": [
+                                        "ride @s summon_ride rift:direbear no_ride_change rift:spawn_as_illager_patrol_mount"
+                                    ]
+                                }
+                            }
+                        ]
                     }
                 ]
             },

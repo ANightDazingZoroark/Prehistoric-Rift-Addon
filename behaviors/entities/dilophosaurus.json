@@ -66,6 +66,10 @@
 					"type": "bool",
 					"default": false,
 					"client_sync": true
+                },
+				"rift:owned_by_illager": {
+					"type": "bool",
+					"default": false
                 }
 			},
 			"animations": {
@@ -603,6 +607,18 @@
 					"despawn_from_distance": {}
 				}
             },
+            "rift:dilophosaurus_adult_illager_patrol": {
+                "minecraft:health": {
+                    "value": 40,
+                    "max": 40
+                },
+				"minecraft:behavior.hurt_by_target": {
+					"priority": 6
+				},
+				"minecraft:despawn": {
+					"despawn_from_distance": {}
+				}
+            },
 			"rift:can_melee_attack": {
 				"minecraft:behavior.delayed_attack": {
 					"priority": 9,
@@ -802,6 +818,79 @@
 					]
 				}
 			},
+            "rift:mounted_by_illager_targets": {
+				"minecraft:behavior.nearest_attackable_target": {
+					"priority": 7,
+					"within_radius": 12.0,
+					"must_see": true,
+					"entity_types": [
+						{
+							"filters": {
+								"any_of": [
+									{
+										"test": "is_family",
+										"subject": "other",
+										"value": "wandering_trader"
+									},
+									{
+										"test": "is_family",
+										"subject": "other",
+										"value": "iron_golem"
+									},
+									{
+                                        "all_of": [
+                                            {
+                                                "subject": "other",
+                                                "test": "is_family",
+                                                "value": "villager"
+                                            },
+                                            {
+                                                "operator": "!=",
+                                                "subject": "other",
+                                                "test": "has_component",
+                                                "value": "minecraft:is_baby"
+                                            }
+                                        ]
+									},
+                                    {
+                                        "all_of": [
+                                            {
+                                                "test": "is_family",
+                                                "subject": "other",
+                                                "value": "player"
+                                            },
+                                            {
+                                                "test": "is_riding",
+                                                "subject": "other",
+                                                "value": false
+                                            }
+                                        ]
+                                    }
+								]
+							},
+							"max_dist": 12
+						},
+						{
+							"filters": {
+								"all_of": [
+									{
+										"test": "has_component",
+										"subject": "other",
+										"value": "minecraft:is_tamed"
+									},
+									{
+										"test": "rider_count",
+										"subject": "other",
+										"operator": ">",
+										"value": 0
+									}
+								]
+							},
+							"max_dist": 12
+						}
+					]
+				}
+            },
 			"rift:aggravating_horn_attack": {
 				"minecraft:behavior.nearest_attackable_target": {
 					"priority": 7,
@@ -1100,6 +1189,22 @@
 					"interact_text": "action.interact.mount"
 				}
             },
+			"rift:has_illager_mount": {
+				"minecraft:rideable": {
+					"family_types": [
+						"illager"
+					],
+					"seats": [
+						{
+							"position": [
+								0,
+								1.4,
+								0.2
+							]
+						}
+					]
+				}
+            },
 			"rift:temptable": {
                 "minecraft:behavior.tempt": {
                     "priority": 13,
@@ -1135,6 +1240,17 @@
 					"priority": 17
 				}
 			},
+            "rift:mounted_by_illager_standing": {
+                "minecraft:behavior.mount_pathing": {
+                    "priority": 15,
+                    "speed_multiplier": 1.0,
+                    "target_dist": 0.0,
+                    "track_target": true
+                },
+                "minecraft:behavior.random_stroll": {
+					"priority": 16
+				}
+            },
 			"rift:wild_can_move": {
 				"minecraft:movement": {
 					"value": 0.20
@@ -4110,7 +4226,27 @@
 							}
 						},
 						"deals_damage": false
-					}
+					},
+                    {
+                        "on_damage": {
+                            "filters": {
+                                "all_of": [
+                                    {
+                                        "test": "is_family",
+                                        "subject": "other",
+                                        "value": "illager"
+                                    },
+                                    {
+                                        "test": "bool_property",
+                                        "subject": "self",
+                                        "domain": "rift:owned_by_illager",
+                                        "value": true
+                                    }
+                                ]
+                            }
+                        },
+						"deals_damage": false
+                    }
 				]
 			},
             "minecraft:behavior.float": {}
@@ -4895,6 +5031,94 @@
 					}
 				]
 			},
+            "rift:spawn_as_illager_patrol_mount": {
+                "randomize": [
+                    {
+                        "weight": 1,
+                        "add": {
+                            "component_groups": [
+								"rift:dilophosaurus_adult",
+                                "rift:dilophosaurus_adult_illager_patrol",
+                                "rift:has_illager_mount",
+								"rift:mounted_by_illager_targets",
+                                "rift:has_no_target",
+								"rift:variant_zero",
+                                "rift:wild_can_move",
+								"rift:pushable",
+                                "rift:mounted_by_illager_standing",
+								"rift:default_collision",
+                                "rift:dilophosaurus_saddled"
+                            ]
+                        },
+                        "set_property": {
+                            "rift:owned_by_illager": true
+                        }
+                    },
+                    {
+                        "weight": 1,
+                        "add": {
+                            "component_groups": [
+								"rift:dilophosaurus_adult",
+                                "rift:dilophosaurus_adult_illager_patrol",
+                                "rift:has_illager_mount",
+								"rift:mounted_by_illager_targets",
+                                "rift:has_no_target",
+								"rift:variant_one",
+                                "rift:wild_can_move",
+								"rift:pushable",
+                                "rift:mounted_by_illager_standing",
+								"rift:default_collision",
+                                "rift:dilophosaurus_saddled"
+                            ]
+                        },
+                        "set_property": {
+                            "rift:owned_by_illager": true
+                        }
+                    },
+                    {
+                        "weight": 1,
+                        "add": {
+                            "component_groups": [
+								"rift:dilophosaurus_adult",
+                                "rift:dilophosaurus_adult_illager_patrol",
+                                "rift:has_illager_mount",
+								"rift:mounted_by_illager_targets",
+                                "rift:has_no_target",
+								"rift:variant_two",
+                                "rift:wild_can_move",
+								"rift:pushable",
+                                "rift:mounted_by_illager_standing",
+								"rift:default_collision",
+                                "rift:dilophosaurus_saddled"
+                            ]
+                        },
+                        "set_property": {
+                            "rift:owned_by_illager": true
+                        }
+                    },
+                    {
+                        "weight": 1,
+                        "add": {
+                            "component_groups": [
+								"rift:dilophosaurus_adult",
+                                "rift:dilophosaurus_adult_illager_patrol",
+                                "rift:has_illager_mount",
+								"rift:mounted_by_illager_targets",
+                                "rift:has_no_target",
+								"rift:variant_three",
+                                "rift:wild_can_move",
+								"rift:pushable",
+                                "rift:mounted_by_illager_standing",
+								"rift:default_collision",
+                                "rift:dilophosaurus_saddled"
+                            ]
+                        },
+                        "set_property": {
+                            "rift:owned_by_illager": true
+                        }
+                    }
+                ]
+            },
 			"rift:baby_grow_up": {
 				"sequence": [
 					{

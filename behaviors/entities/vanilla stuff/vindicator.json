@@ -474,12 +474,91 @@
                 }
             },
             "minecraft:spawn_as_patrol_follower": {
-                "add": {
-                    "component_groups": [
-                        "minecraft:default_targeting",
-                        "minecraft:patrol_follower"
-                    ]
-                }
+                "sequence": [
+                    {
+                        "add": {
+                            "component_groups": [
+                                "minecraft:default_targeting",
+                                "minecraft:patrol_follower"
+                            ]
+                        }
+                    },
+                    {
+                        "filters": {
+                            "all_of": [
+                                {
+                                    "test": "has_biome_tag",
+                                    "operator": "!=",
+                                    "value": "frozen"
+                                },
+                                {
+                                    "test": "has_biome_tag",
+                                    "operator": "!=",
+                                    "value": "cold"
+                                },
+                                {
+                                    "test": "has_biome_tag",
+                                    "operator": "!=",
+                                    "value": "taiga"
+                                }
+                            ]
+                        },
+                        "randomize": [
+                            {
+                                "weight": 2,
+                                "run_command": {
+                                    "command": [
+                                        "ride @s summon_ride rift:utahraptor no_ride_change rift:spawn_as_illager_patrol_mount"
+                                    ]
+                                }
+                            },
+                            {
+                                "weight": 1,
+                                "run_command": {
+                                    "command": [
+                                        "ride @s summon_ride rift:dilophosaurus no_ride_change rift:spawn_as_illager_patrol_mount"
+                                    ]
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "filters": {
+                            "any_of": [
+                                {
+                                    "test": "has_biome_tag",
+                                    "value": "frozen"
+                                },
+                                {
+                                    "test": "has_biome_tag",
+                                    "value": "cold"
+                                },
+                                {
+                                    "test": "has_biome_tag",
+                                    "value": "taiga"
+                                }
+                            ]
+                        },
+                        "randomize": [
+                            {
+                                "weight": 2,
+                                "run_command": {
+                                    "command": [
+                                        "ride @s summon_ride rift:direwolf no_ride_change rift:spawn_as_illager_patrol_mount"
+                                    ]
+                                }
+                            },
+                            {
+                                "weight": 1,
+                                "run_command": {
+                                    "command": [
+                                        "ride @s summon_ride rift:direbear no_ride_change rift:spawn_as_illager_patrol_mount"
+                                    ]
+                                }
+                            }
+                        ]
+                    }
+                ]
             },
             "minecraft:spawn_for_raid": {
                 "add": {
@@ -577,8 +656,7 @@
                 },
                 "run_command": {
                     "command": [
-                        "replaceitem entity @s slot.weapon.mainhand 0 iron_axe",
-                        "say melee mode"
+                        "replaceitem entity @s slot.weapon.mainhand 0 iron_axe"
                     ]
                 }
             },
@@ -595,8 +673,7 @@
                 },
                 "run_command": {
                     "command": [
-                        "replaceitem entity @s slot.weapon.mainhand 0 rift:pistol",
-                        "say range mode"
+                        "replaceitem entity @s slot.weapon.mainhand 0 rift:pistol"
                     ]
                 }
             }
