@@ -52,7 +52,7 @@ world.events.worldInitialize.subscribe((ev) => {
     ev.propertyRegistry.registerEntityTypeDynamicProperties(playerData, MinecraftEntityTypes.player)
 })
 
-world.events.playerJoin.subscribe(ev => {
+world.events.playerSpawn.subscribe(ev => {
     ev.player.triggerEvent(`rift:remove_warning`)
     for (let i = 0; i < 24; i++) {
         if (ev.player.getDynamicProperty(i.toString()) == null) {
