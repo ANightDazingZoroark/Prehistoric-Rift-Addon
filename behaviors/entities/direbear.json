@@ -1872,6 +1872,54 @@
 					}
 				}
             },
+            "rift:use_stomp_attack_owned_by_illager": {
+                "minecraft:mark_variant": {
+                    "value": 1
+                },
+				"minecraft:behavior.knockback_roar": {
+					"priority": 0,
+					"duration": 0.76,
+					"attack_time": 0.76,
+					"knockback_damage": 15,
+					"knockback_strength": 1,
+					"knockback_range": 8,
+					"damage_filters": {
+                        "all_of": [
+                            {
+                                "test":  "is_family", 
+                                "subject": "other",
+                                "operator": "!=",
+                                "value":  "illager"
+                            },
+                            {
+                                "test":  "bool_property",
+                                "subject": "other",
+                                "domain": "rift:owned_by_illager",
+                                "value":  false
+                            }
+                        ]
+                    },
+					"knockback_filters": {
+                        "all_of": [
+                            {
+                                "test":  "is_family", 
+                                "subject": "other",
+                                "operator": "!=",
+                                "value":  "illager"
+                            },
+                            {
+                                "test":  "bool_property",
+                                "subject": "other",
+                                "domain": "rift:owned_by_illager",
+                                "value":  false
+                            }
+                        ]
+                    },
+					"on_roar_end": {
+						"event": "rift:cannot_use_stomp"
+					}
+				}
+            },
             "rift:claw_attack": {
                 "minecraft:mark_variant": {
                     "value": 2
@@ -5323,6 +5371,7 @@
                         "rift:stomp_attack",
                         "rift:use_stomp_attack",
                         "rift:use_stomp_attack_tamed",
+                        "rift:use_stomp_attack_owned_by_illager",
                         "rift:claw_attack"
                     ]
                 }
@@ -5334,6 +5383,7 @@
                         "rift:stomp_attack",
                         "rift:use_stomp_attack",
                         "rift:use_stomp_attack_tamed",
+                        "rift:use_stomp_attack_owned_by_illager",
                         "rift:claw_attack"
                     ]
                 }
@@ -5349,7 +5399,8 @@
                         "rift:bite_attack",
                         "rift:claw_attack",
                         "rift:use_stomp_attack",
-                        "rift:use_stomp_attack_tamed"
+                        "rift:use_stomp_attack_tamed",
+                        "rift:use_stomp_attack_owned_by_illager"
                     ]
                 }
             },
@@ -5360,6 +5411,7 @@
                         "rift:stomp_attack",
                         "rift:use_stomp_attack",
                         "rift:use_stomp_attack_tamed",
+                        "rift:use_stomp_attack_owned_by_illager",
                         "rift:claw_attack"
                     ]
                 }
@@ -5375,7 +5427,8 @@
                         "rift:bite_attack",
                         "rift:stomp_attack",
                         "rift:use_stomp_attack",
-                        "rift:use_stomp_attack_tamed"
+                        "rift:use_stomp_attack_tamed",
+                        "rift:use_stomp_attack_owned_by_illager"
                     ]
                 }
             },
@@ -5386,6 +5439,7 @@
                         "rift:stomp_attack",
                         "rift:use_stomp_attack",
                         "rift:use_stomp_attack_tamed",
+                        "rift:use_stomp_attack_owned_by_illager",
                         "rift:claw_attack"
                     ]
                 }
@@ -5401,10 +5455,20 @@
                     },
                     {
                         "filters": {
-                            "test": "has_component",
-                            "subject": "self",
-                            "operator": "!=",
-                            "value": "minecraft:is_tamed"
+                            "all_of": [
+                                {
+                                    "test": "has_component",
+                                    "subject": "self",
+                                    "operator": "!=",
+                                    "value": "minecraft:is_tamed"
+                                },
+                                {
+                                    "test":  "bool_property",
+                                    "subject": "self",
+                                    "domain": "rift:owned_by_illager",
+                                    "value":  false
+                                }
+                            ]
                         },
                         "add": {
                             "component_groups": [
@@ -5414,13 +5478,46 @@
                     },
                     {
                         "filters": {
-                            "test": "has_component",
-                            "subject": "self",
-                            "value": "minecraft:is_tamed"
+                            "all_of": [
+                                {
+                                    "test": "has_component",
+                                    "subject": "self",
+                                    "value": "minecraft:is_tamed"
+                                },
+                                {
+                                    "test":  "bool_property",
+                                    "subject": "self",
+                                    "domain": "rift:owned_by_illager",
+                                    "value":  false
+                                }
+                            ]
                         },
                         "add": {
                             "component_groups": [
                                 "rift:use_stomp_attack_tamed"
+                            ]
+                        }
+                    },
+                    {
+                        "filters": {
+                            "all_of": [
+                                {
+                                    "test": "has_component",
+                                    "subject": "self",
+                                    "operator": "!=",
+                                    "value": "minecraft:is_tamed"
+                                },
+                                {
+                                    "test":  "bool_property",
+                                    "subject": "self",
+                                    "domain": "rift:owned_by_illager",
+                                    "value":  true
+                                }
+                            ]
+                        },
+                        "add": {
+                            "component_groups": [
+                                "rift:use_stomp_attack_owned_by_illager"
                             ]
                         }
                     }

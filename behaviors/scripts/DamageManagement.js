@@ -628,7 +628,7 @@ world.events.entityHurt.subscribe((event) => {
         event.damageSource.damagingEntity.removeTag('chargeFour')
         event.damageSource.damagingEntity.removeTag('chargeFive')
     }
-    if (event.damageSource.damagingProjectile.typeId == 'rift:dilophosaurus_spit') {
+    if (event.damageSource.damagingEntity.typeId == 'rift:dilophosaurus' && event.damageSource.damagingProjectile.typeId == 'rift:dilophosaurus_spit') {
         event.hurtEntity.addEffect(MinecraftEffectTypes.poison, 200)
         event.hurtEntity.addEffect(MinecraftEffectTypes.blindness, 200)
         event.hurtEntity.addEffect(MinecraftEffectTypes.slowness, 200, 2)
