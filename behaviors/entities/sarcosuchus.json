@@ -56,6 +56,10 @@
 					"type": "bool",
 					"default": false,
 					"client_sync": true
+                },
+				"rift:owned_by_illager": {
+					"type": "bool",
+					"default": false
                 }
 			},
 			"animations": {
@@ -69,7 +73,8 @@
 				"contInLoveTag": "controller.animation.add_in_love_tag",
 				"contHypnotizedTag": "controller.animation.add_hypnotized_tag",
 				"contHypnotizedTamedTag": "controller.animation.add_hypnotized_by_tamed_tag",
-				"contForcedAttack": "controller.animation.general_forced_attack",
+				"contOwnedByIllagerTag": "controller.animation.add_owned_by_illager_tag",
+                "contForcedAttack": "controller.animation.general_forced_attack",
 				"contSpinAttack": "controller.animation.sarco_use_spin_attack",
 				"contSarcoEndSpinCooldown": "controller.animation.sarco_end_spin_cooldown",
 				"contTameState": "controller.animation.manage_tame_state",
@@ -111,6 +116,7 @@
 					"contInLoveTag",
 					"contHypnotizedTag",
                     "contHypnotizedTamedTag",
+                    "contOwnedByIllagerTag",
 					"contForcedAttack",
 					"contSpinAttack",
 					"contSarcoEndSpinCooldown",
@@ -584,6 +590,18 @@
 					"despawn_from_distance": {}
 				}
             },
+            "rift:sarcosuchus_adult_illager_patrol": {
+                "minecraft:health": {
+                    "value": 80,
+                    "max": 80
+                },
+				"minecraft:despawn": {
+					"despawn_from_distance": {}
+				},
+				"minecraft:behavior.hurt_by_target": {
+					"priority": 6
+				}
+            },
             "rift:sarcosuchus_adult_not_trusting": {
                 "minecraft:trusting": {
                     "probability": 0.25,
@@ -719,6 +737,79 @@
 						 	},
 							"max_dist": 48
 					  	}
+					]
+				}
+			},
+            "rift:mounted_by_illager_targets": {
+				"minecraft:behavior.nearest_attackable_target": {
+					"priority": 7,
+					"within_radius": 12.0,
+					"must_see": true,
+					"entity_types": [
+						{
+							"filters": {
+								"any_of": [
+									{
+										"test": "is_family",
+										"subject": "other",
+										"value": "wandering_trader"
+									},
+									{
+										"test": "is_family",
+										"subject": "other",
+										"value": "iron_golem"
+									},
+									{
+                                        "all_of": [
+                                            {
+                                                "subject": "other",
+                                                "test": "is_family",
+                                                "value": "villager"
+                                            },
+                                            {
+                                                "operator": "!=",
+                                                "subject": "other",
+                                                "test": "has_component",
+                                                "value": "minecraft:is_baby"
+                                            }
+                                        ]
+									},
+                                    {
+                                        "all_of": [
+                                            {
+                                                "test": "is_family",
+                                                "subject": "other",
+                                                "value": "player"
+                                            },
+                                            {
+                                                "test": "is_riding",
+                                                "subject": "other",
+                                                "value": false
+                                            }
+                                        ]
+                                    }
+								]
+							},
+							"max_dist": 12
+						},
+						{
+							"filters": {
+								"all_of": [
+									{
+										"test": "has_component",
+										"subject": "other",
+										"value": "minecraft:is_tamed"
+									},
+									{
+										"test": "rider_count",
+										"subject": "other",
+										"operator": ">",
+										"value": 0
+									}
+								]
+							},
+							"max_dist": 12
+						}
 					]
 				}
 			},
@@ -1258,6 +1349,22 @@
 					"interact_text": "action.interact.mount"
 				}
             },
+			"rift:has_illager_mount": {
+                "minecraft:rideable": {
+					"family_types": [
+						"illager"
+					],
+					"seats": [
+						{
+							"position": [
+								0,
+								0.5,
+								-0.1
+							]
+						}
+					]
+				}
+            },
 			"rift:can_bite_attack": {
 				"minecraft:behavior.delayed_attack": {
 					"priority": 8,
@@ -1391,6 +1498,23 @@
 					"value": 0.3
 				}
 			},
+            "rift:mounted_by_illager_standing": {
+				"minecraft:movement": {
+					"value": 0.1
+				},
+				"minecraft:underwater_movement": {
+					"value": 0.3
+				},
+                "minecraft:behavior.mount_pathing": {
+                    "priority": 16,
+                    "speed_multiplier": 1.0,
+                    "target_dist": 0.0,
+                    "track_target": true
+                },
+				"minecraft:behavior.random_stroll": {
+					"priority": 17
+				}
+            },
 			"rift:follow_tenontosaurus": {
 				"minecraft:behavior.nearest_prioritized_attackable_target": {
 					"priority": 7,
@@ -4676,6 +4800,12 @@
 									"subject": "self",
 									"domain": "rift:is_hypnotized",
 									"value": false
+								},
+								{
+									"test": "bool_property",
+									"subject": "self",
+									"domain": "rift:owned_by_illager",
+									"value": false
 								}
 							]
 						},
@@ -4699,6 +4829,12 @@
 									"test": "bool_property",
 									"subject": "self",
 									"domain": "rift:is_hypnotized",
+									"value": false
+								},
+								{
+									"test": "bool_property",
+									"subject": "self",
+									"domain": "rift:owned_by_illager",
 									"value": false
 								}
 							]
@@ -5897,17 +6033,101 @@
                     }
                 ]
 			},
+            "rift:spawn_as_illager_patrol_mount": {
+                "randomize": [
+                    {
+                        "weight": 1,
+                        "add": {
+                            "component_groups": [
+                                "rift:sarcosuchus_adult",
+                                "rift:sarcosuchus_adult_illager_patrol",
+								"rift:can_bite_attack",
+                                "rift:has_illager_mount",
+								"rift:mounted_by_illager_targets",
+								"rift:default_navigation",
+                                "rift:pushable",
+                                "rift:variant_zero",
+                                "rift:sarcosuchus_saddled",
+                                "rift:mounted_by_illager_standing"
+                            ]
+                        },
+                        "set_property": {
+                            "rift:owned_by_illager": true
+                        }
+                    },
+                    {
+                        "weight": 1,
+                        "add": {
+                            "component_groups": [
+                                "rift:sarcosuchus_adult",
+                                "rift:sarcosuchus_adult_illager_patrol",
+								"rift:can_bite_attack",
+                                "rift:has_illager_mount",
+								"rift:mounted_by_illager_targets",
+								"rift:default_navigation",
+                                "rift:pushable",
+                                "rift:variant_one",
+                                "rift:sarcosuchus_saddled",
+                                "rift:mounted_by_illager_standing"
+                            ]
+                        },
+                        "set_property": {
+                            "rift:owned_by_illager": true
+                        }
+                    },
+                    {
+                        "weight": 1,
+                        "add": {
+                            "component_groups": [
+                                "rift:sarcosuchus_adult",
+                                "rift:sarcosuchus_adult_illager_patrol",
+								"rift:can_bite_attack",
+                                "rift:has_illager_mount",
+								"rift:mounted_by_illager_targets",
+								"rift:default_navigation",
+                                "rift:pushable",
+                                "rift:variant_two",
+                                "rift:sarcosuchus_saddled",
+                                "rift:mounted_by_illager_standing"
+                            ]
+                        },
+                        "set_property": {
+                            "rift:owned_by_illager": true
+                        }
+                    },
+                    {
+                        "weight": 1,
+                        "add": {
+                            "component_groups": [
+                                "rift:sarcosuchus_adult",
+                                "rift:sarcosuchus_adult_illager_patrol",
+								"rift:can_bite_attack",
+                                "rift:has_illager_mount",
+								"rift:mounted_by_illager_targets",
+								"rift:default_navigation",
+                                "rift:pushable",
+                                "rift:variant_three",
+                                "rift:sarcosuchus_saddled",
+                                "rift:mounted_by_illager_standing"
+                            ]
+                        },
+                        "set_property": {
+                            "rift:owned_by_illager": true
+                        }
+                    }
+                ]
+            },
 			"rift:can_wild_spin_attack": {
-				"add": {
-					"component_groups": [
-						"rift:wild_spin_attack"
-					]
-				},
-				"remove": {
-					"component_groups": [
-						"rift:can_bite_attack"
-					]
-				}
+                "add": {
+                    "component_groups": [
+                        "rift:wild_spin_attack"
+                    ]
+                },
+                "remove": {
+                    "component_groups": [
+                        "rift:can_bite_attack"
+                    ]
+                }
 			},
 			"rift:return_to_bite_attack": {
 				"add": {

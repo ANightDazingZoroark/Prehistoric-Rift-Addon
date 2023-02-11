@@ -60,6 +60,10 @@
 					"type": "bool",
 					"default": false,
 					"client_sync": true
+                },
+				"rift:owned_by_illager": {
+					"type": "bool",
+					"default": false
                 }
 			},
 			"animations": {
@@ -74,6 +78,7 @@
 				"contTameState": "controller.animation.manage_tame_state",
 				"contHypnotizedTag": "controller.animation.add_hypnotized_tag",
 				"contHypnotizedTamedTag": "controller.animation.add_hypnotized_by_tamed_tag",
+				"contOwnedByIllagerTag": "controller.animation.add_owned_by_illager_tag",
 				"contBehaviorState": "controller.animation.manage_tame_behavior",
 				"contForcedAttack": "controller.animation.baryonyx_forced_attack",
 				"contEnergyUsage": "controller.animation.baryonyx_energy_movement_usage",
@@ -111,6 +116,7 @@
 					"contTameState",
 					"contHypnotizedTag",
                     "contHypnotizedTamedTag",
+                    "contOwnedByIllagerTag",
 					"contBehaviorState",
 					"contForcedAttack",
 					"contEnergyUsage",
@@ -527,6 +533,18 @@
 					"despawn_from_distance": {}
 				}
             },
+            "rift:baryonyx_adult_illager_patrol": {
+                "minecraft:health": {
+                    "value": 60,
+                    "max": 60
+                },
+				"minecraft:despawn": {
+					"despawn_from_distance": {}
+				},
+				"minecraft:behavior.hurt_by_target": {
+					"priority": 4
+				}
+            },
 			"rift:baryonyx_adult_wild_poison_area": {
 				"minecraft:mob_effect": {
 					"effect_range": 2,
@@ -550,6 +568,45 @@
 								"operator": "!=",
 								"value": "poison"
 							}
+						]
+					}
+				}
+			},
+			"rift:baryonyx_adult_owned_by_illager_poison_area": {
+				"minecraft:mob_effect": {
+					"effect_range": 2,
+					"mob_effect": "poison",
+					"effect_time": 45,
+					"entity_filter": {
+						"all_of": [
+							{
+								"test": "in_water",
+								"subject": "self",
+								"value": true
+							},
+							{
+								"test": "in_water",
+								"subject": "other",
+								"value": true
+							},
+							{
+								"test": "has_mob_effect",
+								"subject": "other",
+								"operator": "!=",
+								"value": "poison"
+							},
+                            {
+                                "test": "is_family",
+                                "subject": "other",
+                                "operator": "!=",
+                                "value": "illager"
+                            },
+                            {
+                                "test": "bool_property",
+                                "subject": "other",
+                                "domain": "rift:owned_by_illager",
+                                "value": false
+                            }
 						]
 					}
 				}
@@ -866,6 +923,79 @@
 						 	},
 							"max_dist": 48
 					  	}
+					]
+				}
+			},
+            "rift:mounted_by_illager_targets": {
+				"minecraft:behavior.nearest_attackable_target": {
+					"priority": 5,
+					"within_radius": 12.0,
+					"must_see": true,
+					"entity_types": [
+						{
+							"filters": {
+								"any_of": [
+									{
+										"test": "is_family",
+										"subject": "other",
+										"value": "wandering_trader"
+									},
+									{
+										"test": "is_family",
+										"subject": "other",
+										"value": "iron_golem"
+									},
+									{
+                                        "all_of": [
+                                            {
+                                                "subject": "other",
+                                                "test": "is_family",
+                                                "value": "villager"
+                                            },
+                                            {
+                                                "operator": "!=",
+                                                "subject": "other",
+                                                "test": "has_component",
+                                                "value": "minecraft:is_baby"
+                                            }
+                                        ]
+									},
+                                    {
+                                        "all_of": [
+                                            {
+                                                "test": "is_family",
+                                                "subject": "other",
+                                                "value": "player"
+                                            },
+                                            {
+                                                "test": "is_riding",
+                                                "subject": "other",
+                                                "value": false
+                                            }
+                                        ]
+                                    }
+								]
+							},
+							"max_dist": 12
+						},
+						{
+							"filters": {
+								"all_of": [
+									{
+										"test": "has_component",
+										"subject": "other",
+										"value": "minecraft:is_tamed"
+									},
+									{
+										"test": "rider_count",
+										"subject": "other",
+										"operator": ">",
+										"value": 0
+									}
+								]
+							},
+							"max_dist": 12
+						}
 					]
 				}
 			},
@@ -1261,6 +1391,22 @@
 					"interact_text": "action.interact.mount"
 				}
             },
+			"rift:has_illager_mount": {
+                "minecraft:rideable": {
+					"family_types": [
+						"illager"
+					],
+					"seats": [
+						{
+							"position": [
+								0,
+								1.5,
+								0.1
+							]
+						}
+					]
+				}
+            },
 			"rift:temptable": {
                 "minecraft:behavior.tempt": {
                     "priority": 11,
@@ -1319,6 +1465,25 @@
 				},
 				"minecraft:water_movement": {
 					"drag_factor": 0.5
+				}
+			},
+			"rift:mounted_by_illager_standing": {
+				"minecraft:movement": {
+					"value": 0.25
+				},
+				"minecraft:underwater_movement": {
+					"value": 0.25
+				},
+				"minecraft:water_movement": {
+					"drag_factor": 0.5
+				},
+                "minecraft:behavior.mount_pathing": {
+                    "priority": 17,
+                    "target_dist": 0.0,
+                    "track_target": true
+                },
+				"minecraft:behavior.random_stroll": {
+					"priority": 18
 				}
 			},
 			"rift:follow_tenontosaurus": {
@@ -5203,6 +5368,90 @@
 					}
 				]
 			},
+            "rift:spawn_as_illager_patrol_mount": {
+                "randomize": [
+                    {
+                        "weight": 1,
+                        "add": {
+                            "component_groups": [
+                                "rift:baryonyx_adult",
+                                "rift:baryonyx_adult_illager_patrol",
+                                "rift:default_navigation",
+                                "rift:has_illager_mount",
+                                "rift:baryonyx_adult_owned_by_illager_poison_area",
+                                "rift:mounted_by_illager_targets",
+                                "rift:pushable",
+                                "rift:mounted_by_illager_standing",
+                                "rift:variant_one",
+                                "rift:baryonyx_saddled"
+                            ]
+                        },
+                        "set_property": {
+                            "rift:owned_by_illager": true
+                        }
+                    },
+                    {
+                        "weight": 1,
+                        "add": {
+                            "component_groups": [
+                                "rift:baryonyx_adult",
+                                "rift:baryonyx_adult_illager_patrol",
+                                "rift:default_navigation",
+                                "rift:has_illager_mount",
+                                "rift:baryonyx_adult_owned_by_illager_poison_area",
+                                "rift:mounted_by_illager_targets",
+                                "rift:pushable",
+                                "rift:mounted_by_illager_standing",
+                                "rift:variant_two",
+                                "rift:baryonyx_saddled"
+                            ]
+                        },
+                        "set_property": {
+                            "rift:owned_by_illager": true
+                        }
+                    },
+                    {
+                        "weight": 1,
+                        "add": {
+                            "component_groups": [
+                                "rift:baryonyx_adult",
+                                "rift:baryonyx_adult_illager_patrol",
+                                "rift:default_navigation",
+                                "rift:has_illager_mount",
+                                "rift:baryonyx_adult_owned_by_illager_poison_area",
+                                "rift:mounted_by_illager_targets",
+                                "rift:pushable",
+                                "rift:mounted_by_illager_standing",
+                                "rift:variant_three",
+                                "rift:baryonyx_saddled"
+                            ]
+                        },
+                        "set_property": {
+                            "rift:owned_by_illager": true
+                        }
+                    },
+                    {
+                        "weight": 1,
+                        "add": {
+                            "component_groups": [
+                                "rift:baryonyx_adult",
+                                "rift:baryonyx_adult_illager_patrol",
+                                "rift:default_navigation",
+                                "rift:has_illager_mount",
+                                "rift:baryonyx_adult_owned_by_illager_poison_area",
+                                "rift:mounted_by_illager_targets",
+                                "rift:pushable",
+                                "rift:mounted_by_illager_standing",
+                                "rift:variant_four",
+                                "rift:baryonyx_saddled"
+                            ]
+                        },
+                        "set_property": {
+                            "rift:owned_by_illager": true
+                        }
+                    }
+                ]
+            },
 			"rift:baby_grow_up": {
 				"sequence": [
 					{

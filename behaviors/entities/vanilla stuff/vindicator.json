@@ -1,6 +1,31 @@
 {
     "format_version": "1.16.0",
     "minecraft:entity": {
+        "description": {
+            "identifier": "minecraft:vindicator",
+            "is_spawnable": true,
+            "is_summonable": true,
+            "is_experimental": false,
+            "properties": {
+                "rift:bleeding": {
+                    "client_sync": true,
+                    "default": false,
+                    "type": "bool"
+                }
+            },
+            "animations": {
+                "contBleed": "controller.animation.general_manage_bleed",
+                "contMovingTag": "controller.animation.add_moving_tag",
+                "animBleed": "animation.general_bleed",
+                "animBleedCountdown": "animation.general_bleed_countdown"
+            },
+            "scripts": {
+                "animate": [
+                    "contBleed",
+                    "contMovingTag"
+                ]
+            }
+        },
         "component_groups": {
             "minecraft:celebrate": {
                 "minecraft:behavior.celebrate": {
@@ -383,39 +408,41 @@
                 "value": 0
             }
         },
-        "description": {
-            "animations": {
-                "animBleed": "animation.general_bleed",
-                "animBleedCountdown": "animation.general_bleed_countdown",
-                "contBleed": "controller.animation.general_manage_bleed",
-                "contMovingTag": "controller.animation.add_moving_tag"
-            },
-            "identifier": "minecraft:vindicator",
-            "is_experimental": false,
-            "is_spawnable": true,
-            "is_summonable": true,
-            "properties": {
-                "rift:bleeding": {
-                    "client_sync": true,
-                    "default": false,
-                    "type": "bool"
-                }
-            },
-            "scripts": {
-                "animate": [
-                    "contBleed",
-                    "contMovingTag"
-                ]
-            }
-        },
         "events": {
             "minecraft:become_aggro": {
-                "add": {
-                    "component_groups": [
-                        "minecraft:vindicator_aggro",
-                        "rift:change_attack_mode"
-                    ]
-                }
+                "sequence": [
+                    {
+                        "add": {
+                            "component_groups": [
+                                "minecraft:vindicator_aggro"
+                            ]
+                        }
+                    },
+                    {
+                        "filters": {
+                            "test": "is_riding",
+                            "subject": "self",
+                            "value": false
+                        },
+                        "add": {
+                            "component_groups": [
+                                "rift:change_attack_mode"
+                            ]
+                        }
+                    },
+                    {
+                        "filters": {
+                            "test": "is_riding",
+                            "subject": "self",
+                            "value": true
+                        },
+                        "add": {
+                            "component_groups": [
+                                "rift:ranged_attack_mode"
+                            ]
+                        }
+                    }
+                ]
             },
             "minecraft:entity_spawned": {
                 "add": {
@@ -500,6 +527,16 @@
                                     "test": "has_biome_tag",
                                     "operator": "!=",
                                     "value": "taiga"
+                                },
+                                {
+                                    "test": "has_biome_tag",
+                                    "operator": "!=",
+                                    "value": "swamp"
+                                },
+                                {
+                                    "test": "has_biome_tag",
+                                    "operator": "!=",
+                                    "value": "mangrove_swamp"
                                 }
                             ]
                         },
@@ -553,6 +590,38 @@
                                 "run_command": {
                                     "command": [
                                         "ride @s summon_ride rift:direbear no_ride_change rift:spawn_as_illager_patrol_mount"
+                                    ]
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "filters": {
+                            "any_of": [
+                                {
+                                    "test": "has_biome_tag",
+                                    "value": "swamp"
+                                },
+                                {
+                                    "test": "has_biome_tag",
+                                    "value": "mangrove_swamp"
+                                }
+                            ]
+                        },
+                        "randomize": [
+                            {
+                                "weight": 2,
+                                "run_command": {
+                                    "command": [
+                                        "ride @s summon_ride rift:baryonyx no_ride_change rift:spawn_as_illager_patrol_mount"
+                                    ]
+                                }
+                            },
+                            {
+                                "weight": 1,
+                                "run_command": {
+                                    "command": [
+                                        "ride @s summon_ride rift:sarcosuchus no_ride_change rift:spawn_as_illager_patrol_mount"
                                     ]
                                 }
                             }
