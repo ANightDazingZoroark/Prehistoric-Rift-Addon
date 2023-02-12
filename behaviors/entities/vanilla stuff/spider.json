@@ -2,6 +2,15 @@
     "format_version": "1.18.20",
     "minecraft:entity": {
         "component_groups": {
+            "rift:is_hypnotized": {
+                "minecraft:is_sheared": {}
+            },
+            "rift:is_hypnotized_tamed": {
+                "minecraft:is_charged": {}
+            },
+            "rift:is_bleeding": {
+                "minecraft:is_ignited": {}
+            },
             "minecraft:spider_angry": {
                 "minecraft:angry": {
                     "calm_event": {
@@ -523,34 +532,17 @@
                 "animDeathTimer": "animation.hypnosis_death_timer",
                 "animFindTenontosaurus": "animation.find_tenontosaurus",
                 "animTamedDeathTimer": "animation.hypnosis_death_timer_tamed",
-                "contBleed": "controller.animation.general_manage_bleed",
-                "contDieWithoutTamedTenontosaurus": "controller.animation.general_death_timer_tamed_tenontosaurus",
-                "contDieWithoutTenontosaurus": "controller.animation.general_die_without_tenontosaurus",
-                "contHypnotizedTag": "controller.animation.add_hypnotized_tag",
-                "contHypnotizedTamedTag": "controller.animation.add_hypnotized_by_tamed_tag",
+                "contBleed": "controller.animation.spider_manage_bleed",
+                "contDieWithoutTamedTenontosaurus": "controller.animation.spider_death_timer_tamed_tenontosaurus",
+                "contDieWithoutTenontosaurus": "controller.animation.spider_die_without_tenontosaurus",
+                "contHypnotizedTag": "controller.animation.spider_add_hypnotized_tag",
+                "contHypnotizedTamedTag": "controller.animation.spider_add_hypnotized_by_tamed_tag",
                 "contMovingTag": "controller.animation.add_moving_tag"
             },
             "identifier": "minecraft:spider",
             "is_experimental": false,
             "is_spawnable": true,
             "is_summonable": true,
-            "properties": {
-                "rift:bleeding": {
-                    "client_sync": true,
-                    "default": false,
-                    "type": "bool"
-                },
-                "rift:is_hypnotized": {
-                    "client_sync": true,
-                    "default": false,
-                    "type": "bool"
-                },
-                "rift:is_hypnotized_tamed": {
-                    "client_sync": true,
-                    "default": false,
-                    "type": "bool"
-                }
-            },
             "scripts": {
                 "animate": [
                     "contHypnotizedTag",
@@ -765,7 +757,8 @@
                                     "component_groups": [
                                         "rift:hypnotized_spider_stray_jockey",
                                         "rift:follow_tenontosaurus",
-                                        "rift:follow_tenontosaurus_no_target"
+                                        "rift:follow_tenontosaurus_no_target",
+                                        "rift:is_hypnotized"
                                     ]
                                 },
                                 "filters": {
@@ -784,9 +777,6 @@
                                         }
                                     ]
                                 },
-                                "set_property": {
-                                    "rift:is_hypnotized": true
-                                },
                                 "weight": 80
                             },
                             {
@@ -794,15 +784,13 @@
                                     "component_groups": [
                                         "rift:hypnotized_spider_wither_jockey",
                                         "rift:follow_tenontosaurus",
-                                        "rift:follow_tenontosaurus_no_target"
+                                        "rift:follow_tenontosaurus_no_target",
+                                        "rift:is_hypnotized"
                                     ]
                                 },
                                 "filters": {
                                     "test": "is_biome",
                                     "value": "the_nether"
-                                },
-                                "set_property": {
-                                    "rift:is_hypnotized": true
                                 },
                                 "weight": 80
                             },
@@ -811,7 +799,8 @@
                                     "component_groups": [
                                         "rift:hypnotized_spider_jockey",
                                         "rift:follow_tenontosaurus",
-                                        "rift:follow_tenontosaurus_no_target"
+                                        "rift:follow_tenontosaurus_no_target",
+                                        "rift:is_hypnotized"
                                     ]
                                 },
                                 "filters": {
@@ -826,9 +815,6 @@
                                         }
                                     ]
                                 },
-                                "set_property": {
-                                    "rift:is_hypnotized": true
-                                },
                                 "weight": 20
                             }
                         ],
@@ -838,19 +824,19 @@
                         "add": {
                             "component_groups": [
                                 "rift:follow_tenontosaurus",
-                                "rift:follow_tenontosaurus_no_target"
+                                "rift:follow_tenontosaurus_no_target",
+                                "rift:is_hypnotized"
                             ]
-                        },
-                        "set_property": {
-                            "rift:is_hypnotized": true
                         },
                         "weight": 99
                     }
                 ]
             },
             "rift:start_bleeding": {
-                "set_property": {
-                    "rift:bleeding": true
+                "add": {
+                    "component_groups": [
+                        "rift:is_bleeding"
+                    ]
                 }
             },
             "rift:stop_attacking_for_tenontosaurus": {
@@ -871,16 +857,15 @@
                         "filters": {
                             "all_of": [
                                 {
-                                    "domain": "rift:is_hypnotized",
+                                    "test": "has_component",
                                     "subject": "self",
-                                    "test": "bool_property",
-                                    "value": true
+                                    "value": "minecraft:is_sheared"
                                 },
                                 {
-                                    "domain": "rift:is_hypnotized_tamed",
+                                    "test": "has_component",
                                     "subject": "self",
-                                    "test": "bool_property",
-                                    "value": false
+                                    "operator": "!=",
+                                    "value": "minecraft:is_charged"
                                 }
                             ]
                         }
@@ -894,16 +879,15 @@
                         "filters": {
                             "all_of": [
                                 {
-                                    "domain": "rift:is_hypnotized",
+                                    "test": "has_component",
                                     "subject": "self",
-                                    "test": "bool_property",
-                                    "value": false
+                                    "operator": "!=",
+                                    "value": "minecraft:is_sheared"
                                 },
                                 {
-                                    "domain": "rift:is_hypnotized_tamed",
+                                    "test": "has_component",
                                     "subject": "self",
-                                    "test": "bool_property",
-                                    "value": true
+                                    "value": "minecraft:is_charged"
                                 }
                             ]
                         }
@@ -911,30 +895,28 @@
                 ]
             },
             "rift:stop_bleeding": {
-                "set_property": {
-                    "rift:bleeding": false
+                "remove": {
+                    "component_groups": [
+                        "rift:is_bleeding"
+                    ]
                 }
             },
             "rift:transform_into_hypnotized": {
                 "add": {
                     "component_groups": [
                         "rift:follow_tenontosaurus",
-                        "rift:follow_tenontosaurus_no_target"
+                        "rift:follow_tenontosaurus_no_target",
+                        "rift:is_hypnotized"
                     ]
-                },
-                "set_property": {
-                    "rift:is_hypnotized": true
                 }
             },
             "rift:transform_into_hypnotized_by_tamed": {
                 "add": {
                     "component_groups": [
                         "rift:follow_tamed_tenontosaurus",
-                        "rift:follow_tamed_tenontosaurus_no_target"
+                        "rift:follow_tamed_tenontosaurus_no_target",
+                        "rift:is_hypnotized_tamed"
                     ]
-                },
-                "set_property": {
-                    "rift:is_hypnotized_tamed": true
                 }
             },
             "rift:transform_into_hypnotized_by_tamed_with_jockey": {
@@ -942,16 +924,14 @@
                     "component_groups": [
                         "rift:follow_tamed_tenontosaurus",
                         "rift:follow_tamed_tenontosaurus_no_target",
-                        "rift:hypnotized_with_jockey"
+                        "rift:hypnotized_with_jockey",
+                        "rift:is_hypnotized_tamed"
                     ]
                 },
                 "run_command": {
                     "command": [
                         "ride @e[family=skeleton, c=1, tag=hypnotizedTamed] start_riding @s teleport_rider until_full"
                     ]
-                },
-                "set_property": {
-                    "rift:is_hypnotized_tamed": true
                 }
             },
             "rift:transform_into_hypnotized_with_jockey": {
@@ -959,16 +939,14 @@
                     "component_groups": [
                         "rift:follow_tenontosaurus",
                         "rift:follow_tenontosaurus_no_target",
-                        "rift:hypnotized_with_jockey"
+                        "rift:hypnotized_with_jockey",
+                        "rift:is_hypnotized"
                     ]
                 },
                 "run_command": {
                     "command": [
                         "ride @e[family=skeleton, c=1, tag=hypnotized] start_riding @s teleport_rider until_full"
                     ]
-                },
-                "set_property": {
-                    "rift:is_hypnotized": true
                 }
             }
         }

@@ -1,5 +1,5 @@
 import { BlockLocation, ItemStack, Items, world, Location, MinecraftEffectTypes, system } from "@minecraft/server"
-import { setTimeout } from "./externals/timers"
+import { clearTimeout, setTimeout } from "./externals/timers"
 
 let saurophaganaxFood = [
     'minecraft:blaze',
@@ -54,8 +54,6 @@ let fibrousMeatDroppers = [
 ]
 
 world.events.entityHurt.subscribe((event) => {
-    let blockBelowAttacker = event.damageSource.damagingEntity.dimension.getBlock(new BlockLocation(Math.trunc(event.damageSource.damagingEntity.location.x), Math.trunc(event.damageSource.damagingEntity.location.y) - 1, Math.trunc(event.damageSource.damagingEntity.location.z)))
-
     if (event.damageSource.damagingEntity.typeId == 'rift:tyrannosaurus' && event.hurtEntity.getComponent('health').current <= 0) {
         if (exoticMeatDroppers.includes(event.hurtEntity.typeId)) {
             event.hurtEntity.dimension.spawnItem(new ItemStack(Items.get('rift:raw_exotic_meat'), 5, 0), new Location(event.hurtEntity.location.x, event.hurtEntity.location.y, event.hurtEntity.location.z))
@@ -654,7 +652,7 @@ world.events.entityHurt.subscribe((event) => {
         event.damageSource.damagingEntity.getComponent('health').setCurrent(event.damageSource.damagingEntity.getComponent('health').current + 4)
     }
     if (event.damageSource.damagingEntity.typeId == 'rift:saurophaganax' && !event.damageSource.damagingEntity.hasTag('roaring') && saurophaganaxFood.includes(event.hurtEntity.typeId) && event.hurtEntity.getComponent('health').current <= 0) {
-        event.damageSource.damagingEntity.runCommandAsync(`scoreboard players add @s[scores={saurophLightBlst=!10}] saurophLightBlst 1`)
+        event.damageSource.damagingEntity.triggerEvent('rift:increase_light_blast_meter')
     }
     if (event.damageSource.damagingEntity.typeId == 'rift:direwolf' && event.damageSource.damagingEntity.hasTag('sonicBoom')) {
         event.hurtEntity.dimension.spawnEntity('rift:direwolf_explosion', new Location(event.hurtEntity.location.x, event.hurtEntity.location.y, event.hurtEntity.location.z))
@@ -669,10 +667,16 @@ world.events.entityHurt.subscribe((event) => {
     if (event.hurtEntity.typeId == 'rift:tenontosaurus' && event.hurtEntity.getComponent('is_tamed') && event.hurtEntity.hasTag('ridden')) {
         event.damageSource.damagingEntity.addTag('tenontoTamedTarget')
         event.hurtEntity.runCommandAsync(`event entity @e[r=24, tag=!tamed, tag=hypnotizedTamed] rift:attack_for_tenontosaurus`)
+        setTimeout(() => {
+            event.damageSource.damagingEntity.removeTag('tenontoTamedTarget')
+        }, 1000)
     }
     if (event.damageSource.damagingEntity.typeId == 'rift:tenontosaurus' && event.damageSource.damagingEntity.getComponent('is_tamed') && event.damageSource.damagingEntity.hasTag('ridden')) {
         event.hurtEntity.addTag('tenontoTamedTarget')
         event.damageSource.damagingEntity.runCommandAsync(`event entity @e[r=24, tag=!tamed, tag=hypnotizedTamed] rift:attack_for_tenontosaurus`)
+        setTimeout(() => {
+            event.hurtEntity.removeTag('tenontoTamedTarget')
+        }, 1000)
     }
     if (event.damageSource.damagingEntity.typeId == 'rift:direbear' && event.damageSource.damagingEntity.hasTag('stompMode')) {
         event.hurtEntity.addEffect(MinecraftEffectTypes.slowness, 60, 255)
@@ -696,18 +700,3 @@ world.events.entityHurt.subscribe((event) => {
     //     event.hurtEntity.triggerEvent('rift:start_bleeding')
     // }
 })
-
-// system.run(function everyTick(tick) {
-//     system.run(everyTick)
-//     let mobs = Array.from(world.getDimension('overworld').getEntities())
-//     for (let i = 0; i < mobs.length; i++) {
-//         let blockBelowAttacker = mobs[i].dimension.getBlock(new BlockLocation(Math.trunc(mobs[i].location.x), Math.trunc(mobs[i].location.y) - 1, Math.trunc(mobs[i].location.z)))
-
-//         if (mobs[i].typeId == 'rift:utahraptor' && mobs[i].getComponent('is_tamed') && !mobs[i].hasTag('ridden') && blockBelowAttacker.typeId == 'minecraft:air' && !mobs[i].hasOwnProperty('jumpAttacking')) {
-//             mobs[i].jumpAttacking = 0
-//         }
-//         if (mobs[i].typeId == 'rift:utahraptor' && mobs[i].getComponent('is_tamed') && !mobs[i].hasTag('ridden') && blockBelowAttacker.typeId == 'minecraft:air' && mobs[i].hasOwnProperty('jumpAttacking')) {
-//             mobs[i].jumpAttacking++
-//         }
-//     }
-// })

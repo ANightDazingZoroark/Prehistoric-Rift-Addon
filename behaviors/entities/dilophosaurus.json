@@ -84,7 +84,7 @@
 				"contHypnotizedTag": "controller.animation.add_hypnotized_tag",
 				"contHypnotizedTamedTag": "controller.animation.add_hypnotized_by_tamed_tag",
 				"contOwnedByIllagerTag": "controller.animation.add_owned_by_illager_tag",
-				"contShoot": "controller.animation.dilophosaurus_shoot",
+				// "contShoot": "controller.animation.dilophosaurus_shoot",
 				"contForcedAttack": "controller.animation.dilophosaurus_forced_attack",
 				"contEnergyUsage": "controller.animation.dilophosaurus_energy_movement_usage",
 				"contWarnLowEnergy": "controller.animation.warn_of_low_energy",
@@ -124,7 +124,7 @@
 					"contHypnotizedTag",
                     "contHypnotizedTamedTag",
                     "contOwnedByIllagerTag",
-					"contShoot",
+					// "contShoot",
 					"contForcedAttack",
 					"contEnergyUsage",
 					"contWarnLowEnergy",
@@ -378,6 +378,40 @@
 					"damage": 6
 				}
             },
+			"rift:dilophosaurus_adult_calm": {
+				"minecraft:on_target_acquired": {
+					"event": "rift:adult_become_angry_delay",
+					"target": "self"
+				},
+				"minecraft:on_friendly_anger": {
+					"event": "rift:adult_become_angry_delay",
+					"target": "self"
+				}
+			},
+            "rift:dilophosaurus_adult_angry_delay": {
+                "minecraft:is_sheared": {},
+                "minecraft:timer": {
+                    "time": 2.12,
+                    "time_down_event": {
+                        "event": "rift:adult_become_angry",
+                        "target": "self"
+                    }
+                }
+            },
+			"rift:dilophosaurus_adult_angry": {
+				"minecraft:angry": {
+					"broadcast_anger": false,
+					"duration": 30,
+					"calm_event": {
+						"event": "rift:adult_on_calm",
+						"target": "self"
+					}
+				},
+                "minecraft:on_target_escape": {
+                    "event": "rift:adult_on_calm",
+                    "target": "self"
+                }
+			},
             "rift:dilophosaurus_adult_wild": {
                 "minecraft:health": {
                     "value": 40,
@@ -631,10 +665,14 @@
 				}
 			},
 			"rift:ranged_attack": {
-				"minecraft:is_sheared": {},
 				"minecraft:behavior.ranged_attack": {
+					"attack_interval_min": 1,
+					"attack_interval_max": 1,
 					"priority": 9,
-					"attack_radius": 64
+					"attack_radius": 16.0
+				},
+				"minecraft:shooter": {
+					"def": "rift:dilophosaurus_spit"
 				}
 			},
 			"rift:can_spawn_trap": {
@@ -668,7 +706,7 @@
 			"rift:default_targets": {
 				"minecraft:behavior.nearest_attackable_target": {
 					"priority": 7,
-					"within_radius": 32.0,
+					"within_radius": 16.0,
 					"must_see": true,
 					"entity_types": [
 						{
@@ -691,7 +729,7 @@
 									}
 								]
 							},
-							"max_dist": 48
+							"max_dist": 16
 						},
 						{
 							"filters": {
@@ -741,7 +779,7 @@
 									}
 								]
 							},
-							"max_dist": 48
+							"max_dist": 16
 						},
 						{
 							"filters": {
@@ -774,7 +812,7 @@
 									}
 								]
 							},
-							"max_dist": 48
+							"max_dist": 16
 						},
 						{
 							"filters": {
@@ -792,7 +830,7 @@
 									}
 								]
 							},
-							"max_dist": 48
+							"max_dist": 16
 						},
 						{
 							"filters": {
@@ -815,7 +853,7 @@
 									}
 								]
 							},
-							"max_dist": 48
+							"max_dist": 16
 						}
 					]
 				}
@@ -1544,12 +1582,6 @@
 					"is_pushable_by_piston": false
 				}
             },
-			"rift:has_no_target": {
-				"minecraft:on_target_acquired": {
-					"event": "rift:start_attacking",
-					"target": "self"
-				}
-			},
 			"rift:has_no_target_turret_mode": {
 				"minecraft:on_target_acquired": {
 					"event": "rift:start_attacking_turret_mode",
@@ -1563,10 +1595,6 @@
 				}
 			},
 			"rift:can_attack": {
-				"minecraft:on_target_escape": {
-					"event": "rift:stop_attacking",
-					"target": "self"
-				},
 				"minecraft:target_nearby_sensor": {
 					"inside_range": 3,
 					"outside_range": 6,
@@ -4184,11 +4212,6 @@
 										"subject": "other",
 										"operator": "!=",
 										"value": "minecraft:is_tamed"
-									},
-									{
-										"test": "has_component",
-										"subject": "other",
-										"value": "minecraft:is_sheared"
 									}
 								]
 							}
@@ -4262,9 +4285,9 @@
 							"component_groups": [
 								"rift:dilophosaurus_adult",
 								"rift:dilophosaurus_adult_wild",
+                                "rift:dilophosaurus_adult_calm",
 								"rift:default_targets",
 								"rift:dilophosaurus_adult_wild_not_trusting",
-								"rift:has_no_target",
 								"rift:wild_standing",
 								"rift:variant_zero",
 								"rift:wild_can_move",
@@ -4279,9 +4302,9 @@
 							"component_groups": [
 								"rift:dilophosaurus_adult",
 								"rift:dilophosaurus_adult_wild",
+                                "rift:dilophosaurus_adult_calm",
 								"rift:default_targets",
 								"rift:dilophosaurus_adult_wild_not_trusting",
-								"rift:has_no_target",
 								"rift:wild_standing",
 								"rift:variant_one",
 								"rift:wild_can_move",
@@ -4296,9 +4319,9 @@
 							"component_groups": [
 								"rift:dilophosaurus_adult",
 								"rift:dilophosaurus_adult_wild",
+                                "rift:dilophosaurus_adult_calm",
 								"rift:default_targets",
 								"rift:dilophosaurus_adult_wild_not_trusting",
-								"rift:has_no_target",
 								"rift:wild_standing",
 								"rift:variant_two",
 								"rift:wild_can_move",
@@ -4313,9 +4336,9 @@
 							"component_groups": [
 								"rift:dilophosaurus_adult",
 								"rift:dilophosaurus_adult_wild",
+                                "rift:dilophosaurus_adult_calm",
 								"rift:default_targets",
 								"rift:dilophosaurus_adult_wild_not_trusting",
-								"rift:has_no_target",
 								"rift:wild_standing",
 								"rift:variant_three",
 								"rift:wild_can_move",
@@ -4679,73 +4702,6 @@
                     }
                 ]
             },
-			"rift:start_attacking": {
-				"add": {
-					"component_groups": [
-						"rift:can_attack"
-					]
-				},
-				"remove": {
-					"component_groups": [
-						"rift:has_no_target"
-					]
-				}
-			},
-			"rift:stop_attacking": {
-				"sequence": [
-					{
-						"add": {
-							"component_groups": [
-								"rift:has_no_target",
-								"rift:pushable"
-							]
-						},
-						"remove": {
-							"component_groups": [
-								"rift:can_attack",
-								"rift:can_melee_attack",
-								"rift:ranged_attack",
-								"rift:unpushable"
-							]
-						}		
-					},
-					{
-						"filters": {
-							"test": "has_component",
-							"subject": "self",
-							"operator": "!=",
-							"value": "minecraft:is_tamed"
-						},
-						"add": {
-							"component_groups": [
-								"rift:wild_can_move"
-							]
-						},
-						"remove": {
-							"component_groups": [
-								"rift:wild_cannot_move"
-							]
-						}
-					},
-					{
-						"filters": {
-							"test": "has_component",
-							"subject": "self",
-							"value": "minecraft:is_tamed"
-						},
-						"add": {
-							"component_groups": [
-								"rift:tamed_can_move"
-							]
-						},
-						"remove": {
-							"component_groups": [
-								"rift:tamed_cannot_move"
-							]
-						}
-					}
-				]
-			},
 			"rift:ranged_attack_mode": {
 				"sequence": [
 					{
@@ -4758,43 +4714,7 @@
 						"remove": {
 							"component_groups": [
 								"rift:can_melee_attack",
-								"rift:pushable",
-								"rift:wild_can_move"
-							]
-						}
-					},
-					{
-						"filters": {
-							"test": "has_component",
-							"subject": "self",
-							"operator": "!=",
-							"value": "minecraft:is_tamed"
-						},
-						"add": {
-							"component_groups": [
-								"rift:wild_cannot_move"
-							]
-						},
-						"remove": {
-							"component_groups": [
-								"rift:wild_can_move"
-							]
-						}
-					},
-					{
-						"filters": {
-							"test": "has_component",
-							"subject": "self",
-							"value": "minecraft:is_tamed"
-						},
-						"add": {
-							"component_groups": [
-								"rift:tamed_cannot_move"
-							]
-						},
-						"remove": {
-							"component_groups": [
-								"rift:tamed_can_move"
+								"rift:pushable"
 							]
 						}
 					}
@@ -4813,41 +4733,6 @@
 							"component_groups": [
 								"rift:ranged_attack",
 								"rift:unpushable"
-							]
-						}
-					},
-					{
-						"filters": {
-							"test": "has_component",
-							"subject": "self",
-							"operator": "!=",
-							"value": "minecraft:is_tamed"
-						},
-						"add": {
-							"component_groups": [
-								"rift:wild_can_move"
-							]
-						},
-						"remove": {
-							"component_groups": [
-								"rift:wild_cannot_move"
-							]
-						}
-					},
-					{
-						"filters": {
-							"test": "has_component",
-							"subject": "self",
-							"value": "minecraft:is_tamed"
-						},
-						"add": {
-							"component_groups": [
-								"rift:tamed_can_move"
-							]
-						},
-						"remove": {
-							"component_groups": [
-								"rift:tamed_cannot_move"
 							]
 						}
 					}
@@ -5043,7 +4928,6 @@
                                 "rift:dilophosaurus_adult_illager_patrol",
                                 "rift:has_illager_mount",
 								"rift:mounted_by_illager_targets",
-                                "rift:has_no_target",
 								"rift:variant_zero",
                                 "rift:wild_can_move",
 								"rift:pushable",
@@ -5064,7 +4948,6 @@
                                 "rift:dilophosaurus_adult_illager_patrol",
                                 "rift:has_illager_mount",
 								"rift:mounted_by_illager_targets",
-                                "rift:has_no_target",
 								"rift:variant_one",
                                 "rift:wild_can_move",
 								"rift:pushable",
@@ -5085,7 +4968,6 @@
                                 "rift:dilophosaurus_adult_illager_patrol",
                                 "rift:has_illager_mount",
 								"rift:mounted_by_illager_targets",
-                                "rift:has_no_target",
 								"rift:variant_two",
                                 "rift:wild_can_move",
 								"rift:pushable",
@@ -5106,7 +4988,6 @@
                                 "rift:dilophosaurus_adult_illager_patrol",
                                 "rift:has_illager_mount",
 								"rift:mounted_by_illager_targets",
-                                "rift:has_no_target",
 								"rift:variant_three",
                                 "rift:wild_can_move",
 								"rift:pushable",
@@ -5130,7 +5011,7 @@
 								"rift:dilophosaurus_adult_wild",
 								"rift:default_targets",
 								"rift:dilophosaurus_adult_wild_not_trusting",
-								"rift:has_no_target"
+                                "rift:dilophosaurus_adult_calm"
 							]
 						},
 						"remove": {
@@ -5161,7 +5042,9 @@
 								"rift:dilophosaurus_adult",
 								"rift:dilophosaurus_adult_wild",
 								"rift:default_targets",
-								"rift:dilophosaurus_adult_wild_not_trusting"
+								"rift:dilophosaurus_adult_wild_not_trusting",
+                                "rift:dilophosaurus_adult_angry_delay",
+                                "rift:dilophosaurus_adult_angry"
 							]
 						}
 					}
@@ -5208,6 +5091,47 @@
 					]
 				}
 			},
+            "rift:adult_become_angry_delay": {
+                "add": {
+                    "component_groups": [
+                        "rift:dilophosaurus_adult_angry_delay"
+                    ]
+                },
+                "remove": {
+                    "component_groups": [
+                        "rift:dilophosaurus_adult_calm"
+                    ]
+                }
+            },
+            "rift:adult_become_angry": {
+                "add": {
+                    "component_groups": [
+                        "rift:dilophosaurus_adult_angry",
+                        "rift:can_attack"
+                    ]
+                },
+                "remove": {
+                    "component_groups": [
+                        "rift:dilophosaurus_adult_angry_delay"
+                    ]
+                }
+            },
+            "rift:adult_on_calm": {
+                "add": {
+                    "component_groups": [
+                        "rift:dilophosaurus_adult_calm"
+                    ]
+                },
+                "remove": {
+                    "component_groups": [
+                        "rift:dilophosaurus_adult_angry",
+                        "rift:can_attack",
+                        "rift:can_melee_attack",
+                        "rift:ranged_attack",
+                        "rift:unpushable"
+                    ]
+                }
+            },
 			"rift:stop_being_aggravated": {
 				"remove": {
 					"component_groups": [
@@ -5224,7 +5148,6 @@
 				"remove": {
 					"component_groups": [
 						"rift:pushable",
-						"rift:has_no_target",
 						"rift:can_attack",
 						"rift:ranged_attack",
 						"rift:can_melee_attack"
@@ -5235,8 +5158,7 @@
 				"add": {
 					"component_groups": [
 						"rift:pushable",
-						"minecraft:collision_box",
-						"rift:has_no_target"
+						"minecraft:collision_box"
 					]
 				},
 				"remove": {
@@ -5259,7 +5181,10 @@
 					"component_groups": [
 						"rift:dilophosaurus_adult_wild_not_trusting",
 						"rift:default_targets",
-						"rift:wild_cannot_move"
+						"rift:wild_cannot_move",
+                        "rift:dilophosaurus_adult_calm",
+                        "rift:dilophosaurus_adult_angry_delay",
+                        "rift:dilophosaurus_adult_angry"
 					]
 				},
 				"run_command": {
@@ -5275,7 +5200,8 @@
 				"add": {
 					"component_groups": [
 						"rift:default_targets",
-						"rift:dilophosaurus_adult_wild_not_trusting"
+						"rift:dilophosaurus_adult_wild_not_trusting",
+                        "rift:dilophosaurus_adult_calm"
 					]
 				},
 				"remove": {
@@ -5350,7 +5276,8 @@
 						"rift:dilophosaurus_adult_tamed",
 						"rift:tamed_standing",
 						"rift:rideable",
-						"rift:tamed_can_move"
+						"rift:tamed_can_move",
+                        "rift:dilophosaurus_adult_calm"
 					]
 				},
 				"remove": {
@@ -5521,8 +5448,8 @@
 			"rift:on_assist_behavior": {
 				"add": {
 					"component_groups": [
+                        "rift:dilophosaurus_adult_calm",
 						"rift:assist_behavior",
-						"rift:has_no_target",
 						"rift:rideable",
 						"rift:pushable"
 					]
@@ -5550,8 +5477,8 @@
 			"rift:on_neutral_behavior": {
 				"add": {
 					"component_groups": [
+                        "rift:dilophosaurus_adult_calm",
 						"rift:neutral_behavior",
-						"rift:has_no_target",
 						"rift:rideable",
 						"rift:pushable"
 					]
@@ -5579,8 +5506,8 @@
 			"rift:on_aggressive_behavior": {
 				"add": {
 					"component_groups": [
+                        "rift:dilophosaurus_adult_calm",
 						"rift:aggressive_behavior",
-						"rift:has_no_target",
 						"rift:rideable",
 						"rift:pushable"
 					]
@@ -5608,13 +5535,13 @@
 			"rift:on_passive_behavior": {
 				"add": {
 					"component_groups": [
-						"rift:has_no_target",
 						"rift:rideable",
 						"rift:pushable"
 					]
 				},
 				"remove": {
 					"component_groups": [
+                        "rift:dilophosaurus_adult_calm",
 						"rift:assist_behavior",
 						"rift:neutral_behavior",
 						"rift:aggressive_behavior",
@@ -5637,21 +5564,21 @@
 			"rift:on_turret_behavior": {
 				"add": {
 					"component_groups": [
+                        "rift:ranged_attack",
 						"rift:aggressive_behavior",
 						"rift:tamed_cannot_move",
-						"rift:unpushable",
-						"rift:has_no_target_turret_mode"
+						"rift:unpushable"
 					]
 				},
 				"remove": {
 					"component_groups": [
+                        "rift:dilophosaurus_adult_calm",
 						"rift:assist_behavior",
 						"rift:neutral_behavior",
 						"rift:tamed_can_move",
 						"rift:tamed_can_move_low_energy",
 						"rift:pushable",
 						"rift:rideable",
-						"rift:has_no_target",
 						"rift:can_melee_attack",
 						"rift:can_attack"
 					]

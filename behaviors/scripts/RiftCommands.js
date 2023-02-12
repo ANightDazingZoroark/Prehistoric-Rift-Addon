@@ -16,17 +16,6 @@ world.events.beforeChat.subscribe(async (ev) => {
                     break
                 case 'r!test':
                     ev.sender.tell('Hello World!')
-                    // let armorCount = 0
-                    // ev.sender.runCommandAsync('testfor @s[hasitem={location=slot.armor.chest, item=netherite_chestplate}]').then(() =>{
-                    //     armorCount++
-                    //     console.warn('one')
-                    //     ev.sender.runCommandAsync('testfor @s[hasitem={location=slot.armor.chest, item=diamond_chestplate}]').then(() => {
-                    //         armorCount++
-                    //         console.warn('two')
-                    //     }).finally(()=> console.warn(armorCount))
-                    // })
-                    // await ev.sender.runCommandAsync('testfor @s[hasitem={location=slot.armor.chest, item=netherite_chestplate}]').then(x => armorCount++)
-                    // console.warn(armorCount)
                     break
                 case 'r!journalunlock':
                     ev.sender.tell('Unlocked all journal entries!')

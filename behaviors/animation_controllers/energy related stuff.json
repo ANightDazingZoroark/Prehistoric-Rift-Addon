@@ -59,7 +59,101 @@
                     ],
                     "transitions": [
                         {
-                            "lowEnergy": "query.property('rift:energy') <= 45 && query.property('rift:focused_stab_charge') == 0"
+                            "lowEnergy": "query.property('rift:energy') <= 90"
+                        },
+                        {
+                            "noEnergyDelay": "query.property('rift:energy') == 0"
+                        }
+                    ]
+                },
+                "lowEnergy": {
+                    "on_entry": [
+                        "/execute as @s[tag=ridden] run tellraw @p {\"rawtext\":[{\"selector\": \"@s\"}, {\"text\":\" is low on energy! It needs to rest in order for it to regenerate!\"}]}",
+                        "@s rift:disable_jump",
+                        "@s rift:disable_ranged_attack_ability",
+                        "@s rift:moving_slowly_low_energy",
+                        "/effect @s slowness 0",
+                        "/effect @s weakness 0",
+                        "/tag @s add lowEnergy",
+                        "/tag @s remove noEnergy"
+                    ],
+                    "on_exit": [
+                        "/tag @s remove lowEnergy"
+                    ],
+                    "animations": [
+                        "animLowOnEnergyEffects"
+                    ],
+                    "transitions": [
+                        {
+                            "default": "query.property('rift:energy') > 90 || !query.has_rider"
+                        },
+                        {
+                            "noEnergyDelay": "query.property('rift:energy') == 0"
+                        }
+                    ]
+                },
+                "noEnergyDelay": {
+                    "on_entry": [
+                        "/execute as @s[tag=ridden] run tellraw @p {\"rawtext\":[{\"selector\": \"@s\"}, {\"text\":\" has no energy! It needs to rest!\"}]}",
+                        "@s rift:disable_jump",
+                        "@s rift:disable_ranged_attack_ability",
+                        "@s rift:stop_moving_low_energy",
+                        "/effect @s slowness 0",
+                        "/effect @s weakness 0",
+                        "/tag @s add regenDelay",
+                        "/tag @s add noEnergy",
+                        "@s rift:sit_at_no_energy",
+                        "@s rift:passive_at_no_energy"
+                    ],
+                    "on_exit": [
+                        "/tag @s remove regenDelay"
+                    ],
+                    "animations": [
+                        "animEnergyRegenDelay",
+                        "animNoEnergyEffects"
+                    ],
+                    "transitions": [
+                        {
+                            "default": "!query.has_rider"
+                        },
+                        {
+                            "noEnergy": "query.all_animations_finished"
+                        }
+                    ]
+                },
+                "noEnergy": {
+                    "on_entry": [
+                        "/tag @s add noEnergy"
+                    ],
+                    "animations": [
+                        "animNoEnergyEffects"
+                    ],
+                    "transitions": [
+                        {
+                            "default": "query.property('rift:energy') > 30 || !query.has_rider"
+                        },
+                        {
+                            "lowEnergy": "query.property('rift:energy') > 0 && query.property('rift:energy') <= 30"
+                        }
+                    ]
+                }
+            }
+        },
+        "controller.animation.stegosaurus_warn_of_low_energy": {
+            "initial_state": "default",
+            "states": {
+                "default": {
+                    "on_entry": [
+                        "/effect @s slowness 0",
+                        "/effect @s weakness 0",
+                        "@s rift:enable_jump",
+                        "@s rift:reenable_ranged_attack_ability",
+                        "@s rift:return_to_moving_normally",
+                        "/tag @s remove noEnergy"
+                    ],
+                    "transitions": [
+                        {
+                            "lowEnergy": "query.property('rift:energy') <= 90 && query.property('rift:focused_stab_charge') == 0"
                         },
                         {
                             "noEnergyDelay": "query.property('rift:energy') == 0 && query.property('rift:focused_stab_charge') == 0"
@@ -85,7 +179,7 @@
                     ],
                     "transitions": [
                         {
-                            "default": "query.property('rift:energy') > 45 || !query.has_rider"
+                            "default": "query.property('rift:energy') > 90 || !query.has_rider"
                         },
                         {
                             "noEnergyDelay": "query.property('rift:energy') == 0 && query.property('rift:focused_stab_charge') == 0"

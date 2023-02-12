@@ -12,10 +12,15 @@
 					"default": false,
 					"client_sync": true
 				},
-				"rift:light_blast_notify": {
-					"type": "bool",
-					"default": false
-				},
+                "rift:light_blast": {
+                    "range": [
+                        0,
+                        10
+                    ],
+                    "type": "int",
+                    "default": 0,
+					"client_sync": true
+                },
 				"rift:is_forced_attacking": {
 					"type": "bool",
 					"default": false
@@ -55,7 +60,7 @@
 			"animations": {
                 "contEatFromInventory": "controller.animation.general_eat_from_inventory",
                 "contRefillEnergyFromInventory": "controller.animation.general_refill_energy_from_inventory",
-				"contManageTags": "controller.animation.sauro_manage_tags",
+				"contNotifyRider": "controller.animation.sauro_notify_rider",
 				"contResetLightBlastChargeWhenWeakened": "controller.animation.sauro_reset_light_blast_charge_when_weakened",
 				"contMovingTag": "controller.animation.add_moving_tag",
 				"contTameTag": "controller.animation.add_tame_tag",
@@ -66,7 +71,8 @@
 				"contHasTargetTag": "controller.animation.add_has_target_tag",
 				"contShearedTag": "controller.animation.add_sheared_tag",
 				"contInLoveTag": "controller.animation.add_in_love_tag",
-				"contForcedAttack": "controller.animation.saurophaganax_forced_attack",
+				"contCanLightBlastTag": "controller.animation.sauro_can_light_blast",
+                "contForcedAttack": "controller.animation.saurophaganax_forced_attack",
 				"contUnsittableWhenRidden": "controller.animation.become_unsittable_when_ridden",
 				"contTameState": "controller.animation.manage_tame_state",
 				"contBehaviorState": "controller.animation.manage_tame_behavior",
@@ -94,7 +100,7 @@
 				"animate": [
                     "contEatFromInventory",
                     "contRefillEnergyFromInventory",
-					"contManageTags",
+					"contNotifyRider",
 					"contResetLightBlastChargeWhenWeakened",
                     "contMovingTag",
 					"contTameTag",
@@ -105,6 +111,7 @@
 					"contHasTargetTag",
 					"contShearedTag",
 					"contInLoveTag",
+                    "contCanLightBlastTag",
 					"contForcedAttack",
 					"contUnsittableWhenRidden",
 					"contTameState",
@@ -4019,11 +4026,6 @@
 								"rift:pushable",
 								"rift:can_attack"
 							]
-						},
-						"run_command": {
-							"command": [
-								"scoreboard players set @s saurophLightBlst 0"
-							]
 						}
 					},
 					{
@@ -4038,11 +4040,6 @@
 								"rift:variant_one",
 								"rift:pushable",
 								"rift:can_attack"
-							]
-						},
-						"run_command": {
-							"command": [
-								"scoreboard players set @s saurophLightBlst 0"
 							]
 						}
 					},
@@ -4059,11 +4056,6 @@
 								"rift:pushable",
 								"rift:can_attack"
 							]
-						},
-						"run_command": {
-							"command": [
-								"scoreboard players set @s saurophLightBlst 0"
-							]
 						}
 					},
 					{
@@ -4078,11 +4070,6 @@
 								"rift:variant_three",
 								"rift:pushable",
 								"rift:can_attack"
-							]
-						},
-						"run_command": {
-							"command": [
-								"scoreboard players set @s saurophLightBlst 0"
 							]
 						}
 					}
@@ -4176,11 +4163,9 @@
 								"rift:aggravating_horn_attack"
 							]
 						},
-						"run_command": {
-							"command": [
-								"scoreboard players set @s saurophLightBlst 0"
-							]
-						}
+                        "set_property": {
+                            "rift:light_blast": "0"
+                        }
 					},
 					{
 						"filters": {
@@ -4270,11 +4255,6 @@
 								"rift:saurophaganax_baby_weakened",
 								"rift:saurophaganax_baby_tameable",
 								"rift:temptable"
-							]
-						},
-						"run_command": {
-							"command": [
-								"scoreboard players set @s saurophLightBlst 0"
 							]
 						}
 					},
@@ -4549,27 +4529,30 @@
 					]
 				}
 			},
+            "rift:increase_light_blast_meter": {
+                "set_property": {
+                    "rift:light_blast": "query.property('rift:light_blast') + 1"
+                }
+            },
+            "rift:reset_light_blast_meter": {
+                "set_property": {
+                    "rift:light_blast": "0"
+                }
+            },
 			"rift:end_light_blast": {
 				"remove": {
 					"component_groups": [
 						"rift:saurophaganax_light_blast"
 					]
 				},
-				"run_command": {
-					"command": [
-						"scoreboard players set @s saurophLightBlst 0"
-					]
-				}
+                "set_property": {
+                    "rift:light_blast": "0"
+                }
 			},
 			"rift:activate_light_blast": {
 				"add": {
 					"component_groups": [
 						"rift:saurophaganax_light_blast"
-					]
-				},
-				"run_command": {
-					"command": [
-						"scoreboard players set @s saurophLightBlst 11"
 					]
 				}
 			},
@@ -4603,10 +4586,12 @@
 				},
 				"run_command": {
 					"command": [
-						"event entity @s rift:decrease_energy_while_light_blasting",
-						"scoreboard players set @s saurophLightBlst 0"
+						"event entity @s rift:decrease_energy_while_light_blasting"
 					]
-				}
+				},
+                "set_property": {
+                    "rift:light_blast": "0"
+                }
 			},
 			"rift:on_standing": {
 				"sequence": [

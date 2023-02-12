@@ -19,31 +19,58 @@
 					],
 					"animations": [
 						"animResetLightBlastCharge"
-					]
+					],
+                    "on_entry": [
+                        "/say oof"
+                    ]
 				}
 			}
 		},
-		"controller.animation.sauro_manage_tags": {
+		"controller.animation.sauro_can_light_blast": {
 			"initial_state": "default",
 			"states": {
 				"default": {
 					"transitions": [
 						{
-							"canNotify": "query.property('rift:light_blast_notify') == true"
+							"canLightBlast": "query.property('rift:light_blast') == 10"
+						}
+					]
+				},
+				"canLightBlast": {
+					"transitions": [
+						{
+							"default": "query.property('rift:light_blast') < 10"
+						}
+					],
+					"on_entry": [
+						"/tag @s add canLightBlast",
+                        "/say yay"
+					],
+					"on_exit": [
+						"/tag @s remove canLightBlast",
+                        "/say oof"
+					]
+				}
+			}
+		},
+		"controller.animation.sauro_notify_rider": {
+			"initial_state": "default",
+			"states": {
+				"default": {
+					"transitions": [
+						{
+							"canNotify": "query.property('rift:light_blast') == 10 && query.has_rider"
 						}
 					]
 				},
 				"canNotify": {
 					"transitions": [
 						{
-							"default": "query.property('rift:light_blast_notify') == false"
+							"default": "query.property('rift:light_blast') < 10 || !query.has_rider"
 						}
 					],
 					"on_entry": [
-						"/tag @s add canNotify"
-					],
-					"on_exit": [
-						"/tag @s remove canNotify"
+						"/execute as @s[tag=ridden] run tellraw @p {\"rawtext\":[{\"text\":\"Light Blast Available!\"}]}"
 					]
 				}
 			}

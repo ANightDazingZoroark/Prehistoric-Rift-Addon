@@ -452,12 +452,51 @@
                                             }
                                         ]
                                     },
+                                    {
+                                        "test": "bool_property",
+                                        "subject": "other",
+                                        "domain": "rift:is_hypnotized",
+                                        "value": false
+                                    },
+                                    {
+                                        "test":  "is_family", 
+                                        "subject": "other",
+                                        "operator": "!=",
+                                        "value":  "cavespider"
+                                    },
+                                    {
+                                        "test":  "is_family", 
+                                        "subject": "other",
+                                        "operator": "!=",
+                                        "value":  "spider"
+                                    }
+								]
+							},
+							"max_dist": 16
+						},
+						{
+							"filters": {
+								"all_of": [
 									{
-										"test": "bool_property",
-										"subject": "other",
-										"domain": "rift:is_hypnotized",
-										"value": false
-									}
+                                        "any_of": [
+                                            {
+                                                "test":  "is_family", 
+                                                "subject": "other",
+                                                "value":  "cavespider"
+                                            },
+                                            {
+                                                "test":  "is_family", 
+                                                "subject": "other",
+                                                "value":  "spider"
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "test": "has_component",
+                                        "subject": "other",
+                                        "operator": "!=",
+                                        "value": "minecraft:is_sheared"
+                                    }
 								]
 							},
 							"max_dist": 16
@@ -650,6 +689,10 @@
 					"soft_distance": 4,
 					"hard_distance": 8,
 					"max_distance": 12
+				},
+				"minecraft:on_target_acquired": {
+					"event": "rift:tamed_on_anger",
+					"target": "self"
 				}
             },
 			"rift:temptable": {
@@ -697,15 +740,17 @@
 					"priority": 10
 				}
 			},
-			"rift:sitting": {
-				"minecraft:on_target_acquired": {
-					"event": "rift:sitting_on_anger",
-					"target": "self"
-				}
-			},
-			"rift:sitting_angered": {
+			"rift:tamed_angered": {
+                "minecraft:angry": {
+					"duration": 30,
+					"broadcast_anger": false,
+					"calm_event": {
+						"event": "rift:tamed_on_calm",
+						"target": "self"
+					}
+                },
 				"minecraft:on_target_escape": {
-					"event": "rift:sitting_on_calm",
+					"event": "rift:tamed_on_calm",
 				  	"target": "self"
 				}
 			},
@@ -3715,7 +3760,7 @@
 							"component_groups": [
 								"rift:wild_standing",
 								"rift:sitting",
-								"rift:sitting_angered",
+								"rift:tamed_angered",
 								"rift:wandering"
 							]
 						},
@@ -3749,7 +3794,7 @@
 					"component_groups": [
 						"rift:wild_standing",
 						"rift:tamed_standing",
-						"rift:sitting_angered",
+						"rift:tamed_angered",
 						"rift:wandering",
 						"rift:temptable"
 					]
@@ -3773,7 +3818,7 @@
 								"rift:wild_standing",
 								"rift:tamed_standing",
 								"rift:sitting",
-								"rift:sitting_angered"
+								"rift:tamed_angered"
 							]
 						},
 						"run_command": {
@@ -3796,27 +3841,17 @@
 					}
 				]
 			},
-			"rift:sitting_on_anger": {
+			"rift:tamed_on_anger": {
 				"add": {
 					"component_groups": [
-						"rift:sitting_angered"
-					]
-				},
-				"remove": {
-					"component_groups": [
-						"rift:sitting"
+						"rift:tamed_angered"
 					]
 				}
 			},
-			"rift:sitting_on_calm": {
-				"add": {
-					"component_groups": [
-						"rift:sitting"
-					]
-				},
+			"rift:tamed_on_calm": {
 				"remove": {
 					"component_groups": [
-						"rift:sitting_angered"
+						"rift:tamed_angered"
 					]
 				}
 			},
