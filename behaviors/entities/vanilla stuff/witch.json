@@ -63,9 +63,18 @@
                         "filters": {
                             "any_of": [
                                 {
-                                    "subject": "other",
-                                    "test": "is_family",
-                                    "value": "player"
+                                    "all_of": [
+                                        {
+                                            "subject": "other",
+                                            "test": "is_family",
+                                            "value": "player"
+                                        },
+                                        {
+                                            "subject": "other",
+                                            "test": "is_riding",
+                                            "value": false
+                                        }
+                                    ]
                                 },
                                 {
                                     "subject": "other",
@@ -76,6 +85,26 @@
                                     "subject": "other",
                                     "test": "is_family",
                                     "value": "irongolem"
+                                },
+                                {
+                                    "all_of": [
+                                        {
+                                            "subject": "other",
+                                            "test": "is_family",
+                                            "value": "villager"
+                                        },
+                                        {
+                                            "operator": "!=",
+                                            "subject": "other",
+                                            "test": "has_component",
+                                            "value": "minecraft:is_baby"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "test": "is_family",
+                                    "subject": "other",
+                                    "value": "wandering_trader"
                                 }
                             ]
                         },
@@ -160,8 +189,17 @@
                 "family": [
                     "witch",
                     "human",
+                    "illager",
                     "mob"
                 ]
+            },
+            "minecraft:damage_sensor": {
+				"triggers": [
+                    {
+						"deals_damage": false,
+						"cause": "magic"
+                    }
+				]
             }
         },
         "description": {
@@ -210,6 +248,11 @@
                     "component_groups": [
                         "minecraft:raid_configuration",
                         "minecraft:raid_persistence"
+                    ]
+                },
+                "run_command": {
+                    "command": [
+                        "ride @s summon_ride rift:parasaurolophus no_ride_change rift:spawn_as_illager_raid_mount"
                     ]
                 }
             },

@@ -769,6 +769,34 @@
 					"despawn_from_distance": {}
 				}
             },
+            "rift:direbear_adult_raid_mount": {
+                "minecraft:health": {
+                    "value": 80,
+                    "max": 80
+                },
+				"minecraft:behavior.hurt_by_target": {
+					"priority": 6
+				},
+				"minecraft:navigation.climb": {
+                    "can_sink": false,
+					"avoid_damage_blocks": true
+				},
+                "minecraft:behavior.move_to_village": {
+                    "goal_radius": 2.0,
+                    "priority": 15,
+                    "speed_multiplier": 1.0
+                },
+                "minecraft:dweller": {
+                    "can_find_poi": false,
+                    "can_migrate": true,
+                    "dweller_role": "hostile",
+                    "dwelling_type": "village",
+                    "first_founding_reward": 0,
+                    "update_interval_base": 60,
+                    "update_interval_variant": 40
+                },
+                "minecraft:persistent": {}
+            },
             "rift:direbear_adult_hypnotized": {
                 "minecraft:health": {
                     "value": 80,
@@ -1384,6 +1412,9 @@
 					}
 				}
 			},
+			"rift:direbear_mounted_by_illager_saddled": {
+				"minecraft:is_saddled": {}
+			},
 			"rift:direbear_chested": {
 				"minecraft:is_chested": {}
             },
@@ -1449,10 +1480,10 @@
 					"drag_factor": 0.7
 				},
                 "minecraft:behavior.random_stroll": {
-					"priority": 15
+					"priority": 17
 				},
 				"minecraft:behavior.random_look_around": {
-					"priority": 16
+					"priority": 18
 				}
             },
             "rift:wild_standing_hypnotized_by_tenontosaurus": {
@@ -1477,13 +1508,13 @@
 					"drag_factor": 0.7
 				},
                 "minecraft:behavior.mount_pathing": {
-                    "priority": 14,
+                    "priority": 16,
                     "speed_multiplier": 1.35,
                     "target_dist": 0.0,
                     "track_target": true
                 },
                 "minecraft:behavior.random_stroll": {
-					"priority": 15
+					"priority": 17
 				}
             },
 			"rift:follow_tenontosaurus": {
@@ -1524,7 +1555,7 @@
 			},
 			"rift:follow_tenontosaurus_no_target": {
 				"minecraft:behavior.ranged_attack": {
-					"priority": 15,
+					"priority": 17,
 					"attack_radius": 8.0,
 					"attack_radius_min": 4
 				},
@@ -1586,7 +1617,7 @@
 			},
 			"rift:follow_tamed_tenontosaurus_no_target": {
 				"minecraft:behavior.ranged_attack": {
-					"priority": 15,
+					"priority": 17,
 					"attack_radius": 8.0,
 					"attack_radius_min": 4
 				},
@@ -1633,7 +1664,7 @@
 					"priority": 1
 				},
                 "minecraft:behavior.random_stroll": {
-					"priority": 15
+					"priority": 17
 				}
 			},
 			"rift:tamed_can_move": {
@@ -5525,13 +5556,6 @@
                     }
                 ]
             },
-            "rift:on_approach_beehive": {
-                "run_command": {
-                    "command": [
-                        "say hello"
-                    ]
-                }
-            },
             "rift:spawn_as_baby": {
                 "randomize": [
                     {
@@ -5606,7 +5630,7 @@
                                 "rift:mounted_by_illager_standing",
                                 "rift:variant_one",
                                 "rift:pushable",
-                                "rift:direbear_saddled"
+                                "rift:direbear_mounted_by_illager_saddled"
                             ]
                         },
                         "set_property": {
@@ -5625,7 +5649,7 @@
                                 "rift:mounted_by_illager_standing",
                                 "rift:variant_two",
                                 "rift:pushable",
-                                "rift:direbear_saddled"
+                                "rift:direbear_mounted_by_illager_saddled"
                             ]
                         },
                         "set_property": {
@@ -5644,7 +5668,7 @@
                                 "rift:mounted_by_illager_standing",
                                 "rift:variant_three",
                                 "rift:pushable",
-                                "rift:direbear_saddled"
+                                "rift:direbear_mounted_by_illager_saddled"
                             ]
                         },
                         "set_property": {
@@ -5663,7 +5687,87 @@
                                 "rift:mounted_by_illager_standing",
                                 "rift:variant_four",
                                 "rift:pushable",
-                                "rift:direbear_saddled"
+                                "rift:direbear_mounted_by_illager_saddled"
+                            ]
+                        },
+                        "set_property": {
+                            "rift:owned_by_illager": true
+                        }
+                    }
+                ]
+            },
+            "rift:spawn_as_illager_raid_mount": {
+                "randomize": [
+                    {
+                        "weight": 1,
+                        "add": {
+                            "component_groups": [
+                                "rift:direbear_adult",
+                                "rift:direbear_adult_raid_mount",
+                                "rift:direbear_adult_calm",
+                                "rift:has_illager_mount",
+                                "rift:mounted_by_illager_targets",
+                                "rift:mounted_by_illager_standing",
+                                "rift:variant_one",
+                                "rift:pushable",
+                                "rift:direbear_mounted_by_illager_saddled"
+                            ]
+                        },
+                        "set_property": {
+                            "rift:owned_by_illager": true
+                        }
+                    },
+                    {
+                        "weight": 1,
+                        "add": {
+                            "component_groups": [
+                                "rift:direbear_adult",
+                                "rift:direbear_adult_raid_mount",
+                                "rift:direbear_adult_calm",
+                                "rift:has_illager_mount",
+                                "rift:mounted_by_illager_targets",
+                                "rift:mounted_by_illager_standing",
+                                "rift:variant_two",
+                                "rift:pushable",
+                                "rift:direbear_mounted_by_illager_saddled"
+                            ]
+                        },
+                        "set_property": {
+                            "rift:owned_by_illager": true
+                        }
+                    },
+                    {
+                        "weight": 1,
+                        "add": {
+                            "component_groups": [
+                                "rift:direbear_adult",
+                                "rift:direbear_adult_raid_mount",
+                                "rift:direbear_adult_calm",
+                                "rift:has_illager_mount",
+                                "rift:mounted_by_illager_targets",
+                                "rift:mounted_by_illager_standing",
+                                "rift:variant_three",
+                                "rift:pushable",
+                                "rift:direbear_mounted_by_illager_saddled"
+                            ]
+                        },
+                        "set_property": {
+                            "rift:owned_by_illager": true
+                        }
+                    },
+                    {
+                        "weight": 1,
+                        "add": {
+                            "component_groups": [
+                                "rift:direbear_adult",
+                                "rift:direbear_adult_raid_mount",
+                                "rift:direbear_adult_calm",
+                                "rift:has_illager_mount",
+                                "rift:mounted_by_illager_targets",
+                                "rift:mounted_by_illager_standing",
+                                "rift:variant_four",
+                                "rift:pushable",
+                                "rift:direbear_mounted_by_illager_saddled"
                             ]
                         },
                         "set_property": {

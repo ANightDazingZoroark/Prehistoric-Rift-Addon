@@ -602,6 +602,30 @@
 					"priority": 6
 				}
             },
+            "rift:sarcosuchus_adult_raid_mount": {
+                "minecraft:health": {
+                    "value": 80,
+                    "max": 80
+                },
+				"minecraft:behavior.hurt_by_target": {
+					"priority": 6
+				},
+                "minecraft:behavior.move_to_village": {
+                    "goal_radius": 2.0,
+                    "priority": 17,
+                    "speed_multiplier": 1.0
+                },
+                "minecraft:dweller": {
+                    "can_find_poi": false,
+                    "can_migrate": true,
+                    "dweller_role": "hostile",
+                    "dwelling_type": "village",
+                    "first_founding_reward": 0,
+                    "update_interval_base": 60,
+                    "update_interval_variant": 40
+                },
+                "minecraft:persistent": {}
+            },
             "rift:sarcosuchus_adult_not_trusting": {
                 "minecraft:trusting": {
                     "probability": 0.25,
@@ -1037,7 +1061,7 @@
 			},
 			"rift:sarcosuchus_wild_not_in_water": {
 				"minecraft:behavior.random_stroll": {
-					"priority": 17
+					"priority": 19
 				},
 				"minecraft:behavior.avoid_block": {
 					"priority": 3,
@@ -1329,6 +1353,9 @@
 					}
                 }
             },
+            "rift:sarcosuchus_mounted_by_illager_saddled": {
+                "minecraft:is_saddled": {}
+            },
             "rift:sarcosuchus_chested": {
                 "minecraft:is_chested": {}
             },
@@ -1487,7 +1514,7 @@
 					"value": 0.3
 				},
 				"minecraft:behavior.random_look_around": {
-					"priority": 18
+					"priority": 20
 				}
 			},
 			"rift:wild_standing_hypnotized_by_tenontosaurus": {
@@ -1506,13 +1533,13 @@
 					"value": 0.3
 				},
                 "minecraft:behavior.mount_pathing": {
-                    "priority": 16,
+                    "priority": 18,
                     "speed_multiplier": 1.0,
                     "target_dist": 0.0,
                     "track_target": true
                 },
 				"minecraft:behavior.random_stroll": {
-					"priority": 17
+					"priority": 19
 				}
             },
 			"rift:follow_tenontosaurus": {
@@ -1700,7 +1727,7 @@
 					"priority": 1
 				},
 				"minecraft:behavior.random_stroll": {
-					"priority": 17
+					"priority": 19
 				}
 			},
 			"rift:tamed_can_move": {
@@ -4913,7 +4940,27 @@
 							}
 						},
 						"deals_damage": false
-					}
+					},
+                    {
+                        "on_damage": {
+                            "filters": {
+                                "all_of": [
+                                    {
+                                        "test": "is_family",
+                                        "subject": "other",
+                                        "value": "illager"
+                                    },
+                                    {
+                                        "test": "bool_property",
+                                        "subject": "self",
+                                        "domain": "rift:owned_by_illager",
+                                        "value": true
+                                    }
+                                ]
+                            }
+                        },
+						"deals_damage": false
+                    }
 				]
 			}
         },
@@ -6047,7 +6094,7 @@
 								"rift:default_navigation",
                                 "rift:pushable",
                                 "rift:variant_zero",
-                                "rift:sarcosuchus_saddled",
+                                "rift:sarcosuchus_mounted_by_illager_saddled",
                                 "rift:mounted_by_illager_standing"
                             ]
                         },
@@ -6067,7 +6114,7 @@
 								"rift:default_navigation",
                                 "rift:pushable",
                                 "rift:variant_one",
-                                "rift:sarcosuchus_saddled",
+                                "rift:sarcosuchus_mounted_by_illager_saddled",
                                 "rift:mounted_by_illager_standing"
                             ]
                         },
@@ -6087,7 +6134,7 @@
 								"rift:default_navigation",
                                 "rift:pushable",
                                 "rift:variant_two",
-                                "rift:sarcosuchus_saddled",
+                                "rift:sarcosuchus_mounted_by_illager_saddled",
                                 "rift:mounted_by_illager_standing"
                             ]
                         },
@@ -6107,7 +6154,91 @@
 								"rift:default_navigation",
                                 "rift:pushable",
                                 "rift:variant_three",
-                                "rift:sarcosuchus_saddled",
+                                "rift:sarcosuchus_mounted_by_illager_saddled",
+                                "rift:mounted_by_illager_standing"
+                            ]
+                        },
+                        "set_property": {
+                            "rift:owned_by_illager": true
+                        }
+                    }
+                ]
+            },
+            "rift:spawn_as_illager_raid_mount": {
+                "randomize": [
+                    {
+                        "weight": 1,
+                        "add": {
+                            "component_groups": [
+                                "rift:sarcosuchus_adult",
+                                "rift:sarcosuchus_adult_raid_mount",
+								"rift:can_bite_attack",
+                                "rift:has_illager_mount",
+								"rift:mounted_by_illager_targets",
+								"rift:default_navigation",
+                                "rift:pushable",
+                                "rift:variant_zero",
+                                "rift:sarcosuchus_mounted_by_illager_saddled",
+                                "rift:mounted_by_illager_standing"
+                            ]
+                        },
+                        "set_property": {
+                            "rift:owned_by_illager": true
+                        }
+                    },
+                    {
+                        "weight": 1,
+                        "add": {
+                            "component_groups": [
+                                "rift:sarcosuchus_adult",
+                                "rift:sarcosuchus_adult_raid_mount",
+								"rift:can_bite_attack",
+                                "rift:has_illager_mount",
+								"rift:mounted_by_illager_targets",
+								"rift:default_navigation",
+                                "rift:pushable",
+                                "rift:variant_one",
+                                "rift:sarcosuchus_mounted_by_illager_saddled",
+                                "rift:mounted_by_illager_standing"
+                            ]
+                        },
+                        "set_property": {
+                            "rift:owned_by_illager": true
+                        }
+                    },
+                    {
+                        "weight": 1,
+                        "add": {
+                            "component_groups": [
+                                "rift:sarcosuchus_adult",
+                                "rift:sarcosuchus_adult_raid_mount",
+								"rift:can_bite_attack",
+                                "rift:has_illager_mount",
+								"rift:mounted_by_illager_targets",
+								"rift:default_navigation",
+                                "rift:pushable",
+                                "rift:variant_two",
+                                "rift:sarcosuchus_mounted_by_illager_saddled",
+                                "rift:mounted_by_illager_standing"
+                            ]
+                        },
+                        "set_property": {
+                            "rift:owned_by_illager": true
+                        }
+                    },
+                    {
+                        "weight": 1,
+                        "add": {
+                            "component_groups": [
+                                "rift:sarcosuchus_adult",
+                                "rift:sarcosuchus_adult_raid_mount",
+								"rift:can_bite_attack",
+                                "rift:has_illager_mount",
+								"rift:mounted_by_illager_targets",
+								"rift:default_navigation",
+                                "rift:pushable",
+                                "rift:variant_three",
+                                "rift:sarcosuchus_mounted_by_illager_saddled",
                                 "rift:mounted_by_illager_standing"
                             ]
                         },

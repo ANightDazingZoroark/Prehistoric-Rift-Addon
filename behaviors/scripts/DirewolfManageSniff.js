@@ -83,7 +83,6 @@ function manualSniffGui(hitEntity, entity) {
                             for (let z = -12; z < 13; z++) {
                                 if (hitEntity.dimension.getBlock(new BlockLocation(Math.trunc(hitEntity.location.x+x), Math.trunc(hitEntity.location.y+y), Math.trunc(hitEntity.location.z+z))).typeId == 'minecraft:chest') {
                                     world.getDimension('overworld').spawnEntity('rift:direwolf_alert_icon', new BlockLocation(Math.trunc(hitEntity.location.x+x), Math.trunc(hitEntity.location.y+y), Math.trunc(hitEntity.location.z+z))).nameTag = ''
-                                    console.warn('yay')
                                 }
                                 if (hitEntity.dimension.getBlock(new BlockLocation(Math.trunc(hitEntity.location.x+x), Math.trunc(hitEntity.location.y+y), Math.trunc(hitEntity.location.z+z))).typeId == 'minecraft:trapped_chest') {
                                     world.getDimension('overworld').spawnEntity('rift:direwolf_alert_icon', new BlockLocation(Math.trunc(hitEntity.location.x+x), Math.trunc(hitEntity.location.y+y), Math.trunc(hitEntity.location.z+z))).nameTag = ''
@@ -144,7 +143,6 @@ world.events.entityHit.subscribe(({ hitEntity, entity }) => {
 
 world.events.beforeDataDrivenEntityTriggerEvent.subscribe(data => {
     if (data.id == 'rift:use_chest_sniff') {
-        console.warn('hello')
         for (let x = -12; x < 13; x++) {
             for (let y = -4; y < 16; y++) {
                 for (let z = -12; z < 13; z++) {

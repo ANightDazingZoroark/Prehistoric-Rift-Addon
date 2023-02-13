@@ -852,28 +852,149 @@
                 ]
             },
             "minecraft:spawn_for_raid": {
-                "randomize": [
+                "sequence": [
                     {
-                        "weight": 2,
-                        "add": {
-                            "component_groups": [
-                                "rift:smger",
-                                "rift:ranged_attack_smg",
-                                "minecraft:raid_configuration",
-                                "minecraft:raid_persistence"
-                            ]
-                        }
+                        "randomize": [
+                            {
+                                "weight": 2,
+                                "add": {
+                                    "component_groups": [
+                                        "rift:smger",
+                                        "rift:ranged_attack_smg",
+                                        "minecraft:raid_configuration",
+                                        "minecraft:raid_persistence"
+                                    ]
+                                }
+                            },
+                            {
+                                "weight": 1,
+                                "add": {
+                                    "component_groups": [
+                                        "rift:shotgunner",
+                                        "rift:ranged_attack_shotgun",
+                                        "minecraft:raid_configuration",
+                                        "minecraft:raid_persistence"
+                                    ]
+                                }
+                            }
+                        ]
                     },
                     {
-                        "weight": 1,
-                        "add": {
-                            "component_groups": [
-                                "rift:shotgunner",
-                                "rift:ranged_attack_shotgun",
-                                "minecraft:raid_configuration",
-                                "minecraft:raid_persistence"
+                        "filters": {
+                            "all_of": [
+                                {
+                                    "test": "has_biome_tag",
+                                    "operator": "!=",
+                                    "value": "frozen"
+                                },
+                                {
+                                    "test": "has_biome_tag",
+                                    "operator": "!=",
+                                    "value": "cold"
+                                },
+                                {
+                                    "test": "has_biome_tag",
+                                    "operator": "!=",
+                                    "value": "taiga"
+                                },
+                                {
+                                    "test": "has_biome_tag",
+                                    "operator": "!=",
+                                    "value": "swamp"
+                                },
+                                {
+                                    "test": "has_biome_tag",
+                                    "operator": "!=",
+                                    "value": "mangrove_swamp"
+                                }
                             ]
-                        }
+                        },
+                        "randomize": [
+                            {
+                                "weight": 2,
+                                "run_command": {
+                                    "command": [
+                                        "ride @s summon_ride rift:utahraptor no_ride_change rift:spawn_as_illager_raid_mount"
+                                    ]
+                                }
+                            },
+                            {
+                                "weight": 1,
+                                "run_command": {
+                                    "command": [
+                                        "ride @s summon_ride rift:dilophosaurus no_ride_change rift:spawn_as_illager_raid_mount"
+                                    ]
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "filters": {
+                            "any_of": [
+                                {
+                                    "test": "has_biome_tag",
+                                    "value": "frozen"
+                                },
+                                {
+                                    "test": "has_biome_tag",
+                                    "value": "cold"
+                                },
+                                {
+                                    "test": "has_biome_tag",
+                                    "value": "taiga"
+                                }
+                            ]
+                        },
+                        "randomize": [
+                            {
+                                "weight": 2,
+                                "run_command": {
+                                    "command": [
+                                        "ride @s summon_ride rift:direwolf no_ride_change rift:spawn_as_illager_raid_mount"
+                                    ]
+                                }
+                            },
+                            {
+                                "weight": 1,
+                                "run_command": {
+                                    "command": [
+                                        "ride @s summon_ride rift:direbear no_ride_change rift:spawn_as_illager_raid_mount"
+                                    ]
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "filters": {
+                            "any_of": [
+                                {
+                                    "test": "has_biome_tag",
+                                    "value": "swamp"
+                                },
+                                {
+                                    "test": "has_biome_tag",
+                                    "value": "mangrove_swamp"
+                                }
+                            ]
+                        },
+                        "randomize": [
+                            {
+                                "weight": 2,
+                                "run_command": {
+                                    "command": [
+                                        "ride @s summon_ride rift:baryonyx no_ride_change rift:spawn_as_illager_raid_mount"
+                                    ]
+                                }
+                            },
+                            {
+                                "weight": 1,
+                                "run_command": {
+                                    "command": [
+                                        "ride @s summon_ride rift:sarcosuchus no_ride_change rift:spawn_as_illager_raid_mount"
+                                    ]
+                                }
+                            }
+                        ]
                     }
                 ]
             },

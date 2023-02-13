@@ -31,7 +31,4 @@ world.events.beforeDataDrivenEntityTriggerEvent.subscribe(data => {
             data.entity.target.removeTag('tenontoTamedTarget')
         }, 1000)
     }
-    if (data.entity.typeId == 'rift:dilophosaurus' && data.id == 'rift:ranged_attack_mode') {
-        console.warn('angy')
-    }
 })

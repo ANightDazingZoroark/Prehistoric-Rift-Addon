@@ -33,6 +33,10 @@
 					"type": "bool",
 					"default": false,
 					"client_sync": true
+                },
+				"rift:owned_by_illager": {
+					"type": "bool",
+					"default": false
                 }
 			},
 			"animations": {
@@ -45,7 +49,8 @@
 				"contRiddenTag": "controller.animation.add_ridden_tag",
 				"contShearedTag": "controller.animation.add_sheared_tag",
 				"contInLoveTag": "controller.animation.add_in_love_tag",
-				"contTameState": "controller.animation.manage_tame_state",
+				"contOwnedByIllagerTag": "controller.animation.add_owned_by_illager_tag",
+                "contTameState": "controller.animation.manage_tame_state",
 				"contEnergyUsage": "controller.animation.parasaurolophus_energy_movement_usage",
 				"contWarnLowEnergy": "controller.animation.warn_of_low_energy",
 				"contBleed": "controller.animation.general_manage_bleed",
@@ -71,6 +76,7 @@
 					"contRiddenTag",
 					"contShearedTag",
 					"contInLoveTag",
+                    "contOwnedByIllagerTag",
 					"contTameState",
 					"contEnergyUsage",
 					"contWarnLowEnergy",
@@ -280,6 +286,67 @@
 					"priority": 4
 				}
             },
+            "rift:parasaurolophus_adult_raid_mount": {
+				"minecraft:health": {
+					"value": 60,
+					"max": 60
+				},
+				"minecraft:behavior.hurt_by_target": {
+					"priority": 4
+				},
+                "minecraft:behavior.move_to_village": {
+                    "goal_radius": 2.0,
+                    "priority": 15,
+                    "speed_multiplier": 1.0
+                },
+                "minecraft:dweller": {
+                    "can_find_poi": false,
+                    "can_migrate": true,
+                    "dweller_role": "hostile",
+                    "dwelling_type": "village",
+                    "first_founding_reward": 0,
+                    "update_interval_base": 60,
+                    "update_interval_variant": 40
+                },
+                "minecraft:persistent": {}
+            },
+            "rift:parasaurolophus_adult_raid_mount_can_detect_for_sound_blast": {
+				"minecraft:behavior.ranged_attack": {
+					"priority": 16,
+					"attack_radius": 8.0,
+					"attack_radius_min": 2
+				},
+                "minecraft:entity_sensor": {
+					"sensor_range": 4,
+					"relative_range": false,
+					"minimum_count": 1,
+					"event_filters": {
+						"test": "is_target",
+                        "subject": "other",
+                        "value": true
+					},
+					"event": "rift:raid_mount_use_sound_blast"
+                }
+            },
+            "rift:calling_raid_mount": {
+                "minecraft:is_ignited": {},
+                "minecraft:timer": {
+                    "time": 1.04,
+                    "time_down_event": {
+                        "event": "rift:raid_mount_stop_calling",
+                        "target": "self"
+                    }
+                }
+            },
+            "rift:calling_raid_mount_cooldown": {
+                "minecraft:timer": {
+                    "time": 10,
+                    "time_down_event": {
+                        "event": "rift:raid_mount_end_calling_cooldown",
+                        "target": "self"
+                    }
+                }
+            },
             "rift:parasaurolophus_adult_calm": {
 				"minecraft:on_target_acquired": {
 					"event": "rift:adult_call_and_become_angry",
@@ -374,6 +441,79 @@
 							},
 							"max_dist": 48
 					  	}
+					]
+				}
+			},
+            "rift:mounted_by_illager_targets": {
+				"minecraft:behavior.nearest_attackable_target": {
+					"priority": 5,
+					"within_radius": 12.0,
+					"must_see": false,
+					"entity_types": [
+						{
+							"filters": {
+								"any_of": [
+									{
+										"test": "is_family",
+										"subject": "other",
+										"value": "wandering_trader"
+									},
+									{
+										"test": "is_family",
+										"subject": "other",
+										"value": "iron_golem"
+									},
+									{
+                                        "all_of": [
+                                            {
+                                                "subject": "other",
+                                                "test": "is_family",
+                                                "value": "villager"
+                                            },
+                                            {
+                                                "operator": "!=",
+                                                "subject": "other",
+                                                "test": "has_component",
+                                                "value": "minecraft:is_baby"
+                                            }
+                                        ]
+									},
+                                    {
+                                        "all_of": [
+                                            {
+                                                "test": "is_family",
+                                                "subject": "other",
+                                                "value": "player"
+                                            },
+                                            {
+                                                "test": "is_riding",
+                                                "subject": "other",
+                                                "value": false
+                                            }
+                                        ]
+                                    }
+								]
+							},
+							"max_dist": 12
+						},
+						{
+							"filters": {
+								"all_of": [
+									{
+										"test": "has_component",
+										"subject": "other",
+										"value": "minecraft:is_tamed"
+									},
+									{
+										"test": "rider_count",
+										"subject": "other",
+										"operator": ">",
+										"value": 0
+									}
+								]
+							},
+							"max_dist": 12
+						}
 					]
 				}
 			},
@@ -561,6 +701,20 @@
 					"priority": 10
 				}
 			},
+			"rift:mounted_by_illager_standing": {
+                "minecraft:behavior.mount_pathing": {
+                    "priority": 8,
+                    "speed_multiplier": 1.0,
+                    "target_dist": 0.0,
+                    "track_target": true
+                },
+                "minecraft:behavior.random_stroll": {
+					"priority": 9
+				},
+				"minecraft:movement": {
+					"value": 0.25
+				}
+			},
 			"rift:tamed_standing": {
 				"minecraft:behavior.breed": {
 					"priority": 1
@@ -596,11 +750,31 @@
             },
             "rift:is_rideable": {
                 "minecraft:rideable": {
+					"family_types": [
+						"player"
+					],
 					"seats": [
 						{
 							"position": [
 								0,
 								1.2,
+								0.2
+							]
+						}
+					],
+					"interact_text": "action.interact.mount"
+				}
+            },
+			"rift:has_illager_mount": {
+                "minecraft:rideable": {
+					"family_types": [
+						"illager"
+					],
+					"seats": [
+						{
+							"position": [
+								0,
+								1.1,
 								0.2
 							]
 						}
@@ -617,6 +791,9 @@
 						"range_max": 0
 					}
 				}
+            },
+            "rift:parasaurolophus_mounted_by_illager_saddled": {
+                "minecraft:is_saddled": {}
             },
             "rift:parasaurolophus_chested": {
                 "minecraft:is_chested": {}
@@ -3547,7 +3724,39 @@
 							}
 						},
 						"deals_damage": false
-					}
+					},
+                    {
+                        "on_damage": {
+                            "filters": {
+                                "all_of": [
+                                    {
+                                        "test": "is_family",
+                                        "subject": "other",
+                                        "value": "illager"
+                                    },
+                                    {
+                                        "test": "bool_property",
+                                        "subject": "self",
+                                        "domain": "rift:owned_by_illager",
+                                        "value": true
+                                    }
+                                ]
+                            }
+                        },
+						"deals_damage": false
+                    },
+                    {
+                        "on_damage": {
+                            "filters": {
+                                "test": "bool_property",
+                                "subject": "self",
+                                "domain": "rift:owned_by_illager",
+                                "value": true
+                            }
+                        },
+						"deals_damage": false,
+						"cause": "magic"
+                    }
 				]
 			}
         },
@@ -3953,6 +4162,90 @@
 					}
 				]
             },
+            "rift:spawn_as_illager_raid_mount": {
+                "randomize": [
+                    {
+                        "weight": 1,
+                        "add": {
+                            "component_groups": [
+                                "rift:parasaurolophus_adult",
+                                "rift:parasaurolophus_adult_raid_mount",
+                                "rift:mounted_by_illager_targets",
+                                "rift:parasaurolophus_adult_raid_mount_can_detect_for_sound_blast",
+                                "rift:is_quadrapedal",
+                                "rift:variant_one",
+                                "rift:pushable",
+                                "rift:has_illager_mount",
+                                "rift:mounted_by_illager_standing",
+                                "rift:parasaurolophus_mounted_by_illager_saddled"
+                            ]
+                        },
+                        "set_property": {
+                            "rift:owned_by_illager": true
+                        }
+                    },
+                    {
+                        "weight": 1,
+                        "add": {
+                            "component_groups": [
+                                "rift:parasaurolophus_adult",
+                                "rift:parasaurolophus_adult_raid_mount",
+                                "rift:mounted_by_illager_targets",
+                                "rift:parasaurolophus_adult_raid_mount_can_detect_for_sound_blast",
+                                "rift:is_quadrapedal",
+                                "rift:variant_two",
+                                "rift:pushable",
+                                "rift:has_illager_mount",
+                                "rift:mounted_by_illager_standing",
+                                "rift:parasaurolophus_mounted_by_illager_saddled"
+                            ]
+                        },
+                        "set_property": {
+                            "rift:owned_by_illager": true
+                        }
+                    },
+                    {
+                        "weight": 1,
+                        "add": {
+                            "component_groups": [
+                                "rift:parasaurolophus_adult",
+                                "rift:parasaurolophus_adult_raid_mount",
+                                "rift:mounted_by_illager_targets",
+                                "rift:parasaurolophus_adult_raid_mount_can_detect_for_sound_blast",
+                                "rift:is_quadrapedal",
+                                "rift:variant_three",
+                                "rift:pushable",
+                                "rift:has_illager_mount",
+                                "rift:mounted_by_illager_standing",
+                                "rift:parasaurolophus_mounted_by_illager_saddled"
+                            ]
+                        },
+                        "set_property": {
+                            "rift:owned_by_illager": true
+                        }
+                    },
+                    {
+                        "weight": 1,
+                        "add": {
+                            "component_groups": [
+                                "rift:parasaurolophus_adult",
+                                "rift:parasaurolophus_adult_raid_mount",
+                                "rift:mounted_by_illager_targets",
+                                "rift:parasaurolophus_adult_raid_mount_can_detect_for_sound_blast",
+                                "rift:is_quadrapedal",
+                                "rift:variant_four",
+                                "rift:pushable",
+                                "rift:has_illager_mount",
+                                "rift:mounted_by_illager_standing",
+                                "rift:parasaurolophus_mounted_by_illager_saddled"
+                            ]
+                        },
+                        "set_property": {
+                            "rift:owned_by_illager": true
+                        }
+                    }
+                ]
+            },
             "rift:hatched_from_egg": {
 				"randomize": [
 					{
@@ -4016,6 +4309,49 @@
 						}
 					}
 				]
+            },
+            "rift:raid_mount_use_sound_blast": {
+                "add": {
+                    "component_groups": [
+                        "rift:calling_raid_mount"
+                    ]
+                },
+                "remove": {
+                    "component_groups": [
+                        "rift:parasaurolophus_adult_raid_mount_can_detect_for_sound_blast"
+                    ]
+                },
+                "run_command": {
+                    "command": [
+						"camerashake add @a[r=10] 4",
+						"playsound mob.parasaurolophus.calling @a[r=10]",
+						"effect @e[r=10, family=!inanimate, tag=!riding, family=!illager, tag=!ownedByIllager] slowness 10 255"
+                    ]
+                }
+            },
+            "rift:raid_mount_stop_calling": {
+                "add": {
+                    "component_groups": [
+                        "rift:calling_raid_mount_cooldown"
+                    ]
+                },
+                "remove": {
+                    "component_groups": [
+                        "rift:calling_raid_mount"
+                    ]
+                }
+            },
+            "rift:raid_mount_end_calling_cooldown": {
+                "add": {
+                    "component_groups": [
+                        "rift:parasaurolophus_adult_raid_mount_can_detect_for_sound_blast"
+                    ]
+                },
+                "remove": {
+                    "component_groups": [
+                        "rift:calling_raid_mount_cooldown"
+                    ]
+                }
             },
             "rift:cannot_sit": {
 				"add": {
