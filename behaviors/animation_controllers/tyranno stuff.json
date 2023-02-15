@@ -51,11 +51,14 @@
 				"default": {
 					"transitions": [
 						{
-							"wild": "!query.is_tamed && !query.is_baby"
+							"wild": "query.property('rift:owned_by_illager') == false && !query.is_tamed && !query.is_baby"
 						},
 						{
 							"tamed": "query.is_tamed && !query.is_baby"
-						}
+						},
+                        {
+                            "ownedByIllager": "query.property('rift:owned_by_illager') == true && !query.is_baby"
+                        }
 					]
 				},
 				"wild": {
@@ -77,7 +80,17 @@
 					"animations": [
 						"animIntimidateTamed"
 					]
-				}
+				},
+                "ownedByIllager": {
+                    "transitions": [
+                        {
+                            "default": "query.property('rift:owned_by_illager') == false || !query.is_baby"
+                        }
+                    ],
+					"animations": [
+						"animIntimidateOwnedByIllager"
+					]
+                }
 			}
 		}
 	}

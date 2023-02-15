@@ -103,25 +103,47 @@
             },
             "minecraft:illager_squad_captain": {
                 "minecraft:damage_sensor": {
-                    "triggers": {
-                        "on_damage": {
-                            "event": "minecraft:gain_bad_omen",
-                            "filters": {
-                                "all_of": [
-                                    {
-                                        "test": "has_damage",
-                                        "value": "fatal"
-                                    },
-                                    {
-                                        "subject": "other",
-                                        "test": "is_family",
-                                        "value": "player"
-                                    }
-                                ]
+                    "triggers": [
+                        {
+                            "on_damage": {
+                                "event": "minecraft:gain_bad_omen",
+                                "filters": {
+                                    "all_of": [
+                                        {
+                                            "test": "has_damage",
+                                            "value": "fatal"
+                                        },
+                                        {
+                                            "subject": "other",
+                                            "test": "is_family",
+                                            "value": "player"
+                                        }
+                                    ]
+                                },
+                                "target": "other"
+                            }
+                        },
+                        {
+                            "on_damage": {
+                                "filters": {
+                                    "any_of": [
+                                        {
+                                            "test": "is_family",
+                                            "subject": "other",
+                                            "value": "illager"
+                                        },
+                                        {
+                                            "test": "bool_property",
+                                            "subject": "other",
+                                            "domain": "rift:owned_by_illager",
+                                            "value": true
+                                        }
+                                    ]
+                                }
                             },
-                            "target": "other"
+                            "deals_damage": false
                         }
-                    }
+                    ]
                 },
                 "minecraft:equipment": {
                     "slot_drop_chance": [
@@ -145,25 +167,47 @@
                     "within_radius": 8
                 },
                 "minecraft:damage_sensor": {
-                    "triggers": {
-                        "on_damage": {
-                            "event": "minecraft:gain_bad_omen",
-                            "filters": {
-                                "all_of": [
-                                    {
-                                        "test": "has_damage",
-                                        "value": "fatal"
-                                    },
-                                    {
-                                        "subject": "other",
-                                        "test": "is_family",
-                                        "value": "player"
-                                    }
-                                ]
+                    "triggers": [
+                        {
+                            "on_damage": {
+                                "event": "minecraft:gain_bad_omen",
+                                "filters": {
+                                    "all_of": [
+                                        {
+                                            "test": "has_damage",
+                                            "value": "fatal"
+                                        },
+                                        {
+                                            "subject": "other",
+                                            "test": "is_family",
+                                            "value": "player"
+                                        }
+                                    ]
+                                },
+                                "target": "other"
+                            }
+                        },
+                        {
+                            "on_damage": {
+                                "filters": {
+                                    "any_of": [
+                                        {
+                                            "test": "is_family",
+                                            "subject": "other",
+                                            "value": "illager"
+                                        },
+                                        {
+                                            "test": "bool_property",
+                                            "subject": "other",
+                                            "domain": "rift:owned_by_illager",
+                                            "value": true
+                                        }
+                                    ]
+                                }
                             },
-                            "target": "other"
+                            "deals_damage": false
                         }
-                    }
+                    ]
                 },
                 "minecraft:equipment": {
                     "slot_drop_chance": [
@@ -341,6 +385,30 @@
             "minecraft:health": {
                 "max": 24,
                 "value": 24
+            },
+            "minecraft:damage_sensor": {
+                "triggers": [
+                    {
+                        "on_damage": {
+                            "filters": {
+                                "any_of": [
+                                    {
+                                        "test": "is_family",
+                                        "subject": "other",
+                                        "value": "illager"
+                                    },
+                                    {
+                                        "test": "bool_property",
+                                        "subject": "other",
+                                        "domain": "rift:owned_by_illager",
+                                        "value": true
+                                    }
+                                ]
+                            }
+                        },
+                        "deals_damage": false
+                    }
+                ]
             },
             "minecraft:hurt_on_condition": {
                 "damage_conditions": [

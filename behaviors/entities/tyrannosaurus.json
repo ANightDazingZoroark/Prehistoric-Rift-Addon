@@ -41,6 +41,10 @@
 					"type": "bool",
 					"default": false,
 					"client_sync": true
+                },
+				"rift:owned_by_illager": {
+					"type": "bool",
+					"default": false
                 }
 			},
 			"animations": {
@@ -55,6 +59,7 @@
 				"contForcedAttack": "controller.animation.general_forced_attack",
 				"contTyrannoEndRoarCooldown": "controller.animation.tyranno_end_roar_cooldown",
 				"contIntimidate": "controller.animation.tyranno_intimidate",
+				"contOwnedByIllagerTag": "controller.animation.add_owned_by_illager_tag",
 				"contTameState": "controller.animation.manage_tame_state",
 				"contBehaviorState": "controller.animation.manage_tame_behavior",
 				"contEnergyUsage": "controller.animation.tyrannosaurus_energy_movement_usage",
@@ -71,6 +76,7 @@
 				"animTyrannoRoarCooldown": "animation.tyranno_roar_cooldown",
 				"animIntimidateWild": "animation.apex_predator_intimidate_wild",
 				"animIntimidateTamed": "animation.apex_predator_intimidate_tamed",
+                "animIntimidateOwnedByIllager": "animation.apex_predator_intimidate_owned_by_illager",
                 "animBleed": "animation.general_bleed",
                 "animBleedCountdown": "animation.general_bleed_countdown"
 			},
@@ -87,6 +93,7 @@
 					"contForcedAttack",
 					"contTyrannoEndRoarCooldown",
 					"contIntimidate",
+                    "contOwnedByIllagerTag",
 					"contTameState",
 					"contBehaviorState",
 					"contEnergyUsage",
@@ -494,6 +501,38 @@
 					"delay_before_eating": 0
 				}
 			},
+			"rift:tyrannosaurus_adult_raid_mount": {
+				"minecraft:health": {
+					"value": 160,
+					"max": 160
+				},
+				"minecraft:behavior.hurt_by_target": {
+					"priority": 4,
+					"entity_types": {
+						"filters": {
+                            "test": "is_family",
+                            "subject": "other",
+                            "operator": "!=",
+                            "value": "illager"
+						}
+					}
+				},
+                "minecraft:behavior.move_to_village": {
+                    "goal_radius": 2.0,
+                    "priority": 15,
+                    "speed_multiplier": 1.0
+                },
+                "minecraft:dweller": {
+                    "can_find_poi": false,
+                    "can_migrate": true,
+                    "dweller_role": "hostile",
+                    "dwelling_type": "village",
+                    "first_founding_reward": 0,
+                    "update_interval_base": 60,
+                    "update_interval_variant": 40
+                },
+                "minecraft:persistent": {}
+			},
 			"rift:tyrannosaurus_adult_tamed": {
 				"minecraft:health": {
 					"value": 160,
@@ -839,6 +878,79 @@
 					]
 				}
 			},
+			"rift:mounted_by_illager_targets": {
+				"minecraft:behavior.nearest_attackable_target": {
+					"priority": 6,
+					"within_radius": 12.0,
+					"must_see": false,
+					"entity_types": [
+						{
+							"filters": {
+								"any_of": [
+									{
+										"test": "is_family",
+										"subject": "other",
+										"value": "wandering_trader"
+									},
+									{
+										"test": "is_family",
+										"subject": "other",
+										"value": "iron_golem"
+									},
+									{
+                                        "all_of": [
+                                            {
+                                                "subject": "other",
+                                                "test": "is_family",
+                                                "value": "villager"
+                                            },
+                                            {
+                                                "operator": "!=",
+                                                "subject": "other",
+                                                "test": "has_component",
+                                                "value": "minecraft:is_baby"
+                                            }
+                                        ]
+									},
+                                    {
+                                        "all_of": [
+                                            {
+                                                "test": "is_family",
+                                                "subject": "other",
+                                                "value": "player"
+                                            },
+                                            {
+                                                "test": "is_riding",
+                                                "subject": "other",
+                                                "value": false
+                                            }
+                                        ]
+                                    }
+								]
+							},
+							"max_dist": 12
+						},
+						{
+							"filters": {
+								"all_of": [
+									{
+										"test": "has_component",
+										"subject": "other",
+										"value": "minecraft:is_tamed"
+									},
+									{
+										"test": "rider_count",
+										"subject": "other",
+										"operator": ">",
+										"value": 0
+									}
+								]
+							},
+							"max_dist": 12
+						}
+					]
+				}
+			},
 			"rift:tyrannosaurus_angry_because_of_fire": {
 				"minecraft:timer": {
 					"time": 15,
@@ -944,6 +1056,15 @@
 					}
 				}
 			},
+			"rift:roar_owned_by_illager": {
+				"minecraft:timer": {
+					"time": 2.08,
+					"time_down_event": {
+						"event": "rift:stop_roaring_owned_by_illager",
+						"target": "self"
+					}
+				}
+			},
 			"rift:roar_in_wild_angered_by_fire": {
 				"minecraft:timer": {
 					"time": 2.08,
@@ -967,6 +1088,9 @@
 					}
 				}
 			},
+			"rift:tyrannosaurus_mounted_by_illager_saddled": {
+				"minecraft:is_saddled": {}
+			},
 			"rift:tyrannosaurus_chested": {
 				"minecraft:is_chested": {}
 			},
@@ -987,6 +1111,23 @@
 						}
 					],
 					"crouching_skip_interact": true
+				}
+			},
+			"rift:has_illager_mount": {
+				"minecraft:rideable": {
+					"seat_count": 1,
+					"family_types": [
+						"illager"
+					],
+					"seats": [
+						{
+							"position": [
+								0,
+								1.45,
+								-0.15
+							]
+						}
+					]
 				}
 			},
 			"rift:birthday_rideable": {
@@ -1038,10 +1179,24 @@
 					"value": 0.20
 				},
 				"minecraft:behavior.random_stroll": {
-					"priority": 15
+					"priority": 17
 				},
 				"minecraft:behavior.random_look_around": {
-					"priority": 16
+					"priority": 18
+				}
+			},
+			"rift:mounted_by_illager_standing": {
+				"minecraft:movement": {
+					"value": 0.20
+				},
+                "minecraft:behavior.mount_pathing": {
+                    "priority": 16,
+                    "speed_multiplier": 1.0,
+                    "target_dist": 0.0,
+                    "track_target": true
+                },
+				"minecraft:behavior.random_stroll": {
+					"priority": 17
 				}
 			},
 			"rift:tamed_standing": {
@@ -1069,7 +1224,7 @@
 					"priority": 1
 				},
 				"minecraft:behavior.random_stroll": {
-					"priority": 15
+					"priority": 17
 				}
 			},
 			"rift:tamed_can_move": {
@@ -4690,11 +4845,6 @@
 												"test": "is_family",
 												"subject": "other",
 												"value": "player"
-											},
-											{
-												"test": "is_family",
-												"subject": "other",
-												"value": "forcedAttack"
 											}
 										]
 									},
@@ -4703,6 +4853,12 @@
 										"value": 3,
 										"subject": "self"
 									},
+                                    {
+                                        "test": "bool_property",
+                                        "subject": "self",
+                                        "domain": "rift:owned_by_illager",
+                                        "value": false
+                                    },
 									{
 										"test": "has_damage",
 										"subject": "self",
@@ -4750,7 +4906,74 @@
 							}
 						},
 						"deals_damage": false
-					}
+					},
+                    {
+                        "on_damage": {
+                            "filters": {
+                                "all_of": [
+                                    {
+                                        "test": "is_family",
+                                        "subject": "other",
+                                        "value": "illager"
+                                    },
+                                    {
+                                        "test": "bool_property",
+                                        "subject": "self",
+                                        "domain": "rift:owned_by_illager",
+                                        "value": true
+                                    }
+                                ]
+                            }
+                        },
+						"deals_damage": false
+                    },
+                    {
+                        "on_damage": {
+                            "filters": {
+                                "all_of": [
+									{
+										"any_of": [
+											{
+												"test": "is_family",
+												"subject": "other",
+												"value": "mob"
+											},
+											{
+												"test": "is_family",
+												"subject": "other",
+												"value": "player"
+											}
+										]
+									},
+                                    {
+                                        "test": "is_family",
+                                        "subject": "other",
+                                        "operator": "!=",
+                                        "value": "illager"
+                                    },
+                                    {
+                                        "test": "bool_property",
+                                        "subject": "self",
+                                        "domain": "rift:owned_by_illager",
+                                        "value": true
+                                    },
+									{
+										"test": "has_damage",
+										"subject": "self",
+										"operator": "!=",
+										"value": "fatal"
+									},
+									{
+										"test": "random_chance",
+										"value": 3,
+										"subject": "self"
+									}
+                                ]
+                            },
+							"event": "rift:tamed_by_illager_roar",
+							"target": "self"
+                        }
+                    }
 				]
 			},
 			"minecraft:environment_sensor": {
@@ -5513,6 +5736,86 @@
 					}
 				]
 			},
+            "rift:spawn_as_illager_raid_mount": {
+                "randomize": [
+                    {
+                        "weight": 1,
+                        "add": {
+                            "component_groups": [
+                                "rift:tyrannosaurus_adult",
+                                "rift:tyrannosaurus_adult_raid_mount",
+                                "rift:has_illager_mount",
+								"rift:mounted_by_illager_targets",
+                                "rift:variant_zero",
+                                "rift:pushable",
+                                "rift:can_attack",
+                                "rift:mounted_by_illager_standing",
+                                "rift:tyrannosaurus_mounted_by_illager_saddled"
+                            ]
+                        },
+                        "set_property": {
+                            "rift:owned_by_illager": true
+                        }
+                    },
+                    {
+                        "weight": 1,
+                        "add": {
+                            "component_groups": [
+                                "rift:tyrannosaurus_adult",
+                                "rift:tyrannosaurus_adult_raid_mount",
+                                "rift:has_illager_mount",
+								"rift:mounted_by_illager_targets",
+                                "rift:variant_one",
+                                "rift:pushable",
+                                "rift:can_attack",
+                                "rift:mounted_by_illager_standing",
+                                "rift:tyrannosaurus_mounted_by_illager_saddled"
+                            ]
+                        },
+                        "set_property": {
+                            "rift:owned_by_illager": true
+                        }
+                    },
+                    {
+                        "weight": 1,
+                        "add": {
+                            "component_groups": [
+                                "rift:tyrannosaurus_adult",
+                                "rift:tyrannosaurus_adult_raid_mount",
+                                "rift:has_illager_mount",
+								"rift:mounted_by_illager_targets",
+                                "rift:variant_two",
+                                "rift:pushable",
+                                "rift:can_attack",
+                                "rift:mounted_by_illager_standing",
+                                "rift:tyrannosaurus_mounted_by_illager_saddled"
+                            ]
+                        },
+                        "set_property": {
+                            "rift:owned_by_illager": true
+                        }
+                    },
+                    {
+                        "weight": 1,
+                        "add": {
+                            "component_groups": [
+                                "rift:tyrannosaurus_adult",
+                                "rift:tyrannosaurus_adult_raid_mount",
+                                "rift:has_illager_mount",
+								"rift:mounted_by_illager_targets",
+                                "rift:variant_three",
+                                "rift:pushable",
+                                "rift:can_attack",
+                                "rift:mounted_by_illager_standing",
+                                "rift:tyrannosaurus_mounted_by_illager_saddled"
+                            ]
+                        },
+                        "set_property": {
+                            "rift:owned_by_illager": true
+                        }
+                    }
+                ]
+            },
 			"rift:wild_roar": {
 				"add": {
 					"component_groups": [
@@ -5548,6 +5851,40 @@
 					]
 				}
 			},
+            "rift:tamed_by_illager_roar": {
+				"add": {
+					"component_groups": [
+						"rift:roar_owned_by_illager",
+						"rift:unpushable"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:pushable",
+						"rift:mounted_by_illager_targets"
+					]
+				},
+				"run_command": {
+					"command": [
+						"summon rift:tyrannosaurus_roar_tamed_by_illager",
+						"playanimation @s animation.tyrannosaurus.roar"
+					]
+				}
+            },
+            "rift:stop_roaring_owned_by_illager": {
+				"add": {
+					"component_groups": [
+						"rift:pushable",
+						"rift:mounted_by_illager_targets"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:roar_owned_by_illager",
+						"rift:unpushable"
+					]
+				}
+            },
 			"rift:commit_suicide": {
 				"run_command": {
 					"command": [

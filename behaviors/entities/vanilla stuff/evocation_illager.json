@@ -272,6 +272,30 @@
                 "max": 24,
                 "value": 24
             },
+            "minecraft:damage_sensor": {
+                "triggers": [
+                    {
+                        "on_damage": {
+                            "filters": {
+                                "any_of": [
+                                    {
+                                        "test": "is_family",
+                                        "subject": "other",
+                                        "value": "illager"
+                                    },
+                                    {
+                                        "test": "bool_property",
+                                        "subject": "other",
+                                        "domain": "rift:owned_by_illager",
+                                        "value": true
+                                    }
+                                ]
+                            }
+                        },
+                        "deals_damage": false
+                    }
+                ]
+            },
             "minecraft:hurt_on_condition": {
                 "damage_conditions": [
                     {
@@ -359,13 +383,24 @@
                 ]
             },
             "minecraft:spawn_for_raid": {
-                "add": {
-                    "component_groups": [
-                        "minecraft:raid_configuration",
-                        "minecraft:raid_despawn",
-                        "minecraft:raid_persistence"
-                    ]
-                }
+                "sequence": [
+                    {
+                        "add": {
+                            "component_groups": [
+                                "minecraft:raid_configuration",
+                                "minecraft:raid_despawn",
+                                "minecraft:raid_persistence"
+                            ]
+                        }
+                    },
+                    {
+                        "run_command": {
+                            "command": [
+                                "ride @s summon_ride rift:tyrannosaurus no_ride_change rift:spawn_as_illager_raid_mount"
+                            ]
+                        }
+                    }
+                ]
             },
             "minecraft:start_celebrating": {
                 "sequence": [
