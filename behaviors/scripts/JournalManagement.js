@@ -351,15 +351,15 @@ function invertebratesGui(source) {
     .title('Invertebrates')
     .button('Return to Index')
     let failCount = 0;
-    for (let i = 0; i < creatureList.fishes.length; i++) {
-        if (source.getDynamicProperty(creatureList.fishes[i][0].toString()) == true) {
-            invertebratesList.push(creatureList.fishes[i][1])
+    for (let i = 0; i < creatureList.invertebrates.length; i++) {
+        if (source.getDynamicProperty(creatureList.invertebrates[i][0].toString()) == true) {
+            invertebratesList.push(creatureList.invertebrates[i][1])
         }
         else {
             failCount += 1
         }
     }
-    if (failCount >= creatureList.fishes.length) {
+    if (failCount >= creatureList.invertebrates.length) {
         guiInvertebrates.body('Looks like you need to unlock an entry here...')
     }
     invertebratesList.sort()

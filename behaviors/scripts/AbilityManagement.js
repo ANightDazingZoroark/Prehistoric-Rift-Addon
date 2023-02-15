@@ -1,21 +1,5 @@
-import { system, world } from "@minecraft/server"
+import { Vector, system, world } from "@minecraft/server"
 import { setTimeout } from "./externals/timers"
-
-// system.run(function everyTick(tick) {
-//     system.run(everyTick)
-//     let entities = Array.from(world.getDimension('overworld').getEntities({
-//         type: 'rift:dilophosaurus'
-//     }))
-//     for (let i = 0; i < entities.length; i++) {
-//         if (entities[i].getComponent('is_sheared') && !!entities[i].target) {
-//             entities[i].target.addTag('diloTarget')
-//             entities[i].runCommandAsync(`tp @s ~ ~ ~ facing @e[tag=diloTarget, c=1]`)
-//         }
-//         if (entities[i].getComponent('is_sheared') && !entities[i].target) {
-//             entities[i].runCommandAsync(`tag @e remove diloTarget`)
-//         }
-//     }
-// })
 
 world.events.beforeDataDrivenEntityTriggerEvent.subscribe(data => {
     if (data.entity.typeId == 'rift:tenontosaurus' && data.id == 'rift:adult_become_angry') {
@@ -30,5 +14,12 @@ world.events.beforeDataDrivenEntityTriggerEvent.subscribe(data => {
         setTimeout(() => {
             data.entity.target.removeTag('tenontoTamedTarget')
         }, 1000)
+    }
+    if (data.id == 'rift:force_go_down') {
+        data.entity.setVelocity({
+            x: 0,
+            y: -1,
+            z: 0
+        })
     }
 })

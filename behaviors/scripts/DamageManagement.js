@@ -53,6 +53,89 @@ let fibrousMeatDroppers = [
     'rift:pteranodon'
 ]
 
+let affectedByBola = [
+    'rift:anomalocaris',
+    'rift:baryonyx',
+    'rift:coelophysis',
+    'rift:dilophosaurus',
+    'rift:dimetrodon',
+    'rift:direbear',
+    'rift:direwolf',
+    'rift:dodo',
+    'rift:gallimimus',
+    'rift:megaloceros',
+    'rift:megapiranha',
+    'rift:palaeocastor',
+    'rift:parasaurolophus',
+    'rift:pteranodon',
+    'rift:sarcosuchus',
+    'rift:tenontosaurus',
+    'rift:utahraptor',
+    'minecraft:player',
+    'minecraft:axolotl',
+    'minecraft:bat',
+    'minecraft:bee',
+    'minecraft:blaze',
+    'minecraft:cat',
+    'minecraft:cave_spider',
+    'minecraft:chicken',
+    'minecraft:cow',
+    'minecraft:creeper',
+    'minecraft:dolphin',
+    'minecraft:donkey',
+    'minecraft:drowned',
+    'minecraft:endermite',
+    'minecraft:evocation_illager',
+    'minecraft:fish',
+    'minecraft:fox',
+    'minecraft:frog',
+    'minecraft:ghast',
+    'minecraft:glow_squid',
+    'minecraft:goat',
+    'minecraft:guardian',
+    'minecraft:hoglin',
+    'minecraft:horse',
+    'minecraft:husk',
+    'minecraft:llama',
+    'minecraft:mooshroom',
+    'minecraft:mule',
+    'minecraft:ocelot',
+    'minecraft:panda',
+    'minecraft:parrot',
+    'minecraft:phantom',
+    'minecraft:pig',
+    'minecraft:piglin_brute',
+    'minecraft:piglin',
+    'minecraft:pillager',
+    'minecraft:polar_bear',
+    'minecraft:pufferfish',
+    'minecraft:rabbit',
+    'minecraft:salmon',
+    'minecraft:sheep',
+    'minecraft:silverfish',
+    'minecraft:skeleton_horse',
+    'minecraft:skeleton',
+    'minecraft:spider',
+    'minecraft:squid',
+    'minecraft:stray',
+    'minecraft:strider',
+    'minecraft:tadpole',
+    'minecraft:trader_llama',
+    'minecraft:tropicalfish',
+    'minecraft:turtle',
+    'minecraft:villager',
+    'minecraft:vindicator',
+    'minecraft:wandering_trader',
+    'minecraft:witch',
+    'minecraft:wither_skeleton',
+    'minecraft:wolf',
+    'minecraft:zoglin',
+    'minecraft:zombie_horse',
+    'minecraft:zombie_pigman',
+    'minecraft:zombie_villager',
+    'minecraft:zombie'
+]
+
 world.events.entityHurt.subscribe((event) => {
     if (event.damageSource.damagingEntity.typeId == 'rift:tyrannosaurus' && event.hurtEntity.getComponent('health').current <= 0) {
         if (exoticMeatDroppers.includes(event.hurtEntity.typeId)) {
@@ -689,6 +772,11 @@ world.events.entityHurt.subscribe((event) => {
     if (event.damageSource.damagingEntity.typeId == 'rift:direbear' && event.damageSource.damagingEntity.hasTag('clawMode')) {
         event.hurtEntity.triggerEvent('rift:stop_bleeding')
         event.hurtEntity.triggerEvent('rift:start_bleeding')
+    }
+
+    if (affectedByBola.includes(event.hurtEntity.typeId) && event.damageSource.damagingProjectile.typeId == 'rift:bola_projectile') {
+        event.hurtEntity.triggerEvent('rift:stop_being_affected_by_bola')
+        event.hurtEntity.triggerEvent('rift:affected_by_bola')
     }
     //code that tries to make it so wearing armor protects u from bleeding below
     // if (event.damageSource.damagingEntity.typeId == 'rift:direbear' && event.damageSource.damagingEntity.hasTag('clawMode') && event.hurtEntity.typeId != 'minecraft:player') {

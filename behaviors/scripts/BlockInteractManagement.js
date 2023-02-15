@@ -22,6 +22,8 @@ function gunforgeGui(source) {
     .button('Shotgun', 'textures/items/shotgun')
     .button('Sniping Rifle', 'textures/items/sniping rifle')
     .button('Rocket Launcher', 'textures/items/rocket launcher')
+    .button('Grenade', 'textures/items/grenade')
+    .button('Flame Bomb', 'textures/items/flame bomb')
     .show(source).then(result => {
         switch(result.selection) {
             case 0:
@@ -38,6 +40,12 @@ function gunforgeGui(source) {
                 break
             case 4:
                 rocketLauncherCraftingMain(source)
+                break
+            case 5:
+                grenadeCraft(source)
+                break
+            case 6:
+                flameBombCraft(source)
                 break
         }
         gunForgeUse = 0
@@ -388,6 +396,66 @@ function rocketLauncherAmmoCraft(source) {
                     source.runCommandAsync('give @s rift:rocket 1')
                     source.runCommandAsync('clear @s rift:green_plastic_frame -1 3')
                     source.runCommandAsync('clear @s minecraft:gunpowder -1 4')
+                }
+                else {
+                    craftFail(source)
+                }
+                break
+            case 1:
+                gunforgeGui(source)
+                break
+        }
+    })
+}
+
+function grenadeCraft(source) {
+    const grenadeCraft = new ActionFormData()
+    .title('Craft Grenade')
+    .body('Crafting components:\n-1x Green Plastic Frame\n-2x Gunpowder\n-1x Redstone\n-1x Iron Nugget\n-1x Gold Nugget')
+    .button('Craft (x4)')
+    .button('Back')
+    .show(source).then(result => {
+        switch(result.selection) {
+            case 0:
+                if (testForItem(source, 'rift:green_plastic_frame', -1, '>=', function() {return 1}) && testForItem(source, 'minecraft:gunpowder', -1, '>=', function() {return 2}) && testForItem(source, 'minecraft:redstone', -1, '>=', function() {return 1}) && testForItem(source, 'minecraft:iron_nugget', -1, '>=', function() {return 1}) && testForItem(source, 'minecraft:gold_nugget', -1, '>=', function() {return 1})) {
+                    source.runCommandAsync('give @s rift:grenade 4')
+                    source.runCommandAsync('clear @s rift:green_plastic_frame -1 1')
+                    source.runCommandAsync('clear @s minecraft:gunpowder -1 2')
+                    source.runCommandAsync('clear @s minecraft:redstone -1 1')
+                    source.runCommandAsync('clear @s minecraft:iron_nugget -1 1')
+                    source.runCommandAsync('clear @s minecraft:gold_nugget -1 1')
+                }
+                else {
+                    craftFail(source)
+                }
+                break
+            case 1:
+                gunforgeGui(source)
+                break
+        }
+    })
+}
+
+function flameBombCraft(source) {
+    const flameBombCraft = new ActionFormData()
+    .title('Craft Flame Bomb')
+    .body('Crafting components:\n-2x Leather\n-1x Crude Oil\n-1x String/Grass Fiber')
+    .button('Craft (x4)')
+    .button('Back')
+    .show(source).then(result => {
+        switch(result.selection) {
+            case 0:
+                if (testForItem(source, 'minecraft:leather', -1, '>=', function() {return 2}) && testForItem(source, 'rift:crude_oil', -1, '>=', function() {return 1}) && testForItem(source, 'minecraft:string', -1, '>=', function() {return 1})) {
+                    source.runCommandAsync('give @s rift:flame_bomb 4')
+                    source.runCommandAsync('clear @s minecraft:leather -1 2')
+                    source.runCommandAsync('clear @s rift:crude_oil -1 1')
+                    source.runCommandAsync('clear @s minecraft:string -1 1')
+                }
+                else if (testForItem(source, 'minecraft:leather', -1, '>=', function() {return 2}) && testForItem(source, 'rift:crude_oil', -1, '>=', function() {return 1}) && testForItem(source, 'rift:grass_fiber', -1, '>=', function() {return 1})) {
+                    source.runCommandAsync('give @s rift:flame_bomb 4')
+                    source.runCommandAsync('clear @s minecraft:leather -1 2')
+                    source.runCommandAsync('clear @s rift:crude_oil -1 1')
+                    source.runCommandAsync('clear @s rift:grass_fiber -1 1')
                 }
                 else {
                     craftFail(source)

@@ -60,6 +60,10 @@
 				"rift:owned_by_illager": {
 					"type": "bool",
 					"default": false
+                },
+                "rift:affected_by_bola": {
+					"type": "bool",
+					"default": false
                 }
 			},
 			"animations": {
@@ -67,6 +71,7 @@
                 "contRefillEnergyFromInventory": "controller.animation.general_refill_energy_from_inventory",
 				"contPackBuff": "controller.animation.wild_utahraptor_pack_buff",
 				"contWildRemoveBuffs": "controller.animation.wild_utahraptor_remove_buffs",
+                "contInWaterTag": "controller.animation.add_in_water_tag",
 				"contTameTag": "controller.animation.add_tame_tag",
 				"contBabyTag": "controller.animation.add_baby_tag",
 				"contRiddenTag": "controller.animation.add_ridden_tag",
@@ -84,7 +89,8 @@
 				"contDieWithoutTenontosaurus": "controller.animation.general_die_without_tenontosaurus",
                 "contDieWithoutTamedTenontosaurus": "controller.animation.general_death_timer_tamed_tenontosaurus",
 				"contBleed": "controller.animation.general_manage_bleed",
-				"animEatFromInventory": "animation.use_eat_from_inventory",
+				"contBola": "controller.animation.general_manage_bola",
+                "animEatFromInventory": "animation.use_eat_from_inventory",
                 "animRefillEnergyFromInventory": "animation.use_refill_energy_from_inventory",
 				"animUseEnergyWhileMoving": "animation.utahraptor_decrease_energy_while_moving",
 				"animEnergyRegenDelay": "animation.regenerate_energy_delay",
@@ -98,7 +104,9 @@
 				"animDeathTimer": "animation.hypnosis_death_timer",
                 "animTamedDeathTimer": "animation.hypnosis_death_timer_tamed",
                 "animBleed": "animation.general_bleed",
-                "animBleedCountdown": "animation.general_bleed_countdown"
+                "animBleedCountdown": "animation.general_bleed_countdown",
+                "animBolaEffect": "animation.general_bola_effect",
+                "animBolaEffectCountdown": "animation.general_bola_effect_countdown"
 			},
 			"scripts": {
 				"animate": [
@@ -106,6 +114,7 @@
                     "contRefillEnergyFromInventory",
 					"contPackBuff",
 					"contWildRemoveBuffs",
+                    "contInWaterTag",
 					"contTameTag",
 					"contBabyTag",
 					"contRiddenTag",
@@ -122,7 +131,8 @@
 					"contBehaviorState",
 					"contDieWithoutTenontosaurus",
                     "contDieWithoutTamedTenontosaurus",
-                    "contBleed"
+                    "contBleed",
+                    "contBola"
 				]
 			}
         },
@@ -7115,7 +7125,18 @@
                 "set_property": {
                     "rift:bleeding": false
                 }
-            }
+            },
+            "rift:affected_by_bola": {
+                "set_property": {
+                    "rift:affected_by_bola": true
+                }
+            },
+            "rift:stop_being_affected_by_bola": {
+                "set_property": {
+                    "rift:affected_by_bola": false
+                }
+            },
+            "rift:force_go_down": {}
         }
     }
 }
