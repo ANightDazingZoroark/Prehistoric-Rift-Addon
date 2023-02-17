@@ -7,7 +7,7 @@
                 "default": {
                     "transitions": [
                         {
-                            "chooseAttack": "query.has_target && !query.is_baby && ((query.property('rift:is_hypnotized') == true || query.property('rift:is_hypnotized_tamed') == true) ? (query.target -> query.owner_identifier) != 'rift:tenontosaurus' : 1.0)"
+                            "chooseAttack": "query.property('rift:undergoing_taming') == false && query.has_target && !query.is_baby && ((query.property('rift:is_hypnotized') == true || query.property('rift:is_hypnotized_tamed') == true) ? (query.target -> query.owner_identifier) != 'rift:tenontosaurus' : 1.0)"
                         }
                     ]
                 },
@@ -27,7 +27,7 @@
                             "biteLimbo": "query.is_delayed_attacking"
                         },
                         {
-                            "default": "!query.has_target"
+                            "default": "!query.has_target || query.property('rift:undergoing_taming') == true"
                         }
                     ],
                     "on_entry": [
@@ -43,7 +43,7 @@
                             "claw": "!query.is_delayed_attacking && v.attackMode == 1"
                         },
                         {
-                            "default": "!query.has_target"
+                            "default": "!query.has_target || query.property('rift:undergoing_taming') == true"
                         }
                     ],
                     "on_exit": [
@@ -56,7 +56,7 @@
                             "clawLimbo": "v.attack_time > 0"
                         },
                         {
-                            "default": "!query.has_target"
+                            "default": "!query.has_target || query.property('rift:undergoing_taming') == true"
                         }
                     ],
                     "on_entry": [
@@ -72,7 +72,7 @@
                             "claw": "v.attack_time == 0 && v.attackMode == 1"
                         },
                         {
-                            "default": "!query.has_target"
+                            "default": "!query.has_target || query.property('rift:undergoing_taming') == true"
                         }
                     ],
                     "on_exit": [

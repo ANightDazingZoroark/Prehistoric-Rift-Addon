@@ -262,6 +262,30 @@
                 "width": 0.6
             },
             "minecraft:conditional_bandwidth_optimization": {},
+            "minecraft:damage_sensor": {
+                "triggers": [
+                    {
+                        "deals_damage": false,
+                        "on_damage": {
+                            "filters": {
+                                "any_of": [
+                                    {
+                                        "subject": "other",
+                                        "test": "is_family",
+                                        "value": "illager"
+                                    },
+                                    {
+                                        "domain": "rift:owned_by_illager",
+                                        "subject": "other",
+                                        "test": "bool_property",
+                                        "value": true
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                ]
+            },
             "minecraft:experience_reward": {
                 "on_death": "10"
             },
@@ -271,30 +295,6 @@
             "minecraft:health": {
                 "max": 24,
                 "value": 24
-            },
-            "minecraft:damage_sensor": {
-                "triggers": [
-                    {
-                        "on_damage": {
-                            "filters": {
-                                "any_of": [
-                                    {
-                                        "test": "is_family",
-                                        "subject": "other",
-                                        "value": "illager"
-                                    },
-                                    {
-                                        "test": "bool_property",
-                                        "subject": "other",
-                                        "domain": "rift:owned_by_illager",
-                                        "value": true
-                                    }
-                                ]
-                            }
-                        },
-                        "deals_damage": false
-                    }
-                ]
             },
             "minecraft:hurt_on_condition": {
                 "damage_conditions": [
@@ -345,7 +345,11 @@
             "animations": {
                 "animBleed": "animation.general_bleed",
                 "animBleedCountdown": "animation.general_bleed_countdown",
+                "animBolaEffect": "animation.general_bola_effect",
+                "animBolaEffectCountdown": "animation.general_bola_effect_countdown",
                 "contBleed": "controller.animation.general_manage_bleed",
+                "contBola": "controller.animation.general_manage_bola",
+                "contInWaterTag": "controller.animation.add_in_water_tag",
                 "contMovingTag": "controller.animation.add_moving_tag"
             },
             "identifier": "minecraft:evocation_illager",
@@ -353,6 +357,10 @@
             "is_spawnable": true,
             "is_summonable": true,
             "properties": {
+                "rift:affected_by_bola": {
+                    "default": false,
+                    "type": "bool"
+                },
                 "rift:bleeding": {
                     "client_sync": true,
                     "default": false,
@@ -362,7 +370,9 @@
             "scripts": {
                 "animate": [
                     "contBleed",
-                    "contMovingTag"
+                    "contMovingTag",
+                    "contInWaterTag",
+                    "contBola"
                 ]
             }
         },
@@ -431,9 +441,20 @@
                     ]
                 }
             },
+            "rift:affected_by_bola": {
+                "set_property": {
+                    "rift:affected_by_bola": true
+                }
+            },
+            "rift:force_go_down": {},
             "rift:start_bleeding": {
                 "set_property": {
                     "rift:bleeding": true
+                }
+            },
+            "rift:stop_being_affected_by_bola": {
+                "set_property": {
+                    "rift:affected_by_bola": false
                 }
             },
             "rift:stop_bleeding": {

@@ -74,6 +74,10 @@
 				"rift:owned_by_illager": {
 					"type": "bool",
 					"default": false
+                },
+                "rift:affected_by_bola": {
+					"type": "bool",
+					"default": false
                 }
 			},
 			"animations": {
@@ -84,6 +88,7 @@
 				"contPackBuff": "controller.animation.wild_direwolf_pack_buff",
 				"contWildRemoveBuffs": "controller.animation.wild_direwolf_remove_buffs",
 				"contSwitchBetweenMeleeAttacks": "controller.animation.direwolf_werewolf_switch_between_melee_attacks",
+                "contInWaterTag": "controller.animation.add_in_water_tag",
 				"contMovingTag": "controller.animation.add_moving_tag",
 				"contTameTag": "controller.animation.add_tame_tag",
 				"contBabyTag": "controller.animation.add_baby_tag",
@@ -103,6 +108,7 @@
 				"contDieWithoutTenontosaurus": "controller.animation.general_die_without_tenontosaurus",
                 "contDieWithoutTamedTenontosaurus": "controller.animation.general_death_timer_tamed_tenontosaurus",
 				"contBleed": "controller.animation.general_manage_bleed",
+				"contBola": "controller.animation.general_manage_bola",
 				"animUseEnergyWhileMovingNormal": "animation.direwolf_decrease_energy_while_moving_normal",
 				"animUseEnergyWhileMovingWerewolf": "animation.direwolf_decrease_energy_while_moving_werewolf",
 				"animEnergyRegenDelay": "animation.regenerate_energy_delay",
@@ -124,7 +130,9 @@
 				"animDeathTimer": "animation.hypnosis_death_timer",
                 "animTamedDeathTimer": "animation.hypnosis_death_timer_tamed",
                 "animBleed": "animation.general_bleed",
-                "animBleedCountdown": "animation.general_bleed_countdown"
+                "animBleedCountdown": "animation.general_bleed_countdown",
+                "animBolaEffect": "animation.general_bola_effect",
+                "animBolaEffectCountdown": "animation.general_bola_effect_countdown"
 			},
 			"scripts": {
 				"animate": [
@@ -135,6 +143,7 @@
 					"contPackBuff",
 					"contWildRemoveBuffs",
 					"contSwitchBetweenMeleeAttacks",
+                    "contInWaterTag",
                     "contMovingTag",
 					"contTameTag",
 					"contBabyTag",
@@ -153,7 +162,8 @@
 					"contWarnLowEnergy",
 					"contDieWithoutTenontosaurus",
                     "contDieWithoutTamedTenontosaurus",
-                    "contBleed"
+                    "contBleed",
+                    "contBola"
 				]
 			}
         },
@@ -5927,7 +5937,8 @@
 							]
 						},
 						"set_property": {
-							"rift:undergoing_taming": false
+							"rift:undergoing_taming": false,
+                            "rift:affected_by_bola": false
 						}
 					},
 					{
@@ -6672,7 +6683,8 @@
 						"rift:direwolf_adult_wild_not_trusting",
 						"rift:default_targets_normal",
 						"rift:direwolf_adult_calm",
-						"rift:direwolf_adult_angry"
+						"rift:direwolf_adult_angry",
+                        "rift:normal_mode_attack"
 					]
 				},
 				"run_command": {
@@ -6689,7 +6701,8 @@
 					"component_groups": [
 						"rift:default_targets_normal",
 						"rift:direwolf_adult_wild_not_trusting",
-						"rift:direwolf_adult_calm"
+						"rift:direwolf_adult_calm",
+                        "rift:normal_mode_attack"
 					]
 				},
 				"remove": {
@@ -6764,7 +6777,8 @@
 						"rift:direwolf_adult_tamed",
 						"rift:direwolf_normal_rideable",
 						"rift:cannot_power_jump",
-						"rift:tamed_can_move"
+						"rift:tamed_can_move",
+                        "rift:normal_mode_attack"
 					]
 				},
 				"remove": {
@@ -7802,7 +7816,18 @@
                 "set_property": {
                     "rift:bleeding": false
                 }
-            }
+            },
+            "rift:affected_by_bola": {
+                "set_property": {
+                    "rift:affected_by_bola": true
+                }
+            },
+            "rift:stop_being_affected_by_bola": {
+                "set_property": {
+                    "rift:affected_by_bola": false
+                }
+            },
+            "rift:force_go_down": {}
 		}
     }
 }

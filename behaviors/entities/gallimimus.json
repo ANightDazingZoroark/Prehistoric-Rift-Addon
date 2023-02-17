@@ -33,11 +33,16 @@
 					"type": "bool",
 					"default": false,
 					"client_sync": true
+                },
+                "rift:affected_by_bola": {
+					"type": "bool",
+					"default": false
                 }
 			},
 			"animations": {
                 "contEatFromInventory": "controller.animation.general_eat_from_inventory",
                 "contRefillEnergyFromInventory": "controller.animation.general_refill_energy_from_inventory",
+                "contInWaterTag": "controller.animation.add_in_water_tag",
 				"contMovingTag": "controller.animation.add_moving_tag",
 				"contTameTag": "controller.animation.add_tame_tag",
 				"contBabyTag": "controller.animation.add_baby_tag",
@@ -48,6 +53,7 @@
 				"contEnergyUsage": "controller.animation.gallimimus_energy_movement_usage",
 				"contWarnLowEnergy": "controller.animation.warn_of_low_energy",
 				"contBleed": "controller.animation.general_manage_bleed",
+				"contBola": "controller.animation.general_manage_bola",
 				"animEatFromInventory": "animation.use_eat_from_inventory",
                 "animRefillEnergyFromInventory": "animation.use_refill_energy_from_inventory",
 				"animUseEnergyWhileMoving": "animation.gallimimus_decrease_energy_while_moving",
@@ -57,12 +63,15 @@
 				"animRegenerateEnergy": "animation.gallimimus_regenerate_energy",
 				"animForcedAttack": "animation.forced_attack_gallimimus",
                 "animBleed": "animation.general_bleed",
-                "animBleedCountdown": "animation.general_bleed_countdown"
+                "animBleedCountdown": "animation.general_bleed_countdown",
+                "animBolaEffect": "animation.general_bola_effect",
+                "animBolaEffectCountdown": "animation.general_bola_effect_countdown"
 			},
 			"scripts": {
 				"animate": [
                     "contEatFromInventory",
                     "contRefillEnergyFromInventory",
+                    "contInWaterTag",
                     "contMovingTag",
 					"contTameTag",
 					"contBabyTag",
@@ -72,7 +81,8 @@
 					"contTameState",
 					"contEnergyUsage",
 					"contWarnLowEnergy",
-                    "contBleed"
+                    "contBleed",
+                    "contBola"
 				]
 			}
         },
@@ -4146,7 +4156,18 @@
                 "set_property": {
                     "rift:bleeding": false
                 }
-            }
+            },
+            "rift:affected_by_bola": {
+                "set_property": {
+                    "rift:affected_by_bola": true
+                }
+            },
+            "rift:stop_being_affected_by_bola": {
+                "set_property": {
+                    "rift:affected_by_bola": false
+                }
+            },
+            "rift:force_go_down": {}
 		}
     }
 }

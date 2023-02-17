@@ -1,31 +1,6 @@
 {
     "format_version": "1.16.0",
     "minecraft:entity": {
-        "description": {
-            "identifier": "minecraft:vindicator",
-            "is_spawnable": true,
-            "is_summonable": true,
-            "is_experimental": false,
-            "properties": {
-                "rift:bleeding": {
-                    "client_sync": true,
-                    "default": false,
-                    "type": "bool"
-                }
-            },
-            "animations": {
-                "contBleed": "controller.animation.general_manage_bleed",
-                "contMovingTag": "controller.animation.add_moving_tag",
-                "animBleed": "animation.general_bleed",
-                "animBleedCountdown": "animation.general_bleed_countdown"
-            },
-            "scripts": {
-                "animate": [
-                    "contBleed",
-                    "contMovingTag"
-                ]
-            }
-        },
         "component_groups": {
             "minecraft:celebrate": {
                 "minecraft:behavior.celebrate": {
@@ -124,24 +99,24 @@
                             }
                         },
                         {
+                            "deals_damage": false,
                             "on_damage": {
                                 "filters": {
                                     "any_of": [
                                         {
-                                            "test": "is_family",
                                             "subject": "other",
+                                            "test": "is_family",
                                             "value": "illager"
                                         },
                                         {
-                                            "test": "bool_property",
-                                            "subject": "other",
                                             "domain": "rift:owned_by_illager",
+                                            "subject": "other",
+                                            "test": "bool_property",
                                             "value": true
                                         }
                                     ]
                                 }
-                            },
-                            "deals_damage": false
+                            }
                         }
                     ]
                 },
@@ -188,24 +163,24 @@
                             }
                         },
                         {
+                            "deals_damage": false,
                             "on_damage": {
                                 "filters": {
                                     "any_of": [
                                         {
-                                            "test": "is_family",
                                             "subject": "other",
+                                            "test": "is_family",
                                             "value": "illager"
                                         },
                                         {
-                                            "test": "bool_property",
-                                            "subject": "other",
                                             "domain": "rift:owned_by_illager",
+                                            "subject": "other",
+                                            "test": "bool_property",
                                             "value": true
                                         }
                                     ]
                                 }
-                            },
-                            "deals_damage": false
+                            }
                         }
                     ]
                 },
@@ -306,28 +281,36 @@
                 }
             },
             "rift:change_attack_mode": {
-				"minecraft:target_nearby_sensor": {
-					"inside_range": 4,
-					"outside_range": 7,
-					"must_see": true,
-					"on_inside_range": {
-						"event": "rift:melee_attack_mode",
-						"target": "self"
-					},
-					"on_outside_range": {
-						"event": "rift:ranged_attack_mode",
-						"target": "self"
-					},
-					"on_vision_lost_inside_range": {
-						"event": "rift:ranged_attack_mode",
-						"target": "self"
-					}
-			  	}
-			},
-            "rift:ranged_mode": {
-                "minecraft:equipment": {
-                    "table": "loot_tables/entities/vindicator ranged.json"
+                "minecraft:target_nearby_sensor": {
+                    "inside_range": 4,
+                    "must_see": true,
+                    "on_inside_range": {
+                        "event": "rift:melee_attack_mode",
+                        "target": "self"
+                    },
+                    "on_outside_range": {
+                        "event": "rift:ranged_attack_mode",
+                        "target": "self"
+                    },
+                    "on_vision_lost_inside_range": {
+                        "event": "rift:ranged_attack_mode",
+                        "target": "self"
+                    },
+                    "outside_range": 7
+                }
+            },
+            "rift:melee_mode": {
+                "minecraft:attack": {
+                    "damage": 8
                 },
+                "minecraft:behavior.melee_attack": {
+                    "priority": 3
+                },
+                "minecraft:equipment": {
+                    "table": "loot_tables/entities/vindicator melee.json"
+                }
+            },
+            "rift:ranged_mode": {
                 "minecraft:behavior.ranged_attack": {
                     "attack_interval_max": 1.0,
                     "attack_interval_min": 1.0,
@@ -335,19 +318,11 @@
                     "attack_radius_min": 6,
                     "priority": 3
                 },
+                "minecraft:equipment": {
+                    "table": "loot_tables/entities/vindicator ranged.json"
+                },
                 "minecraft:shooter": {
                     "def": "rift:pistol_bullet"
-                }
-            },
-            "rift:melee_mode": {
-                "minecraft:equipment": {
-                    "table": "loot_tables/entities/vindicator melee.json"
-                },
-                "minecraft:attack": {
-                    "damage": 8
-                },
-                "minecraft:behavior.melee_attack": {
-                    "priority": 3
                 }
             }
         },
@@ -376,6 +351,30 @@
                 "width": 0.6
             },
             "minecraft:conditional_bandwidth_optimization": {},
+            "minecraft:damage_sensor": {
+                "triggers": [
+                    {
+                        "deals_damage": false,
+                        "on_damage": {
+                            "filters": {
+                                "any_of": [
+                                    {
+                                        "subject": "other",
+                                        "test": "is_family",
+                                        "value": "illager"
+                                    },
+                                    {
+                                        "domain": "rift:owned_by_illager",
+                                        "subject": "other",
+                                        "test": "bool_property",
+                                        "value": true
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                ]
+            },
             "minecraft:experience_reward": {
                 "on_death": "query.last_hit_by_player ? (query.is_baby ? 12 : 5) + (Math.die_roll(query.equipment_count,1,3)) : 0"
             },
@@ -385,30 +384,6 @@
             "minecraft:health": {
                 "max": 24,
                 "value": 24
-            },
-            "minecraft:damage_sensor": {
-                "triggers": [
-                    {
-                        "on_damage": {
-                            "filters": {
-                                "any_of": [
-                                    {
-                                        "test": "is_family",
-                                        "subject": "other",
-                                        "value": "illager"
-                                    },
-                                    {
-                                        "test": "bool_property",
-                                        "subject": "other",
-                                        "domain": "rift:owned_by_illager",
-                                        "value": true
-                                    }
-                                ]
-                            }
-                        },
-                        "deals_damage": false
-                    }
-                ]
             },
             "minecraft:hurt_on_condition": {
                 "damage_conditions": [
@@ -476,6 +451,41 @@
                 "value": 0
             }
         },
+        "description": {
+            "animations": {
+                "animBleed": "animation.general_bleed",
+                "animBleedCountdown": "animation.general_bleed_countdown",
+                "animBolaEffect": "animation.general_bola_effect",
+                "animBolaEffectCountdown": "animation.general_bola_effect_countdown",
+                "contBleed": "controller.animation.general_manage_bleed",
+                "contBola": "controller.animation.general_manage_bola",
+                "contInWaterTag": "controller.animation.add_in_water_tag",
+                "contMovingTag": "controller.animation.add_moving_tag"
+            },
+            "identifier": "minecraft:vindicator",
+            "is_experimental": false,
+            "is_spawnable": true,
+            "is_summonable": true,
+            "properties": {
+                "rift:affected_by_bola": {
+                    "default": false,
+                    "type": "bool"
+                },
+                "rift:bleeding": {
+                    "client_sync": true,
+                    "default": false,
+                    "type": "bool"
+                }
+            },
+            "scripts": {
+                "animate": [
+                    "contBleed",
+                    "contMovingTag",
+                    "contInWaterTag",
+                    "contBola"
+                ]
+            }
+        },
         "events": {
             "minecraft:become_aggro": {
                 "sequence": [
@@ -487,27 +497,27 @@
                         }
                     },
                     {
-                        "filters": {
-                            "test": "is_riding",
-                            "subject": "self",
-                            "value": false
-                        },
                         "add": {
                             "component_groups": [
                                 "rift:change_attack_mode"
                             ]
+                        },
+                        "filters": {
+                            "subject": "self",
+                            "test": "is_riding",
+                            "value": false
                         }
                     },
                     {
-                        "filters": {
-                            "test": "is_riding",
-                            "subject": "self",
-                            "value": true
-                        },
                         "add": {
                             "component_groups": [
                                 "rift:ranged_attack_mode"
                             ]
+                        },
+                        "filters": {
+                            "subject": "self",
+                            "test": "is_riding",
+                            "value": true
                         }
                     }
                 ]
@@ -582,48 +592,48 @@
                         "filters": {
                             "all_of": [
                                 {
-                                    "test": "has_biome_tag",
                                     "operator": "!=",
+                                    "test": "has_biome_tag",
                                     "value": "frozen"
                                 },
                                 {
-                                    "test": "has_biome_tag",
                                     "operator": "!=",
+                                    "test": "has_biome_tag",
                                     "value": "cold"
                                 },
                                 {
-                                    "test": "has_biome_tag",
                                     "operator": "!=",
+                                    "test": "has_biome_tag",
                                     "value": "taiga"
                                 },
                                 {
-                                    "test": "has_biome_tag",
                                     "operator": "!=",
+                                    "test": "has_biome_tag",
                                     "value": "swamp"
                                 },
                                 {
-                                    "test": "has_biome_tag",
                                     "operator": "!=",
+                                    "test": "has_biome_tag",
                                     "value": "mangrove_swamp"
                                 }
                             ]
                         },
                         "randomize": [
                             {
-                                "weight": 2,
                                 "run_command": {
                                     "command": [
                                         "ride @s summon_ride rift:utahraptor no_ride_change rift:spawn_as_illager_patrol_mount"
                                     ]
-                                }
+                                },
+                                "weight": 2
                             },
                             {
-                                "weight": 1,
                                 "run_command": {
                                     "command": [
                                         "ride @s summon_ride rift:dilophosaurus no_ride_change rift:spawn_as_illager_patrol_mount"
                                     ]
-                                }
+                                },
+                                "weight": 1
                             }
                         ]
                     },
@@ -646,20 +656,20 @@
                         },
                         "randomize": [
                             {
-                                "weight": 2,
                                 "run_command": {
                                     "command": [
                                         "ride @s summon_ride rift:direwolf no_ride_change rift:spawn_as_illager_patrol_mount"
                                     ]
-                                }
+                                },
+                                "weight": 2
                             },
                             {
-                                "weight": 1,
                                 "run_command": {
                                     "command": [
                                         "ride @s summon_ride rift:direbear no_ride_change rift:spawn_as_illager_patrol_mount"
                                     ]
-                                }
+                                },
+                                "weight": 1
                             }
                         ]
                     },
@@ -678,20 +688,20 @@
                         },
                         "randomize": [
                             {
-                                "weight": 2,
                                 "run_command": {
                                     "command": [
                                         "ride @s summon_ride rift:baryonyx no_ride_change rift:spawn_as_illager_patrol_mount"
                                     ]
-                                }
+                                },
+                                "weight": 2
                             },
                             {
-                                "weight": 1,
                                 "run_command": {
                                     "command": [
                                         "ride @s summon_ride rift:sarcosuchus no_ride_change rift:spawn_as_illager_patrol_mount"
                                     ]
-                                }
+                                },
+                                "weight": 1
                             }
                         ]
                     }
@@ -713,48 +723,48 @@
                         "filters": {
                             "all_of": [
                                 {
-                                    "test": "has_biome_tag",
                                     "operator": "!=",
+                                    "test": "has_biome_tag",
                                     "value": "frozen"
                                 },
                                 {
-                                    "test": "has_biome_tag",
                                     "operator": "!=",
+                                    "test": "has_biome_tag",
                                     "value": "cold"
                                 },
                                 {
-                                    "test": "has_biome_tag",
                                     "operator": "!=",
+                                    "test": "has_biome_tag",
                                     "value": "taiga"
                                 },
                                 {
-                                    "test": "has_biome_tag",
                                     "operator": "!=",
+                                    "test": "has_biome_tag",
                                     "value": "swamp"
                                 },
                                 {
-                                    "test": "has_biome_tag",
                                     "operator": "!=",
+                                    "test": "has_biome_tag",
                                     "value": "mangrove_swamp"
                                 }
                             ]
                         },
                         "randomize": [
                             {
-                                "weight": 2,
                                 "run_command": {
                                     "command": [
                                         "ride @s summon_ride rift:utahraptor no_ride_change rift:spawn_as_illager_raid_mount"
                                     ]
-                                }
+                                },
+                                "weight": 2
                             },
                             {
-                                "weight": 1,
                                 "run_command": {
                                     "command": [
                                         "ride @s summon_ride rift:dilophosaurus no_ride_change rift:spawn_as_illager_raid_mount"
                                     ]
-                                }
+                                },
+                                "weight": 1
                             }
                         ]
                     },
@@ -777,20 +787,20 @@
                         },
                         "randomize": [
                             {
-                                "weight": 2,
                                 "run_command": {
                                     "command": [
                                         "ride @s summon_ride rift:direwolf no_ride_change rift:spawn_as_illager_raid_mount"
                                     ]
-                                }
+                                },
+                                "weight": 2
                             },
                             {
-                                "weight": 1,
                                 "run_command": {
                                     "command": [
                                         "ride @s summon_ride rift:direbear no_ride_change rift:spawn_as_illager_raid_mount"
                                     ]
-                                }
+                                },
+                                "weight": 1
                             }
                         ]
                     },
@@ -809,20 +819,20 @@
                         },
                         "randomize": [
                             {
-                                "weight": 2,
                                 "run_command": {
                                     "command": [
                                         "ride @s summon_ride rift:baryonyx no_ride_change rift:spawn_as_illager_raid_mount"
                                     ]
-                                }
+                                },
+                                "weight": 2
                             },
                             {
-                                "weight": 1,
                                 "run_command": {
                                     "command": [
                                         "ride @s summon_ride rift:sarcosuchus no_ride_change rift:spawn_as_illager_raid_mount"
                                     ]
-                                }
+                                },
+                                "weight": 1
                             }
                         ]
                     }
@@ -891,16 +901,12 @@
                     ]
                 }
             },
-            "rift:start_bleeding": {
+            "rift:affected_by_bola": {
                 "set_property": {
-                    "rift:bleeding": true
+                    "rift:affected_by_bola": true
                 }
             },
-            "rift:stop_bleeding": {
-                "set_property": {
-                    "rift:bleeding": false
-                }
-            },
+            "rift:force_go_down": {},
             "rift:melee_attack_mode": {
                 "add": {
                     "component_groups": [
@@ -933,6 +939,21 @@
                     "command": [
                         "replaceitem entity @s slot.weapon.mainhand 0 rift:pistol"
                     ]
+                }
+            },
+            "rift:start_bleeding": {
+                "set_property": {
+                    "rift:bleeding": true
+                }
+            },
+            "rift:stop_being_affected_by_bola": {
+                "set_property": {
+                    "rift:affected_by_bola": false
+                }
+            },
+            "rift:stop_bleeding": {
+                "set_property": {
+                    "rift:bleeding": false
                 }
             }
         }

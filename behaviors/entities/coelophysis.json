@@ -47,9 +47,14 @@
 					"type": "bool",
 					"default": false,
 					"client_sync": true
+                },
+                "rift:affected_by_bola": {
+					"type": "bool",
+					"default": false
                 }
 			},
             "animations": {
+				"contInWaterTag": "controller.animation.add_in_water_tag",
 				"contTameTag": "controller.animation.add_tame_tag",
 				"contBabyTag": "controller.animation.add_baby_tag",
 				"contRiddenTag": "controller.animation.add_ridden_tag",
@@ -64,6 +69,7 @@
 				"contDieWithoutTenontosaurus": "controller.animation.general_die_without_tenontosaurus",
                 "contDieWithoutTamedTenontosaurus": "controller.animation.general_death_timer_tamed_tenontosaurus",
 				"contBleed": "controller.animation.general_manage_bleed",
+				"contBola": "controller.animation.general_manage_bola",
                 "animUseEnergyWhileMoving": "animation.coelophysis_decrease_energy_while_moving",
                 "animEnergyRegenDelay": "animation.regenerate_energy_delay",
 				"animRegenerateEnergy": "animation.coelophysis_regenerate_energy",
@@ -74,10 +80,13 @@
 				"animDeathTimer": "animation.hypnosis_death_timer",
                 "animTamedDeathTimer": "animation.hypnosis_death_timer_tamed",
                 "animBleed": "animation.general_bleed",
-                "animBleedCountdown": "animation.general_bleed_countdown"
+                "animBleedCountdown": "animation.general_bleed_countdown",
+                "animBolaEffect": "animation.general_bola_effect",
+                "animBolaEffectCountdown": "animation.general_bola_effect_countdown"
             },
             "scripts": {
                 "animate": [
+                    "contInWaterTag",
                     "contTameTag",
                     "contBabyTag",
                     "contRiddenTag",
@@ -91,6 +100,7 @@
                     "contDieWithoutTenontosaurus",
                     "contDieWithoutTamedTenontosaurus",
                     "contBleed",
+                    "contBola",
                     "contMovingTag"
                 ]
             }
@@ -4748,7 +4758,18 @@
                 "set_property": {
                     "rift:bleeding": false
                 }
-            }
+            },
+            "rift:affected_by_bola": {
+                "set_property": {
+                    "rift:affected_by_bola": true
+                }
+            },
+            "rift:stop_being_affected_by_bola": {
+                "set_property": {
+                    "rift:affected_by_bola": false
+                }
+            },
+            "rift:force_go_down": {}
         }
     }
 }

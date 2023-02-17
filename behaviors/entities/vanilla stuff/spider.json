@@ -2,15 +2,6 @@
     "format_version": "1.18.20",
     "minecraft:entity": {
         "component_groups": {
-            "rift:is_hypnotized": {
-                "minecraft:is_sheared": {}
-            },
-            "rift:is_hypnotized_tamed": {
-                "minecraft:is_charged": {}
-            },
-            "rift:is_bleeding": {
-                "minecraft:is_ignited": {}
-            },
             "minecraft:spider_angry": {
                 "minecraft:angry": {
                     "calm_event": {
@@ -384,6 +375,15 @@
                     }
                 }
             },
+            "rift:is_bleeding": {
+                "minecraft:is_ignited": {}
+            },
+            "rift:is_hypnotized": {
+                "minecraft:is_sheared": {}
+            },
+            "rift:is_hypnotized_tamed": {
+                "minecraft:is_charged": {}
+            },
             "rift:not_hypnotized": {
                 "minecraft:behavior.avoid_mob_type": {
                     "entity_types": [
@@ -529,20 +529,30 @@
             "animations": {
                 "animBleed": "animation.general_bleed",
                 "animBleedCountdown": "animation.general_bleed_countdown",
+                "animBolaEffect": "animation.general_bola_effect",
+                "animBolaEffectCountdown": "animation.general_bola_effect_countdown",
                 "animDeathTimer": "animation.hypnosis_death_timer",
                 "animFindTenontosaurus": "animation.find_tenontosaurus",
                 "animTamedDeathTimer": "animation.hypnosis_death_timer_tamed",
                 "contBleed": "controller.animation.spider_manage_bleed",
+                "contBola": "controller.animation.general_manage_bola",
                 "contDieWithoutTamedTenontosaurus": "controller.animation.spider_death_timer_tamed_tenontosaurus",
                 "contDieWithoutTenontosaurus": "controller.animation.spider_die_without_tenontosaurus",
                 "contHypnotizedTag": "controller.animation.spider_add_hypnotized_tag",
                 "contHypnotizedTamedTag": "controller.animation.spider_add_hypnotized_by_tamed_tag",
+                "contInWaterTag": "controller.animation.add_in_water_tag",
                 "contMovingTag": "controller.animation.add_moving_tag"
             },
             "identifier": "minecraft:spider",
             "is_experimental": false,
             "is_spawnable": true,
             "is_summonable": true,
+            "properties": {
+                "rift:affected_by_bola": {
+                    "default": false,
+                    "type": "bool"
+                }
+            },
             "scripts": {
                 "animate": [
                     "contHypnotizedTag",
@@ -550,7 +560,9 @@
                     "contDieWithoutTenontosaurus",
                     "contDieWithoutTamedTenontosaurus",
                     "contBleed",
-                    "contMovingTag"
+                    "contMovingTag",
+                    "contInWaterTag",
+                    "contBola"
                 ]
             }
         },
@@ -673,6 +685,11 @@
                     }
                 ]
             },
+            "rift:affected_by_bola": {
+                "set_property": {
+                    "rift:affected_by_bola": true
+                }
+            },
             "rift:attack_for_tenontosaurus": {
                 "add": {
                     "component_groups": [
@@ -686,6 +703,7 @@
                     ]
                 }
             },
+            "rift:force_go_down": {},
             "rift:hypnotized_by_tamed_tenontosaurus": {
                 "sequence": [
                     {},
@@ -857,14 +875,14 @@
                         "filters": {
                             "all_of": [
                                 {
-                                    "test": "has_component",
                                     "subject": "self",
+                                    "test": "has_component",
                                     "value": "minecraft:is_sheared"
                                 },
                                 {
-                                    "test": "has_component",
-                                    "subject": "self",
                                     "operator": "!=",
+                                    "subject": "self",
+                                    "test": "has_component",
                                     "value": "minecraft:is_charged"
                                 }
                             ]
@@ -879,20 +897,25 @@
                         "filters": {
                             "all_of": [
                                 {
-                                    "test": "has_component",
-                                    "subject": "self",
                                     "operator": "!=",
+                                    "subject": "self",
+                                    "test": "has_component",
                                     "value": "minecraft:is_sheared"
                                 },
                                 {
-                                    "test": "has_component",
                                     "subject": "self",
+                                    "test": "has_component",
                                     "value": "minecraft:is_charged"
                                 }
                             ]
                         }
                     }
                 ]
+            },
+            "rift:stop_being_affected_by_bola": {
+                "set_property": {
+                    "rift:affected_by_bola": false
+                }
             },
             "rift:stop_bleeding": {
                 "remove": {

@@ -64,12 +64,17 @@
 				"rift:owned_by_illager": {
 					"type": "bool",
 					"default": false
+                },
+                "rift:affected_by_bola": {
+					"type": "bool",
+					"default": false
                 }
 			},
 			"animations": {
                 "contEatFromInventory": "controller.animation.general_eat_from_inventory",
                 "contRefillEnergyFromInventory": "controller.animation.general_refill_energy_from_inventory",
 				"contSwitchBetweenMeleeAttacks": "controller.animation.baryonyx_switch_between_melee_attacks",
+				"contInWaterTag": "controller.animation.add_in_water_tag",
 				"contMovingTag": "controller.animation.add_moving_tag",
 				"contTameTag": "controller.animation.add_tame_tag",
 				"contBabyTag": "controller.animation.add_baby_tag",
@@ -86,6 +91,7 @@
 				"contDieWithoutTenontosaurus": "controller.animation.general_die_without_tenontosaurus",
                 "contDieWithoutTamedTenontosaurus": "controller.animation.general_death_timer_tamed_tenontosaurus",
 				"contBleed": "controller.animation.general_manage_bleed",
+				"contBola": "controller.animation.general_manage_bola",
 				"animEatFromInventory": "animation.use_eat_from_inventory",
                 "animRefillEnergyFromInventory": "animation.use_refill_energy_from_inventory",
 				"animUseEnergyWhileMoving": "animation.baryonyx_decrease_energy_while_moving",
@@ -101,13 +107,16 @@
 				"animDeathTimer": "animation.hypnosis_death_timer",
                 "animTamedDeathTimer": "animation.hypnosis_death_timer_tamed",
                 "animBleed": "animation.general_bleed",
-                "animBleedCountdown": "animation.general_bleed_countdown"
+                "animBleedCountdown": "animation.general_bleed_countdown",
+                "animBolaEffect": "animation.general_bola_effect",
+                "animBolaEffectCountdown": "animation.general_bola_effect_countdown"
 			},
 			"scripts": {
 				"animate": [
                     "contEatFromInventory",
                     "contRefillEnergyFromInventory",
 					"contSwitchBetweenMeleeAttacks",
+                    "contInWaterTag",
                     "contMovingTag",
 					"contTameTag",
 					"contBabyTag",
@@ -123,7 +132,8 @@
 					"contWarnLowEnergy",
 					"contDieWithoutTenontosaurus",
                     "contDieWithoutTamedTenontosaurus",
-                    "contBleed"
+                    "contBleed",
+                    "contBola"
 				]
 			}
         },
@@ -5684,7 +5694,9 @@
 						"rift:default_targets",
 						"rift:the_flood_targets",
 						"rift:baryonyx_adult_not_trusting",
-						"rift:baryonyx_adult_wild"
+						"rift:baryonyx_adult_wild",
+						"rift:can_bite_attack",
+						"rift:can_claw_attack"
 					]
 				},
 				"run_command": {
@@ -6670,7 +6682,18 @@
                 "set_property": {
                     "rift:bleeding": false
                 }
-            }
+            },
+            "rift:affected_by_bola": {
+                "set_property": {
+                    "rift:affected_by_bola": true
+                }
+            },
+            "rift:stop_being_affected_by_bola": {
+                "set_property": {
+                    "rift:affected_by_bola": false
+                }
+            },
+            "rift:force_go_down": {}
 		}
     }
 }

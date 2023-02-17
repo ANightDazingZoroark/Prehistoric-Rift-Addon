@@ -1,79 +1,53 @@
 {
     "format_version": "1.16.0",
     "minecraft:entity": {
-        "description": {
-            "identifier": "minecraft:vex",
-            "is_spawnable": true,
-            "is_summonable": true,
-            "is_experimental": false
-        },
         "components": {
-            "minecraft:is_hidden_when_invisible": {},
-            "minecraft:experience_reward": {
-                "on_death": "query.last_hit_by_player ? 5 + (query.equipment_count * Math.Random(1,3)) : 0"
-            },
-            "minecraft:nameable": {},
-            "minecraft:type_family": {
-                "family": [ 
-                    "vex",
-                    "illager", 
-                    "monster",
-                    "mob" 
-                ]
-            },
-            "minecraft:equipment": {
-                "table": "loot_tables/entities/vex_gear.json"
-            },
-            "minecraft:health": {
-                "value": 14,
-                "max": 14
-            },
             "minecraft:attack": {
                 "damage": 3
-            },
-            "minecraft:collision_box": {
-                "width": 0.4,
-                "height": 0.8
-            },
-            "minecraft:movement": {
-                "value": 1.0
-            },
-            "minecraft:navigation.walk": {
-                "can_path_over_water": true
-            },
-            "minecraft:movement.basic": {},
-            "minecraft:jump.static": {},
-            "minecraft:can_climb": {},
-            "minecraft:fire_immune": {},
-            "minecraft:despawn": {
-                "despawn_from_distance": {}
-            },
-            "minecraft:behavior.float": {
-                "priority": 0
             },
             "minecraft:behavior.charge_attack": {
                 "priority": 4
             },
+            "minecraft:behavior.float": {
+                "priority": 0
+            },
+            "minecraft:behavior.hurt_by_target": {
+                "priority": 1
+            },
+            "minecraft:behavior.look_at_entity": {
+                "filters": {
+                    "subject": "other",
+                    "test": "is_family",
+                    "value": "mob"
+                },
+                "look_distance": 6.0,
+                "priority": 9,
+                "probability": 0.02
+            },
+            "minecraft:behavior.look_at_player": {
+                "look_distance": 6.0,
+                "priority": 9,
+                "probability": 0.02
+            },
             "minecraft:behavior.nearest_attackable_target": {
-                "priority": 3,
                 "entity_types": [
                     {
                         "filters": {
-                            "any_of" : [
+                            "any_of": [
                                 {
-                                    "test": "is_family", 
-                                    "subject": "other", 
+                                    "subject": "other",
+                                    "test": "is_family",
                                     "value": "player"
                                 },
                                 {
-                                    "test": "is_family", 
-                                    "subject": "other", 
-                                    "value":  "irongolem"
+                                    "subject": "other",
+                                    "test": "is_family",
+                                    "value": "irongolem"
                                 },
                                 {
-                                    "test": "is_family", 
-                                    "subject": "other", 
-                                    "value":  "wandering_trader"
+                                    "subject": "other",
+                                    "test": "is_family",
+                                    "value": "wandering_trader"
                                 }
                             ]
                         },
@@ -82,74 +56,131 @@
                     {
                         "filters": {
                             "all_of": [
-                                { 
-                                    "test": "is_family", 
-                                    "subject": "other", 
-                                    "value": "villager" 
+                                {
+                                    "subject": "other",
+                                    "test": "is_family",
+                                    "value": "villager"
                                 },
-                                { 
-                                    "test": "has_component", 
-                                    "subject": "other", 
-                                    "operator": "!=", 
-                                    "value": "minecraft:is_baby" 
+                                {
+                                    "operator": "!=",
+                                    "subject": "other",
+                                    "test": "has_component",
+                                    "value": "minecraft:is_baby"
                                 }
                             ]
                         },
                         "max_dist": 70
                     }
                 ],
-                "must_see": true
+                "must_see": true,
+                "priority": 3
             },
+            "minecraft:can_climb": {},
+            "minecraft:collision_box": {
+                "height": 0.8,
+                "width": 0.4
+            },
+            "minecraft:conditional_bandwidth_optimization": {},
             "minecraft:damage_sensor": {
                 "triggers": [
                     {
+                        "deals_damage": false,
                         "on_damage": {
                             "filters": {
                                 "any_of": [
                                     {
-                                        "test": "is_family",
                                         "subject": "other",
+                                        "test": "is_family",
                                         "value": "illager"
                                     },
                                     {
-                                        "test": "bool_property",
-                                        "subject": "other",
                                         "domain": "rift:owned_by_illager",
+                                        "subject": "other",
+                                        "test": "bool_property",
                                         "value": true
                                     }
                                 ]
                             }
-                        },
-                        "deals_damage": false
+                        }
                     }
                 ]
             },
-            "minecraft:behavior.look_at_player": {
-                "priority": 9,
-                "look_distance": 6.0,
-                "probability": 0.02
+            "minecraft:despawn": {
+                "despawn_from_distance": {}
             },
-            "minecraft:behavior.look_at_entity": {
-                "priority": 9,
-                "look_distance": 6.0,
-                "probability": 0.02,
-                "filters": { 
-                    "test": "is_family", 
-                    "subject": "other", 
-                    "value": "mob"
-                }
+            "minecraft:equipment": {
+                "table": "loot_tables/entities/vex_gear.json"
             },
-            "minecraft:behavior.hurt_by_target": {
-                "priority": 1
+            "minecraft:experience_reward": {
+                "on_death": "query.last_hit_by_player ? 5 + (query.equipment_count * Math.Random(1,3)) : 0"
             },
-            "minecraft:physics": {
-                "has_gravity": false,
-                "has_collision": false
-            },
-            "minecraft:conditional_bandwidth_optimization": {},
+            "minecraft:fire_immune": {},
             "minecraft:game_event_movement_tracking": {
                 "emit_move": false,
                 "emit_swim": false
+            },
+            "minecraft:health": {
+                "max": 14,
+                "value": 14
+            },
+            "minecraft:is_hidden_when_invisible": {},
+            "minecraft:jump.static": {},
+            "minecraft:movement": {
+                "value": 1.0
+            },
+            "minecraft:movement.basic": {},
+            "minecraft:nameable": {},
+            "minecraft:navigation.walk": {
+                "can_path_over_water": true
+            },
+            "minecraft:physics": {
+                "has_collision": false,
+                "has_gravity": false
+            },
+            "minecraft:type_family": {
+                "family": [
+                    "vex",
+                    "illager",
+                    "monster",
+                    "mob"
+                ]
+            }
+        },
+        "description": {
+            "animations": {
+                "animBolaEffect": "animation.general_bola_effect",
+                "animBolaEffectCountdown": "animation.general_bola_effect_countdown",
+                "contBola": "controller.animation.general_manage_bola",
+                "contInWaterTag": "controller.animation.add_in_water_tag"
+            },
+            "identifier": "minecraft:vex",
+            "is_experimental": false,
+            "is_spawnable": true,
+            "is_summonable": true,
+            "properties": {
+                "rift:affected_by_bola": {
+                    "default": false,
+                    "type": "bool"
+                }
+            },
+            "scripts": {
+                "animate": [
+                    "contInWaterTag",
+                    "contBola"
+                ]
+            }
+        },
+        "events": {
+            "rift:affected_by_bola": {
+                "set_property": {
+                    "rift:affected_by_bola": true
+                }
+            },
+            "rift:force_go_down": {},
+            "rift:stop_being_affected_by_bola": {
+                "set_property": {
+                    "rift:affected_by_bola": false
+                }
             }
         }
     }

@@ -401,7 +401,11 @@
             "animations": {
                 "animBleed": "animation.general_bleed",
                 "animBleedCountdown": "animation.general_bleed_countdown",
+                "animBolaEffect": "animation.general_bola_effect",
+                "animBolaEffectCountdown": "animation.general_bola_effect_countdown",
                 "contBleed": "controller.animation.general_manage_bleed",
+                "contBola": "controller.animation.general_manage_bola",
+                "contInWaterTag": "controller.animation.add_in_water_tag",
                 "contMovingTag": "controller.animation.add_moving_tag"
             },
             "identifier": "minecraft:axolotl",
@@ -409,6 +413,10 @@
             "is_spawnable": true,
             "is_summonable": true,
             "properties": {
+                "rift:affected_by_bola": {
+                    "default": false,
+                    "type": "bool"
+                },
                 "rift:bleeding": {
                     "client_sync": true,
                     "default": false,
@@ -418,7 +426,9 @@
             "scripts": {
                 "animate": [
                     "contBleed",
-                    "contMovingTag"
+                    "contMovingTag",
+                    "contInWaterTag",
+                    "contBola"
                 ]
             }
         },
@@ -554,9 +564,20 @@
                     ]
                 }
             },
+            "rift:affected_by_bola": {
+                "set_property": {
+                    "rift:affected_by_bola": true
+                }
+            },
+            "rift:force_go_down": {},
             "rift:start_bleeding": {
                 "set_property": {
                     "rift:bleeding": true
+                }
+            },
+            "rift:stop_being_affected_by_bola": {
+                "set_property": {
+                    "rift:affected_by_bola": false
                 }
             },
             "rift:stop_bleeding": {

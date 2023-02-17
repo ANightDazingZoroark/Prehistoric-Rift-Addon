@@ -52,9 +52,14 @@
 					"type": "bool",
 					"default": false,
 					"client_sync": true
+                },
+                "rift:affected_by_bola": {
+					"type": "bool",
+					"default": false
                 }
 			},
 			"animations": {
+				"contInWaterTag": "controller.animation.add_in_water_tag",
 				"contTameTag": "controller.animation.add_tame_tag",
 				"contMovingTag": "controller.animation.add_moving_tag",
 				"contBabyTag": "controller.animation.add_baby_tag",
@@ -69,6 +74,7 @@
 				"contDieWithoutTenontosaurus": "controller.animation.general_die_without_tenontosaurus",
                 "contDieWithoutTamedTenontosaurus": "controller.animation.general_death_timer_tamed_tenontosaurus",
 				"contBleed": "controller.animation.general_manage_bleed",
+				"contBola": "controller.animation.general_manage_bola",
 				"animRegenerateEnergyNormal": "animation.dimetrodon_regenerate_energy_normal",
 				"animRegenerateEnergyFrost": "animation.dimetrodon_regenerate_energy_frost",
 				"animRegenerateEnergyFlame": "animation.dimetrodon_regenerate_energy_flame",
@@ -82,10 +88,13 @@
 				"animDeathTimer": "animation.hypnosis_death_timer",
                 "animTamedDeathTimer": "animation.hypnosis_death_timer_tamed",
                 "animBleed": "animation.general_bleed",
-                "animBleedCountdown": "animation.general_bleed_countdown"
+                "animBleedCountdown": "animation.general_bleed_countdown",
+                "animBolaEffect": "animation.general_bola_effect",
+                "animBolaEffectCountdown": "animation.general_bola_effect_countdown"
 			},
 			"scripts": {
 				"animate": [
+                    "contInWaterTag",
 					"contTameTag",
                     "contMovingTag",
 					"contBabyTag",
@@ -99,7 +108,8 @@
 					"contWarnLowEnergy",
 					"contDieWithoutTenontosaurus",
                     "contDieWithoutTamedTenontosaurus",
-                    "contBleed"
+                    "contBleed",
+                    "contBola"
 				]
 			}
         },
@@ -1473,7 +1483,7 @@
 					"attack_duration": 0.52,
 					"hit_delay_pct": 1,
 					"track_target": true,
-					"reach_multiplier": 5
+					"reach_multiplier": 3
 				}
 			},
 			"rift:transform_into_hypnotized_variant_one": {
@@ -4685,7 +4695,8 @@
 					"component_groups": [
 						"rift:default_targets",
 						"rift:dimetrodon_adult_not_trusting",
-						"rift:dimetrodon_adult_wild"
+						"rift:dimetrodon_adult_wild",
+                        "rift:can_attack"
 					]
 				},
 				"run_command": {
@@ -4701,7 +4712,8 @@
 				"add": {
 					"component_groups": [
 						"rift:default_targets",
-						"rift:dimetrodon_adult_not_trusting"
+						"rift:dimetrodon_adult_not_trusting",
+                        "rift:can_attack"
 					]
 				},
 				"remove": {
@@ -4773,7 +4785,8 @@
 				"add": {
 					"component_groups": [
 						"rift:dimetrodon_adult_tamed",
-						"rift:dimetrodon_tamed"
+						"rift:dimetrodon_tamed",
+                        "rift:can_attack"
 					]
 				},
 				"remove": {
@@ -6096,7 +6109,18 @@
                 "set_property": {
                     "rift:bleeding": false
                 }
-            }
+            },
+            "rift:affected_by_bola": {
+                "set_property": {
+                    "rift:affected_by_bola": true
+                }
+            },
+            "rift:stop_being_affected_by_bola": {
+                "set_property": {
+                    "rift:affected_by_bola": false
+                }
+            },
+            "rift:force_go_down": {}
         }
     }
 }

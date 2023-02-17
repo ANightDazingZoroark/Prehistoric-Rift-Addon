@@ -329,13 +329,17 @@
         },
         "description": {
             "animations": {
+                "animBolaEffect": "animation.general_bola_effect",
+                "animBolaEffectCountdown": "animation.general_bola_effect_countdown",
                 "animDeathTimer": "animation.hypnosis_death_timer",
                 "animFindTenontosaurus": "animation.find_tenontosaurus",
                 "animTamedDeathTimer": "animation.hypnosis_death_timer_tamed",
+                "contBola": "controller.animation.general_manage_bola",
                 "contDieWithoutTamedTenontosaurus": "controller.animation.general_death_timer_tamed_tenontosaurus",
                 "contDieWithoutTenontosaurus": "controller.animation.general_die_without_tenontosaurus",
                 "contHypnotizedTag": "controller.animation.add_hypnotized_tag",
                 "contHypnotizedTamedTag": "controller.animation.add_hypnotized_by_tamed_tag",
+                "contInWaterTag": "controller.animation.add_in_water_tag",
                 "contMovingTag": "controller.animation.add_moving_tag"
             },
             "identifier": "minecraft:blaze",
@@ -343,6 +347,10 @@
             "is_spawnable": true,
             "is_summonable": true,
             "properties": {
+                "rift:affected_by_bola": {
+                    "default": false,
+                    "type": "bool"
+                },
                 "rift:is_hypnotized": {
                     "client_sync": true,
                     "default": false,
@@ -360,7 +368,9 @@
                     "contHypnotizedTamedTag",
                     "contDieWithoutTenontosaurus",
                     "contDieWithoutTamedTenontosaurus",
-                    "contMovingTag"
+                    "contMovingTag",
+                    "contInWaterTag",
+                    "contBola"
                 ]
             }
         },
@@ -380,6 +390,11 @@
                     ]
                 }
             },
+            "rift:affected_by_bola": {
+                "set_property": {
+                    "rift:affected_by_bola": true
+                }
+            },
             "rift:attack_for_tenontosaurus": {
                 "add": {
                     "component_groups": [
@@ -393,6 +408,7 @@
                     ]
                 }
             },
+            "rift:force_go_down": {},
             "rift:hypnotized_by_tamed_tenontosaurus": {
                 "add": {
                     "component_groups": [
@@ -476,6 +492,11 @@
                         }
                     }
                 ]
+            },
+            "rift:stop_being_affected_by_bola": {
+                "set_property": {
+                    "rift:affected_by_bola": false
+                }
             },
             "rift:transform_into_hypnotized": {
                 "add": {

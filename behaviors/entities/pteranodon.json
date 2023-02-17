@@ -56,11 +56,16 @@
 					"type": "bool",
 					"default": false,
 					"client_sync": true
+                },
+                "rift:affected_by_bola": {
+					"type": "bool",
+					"default": false
                 }
 			},
 			"animations": {
                 "contLandingManage": "controller.animation.ptera_on_landing",
                 "contFasterWhenMountedFlying": "controller.animation.ptera_faster_when_mounted_flying",
+                "contInWaterTag": "controller.animation.add_in_water_tag",
                 "contMovingTag": "controller.animation.add_moving_tag",
 				"contTameTag": "controller.animation.add_tame_tag",
 				"contBabyTag": "controller.animation.add_baby_tag",
@@ -78,6 +83,7 @@
 				"contDieWithoutTenontosaurus": "controller.animation.general_die_without_tenontosaurus",
                 "contDieWithoutTamedTenontosaurus": "controller.animation.general_death_timer_tamed_tenontosaurus",
 				"contBleed": "controller.animation.general_manage_bleed",
+				"contBola": "controller.animation.general_manage_bola",
                 "animFlyingWhileMounted": "animation.pteranodon_flying_while_mounted",
                 "animLanding": "animation.flying_mob_landing",
                 "animUseEnergyWhileMoving": "animation.pteranodon_decrease_energy_while_moving",
@@ -90,12 +96,15 @@
 				"animDeathTimer": "animation.hypnosis_death_timer",
                 "animTamedDeathTimer": "animation.hypnosis_death_timer_tamed",
                 "animBleed": "animation.general_bleed",
-                "animBleedCountdown": "animation.general_bleed_countdown"
+                "animBleedCountdown": "animation.general_bleed_countdown",
+                "animBolaEffect": "animation.general_bola_effect",
+                "animBolaEffectCountdown": "animation.general_bola_effect_countdown"
 			},
 			"scripts": {
 				"animate": [
                     "contLandingManage",
                     "contFasterWhenMountedFlying",
+                    "contInWaterTag",
                     "contMovingTag",
 					"contTameTag",
 					"contBabyTag",
@@ -112,7 +121,8 @@
 					"contWarnLowEnergy",
 					"contDieWithoutTenontosaurus",
                     "contDieWithoutTamedTenontosaurus",
-                    "contBleed"
+                    "contBleed",
+                    "contBola"
 				]
 			}
         },
@@ -5494,7 +5504,18 @@
                 "set_property": {
                     "rift:bleeding": false
                 }
-            }
+            },
+            "rift:affected_by_bola": {
+                "set_property": {
+                    "rift:affected_by_bola": true
+                }
+            },
+            "rift:stop_being_affected_by_bola": {
+                "set_property": {
+                    "rift:affected_by_bola": false
+                }
+            },
+            "rift:force_go_down": {}
         }
     }
 }

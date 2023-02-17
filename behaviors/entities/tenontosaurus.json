@@ -41,11 +41,16 @@
 					"type": "bool",
 					"default": false,
 					"client_sync": true
+                },
+                "rift:affected_by_bola": {
+					"type": "bool",
+					"default": false
                 }
 			},
 			"animations": {
                 "contEatFromInventory": "controller.animation.general_eat_from_inventory",
                 "contRefillEnergyFromInventory": "controller.animation.general_refill_energy_from_inventory",
+                "contInWaterTag": "controller.animation.add_in_water_tag",
 				"contMovingTag": "controller.animation.add_moving_tag",
 				"contTameTag": "controller.animation.add_tame_tag",
 				"contBabyTag": "controller.animation.add_baby_tag",
@@ -61,6 +66,7 @@
                 "contForcedUseHypnotize": "controller.animation.tenontosaurus_forced_use_hypnotize",
 				"contTamedMakeMinionsAttack": "controller.animation.tenontosaurus_tamed_make_minions_attack",
 				"contBleed": "controller.animation.general_manage_bleed",
+				"contBola": "controller.animation.general_manage_bola",
 				"animEatFromInventory": "animation.use_eat_from_inventory",
                 "animRefillEnergyFromInventory": "animation.use_refill_energy_from_inventory",
                 "animUseEnergyWhileMoving": "animation.tenontosaurus_decrease_energy_while_moving",
@@ -73,12 +79,15 @@
                 "animTamedUseHypnosis": "animation.use_hypnosis_tamed",
                 "animForcedAttack": "animation.forced_attack_tenontosaurus",
                 "animBleed": "animation.general_bleed",
-                "animBleedCountdown": "animation.general_bleed_countdown"
+                "animBleedCountdown": "animation.general_bleed_countdown",
+                "animBolaEffect": "animation.general_bola_effect",
+                "animBolaEffectCountdown": "animation.general_bola_effect_countdown"
 			},
 			"scripts": {
 				"animate": [
                     "contEatFromInventory",
                     "contRefillEnergyFromInventory",
+                    "contInWaterTag",
                     "contMovingTag",
 					"contTameTag",
 					"contBabyTag",
@@ -93,7 +102,8 @@
 					"contUseHypnotize",
                     "contForcedUseHypnotize",
                     "contTamedMakeMinionsAttack",
-                    "contBleed"
+                    "contBleed",
+                    "contBola"
 				]
 			}
         },
@@ -4510,7 +4520,18 @@
                 "set_property": {
                     "rift:bleeding": false
                 }
-            }
+            },
+            "rift:affected_by_bola": {
+                "set_property": {
+                    "rift:affected_by_bola": true
+                }
+            },
+            "rift:stop_being_affected_by_bola": {
+                "set_property": {
+                    "rift:affected_by_bola": false
+                }
+            },
+            "rift:force_go_down": {}
 		}
     }
 }

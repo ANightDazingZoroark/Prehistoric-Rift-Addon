@@ -178,14 +178,14 @@
                         "filters": {
                             "any_of": [
                                 {
-                                    "test": "is_family",
                                     "subject": "other",
+                                    "test": "is_family",
                                     "value": "illager"
                                 },
                                 {
-                                    "test": "bool_property",
-                                    "subject": "other",
                                     "domain": "rift:owned_by_illager",
+                                    "subject": "other",
+                                    "test": "bool_property",
                                     "value": true
                                 }
                             ]
@@ -433,15 +433,27 @@
         },
         "description": {
             "animations": {
+                "animBolaEffect": "animation.general_bola_effect",
+                "animBolaEffectCountdown": "animation.general_bola_effect_countdown",
+                "contBola": "controller.animation.general_manage_bola",
+                "contInWaterTag": "controller.animation.add_in_water_tag",
                 "contMovingTag": "controller.animation.add_moving_tag"
             },
             "identifier": "minecraft:iron_golem",
             "is_experimental": false,
             "is_spawnable": false,
             "is_summonable": true,
+            "properties": {
+                "rift:affected_by_bola": {
+                    "default": false,
+                    "type": "bool"
+                }
+            },
             "scripts": {
                 "animate": [
-                    "contMovingTag"
+                    "contMovingTag",
+                    "contInWaterTag",
+                    "contBola"
                 ]
             }
         },
@@ -458,6 +470,17 @@
                     "component_groups": [
                         "minecraft:village_created"
                     ]
+                }
+            },
+            "rift:affected_by_bola": {
+                "set_property": {
+                    "rift:affected_by_bola": true
+                }
+            },
+            "rift:force_go_down": {},
+            "rift:stop_being_affected_by_bola": {
+                "set_property": {
+                    "rift:affected_by_bola": false
                 }
             }
         }

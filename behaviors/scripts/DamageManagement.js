@@ -54,17 +54,15 @@ let fibrousMeatDroppers = [
 ]
 
 let affectedByBola = [
-    'rift:anomalocaris',
     'rift:baryonyx',
     'rift:coelophysis',
     'rift:dilophosaurus',
     'rift:dimetrodon',
     'rift:direbear',
-    'rift:direwolf',
+    // 'rift:direwolf', //direwolves in werewolf mode are immune to bolas but are affected otherwise, hence this being a comment
     'rift:dodo',
     'rift:gallimimus',
     'rift:megaloceros',
-    'rift:megapiranha',
     'rift:palaeocastor',
     'rift:parasaurolophus',
     'rift:pteranodon',
@@ -774,17 +772,12 @@ world.events.entityHurt.subscribe((event) => {
         event.hurtEntity.triggerEvent('rift:start_bleeding')
     }
 
-    if (affectedByBola.includes(event.hurtEntity.typeId) && event.damageSource.damagingProjectile.typeId == 'rift:bola_projectile') {
+    if (!event.hurtEntity.hasTag('inWater') && affectedByBola.includes(event.hurtEntity.typeId) && event.damageSource.damagingProjectile.typeId == 'rift:bola_projectile') {
         event.hurtEntity.triggerEvent('rift:stop_being_affected_by_bola')
         event.hurtEntity.triggerEvent('rift:affected_by_bola')
     }
-    //code that tries to make it so wearing armor protects u from bleeding below
-    // if (event.damageSource.damagingEntity.typeId == 'rift:direbear' && event.damageSource.damagingEntity.hasTag('clawMode') && event.hurtEntity.typeId != 'minecraft:player') {
-    //     event.hurtEntity.triggerEvent('rift:stop_bleeding')
-    //     event.hurtEntity.triggerEvent('rift:start_bleeding')
-    // }
-    // if (event.damageSource.damagingEntity.typeId == 'rift:direbear' && event.damageSource.damagingEntity.hasTag('clawMode') && event.hurtEntity.typeId == 'minecraft:player' && event.hurtEntity.getComponent('inventory').container.) {
-    //     event.hurtEntity.triggerEvent('rift:stop_bleeding')
-    //     event.hurtEntity.triggerEvent('rift:start_bleeding')
-    // }
+    if (!event.hurtEntity.hasTag('inWater') && event.hurtEntity.typeId == 'rift:direwolf' && !event.hurtEntity.hasTag('ignited') && event.damageSource.damagingProjectile.typeId == 'rift:bola_projectile') {
+        event.hurtEntity.triggerEvent('rift:stop_being_affected_by_bola')
+        event.hurtEntity.triggerEvent('rift:affected_by_bola')
+    }
 })

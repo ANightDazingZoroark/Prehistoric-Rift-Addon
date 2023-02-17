@@ -7,7 +7,7 @@
                 "default": {
                     "transitions": [
                         {
-                            "chooseAttack": "query.has_target && !query.is_baby && !query.is_baby && ((query.property('rift:is_hypnotized') == true || query.property('rift:is_hypnotized_tamed') == true) ? (query.target -> query.owner_identifier) != 'rift:tenontosaurus' : 1.0)"
+                            "chooseAttack": "query.property('rift:undergoing_taming') == false && query.has_target && !query.is_baby && !query.is_baby && ((query.property('rift:is_hypnotized') == true || query.property('rift:is_hypnotized_tamed') == true) ? (query.target -> query.owner_identifier) != 'rift:tenontosaurus' : 1.0)"
                         }
                     ],
                     "on_entry": [
@@ -28,7 +28,7 @@
                             "claw": "v.attackMode == 2"
                         },
                         {
-                            "default": "v.attackMode == 1 && query.out_of_control"
+                            "default": "(v.attackMode == 1 && query.out_of_control) || query.property('rift:undergoing_taming') == true"
                         }
                     ]
                 },
@@ -38,7 +38,7 @@
                             "biteLimbo": "query.is_delayed_attacking"
                         },
                         {
-                            "default": "!query.has_target"
+                            "default": "!query.has_target || query.property('rift:undergoing_taming') == true"
                         }
                     ],
                     "on_entry": [
@@ -60,7 +60,7 @@
                             "claw": "!query.is_delayed_attacking && v.attackMode == 2"
                         },
                         {
-                            "default": "!query.has_target || (v.attackMode == 1 && query.out_of_control)"
+                            "default": "!query.has_target || (v.attackMode == 1 && query.out_of_control) || query.property('rift:undergoing_taming') == true"
                         }
                     ],
                     "on_exit": [
@@ -74,7 +74,7 @@
                             "stompLimbo": "query.is_roaring"
                         },
                         {
-                            "default": "!query.has_target"
+                            "default": "!query.has_target || query.property('rift:undergoing_taming') == true"
                         }
                     ],
                     "on_entry": [
@@ -96,7 +96,7 @@
                             "claw": "!query.is_roaring && v.attackMode == 2"
                         },
                         {
-                            "default": "!query.has_target || (v.attackMode == 1 && query.out_of_control)"
+                            "default": "!query.has_target || (v.attackMode == 1 && query.out_of_control) || query.property('rift:undergoing_taming') == true"
                         }
                     ],
                     "on_exit": [
@@ -111,7 +111,7 @@
                             "clawLimbo": "query.is_delayed_attacking"
                         },
                         {
-                            "default": "!query.has_target"
+                            "default": "!query.has_target || query.property('rift:undergoing_taming') == true"
                         }
                     ],
                     "on_entry": [
@@ -133,7 +133,7 @@
                             "claw": "!query.is_delayed_attacking && v.attackMode == 2"
                         },
                         {
-                            "default": "!query.has_target || (v.attackMode == 1 && query.out_of_control)"
+                            "default": "!query.has_target || (v.attackMode == 1 && query.out_of_control) || query.property('rift:undergoing_taming') == true"
                         }
                     ],
                     "on_exit": [

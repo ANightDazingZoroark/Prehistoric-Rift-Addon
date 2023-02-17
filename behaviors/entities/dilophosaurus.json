@@ -70,11 +70,16 @@
 				"rift:owned_by_illager": {
 					"type": "bool",
 					"default": false
+                },
+                "rift:affected_by_bola": {
+					"type": "bool",
+					"default": false
                 }
 			},
 			"animations": {
                 "contEatFromInventory": "controller.animation.general_eat_from_inventory",
                 "contRefillEnergyFromInventory": "controller.animation.general_refill_energy_from_inventory",
+				"contInWaterTag": "controller.animation.add_in_water_tag",
 				"contMovingTag": "controller.animation.add_moving_tag",
 				"contShearedTag": "controller.animation.add_sheared_tag",
 				"contTameTag": "controller.animation.add_tame_tag",
@@ -84,7 +89,6 @@
 				"contHypnotizedTag": "controller.animation.add_hypnotized_tag",
 				"contHypnotizedTamedTag": "controller.animation.add_hypnotized_by_tamed_tag",
 				"contOwnedByIllagerTag": "controller.animation.add_owned_by_illager_tag",
-				// "contShoot": "controller.animation.dilophosaurus_shoot",
 				"contForcedAttack": "controller.animation.dilophosaurus_forced_attack",
 				"contEnergyUsage": "controller.animation.dilophosaurus_energy_movement_usage",
 				"contWarnLowEnergy": "controller.animation.warn_of_low_energy",
@@ -94,6 +98,7 @@
 				"contDieWithoutTenontosaurus": "controller.animation.general_die_without_tenontosaurus",
                 "contDieWithoutTamedTenontosaurus": "controller.animation.general_death_timer_tamed_tenontosaurus",
 				"contBleed": "controller.animation.general_manage_bleed",
+				"contBola": "controller.animation.general_manage_bola",
 				"animEatFromInventory": "animation.use_eat_from_inventory",
                 "animRefillEnergyFromInventory": "animation.use_refill_energy_from_inventory",
 				"animUseEnergyWhileMoving": "animation.dilophosaurus_decrease_energy_while_moving",
@@ -109,12 +114,15 @@
 				"animDeathTimer": "animation.hypnosis_death_timer",
                 "animTamedDeathTimer": "animation.hypnosis_death_timer_tamed",
                 "animBleed": "animation.general_bleed",
-                "animBleedCountdown": "animation.general_bleed_countdown"
+                "animBleedCountdown": "animation.general_bleed_countdown",
+                "animBolaEffect": "animation.general_bola_effect",
+                "animBolaEffectCountdown": "animation.general_bola_effect_countdown"
             },
             "scripts": {
                 "animate": [
                     "contEatFromInventory",
                     "contRefillEnergyFromInventory",
+                    "contInWaterTag",
                     "contMovingTag",
 					"contShearedTag",
                     "contTameTag",
@@ -124,7 +132,6 @@
 					"contHypnotizedTag",
                     "contHypnotizedTamedTag",
                     "contOwnedByIllagerTag",
-					// "contShoot",
 					"contForcedAttack",
 					"contEnergyUsage",
 					"contWarnLowEnergy",
@@ -133,7 +140,8 @@
 					"contBehaviorState",
 					"contDieWithoutTenontosaurus",
                     "contDieWithoutTamedTenontosaurus",
-                    "contBleed"
+                    "contBleed",
+                    "contBola"
                 ]
             }
         },
@@ -5285,7 +5293,8 @@
 						"rift:dilophosaurus_adult_trusting",
 						"rift:dilophosaurus_adult_waiting_for_tame",
 						"rift:temptable",
-						"rift:wild_can_move"
+						"rift:wild_can_move",
+                        "rift:pushable"
 					]
 				},
 				"remove": {
@@ -5295,7 +5304,11 @@
 						"rift:wild_cannot_move",
                         "rift:dilophosaurus_adult_calm",
                         "rift:dilophosaurus_adult_angry_delay",
-                        "rift:dilophosaurus_adult_angry"
+                        "rift:dilophosaurus_adult_angry",
+                        "rift:can_attack",
+                        "rift:can_melee_attack",
+                        "rift:ranged_attack",
+                        "rift:unpushable"
 					]
 				},
 				"run_command": {
@@ -5312,7 +5325,8 @@
 					"component_groups": [
 						"rift:default_targets",
 						"rift:dilophosaurus_adult_wild_not_trusting",
-                        "rift:dilophosaurus_adult_calm"
+                        "rift:dilophosaurus_adult_calm",
+                        "rift:can_attack"
 					]
 				},
 				"remove": {
@@ -5388,7 +5402,8 @@
 						"rift:tamed_standing",
 						"rift:rideable",
 						"rift:tamed_can_move",
-                        "rift:dilophosaurus_adult_calm"
+                        "rift:dilophosaurus_adult_calm",
+                        "rift:can_attack"
 					]
 				},
 				"remove": {
@@ -6283,7 +6298,18 @@
                 "set_property": {
                     "rift:bleeding": false
                 }
-            }
+            },
+            "rift:affected_by_bola": {
+                "set_property": {
+                    "rift:affected_by_bola": true
+                }
+            },
+            "rift:stop_being_affected_by_bola": {
+                "set_property": {
+                    "rift:affected_by_bola": false
+                }
+            },
+            "rift:force_go_down": {}
         }
     }
 }
