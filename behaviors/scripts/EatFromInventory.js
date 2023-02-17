@@ -1,4 +1,4 @@
-import { MinecraftEffectTypes, system, world } from "@minecraft/server"
+import { MinecraftEffectTypes, world } from "@minecraft/server"
 import { clearEntity } from "./externals/itemmanagement"
 
 let fiberBarEaters = [

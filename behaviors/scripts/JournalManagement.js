@@ -1,5 +1,5 @@
 import { MinecraftBlockTypes } from "@minecraft/server"
-import { system, world } from "@minecraft/server"
+import { world } from "@minecraft/server"
 import { ActionFormData, ModalFormData } from "@minecraft/server-ui"
 import * as guiEntry from "./JournalEntries"
 

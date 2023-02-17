@@ -1,4 +1,4 @@
-import { Vector, system, world } from "@minecraft/server"
+import { world } from "@minecraft/server"
 import { setTimeout } from "./externals/timers"
 
 world.events.beforeDataDrivenEntityTriggerEvent.subscribe(data => {

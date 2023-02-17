@@ -1,4 +1,4 @@
-import { BlockLocation, ItemStack, Items, world, Location, MinecraftEffectTypes, system } from "@minecraft/server"
+import { BlockLocation, ItemStack, Items, world, Location, MinecraftEffectTypes } from "@minecraft/server"
 import { clearTimeout, setTimeout } from "./externals/timers"
 
 let saurophaganaxFood = [
@@ -122,6 +122,7 @@ let affectedByBola = [
     'minecraft:tropicalfish',
     'minecraft:turtle',
     'minecraft:villager',
+    'minecraft:villager_v2',
     'minecraft:vindicator',
     'minecraft:wandering_trader',
     'minecraft:witch',
@@ -131,6 +132,7 @@ let affectedByBola = [
     'minecraft:zombie_horse',
     'minecraft:zombie_pigman',
     'minecraft:zombie_villager',
+    'minecraft:zombie_villager_v2',
     'minecraft:zombie'
 ]
 

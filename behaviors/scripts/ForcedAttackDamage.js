@@ -1,4 +1,4 @@
-import { MinecraftEffectTypes, system, world } from "@minecraft/server"
+import { MinecraftEffectTypes, world } from "@minecraft/server"
 
 function damageOutput(entity, value) {
     if (entity.getEffect(MinecraftEffectTypes.strength) && !entity.hasTag('chargeOne') && !entity.hasTag('chargeTwo') && !entity.hasTag('chargeThree') && !entity.hasTag('chargeFour') && !entity.hasTag('chargeFive')) {

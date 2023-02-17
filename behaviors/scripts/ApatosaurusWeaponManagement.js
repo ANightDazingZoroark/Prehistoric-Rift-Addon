@@ -1,4 +1,4 @@
-import { system, world } from "@minecraft/server"
+import { world } from "@minecraft/server"
 import { clearEntity, testForItem } from "./externals/itemmanagement"
 
 world.events.beforeDataDrivenEntityTriggerEvent.subscribe(data => {

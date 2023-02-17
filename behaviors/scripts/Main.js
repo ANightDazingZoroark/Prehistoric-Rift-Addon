@@ -9,6 +9,7 @@ import 'DamageManagement.js'
 import 'DirewolfManageSniff.js'
 import 'EatFromInventory.js'
 import 'ForcedAttackDamage.js'
+import 'ItemUse.js'
 import 'JournalManagement.js'
 import 'RiftCommands.js'
 import { DynamicPropertiesDefinition, MinecraftEntityTypes, system, world } from "@minecraft/server"
