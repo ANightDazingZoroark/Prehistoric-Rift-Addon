@@ -106,6 +106,9 @@
                         },
                         {
                             "ascending": "query.is_jumping"
+                        },
+                        {
+                            "hovering": "query.equipped_item_any_tag('slot.weapon.mainhand', 'rift:gun')"
                         }
                     ],
                     "on_entry": [
@@ -115,7 +118,7 @@
                 "jumpCooldown": {
 					"transitions": [
                         {
-							"hovering": "return query.is_jumping && query.life_time - variable.jump_cooldown < 0.5;"
+							"hovering": "return (query.is_jumping && query.life_time - variable.jump_cooldown < 0.5) || query.equipped_item_any_tag('slot.weapon.mainhand', 'rift:gun');"
 						},
 						{
 							"descending": "return !query.is_jumping && query.life_time - variable.jump_cooldown > 0.5;"
@@ -138,13 +141,18 @@
                         },
                         {
                             "jumpCooldown": "variable.jump_cooldown = query.life_time; return (!query.is_jumping);"
+                        },
+                        {
+                            "hovering": "query.equipped_item_any_tag('slot.weapon.mainhand', 'rift:gun')"
                         }
                     ]
                 },
                 "hovering": {
                     "on_entry": [
                         "/event entity @e[tag=waterMountHasRider, c=1, tag=tamed] rift:swim_to_float",
-                        "/tellraw @p {\"rawtext\":[{\"text\":\"Enabled hover mode\"}]}"
+                        "/tellraw @p {\"rawtext\":[{\"text\":\"Enabled hover mode\"}]}",
+                        "/effect @e[c=1, tag=waterMountHasRider, tag=tamed] levitation 0 0",
+                        "/effect @e[c=1, tag=waterMountHasRider, tag=tamed] slow_falling 0 0"
                     ],
                     "on_exit": [
                         "/tellraw @p {\"rawtext\":[{\"text\":\"Disabled hover mode\"}]}",
@@ -152,7 +160,7 @@
                     ],
                     "transitions": [
                         {
-                            "ascending": "return query.life_time - variable.jump_cooldown > 1 && (query.is_jumping == 1.0);"
+                            "ascending": "return query.life_time - variable.jump_cooldown > 1 && (query.is_jumping == 1.0) && !query.equipped_item_any_tag('slot.weapon.mainhand', 'rift:gun');"
                         },
                         {
                             "default": "!query.is_riding || (query.is_riding ? (query.get_ride -> query.is_in_water) == 0)"
@@ -187,6 +195,9 @@
                         },
                         {
                             "notEnoughEnergy": "query.is_jumping && (query.get_ride -> query.property('rift:energy')) == 0"
+                        },
+                        {
+                            "hovering": "query.equipped_item_any_tag('slot.weapon.mainhand', 'rift:gun') && (query.get_ride -> query.property('rift:energy')) > 0"
                         }
                     ],
                     "on_entry": [
@@ -199,7 +210,7 @@
 					],
 					"transitions": [
                         {
-							"hovering": "return (query.get_ride -> query.property('rift:energy')) > 0 && query.is_jumping && query.life_time - variable.jump_cooldown < 0.5;"
+							"hovering": "return ((query.get_ride -> query.property('rift:energy')) > 0 && query.is_jumping && query.life_time - variable.jump_cooldown < 0.5) || (query.equipped_item_any_tag('slot.weapon.mainhand', 'rift:gun') && (query.get_ride -> query.property('rift:energy')) > 0);"
 						},
 						{
 							"descending": "return !query.is_jumping && query.life_time - variable.jump_cooldown > 0.5;"
@@ -225,6 +236,9 @@
                         },
                         {
                             "notEnoughEnergy": "query.is_riding && (query.is_riding ? (query.get_ride -> query.property('rift:energy')) == 0)"
+                        },
+                        {
+                            "hovering": "query.equipped_item_any_tag('slot.weapon.mainhand', 'rift:gun')"
                         }
                     ],
                     "on_entry": [
@@ -246,7 +260,7 @@
                     ],
                     "transitions": [
                         {
-                            "ascending": "return query.life_time - variable.jump_cooldown > 1 && (query.is_jumping == 1.0);"
+                            "ascending": "return query.life_time - variable.jump_cooldown > 1 && (query.is_jumping == 1.0) && !query.equipped_item_any_tag('slot.weapon.mainhand', 'rift:gun');"
                         },
                         {
                             "default": "!query.is_riding"
@@ -869,14 +883,14 @@
                 "default": {
                     "transitions": [
                         {
-                            "snipingRifle": "query.is_sneaking && query.get_equipped_item_name('main_hand') == 'sniping_rifle'"
+                            "snipingRifle": "(query.is_riding ? query.is_jumping : query.is_sneaking) && query.get_equipped_item_name('main_hand') == 'sniping_rifle'"
                         }
                     ]
                 },
                 "snipingRifle": {
                     "transitions": [
                         {
-                            "default": "!query.is_sneaking || query.get_equipped_item_name('main_hand') != 'sniping_rifle'"
+                            "default": "(!query.is_sneaking && !query.is_jumping) || query.get_equipped_item_name('main_hand') != 'sniping_rifle'"
                         }
                     ],
                     "on_entry": [

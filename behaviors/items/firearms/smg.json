@@ -44,87 +44,177 @@
 			},
 			"minecraft:creative_category": {
 				"parent": "itemGroup.name.riftFirearms"
-			}
+			},
+            "tag:rift:gun": {}
 		},
 		"events": {
 			"rift:shoot": {
 				"sequence": [
                     {
-                        "condition": "!query.is_sneaking",
+                        "condition": "!query.is_riding",
                         "sequence": [
                             {
-                                "condition": "query.remaining_durability > 1",
-                                "shoot": {
-                                    "projectile": "rift:smg_bullet<rift:normal>",
-                                    "launch_power": 1
-                                },
-                                "damage": {
-                                    "type": "durability",
-                                    "amount": 1,
-                                    "target": "self"
-                                }
+                                "condition": "!query.is_sneaking",
+                                "sequence": [
+                                    {
+                                        "condition": "query.remaining_durability > 1",
+                                        "shoot": {
+                                            "projectile": "rift:smg_bullet<rift:normal>",
+                                            "launch_power": 1
+                                        },
+                                        "damage": {
+                                            "type": "durability",
+                                            "amount": 1,
+                                            "target": "self"
+                                        }
+                                    },
+                                    {
+                                        "condition": "query.remaining_durability == 1",
+                                        "shoot": {
+                                            "projectile": "rift:smg_bullet<rift:normal>",
+                                            "launch_power": 1
+                                        },
+                                        "run_command": {
+                                            "command": [
+                                                "tellraw @s[m=!c] {\"rawtext\":[{\"text\":\"Right click/tap and hold to reload! Make sure you have enough magazines to do so beforehand!\"}]}"
+                                            ],
+                                            "target": "holder"
+                                        },
+                                        "damage": {
+                                            "type": "durability",
+                                            "amount": 1,
+                                            "target": "self"
+                                        }
+                                    }
+                                ]
                             },
                             {
-                                "condition": "query.remaining_durability == 1",
-                                "shoot": {
-                                    "projectile": "rift:smg_bullet<rift:normal>",
-                                    "launch_power": 1
-                                },
-                                "run_command": {
-                                    "command": [
-                                        "tellraw @s[m=!c] {\"rawtext\":[{\"text\":\"Right click/tap and hold to reload! Make sure you have enough magazines to do so beforehand!\"}]}"
-                                    ],
-                                    "target": "holder"
-                                },
-                                "damage": {
-                                    "type": "durability",
-                                    "amount": 1,
-                                    "target": "self"
-                                }
+                                "condition": "query.is_sneaking",
+                                "sequence": [
+                                    {
+                                        "condition": "query.remaining_durability > 15",
+                                        "shoot": {
+                                            "projectile": "rift:smg_bullet<rift:explosive>",
+                                            "launch_power": 1
+                                        },
+                                        "damage": {
+                                            "type": "durability",
+                                            "amount": 15,
+                                            "target": "self"
+                                        }
+                                    },
+                                    {
+                                        "condition": "query.remaining_durability == 15",
+                                        "shoot": {
+                                            "projectile": "rift:smg_bullet<rift:explosive>",
+                                            "launch_power": 1
+                                        },
+                                        "run_command": {
+                                            "command": [
+                                                "tellraw @s[m=!c] {\"rawtext\":[{\"text\":\"Right click/tap and hold to reload! Make sure you have enough magazines to do so beforehand!\"}]}"
+                                            ],
+                                            "target": "holder"
+                                        },
+                                        "damage": {
+                                            "type": "durability",
+                                            "amount": 15,
+                                            "target": "self"
+                                        }
+                                    },
+                                    {
+                                        "condition": "query.remaining_durability < 15",
+                                        "run_command": {
+                                            "command": [
+                                                "tellraw @s[m=!c] {\"rawtext\":[{\"text\":\"Your smg doesnt have enough loaded ammunition to use this!\"}]}"
+                                            ],
+                                            "target": "holder"
+                                        }
+                                    }
+                                ]
                             }
                         ]
                     },
                     {
-                        "condition": "query.is_sneaking",
+                        "condition": "query.is_riding",
                         "sequence": [
                             {
-                                "condition": "query.remaining_durability > 15",
-                                "shoot": {
-                                    "projectile": "rift:smg_bullet<rift:explosive>",
-                                    "launch_power": 1
-                                },
-                                "damage": {
-                                    "type": "durability",
-                                    "amount": 15,
-                                    "target": "self"
-                                }
+                                "condition": "!query.is_jumping",
+                                "sequence": [
+                                    {
+                                        "condition": "query.remaining_durability > 1",
+                                        "shoot": {
+                                            "projectile": "rift:smg_bullet<rift:normal>",
+                                            "launch_power": 1
+                                        },
+                                        "damage": {
+                                            "type": "durability",
+                                            "amount": 1,
+                                            "target": "self"
+                                        }
+                                    },
+                                    {
+                                        "condition": "query.remaining_durability == 1",
+                                        "shoot": {
+                                            "projectile": "rift:smg_bullet<rift:normal>",
+                                            "launch_power": 1
+                                        },
+                                        "run_command": {
+                                            "command": [
+                                                "tellraw @s[m=!c] {\"rawtext\":[{\"text\":\"Right click/tap and hold to reload! Make sure you have enough magazines to do so beforehand!\"}]}"
+                                            ],
+                                            "target": "holder"
+                                        },
+                                        "damage": {
+                                            "type": "durability",
+                                            "amount": 1,
+                                            "target": "self"
+                                        }
+                                    }
+                                ]
                             },
                             {
-                                "condition": "query.remaining_durability == 15",
-                                "shoot": {
-                                    "projectile": "rift:smg_bullet<rift:explosive>",
-                                    "launch_power": 1
-                                },
-                                "run_command": {
-                                    "command": [
-                                        "tellraw @s[m=!c] {\"rawtext\":[{\"text\":\"Right click/tap and hold to reload! Make sure you have enough magazines to do so beforehand!\"}]}"
-                                    ],
-                                    "target": "holder"
-                                },
-                                "damage": {
-                                    "type": "durability",
-                                    "amount": 15,
-                                    "target": "self"
-                                }
-                            },
-                            {
-                                "condition": "query.remaining_durability < 15",
-                                "run_command": {
-                                    "command": [
-                                        "tellraw @s[m=!c] {\"rawtext\":[{\"text\":\"Your smg doesnt have enough loaded ammunition to use this!\"}]}"
-                                    ],
-                                    "target": "holder"
-                                }
+                                "condition": "query.is_jumping",
+                                "sequence": [
+                                    {
+                                        "condition": "query.remaining_durability > 15",
+                                        "shoot": {
+                                            "projectile": "rift:smg_bullet<rift:explosive>",
+                                            "launch_power": 1
+                                        },
+                                        "damage": {
+                                            "type": "durability",
+                                            "amount": 15,
+                                            "target": "self"
+                                        }
+                                    },
+                                    {
+                                        "condition": "query.remaining_durability == 15",
+                                        "shoot": {
+                                            "projectile": "rift:smg_bullet<rift:explosive>",
+                                            "launch_power": 1
+                                        },
+                                        "run_command": {
+                                            "command": [
+                                                "tellraw @s[m=!c] {\"rawtext\":[{\"text\":\"Right click/tap and hold to reload! Make sure you have enough magazines to do so beforehand!\"}]}"
+                                            ],
+                                            "target": "holder"
+                                        },
+                                        "damage": {
+                                            "type": "durability",
+                                            "amount": 15,
+                                            "target": "self"
+                                        }
+                                    },
+                                    {
+                                        "condition": "query.remaining_durability < 15",
+                                        "run_command": {
+                                            "command": [
+                                                "tellraw @s[m=!c] {\"rawtext\":[{\"text\":\"Your smg doesnt have enough loaded ammunition to use this!\"}]}"
+                                            ],
+                                            "target": "holder"
+                                        }
+                                    }
+                                ]
                             }
                         ]
                     },
