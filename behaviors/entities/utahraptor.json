@@ -376,7 +376,7 @@
                     "max": 25
                 },
                 "minecraft:attack": {
-                    "damage": 7
+                    "damage": 2
                 }
             },
             "rift:utahraptor_adult": {
@@ -391,7 +391,7 @@
                     "table": "loot_tables/entities/utahraptor.loot.json"
                 },
 				"minecraft:attack": {
-					"damage": 12
+					"damage": 6
 				}
             },
             "rift:utahraptor_adult_wild": {
@@ -1107,6 +1107,121 @@
 					]
 				}
 			},
+			"rift:den_inhabitant_targets": {
+				"minecraft:behavior.nearest_attackable_target": {
+					"priority": 7,
+					"within_radius": 32.0,
+					"must_see": true,
+					"entity_types": [
+						{
+							"filters": {
+								"any_of": [
+									{
+										"test": "is_family",
+										"subject": "other",
+										"value": "wandering_trader"
+									},
+									{
+										"test": "is_family",
+										"subject": "other",
+										"value": "villager"
+									}
+								]
+							},
+							"max_dist": 48
+						},
+						{
+							"filters": {
+								"all_of": [
+									{
+										"test": "is_family",
+										"subject": "other",
+										"value": "player"
+									},
+									{
+										"test": "has_equipment",
+										"subject": "other",
+										"domain": "hand",
+										"operator": "!=",
+										"value": "minecraft:torch"
+									},
+									{
+										"test": "has_equipment",
+										"subject": "other",
+										"domain": "hand",
+										"operator": "!=",
+										"value": "minecraft:soul_torch"
+									},
+									{
+										"test": "has_equipment",
+										"subject": "other",
+										"domain": "hand",
+										"operator": "!=",
+										"value": "rift:flesh_treat"
+									},
+									{
+										"test": "is_riding",
+										"subject": "other",
+										"value": false
+									},
+									{
+										"test": "is_sneaking",
+										"subject": "other",
+										"value": false
+									}
+								]
+							},
+							"max_dist": 48
+						},
+						{
+							"filters": {
+								"all_of": [
+									{
+										"test": "is_family",
+										"subject": "other",
+										"value": "player"
+									},
+									{
+										"test": "has_equipment",
+										"subject": "other",
+										"domain": "hand",
+										"value": "rift:flesh_treat"
+									},
+									{
+										"test": "is_sneaking",
+										"subject": "other",
+										"value": false
+									}
+								]
+							},
+							"max_dist": 48
+						},
+						{
+							"filters": {
+								"all_of": [
+									{
+										"test": "is_family",
+										"subject": "other",
+										"value": "utahraptor"
+									},
+									{
+										"test": "has_component",
+										"subject": "other",
+										"value": "minecraft:is_tamed"
+									},
+									{
+										"test": "rider_count",
+										"subject": "other",
+										"operator": ">",
+										"value": 0
+									}
+								]
+							},
+							"max_dist": 48
+						}
+					]
+				}
+			},
 			"rift:mounted_by_illager_targets": {
 				"minecraft:behavior.nearest_attackable_target": {
 					"priority": 7,
@@ -1510,7 +1625,7 @@
 			"rift:utahraptor_tamed_pounceable": {
 				"minecraft:area_attack": {
 					"damage_range": 0.75,
-					"damage_per_tick": 12,
+					"damage_per_tick": 6,
 					"cause": "entity_attack",
 					"entity_filter": {
 						"all_of": [
@@ -1532,7 +1647,7 @@
 			"rift:utahraptor_tamed_buff_pounceable": {
 				"minecraft:area_attack": {
 					"damage_range": 0.75,
-					"damage_per_tick": 30,
+					"damage_per_tick": 12,
 					"cause": "entity_attack",
 					"entity_filter": {
 						"all_of": [
@@ -5319,7 +5434,8 @@
 					}
 				]
 			},
-            "minecraft:behavior.float": {}
+            "minecraft:behavior.float": {},
+            "minecraft:conditional_bandwidth_optimization": {}
         },
         "events": {
 			"minecraft:entity_spawned": {
@@ -6558,7 +6674,7 @@
 								"rift:utahraptor_adult",
 								"rift:utahraptor_adult_wild_den_dweller",
 								"rift:utahraptor_adult_calm",
-								"rift:default_targets",
+								"rift:den_inhabitant_targets",
 								"rift:variant_zero",
                                 "rift:utahraptor_adult_wild_not_trusting",
 								"rift:utahraptor_adult_can_pounce",
@@ -6576,7 +6692,7 @@
 								"rift:utahraptor_adult",
 								"rift:utahraptor_adult_wild_den_dweller",
 								"rift:utahraptor_adult_calm",
-								"rift:default_targets",
+								"rift:den_inhabitant_targets",
 								"rift:variant_one",
                                 "rift:utahraptor_adult_wild_not_trusting",
 								"rift:utahraptor_adult_can_pounce",
@@ -6594,7 +6710,7 @@
 								"rift:utahraptor_adult",
 								"rift:utahraptor_adult_wild_den_dweller",
 								"rift:utahraptor_adult_calm",
-								"rift:default_targets",
+								"rift:den_inhabitant_targets",
 								"rift:variant_two",
                                 "rift:utahraptor_adult_wild_not_trusting",
 								"rift:utahraptor_adult_can_pounce",
@@ -6612,7 +6728,7 @@
 								"rift:utahraptor_adult",
 								"rift:utahraptor_adult_wild_den_dweller",
 								"rift:utahraptor_adult_calm",
-								"rift:default_targets",
+								"rift:den_inhabitant_targets",
 								"rift:variant_three",
                                 "rift:utahraptor_adult_wild_not_trusting",
 								"rift:utahraptor_adult_can_pounce",
@@ -7161,7 +7277,7 @@
 			},
 			"rift:regenerate_energy_from_cooked_food": {
 				"set_property": {
-					"rift:energy": "query.property('rift:energy') + 30"
+					"rift:energy": "query.property('rift:energy') + 45"
 				},
 				"run_command": {
 					"command": [

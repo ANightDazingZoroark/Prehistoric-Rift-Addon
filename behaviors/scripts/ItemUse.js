@@ -12,12 +12,15 @@ world.events.beforeItemUseOn.subscribe(data => {
         switch (data.item.typeId) {
             case 'rift:loot_sack_common':
                 world.getDimension('overworld').runCommandAsync('loot spawn '+getPlaceCoords(data.blockLocation)+' loot "loot sacks/common drops"')
+                data.source.runCommandAsync('clear @s rift:loot_sack_common -1 1')
                 break
             case 'rift:loot_sack_uncommon':
                 world.getDimension('overworld').runCommandAsync('loot spawn '+getPlaceCoords(data.blockLocation)+' loot "loot sacks/uncommon drops"')
+                data.source.runCommandAsync('clear @s rift:loot_sack_uncommon -1 1')
                 break
             case 'rift:loot_sack_rare':
                 world.getDimension('overworld').runCommandAsync('loot spawn '+getPlaceCoords(data.blockLocation)+' loot "loot sacks/rare drops"')
+                data.source.runCommandAsync('clear @s rift:loot_sack_rare -1 1')
                 break
             case 'rift:loot_sack_super_rare':
                 world.getDimension('overworld').runCommandAsync('loot spawn '+getPlaceCoords(data.blockLocation)+' loot "loot sacks/super rare drops"')
@@ -32,6 +35,7 @@ world.events.beforeItemUseOn.subscribe(data => {
                         world.getDimension('overworld').spawnItem(new ItemStack(Items.get('rift:christmas_costume'), 1, 0), new BlockLocation(data.blockLocation.x, data.blockLocation.y + 1, data.blockLocation.z))
                     }
                 }
+                data.source.runCommandAsync('clear @s rift:loot_sack_super_rare -1 1')
                 break
         }
     }

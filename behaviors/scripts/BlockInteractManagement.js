@@ -313,16 +313,15 @@ function snipingRifleCraft(source) {
 
 function snipingRifleAmmoCraft(source) {
     const snipingRifleAmmoCraft = new ActionFormData()
-    .title('Craft Rifle Magazine')
-    .body('Crafting components:\n-1x Orange Plastic Frame\n-1x Gold Ingot\n-4x Gunpowder')
+    .title('Craft Rifle Bullets')
+    .body('Crafting components:\n-1x Gold Ingot\n-4x Gunpowder')
     .button('Craft (x8)')
     .button('Back')
     .show(source).then(result => {
         switch(result.selection) {
             case 0:
-                if (testForItem(source, 'rift:orange_plastic_frame', -1, '>=', function() {return 1}) && testForItem(source, 'minecraft:gold_ingot', -1, '>=', function() {return 1}) && testForItem(source, 'minecraft:gunpowder', -1, '>=', function() {return 4})) {
-                    source.runCommandAsync('give @s rift:rifle_magazine 8')
-                    source.runCommandAsync('clear @s rift:orange_plastic_frame -1 1')
+                if (testForItem(source, 'minecraft:gold_ingot', -1, '>=', function() {return 1}) && testForItem(source, 'minecraft:gunpowder', -1, '>=', function() {return 4})) {
+                    source.runCommandAsync('give @s rift:rifle_bullets 8')
                     source.runCommandAsync('clear @s minecraft:gold_ingot -1 1')
                     source.runCommandAsync('clear @s minecraft:gunpowder -1 4')
                 }

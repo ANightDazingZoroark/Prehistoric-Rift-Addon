@@ -11,17 +11,27 @@
             "rift:has_egg": {
                 "minecraft:is_sheared": {}
             },
-            "rift:make_guardian_angry": {
+            "rift:make_tyrannosaurus_guardian_angry": {
                 "minecraft:angry": {
                     "duration": 60,
                     "broadcast_range": 24,
                     "broadcast_anger": true,
 					"broadcast_filters": {
-						"test": "has_component",
-						"subject": "other",
-						"operator": "!=",
-						"value": "minecraft:is_tamed"
-					},
+                        "all_of": [
+                            {
+                                "test": "has_component",
+                                "subject": "other",
+                                "operator": "!=",
+                                "value": "minecraft:is_tamed"
+                            },
+                            {
+                                "test": "bool_property",
+                                "subject": "other",
+                                "domain": "rift:owned_by_illager",
+                                "value": false
+                            }
+                        ]
+                    },
                     "broadcast_targets": [
                         "tyrannosaurus"
                     ],
@@ -29,6 +39,117 @@
                         "event": "rift:calm_down",
                         "target": "self"
                     }
+                }
+            },
+            "rift:make_utahraptor_guardian_angry": {
+                "minecraft:angry": {
+                    "duration": 60,
+                    "broadcast_range": 24,
+                    "broadcast_anger": true,
+					"broadcast_filters": {
+                        "all_of": [
+                            {
+                                "test": "has_component",
+                                "subject": "other",
+                                "operator": "!=",
+                                "value": "minecraft:is_tamed"
+                            },
+                            {
+                                "test": "bool_property",
+                                "subject": "other",
+                                "domain": "rift:owned_by_illager",
+                                "value": false
+                            }
+                        ]
+                    },
+                    "broadcast_targets": [
+                        "utahraptor"
+                    ],
+                    "calm_event": {
+                        "event": "rift:calm_down",
+                        "target": "self"
+                    }
+                }
+            },
+            "rift:tyrannosaurus_egg": {
+                "minecraft:variant": {
+                    "value": 0
+                },
+                "minecraft:behavior.nearest_attackable_target": {
+                    "priority": 0,
+                    "within_radius": 24,
+                    "reselect_targets": true,
+                    "entity_types": [
+                        {
+                            "filters": {
+                                "test": "is_family",
+                                "subject": "other",
+                                "value": "player"
+                            },
+                            "max_dist": 24
+                        }
+                    ]
+                },
+                "minecraft:interact": {
+                    "interactions": [
+                        {
+                            "on_interact": {
+                                "filters": {
+                                    "test": "has_component",
+                                    "subject": "self",
+                                    "value": "minecraft:is_sheared"
+                                },
+                                "event": "rift:grab_tyrannosaurus_egg",
+                                "target": "self"
+                            },
+                            "interact_text": "action.interact.grab_egg",
+                            "spawn_items": {
+                                "table": "loot_tables/eggs/tyrannosaurus egg.loot.json"
+                            }
+                        }
+                    ]
+                }
+            },
+            "rift:utahraptor_egg": {
+                "minecraft:variant": {
+                    "value": 1
+                },
+                "minecraft:scale": {
+                    "value": 0.5
+                },
+                "minecraft:behavior.nearest_attackable_target": {
+                    "priority": 0,
+                    "within_radius": 24,
+                    "reselect_targets": true,
+                    "entity_types": [
+                        {
+                            "filters": {
+                                "test": "is_family",
+                                "subject": "other",
+                                "value": "player"
+                            },
+                            "max_dist": 24
+                        }
+                    ]
+                },
+                "minecraft:interact": {
+                    "interactions": [
+                        {
+                            "on_interact": {
+                                "filters": {
+                                    "test": "has_component",
+                                    "subject": "self",
+                                    "value": "minecraft:is_sheared"
+                                },
+                                "event": "rift:grab_utahraptor_egg",
+                                "target": "self"
+                            },
+                            "interact_text": "action.interact.grab_egg",
+                            "spawn_items": {
+                                "table": "loot_tables/eggs/utahraptor egg.loot.json"
+                            }
+                        }
+                    ]
                 }
             }
         },
@@ -38,40 +159,6 @@
 					"eggNest",
 					"inanimate"
 				]
-            },
-            "minecraft:behavior.nearest_attackable_target": {
-                "priority": 0,
-                "within_radius": 24,
-                "reselect_targets": true,
-                "entity_types": [
-                    {
-                        "filters": {
-                            "test": "is_family",
-                            "subject": "other",
-                            "value": "player"
-                        },
-                        "max_dist": 24
-                    }
-                ]
-            },
-            "minecraft:interact": {
-                "interactions": [
-                    {
-                        "on_interact": {
-                            "filters": {
-                                "test": "has_component",
-                                "subject": "self",
-                                "value": "minecraft:is_sheared"
-                            },
-                            "event": "rift:grab_egg",
-                            "target": "self"
-                        },
-                        "interact_text": "action.interact.grab_egg",
-                        "spawn_items": {
-                            "table": "loot_tables/eggs/tyrannosaurus egg.loot.json"
-                        }
-                    }
-                ]
             },
             "minecraft:physics": {
                 "has_gravity": true,
@@ -86,20 +173,50 @@
                     "cause": "all",
                     "deals_damage": false
                 }
-            }
+            },
+            "minecraft:conditional_bandwidth_optimization": {}
         },
         "events": {
             "minecraft:entity_spawned": {
                 "add": {
                     "component_groups": [
+                        "rift:has_egg",
+                        "rift:tyrannosaurus_egg"
+                    ]
+                }
+            },
+            "rift:spawned_tyrannosaurus_egg": {
+                "add": {
+                    "component_groups": [
+                        "rift:has_egg",
+                        "rift:tyrannosaurus_egg"
+                    ]
+                }
+            },
+            "rift:spawned_utahraptor_egg": {
+                "add": {
+                    "component_groups": [
+                        "rift:has_egg",
+                        "rift:utahraptor_egg"
+                    ]
+                }
+            },
+            "rift:grab_tyrannosaurus_egg": {
+                "add": {
+                    "component_groups": [
+                        "rift:make_tyrannosaurus_guardian_angry"
+                    ]
+                },
+                "remove": {
+                    "component_groups": [
                         "rift:has_egg"
                     ]
                 }
             },
-            "rift:grab_egg": {
+            "rift:grab_utahraptor_egg": {
                 "add": {
                     "component_groups": [
-                        "rift:make_guardian_angry"
+                        "rift:make_utahraptor_guardian_angry"
                     ]
                 },
                 "remove": {
@@ -111,7 +228,7 @@
             "rift:calm_down": {
                 "remove": {
                     "component_groups": [
-                        "rift:make_guardian_angry"
+                        "rift:make_tyrannosaurus_guardian_angry"
                     ]
                 }
             }
