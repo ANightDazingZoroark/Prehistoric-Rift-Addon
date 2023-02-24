@@ -136,8 +136,41 @@ let affectedByBola = [
     'minecraft:zombie'
 ]
 
+function getPlaceCoords(entity) {
+    return entity.x.toString()+' '+entity.y.toString()+' '+entity.z.toString()
+}
+
 world.events.entityHurt.subscribe((event) => {
-    if (event.damageSource.damagingEntity.typeId == 'rift:tyrannosaurus' && event.hurtEntity.getComponent('health').current <= 0) {
+    if ((event.damageSource.damagingEntity.typeId == 'minecraft:player' || event.damageSource.damagingEntity.hasTag('tamed')) && event.hurtEntity.typeId == 'minecraft:cod' && event.hurtEntity.getComponent('health').current <= 0) {
+        world.getDimension('overworld').runCommandAsync('loot spawn '+getPlaceCoords(event.hurtEntity.location)+' loot "entities/fish"')
+    }
+    if ((event.damageSource.damagingEntity.typeId == 'minecraft:player' || event.damageSource.damagingEntity.hasTag('tamed')) && event.hurtEntity.typeId == 'minecraft:salmon' && event.hurtEntity.getComponent('health').current <= 0) {
+        switch (event.damageSource.damagingEntity.getComponent('variant').value) {
+            case 0:
+                world.getDimension('overworld').runCommandAsync('loot spawn '+getPlaceCoords(event.hurtEntity.location)+' loot "entities/salmon_normal"')
+                break
+            case 1:
+                world.getDimension('overworld').runCommandAsync('loot spawn '+getPlaceCoords(event.hurtEntity.location)+' loot "entities/salmon_normal"')
+                break
+            case 2:
+                world.getDimension('overworld').runCommandAsync('loot spawn '+getPlaceCoords(event.hurtEntity.location)+' loot "entities/salmon_large"')
+                break
+        }
+    }
+    if ((event.damageSource.damagingEntity.typeId == 'minecraft:player' || event.damageSource.damagingEntity.hasTag('tamed')) && event.hurtEntity.typeId == 'minecraft:tropicalfish' && event.hurtEntity.getComponent('health').current <= 0) {
+        world.getDimension('overworld').runCommandAsync('loot spawn '+getPlaceCoords(event.hurtEntity.location)+' loot "entities/tropicalfish"')
+    }
+    if ((event.damageSource.damagingEntity.typeId == 'minecraft:player' || event.damageSource.damagingEntity.hasTag('tamed')) && event.hurtEntity.typeId == 'minecraft:pufferfish' && event.hurtEntity.getComponent('health').current <= 0) {
+        world.getDimension('overworld').runCommandAsync('loot spawn '+getPlaceCoords(event.hurtEntity.location)+' loot "entities/pufferfish"')
+    }
+    if ((event.damageSource.damagingEntity.typeId == 'minecraft:player' || event.damageSource.damagingEntity.hasTag('tamed')) && event.hurtEntity.typeId == 'rift:coelacanth' && event.hurtEntity.getComponent('health').current <= 0) {
+        world.getDimension('overworld').runCommandAsync('loot spawn '+getPlaceCoords(event.hurtEntity.location)+' loot "entities/coelacanth.loot"')
+    }
+    if ((event.damageSource.damagingEntity.typeId == 'minecraft:player' || event.damageSource.damagingEntity.hasTag('tamed')) && event.hurtEntity.typeId == 'rift:megapiranha' && event.hurtEntity.getComponent('health').current <= 0) {
+        world.getDimension('overworld').runCommandAsync('loot spawn '+getPlaceCoords(event.hurtEntity.location)+' loot "entities/megapiranha.loot"')
+    }
+
+    if (event.damageSource.damagingEntity.typeId == 'rift:tyrannosaurus' && event.damageSource.damagingEntity.hasTag('tamed') && event.hurtEntity.getComponent('health').current <= 0) {
         if (exoticMeatDroppers.includes(event.hurtEntity.typeId)) {
             event.hurtEntity.dimension.spawnItem(new ItemStack(Items.get('rift:raw_exotic_meat'), 5, 0), new Location(event.hurtEntity.location.x, event.hurtEntity.location.y, event.hurtEntity.location.z))
         }
@@ -200,7 +233,7 @@ world.events.entityHurt.subscribe((event) => {
             }
         }
     }
-    if (event.damageSource.damagingEntity.typeId == 'rift:utahraptor' && event.hurtEntity.getComponent('health').current <= 0) {
+    if (event.damageSource.damagingEntity.typeId == 'rift:utahraptor' && event.damageSource.damagingEntity.hasTag('tamed') && event.hurtEntity.getComponent('health').current <= 0) {
         if (exoticMeatDroppers.includes(event.hurtEntity.typeId)) {
             event.hurtEntity.dimension.spawnItem(new ItemStack(Items.get('rift:raw_exotic_meat'), 3, 0), new Location(event.hurtEntity.location.x, event.hurtEntity.location.y, event.hurtEntity.location.z))
         }
@@ -242,7 +275,7 @@ world.events.entityHurt.subscribe((event) => {
             }
         }
     }
-    if (event.damageSource.damagingEntity.typeId == 'rift:dimetrodon' && event.hurtEntity.getComponent('health').current <= 0) {
+    if (event.damageSource.damagingEntity.typeId == 'rift:dimetrodon' && event.damageSource.damagingEntity.hasTag('tamed') && event.hurtEntity.getComponent('health').current <= 0) {
         if (exoticMeatDroppers.includes(event.hurtEntity.typeId)) {
             event.hurtEntity.dimension.spawnItem(new ItemStack(Items.get('rift:raw_exotic_meat'), 3, 0), new Location(event.hurtEntity.location.x, event.hurtEntity.location.y, event.hurtEntity.location.z))
         }
@@ -296,7 +329,7 @@ world.events.entityHurt.subscribe((event) => {
             }
         }
     }
-    if (event.damageSource.damagingEntity.typeId == 'rift:sarcosuchus' && event.hurtEntity.getComponent('health').current <= 0) {
+    if (event.damageSource.damagingEntity.typeId == 'rift:sarcosuchus' && event.damageSource.damagingEntity.hasTag('tamed') && event.hurtEntity.getComponent('health').current <= 0) {
         if (exoticMeatDroppers.includes(event.hurtEntity.typeId)) {
             event.hurtEntity.dimension.spawnItem(new ItemStack(Items.get('rift:raw_exotic_meat'), 1, 0), new Location(event.hurtEntity.location.x, event.hurtEntity.location.y, event.hurtEntity.location.z))
         }
@@ -350,7 +383,7 @@ world.events.entityHurt.subscribe((event) => {
             }
         }
     }
-    if (event.damageSource.damagingEntity.typeId == 'rift:anomalocaris' && event.hurtEntity.getComponent('health').current <= 0) {
+    if (event.damageSource.damagingEntity.typeId == 'rift:anomalocaris' && event.damageSource.damagingEntity.hasTag('tamed') && event.hurtEntity.getComponent('health').current <= 0) {
         if (exoticMeatDroppers.includes(event.hurtEntity.typeId)) {
             event.hurtEntity.dimension.spawnItem(new ItemStack(Items.get('rift:raw_exotic_meat'), 1, 0), new Location(event.hurtEntity.location.x, event.hurtEntity.location.y, event.hurtEntity.location.z))
         }
@@ -419,7 +452,7 @@ world.events.entityHurt.subscribe((event) => {
             }
         }
     }
-    if (event.damageSource.damagingEntity.typeId == 'rift:saurophaganax' && event.hurtEntity.getComponent('health').current <= 0) {
+    if (event.damageSource.damagingEntity.typeId == 'rift:saurophaganax' && event.damageSource.damagingEntity.hasTag('tamed') && event.hurtEntity.getComponent('health').current <= 0) {
         switch (event.hurtEntity.typeId) {
             case 'minecraft:zombie':
                 event.hurtEntity.dimension.spawnItem(new ItemStack(Items.get('minecraft:rotten_flesh'), 5, 0), new Location(event.hurtEntity.location.x, event.hurtEntity.location.y, event.hurtEntity.location.z))
@@ -492,7 +525,7 @@ world.events.entityHurt.subscribe((event) => {
                 break
         }
     }
-    if (event.damageSource.damagingEntity.typeId == 'rift:direwolf' && event.hurtEntity.getComponent('health').current <= 0) {
+    if (event.damageSource.damagingEntity.typeId == 'rift:direwolf' && event.damageSource.damagingEntity.hasTag('tamed') && event.hurtEntity.getComponent('health').current <= 0) {
         if (exoticMeatDroppers.includes(event.hurtEntity.typeId)) {
             event.hurtEntity.dimension.spawnItem(new ItemStack(Items.get('rift:raw_exotic_meat'), 3, 0), new Location(event.hurtEntity.location.x, event.hurtEntity.location.y, event.hurtEntity.location.z))
         }
@@ -534,7 +567,7 @@ world.events.entityHurt.subscribe((event) => {
             }
         }
     }
-    if (event.damageSource.damagingEntity.typeId == 'rift:baryonyx' && event.hurtEntity.getComponent('health').current <= 0) {
+    if (event.damageSource.damagingEntity.typeId == 'rift:baryonyx' && event.damageSource.damagingEntity.hasTag('tamed') && event.hurtEntity.getComponent('health').current <= 0) {
         if (exoticMeatDroppers.includes(event.hurtEntity.typeId)) {
             event.hurtEntity.dimension.spawnItem(new ItemStack(Items.get('rift:raw_exotic_meat'), 3, 0), new Location(event.hurtEntity.location.x, event.hurtEntity.location.y, event.hurtEntity.location.z))
         }
@@ -588,7 +621,7 @@ world.events.entityHurt.subscribe((event) => {
             }
         }
     }
-    if (event.damageSource.damagingEntity.typeId == 'rift:dilophosaurus' && event.hurtEntity.getComponent('health').current <= 0) {
+    if (event.damageSource.damagingEntity.typeId == 'rift:dilophosaurus' && event.damageSource.damagingEntity.hasTag('tamed') && event.hurtEntity.getComponent('health').current <= 0) {
         if (exoticMeatDroppers.includes(event.hurtEntity.typeId)) {
             event.hurtEntity.dimension.spawnItem(new ItemStack(Items.get('rift:raw_exotic_meat'), 1, 0), new Location(event.hurtEntity.location.x, event.hurtEntity.location.y, event.hurtEntity.location.z))
         }
@@ -630,7 +663,7 @@ world.events.entityHurt.subscribe((event) => {
             }
         }
     }
-    if (event.damageSource.damagingEntity.typeId == 'rift:direbear' && event.hurtEntity.getComponent('health').current <= 0) {
+    if (event.damageSource.damagingEntity.typeId == 'rift:direbear' && event.damageSource.damagingEntity.hasTag('tamed') && event.hurtEntity.getComponent('health').current <= 0) {
         if (exoticMeatDroppers.includes(event.hurtEntity.typeId)) {
             event.hurtEntity.dimension.spawnItem(new ItemStack(Items.get('rift:raw_exotic_meat'), 5, 0), new Location(event.hurtEntity.location.x, event.hurtEntity.location.y, event.hurtEntity.location.z))
         }
