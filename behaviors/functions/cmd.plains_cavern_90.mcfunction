@@ -1,2 +1,2 @@
-structure load plains_cavern_path ~-16 ~-1 ~-4 90_degrees
+structure load plains_hall_90 ~-16 ~-1 ~-4
 setblock ~ ~ ~ air

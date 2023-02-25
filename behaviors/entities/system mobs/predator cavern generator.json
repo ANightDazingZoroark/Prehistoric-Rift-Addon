@@ -1,0 +1,85 @@
+{
+	"format_version": "1.16.0",
+	"minecraft:entity": {
+		"description": {
+			"identifier": "rift:predator_cavern_generator",
+			"is_spawnable": false,
+			"is_summonable": true,
+			"is_experimental": false
+        },
+        "component_groups": {
+            "rift:commit_disappear": {
+                "minecraft:instant_despawn": {}
+            }
+        },
+        "components": {
+            "minecraft:timer": {
+                "time": 0.5,
+                "time_down_event": {
+                    "event": "rift:commit_disappear",
+                    "target": "self"
+                }
+            },
+            "minecraft:physics": {
+                "has_collision": false,
+                "has_gravity": false
+            },
+            "minecraft:pushable": {
+                "is_pushable": false,
+                "is_pushable_by_piston": false
+            },
+            "minecraft:conditional_bandwidth_optimization": {}
+        },
+        "events": {
+            "rift:unguaranteed_hallway_0": {
+                "randomize": [
+                    {
+                        "weight": 1,
+                        "run_command": {
+                            "command": [
+                                "structure load plains_hall_0 ~-4 ~-1 ~"
+                            ]
+                        }
+                    },
+                    {
+                        "weight": 1,
+                        "run_command": {
+                            "command": [
+                                "setblock ~ ~ ~ stone_stairs 2"
+                            ]
+                        }
+                    }
+                ]
+            },
+            "rift:unguaranteed_hallway_90": {
+                "randomize": [
+                    {
+                        "weight": 1,
+                        "run_command": {
+                            "command": [
+                                "structure load plains_hall_90 ~-16 ~-1 ~-4"
+                            ]
+                        }
+                    },
+                    {
+                        "weight": 1,
+                        "run_command": {
+                            "command": [
+                                "setblock ~ ~ ~ stone_stairs 1"
+                            ]
+                        }
+                    }
+                ]
+            },
+            "rift:unguaranteed_hallway_180": {},
+            "rift:unguaranteed_hallway_270": {},
+            "rift:commit_disappear": {
+                "add": {
+                    "component_groups": [
+                        "rift:commit_disappear"
+                    ]
+                }
+            }
+        }
+    }
+}

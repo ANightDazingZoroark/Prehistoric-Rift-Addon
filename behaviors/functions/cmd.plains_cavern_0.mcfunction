@@ -1,2 +1,2 @@
-structure load plains_cavern_path ~-4 ~-1 ~+1
+structure load plains_hall_0 ~-4 ~-1 ~
 setblock ~ ~ ~ air
