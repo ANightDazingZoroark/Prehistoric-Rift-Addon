@@ -1,0 +1,184 @@
+{
+    "format_version": "1.16.100",
+    "minecraft:block": {
+        "description": {
+            "identifier": "rift:blighted_stone_stairs",
+			"properties": {
+				"rift:orientation": [
+                    0, //north ground
+                    1, //east ground
+                    2, //south ground
+                    3, //west ground
+                    4, //north ceiling
+                    5, //east ceiling
+                    6, //south ceiling
+                    7 //west ceiling
+                ],
+                "rift:north_corner": [
+                    0, //not corner
+                    1,
+                    2,
+                    3,
+                    4
+                ],
+                "rift:east_corner": [
+                    0, //not corner
+                    1,
+                    2,
+                    3,
+                    4
+                ],
+                "rift:south_corner": [
+                    0, //not corner
+                    1,
+                    2,
+                    3,
+                    4
+                ],
+                "rift:west_corner": [
+                    0, //not corner
+                    1,
+                    2,
+                    3,
+                    4
+                ]
+            }
+        },
+        "permutations": [
+            {
+                "condition": "query.block_property('rift:orientation') <= 3",
+                "components": {
+					"minecraft:entity_collision": {
+						"origin": [ -8, 0, -8 ],
+						"size": [ 16, 8, 16 ] 
+					},
+					"minecraft:selection_box": {
+						"origin": [ -8, 0, -8 ],
+						"size": [ 16, 8, 16 ]
+					}
+                }
+            },
+            {
+                "condition": "query.block_property('rift:orientation') > 3",
+                "components": {
+                    "minecraft:entity_collision": {
+                        "origin": [ -8, 8, -8 ],
+                        "size": [ 16, 8, 16 ] 
+                    },
+                    "minecraft:selection_box": {
+                        "origin": [ -8, 8, -8 ],
+                        "size": [ 16, 8, 16 ]
+                    }
+                }
+            },
+            {
+                "condition": "query.block_property('rift:north_corner') == 0 && query.block_property('rift:east_corner') == 0 && query.block_property('rift:south_corner') == 0 && query.block_property('rift:west_corner') == 0",
+                "components": {
+                    "minecraft:queued_ticking": {
+                        "looping": true,
+                        "interval_range": [
+                            0,
+                            0
+                        ],
+                        "on_tick": {
+                            "event": "rift:check_for_nearby_blocks",
+                            "target": "self"
+                        }
+                    },
+                    "minecraft:part_visibility": {
+                        "conditions": {
+                            "top0": "query.block_property('rift:orientation') != 2 && query.block_property('rift:orientation') != 3",
+                            "top1": "query.block_property('rift:orientation') != 2 && query.block_property('rift:orientation') != 1",
+                            "top2": "query.block_property('rift:orientation') != 0 && query.block_property('rift:orientation') != 3",
+                            "top3": "query.block_property('rift:orientation') != 0 && query.block_property('rift:orientation') != 1",
+                            "bottom0": "query.block_property('rift:orientation') != 6 && query.block_property('rift:orientation') != 7",
+                            "bottom1": "query.block_property('rift:orientation') != 6 && query.block_property('rift:orientation') != 5",
+                            "bottom2": "query.block_property('rift:orientation') != 4 && query.block_property('rift:orientation') != 7",
+                            "bottom3": "query.block_property('rift:orientation') != 4 && query.block_property('rift:orientation') != 5"
+                        }
+                    }
+                }
+            }
+        ],
+        "components": {
+			"minecraft:geometry": "geometry.stairs",
+			"minecraft:material_instances": {
+				"*": {
+					"texture": "blighted stone",
+					"render_method": "opaque"
+				}
+			},
+            "minecraft:destructible_by_mining": {
+                "seconds_to_destroy": 5
+            },
+			"minecraft:on_player_placing": {
+				"event": "rift:update_orientation"
+			},
+            "tag:stone": {},
+            "tag:wood_pick_diggable": {},
+            "tag:stone_pick_diggable": {},
+            "tag:iron_pick_diggable": {},
+            "tag:gold_pick_diggable": {},
+            "tag:diamond_pick_diggable": {},
+            "tag:stairs": {}
+        },
+        "events": {
+            "rift:update_orientation": {
+                "sequence": [
+                    {
+                        "condition": "query.cardinal_facing_2d == 2 && query.target_x_rotation >= 0",
+                        "set_block_property": {
+                            "rift:orientation": 0
+                        }
+                    },
+                    {
+                        "condition": "query.cardinal_facing_2d == 3 && query.target_x_rotation >= 0",
+                        "set_block_property": {
+                            "rift:orientation": 2
+                        }
+                    },
+                    {
+                        "condition": "query.cardinal_facing_2d == 4 && query.target_x_rotation >= 0",
+                        "set_block_property": {
+                            "rift:orientation": 3
+                        }
+                    },
+                    {
+                        "condition": "query.cardinal_facing_2d == 5 && query.target_x_rotation >= 0",
+                        "set_block_property": {
+                            "rift:orientation": 1
+                        }
+                    },
+                    
+                    {
+                        "condition": "query.cardinal_facing_2d == 2 && query.target_x_rotation < 0",
+                        "set_block_property": {
+                            "rift:orientation": 4
+                        }
+                    },
+                    {
+                        "condition": "query.cardinal_facing_2d == 3 && query.target_x_rotation < 0",
+                        "set_block_property": {
+                            "rift:orientation": 6
+                        }
+                    },
+                    {
+                        "condition": "query.cardinal_facing_2d == 4 && query.target_x_rotation < 0",
+                        "set_block_property": {
+                            "rift:orientation": 7
+                        }
+                    },
+                    {
+                        "condition": "query.cardinal_facing_2d == 5 && query.target_x_rotation < 0",
+                        "set_block_property": {
+                            "rift:orientation": 5
+                        }
+                    }
+                ]
+            },
+            "rift:check_for_nearby_blocks": {
+                "sequence": []
+            }
+        }
+    }
+}

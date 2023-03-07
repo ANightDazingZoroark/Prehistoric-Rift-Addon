@@ -1,0 +1,103 @@
+{
+    "format_version": "1.16.100",
+    "minecraft:block": {
+        "description": {
+            "identifier": "rift:blighted_stone_slab",
+			"properties": {
+				"rift:state": [
+                    0, 
+                    1, 
+                    2
+                ]
+			}
+        },
+		"permutations": [
+			//Down Slab
+			{
+				"condition": "query.block_property('rift:state') == 0",
+				"components": {
+					"minecraft:entity_collision": {
+						"origin": [ -8, 0, -8 ],
+						"size": [ 16, 8, 16 ] 
+					},
+					"minecraft:selection_box": {
+						"origin": [ -8, 0, -8 ],
+						"size": [ 16, 8, 16 ]
+					},
+					"minecraft:on_interact": {
+						"event": "rift:full_slab",
+						"target": "self",
+						"condition": "q.block_face == 1.0 && q.is_item_name_any('slot.weapon.mainhand','rift:blighted_stone_slab')"
+					}
+				}
+			},
+			//Top Slab
+			{
+				"condition": "query.block_property('rift:state') == 1",
+				"components": {
+					"minecraft:entity_collision": {
+						"origin": [ -8, 8, -8 ],
+						"size": [ 16, 8, 16 ] 
+					},
+					"minecraft:selection_box": {
+						"origin": [ -8, 8, -8 ],
+						"size": [ 16, 8, 16 ]
+					},
+					"minecraft:on_interact": {
+						"event": "rift:full_slab",
+						"target": "self",
+						"condition": "q.block_face == 0.0 && q.is_item_name_any('slot.weapon.mainhand','rift:blighted_stone_slab')"
+					}
+				}
+			},
+			//Full Slab
+			{
+				"condition": "query.block_property('rift:state') == 2",
+				"components": {
+					"minecraft:unit_cube": {}
+				}
+			}
+		],
+        "components": {
+			"minecraft:geometry": "geometry.slab",
+			"minecraft:material_instances": {
+				"*": {
+					"texture": "blighted stone",
+					"render_method": "opaque"
+				}
+			},
+            "minecraft:destructible_by_mining": {
+                "seconds_to_destroy": 5
+            },
+			"minecraft:part_visibility": {
+				"conditions": {
+				    "bottom_slab": "query.block_property('rift:state') == 0 || query.block_property('rift:state') == 2",
+				    "top_slab": "query.block_property('rift:state') == 1 || query.block_property('rift:state') == 2"
+				}
+			},
+			"minecraft:on_player_placing": {
+				"event": "rift:update_facing_direction"
+			},
+            "minecraft:friction": 0.6,
+            "minecraft:block_light_absorption": 0.0,
+            "tag:stone": {},
+            "tag:wood_pick_diggable": {},
+            "tag:stone_pick_diggable": {},
+            "tag:iron_pick_diggable": {},
+            "tag:gold_pick_diggable": {},
+            "tag:diamond_pick_diggable": {}
+        },
+		"events": {
+			"rift:update_facing_direction": {
+				"set_block_property": {
+					"rift:state": "query.target_x_rotation <= 0"
+				}
+			},
+			"rift:full_slab": {
+				"set_block_property": {
+					"rift:state": 2
+				}
+			}
+		}
+    }
+}
