@@ -1,4 +1,4 @@
-import { BlockLocation, ItemStack, Items, world, Location, MinecraftEffectTypes } from "@minecraft/server"
+import { ItemStack, Items, world, MinecraftEffectTypes } from "@minecraft/server"
 import { clearTimeout, setTimeout } from "./externals/timers"
 
 let saurophaganaxFood = [

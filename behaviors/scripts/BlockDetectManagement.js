@@ -4,7 +4,7 @@ how stupidly laggy this is. might wanna remake this to utilize runCommandAsync
 and respect the 128 commands per tick, or maybe wait till mojank makes it so vanilla
 blocks become data driven
 ***/
-import { BlockLocation, system, world } from "@minecraft/server"
+import { system, world } from "@minecraft/server"
 
 let fireBlocks = [
     "minecraft:fire",

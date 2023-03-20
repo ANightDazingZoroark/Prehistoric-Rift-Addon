@@ -1,4 +1,4 @@
-import { BlockLocation, world } from "@minecraft/server"
+import { world } from "@minecraft/server"
 import { ActionFormData } from "@minecraft/server-ui"
 
 function sniffMainGui(hitEntity, entity) {

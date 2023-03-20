@@ -1,4 +1,4 @@
-import { BlockLocation, world } from "@minecraft/server"
+import { world } from "@minecraft/server"
 import { clearEntity, testForItem } from "./externals/itemmanagement"
 
 let alphabet = 'abcdefghijklmnopqrstuvwxyz'.split('')
@@ -8,17 +8,17 @@ world.events.beforeChat.subscribe(async (ev) => {
         if (ev.sender.hasTag('canRiftCommands')) {
             switch (ev.message) {
                 case 'r!commands':
-                    ev.sender.tell('==Commands==')
-                    ev.sender.tell('r!commands: Opens up the list of usable commands')
-                    ev.sender.tell('r!test: Generic "Hello World" message you\'d learn to make from a programming tutorial or class')
-                    ev.sender.tell('r!journalunlock: Unlock all journal entries for the person using the command')
-                    ev.sender.tell('r!journalrelock: Reset all unlocked journal entries for the person using the command')
+                    ev.sender.sendMessage('==Commands==')
+                    ev.sender.sendMessage('r!commands: Opens up the list of usable commands')
+                    ev.sender.sendMessage('r!test: Generic "Hello World" message you\'d learn to make from a programming tutorial or class')
+                    ev.sender.sendMessage('r!journalunlock: Unlock all journal entries for the person using the command')
+                    ev.sender.sendMessage('r!journalrelock: Reset all unlocked journal entries for the person using the command')
                     break
                 case 'r!test':
-                    ev.sender.tell('Hello World!')
+                    ev.sender.sendMessage('Hello World!')
                     break
                 case 'r!journalunlock':
-                    ev.sender.tell('Unlocked all journal entries!')
+                    ev.sender.sendMessage('Unlocked all journal entries!')
                     for (let i = 0; i < 24; i++) {
                         ev.sender.setDynamicProperty(i.toString(), true)
                     }
@@ -27,9 +27,9 @@ world.events.beforeChat.subscribe(async (ev) => {
                     }
                     break
                 case 'r!journalrelock':
-                    ev.sender.tell('Relocked all journal entries!')
+                    ev.sender.sendMessage('Relocked all journal entries!')
                     for (let i = 0; i < 24; i++) {
-                        ev.sender.setDynamicProperty(alphabet[i], false)
+                        ev.sender.setDynamicProperty(i.toString(), false)
                     }
                     for (let i = 0; i < 5; i++) {
                         ev.sender.setDynamicProperty(alphabet[i], false)
@@ -38,7 +38,7 @@ world.events.beforeChat.subscribe(async (ev) => {
             }
         }
         else {
-            ev.sender.tell('You can only use these special commands in creative mode!')
+            ev.sender.sendMessage('You can only use these special commands in creative mode!')
         }
         ev.cancel = true
     }
