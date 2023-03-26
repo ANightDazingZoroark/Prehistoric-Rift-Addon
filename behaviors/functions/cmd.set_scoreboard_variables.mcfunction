@@ -1,2 +1,0 @@
-scoreboard objectives add stegoFocusCharge dummy
-scoreboard objectives add saurophLightBlst dummy

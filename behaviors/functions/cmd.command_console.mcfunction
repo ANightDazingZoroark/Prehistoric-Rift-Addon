@@ -1,1 +1,0 @@
-event entity @e[type=rift:apatosaurus, tag=tamed, c=1] rift:use_mounted_weapon

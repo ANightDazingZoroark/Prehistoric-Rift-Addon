@@ -1,1 +1,0 @@
-event entity @e[type=rift:apatosaurus, c=1, hasitem={item=rift:apatosaurus_platform, slot=0, location=slot.inventory}] rift:keep_saddle
