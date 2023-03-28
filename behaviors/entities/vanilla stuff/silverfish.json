@@ -1,16 +1,47 @@
 {
     "format_version": "1.17.10",
     "minecraft:entity": {
+        "description": {
+            "identifier": "minecraft:silverfish",
+            "is_spawnable": true,
+            "is_summonable": true,
+            "is_experimental": false,
+            "animations": {
+                "contHypnotizedTag": "controller.animation.add_hypnotized_tag",
+                "contDieWithoutTenontosaurus": "controller.animation.general_die_without_tenontosaurus",
+                "animFindTenontosaurus": "animation.find_tenontosaurus",
+                "animDeathTimer": "animation.hypnosis_death_timer"
+            },
+            "scripts": {
+                "animate": [
+                    "contHypnotizedTag",
+                    "contDieWithoutTenontosaurus"
+                ]
+            },
+            "properties": {
+                "rift:is_hypnotized": {
+                    "type": "bool",
+                    "default": false,
+                    "client_sync": true
+                }
+            }
+        },
         "component_groups": {
+            "minecraft:silverfish_calm": {
+                "minecraft:on_target_acquired" : {
+                    "event": "minecraft:become_angry",
+                    "target": "self"
+                }
+            },
             "minecraft:silverfish_angry": {
                 "minecraft:angry": {
+                    "duration": -1,
                     "broadcast_anger": true,
                     "broadcast_range": 20,
                     "calm_event": {
                         "event": "minecraft:on_calm",
                         "target": "self"
-                    },
-                    "duration": -1
+                    }
                 },
                 "minecraft:behavior.melee_attack": {
                     "priority": 4,
@@ -20,9 +51,155 @@
                     "priority": 1
                 }
             },
-            "minecraft:silverfish_calm": {
+            "rift:not_hypnotized": {
+                "minecraft:behavior.avoid_mob_type": {
+                    "priority": 2,
+                    "entity_types": [
+                        {
+                            "filters": {
+                                "any_of": [
+                                    {
+                                        "test": "is_family",
+                                        "value": "parasaurScary",
+                                        "subject": "other"
+                                    },
+                                    {
+                                        "test": "is_family",
+                                        "value": "carnivore",
+                                        "subject": "other"
+                                    }
+                                ]
+                            },
+                            "max_dist": 12,
+                            "must_see": true,
+                            "walk_speed_multiplier": 1.2,
+                            "sprint_speed_multiplier": 1.2
+                        }
+                    ]
+                },
+                "minecraft:behavior.float": {
+                    "priority": 1
+                },
+                "minecraft:behavior.silverfish_merge_with_stone": {
+                    "priority": 5
+                },
+                "minecraft:behavior.nearest_attackable_target": {
+                    "priority": 3,
+                    "attack_interval": 10,
+                    "entity_types": [
+                        {
+                            "filters": {
+                                "any_of": [
+                                    { 
+                                        "test": "is_family", 
+                                        "subject": "other",
+                                        "value": "snowgolem"
+                                    },
+                                    { 
+                                        "test": "is_family",
+                                        "subject": "other", 
+                                        "value": "irongolem"
+                                    }
+                                ]
+                            },
+                            "max_dist": 8
+                        },
+                        {
+                            "filters": {
+                                "all_of": [
+                                    {
+                                        "test": "is_family",
+                                        "subject": "other",
+                                        "value": "player"
+                                    },
+                                    {
+                                        "test": "is_riding",
+                                        "subject": "other",
+                                        "value": false
+                                    }
+                                ]
+                            },
+                            "max_dist": 8
+                        },
+                        {
+                            "filters": {
+                                "test": "is_family",
+                                "subject": "other",
+                                "value": "parasaurAngerer"
+                            },
+                            "max_dist": 64
+                        }
+                    ]
+                },
+                "minecraft:behavior.hurt_by_target": {
+                    "priority": 1,
+                    "alert_same_type": true
+                }
+            },
+            "rift:follow_tenontosaurus": {
+                "minecraft:behavior.nearest_prioritized_attackable_target": {
+                    "priority": 3,
+                    "within_radius": 32.0,
+                    "entity_types": [
+                        {
+                            "filters": {
+                                "all_of": [
+                                    {
+                                        "test": "has_tag",
+                                        "subject": "other",
+                                        "value": "tenontoTarget"
+                                    }
+                                ]
+                            },
+                            "max_dist": 48,
+                            "priority": 0
+                        },
+                        {
+                            "filters": {
+                                "all_of": [
+                                    {
+                                        "test": "is_family",
+                                        "subject": "other",
+                                        "value": "tenontosaurus"
+                                    },
+                                    {
+                                        "test": "has_component",
+                                        "subject": "other",
+                                        "operator": "!=",
+                                        "value": "minecraft:is_tamed"
+                                    }
+                                ]
+                            },
+                            "max_dist": 48,
+                            "priority": 1
+                        }
+                    ]
+                }
+            },
+            "rift:follow_tenontosaurus_no_target": {
+                "minecraft:behavior.ranged_attack": {
+                    "priority": 6,
+                    "attack_radius": 6.0,
+                    "attack_radius_min": 4
+                },
                 "minecraft:on_target_acquired": {
-                    "event": "minecraft:become_angry",
+                    "filters": {
+                        "all_of": [
+                            {
+                                "test": "has_component",
+                                "subject": "target",
+                                "operator": "!=",
+                                "value": "minecraft:is_tamed"
+                            },
+                            {
+                                "test": "is_family",
+                                "subject": "target",
+                                "operator": "!=",
+                                "value": "tenontosaurus"
+                            }
+                        ]
+                    },
+                    "event": "rift:attack_for_tenontosaurus",
                     "target": "self"
                 }
             },
@@ -36,354 +213,80 @@
                     "target": "self"
                 }
             },
-            "rift:follow_tamed_tenontosaurus": {
-                "minecraft:behavior.nearest_prioritized_attackable_target": {
-                    "entity_types": [
-                        {
-                            "filters": {
-                                "subject": "other",
-                                "test": "has_tag",
-                                "value": "tenontoTamedTarget"
-                            },
-                            "max_dist": 48,
-                            "priority": 0
-                        },
-                        {
-                            "filters": {
-                                "all_of": [
-                                    {
-                                        "subject": "other",
-                                        "test": "is_family",
-                                        "value": "tenontosaurus"
-                                    },
-                                    {
-                                        "subject": "other",
-                                        "test": "has_component",
-                                        "value": "minecraft:is_tamed"
-                                    }
-                                ]
-                            },
-                            "max_dist": 48,
-                            "priority": 1
-                        }
-                    ],
-                    "priority": 3,
-                    "within_radius": 32.0
-                }
-            },
-            "rift:follow_tamed_tenontosaurus_no_target": {
-                "minecraft:behavior.ranged_attack": {
-                    "attack_radius": 6.0,
-                    "attack_radius_min": 4,
-                    "priority": 6
-                },
-                "minecraft:on_target_acquired": {
-                    "event": "rift:attack_for_tenontosaurus",
-                    "filters": {
-                        "subject": "target",
-                        "test": "has_tag",
-                        "value": "tenontoTamedTarget"
-                    },
-                    "target": "self"
-                }
-            },
-            "rift:follow_tenontosaurus": {
-                "minecraft:behavior.nearest_prioritized_attackable_target": {
-                    "entity_types": [
-                        {
-                            "filters": {
-                                "all_of": [
-                                    {
-                                        "subject": "other",
-                                        "test": "has_tag",
-                                        "value": "tenontoTarget"
-                                    }
-                                ]
-                            },
-                            "max_dist": 48,
-                            "priority": 0
-                        },
-                        {
-                            "filters": {
-                                "all_of": [
-                                    {
-                                        "subject": "other",
-                                        "test": "is_family",
-                                        "value": "tenontosaurus"
-                                    },
-                                    {
-                                        "operator": "!=",
-                                        "subject": "other",
-                                        "test": "has_component",
-                                        "value": "minecraft:is_tamed"
-                                    }
-                                ]
-                            },
-                            "max_dist": 48,
-                            "priority": 1
-                        }
-                    ],
-                    "priority": 3,
-                    "within_radius": 32.0
-                }
-            },
-            "rift:follow_tenontosaurus_no_target": {
-                "minecraft:behavior.ranged_attack": {
-                    "attack_radius": 6.0,
-                    "attack_radius_min": 4,
-                    "priority": 6
-                },
-                "minecraft:on_target_acquired": {
-                    "event": "rift:attack_for_tenontosaurus",
-                    "filters": {
-                        "all_of": [
-                            {
-                                "operator": "!=",
-                                "subject": "target",
-                                "test": "has_component",
-                                "value": "minecraft:is_tamed"
-                            },
-                            {
-                                "operator": "!=",
-                                "subject": "target",
-                                "test": "is_family",
-                                "value": "tenontosaurus"
-                            }
-                        ]
-                    },
-                    "target": "self"
-                }
-            },
-            "rift:not_hypnotized": {
-                "minecraft:behavior.avoid_mob_type": {
-                    "entity_types": [
-                        {
-                            "filters": {
-                                "any_of": [
-                                    {
-                                        "subject": "other",
-                                        "test": "is_family",
-                                        "value": "parasaurScary"
-                                    },
-                                    {
-                                        "subject": "other",
-                                        "test": "is_family",
-                                        "value": "carnivore"
-                                    }
-                                ]
-                            },
-                            "max_dist": 12,
-                            "must_see": true,
-                            "sprint_speed_multiplier": 1.2,
-                            "walk_speed_multiplier": 1.2
-                        }
-                    ],
-                    "priority": 2
-                },
-                "minecraft:behavior.float": {
-                    "priority": 1
-                },
-                "minecraft:behavior.hurt_by_target": {
-                    "alert_same_type": true,
-                    "priority": 1
-                },
-                "minecraft:behavior.nearest_attackable_target": {
-                    "attack_interval": 10,
-                    "entity_types": [
-                        {
-                            "filters": {
-                                "any_of": [
-                                    {
-                                        "subject": "other",
-                                        "test": "is_family",
-                                        "value": "snowgolem"
-                                    },
-                                    {
-                                        "subject": "other",
-                                        "test": "is_family",
-                                        "value": "irongolem"
-                                    }
-                                ]
-                            },
-                            "max_dist": 8
-                        },
-                        {
-                            "filters": {
-                                "all_of": [
-                                    {
-                                        "subject": "other",
-                                        "test": "is_family",
-                                        "value": "player"
-                                    },
-                                    {
-                                        "subject": "other",
-                                        "test": "is_riding",
-                                        "value": false
-                                    }
-                                ]
-                            },
-                            "max_dist": 8
-                        },
-                        {
-                            "filters": {
-                                "subject": "other",
-                                "test": "is_family",
-                                "value": "parasaurAngerer"
-                            },
-                            "max_dist": 64
-                        }
-                    ],
-                    "priority": 3
-                },
-                "minecraft:behavior.silverfish_merge_with_stone": {
-                    "priority": 5
-                }
-            },
             "rift:transform_into_hypnotized": {
                 "minecraft:transformation": {
                     "into": "minecraft:silverfish<rift:transform_into_hypnotized>"
                 }
-            },
-            "rift:transform_into_hypnotized_by_tamed": {
-                "minecraft:transformation": {
-                    "into": "minecraft:silverfish<rift:transform_into_hypnotized_by_tamed>"
-                }
             }
         },
         "components": {
-            "minecraft:attack": {
-                "damage": 1
-            },
-            "minecraft:block_climber": {},
-            "minecraft:breathable": {
-                "suffocate_time": 0,
-                "total_supply": 15
-            },
-            "minecraft:can_climb": {},
-            "minecraft:collision_box": {
-                "height": 0.3,
-                "width": 0.4
-            },
-            "minecraft:conditional_bandwidth_optimization": {},
-            "minecraft:despawn": {
-                "despawn_from_distance": {}
-            },
+            "minecraft:is_hidden_when_invisible": {},
             "minecraft:experience_reward": {
                 "on_death": "query.last_hit_by_player ? 5 : 0"
             },
+            "minecraft:type_family": {
+                "family": [
+                    "silverfish", 
+                    "monster", 
+                    "lightweight", 
+                    "mob", 
+                    "arthropod"
+                ]
+            },
+            "minecraft:breathable": {
+                "total_supply": 15,
+                "suffocate_time": 0
+            },
+            "minecraft:nameable": {},
+            "minecraft:loot": {
+                "table": "loot_tables/entities/silverfish.json"
+            },
             "minecraft:health": {
-                "max": 8,
-                "value": 8
+                "value": 8,
+                "max": 8
             },
             "minecraft:hurt_on_condition": {
                 "damage_conditions": [
                     {
+                        "filters": { 
+                            "test": "in_lava", 
+                            "subject": "self", 
+                            "operator": "==", 
+                            "value": true 
+                        },
                         "cause": "lava",
-                        "damage_per_tick": 4,
-                        "filters": {
-                            "operator": "==",
-                            "subject": "self",
-                            "test": "in_lava",
-                            "value": true
-                        }
+                        "damage_per_tick": 4
                     }
                 ]
-            },
-            "minecraft:is_hidden_when_invisible": {},
-            "minecraft:jump.static": {},
-            "minecraft:loot": {
-                "table": "loot_tables/entities/silverfish.json"
             },
             "minecraft:movement": {
                 "value": 0.25
             },
-            "minecraft:movement.basic": {},
-            "minecraft:nameable": {},
             "minecraft:navigation.walk": {
                 "can_path_over_water": true
+            },
+            "minecraft:movement.basic": {},
+            "minecraft:jump.static": {},
+            "minecraft:can_climb": {},
+            "minecraft:attack": {
+                "damage": 1
+            },
+            "minecraft:collision_box": {
+                "width": 0.4,
+                "height": 0.3
+            },
+            "minecraft:despawn": {
+                "despawn_from_distance": {}
             },
             "minecraft:physics": {},
             "minecraft:pushable": {
                 "is_pushable": true,
                 "is_pushable_by_piston": true
             },
-            "minecraft:type_family": {
-                "family": [
-                    "silverfish",
-                    "monster",
-                    "lightweight",
-                    "mob",
-                    "arthropod"
-                ]
-            }
-        },
-        "description": {
-            "animations": {
-                "animBleed": "animation.general_bleed",
-                "animBleedCountdown": "animation.general_bleed_countdown",
-                "animBolaEffect": "animation.general_bola_effect",
-                "animBolaEffectCountdown": "animation.general_bola_effect_countdown",
-                "animDeathTimer": "animation.hypnosis_death_timer",
-                "animFindTenontosaurus": "animation.find_tenontosaurus",
-                "animTamedDeathTimer": "animation.hypnosis_death_timer_tamed",
-                "contBleed": "controller.animation.general_manage_bleed",
-                "contBola": "controller.animation.general_manage_bola",
-                "contDieWithoutTamedTenontosaurus": "controller.animation.general_death_timer_tamed_tenontosaurus",
-                "contDieWithoutTenontosaurus": "controller.animation.general_die_without_tenontosaurus",
-                "contHypnotizedTag": "controller.animation.add_hypnotized_tag",
-                "contHypnotizedTamedTag": "controller.animation.add_hypnotized_by_tamed_tag",
-                "contInWaterTag": "controller.animation.add_in_water_tag",
-                "contMovingTag": "controller.animation.add_moving_tag"
-            },
-            "identifier": "minecraft:silverfish",
-            "is_experimental": false,
-            "is_spawnable": true,
-            "is_summonable": true,
-            "properties": {
-                "rift:affected_by_bola": {
-                    "default": false,
-                    "type": "bool"
-                },
-                "rift:bleeding": {
-                    "client_sync": true,
-                    "default": false,
-                    "type": "bool"
-                },
-                "rift:is_hypnotized": {
-                    "client_sync": true,
-                    "default": false,
-                    "type": "bool"
-                },
-                "rift:is_hypnotized_tamed": {
-                    "client_sync": true,
-                    "default": false,
-                    "type": "bool"
-                }
-            },
-            "scripts": {
-                "animate": [
-                    "contHypnotizedTag",
-                    "contHypnotizedTamedTag",
-                    "contDieWithoutTenontosaurus",
-                    "contDieWithoutTamedTenontosaurus",
-                    "contBleed",
-                    "contMovingTag",
-                    "contInWaterTag",
-                    "contBola"
-                ]
-            }
+            "minecraft:conditional_bandwidth_optimization": {},
+            "minecraft:block_climber": {}
         },
         "events": {
-            "minecraft:become_angry": {
-                "add": {
-                    "component_groups": [
-                        "minecraft:silverfish_angry"
-                    ]
-                },
-                "remove": {
-                    "minecraft:silverfish_calm": {}
-                }
-            },
             "minecraft:entity_spawned": {
                 "add": {
                     "component_groups": [
@@ -392,46 +295,23 @@
                     ]
                 }
             },
+            "minecraft:become_angry": {
+                "remove": {
+                    "minecraft:silverfish_calm": {}
+                },
+                "add": {
+                    "component_groups": [
+                        "minecraft:silverfish_angry"
+                    ]
+                }
+            },
             "minecraft:on_calm": {
+                "remove": {
+                    "minecraft:silverfish_angry": {}
+                },
                 "add": {
                     "component_groups": [
                         "minecraft:silverfish_calm"
-                    ]
-                },
-                "remove": {
-                    "minecraft:silverfish_angry": {}
-                }
-            },
-            "rift:affected_by_bola": {
-                "set_property": {
-                    "rift:affected_by_bola": true
-                }
-            },
-            "rift:attack_for_tenontosaurus": {
-                "add": {
-                    "component_groups": [
-                        "rift:attacking_for_tenontosaurus"
-                    ]
-                },
-                "remove": {
-                    "component_groups": [
-                        "rift:follow_tenontosaurus_no_target",
-                        "rift:follow_tamed_tenontosaurus_no_target"
-                    ]
-                }
-            },
-            "rift:force_go_down": {},
-            "rift:hypnotized_by_tamed_tenontosaurus": {
-                "add": {
-                    "component_groups": [
-                        "rift:transform_into_hypnotized_by_tamed"
-                    ]
-                }
-            },
-            "rift:hypnotized_by_tenontosaurus": {
-                "add": {
-                    "component_groups": [
-                        "rift:transform_into_hypnotized"
                     ]
                 }
             },
@@ -446,76 +326,40 @@
                     "rift:is_hypnotized": true
                 }
             },
-            "rift:start_bleeding": {
-                "set_property": {
-                    "rift:bleeding": true
+            "rift:attack_for_tenontosaurus": {
+                "add": {
+                    "component_groups": [
+                        "rift:attacking_for_tenontosaurus"
+                    ]
+                },
+                "remove": {
+                    "component_groups": [
+                        "rift:follow_tenontosaurus_no_target"
+                    ]
+                },
+                "run_command": {
+                    "command": [
+                        "say FOR THE QUEEN"
+                    ]
                 }
             },
             "rift:stop_attacking_for_tenontosaurus": {
-                "sequence": [
-                    {
-                        "remove": {
-                            "component_groups": [
-                                "rift:attacking_for_tenontosaurus"
-                            ]
-                        }
-                    },
-                    {
-                        "add": {
-                            "component_groups": [
-                                "rift:follow_tenontosaurus_no_target"
-                            ]
-                        },
-                        "filters": {
-                            "all_of": [
-                                {
-                                    "domain": "rift:is_hypnotized",
-                                    "subject": "self",
-                                    "test": "bool_property",
-                                    "value": true
-                                },
-                                {
-                                    "domain": "rift:is_hypnotized_tamed",
-                                    "subject": "self",
-                                    "test": "bool_property",
-                                    "value": false
-                                }
-                            ]
-                        }
-                    },
-                    {
-                        "add": {
-                            "component_groups": [
-                                "rift:follow_tamed_tenontosaurus_no_target"
-                            ]
-                        },
-                        "filters": {
-                            "all_of": [
-                                {
-                                    "domain": "rift:is_hypnotized",
-                                    "subject": "self",
-                                    "test": "bool_property",
-                                    "value": false
-                                },
-                                {
-                                    "domain": "rift:is_hypnotized_tamed",
-                                    "subject": "self",
-                                    "test": "bool_property",
-                                    "value": true
-                                }
-                            ]
-                        }
-                    }
-                ]
-            },
-            "rift:stop_being_affected_by_bola": {
-                "set_property": {
-                    "rift:affected_by_bola": false
+                "add": {
+                    "component_groups": [
+                        "rift:follow_tenontosaurus_no_target"
+                    ]
+                },
+                "remove": {
+                    "component_groups": [
+                        "rift:attacking_for_tenontosaurus"
+                    ]
                 }
             },
-            "rift:stop_bleeding": {
-                "set_property": {
-                    "rift:bleeding": false
+            "rift:hypnotized_by_tenontosaurus": {
+                "add": {
+                    "component_groups": [
+                        "rift:transform_into_hypnotized"
+                    ]
                 }
             },
             "rift:transform_into_hypnotized": {
@@ -527,17 +371,6 @@
                 },
                 "set_property": {
                     "rift:is_hypnotized": true
-                }
-            },
-            "rift:transform_into_hypnotized_by_tamed": {
-                "add": {
-                    "component_groups": [
-                        "rift:follow_tamed_tenontosaurus",
-                        "rift:follow_tamed_tenontosaurus_no_target"
-                    ]
-                },
-                "set_property": {
-                    "rift:is_hypnotized_tamed": true
                 }
             }
         }

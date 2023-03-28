@@ -8,14 +8,27 @@
 		"components": {
 			"minecraft:max_stack_size": 1,
 			"minecraft:can_destroy_in_creative": false,
-            "minecraft:cooldown": {
-                "category": "rocket launcher",
-                "duration": 5
-            },
+			"minecraft:durability": {
+				"max_durability": 1
+			},
 			"minecraft:use_animation": "bow",
 			"minecraft:on_use": {
 				"on_use": {
 					"event": "rift:shoot",
+					"target": "self"
+				}
+			},
+			"minecraft:weapon": {
+				"on_hurt_entity": {
+					"event": "rift:damage",
+					"target": "self"
+				},
+				"on_not_hurt_entity": {
+					"event": "rift:damage",
+					"target": "self"
+				},
+				"on_hit_block": {
+					"event": "rift:damage",
 					"target": "self"
 				}
 			},
@@ -28,23 +41,34 @@
 			},
 			"minecraft:creative_category": {
 				"parent": "itemGroup.name.riftFirearms"
-			},
-            "tag:rift:gun": {}
+			}
 		},
 		"events": {
 			"rift:shoot": {
 				"sequence": [
 					{
-                        "shoot": {
-                            "projectile": "rift:rocket",
-                            "launch_power": 1
-                        },
+						"condition": "query.remaining_durability > 0",
+						"damage": {
+							"type": "durability",
+							"amount": 1,
+							"target": "self"
+						},
 						"run_command": {
 							"command": [
-								"replaceitem entity @s[m=!c] slot.weapon.mainhand 0 rift:rocket_launcher_empty",
-                                "tellraw @s[m=!c] {\"rawtext\":[{\"text\":\"Right click/tap and hold to reload! Make sure you have enough rockets to do so beforehand!\"}]}"
+								"say pew pew"
 							],
 							"target": "holder"
+						}
+					}
+				]
+			},
+			"rift:damage": {
+				"sequence": [
+					{
+						"damage": {
+							"type": "durability",
+							"amount": 1,
+							"target": "self"
 						}
 					}
 				]

@@ -12,15 +12,14 @@
 					"default": false,
 					"client_sync": true
 				},
-                "rift:light_blast": {
-                    "range": [
-                        0,
-                        10
-                    ],
-                    "type": "int",
-                    "default": 0,
-					"client_sync": true
-                },
+				"rift:eat_from_inventory_cooldown": {
+					"type": "bool",
+					"default": true
+				},
+				"rift:light_blast_notify": {
+					"type": "bool",
+					"default": false
+				},
 				"rift:is_forced_attacking": {
 					"type": "bool",
 					"default": false
@@ -28,10 +27,10 @@
                 "rift:energy": {
                     "range": [
 						0,
-						450
+						150
 					],
 					"type": "int",
-					"default": 450,
+					"default": 150,
 					"client_sync": true
                 },
                 "rift:tame_state": { //0 for standing, 1 for sitting, 2 for wandering
@@ -50,19 +49,12 @@
 					],
 					"type": "int",
 					"default": 0
-                },
-				"rift:bleeding": {
-					"type": "bool",
-					"default": false,
-					"client_sync": true
                 }
 			},
 			"animations": {
-                "contEatFromInventory": "controller.animation.general_eat_from_inventory",
-                "contRefillEnergyFromInventory": "controller.animation.general_refill_energy_from_inventory",
-				"contNotifyRider": "controller.animation.sauro_notify_rider",
+				"contEatFromInventoryCooldown": "controller.animation.general_eat_from_inventory_cooldown",
+				"contManageTags": "controller.animation.sauro_manage_tags",
 				"contResetLightBlastChargeWhenWeakened": "controller.animation.sauro_reset_light_blast_charge_when_weakened",
-				"contMovingTag": "controller.animation.add_moving_tag",
 				"contTameTag": "controller.animation.add_tame_tag",
 				"contBabyTag": "controller.animation.add_baby_tag",
 				"contRiddenTag": "controller.animation.add_ridden_tag",
@@ -71,17 +63,14 @@
 				"contHasTargetTag": "controller.animation.add_has_target_tag",
 				"contShearedTag": "controller.animation.add_sheared_tag",
 				"contInLoveTag": "controller.animation.add_in_love_tag",
-				"contCanLightBlastTag": "controller.animation.sauro_can_light_blast",
-                "contForcedAttack": "controller.animation.saurophaganax_forced_attack",
+				"contForcedAttack": "controller.animation.saurophaganax_forced_attack",
 				"contUnsittableWhenRidden": "controller.animation.become_unsittable_when_ridden",
 				"contTameState": "controller.animation.manage_tame_state",
 				"contBehaviorState": "controller.animation.manage_tame_behavior",
 				"contEnergyUsage": "controller.animation.saurophaganax_energy_movement_usage",
 				"contWarnLowEnergy": "controller.animation.warn_of_low_energy",
 				"contForcedReturnToSleep": "controller.animation.saurophaganax_forced_sleep_when_no_energy",
-				"contBleed": "controller.animation.general_manage_bleed",
-				"animEatFromInventory": "animation.use_eat_from_inventory",
-                "animRefillEnergyFromInventory": "animation.use_refill_energy_from_inventory",
+				"animEatFromInventoryCooldown": "animation.eat_from_inventory_cooldown",
 				"animUseEnergyWhileMoving": "animation.saurophaganax_decrease_energy_while_moving",
 				"animUseEnergyWhileMovingWeakened": "animation.saurophaganax_decrease_energy_while_moving_weakened",
 				"animEnergyRegenDelay": "animation.regenerate_energy_delay",
@@ -92,17 +81,13 @@
 				"animForcedAttack": "animation.forced_attack_saurophaganax",
 				"animForcedAttackWeakened": "animation.forced_attack_saurophaganax_weakened",
 				"animResetLightBlastCharge": "animation.reset_saurophaganax_light_blast_charge",
-				"animUnriddenLightBlast": "animation.saurophaganax_activate_light_blast",
-                "animBleed": "animation.general_bleed",
-                "animBleedCountdown": "animation.general_bleed_countdown"
+				"animUnriddenLightBlast": "animation.saurophaganax_activate_light_blast"
 			},
 			"scripts": {
 				"animate": [
-                    "contEatFromInventory",
-                    "contRefillEnergyFromInventory",
-					"contNotifyRider",
+					"contEatFromInventoryCooldown",
+					"contManageTags",
 					"contResetLightBlastChargeWhenWeakened",
-                    "contMovingTag",
 					"contTameTag",
 					"contBabyTag",
 					"contRiddenTag",
@@ -111,7 +96,6 @@
 					"contHasTargetTag",
 					"contShearedTag",
 					"contInLoveTag",
-                    "contCanLightBlastTag",
 					"contForcedAttack",
 					"contUnsittableWhenRidden",
 					"contTameState",
@@ -119,7 +103,6 @@
 					"contEnergyUsage",
 					"contWarnLowEnergy",
 					"contForcedReturnToSleep",
-                    "contBleed",
 					"animUnriddenLightBlast"
 				]
 			}
@@ -349,16 +332,6 @@
 						},
 						{ 
 							"item": "rift:boiled_hemolymph", 
-							"priority": 0, 
-							"max_amount": 1 
-						},
-						{ 
-							"item": "rift:raw_fibrous_meat", 
-							"priority": 0, 
-							"max_amount": 1 
-						},
-						{ 
-							"item": "rift:cooked_fibrous_meat", 
 							"priority": 0, 
 							"max_amount": 1 
 						}
@@ -1123,8 +1096,7 @@
 					"saurophaganax",
 					"mob",
 					"carnivore",
-					"dinosaur",
-                    "mediumSize"
+					"dinosaur"
 				]
 			},
 			"minecraft:navigation.walk": {
@@ -1423,18 +1395,6 @@
 												"subject": "other",
 												"domain": "hand",
 												"value": "rift:boiled_hemolymph"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "rift:raw_fibrous_meat"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "rift:cooked_fibrous_meat"
 											}
 										]
 									},
@@ -1513,21 +1473,7 @@
 										"domain": "hand",
 										"operator": "!=",
 										"value": "rift:bug_treat"
-									},
-                                    {
-                                        "test": "has_equipment",
-                                        "subject": "other",
-                                        "domain": "hand",
-                                        "operator": "!=",
-                                        "value": "rift:raw_fibrous_meat"
-                                    },
-                                    {
-                                        "test": "has_equipment",
-                                        "subject": "other",
-                                        "domain": "hand",
-                                        "operator": "!=",
-                                        "value": "rift:cooked_fibrous_meat"
-                                    }
+									}
 								]
 							},
 							"event": "rift:manage_state",
@@ -1690,134 +1636,6 @@
 							"target": "self"
 						},
 						"use_item": true
-					},
-					{
-						"on_interact": {
-							"filters": {
-								"all_of": [
-									{
-                                        "test": "has_equipment",
-                                        "subject": "other",
-                                        "domain": "hand",
-                                        "value": "rift:raw_fibrous_meat"
-                                    },
-									{
-										"test": "has_component",
-										"subject": "self",
-										"value": "minecraft:is_baby",
-										"operator": "!="
-									},
-									{
-										"test": "has_component",
-										"subject": "self",
-										"value": "minecraft:is_tamed"
-									},
-									{
-										"test": "is_sneaking",
-										"subject": "other",
-										"value": true
-									},
-                                    {
-                                        "test": "int_property",
-                                        "subject": "self",
-                                        "domain": "rift:energy",
-                                        "operator": "<",
-                                        "value": 450
-                                    }
-								]
-							},
-							"event": "rift:regenerate_energy_from_raw_food",
-							"target": "self"
-						},
-						"use_item": true
-					},
-					{
-						"on_interact": {
-							"filters": {
-								"all_of": [
-									{
-                                        "test": "has_equipment",
-                                        "subject": "other",
-                                        "domain": "hand",
-                                        "value": "rift:cooked_fibrous_meat"
-                                    },
-									{
-										"test": "has_component",
-										"subject": "self",
-										"value": "minecraft:is_baby",
-										"operator": "!="
-									},
-									{
-										"test": "has_component",
-										"subject": "self",
-										"value": "minecraft:is_tamed"
-									},
-									{
-										"test": "is_sneaking",
-										"subject": "other",
-										"value": true
-									},
-                                    {
-                                        "test": "int_property",
-                                        "subject": "self",
-                                        "domain": "rift:energy",
-                                        "operator": "<",
-                                        "value": 450
-                                    }
-								]
-							},
-							"event": "rift:regenerate_energy_from_cooked_food",
-							"target": "self"
-						},
-						"use_item": true
-					},
-					{
-						"on_interact": {
-							"filters": {
-								"all_of": [
-									{
-                                        "any_of": [
-                                            {
-                                                "test": "has_equipment",
-                                                "subject": "other",
-                                                "domain": "hand",
-                                                "value": "rift:raw_fibrous_meat"
-                                            },
-                                            {
-                                                "test": "has_equipment",
-                                                "subject": "other",
-                                                "domain": "hand",
-                                                "value": "rift:cooked_fibrous_meat"
-                                            }
-                                        ]
-                                    },
-									{
-										"test": "has_component",
-										"subject": "self",
-										"value": "minecraft:is_baby",
-										"operator": "!="
-									},
-									{
-										"test": "has_component",
-										"subject": "self",
-										"value": "minecraft:is_tamed"
-									},
-									{
-										"test": "is_sneaking",
-										"subject": "other",
-										"value": true
-									},
-                                    {
-                                        "test": "int_property",
-                                        "subject": "self",
-                                        "domain": "rift:energy",
-                                        "value": 450
-                                    }
-								]
-							},
-							"event": "rift:lol4",
-							"target": "self"
-						}
 					},
 					{
 						"on_interact": {
@@ -3669,7 +3487,7 @@
 							}
 						},
 						"damage_multiplier": 0.5,
-						"cause": "entity_attack"
+						"cause": "attack"
 					},
 					{
 						"on_damage": {
@@ -4008,8 +3826,7 @@
 						"event": "rift:can_sit"
 					}
 				]
-			},
-            "minecraft:conditional_bandwidth_optimization": {}
+			}
         },
         "events": {
 			"minecraft:entity_spawned": {
@@ -4027,6 +3844,11 @@
 								"rift:pushable",
 								"rift:can_attack"
 							]
+						},
+						"run_command": {
+							"command": [
+								"scoreboard players set @s saurophLightBlst 0"
+							]
 						}
 					},
 					{
@@ -4041,6 +3863,11 @@
 								"rift:variant_one",
 								"rift:pushable",
 								"rift:can_attack"
+							]
+						},
+						"run_command": {
+							"command": [
+								"scoreboard players set @s saurophLightBlst 0"
 							]
 						}
 					},
@@ -4057,6 +3884,11 @@
 								"rift:pushable",
 								"rift:can_attack"
 							]
+						},
+						"run_command": {
+							"command": [
+								"scoreboard players set @s saurophLightBlst 0"
+							]
 						}
 					},
 					{
@@ -4071,6 +3903,11 @@
 								"rift:variant_three",
 								"rift:pushable",
 								"rift:can_attack"
+							]
+						},
+						"run_command": {
+							"command": [
+								"scoreboard players set @s saurophLightBlst 0"
 							]
 						}
 					}
@@ -4164,9 +4001,11 @@
 								"rift:aggravating_horn_attack"
 							]
 						},
-                        "set_property": {
-                            "rift:light_blast": "0"
-                        }
+						"run_command": {
+							"command": [
+								"scoreboard players set @s saurophLightBlst 0"
+							]
+						}
 					},
 					{
 						"filters": {
@@ -4257,6 +4096,11 @@
 								"rift:saurophaganax_baby_tameable",
 								"rift:temptable"
 							]
+						},
+						"run_command": {
+							"command": [
+								"scoreboard players set @s saurophLightBlst 0"
+							]
 						}
 					},
 					{
@@ -4316,8 +4160,7 @@
 				"remove": {
 					"component_groups": [
 						"rift:saurophaganax_adult_wild_not_trusting",
-						"rift:default_targets",
-                        "rift:can_attack"
+						"rift:default_targets"
 					]
 				},
 				"run_command": {
@@ -4333,8 +4176,7 @@
 				"add": {
 					"component_groups": [
 						"rift:saurophaganax_adult_wild_not_trusting",
-						"rift:default_targets",
-                        "rift:can_attack"
+						"rift:default_targets"
 					]
 				},
 				"remove": {
@@ -4402,8 +4244,7 @@
 					"component_groups": [
 						"rift:saurophaganax_tamed",
 						"rift:saurophaganax_adult_tamed",
-						"rift:rideable",
-                        "rift:can_attack"
+						"rift:rideable"
 					]
 				},
 				"remove": {
@@ -4533,30 +4374,27 @@
 					]
 				}
 			},
-            "rift:increase_light_blast_meter": {
-                "set_property": {
-                    "rift:light_blast": "query.property('rift:light_blast') + 1"
-                }
-            },
-            "rift:reset_light_blast_meter": {
-                "set_property": {
-                    "rift:light_blast": "0"
-                }
-            },
 			"rift:end_light_blast": {
 				"remove": {
 					"component_groups": [
 						"rift:saurophaganax_light_blast"
 					]
 				},
-                "set_property": {
-                    "rift:light_blast": "0"
-                }
+				"run_command": {
+					"command": [
+						"scoreboard players set @s saurophLightBlst 0"
+					]
+				}
 			},
 			"rift:activate_light_blast": {
 				"add": {
 					"component_groups": [
 						"rift:saurophaganax_light_blast"
+					]
+				},
+				"run_command": {
+					"command": [
+						"scoreboard players set @s saurophLightBlst 11"
 					]
 				}
 			},
@@ -4590,12 +4428,10 @@
 				},
 				"run_command": {
 					"command": [
-						"event entity @s rift:decrease_energy_while_light_blasting"
+						"event entity @s rift:decrease_energy_while_light_blasting",
+						"scoreboard players set @s saurophLightBlst 0"
 					]
-				},
-                "set_property": {
-                    "rift:light_blast": "0"
-                }
+				}
 			},
 			"rift:on_standing": {
 				"sequence": [
@@ -4946,9 +4782,6 @@
 					"rift:is_forced_attacking": false
 				}
 			},
-            "rift:using_forced_attack": {},
-            "rift:eat_from_inventory": {},
-            "rift:refill_energy_from_inventory": {},
 			"rift:can_notify": {
 				"set_property": {
 					"rift:light_blast_notify": true
@@ -4957,6 +4790,16 @@
 			"rift:cannot_notify": {
 				"set_property": {
 					"rift:light_blast_notify": false
+				}
+			},
+			"rift:start_eat_from_inventory_cooldown": {
+				"set_property": {
+					"rift:eat_from_inventory_cooldown": true
+				}
+			},
+			"rift:stop_eat_from_inventory_cooldown": {
+				"set_property": {
+					"rift:eat_from_inventory_cooldown": false
 				}
 			},
 			"rift:moving_slowly_low_energy": {
@@ -5246,32 +5089,12 @@
 			},
 			"rift:regenerate_energy": {
 				"set_property": {
-					"rift:energy": "query.property('rift:energy') + 10"
-				}
-			},
-			"rift:regenerate_energy_from_raw_food": {
-				"set_property": {
-					"rift:energy": "query.property('rift:energy') + 15"
-				},
-				"run_command": {
-					"command": [
-						"playsound random.eat @a[r=4]"
-					]
-				}
-			},
-			"rift:regenerate_energy_from_cooked_food": {
-				"set_property": {
-					"rift:energy": "query.property('rift:energy') + 45"
-				},
-				"run_command": {
-					"command": [
-						"playsound random.eat @a[r=4]"
-					]
+					"rift:energy": "query.property('rift:energy') + 5"
 				}
 			},
 			"rift:refill_energy": {
 				"set_property": {
-					"rift:energy": "225"
+					"rift:energy": "150"
 				}
 			},
 			//for potion effects
@@ -5557,24 +5380,7 @@
 						"tellraw @p {\"rawtext\":[{\"translate\":\"reminder.cannot_use_regular_food.text\"}]}"
 					]
 				}
-			},
-			"rift:lol4": {
-				"run_command": {
-					"command": [
-						"tellraw @p {\"rawtext\":[{\"translate\":\"reminder.cannot_use_energy_boosters.text\"}]}"
-					]
-				}
-			},
-            "rift:start_bleeding": {
-                "set_property": {
-                    "rift:bleeding": true
-                }
-            },
-            "rift:stop_bleeding": {
-                "set_property": {
-                    "rift:bleeding": false
-                }
-            }
+			}
 		}
     }
 }

@@ -2054,12 +2054,10 @@ export function furnaceMenuGui(entity, hitEntity) {
     .show(entity).then(result => {
         if (result.formValues[0] == true) {
             hitEntity.addTag('smelting')
-            hitEntity.triggerEvent('rift:start_smelting')
             entity.runCommandAsync(`tellraw @s {"rawtext":[{"text":"Smelting mode activated. All items in this creature's inventory will be used as both fuel and smelting materials at the same time"}]}`)
         }
         else {
             hitEntity.removeTag('smelting')
-            hitEntity.triggerEvent('rift:stop_smelting')
             entity.runCommandAsync(`tellraw @s {"rawtext":[{"text":"Smelting mode deactivated"}]}`)
         }
     })

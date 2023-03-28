@@ -11,6 +11,10 @@
 					"type": "bool",
 					"default": false
 				},
+				"rift:eat_from_inventory_cooldown": {
+					"type": "bool",
+					"default": true
+				},
 				"rift:is_forced_attacking": {
 					"type": "bool",
 					"default": false
@@ -28,10 +32,10 @@
                 "rift:energy": {
                     "range": [
 						0,
-						450
+						150
 					],
 					"type": "int",
-					"default": 450,
+					"default": 150,
 					"client_sync": true
                 },
                 "rift:tame_state": { //0 for standing, 1 for sitting, 2 for wandering
@@ -50,18 +54,11 @@
 					],
 					"type": "int",
 					"default": 0
-                },
-				"rift:bleeding": {
-					"type": "bool",
-					"default": false,
-					"client_sync": true
                 }
 			},
 			"animations": {
-                "contEatFromInventory": "controller.animation.general_eat_from_inventory",
-                "contRefillEnergyFromInventory": "controller.animation.general_refill_energy_from_inventory",
 				"contSmeltingCooldown": "controller.animation.apato_furnace_smelting_cooldown",
-				"contMovingTag": "controller.animation.add_moving_tag",
+				"contEatFromInventoryCooldown": "controller.animation.general_eat_from_inventory_cooldown",
 				"contTameTag": "controller.animation.add_tame_tag",
 				"contBabyTag": "controller.animation.add_baby_tag",
 				"contRiddenTag": "controller.animation.add_ridden_tag",
@@ -75,10 +72,8 @@
 				"contBehaviorState": "controller.animation.manage_tame_behavior",
 				"contEnergyUsage": "controller.animation.apatosaurus_energy_movement_usage",
 				"contWarnLowEnergy": "controller.animation.warn_of_low_energy",
-				"contBleed": "controller.animation.general_manage_bleed",
-				"animEatFromInventory": "animation.use_eat_from_inventory",
-                "animRefillEnergyFromInventory": "animation.use_refill_energy_from_inventory",
 				"animSmeltFurnace": "animation.smelting_countdown",
+				"animEatFromInventoryCooldown": "animation.eat_from_inventory_cooldown",
 				"animUseEnergyWhileMoving": "animation.apatosaurus_decrease_energy_while_moving",
 				"animUseEnergyWhileMovingBulldoze": "animation.apatosaurus_decrease_energy_while_moving_bulldozing",
 				"animEnergyRegenDelay": "animation.regenerate_energy_delay",
@@ -86,16 +81,12 @@
 				"animLowOnEnergyEffects": "animation.effects_while_low_on_energy",
 				"animNoEnergyEffects": "animation.effects_while_no_energy",
 				"animForcedAttack": "animation.forced_attack_apatosaurus",
-				"animBreakStuff": "animation.apato_break_stuff",
-                "animBleed": "animation.general_bleed",
-                "animBleedCountdown": "animation.general_bleed_countdown"
+				"animBreakStuff": "animation.apato_break_stuff"
 			},
 			"scripts": {
 				"animate": [
-                    "contEatFromInventory",
-                    "contRefillEnergyFromInventory",
 					"contSmeltingCooldown",
-                    "contMovingTag",
+					"contEatFromInventoryCooldown",
 					"contTameTag",
 					"contBabyTag",
 					"contRiddenTag",
@@ -108,8 +99,7 @@
 					"contForcedAttack",
 					"contBehaviorState",
 					"contEnergyUsage",
-					"contWarnLowEnergy",
-                    "contBleed"
+					"contWarnLowEnergy"
 				]
 			}
         },
@@ -831,21 +821,11 @@
 						"vindicator",
 						"evoker",
 						"pillager",
-                        "dodo",
 						"utahraptor",
 						"parasaurolophus",
 						"dimetrodon",
 						"sarcosuchus",
-						"saurophaganax",
-                        "direwolf",
-                        "megaloceros",
-                        "baryonyx",
-                        "dilophosaurus",
-                        "gallimimus",
-                        "tenontosaurus",
-                        "direbear",
-                        "coelophysis",
-                        "pteranodon"
+						"saurophaganax"
 					],
 					"seats": [
 						{
@@ -1277,8 +1257,7 @@
 					"apatosaurus",
 					"mob",
 					"herbivore",
-					"dinosaur",
-                    "largeSize"
+					"dinosaur"
 				]
 			},
 			"minecraft:navigation.walk": {
@@ -1318,7 +1297,7 @@
 							}
 						},
 						"damage_multiplier": 0.5,
-						"cause": "entity_attack"
+						"cause": "attack"
 					},
 					{
 						"on_damage": {
@@ -1657,13 +1636,7 @@
 												"subject": "other",
 												"domain": "hand",
 												"value": "minecraft:mangrove_leaves"
-											},
-                                            {
-                                                "test": "has_equipment",
-                                                "subject": "other",
-                                                "domain": "hand",
-                                                "value": "rift:fiber_bar"
-                                            }
+											}
 										]
 									},
 									{
@@ -1809,13 +1782,6 @@
 										"domain": "hand",
 										"operator": "!=",
 										"value": "rift:leafy_treat"
-									},
-									{
-										"test": "has_equipment",
-										"subject": "other",
-										"domain": "hand",
-                                        "operator": "!=",
-										"value": "rift:fiber_bar"
 									}
 								]
 							},
@@ -1898,84 +1864,6 @@
 						},
 						"interact_text": "action.interact.attachchest",
 						"use_item": true
-					},
-					{
-						"on_interact": {
-							"filters": {
-								"all_of": [
-									{
-										"test": "has_equipment",
-										"subject": "other",
-										"domain": "hand",
-										"value": "rift:fiber_bar"
-									},
-									{
-										"test": "has_component",
-										"subject": "self",
-										"value": "minecraft:is_baby",
-										"operator": "!="
-									},
-									{
-										"test": "has_component",
-										"subject": "self",
-										"value": "minecraft:is_tamed"
-									},
-									{
-										"test": "is_sneaking",
-										"subject": "other",
-										"value": true
-									},
-                                    {
-                                        "test": "int_property",
-                                        "subject": "self",
-                                        "domain": "rift:energy",
-                                        "operator": "<",
-                                        "value": 450
-                                    }
-								]
-							},
-							"event": "rift:regenerate_energy_from_food",
-							"target": "self"
-						},
-						"use_item": true
-					},
-					{
-						"on_interact": {
-							"filters": {
-								"all_of": [
-									{
-										"test": "has_equipment",
-										"subject": "other",
-										"domain": "hand",
-										"value": "rift:fiber_bar"
-									},
-									{
-										"test": "has_component",
-										"subject": "self",
-										"value": "minecraft:is_baby",
-										"operator": "!="
-									},
-									{
-										"test": "has_component",
-										"subject": "self",
-										"value": "minecraft:is_tamed"
-									},
-									{
-										"test": "is_sneaking",
-										"subject": "other",
-										"value": true
-									},
-                                    {
-                                        "test": "int_property",
-                                        "subject": "self",
-                                        "domain": "rift:energy",
-                                        "value": 450
-                                    }
-								]
-							},
-							"event": "rift:lol4",
-							"target": "self"
-						}
 					},
 					{
 						"on_interact": {
@@ -4306,8 +4194,7 @@
 						"event": "rift:can_sit"
 					}
 				]
-			},
-            "minecraft:conditional_bandwidth_optimization": {}
+			}
         },
         "events": {
 			"minecraft:entity_spawned": {
@@ -4793,38 +4680,16 @@
 					]
 				}
 			},
-			"rift:apato_mortaring": {
-                "sequence": [
-                    {},
-                    {
-                        "filters": {
-                            "test": "is_underground",
-                            "subject": "self",
-                            "value": false
-                        },
-                        "run_command": {
-                            "command": [
-                                "execute as @s[ry=45, rym=-45] run execute as @e[tag=!tamed, type=!player, type=!item, type=!rift:mortar, type=!rift:mortar_shell, type=!rift:egg,  family=!inanimate, c=1, x=~-32, dx=64, y=~-8, dy=64, z=~+16, dz=64] positioned as @e[tag=!tamed, type=!player, type=!item, type=!rift:mortar, type=!rift:mortar_shell, type=!rift:egg,  family=!inanimate, c=1, x=~-32, dx=64, y=~-8, dy=64, z=~+16, dz=64] run summon rift:mortar_shell ~ ~+30 ~",
-                                "execute as @s[ry=135, rym=45] run execute as @e[tag=!tamed, type=!player, type=!item, type=!rift:mortar, type=!rift:mortar_shell, type=!rift:egg,  family=!inanimate, c=1, x=~-16, dx=-64, y=~-8, dy=64, z=~32, dz=-64] positioned as @e[tag=!tamed, type=!player, type=!item, type=!rift:mortar, type=!rift:mortar_shell, type=!rift:egg,  family=!inanimate, c=1, x=~-16, dx=-64, y=~-8, dy=64, z=~32, dz=-64] run summon rift:mortar_shell ~ ~+30 ~",
-                                "execute as @s[ry=180, rym=135] run execute as @e[tag=!tamed, type=!player, type=!item, type=!rift:mortar, type=!rift:mortar_shell, type=!rift:egg,  family=!inanimate, c=1, x=~-32, dx=64, y=~-8, dy=64, z=~-16, dz=-64] positioned as @e[tag=!tamed, type=!player, type=!item, type=!rift:mortar, type=!rift:mortar_shell, type=!rift:egg,  family=!inanimate, c=1, x=~-32, dx=64, y=~-8, dy=64, z=~-16, dz=-64] run summon rift:mortar_shell ~ ~+30 ~",
-                                "execute as @s[ry=-135, rym=-180] run execute as @e[tag=!tamed, type=!player, type=!item, type=!rift:mortar, type=!rift:mortar_shell, type=!rift:egg,  family=!inanimate, c=1, x=~-32, dx=64, y=~-8, dy=64, z=~-16, dz=-64] positioned as @e[tag=!tamed, type=!player, type=!item, type=!rift:mortar, type=!rift:mortar_shell, type=!rift:egg,  family=!inanimate, c=1, x=~-32, dx=64, y=~-8, dy=64, z=~-16, dz=-64] run summon rift:mortar_shell ~ ~+30 ~",
-                                "execute as @s[ry=-45, rym=-135] run execute as @e[tag=!tamed, type=!player, type=!item, type=!rift:mortar, type=!rift:mortar_shell, type=!rift:egg,  family=!inanimate, c=1, x=~16, dx=64, y=~-8, dy=64, z=~-32, dz=64] positioned as @e[tag=!tamed, type=!player, type=!item, type=!rift:mortar, type=!rift:mortar_shell, type=!rift:egg,  family=!inanimate, c=1, x=~16, dx=64, y=~-8, dy=64, z=~-32, dz=64] run summon rift:mortar_shell ~ ~+30 ~"
-                            ]
-                        }
-                    },
-                    {
-                        "filters": {
-                            "test": "is_underground",
-                            "subject": "self",
-                            "value": true
-                        },
-                        "run_command": {
-                            "command": [
-                                "summon rift:mortar_shell ~ ~ ~ rift:spawned_while_underground"
-                            ]
-                        }
-                    }
-                ]
+			"rift:apato_mortaring_not_underground": {
+				"run_command": {
+					"command": [
+						"execute as @s[ry=45, rym=-45] run execute as @e[tag=!tamed, type=!player, type=!item, type=!rift:mortar, type=!rift:mortar_shell, type=!rift:egg,  family=!inanimate, c=1, x=~-32, dx=64, y=~-8, dy=64, z=~+16, dz=64] positioned as @e[tag=!tamed, type=!player, type=!item, type=!rift:mortar, type=!rift:mortar_shell, type=!rift:egg,  family=!inanimate, c=1, x=~-32, dx=64, y=~-8, dy=64, z=~+16, dz=64] run summon rift:mortar_shell ~ ~+30 ~",
+						"execute as @s[ry=135, rym=45] run execute as @e[tag=!tamed, type=!player, type=!item, type=!rift:mortar, type=!rift:mortar_shell, type=!rift:egg,  family=!inanimate, c=1, x=~-16, dx=-64, y=~-8, dy=64, z=~32, dz=-64] positioned as @e[tag=!tamed, type=!player, type=!item, type=!rift:mortar, type=!rift:mortar_shell, type=!rift:egg,  family=!inanimate, c=1, x=~-16, dx=-64, y=~-8, dy=64, z=~32, dz=-64] run summon rift:mortar_shell ~ ~+30 ~",
+						"execute as @s[ry=180, rym=135] run execute as @e[tag=!tamed, type=!player, type=!item, type=!rift:mortar, type=!rift:mortar_shell, type=!rift:egg,  family=!inanimate, c=1, x=~-32, dx=64, y=~-8, dy=64, z=~-16, dz=-64] positioned as @e[tag=!tamed, type=!player, type=!item, type=!rift:mortar, type=!rift:mortar_shell, type=!rift:egg,  family=!inanimate, c=1, x=~-32, dx=64, y=~-8, dy=64, z=~-16, dz=-64] run summon rift:mortar_shell ~ ~+30 ~",
+						"execute as @s[ry=-135, rym=-180] run execute as @e[tag=!tamed, type=!player, type=!item, type=!rift:mortar, type=!rift:mortar_shell, type=!rift:egg,  family=!inanimate, c=1, x=~-32, dx=64, y=~-8, dy=64, z=~-16, dz=-64] positioned as @e[tag=!tamed, type=!player, type=!item, type=!rift:mortar, type=!rift:mortar_shell, type=!rift:egg,  family=!inanimate, c=1, x=~-32, dx=64, y=~-8, dy=64, z=~-16, dz=-64] run summon rift:mortar_shell ~ ~+30 ~",
+						"execute as @s[ry=-45, rym=-135] run execute as @e[tag=!tamed, type=!player, type=!item, type=!rift:mortar, type=!rift:mortar_shell, type=!rift:egg,  family=!inanimate, c=1, x=~16, dx=64, y=~-8, dy=64, z=~-32, dz=64] positioned as @e[tag=!tamed, type=!player, type=!item, type=!rift:mortar, type=!rift:mortar_shell, type=!rift:egg,  family=!inanimate, c=1, x=~16, dx=64, y=~-8, dy=64, z=~-32, dz=64] run summon rift:mortar_shell ~ ~+30 ~"
+					]
+				}
 			},
 			"rift:apato_mortaring_underground": {
 				"run_command": {
@@ -5475,11 +5340,16 @@
 					"rift:is_forced_attacking": false
 				}
 			},
-            "rift:using_forced_attack": {},
-            "rift:eat_from_inventory": {},
-            "rift:refill_energy_from_inventory": {},
-            "rift:use_mounted_weapon": {},
-            "rift:finish_smelt": {},
+			"rift:start_eat_from_inventory_cooldown": {
+				"set_property": {
+					"rift:eat_from_inventory_cooldown": true
+				}
+			},
+			"rift:stop_eat_from_inventory_cooldown": {
+				"set_property": {
+					"rift:eat_from_inventory_cooldown": false
+				}
+			},
 			"rift:start_smelting": {
 				"set_property": {
 					"rift:is_smelting": true
@@ -5772,20 +5642,10 @@
 			},
 			"rift:regenerate_energy": {
 				"set_property": {
-					"rift:energy": "query.property('rift:energy') + 10"
+					"rift:energy": "query.property('rift:energy') + 5"
 				}
 			},
-			"rift:regenerate_energy_from_food": {
-				"set_property": {
-					"rift:energy": "query.property('rift:energy') + 45"
-				},
-				"run_command": {
-					"command": [
-						"playsound random.eat @a[r=4]"
-					]
-				}
-			},
-            // for potion_effects
+			//for potion effects
 			"rift:drink_night_vision_potion_one": {
 				"run_command": {
 					"command": [
@@ -6075,24 +5935,7 @@
 						"tellraw @p {\"rawtext\":[{\"translate\":\"reminder.cannot_use_regular_food.text\"}]}"
 					]
 				}
-			},
-			"rift:lol4": {
-				"run_command": {
-					"command": [
-						"tellraw @p {\"rawtext\":[{\"translate\":\"reminder.cannot_use_energy_boosters.text\"}]}"
-					]
-				}
-			},
-            "rift:start_bleeding": {
-                "set_property": {
-                    "rift:bleeding": true
-                }
-            },
-            "rift:stop_bleeding": {
-                "set_property": {
-                    "rift:bleeding": false
-                }
-            }
+			}
 		}
     }
 }

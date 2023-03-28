@@ -1,166 +1,44 @@
 {
     "format_version": "1.16.0",
     "minecraft:entity": {
+        "description": {
+            "identifier": "minecraft:cave_spider",
+            "is_spawnable": true,
+            "is_summonable": true,
+            "is_experimental": false,
+            "animations": {
+                "contHypnotizedTag": "controller.animation.add_hypnotized_tag",
+                "contDieWithoutTenontosaurus": "controller.animation.general_die_without_tenontosaurus",
+                "animFindTenontosaurus": "animation.find_tenontosaurus",
+                "animDeathTimer": "animation.hypnosis_death_timer"
+            },
+            "scripts": {
+                "animate": [
+                    "contHypnotizedTag",
+                    "contDieWithoutTenontosaurus"
+                ]
+            },
+            "properties": {
+                "rift:is_hypnotized": {
+                    "type": "bool",
+                    "default": false,
+                    "client_sync": true
+                }
+            }
+        },
         "component_groups": {
-            "minecraft:spider_angry": {
-                "minecraft:angry": {
-                    "calm_event": {
-                        "event": "minecraft:on_calm",
-                        "target": "self"
-                    },
-                    "duration": 10,
-                    "duration_delta": 3
-                },
-                "minecraft:behavior.leap_at_target": {
-                    "must_be_on_ground": false,
-                    "priority": 5,
-                    "yd": 0.4
-                },
-                "minecraft:behavior.melee_attack": {
-                    "priority": 4,
-                    "reach_multiplier": 1.4,
-                    "track_target": true
-                }
-            },
-            "minecraft:spider_hostile": {
-                "minecraft:behavior.leap_at_target": {
-                    "must_be_on_ground": false,
-                    "priority": 5,
-                    "yd": 0.4
-                },
-                "minecraft:behavior.melee_attack": {
-                    "priority": 4,
-                    "random_stop_interval": 100,
-                    "reach_multiplier": 0.8,
-                    "track_target": true
-                },
-                "minecraft:behavior.nearest_attackable_target": {
-                    "attack_interval": 5,
-                    "entity_types": [
-                        {
-                            "filters": {
-                                "any_of": [
-                                    {
-                                        "subject": "other",
-                                        "test": "is_family",
-                                        "value": "snowgolem"
-                                    },
-                                    {
-                                        "subject": "other",
-                                        "test": "is_family",
-                                        "value": "irongolem"
-                                    }
-                                ]
-                            },
-                            "max_dist": 16
-                        },
-                        {
-                            "filters": {
-                                "all_of": [
-                                    {
-                                        "subject": "other",
-                                        "test": "is_family",
-                                        "value": "player"
-                                    },
-                                    {
-                                        "subject": "other",
-                                        "test": "is_riding",
-                                        "value": false
-                                    }
-                                ]
-                            },
-                            "max_dist": 16
-                        },
-                        {
-                            "filters": {
-                                "subject": "other",
-                                "test": "is_family",
-                                "value": "parasaurAngerer"
-                            },
-                            "max_dist": 64
-                        }
-                    ],
-                    "must_see": true,
-                    "priority": 3
-                },
-                "minecraft:environment_sensor": {
-                    "triggers": {
-                        "event": "minecraft:become_neutral",
-                        "filters": {
-                            "operator": ">",
-                            "test": "is_brightness",
-                            "value": 0.49
-                        }
-                    }
-                }
-            },
             "minecraft:spider_jockey": {
                 "minecraft:addrider": {
                     "entity_type": "minecraft:skeleton"
                 },
                 "minecraft:rideable": {
+                    "seat_count": 1,
                     "family_types": [
                         "skeleton"
                     ],
-                    "seat_count": 1,
                     "seats": {
-                        "position": [
-                            0.0,
-                            0.3,
-                            -0.1
-                        ]
+                        "position": [0.0, 0.3, -0.1]
                     }
-                }
-            },
-            "minecraft:spider_neutral": {
-                "minecraft:behavior.nearest_attackable_target": {
-                    "attack_interval": 10,
-                    "entity_types": [
-                        {
-                            "filters": {
-                                "subject": "other",
-                                "test": "is_family",
-                                "value": "parasaurAngerer"
-                            },
-                            "max_dist": 64
-                        }
-                    ],
-                    "must_see": true,
-                    "priority": 3
-                },
-                "minecraft:environment_sensor": {
-                    "triggers": {
-                        "event": "minecraft:become_hostile",
-                        "filters": {
-                            "operator": "<",
-                            "test": "is_brightness",
-                            "value": 0.49
-                        }
-                    }
-                },
-                "minecraft:on_target_acquired": {
-                    "event": "minecraft:become_angry"
-                }
-            },
-            "minecraft:spider_poison_easy": {
-                "minecraft:attack": {
-                    "damage": 2,
-                    "effect_duration": 0,
-                    "effect_name": "poison"
-                }
-            },
-            "minecraft:spider_poison_hard": {
-                "minecraft:attack": {
-                    "damage": 2,
-                    "effect_duration": 15,
-                    "effect_name": "poison"
-                }
-            },
-            "minecraft:spider_poison_normal": {
-                "minecraft:attack": {
-                    "damage": 2,
-                    "effect_duration": 7,
-                    "effect_name": "poison"
                 }
             },
             "minecraft:spider_stray_jockey": {
@@ -168,16 +46,12 @@
                     "entity_type": "minecraft:skeleton.stray"
                 },
                 "minecraft:rideable": {
+                    "seat_count": 1,
                     "family_types": [
                         "skeleton"
                     ],
-                    "seat_count": 1,
                     "seats": {
-                        "position": [
-                            0.0,
-                            0.3,
-                            -0.1
-                        ]
+                        "position": [0.0, 0.3, -0.1]
                     }
                 }
             },
@@ -186,95 +60,256 @@
                     "entity_type": "minecraft:skeleton.wither"
                 },
                 "minecraft:rideable": {
+                    "seat_count": 1,
                     "family_types": [
                         "skeleton"
                     ],
-                    "seat_count": 1,
                     "seats": {
-                        "position": [
-                            0.0,
-                            0.25,
-                            -0.1
-                        ]
+                        "position": [0.0, 0.25, -0.1]
                     }
                 }
             },
-            "rift:attacking_for_tenontosaurus": {
-                "minecraft:behavior.leap_at_target": {
-                    "must_be_on_ground": false,
-                    "priority": 5,
-                    "yd": 0.4
-                },
-                "minecraft:behavior.melee_attack": {
-                    "priority": 4,
-                    "reach_multiplier": 0.8,
-                    "track_target": true
-                },
-                "minecraft:on_target_escape": {
-                    "event": "rift:stop_attacking_for_tenontosaurus",
-                    "target": "self"
+            "rift:hypnotized_with_jockey": {
+                "minecraft:rideable": {
+                    "seat_count": 1,
+                    "family_types": [
+                        "skeleton"
+                    ],
+                    "seats": {
+                        "position": [0.0, 0.25, -0.1]
+                    }
                 }
             },
-            "rift:follow_tamed_tenontosaurus": {
-                "minecraft:behavior.nearest_prioritized_attackable_target": {
+            "rift:hypnotized_spider_jockey": {
+                "minecraft:addrider": {
+                    "entity_type": "minecraft:skeleton",
+                    "spawn_event": "rift:spawn_hypnotized_by_tenontosaurus"
+                },
+                "minecraft:rideable": {
+                    "seat_count": 1,
+                    "family_types": [
+                        "skeleton"
+                    ],
+                    "seats": {
+                        "position": [0.0, 0.25, -0.1]
+                    }
+                }
+            },
+            "rift:hypnotized_spider_stray_jockey": {
+                "minecraft:addrider": {
+                    "entity_type": "minecraft:stray",
+                    "spawn_event": "rift:spawn_hypnotized_by_tenontosaurus"
+                },
+                "minecraft:rideable": {
+                    "seat_count": 1,
+                    "family_types": [
+                        "skeleton"
+                    ],
+                    "seats": {
+                        "position": [0.0, 0.25, -0.1]
+                    }
+                }
+            },
+            "rift:hypnotized_spider_wither_jockey": {
+                "minecraft:addrider": {
+                    "entity_type": "minecraft:wither_skeleton",
+                    "spawn_event": "rift:spawn_hypnotized_by_tenontosaurus"
+                },
+                "minecraft:rideable": {
+                    "seat_count": 1,
+                    "family_types": [
+                        "skeleton"
+                    ],
+                    "seats": {
+                        "position": [0.0, 0.25, -0.1]
+                    }
+                }
+            },
+            "minecraft:spider_neutral": {
+                "minecraft:environment_sensor": {
+                    "triggers": {
+                        "filters": { 
+                            "test" : "is_brightness", 
+                            "operator" : "<", 
+                            "value" : 0.49 
+                        },
+                        "event": "minecraft:become_hostile"
+                    }
+                },
+                "minecraft:behavior.nearest_attackable_target": {
+                    "priority": 3,
+                    "must_see": true,
+                    "attack_interval": 10,
                     "entity_types": [
                         {
                             "filters": {
+                                "test": "is_family",
                                 "subject": "other",
-                                "test": "has_tag",
-                                "value": "tenontoTamedTarget"
+                                "value": "parasaurAngerer"
                             },
-                            "max_dist": 48,
-                            "priority": 0
+                            "max_dist": 64
+                        }
+                    ]
+                },
+                "minecraft:on_target_acquired": {
+                    "event": "minecraft:become_angry"
+                }
+            },
+            "minecraft:spider_hostile": {
+                "minecraft:environment_sensor": {
+                    "triggers": {
+                        "filters": {  
+                            "test": "is_brightness", 
+                            "operator": ">", 
+                            "value": 0.49 
+                        },
+                        "event": "minecraft:become_neutral"
+                    }
+                },
+                "minecraft:behavior.nearest_attackable_target": {
+                    "priority": 3,
+                    "must_see": true,
+                    "attack_interval": 5,
+                    "entity_types": [
+                        {
+                            "filters": {
+                                "any_of": [
+                                { "test" :  "is_family", "subject" : "other", "value" :  "snowgolem"},
+                                { "test" :  "is_family", "subject" : "other", "value" :  "irongolem"}
+                                ]
+                            },
+                            "max_dist": 16
                         },
                         {
                             "filters": {
                                 "all_of": [
                                     {
-                                        "subject": "other",
                                         "test": "is_family",
-                                        "value": "tenontosaurus"
+                                        "subject": "other",
+                                        "value": "player"
                                     },
                                     {
+                                        "test": "is_riding",
                                         "subject": "other",
-                                        "test": "has_component",
-                                        "value": "minecraft:is_tamed"
+                                        "value": false
                                     }
                                 ]
                             },
-                            "max_dist": 48,
-                            "priority": 1
+                            "max_dist": 16
+                        },
+                        {
+                            "filters": {
+                                "test": "is_family",
+                                "subject": "other",
+                                "value": "parasaurAngerer"
+                            },
+                            "max_dist": 64
                         }
-                    ],
-                    "priority": 3,
-                    "within_radius": 32.0
+                    ]
+                },
+                "minecraft:behavior.leap_at_target": {
+                    "priority": 5,
+                    "yd": 0.4,
+                    "must_be_on_ground": false
+                },
+                "minecraft:behavior.melee_attack": {
+                    "priority": 4,
+                    "track_target": true,
+                    "random_stop_interval": 100,
+                    "reach_multiplier": 0.8
                 }
             },
-            "rift:follow_tamed_tenontosaurus_no_target": {
-                "minecraft:behavior.ranged_attack": {
-                    "attack_radius": 6.0,
-                    "attack_radius_min": 4,
-                    "priority": 7
+            "minecraft:spider_angry": {
+                "minecraft:angry": {
+                    "duration": 10,
+                    "duration_delta": 3,
+                    "calm_event": {
+                        "event": "minecraft:on_calm",
+                        "target": "self"
+                    }
                 },
-                "minecraft:on_target_acquired": {
-                    "event": "rift:attack_for_tenontosaurus",
-                    "filters": {
-                        "subject": "target",
-                        "test": "has_tag",
-                        "value": "tenontoTamedTarget"
-                    },
-                    "target": "self"
+                "minecraft:behavior.leap_at_target": {
+                    "priority": 5,
+                    "yd": 0.4,
+                    "must_be_on_ground": false
+                },
+                "minecraft:behavior.melee_attack": {
+                    "priority": 4,
+                    "track_target": true,
+                    "reach_multiplier": 1.4
+                }
+            },
+            "minecraft:spider_poison_easy": {
+                "minecraft:attack": {
+                    "damage": 2,
+                    "effect_name": "poison",
+                    "effect_duration": 0
+                }
+            },
+            "minecraft:spider_poison_normal": {
+                "minecraft:attack": {
+                    "damage": 2,
+                    "effect_name": "poison",
+                    "effect_duration": 7
+                }
+            },
+            "minecraft:spider_poison_hard": {
+                "minecraft:attack": {
+                    "damage": 2,
+                    "effect_name": "poison",
+                    "effect_duration": 15
+                }
+            },
+            "rift:not_hypnotized": {
+                "minecraft:behavior.mount_pathing": {
+                    "priority": 6,
+                    "speed_multiplier": 1.25,
+                    "target_dist": 0.0,
+                    "track_target": true
+                },
+                "minecraft:behavior.random_stroll": {
+                    "priority": 7,
+                    "speed_multiplier": 0.8
+                },
+                "minecraft:behavior.look_at_player": {
+                    "priority": 8,
+                    "look_distance": 6.0,
+                    "probability": 0.02
+                },
+                "minecraft:behavior.random_look_around": {
+                    "priority": 9
+                },
+                "minecraft:behavior.avoid_mob_type": {
+                    "priority": 1,
+                    "entity_types": [
+                        {
+                            "filters": {
+                                "test": "is_family",
+                                "value": "parasaurScary",
+                                "subject": "other"
+                            },
+                            "max_dist": 12,
+                            "must_see": true,
+                            "walk_speed_multiplier": 1.2,
+                            "sprint_speed_multiplier": 1.2
+                        }
+                    ]
+                },
+                "minecraft:behavior.hurt_by_target": {
+                    "priority": 2
                 }
             },
             "rift:follow_tenontosaurus": {
                 "minecraft:behavior.nearest_prioritized_attackable_target": {
+                    "priority": 3,
+                    "within_radius": 32.0,
                     "entity_types": [
                         {
                             "filters": {
                                 "all_of": [
                                     {
-                                        "subject": "other",
                                         "test": "has_tag",
+                                        "subject": "other",
                                         "value": "tenontoTarget"
                                     }
                                 ]
@@ -286,14 +321,14 @@
                             "filters": {
                                 "all_of": [
                                     {
-                                        "subject": "other",
                                         "test": "is_family",
+                                        "subject": "other",
                                         "value": "tenontosaurus"
                                     },
                                     {
-                                        "operator": "!=",
-                                        "subject": "other",
                                         "test": "has_component",
+                                        "subject": "other",
+                                        "operator": "!=",
                                         "value": "minecraft:is_tamed"
                                     }
                                 ]
@@ -301,171 +336,55 @@
                             "max_dist": 48,
                             "priority": 1
                         }
-                    ],
-                    "priority": 3,
-                    "within_radius": 32.0
+                    ]
                 }
             },
             "rift:follow_tenontosaurus_no_target": {
                 "minecraft:behavior.ranged_attack": {
+                    "priority": 7,
                     "attack_radius": 6.0,
-                    "attack_radius_min": 4,
-                    "priority": 7
+                    "attack_radius_min": 4
                 },
                 "minecraft:on_target_acquired": {
-                    "event": "rift:attack_for_tenontosaurus",
                     "filters": {
                         "all_of": [
                             {
-                                "operator": "!=",
-                                "subject": "target",
                                 "test": "has_component",
+                                "subject": "target",
+                                "operator": "!=",
                                 "value": "minecraft:is_tamed"
                             },
                             {
-                                "operator": "!=",
-                                "subject": "target",
                                 "test": "is_family",
+                                "subject": "target",
+                                "operator": "!=",
                                 "value": "tenontosaurus"
                             }
                         ]
                     },
+                    "event": "rift:attack_for_tenontosaurus",
                     "target": "self"
                 }
             },
-            "rift:hypnotized_spider_jockey": {
-                "minecraft:addrider": {
-                    "entity_type": "minecraft:skeleton",
-                    "spawn_event": "rift:spawn_hypnotized_by_tenontosaurus"
+            "rift:attacking_for_tenontosaurus": {
+                "minecraft:behavior.leap_at_target": {
+                    "priority": 5,
+                    "yd": 0.4,
+                    "must_be_on_ground": false
                 },
-                "minecraft:rideable": {
-                    "family_types": [
-                        "skeleton"
-                    ],
-                    "seat_count": 1,
-                    "seats": {
-                        "position": [
-                            0.0,
-                            0.25,
-                            -0.1
-                        ]
-                    }
-                }
-            },
-            "rift:hypnotized_spider_stray_jockey": {
-                "minecraft:addrider": {
-                    "entity_type": "minecraft:stray",
-                    "spawn_event": "rift:spawn_hypnotized_by_tenontosaurus"
+                "minecraft:behavior.melee_attack": {
+                    "priority": 4,
+                    "track_target": true,
+                    "reach_multiplier": 0.8
                 },
-                "minecraft:rideable": {
-                    "family_types": [
-                        "skeleton"
-                    ],
-                    "seat_count": 1,
-                    "seats": {
-                        "position": [
-                            0.0,
-                            0.25,
-                            -0.1
-                        ]
-                    }
-                }
-            },
-            "rift:hypnotized_spider_wither_jockey": {
-                "minecraft:addrider": {
-                    "entity_type": "minecraft:wither_skeleton",
-                    "spawn_event": "rift:spawn_hypnotized_by_tenontosaurus"
-                },
-                "minecraft:rideable": {
-                    "family_types": [
-                        "skeleton"
-                    ],
-                    "seat_count": 1,
-                    "seats": {
-                        "position": [
-                            0.0,
-                            0.25,
-                            -0.1
-                        ]
-                    }
-                }
-            },
-            "rift:hypnotized_with_jockey": {
-                "minecraft:rideable": {
-                    "family_types": [
-                        "skeleton"
-                    ],
-                    "seat_count": 1,
-                    "seats": {
-                        "position": [
-                            0.0,
-                            0.25,
-                            -0.1
-                        ]
-                    }
-                }
-            },
-            "rift:is_bleeding": {
-                "minecraft:is_ignited": {}
-            },
-            "rift:is_hypnotized": {
-                "minecraft:is_sheared": {}
-            },
-            "rift:is_hypnotized_tamed": {
-                "minecraft:is_charged": {}
-            },
-            "rift:not_hypnotized": {
-                "minecraft:behavior.avoid_mob_type": {
-                    "entity_types": [
-                        {
-                            "filters": {
-                                "subject": "other",
-                                "test": "is_family",
-                                "value": "parasaurScary"
-                            },
-                            "max_dist": 12,
-                            "must_see": true,
-                            "sprint_speed_multiplier": 1.2,
-                            "walk_speed_multiplier": 1.2
-                        }
-                    ],
-                    "priority": 1
-                },
-                "minecraft:behavior.hurt_by_target": {
-                    "priority": 2
-                },
-                "minecraft:behavior.look_at_player": {
-                    "look_distance": 6.0,
-                    "priority": 8,
-                    "probability": 0.02
-                },
-                "minecraft:behavior.mount_pathing": {
-                    "priority": 6,
-                    "speed_multiplier": 1.25,
-                    "target_dist": 0.0,
-                    "track_target": true
-                },
-                "minecraft:behavior.random_look_around": {
-                    "priority": 9
-                },
-                "minecraft:behavior.random_stroll": {
-                    "priority": 7,
-                    "speed_multiplier": 0.8
+                "minecraft:on_target_escape": {
+                    "event": "rift:stop_attacking_for_tenontosaurus",
+                    "target": "self"
                 }
             },
             "rift:transform_into_hypnotized": {
                 "minecraft:transformation": {
                     "into": "minecraft:cave_spider<rift:transform_into_hypnotized>"
-                }
-            },
-            "rift:transform_into_hypnotized_tamed": {
-                "minecraft:transformation": {
-                    "into": "minecraft:cave_spider<rift:transform_into_hypnotized_tamed>"
-                }
-            },
-            "rift:transform_into_hypnotized_tamed_with_jockey": {
-                "minecraft:transformation": {
-                    "into": "minecraft:cave_spider<rift:transform_into_hypnotized_tamed_with_jockey>"
                 }
             },
             "rift:transform_into_hypnotized_with_jockey": {
@@ -475,495 +394,146 @@
             }
         },
         "components": {
-            "minecraft:behavior.float": {
-                "priority": 0
-            },
-            "minecraft:breathable": {
-                "suffocate_time": 0,
-                "total_supply": 15
-            },
-            "minecraft:can_climb": {},
-            "minecraft:collision_box": {
-                "height": 0.5,
-                "width": 0.7
-            },
-            "minecraft:conditional_bandwidth_optimization": {},
-            "minecraft:despawn": {
-                "despawn_from_distance": {}
-            },
+            "minecraft:is_hidden_when_invisible": {},
             "minecraft:experience_reward": {
                 "on_death": "query.last_hit_by_player ? 5 : 0"
             },
+            "minecraft:type_family": {
+                "family": [ "cavespider", "monster", "arthropod", "mob" ]
+            },
+            "minecraft:breathable": {
+                "total_supply": 15,
+                "suffocate_time": 0
+            },
+            "minecraft:nameable": {},
+            "minecraft:loot": {
+                "table": "loot_tables/entities/spider.json"
+            },
+            "minecraft:collision_box": {
+                "width": 0.7,
+                "height": 0.5
+            },
             "minecraft:health": {
-                "max": 12,
-                "value": 12
+                "value": 12,
+                "max": 12
             },
             "minecraft:hurt_on_condition": {
                 "damage_conditions": [
                     {
+                        "filters": { "test": "in_lava", "subject": "self", "operator": "==", "value": true },
                         "cause": "lava",
-                        "damage_per_tick": 4,
-                        "filters": {
-                            "operator": "==",
-                            "subject": "self",
-                            "test": "in_lava",
-                            "value": true
-                        }
+                        "damage_per_tick": 4
                     }
                 ]
-            },
-            "minecraft:is_hidden_when_invisible": {},
-            "minecraft:jump.static": {},
-            "minecraft:loot": {
-                "table": "loot_tables/entities/spider.json"
             },
             "minecraft:movement": {
                 "value": 0.3
             },
-            "minecraft:movement.basic": {},
-            "minecraft:nameable": {},
             "minecraft:navigation.climb": {
                 "can_path_over_water": true
+            },
+            "minecraft:movement.basic": {},
+            "minecraft:jump.static": {},
+            "minecraft:can_climb": {},
+            "minecraft:despawn": {
+                "despawn_from_distance": {}
+            },
+            "minecraft:behavior.float": {
+                "priority": 0
+            },
+            "minecraft:rideable": {
+                "seat_count": 1,
+                "family_types": [
+                    "zombie"
+                ],
+                "seats": {
+                    "position": [ 0.0, 0.3, 0.0 ]
+                }
             },
             "minecraft:physics": {},
             "minecraft:pushable": {
                 "is_pushable": true,
                 "is_pushable_by_piston": true
             },
-            "minecraft:rideable": {
-                "family_types": [
-                    "zombie"
-                ],
-                "seat_count": 1,
-                "seats": {
-                    "position": [
-                        0.0,
-                        0.3,
-                        0.0
-                    ]
-                }
-            },
-            "minecraft:type_family": {
-                "family": [
-                    "cavespider",
-                    "monster",
-                    "arthropod",
-                    "mob"
-                ]
-            }
-        },
-        "description": {
-            "animations": {
-                "animBleed": "animation.general_bleed",
-                "animBleedCountdown": "animation.general_bleed_countdown",
-                "animBolaEffect": "animation.general_bola_effect",
-                "animBolaEffectCountdown": "animation.general_bola_effect_countdown",
-                "animDeathTimer": "animation.hypnosis_death_timer",
-                "animFindTenontosaurus": "animation.find_tenontosaurus",
-                "animTamedDeathTimer": "animation.hypnosis_death_timer_tamed",
-                "contBleed": "controller.animation.spider_manage_bleed",
-                "contBola": "controller.animation.general_manage_bola",
-                "contDieWithoutTamedTenontosaurus": "controller.animation.spider_death_timer_tamed_tenontosaurus",
-                "contDieWithoutTenontosaurus": "controller.animation.spider_die_without_tenontosaurus",
-                "contHypnotizedTag": "controller.animation.spider_add_hypnotized_tag",
-                "contHypnotizedTamedTag": "controller.animation.spider_add_hypnotized_by_tamed_tag",
-                "contInWaterTag": "controller.animation.add_in_water_tag",
-                "contMovingTag": "controller.animation.add_moving_tag"
-            },
-            "identifier": "minecraft:cave_spider",
-            "is_experimental": false,
-            "is_spawnable": true,
-            "is_summonable": true,
-            "properties": {
-                "rift:affected_by_bola": {
-                    "default": false,
-                    "type": "bool"
-                }
-            },
-            "scripts": {
-                "animate": [
-                    "contHypnotizedTag",
-                    "contHypnotizedTamedTag",
-                    "contDieWithoutTenontosaurus",
-                    "contDieWithoutTamedTenontosaurus",
-                    "contBleed",
-                    "contMovingTag",
-                    "contInWaterTag",
-                    "contBola"
-                ]
-            }
+            "minecraft:conditional_bandwidth_optimization": {}
         },
         "events": {
-            "minecraft:become_angry": {
-                "sequence": [
-                    {
-                        "add": {
-                            "component_groups": [
-                                "minecraft:spider_angry"
-                            ]
-                        },
-                        "remove": {
-                            "component_groups": [
-                                "minecraft:spider_neutral"
-                            ]
-                        }
-                    },
-                    {
-                        "add": {
-                            "component_groups": [
-                                "minecraft:spider_poison_easy"
-                            ]
-                        },
-                        "filters": {
-                            "test": "is_difficulty",
-                            "value": "easy"
-                        },
-                        "remove": {
-                            "component_groups": [
-                                "minecraft:spider_poison_hard",
-                                "minecraft:spider_poison_normal"
-                            ]
-                        }
-                    },
-                    {
-                        "add": {
-                            "component_groups": [
-                                "minecraft:spider_poison_normal"
-                            ]
-                        },
-                        "filters": {
-                            "test": "is_difficulty",
-                            "value": "normal"
-                        },
-                        "remove": {
-                            "component_groups": [
-                                "minecraft:spider_poison_easy",
-                                "minecraft:spider_poison_hard"
-                            ]
-                        }
-                    },
-                    {
-                        "add": {
-                            "component_groups": [
-                                "minecraft:spider_poison_hard"
-                            ]
-                        },
-                        "filters": {
-                            "test": "is_difficulty",
-                            "value": "hard"
-                        },
-                        "remove": {
-                            "component_groups": [
-                                "minecraft:spider_poison_easy",
-                                "minecraft:spider_poison_normal"
-                            ]
-                        }
-                    }
-                ]
-            },
-            "minecraft:become_hostile": {
-                "sequence": [
-                    {
-                        "add": {
-                            "component_groups": [
-                                "minecraft:spider_hostile"
-                            ]
-                        },
-                        "remove": {
-                            "component_groups": [
-                                "minecraft:spider_neutral"
-                            ]
-                        }
-                    },
-                    {
-                        "add": {
-                            "component_groups": [
-                                "minecraft:spider_poison_easy"
-                            ]
-                        },
-                        "filters": {
-                            "test": "is_difficulty",
-                            "value": "easy"
-                        },
-                        "remove": {
-                            "component_groups": [
-                                "minecraft:spider_poison_hard",
-                                "minecraft:spider_poison_normal"
-                            ]
-                        }
-                    },
-                    {
-                        "add": {
-                            "component_groups": [
-                                "minecraft:spider_poison_normal"
-                            ]
-                        },
-                        "filters": {
-                            "test": "is_difficulty",
-                            "value": "normal"
-                        },
-                        "remove": {
-                            "component_groups": [
-                                "minecraft:spider_poison_easy",
-                                "minecraft:spider_poison_hard"
-                            ]
-                        }
-                    },
-                    {
-                        "add": {
-                            "component_groups": [
-                                "minecraft:spider_poison_hard"
-                            ]
-                        },
-                        "filters": {
-                            "test": "is_difficulty",
-                            "value": "hard"
-                        },
-                        "remove": {
-                            "component_groups": [
-                                "minecraft:spider_poison_easy",
-                                "minecraft:spider_poison_normal"
-                            ]
-                        }
-                    }
-                ]
-            },
-            "minecraft:become_neutral": {
-                "add": {
-                    "component_groups": [
-                        "minecraft:spider_neutral"
-                    ]
-                },
-                "remove": {
-                    "component_groups": [
-                        "minecraft:spider_hostile"
-                    ]
-                }
-            },
             "minecraft:entity_spawned": {
                 "randomize": [
                     {
+                        "weight": 1,
                         "randomize": [
                             {
+                                "weight": 80,
+                                "filters": {
+                                    "all_of" : [
+                                        { 
+                                            "test": "is_daytime", 
+                                            "value": false 
+                                        },
+                                        { 
+                                            "test": "is_snow_covered", 
+                                            "value": true 
+                                        },
+                                        { 
+                                            "test": "is_underground", 
+                                            "value": false 
+                                        }
+                                    ]
+                                },
                                 "add": {
                                     "component_groups": [
                                         "minecraft:spider_stray_jockey",
                                         "minecraft:spider_neutral",
                                         "rift:not_hypnotized"
                                     ]
-                                },
-                                "filters": {
-                                    "all_of": [
-                                        {
-                                            "test": "is_daytime",
-                                            "value": false
-                                        },
-                                        {
-                                            "test": "is_snow_covered",
-                                            "value": true
-                                        },
-                                        {
-                                            "test": "is_underground",
-                                            "value": false
-                                        }
-                                    ]
-                                },
-                                "weight": 80
+                                }
                             },
                             {
+                                "weight": 80,
+                                "filters": {
+                                    "test": "is_biome", 
+                                    "value": "the_nether" 
+                                },
                                 "add": {
                                     "component_groups": [
                                         "minecraft:spider_wither_jockey",
                                         "minecraft:spider_neutral",
                                         "rift:not_hypnotized"
                                     ]
-                                },
-                                "filters": {
-                                    "test": "is_biome",
-                                    "value": "the_nether"
-                                },
-                                "weight": 80
+                                }
                             },
                             {
+                                "weight": 20,
+                                "filters": {
+                                    "all_of" : [
+                                        { 
+                                            "test": "is_daytime", 
+                                            "value": false 
+                                        },
+                                        { 
+                                            "test": "is_underground", 
+                                            "value": true 
+                                        }
+                                    ]
+                                },
                                 "add": {
                                     "component_groups": [
                                         "minecraft:spider_jockey",
                                         "minecraft:spider_neutral",
                                         "rift:not_hypnotized"
                                     ]
-                                },
-                                "filters": {
-                                    "all_of": [
-                                        {
-                                            "test": "is_daytime",
-                                            "value": false
-                                        },
-                                        {
-                                            "test": "is_underground",
-                                            "value": true
-                                        }
-                                    ]
-                                },
-                                "weight": 20
+                                }
                             }
-                        ],
-                        "weight": 1
+                        ]
                     },
                     {
+                        "weight": 99,
                         "add": {
                             "component_groups": [
                                 "minecraft:spider_neutral",
                                 "rift:not_hypnotized"
                             ]
-                        },
-                        "weight": 99
-                    }
-                ]
-            },
-            "minecraft:on_calm": {
-                "add": {
-                    "component_groups": [
-                        "minecraft:spider_neutral"
-                    ]
-                },
-                "remove": {
-                    "component_groups": [
-                        "minecraft:spider_angry"
-                    ]
-                }
-            },
-            "rift:affected_by_bola": {
-                "set_property": {
-                    "rift:affected_by_bola": true
-                }
-            },
-            "rift:attack_for_tenontosaurus": {
-                "sequence": [
-                    {
-                        "add": {
-                            "component_groups": [
-                                "rift:attacking_for_tenontosaurus"
-                            ]
-                        },
-                        "remove": {
-                            "component_groups": [
-                                "rift:follow_tenontosaurus_no_target",
-                                "rift:follow_tamed_tenontosaurus_no_target"
-                            ]
-                        }
-                    },
-                    {
-                        "add": {
-                            "component_groups": [
-                                "minecraft:spider_poison_easy"
-                            ]
-                        },
-                        "filters": {
-                            "test": "is_difficulty",
-                            "value": "easy"
-                        },
-                        "remove": {
-                            "component_groups": [
-                                "minecraft:spider_poison_hard",
-                                "minecraft:spider_poison_normal"
-                            ]
-                        }
-                    },
-                    {
-                        "add": {
-                            "component_groups": [
-                                "minecraft:spider_poison_normal"
-                            ]
-                        },
-                        "filters": {
-                            "test": "is_difficulty",
-                            "value": "normal"
-                        },
-                        "remove": {
-                            "component_groups": [
-                                "minecraft:spider_poison_easy",
-                                "minecraft:spider_poison_hard"
-                            ]
-                        }
-                    },
-                    {
-                        "add": {
-                            "component_groups": [
-                                "minecraft:spider_poison_hard"
-                            ]
-                        },
-                        "filters": {
-                            "test": "is_difficulty",
-                            "value": "hard"
-                        },
-                        "remove": {
-                            "component_groups": [
-                                "minecraft:spider_poison_easy",
-                                "minecraft:spider_poison_normal"
-                            ]
-                        }
-                    }
-                ]
-            },
-            "rift:force_go_down": {},
-            "rift:hypnotized_by_tamed_tenontosaurus": {
-                "sequence": [
-                    {},
-                    {
-                        "add": {
-                            "component_groups": [
-                                "rift:transform_into_hypnotized_tamed"
-                            ]
-                        },
-                        "filters": {
-                            "operator": "==",
-                            "subject": "self",
-                            "test": "rider_count",
-                            "value": 0
-                        }
-                    },
-                    {
-                        "add": {
-                            "component_groups": [
-                                "rift:transform_into_hypnotized_tamed_with_jockey"
-                            ]
-                        },
-                        "filters": {
-                            "operator": ">",
-                            "subject": "self",
-                            "test": "rider_count",
-                            "value": 0
-                        }
-                    }
-                ]
-            },
-            "rift:hypnotized_by_tenontosaurus": {
-                "sequence": [
-                    {},
-                    {
-                        "add": {
-                            "component_groups": [
-                                "rift:transform_into_hypnotized"
-                            ]
-                        },
-                        "filters": {
-                            "operator": "==",
-                            "subject": "self",
-                            "test": "rider_count",
-                            "value": 0
-                        }
-                    },
-                    {
-                        "add": {
-                            "component_groups": [
-                                "rift:transform_into_hypnotized_with_jockey"
-                            ]
-                        },
-                        "filters": {
-                            "operator": ">",
-                            "subject": "self",
-                            "test": "rider_count",
-                            "value": 0
                         }
                     }
                 ]
@@ -971,16 +541,10 @@
             "rift:spawn_hypnotized_by_tenontosaurus": {
                 "randomize": [
                     {
+                        "weight": 1,
                         "randomize": [
                             {
-                                "add": {
-                                    "component_groups": [
-                                        "rift:hypnotized_spider_stray_jockey",
-                                        "rift:follow_tenontosaurus",
-                                        "rift:follow_tenontosaurus_no_target",
-                                        "rift:is_hypnotized"
-                                    ]
-                                },
+                                "weight": 80,
                                 "filters": {
                                     "all_of": [
                                         {
@@ -997,32 +561,36 @@
                                         }
                                     ]
                                 },
-                                "weight": 80
-                            },
-                            {
                                 "add": {
                                     "component_groups": [
-                                        "rift:hypnotized_spider_wither_jockey",
+                                        "rift:hypnotized_spider_stray_jockey",
                                         "rift:follow_tenontosaurus",
-                                        "rift:follow_tenontosaurus_no_target",
-                                        "rift:is_hypnotized"
+                                        "rift:follow_tenontosaurus_no_target"
                                     ]
                                 },
+                                "set_property": {
+                                    "rift:is_hypnotized": true
+                                }
+                            },
+                            {
+                                "weight": 80,
                                 "filters": {
                                     "test": "is_biome",
                                     "value": "the_nether"
                                 },
-                                "weight": 80
-                            },
-                            {
                                 "add": {
                                     "component_groups": [
-                                        "rift:hypnotized_spider_jockey",
+                                        "rift:hypnotized_spider_wither_jockey",
                                         "rift:follow_tenontosaurus",
-                                        "rift:follow_tenontosaurus_no_target",
-                                        "rift:is_hypnotized"
+                                        "rift:follow_tenontosaurus_no_target"
                                     ]
                                 },
+                                "set_property": {
+                                    "rift:is_hypnotized": true
+                                }
+                            },
+                            {
+                                "weight": 20,
                                 "filters": {
                                     "any_of": [
                                         {
@@ -1035,136 +603,160 @@
                                         }
                                     ]
                                 },
-                                "weight": 20
+                                "add": {
+                                    "component_groups": [
+                                        "rift:hypnotized_spider_jockey",
+                                        "rift:follow_tenontosaurus",
+                                        "rift:follow_tenontosaurus_no_target"
+                                    ]
+                                },
+                                "set_property": {
+                                    "rift:is_hypnotized": true
+                                }
                             }
-                        ],
-                        "weight": 1
+                        ]
                     },
                     {
+                        "weight": 99,
                         "add": {
                             "component_groups": [
                                 "rift:follow_tenontosaurus",
-                                "rift:follow_tenontosaurus_no_target",
-                                "rift:is_hypnotized"
+                                "rift:follow_tenontosaurus_no_target"
                             ]
                         },
-                        "weight": 99
+                        "set_property": {
+                            "rift:is_hypnotized": true
+                        }
                     }
                 ]
             },
-            "rift:start_bleeding": {
-                "add": {
-                    "component_groups": [
-                        "rift:is_bleeding"
-                    ]
-                }
-            },
-            "rift:stop_attacking_for_tenontosaurus": {
+            "rift:attack_for_tenontosaurus": {
                 "sequence": [
                     {
-                        "remove": {
-                            "component_groups": [
-                                "rift:attacking_for_tenontosaurus",
-                                "minecraft:spider_poison_easy",
-                                "minecraft:spider_poison_normal",
-                                "minecraft:spider_poison_hard"
-                            ]
-                        }
-                    },
-                    {
                         "add": {
+                            "component_groups": [
+                                "rift:attacking_for_tenontosaurus"
+                            ]
+                        },
+                        "remove": {
                             "component_groups": [
                                 "rift:follow_tenontosaurus_no_target"
                             ]
                         },
-                        "filters": {
-                            "all_of": [
-                                {
-                                    "subject": "self",
-                                    "test": "has_component",
-                                    "value": "minecraft:is_sheared"
-                                },
-                                {
-                                    "operator": "!=",
-                                    "subject": "self",
-                                    "test": "has_component",
-                                    "value": "minecraft:is_charged"
-                                }
+                        "run_command": {
+                            "command": [
+                                "say FOR THE QUEEN"
                             ]
                         }
                     },
                     {
-                        "add": {
-                            "component_groups": [
-                                "rift:follow_tamed_tenontosaurus_no_target"
+                        "filters": { 
+                            "test": "is_difficulty", 
+                            "value": "easy"
+                        },            
+                        "remove": {
+                            "component_groups": [ 
+                                "minecraft:spider_poison_hard", 
+                                "minecraft:spider_poison_normal" 
                             ]
                         },
-                        "filters": {
-                            "all_of": [
-                                {
-                                    "operator": "!=",
-                                    "subject": "self",
-                                    "test": "has_component",
-                                    "value": "minecraft:is_sheared"
-                                },
-                                {
-                                    "subject": "self",
-                                    "test": "has_component",
-                                    "value": "minecraft:is_charged"
-                                }
+                        "add": {
+                            "component_groups": [ 
+                                "minecraft:spider_poison_easy"
+                            ]
+                        }
+                    },
+                    {
+                        "filters": { 
+                            "test": "is_difficulty", 
+                            "value": "normal"
+                        },
+                        "remove": {
+                            "component_groups": [ 
+                                "minecraft:spider_poison_easy", 
+                                "minecraft:spider_poison_hard" 
+                            ]
+                        },
+                        "add": {
+                            "component_groups": [ 
+                                "minecraft:spider_poison_normal" 
+                            ]
+                        }
+                    },
+                    {
+                        "filters": { 
+                            "test": "is_difficulty", 
+                            "value" : "hard"
+                        },
+                        "remove": {
+                            "component_groups": [ 
+                                "minecraft:spider_poison_easy", 
+                                "minecraft:spider_poison_normal" 
+                            ]
+                        },
+                        "add": {
+                            "component_groups": [ 
+                                "minecraft:spider_poison_hard" 
                             ]
                         }
                     }
                 ]
             },
-            "rift:stop_being_affected_by_bola": {
-                "set_property": {
-                    "rift:affected_by_bola": false
-                }
-            },
-            "rift:stop_bleeding": {
+            "rift:stop_attacking_for_tenontosaurus": {
+                "add": {
+                    "component_groups": [
+                        "rift:follow_tenontosaurus_no_target"
+                    ]
+                },
                 "remove": {
                     "component_groups": [
-                        "rift:is_bleeding"
+                        "rift:attacking_for_tenontosaurus",
+                        "minecraft:spider_poison_easy", 
+                        "minecraft:spider_poison_normal",
+                        "minecraft:spider_poison_hard" 
                     ]
                 }
+            },
+            "rift:hypnotized_by_tenontosaurus": {
+                "sequence": [
+                    {},
+                    {
+                        "filters": {
+                            "test": "rider_count",
+                            "subject": "self",
+                            "operator": "==",
+                            "value": 0
+                        },
+                        "add": {
+                            "component_groups": [
+                                "rift:transform_into_hypnotized"
+                            ]
+                        }
+                    },
+                    {
+                        "filters": {
+                            "test": "rider_count",
+                            "subject": "self",
+                            "operator": ">",
+                            "value": 0
+                        },
+                        "add": {
+                            "component_groups": [
+                                "rift:transform_into_hypnotized_with_jockey"
+                            ]
+                        }
+                    }
+                ]
             },
             "rift:transform_into_hypnotized": {
                 "add": {
                     "component_groups": [
                         "rift:follow_tenontosaurus",
-                        "rift:follow_tenontosaurus_no_target",
-                        "rift:is_hypnotized"
-                    ]
-                }
-            },
-            "rift:transform_into_hypnotized_tamed": {
-                "add": {
-                    "component_groups": [
-                        "rift:follow_tamed_tenontosaurus",
-                        "rift:follow_tamed_tenontosaurus_no_target",
-                        "rift:hypnotized_with_jockey",
-                        "rift:is_hypnotized_tamed"
+                        "rift:follow_tenontosaurus_no_target"
                     ]
                 },
-                "run_command": {
-                    "command": [
-                        "ride @e[family=skeleton, c=1] start_riding @s teleport_rider until_full"
-                    ]
-                }
-            },
-            "rift:transform_into_hypnotized_tamed_with_jockey": {
-                "add": {
-                    "component_groups": [
-                        "rift:follow_tamed_tenontosaurus",
-                        "rift:follow_tamed_tenontosaurus_no_target",
-                        "rift:is_hypnotized_tamed"
-                    ]
-                },
-                "run_command": {
-                    "command": [
-                        "ride @e[family=skeleton, c=1, tag=hypnotizedTamed] start_riding @s teleport_rider until_full"
-                    ]
+                "set_property": {
+                    "rift:is_hypnotized": true
                 }
             },
             "rift:transform_into_hypnotized_with_jockey": {
@@ -1172,13 +764,173 @@
                     "component_groups": [
                         "rift:follow_tenontosaurus",
                         "rift:follow_tenontosaurus_no_target",
-                        "rift:hypnotized_with_jockey",
-                        "rift:is_hypnotized"
+                        "rift:hypnotized_with_jockey"
                     ]
+                },
+                "set_property": {
+                    "rift:is_hypnotized": true
                 },
                 "run_command": {
                     "command": [
-                        "ride @e[family=skeleton, c=1, tag=hypnotized] start_riding @s teleport_rider until_full"
+                        "ride @e[family=skeleton, c=1] start_riding @s teleport_rider until_full"
+                    ]
+                }
+            },
+            "minecraft:become_hostile": {
+                "sequence": [
+                    {
+                        "remove": {
+                            "component_groups": [
+                                "minecraft:spider_neutral"
+                            ]
+                        },
+                        "add": {
+                            "component_groups": [
+                                "minecraft:spider_hostile"
+                            ]
+                        }
+                    },
+                    {
+                        "filters": { 
+                            "test": "is_difficulty", 
+                            "value": "easy"
+                        },            
+                        "remove": {
+                            "component_groups": [ 
+                                "minecraft:spider_poison_hard", 
+                                "minecraft:spider_poison_normal" 
+                            ]
+                        },
+                        "add": {
+                            "component_groups": [ 
+                                "minecraft:spider_poison_easy"
+                            ]
+                        }
+                    },
+                    {
+                        "filters": { 
+                            "test": "is_difficulty", 
+                            "value": "normal"
+                        },
+                        "remove": {
+                            "component_groups": [ 
+                                "minecraft:spider_poison_easy", 
+                                "minecraft:spider_poison_hard" 
+                            ]
+                        },
+                        "add": {
+                            "component_groups": [ 
+                                "minecraft:spider_poison_normal" 
+                            ]
+                        }
+                    },
+                    {
+                        "filters": { 
+                            "test": "is_difficulty", 
+                            "value" : "hard"
+                        },
+                        "remove": {
+                            "component_groups": [ 
+                                "minecraft:spider_poison_easy", 
+                                "minecraft:spider_poison_normal" 
+                            ]
+                        },
+                        "add": {
+                            "component_groups": [ 
+                                "minecraft:spider_poison_hard" 
+                            ]
+                        }
+                    }
+                ]
+            },
+            "minecraft:become_neutral": {
+                "remove": {
+                    "component_groups": [
+                        "minecraft:spider_hostile"
+                    ]
+                },
+                "add": {
+                    "component_groups": [
+                        "minecraft:spider_neutral"
+                    ]
+                }
+            },
+            "minecraft:become_angry": {
+                "sequence": [
+                    {
+                        "remove": {
+                            "component_groups": [
+                                "minecraft:spider_neutral"
+                            ]
+                        },
+                        "add": {
+                            "component_groups": [
+                                "minecraft:spider_angry"
+                            ]
+                        }
+                    },
+                    {
+                        "filters": { 
+                            "test" : "is_difficulty", 
+                            "value" : "easy"
+                        },
+                        "remove": {
+                            "component_groups": [ 
+                                "minecraft:spider_poison_hard", 
+                                "minecraft:spider_poison_normal" 
+                            ]
+                        },
+                        "add": {
+                            "component_groups": [ 
+                                "minecraft:spider_poison_easy" 
+                            ]
+                        }
+                    },
+                    {
+                        "filters": { 
+                            "test": "is_difficulty", 
+                            "value": "normal" 
+                        },
+                        "remove": {
+                            "component_groups": [ 
+                                "minecraft:spider_poison_easy", 
+                                "minecraft:spider_poison_hard" 
+                            ]
+                        },
+                        "add": {
+                            "component_groups": [ 
+                                "minecraft:spider_poison_normal" 
+                            ]
+                        }
+                    },
+                    {
+                        "filters": { 
+                            "test": "is_difficulty", 
+                            "value": "hard"
+                        },
+                        "remove": {
+                            "component_groups": [ 
+                                "minecraft:spider_poison_easy", 
+                                "minecraft:spider_poison_normal" 
+                            ]
+                        },
+                        "add": {
+                            "component_groups": [ 
+                                "minecraft:spider_poison_hard" 
+                            ]
+                        }
+                    }
+                ]
+            },
+            "minecraft:on_calm": {
+                "remove": {
+                    "component_groups": [
+                        "minecraft:spider_angry"
+                    ]
+                },
+                "add": {
+                    "component_groups": [
+                        "minecraft:spider_neutral"
                     ]
                 }
             }

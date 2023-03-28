@@ -1,4 +1,4 @@
-import { world } from "@minecraft/server"
+import { system, world } from "@minecraft/server"
 import { ActionFormData } from "@minecraft/server-ui"
 import * as guiCrafting from "./ApatosaurusCraftingOptions"
 

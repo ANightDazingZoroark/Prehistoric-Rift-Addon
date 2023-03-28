@@ -23,49 +23,27 @@
 				}
 			}
 		},
-		"controller.animation.sauro_can_light_blast": {
+		"controller.animation.sauro_manage_tags": {
 			"initial_state": "default",
 			"states": {
 				"default": {
 					"transitions": [
 						{
-							"canLightBlast": "query.property('rift:light_blast') == 10"
-						}
-					]
-				},
-				"canLightBlast": {
-					"transitions": [
-						{
-							"default": "query.property('rift:light_blast') < 10"
-						}
-					],
-					"on_entry": [
-						"/tag @s add canLightBlast"
-					],
-					"on_exit": [
-						"/tag @s remove canLightBlast"
-					]
-				}
-			}
-		},
-		"controller.animation.sauro_notify_rider": {
-			"initial_state": "default",
-			"states": {
-				"default": {
-					"transitions": [
-						{
-							"canNotify": "query.property('rift:light_blast') == 10 && query.has_rider"
+							"canNotify": "query.property('rift:light_blast_notify') == true"
 						}
 					]
 				},
 				"canNotify": {
 					"transitions": [
 						{
-							"default": "query.property('rift:light_blast') < 10 || !query.has_rider"
+							"default": "query.property('rift:light_blast_notify') == false"
 						}
 					],
 					"on_entry": [
-						"/execute as @s[tag=ridden] run tellraw @p {\"rawtext\":[{\"text\":\"Light Blast Available!\"}]}"
+						"/tag @s add canNotify"
+					],
+					"on_exit": [
+						"/tag @s remove canNotify"
 					]
 				}
 			}

@@ -1,5 +1,3 @@
-//i gotta need to make it so when entering amount you can use a regular number instead of a function
-//that returns a number, ffs
 export function clearEntity(entity, item, data = -1, amount = function() {
     let num = 0
     for (let x = 0; x < entity.getComponent('inventory').inventorySize; x++) {
@@ -13,13 +11,13 @@ export function clearEntity(entity, item, data = -1, amount = function() {
     return num
 }) {
     if (item == undefined) {
-        for (let i = entity.getComponent('inventory').inventorySize; i > 0; i--) {
+        for (let i = 0; i < entity.getComponent('inventory').inventorySize; i++) {
             entity.runCommandAsync(`replaceitem entity @s slot.inventory `+i+` air 1 0`)
         }
     }
     else {
         let invAmount = 0
-        for (let i = entity.getComponent('inventory').inventorySize; i > 0; i--) {
+        for (let i = 0; i < entity.getComponent('inventory').inventorySize; i++) {
             try {
                 if (entity.getComponent('inventory').container.getItem(i).typeId == item && (data == -1 ? true : entity.getComponent('inventory').container.getItem(i).data == data)) {
                     invAmount += entity.getComponent('inventory').container.getItem(i).amount
@@ -28,7 +26,7 @@ export function clearEntity(entity, item, data = -1, amount = function() {
             catch (e) {}
         }
         if (invAmount == amount) {
-            for (let i = entity.getComponent('inventory').inventorySize; i > 0; i--) {
+            for (let i = 0; i < entity.getComponent('inventory').inventorySize; i++) {
                 try {
                     if (entity.getComponent('inventory').container.getItem(i).typeId == item && (data == -1 ? true : entity.getComponent('inventory').container.getItem(i).data == data)) {
                         entity.runCommandAsync(`replaceitem entity @s slot.inventory `+i+` air 1 0`)
@@ -39,7 +37,7 @@ export function clearEntity(entity, item, data = -1, amount = function() {
         }
         if (invAmount > amount) {
             let reducAmount = 0
-            for (let i = entity.getComponent('inventory').inventorySize; i > 0; i--) {
+            for (let i = 0; i < entity.getComponent('inventory').inventorySize; i++) {
                 try {
                     for (let j = 0; j < amount; j++) {
                         if (entity.getComponent('inventory').container.getItem(i).typeId == item && (data == -1 ? true : entity.getComponent('inventory').container.getItem(i).data == data)) {
@@ -79,19 +77,12 @@ export function testForItem(entity, item, data = -1, operator = '==', amount = f
     }
 }) {
     if (operator == '==') { //equal to amount
-        let num = 0
-        for (let x = 0; x < entity.getComponent('inventory').inventorySize; x++) {
-            try {
-                if (entity.getComponent('inventory').container.getItem(x).typeId == item && (data == -1 ? true : entity.getComponent('inventory').container.getItem(x).data == data)) {
-                    num += entity.getComponent('inventory').container.getItem(x).amount
-                }
+        try {
+            if (entity.runCommandAsync(`testfor @s[hasitem={item=`+item+`, data=`+data+`, quantity=`+(typeof amount == 'function' ? amount() : amount)+`}]`)) {
+                return true
             }
-            catch (e) {}
         }
-        if (num == amount()) {
-            return true
-        }
-        else {
+        catch (e) {
             return false
         }
     }
@@ -105,7 +96,7 @@ export function testForItem(entity, item, data = -1, operator = '==', amount = f
             }
             catch (e) {}
         }
-        if (num > amount()) {
+        if (num > amount) {
             return true
         }
         else {
@@ -122,7 +113,7 @@ export function testForItem(entity, item, data = -1, operator = '==', amount = f
             }
             catch (e) {}
         }
-        if (num >= amount()) {
+        if (num >= amount) {
             return true
         }
         else {
@@ -139,7 +130,7 @@ export function testForItem(entity, item, data = -1, operator = '==', amount = f
             }
             catch (e) {}
         }
-        if (num < amount()) {
+        if (num < amount) {
             return true
         }
         else {
@@ -156,7 +147,7 @@ export function testForItem(entity, item, data = -1, operator = '==', amount = f
             }
             catch (e) {}
         }
-        if (num <= amount()) {
+        if (num <= amount) {
             return true
         }
         else {

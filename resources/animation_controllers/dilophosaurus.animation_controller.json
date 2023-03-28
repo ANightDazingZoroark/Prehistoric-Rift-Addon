@@ -37,43 +37,21 @@
                     ],
                     "transitions": [
                         {
-                            "spitting": "query.property('rift:forced_attack_mode') == 2"
+                            "bite": "query.is_delayed_attacking"
                         },
                         {
-                            "angryDelay": "query.is_sheared"
+                            "spitting": "query.is_sheared || query.property('rift:forced_attack_mode') == 2"
                         }
                     ]
                 },
-                "angryDelay": {
+                "bite": {
                     "animations": [
-                        "animAngryDelay"
+                        "animSetup",
+                        "animBite"
                     ],
                     "transitions": [
                         {
-                            "angry": "query.all_animations_finished"
-                        }
-                    ]
-                },
-                "angry": {
-                    "animations": [
-                        "animAngry",
-                        {
-                            "animBite": "query.is_delayed_attacking"
-                        }
-                    ],
-                    "transitions": [
-                        {
-                            "calmDown": "!query.is_angry && !query.has_target"
-                        }
-                    ]
-                },
-                "calmDown": {
-                    "animations": [
-                        "animCalmDown"
-                    ],
-                    "transitions": [
-                        {
-                            "default": "query.all_animations_finished"
+                            "default": "!query.is_delayed_attacking"
                         }
                     ]
                 },
@@ -83,7 +61,7 @@
                     ],
                     "transitions": [
                         {
-                            "default": "query.property('rift:forced_attack_mode') == 0"
+                            "default": "!query.is_sheared && query.property('rift:forced_attack_mode') == 0"
                         }
                     ]
                 }

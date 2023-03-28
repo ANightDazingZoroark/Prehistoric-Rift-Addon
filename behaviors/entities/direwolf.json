@@ -12,11 +12,6 @@
 					"default": false,
 					"client_sync": true
 				},
-				"rift:is_hypnotized_tamed": {
-					"type": "bool",
-					"default": false,
-					"client_sync": true
-				},
 				"rift:undergoing_taming": {
 					"type": "bool",
 					"default": false,
@@ -38,10 +33,10 @@
                 "rift:energy": {
                     "range": [
 						0,
-						450
+						150
 					],
 					"type": "int",
-					"default": 450,
+					"default": 150,
 					"client_sync": true
                 },
                 "rift:tame_state": { //0 for standing, 1 for sitting, 2 for wandering
@@ -65,19 +60,6 @@
 					"type": "bool",
 					"default": false,
 					"client_sync": true
-                },
-				"rift:bleeding": {
-					"type": "bool",
-					"default": false,
-					"client_sync": true
-                },
-				"rift:owned_by_illager": {
-					"type": "bool",
-					"default": false
-                },
-                "rift:affected_by_bola": {
-					"type": "bool",
-					"default": false
                 }
 			},
 			"animations": {
@@ -88,8 +70,6 @@
 				"contPackBuff": "controller.animation.wild_direwolf_pack_buff",
 				"contWildRemoveBuffs": "controller.animation.wild_direwolf_remove_buffs",
 				"contSwitchBetweenMeleeAttacks": "controller.animation.direwolf_werewolf_switch_between_melee_attacks",
-                "contInWaterTag": "controller.animation.add_in_water_tag",
-				"contMovingTag": "controller.animation.add_moving_tag",
 				"contTameTag": "controller.animation.add_tame_tag",
 				"contBabyTag": "controller.animation.add_baby_tag",
 				"contRiddenTag": "controller.animation.add_ridden_tag",
@@ -97,8 +77,6 @@
 				"contSonicBoomTag": "controller.animation.add_sonic_boom_tag",
 				"contInLoveTag": "controller.animation.add_in_love_tag",
 				"contHypnotizedTag": "controller.animation.add_hypnotized_tag",
-				"contHypnotizedTamedTag": "controller.animation.add_hypnotized_by_tamed_tag",
-				"contOwnedByIllagerTag": "controller.animation.add_owned_by_illager_tag",
 				"contOutOfControlTag": "controller.animation.add_out_of_control_tag",
 				"contTameState": "controller.animation.manage_tame_state",
 				"contBehaviorState": "controller.animation.manage_tame_behavior",
@@ -106,9 +84,6 @@
 				"contEnergyUsage": "controller.animation.direwolf_energy_movement_usage",
 				"contWarnLowEnergy": "controller.animation.warn_of_low_energy",
 				"contDieWithoutTenontosaurus": "controller.animation.general_die_without_tenontosaurus",
-                "contDieWithoutTamedTenontosaurus": "controller.animation.general_death_timer_tamed_tenontosaurus",
-				"contBleed": "controller.animation.general_manage_bleed",
-				"contBola": "controller.animation.general_manage_bola",
 				"animUseEnergyWhileMovingNormal": "animation.direwolf_decrease_energy_while_moving_normal",
 				"animUseEnergyWhileMovingWerewolf": "animation.direwolf_decrease_energy_while_moving_werewolf",
 				"animEnergyRegenDelay": "animation.regenerate_energy_delay",
@@ -127,12 +102,7 @@
 				"animDirewolfBreathCountdown": "animation.direwolf_breath_countdown",
 				"animDirewolfBreathCooldown": "animation.direwolf_breath_cooldown",
 				"animFindTenontosaurus": "animation.find_tenontosaurus",
-				"animDeathTimer": "animation.hypnosis_death_timer",
-                "animTamedDeathTimer": "animation.hypnosis_death_timer_tamed",
-                "animBleed": "animation.general_bleed",
-                "animBleedCountdown": "animation.general_bleed_countdown",
-                "animBolaEffect": "animation.general_bola_effect",
-                "animBolaEffectCountdown": "animation.general_bola_effect_countdown"
+				"animDeathTimer": "animation.hypnosis_death_timer"
 			},
 			"scripts": {
 				"animate": [
@@ -143,8 +113,6 @@
 					"contPackBuff",
 					"contWildRemoveBuffs",
 					"contSwitchBetweenMeleeAttacks",
-                    "contInWaterTag",
-                    "contMovingTag",
 					"contTameTag",
 					"contBabyTag",
 					"contRiddenTag",
@@ -152,18 +120,13 @@
 					"contSonicBoomTag",
 					"contInLoveTag",
 					"contHypnotizedTag",
-                    "contHypnotizedTamedTag",
-                    "contOwnedByIllagerTag",
 					"contOutOfControlTag",
 					"contTameState",
 					"contBehaviorState",
 					"contBreathManage",
 					"contEnergyUsage",
 					"contWarnLowEnergy",
-					"contDieWithoutTenontosaurus",
-                    "contDieWithoutTamedTenontosaurus",
-                    "contBleed",
-                    "contBola"
+					"contDieWithoutTenontosaurus"
 				]
 			}
         },
@@ -629,16 +592,6 @@
 							"max_amount": 1 
 						},
 						{ 
-							"item": "rift:raw_fibrous_meat", 
-							"priority": 0, 
-							"max_amount": 1 
-						},
-						{ 
-							"item": "rift:cooked_fibrous_meat", 
-							"priority": 0, 
-							"max_amount": 1 
-						},
-						{ 
 							"item": "rift:raw_dodo_meat", 
 							"priority": 0, 
 							"max_amount": 1 
@@ -691,64 +644,6 @@
 				"minecraft:despawn": {
 					"despawn_from_distance": {}
 				}
-            },
-			"rift:direwolf_adult_illager_patrol": {
-                "minecraft:health": {
-                    "value": 30,
-                    "max": 30
-                },
-				"minecraft:attack": {
-					"damage": 8
-				},
-                "minecraft:scale": {
-                    "value": 1.25
-                },
-				"minecraft:navigation.walk": {
-					"avoid_water": true,
-					"avoid_damage_blocks": true
-				},
-				"minecraft:movement.generic": {},
-				"minecraft:behavior.hurt_by_target": {
-					"priority": 7
-				},
-				"minecraft:despawn": {
-					"despawn_from_distance": {}
-				}
-            },
-			"rift:direwolf_adult_raid_mount": {
-                "minecraft:health": {
-                    "value": 30,
-                    "max": 30
-                },
-				"minecraft:attack": {
-					"damage": 8
-				},
-                "minecraft:scale": {
-                    "value": 1.25
-                },
-				"minecraft:navigation.walk": {
-					"avoid_water": true,
-					"avoid_damage_blocks": true
-				},
-				"minecraft:movement.generic": {},
-				"minecraft:behavior.hurt_by_target": {
-					"priority": 7
-				},
-                "minecraft:behavior.move_to_village": {
-                    "goal_radius": 2.0,
-                    "priority": 18,
-                    "speed_multiplier": 1.0
-                },
-                "minecraft:dweller": {
-                    "can_find_poi": false,
-                    "can_migrate": true,
-                    "dweller_role": "hostile",
-                    "dwelling_type": "village",
-                    "first_founding_reward": 0,
-                    "update_interval_base": 60,
-                    "update_interval_variant": 40
-                },
-                "minecraft:persistent": {}
             },
 			"rift:direwolf_adult_werewolf_wild": {
 				"minecraft:is_ignited": {},
@@ -850,16 +745,6 @@
 						},
 						{ 
 							"item": "rift:cooked_exotic_meat", 
-							"priority": 0, 
-							"max_amount": 1 
-						},
-						{ 
-							"item": "rift:raw_fibrous_meat", 
-							"priority": 0, 
-							"max_amount": 1 
-						},
-						{ 
-							"item": "rift:cooked_fibrous_meat", 
 							"priority": 0, 
 							"max_amount": 1 
 						},
@@ -1239,78 +1124,6 @@
 								]
 							},
 							"max_dist": 64
-						}
-					]
-				}
-			},
-			"rift:mounted_by_illager_targets": {
-				"minecraft:behavior.nearest_attackable_target": {
-					"priority": 8,
-					"within_radius": 12.0,
-					"entity_types": [
-						{
-							"filters": {
-								"any_of": [
-									{
-										"test": "is_family",
-										"subject": "other",
-										"value": "wandering_trader"
-									},
-									{
-										"test": "is_family",
-										"subject": "other",
-										"value": "iron_golem"
-									},
-									{
-                                        "all_of": [
-                                            {
-                                                "subject": "other",
-                                                "test": "is_family",
-                                                "value": "villager"
-                                            },
-                                            {
-                                                "operator": "!=",
-                                                "subject": "other",
-                                                "test": "has_component",
-                                                "value": "minecraft:is_baby"
-                                            }
-                                        ]
-									},
-                                    {
-                                        "all_of": [
-                                            {
-                                                "test": "is_family",
-                                                "subject": "other",
-                                                "value": "player"
-                                            },
-                                            {
-                                                "test": "is_riding",
-                                                "subject": "other",
-                                                "value": false
-                                            }
-                                        ]
-                                    }
-								]
-							},
-							"max_dist": 12
-						},
-						{
-							"filters": {
-								"all_of": [
-									{
-										"test": "has_component",
-										"subject": "other",
-										"value": "minecraft:is_tamed"
-									},
-									{
-										"test": "rider_count",
-										"subject": "other",
-										"operator": ">",
-										"value": 0
-									}
-								]
-							},
-							"max_dist": 12
 						}
 					]
 				}
@@ -1781,8 +1594,8 @@
 						{
 							"position": [
 								0,
-								1,
-								-0.2
+								1.6,
+								0
 							]
 						}
 					],
@@ -1790,23 +1603,6 @@
 				},
 				"minecraft:input_ground_controlled": {},
 				"minecraft:can_power_jump": {}
-            },
-			"rift:has_illager_mount": {
-				"minecraft:is_saddled": {},
-				"minecraft:rideable": {
-					"family_types": [
-						"illager"
-					],
-					"seats": [
-						{
-							"position": [
-								0,
-								1,
-								-0.2
-							]
-						}
-					]
-				}
             },
 			"rift:cannot_power_jump": {
 				"minecraft:horse.jump_strength": {
@@ -1904,29 +1700,15 @@
 					"value": 0.25
 				},
                 "minecraft:behavior.random_stroll": {
-					"priority": 20
+					"priority": 19
 				},
 				"minecraft:behavior.random_look_around": {
-					"priority": 21
+					"priority": 20
 				}
 			},
 			"rift:wild_standing_hypnotized_by_tenontosaurus": {
 				"minecraft:movement": {
 					"value": 0.25
-				}
-			},
-			"rift:mounted_by_illager_standing": {
-                "minecraft:behavior.mount_pathing": {
-                    "priority": 19,
-                    "speed_multiplier": 1.0,
-                    "target_dist": 0.0,
-                    "track_target": true
-                },
-				"minecraft:movement": {
-					"value": 0.25
-				},
-                "minecraft:behavior.random_stroll": {
-					"priority": 20
 				}
 			},
 			"rift:follow_tenontosaurus": {
@@ -1936,10 +1718,14 @@
 					"entity_types": [
 						{
 							"filters": {
-                                "test": "has_tag",
-                                "subject": "other",
-                                "value": "tenontoTarget"
-                            },
+								"all_of": [
+									{
+										"test": "has_tag",
+										"subject": "other",
+										"value": "tenontoTarget"
+									}
+								]
+							},
 							"max_dist": 48,
 							"priority": 0
 						},
@@ -1967,7 +1753,7 @@
 			},
 			"rift:follow_tenontosaurus_no_target": {
 				"minecraft:behavior.ranged_attack": {
-					"priority": 19,
+					"priority": 18,
 					"attack_radius": 8.0,
 					"attack_radius_min": 4
 				},
@@ -1988,57 +1774,6 @@
 							}
 						]
 					},
-					"event": "rift:attack_for_tenontosaurus",
-					"target": "self"
-				}
-			},
-			"rift:follow_tamed_tenontosaurus": {
-				"minecraft:behavior.nearest_prioritized_attackable_target": {
-					"priority": 8,
-					"within_radius": 32.0,
-					"entity_types": [
-						{
-							"filters": {
-                                "test": "has_tag",
-                                "subject": "other",
-                                "value": "tenontoTamedTarget"
-                            },
-							"max_dist": 48,
-							"priority": 0
-						},
-						{
-							"filters": {
-								"all_of": [
-									{
-										"test": "is_family",
-										"subject": "other",
-										"value": "tenontosaurus"
-									},
-									{
-										"test": "has_component",
-										"subject": "other",
-										"value": "minecraft:is_tamed"
-									}
-								]
-							},
-							"max_dist": 48,
-							"priority": 1
-						}
-					]
-				}
-			},
-			"rift:follow_tamed_tenontosaurus_no_target": {
-				"minecraft:behavior.ranged_attack": {
-					"priority": 19,
-					"attack_radius": 8.0,
-					"attack_radius_min": 4
-				},
-				"minecraft:on_target_acquired": {
-					"filters": {
-                        "test": "has_tag",
-                        "subject": "target",
-                        "value": "tenontoTamedTarget"
-                    },
 					"event": "rift:attack_for_tenontosaurus",
 					"target": "self"
 				}
@@ -2067,7 +1802,7 @@
 					"priority": 2
 				},
                 "minecraft:behavior.random_stroll": {
-					"priority": 20
+					"priority": 19
 				}
 			},
 			"rift:tamed_can_move": {
@@ -2264,11 +1999,6 @@
 				"minecraft:transformation": {
 					"into": "rift:direwolf<rift:transform_into_hypnotized_variant_four>"
 				}
-			},
-            "rift:transform_into_hypnotized_by_tamed": {
-				"minecraft:transformation": {
-					"into": "rift:direwolf<rift:transform_into_hypnotized_by_tamed>"
-				}
 			}
 		},
 		"components": {
@@ -2278,8 +2008,7 @@
 					"direwolf",
 					"mob",
 					"carnivore",
-					"mammal",
-                    "mediumSize"
+					"mammal"
 				]
 			},
 			"minecraft:jump.static": {},
@@ -2566,18 +2295,6 @@
 												"domain": "hand",
 												"value": "rift:cooked_exotic_meat"
 											},
-                                            {
-                                                "test": "has_equipment",
-                                                "subject": "other",
-                                                "domain": "hand",
-                                                "value": "rift:raw_fibrous_meat"
-                                            },
-                                            {
-                                                "test": "has_equipment",
-                                                "subject": "other",
-                                                "domain": "hand",
-                                                "value": "rift:cooked_fibrous_meat"
-                                            },
 											{
 												"test": "has_equipment",
 												"subject": "other",
@@ -2672,21 +2389,7 @@
 										"domain": "hand",
 										"operator": "!=",
 										"value": "rift:lunar_stimulant"
-									},
-                                    {
-                                        "test": "has_equipment",
-                                        "subject": "other",
-                                        "domain": "hand",
-										"operator": "!=",
-                                        "value": "rift:raw_fibrous_meat"
-                                    },
-                                    {
-                                        "test": "has_equipment",
-                                        "subject": "other",
-                                        "domain": "hand",
-										"operator": "!=",
-                                        "value": "rift:cooked_fibrous_meat"
-                                    }
+									}
 								]
 							},
 							"event": "rift:manage_state",
@@ -2758,134 +2461,6 @@
 							"target": "self"
 						},
 						"use_item": true
-					},
-					{
-						"on_interact": {
-							"filters": {
-								"all_of": [
-									{
-                                        "test": "has_equipment",
-                                        "subject": "other",
-                                        "domain": "hand",
-                                        "value": "rift:raw_fibrous_meat"
-                                    },
-									{
-										"test": "has_component",
-										"subject": "self",
-										"value": "minecraft:is_baby",
-										"operator": "!="
-									},
-									{
-										"test": "has_component",
-										"subject": "self",
-										"value": "minecraft:is_tamed"
-									},
-									{
-										"test": "is_sneaking",
-										"subject": "other",
-										"value": true
-									},
-                                    {
-                                        "test": "int_property",
-                                        "subject": "self",
-                                        "domain": "rift:energy",
-                                        "operator": "<",
-                                        "value": 450
-                                    }
-								]
-							},
-							"event": "rift:regenerate_energy_from_raw_food",
-							"target": "self"
-						},
-						"use_item": true
-					},
-					{
-						"on_interact": {
-							"filters": {
-								"all_of": [
-									{
-                                        "test": "has_equipment",
-                                        "subject": "other",
-                                        "domain": "hand",
-                                        "value": "rift:cooked_fibrous_meat"
-                                    },
-									{
-										"test": "has_component",
-										"subject": "self",
-										"value": "minecraft:is_baby",
-										"operator": "!="
-									},
-									{
-										"test": "has_component",
-										"subject": "self",
-										"value": "minecraft:is_tamed"
-									},
-									{
-										"test": "is_sneaking",
-										"subject": "other",
-										"value": true
-									},
-                                    {
-                                        "test": "int_property",
-                                        "subject": "self",
-                                        "domain": "rift:energy",
-                                        "operator": "<",
-                                        "value": 450
-                                    }
-								]
-							},
-							"event": "rift:regenerate_energy_from_cooked_food",
-							"target": "self"
-						},
-						"use_item": true
-					},
-					{
-						"on_interact": {
-							"filters": {
-								"all_of": [
-									{
-                                        "any_of": [
-                                            {
-                                                "test": "has_equipment",
-                                                "subject": "other",
-                                                "domain": "hand",
-                                                "value": "rift:raw_fibrous_meat"
-                                            },
-                                            {
-                                                "test": "has_equipment",
-                                                "subject": "other",
-                                                "domain": "hand",
-                                                "value": "rift:cooked_fibrous_meat"
-                                            }
-                                        ]
-                                    },
-									{
-										"test": "has_component",
-										"subject": "self",
-										"value": "minecraft:is_baby",
-										"operator": "!="
-									},
-									{
-										"test": "has_component",
-										"subject": "self",
-										"value": "minecraft:is_tamed"
-									},
-									{
-										"test": "is_sneaking",
-										"subject": "other",
-										"value": true
-									},
-                                    {
-                                        "test": "int_property",
-                                        "subject": "self",
-                                        "domain": "rift:energy",
-                                        "value": 450
-                                    }
-								]
-							},
-							"event": "rift:lol4",
-							"target": "self"
-						}
 					},
 					{
 						"on_interact": {
@@ -4775,7 +4350,7 @@
 							}
 						},
 						"damage_multiplier": 0.5,
-						"cause": "entity_attack"
+						"cause": "attack"
 					},
 					{
 						"on_damage": {
@@ -4792,6 +4367,11 @@
 												"test": "is_family",
 												"subject": "other",
 												"value": "player"
+											},
+											{
+												"test": "is_family",
+												"subject": "other",
+												"value": "forcedAttack"
 											}
 										]
 									},
@@ -4823,13 +4403,7 @@
 										"subject": "self",
 										"domain": "rift:is_hypnotized",
 										"value": false
-									},
-                                    {
-                                        "test": "is_family",
-                                        "subject": "other",
-                                        "operator": "!=",
-                                        "value": "illager"
-                                    }
+									}
 								]
 							},
 							"event": "rift:wild_snarl",
@@ -4854,70 +4428,7 @@
 							}
 						},
 						"deals_damage": false
-					},
-                    {
-                        "on_damage": {
-                            "filters": {
-                                "all_of": [
-                                    {
-                                        "test": "is_family",
-                                        "subject": "other",
-                                        "value": "illager"
-                                    },
-                                    {
-                                        "test": "bool_property",
-                                        "subject": "self",
-                                        "domain": "rift:owned_by_illager",
-                                        "value": true
-                                    },
-									{
-										"test": "has_damage",
-										"subject": "self",
-										"operator": "!=",
-										"value": "fatal"
-									},
-									{
-										"test": "random_chance",
-										"value": 3,
-										"subject": "self"
-									}
-                                ]
-                            }
-                        },
-						"deals_damage": false
-                    },
-                    {
-                        "on_damage": {
-                            "filters": {
-                                "all_of": [
-                                    {
-                                        "test": "is_family",
-                                        "subject": "other",
-                                        "value": "illager"
-                                    },
-                                    {
-                                        "test": "bool_property",
-                                        "subject": "self",
-                                        "domain": "rift:owned_by_illager",
-                                        "value": false
-                                    },
-									{
-										"test": "has_damage",
-										"subject": "self",
-										"operator": "!=",
-										"value": "fatal"
-									},
-									{
-										"test": "random_chance",
-										"value": 3,
-										"subject": "self"
-									}
-                                ]
-                            },
-							"event": "rift:wild_snarl",
-							"target": "self"
-                        }
-                    }
+					}
 				]
 			},
 			"minecraft:environment_sensor": {
@@ -5097,8 +4608,7 @@
 						"event": "rift:has_no_rider"
 					}
 				]
-			},
-            "minecraft:conditional_bandwidth_optimization": {}
+			}
 		},
 		"events": {
 			"minecraft:entity_spawned": {
@@ -5352,68 +4862,27 @@
 				},
 				"remove": {
 					"component_groups": [
-						"rift:follow_tenontosaurus_no_target",
-                        "rift:follow_tamed_tenontosaurus_no_target"
+						"rift:follow_tenontosaurus_no_target"
+					]
+				},
+				"run_command": {
+					"command": [
+						"say FOR THE QUEEN"
 					]
 				}
 			},
 			"rift:stop_attacking_for_tenontosaurus": {
-                "sequence": [
-                    {
-                        "remove": {
-                            "component_groups": [
-                                "rift:attacking_for_tenontosaurus"
-                            ]
-                        }
-                    },
-                    {
-                        "filters": {
-                            "all_of": [
-                                {
-                                    "test": "bool_property",
-                                    "subject": "self",
-                                    "domain": "rift:is_hypnotized",
-                                    "value": true
-                                },
-                                {
-                                    "test": "bool_property",
-                                    "subject": "self",
-                                    "domain": "rift:is_hypnotized_tamed",
-                                    "value": false
-                                }
-                            ]
-                        },
-                        "add": {
-                            "component_groups": [
-                                "rift:follow_tenontosaurus_no_target"
-                            ]
-                        }
-                    },
-                    {
-                        "filters": {
-                            "all_of": [
-                                {
-                                    "test": "bool_property",
-                                    "subject": "self",
-                                    "domain": "rift:is_hypnotized",
-                                    "value": false
-                                },
-                                {
-                                    "test": "bool_property",
-                                    "subject": "self",
-                                    "domain": "rift:is_hypnotized_tamed",
-                                    "value": true
-                                }
-                            ]
-                        },
-                        "add": {
-                            "component_groups": [
-                                "rift:follow_tamed_tenontosaurus_no_target"
-                            ]
-                        }
-                    }
-                ]
-            },
+				"add": {
+					"component_groups": [
+						"rift:follow_tenontosaurus_no_target"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:attacking_for_tenontosaurus"
+					]
+				}
+			},
 			"rift:hypnotized_by_tenontosaurus": {
 				"sequence": [
 					{},
@@ -5535,81 +5004,6 @@
 					"rift:is_hypnotized": true
 				}
 			},
-            "rift:hypnotized_by_tamed_tenontosaurus": {
-                "add": {
-                    "component_groups": [
-                        "rift:transform_into_hypnotized_by_tamed"
-                    ]
-                }
-            },
-            "rift:transform_into_hypnotized_by_tamed": {
-                "sequence": [
-                    {
-						"add": {
-							"component_groups": [
-								"rift:direwolf_adult",
-								"rift:direwolf_adult_hypnotized",
-								"rift:pushable",
-								"rift:wild_standing_hypnotized_by_tenontosaurus",
-								"rift:default_collision",
-								"rift:follow_tamed_tenontosaurus",
-								"rift:follow_tamed_tenontosaurus_no_target"
-							]
-						},
-						"set_property": {
-							"rift:is_hypnotized_tamed": true
-						}
-                    },
-                    {
-                        "filters": {
-                            "test": "is_variant",
-                            "subject": "other",
-                            "value": 0
-                        },
-                        "add": {
-                            "component_groups": [
-                                "rift:variant_one"
-                            ]
-                        }
-                    },
-                    {
-                        "filters": {
-                            "test": "is_variant",
-                            "subject": "other",
-                            "value": 1
-                        },
-                        "add": {
-                            "component_groups": [
-                                "rift:variant_two"
-                            ]
-                        }
-                    },
-                    {
-                        "filters": {
-                            "test": "is_variant",
-                            "subject": "other",
-                            "value": 2
-                        },
-                        "add": {
-                            "component_groups": [
-                                "rift:variant_three"
-                            ]
-                        }
-                    },
-                    {
-                        "filters": {
-                            "test": "is_variant",
-                            "subject": "other",
-                            "value": 3
-                        },
-                        "add": {
-                            "component_groups": [
-                                "rift:variant_four"
-                            ]
-                        }
-                    }
-                ]
-            },
 			"rift:spawn_as_baby": {
 				"randomize": [
 					{
@@ -5674,166 +5068,6 @@
 					}
 				]
 			},
-            "rift:spawn_as_illager_patrol_mount": {
-                "randomize": [
-                    {
-                        "weight": 1,
-                        "add": {
-                            "component_groups": [
-                                "rift:direwolf_adult",
-                                "rift:direwolf_adult_illager_patrol",
-                                "rift:has_illager_mount",
-								"rift:mounted_by_illager_targets",
-                                "rift:normal_mode_attack",
-                                "rift:variant_one",
-                                "rift:pushable",
-                                "rift:mounted_by_illager_standing",
-                                "rift:default_collision"
-                            ]
-                        },
-                        "set_property": {
-                            "rift:owned_by_illager": true
-                        }
-                    },
-                    {
-                        "weight": 1,
-                        "add": {
-                            "component_groups": [
-                                "rift:direwolf_adult",
-                                "rift:direwolf_adult_illager_patrol",
-                                "rift:has_illager_mount",
-								"rift:mounted_by_illager_targets",
-                                "rift:normal_mode_attack",
-                                "rift:variant_two",
-                                "rift:pushable",
-                                "rift:mounted_by_illager_standing",
-                                "rift:default_collision"
-                            ]
-                        },
-                        "set_property": {
-                            "rift:owned_by_illager": true
-                        }
-                    },
-                    {
-                        "weight": 1,
-                        "add": {
-                            "component_groups": [
-                                "rift:direwolf_adult",
-                                "rift:direwolf_adult_illager_patrol",
-                                "rift:has_illager_mount",
-								"rift:mounted_by_illager_targets",
-                                "rift:normal_mode_attack",
-                                "rift:variant_three",
-                                "rift:pushable",
-                                "rift:mounted_by_illager_standing",
-                                "rift:default_collision"
-                            ]
-                        },
-                        "set_property": {
-                            "rift:owned_by_illager": true
-                        }
-                    },
-                    {
-                        "weight": 1,
-                        "add": {
-                            "component_groups": [
-                                "rift:direwolf_adult",
-                                "rift:direwolf_adult_illager_patrol",
-                                "rift:has_illager_mount",
-								"rift:mounted_by_illager_targets",
-                                "rift:normal_mode_attack",
-                                "rift:variant_four",
-                                "rift:pushable",
-                                "rift:mounted_by_illager_standing",
-                                "rift:default_collision"
-                            ]
-                        },
-                        "set_property": {
-                            "rift:owned_by_illager": true
-                        }
-                    }
-                ]
-            },
-            "rift:spawn_as_illager_raid_mount": {
-                "randomize": [
-                    {
-                        "weight": 1,
-                        "add": {
-                            "component_groups": [
-                                "rift:direwolf_adult",
-                                "rift:direwolf_adult_raid_mount",
-                                "rift:has_illager_mount",
-								"rift:mounted_by_illager_targets",
-                                "rift:normal_mode_attack",
-                                "rift:variant_one",
-                                "rift:pushable",
-                                "rift:mounted_by_illager_standing",
-                                "rift:default_collision"
-                            ]
-                        },
-                        "set_property": {
-                            "rift:owned_by_illager": true
-                        }
-                    },
-                    {
-                        "weight": 1,
-                        "add": {
-                            "component_groups": [
-                                "rift:direwolf_adult",
-                                "rift:direwolf_adult_raid_mount",
-                                "rift:has_illager_mount",
-								"rift:mounted_by_illager_targets",
-                                "rift:normal_mode_attack",
-                                "rift:variant_two",
-                                "rift:pushable",
-                                "rift:mounted_by_illager_standing",
-                                "rift:default_collision"
-                            ]
-                        },
-                        "set_property": {
-                            "rift:owned_by_illager": true
-                        }
-                    },
-                    {
-                        "weight": 1,
-                        "add": {
-                            "component_groups": [
-                                "rift:direwolf_adult",
-                                "rift:direwolf_adult_raid_mount",
-                                "rift:has_illager_mount",
-								"rift:mounted_by_illager_targets",
-                                "rift:normal_mode_attack",
-                                "rift:variant_three",
-                                "rift:pushable",
-                                "rift:mounted_by_illager_standing",
-                                "rift:default_collision"
-                            ]
-                        },
-                        "set_property": {
-                            "rift:owned_by_illager": true
-                        }
-                    },
-                    {
-                        "weight": 1,
-                        "add": {
-                            "component_groups": [
-                                "rift:direwolf_adult",
-                                "rift:direwolf_adult_raid_mount",
-                                "rift:has_illager_mount",
-								"rift:mounted_by_illager_targets",
-                                "rift:normal_mode_attack",
-                                "rift:variant_four",
-                                "rift:pushable",
-                                "rift:mounted_by_illager_standing",
-                                "rift:default_collision"
-                            ]
-                        },
-                        "set_property": {
-                            "rift:owned_by_illager": true
-                        }
-                    }
-                ]
-            },
 			"rift:baby_grow_up": {
 				"sequence": [
 					{
@@ -5938,8 +5172,7 @@
 							]
 						},
 						"set_property": {
-							"rift:undergoing_taming": false,
-                            "rift:affected_by_bola": false
+							"rift:undergoing_taming": false
 						}
 					},
 					{
@@ -6539,10 +5772,6 @@
 					"rift:forced_transform": false
 				}
 			},
-            "rift:using_forced_attack": {},
-            "rift:eat_from_inventory": {},
-            "rift:refill_energy_from_inventory": {},
-            "rift:use_chest_sniff": {},
 			"rift:can_transform_again": {
 				"remove": {
 					"component_groups": [
@@ -6595,8 +5824,7 @@
 					]
 				},
 				"set_property": {
-					"rift:behavior_state": "3",
-                    "rift:affected_by_bola": false
+					"rift:behavior_state": "3"
 				},
 				"run_command": {
 					"command": [
@@ -6685,8 +5913,7 @@
 						"rift:direwolf_adult_wild_not_trusting",
 						"rift:default_targets_normal",
 						"rift:direwolf_adult_calm",
-						"rift:direwolf_adult_angry",
-                        "rift:normal_mode_attack"
+						"rift:direwolf_adult_angry"
 					]
 				},
 				"run_command": {
@@ -6703,8 +5930,7 @@
 					"component_groups": [
 						"rift:default_targets_normal",
 						"rift:direwolf_adult_wild_not_trusting",
-						"rift:direwolf_adult_calm",
-                        "rift:normal_mode_attack"
+						"rift:direwolf_adult_calm"
 					]
 				},
 				"remove": {
@@ -6779,8 +6005,7 @@
 						"rift:direwolf_adult_tamed",
 						"rift:direwolf_normal_rideable",
 						"rift:cannot_power_jump",
-						"rift:tamed_can_move",
-                        "rift:normal_mode_attack"
+						"rift:tamed_can_move"
 					]
 				},
 				"remove": {
@@ -6801,8 +6026,7 @@
 					]
 				},
 				"set_property": {
-					"rift:undergoing_taming": false,
-                    "rift:affected_by_bola": false
+					"rift:undergoing_taming": false
 				}
 			},
 			"rift:commit_suicide": {
@@ -6849,34 +6073,23 @@
 				]
 			},
 			"rift:has_rider": {
-                "sequence": [
-                    {
-                        "add": {
-                            "component_groups": [
-                                "rift:unpushable"
-                            ]
-                        },
-                        "remove": {
-                            "component_groups": [
-                                "rift:pushable",
-                                "rift:aggravating_horn_attack"
-                            ]
-                        }
-                    },
-                    {
-                        "filters": {
-                            "test": "has_component",
-                            "subject": "self",
-                            "value": "minecraft:is_ignited"
-                        },
-                        "run_command": {
-                            "command": [
-                                "tag @s add climber"
-                            ]
-                        }
-                    }
-                ]
-            },
+				"add": {
+					"component_groups": [
+						"rift:unpushable"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:pushable",
+						"rift:aggravating_horn_attack"
+					]
+				},
+				"run_command": {
+					"command": [
+						"tag @s add climber"
+					]
+				}
+			},
 			"rift:has_no_rider": {
 				"sequence": [
 					{
@@ -7496,27 +6709,7 @@
 			},
 			"rift:regenerate_energy": {
 				"set_property": {
-					"rift:energy": "query.property('rift:energy') + 10"
-				}
-			},
-			"rift:regenerate_energy_from_raw_food": {
-				"set_property": {
-					"rift:energy": "query.property('rift:energy') + 15"
-				},
-				"run_command": {
-					"command": [
-						"playsound random.eat @a[r=4]"
-					]
-				}
-			},
-			"rift:regenerate_energy_from_cooked_food": {
-				"set_property": {
-					"rift:energy": "query.property('rift:energy') + 45"
-				},
-				"run_command": {
-					"command": [
-						"playsound random.eat @a[r=4]"
-					]
+					"rift:energy": "query.property('rift:energy') + 5"
 				}
 			},
 			//for potion effects
@@ -7802,35 +6995,7 @@
 						"tellraw @p {\"rawtext\":[{\"translate\":\"reminder.cannot_use_regular_food.text\"}]}"
 					]
 				}
-			},
-			"rift:lol4": {
-				"run_command": {
-					"command": [
-						"tellraw @p {\"rawtext\":[{\"translate\":\"reminder.cannot_use_energy_boosters.text\"}]}"
-					]
-				}
-			},
-            "rift:start_bleeding": {
-                "set_property": {
-                    "rift:bleeding": true
-                }
-            },
-            "rift:stop_bleeding": {
-                "set_property": {
-                    "rift:bleeding": false
-                }
-            },
-            "rift:affected_by_bola": {
-                "set_property": {
-                    "rift:affected_by_bola": true
-                }
-            },
-            "rift:stop_being_affected_by_bola": {
-                "set_property": {
-                    "rift:affected_by_bola": false
-                }
-            },
-            "rift:force_go_down": {}
+			}
 		}
     }
 }

@@ -1,1 +1,0 @@
-execute as @e[type=rift:dilophosaurus, tag=sheared] positioned as @e[type=rift:dilophosaurus, tag=sheared] run tp @s ~ ~ ~ facing @e[tag=diloTarget, c=1]

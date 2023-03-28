@@ -12,15 +12,14 @@
 					"default": false,
 					"client_sync": true
 				},
-				"rift:is_hypnotized_tamed": {
-					"type": "bool",
-					"default": false,
-					"client_sync": true
-				},
 				"rift:undergoing_taming": {
 					"type": "bool",
 					"default": false,
 					"client_sync": true
+				},
+				"rift:eat_from_inventory_cooldown": {
+					"type": "bool",
+					"default": true
 				},
 				"rift:forced_attack_mode": { //0 for nothing, 1 for bite, 2 for claw
 					"range": [
@@ -50,50 +49,28 @@
                 "rift:energy": {
                     "range": [
 						0,
-						450
+						150
 					],
 					"type": "int",
-					"default": 450,
+					"default": 150,
 					"client_sync": true
-                },
-				"rift:bleeding": {
-					"type": "bool",
-					"default": false,
-					"client_sync": true
-                },
-				"rift:owned_by_illager": {
-					"type": "bool",
-					"default": false
-                },
-                "rift:affected_by_bola": {
-					"type": "bool",
-					"default": false
                 }
 			},
 			"animations": {
-                "contEatFromInventory": "controller.animation.general_eat_from_inventory",
-                "contRefillEnergyFromInventory": "controller.animation.general_refill_energy_from_inventory",
+				"contEatFromInventoryCooldown": "controller.animation.general_eat_from_inventory_cooldown",
 				"contSwitchBetweenMeleeAttacks": "controller.animation.baryonyx_switch_between_melee_attacks",
-				"contInWaterTag": "controller.animation.add_in_water_tag",
-				"contMovingTag": "controller.animation.add_moving_tag",
 				"contTameTag": "controller.animation.add_tame_tag",
 				"contBabyTag": "controller.animation.add_baby_tag",
 				"contRiddenTag": "controller.animation.add_ridden_tag",
 				"contInLoveTag": "controller.animation.add_in_love_tag",
 				"contTameState": "controller.animation.manage_tame_state",
 				"contHypnotizedTag": "controller.animation.add_hypnotized_tag",
-				"contHypnotizedTamedTag": "controller.animation.add_hypnotized_by_tamed_tag",
-				"contOwnedByIllagerTag": "controller.animation.add_owned_by_illager_tag",
 				"contBehaviorState": "controller.animation.manage_tame_behavior",
 				"contForcedAttack": "controller.animation.baryonyx_forced_attack",
 				"contEnergyUsage": "controller.animation.baryonyx_energy_movement_usage",
 				"contWarnLowEnergy": "controller.animation.warn_of_low_energy",
 				"contDieWithoutTenontosaurus": "controller.animation.general_die_without_tenontosaurus",
-                "contDieWithoutTamedTenontosaurus": "controller.animation.general_death_timer_tamed_tenontosaurus",
-				"contBleed": "controller.animation.general_manage_bleed",
-				"contBola": "controller.animation.general_manage_bola",
-				"animEatFromInventory": "animation.use_eat_from_inventory",
-                "animRefillEnergyFromInventory": "animation.use_refill_energy_from_inventory",
+				"animEatFromInventoryCooldown": "animation.eat_from_inventory_cooldown",
 				"animUseEnergyWhileMoving": "animation.baryonyx_decrease_energy_while_moving",
 				"animEnergyRegenDelay": "animation.regenerate_energy_delay",
 				"animRegenerateEnergyLand": "animation.baryonyx_regenerate_energy_on_land",
@@ -104,36 +81,23 @@
 				"animForcedAttackSlashOne": "animation.forced_attack_baryonyx_slash_one",
 				"animForcedAttackSlashTwo": "animation.forced_attack_baryonyx_slash_two",
 				"animFindTenontosaurus": "animation.find_tenontosaurus",
-				"animDeathTimer": "animation.hypnosis_death_timer",
-                "animTamedDeathTimer": "animation.hypnosis_death_timer_tamed",
-                "animBleed": "animation.general_bleed",
-                "animBleedCountdown": "animation.general_bleed_countdown",
-                "animBolaEffect": "animation.general_bola_effect",
-                "animBolaEffectCountdown": "animation.general_bola_effect_countdown"
+				"animDeathTimer": "animation.hypnosis_death_timer"
 			},
 			"scripts": {
 				"animate": [
-                    "contEatFromInventory",
-                    "contRefillEnergyFromInventory",
+					"contEatFromInventoryCooldown",
 					"contSwitchBetweenMeleeAttacks",
-                    "contInWaterTag",
-                    "contMovingTag",
 					"contTameTag",
 					"contBabyTag",
 					"contRiddenTag",
 					"contInLoveTag",
 					"contTameState",
 					"contHypnotizedTag",
-                    "contHypnotizedTamedTag",
-                    "contOwnedByIllagerTag",
 					"contBehaviorState",
 					"contForcedAttack",
 					"contEnergyUsage",
 					"contWarnLowEnergy",
-					"contDieWithoutTenontosaurus",
-                    "contDieWithoutTamedTenontosaurus",
-                    "contBleed",
-                    "contBola"
+					"contDieWithoutTenontosaurus"
 				]
 			}
         },
@@ -481,16 +445,6 @@
 							"max_amount": 1 
 						},
 						{ 
-							"item": "rift:raw_fibrous_meat", 
-							"priority": 0, 
-							"max_amount": 1 
-						},
-						{ 
-							"item": "rift:cooked_fibrous_meat", 
-							"priority": 0, 
-							"max_amount": 1 
-						},
-						{ 
 							"item": "rift:raw_dodo_meat", 
 							"priority": 0, 
 							"max_amount": 1 
@@ -543,42 +497,6 @@
 					"despawn_from_distance": {}
 				}
             },
-            "rift:baryonyx_adult_illager_patrol": {
-                "minecraft:health": {
-                    "value": 60,
-                    "max": 60
-                },
-				"minecraft:behavior.hurt_by_target": {
-					"priority": 4
-				},
-                "minecraft:despawn": {
-					"despawn_from_distance": {}
-				}
-            },
-            "rift:baryonyx_adult_raid_mount": {
-                "minecraft:health": {
-                    "value": 60,
-                    "max": 60
-                },
-				"minecraft:behavior.hurt_by_target": {
-					"priority": 4
-				},
-                "minecraft:behavior.move_to_village": {
-                    "goal_radius": 2.0,
-                    "priority": 18,
-                    "speed_multiplier": 1.0
-                },
-                "minecraft:dweller": {
-                    "can_find_poi": false,
-                    "can_migrate": true,
-                    "dweller_role": "hostile",
-                    "dwelling_type": "village",
-                    "first_founding_reward": 0,
-                    "update_interval_base": 60,
-                    "update_interval_variant": 40
-                },
-                "minecraft:persistent": {}
-            },
 			"rift:baryonyx_adult_wild_poison_area": {
 				"minecraft:mob_effect": {
 					"effect_range": 2,
@@ -602,45 +520,6 @@
 								"operator": "!=",
 								"value": "poison"
 							}
-						]
-					}
-				}
-			},
-			"rift:baryonyx_adult_owned_by_illager_poison_area": {
-				"minecraft:mob_effect": {
-					"effect_range": 2,
-					"mob_effect": "poison",
-					"effect_time": 45,
-					"entity_filter": {
-						"all_of": [
-							{
-								"test": "in_water",
-								"subject": "self",
-								"value": true
-							},
-							{
-								"test": "in_water",
-								"subject": "other",
-								"value": true
-							},
-							{
-								"test": "has_mob_effect",
-								"subject": "other",
-								"operator": "!=",
-								"value": "poison"
-							},
-                            {
-                                "test": "is_family",
-                                "subject": "other",
-                                "operator": "!=",
-                                "value": "illager"
-                            },
-                            {
-                                "test": "bool_property",
-                                "subject": "other",
-                                "domain": "rift:owned_by_illager",
-                                "value": false
-                            }
 						]
 					}
 				}
@@ -692,7 +571,7 @@
             },
             "rift:default_targets": {
 				"minecraft:behavior.nearest_attackable_target": {
-					"priority": 7,
+					"priority": 5,
 					"within_radius": 32.0,
 					"must_see": true,
 					"entity_types": [
@@ -846,7 +725,7 @@
 			},
             "rift:the_flood_targets": {
 				"minecraft:behavior.nearest_attackable_target": {
-					"priority": 7,
+					"priority": 5,
 					"within_radius": 32.0,
 					"must_see": true,
 					"entity_types": [
@@ -960,82 +839,9 @@
 					]
 				}
 			},
-            "rift:mounted_by_illager_targets": {
-				"minecraft:behavior.nearest_attackable_target": {
-					"priority": 7,
-					"within_radius": 12.0,
-					"must_see": true,
-					"entity_types": [
-						{
-							"filters": {
-								"any_of": [
-									{
-										"test": "is_family",
-										"subject": "other",
-										"value": "wandering_trader"
-									},
-									{
-										"test": "is_family",
-										"subject": "other",
-										"value": "iron_golem"
-									},
-									{
-                                        "all_of": [
-                                            {
-                                                "subject": "other",
-                                                "test": "is_family",
-                                                "value": "villager"
-                                            },
-                                            {
-                                                "operator": "!=",
-                                                "subject": "other",
-                                                "test": "has_component",
-                                                "value": "minecraft:is_baby"
-                                            }
-                                        ]
-									},
-                                    {
-                                        "all_of": [
-                                            {
-                                                "test": "is_family",
-                                                "subject": "other",
-                                                "value": "player"
-                                            },
-                                            {
-                                                "test": "is_riding",
-                                                "subject": "other",
-                                                "value": false
-                                            }
-                                        ]
-                                    }
-								]
-							},
-							"max_dist": 12
-						},
-						{
-							"filters": {
-								"all_of": [
-									{
-										"test": "has_component",
-										"subject": "other",
-										"value": "minecraft:is_tamed"
-									},
-									{
-										"test": "rider_count",
-										"subject": "other",
-										"operator": ">",
-										"value": 0
-									}
-								]
-							},
-							"max_dist": 12
-						}
-					]
-				}
-			},
 			"rift:aggravating_horn_attack": {
 				"minecraft:behavior.nearest_attackable_target": {
-				  	"priority": 7,
+				  	"priority": 5,
 					"within_radius": 32.0,
 					"must_see": true,
 				  	"entity_types": [
@@ -1267,14 +1073,7 @@
 						},
 						{
 							"item": "rift:cooked_megapiranha",
-							"heal_amount": 6,
-							"effects": [
-								{
-									"name": "regeneration",
-									"duration": 15,
-									"amplifier": 3
-								}
-							]
+							"heal_amount": 6
 						},
 						{
 							"item": "rift:mixed_meat",
@@ -1405,9 +1204,6 @@
 					}
                 }
             },
-            "rift:baryonyx_mounted_by_illager_saddled": {
-                "minecraft:is_saddled": {}
-            },
             "rift:baryonyx_chested": {
                 "minecraft:is_chested": {}
             },
@@ -1426,22 +1222,6 @@
 						}
 					],
 					"interact_text": "action.interact.mount"
-				}
-            },
-			"rift:has_illager_mount": {
-                "minecraft:rideable": {
-					"family_types": [
-						"illager"
-					],
-					"seats": [
-						{
-							"position": [
-								0,
-								1.5,
-								0.1
-							]
-						}
-					]
 				}
             },
 			"rift:temptable": {
@@ -1487,10 +1267,10 @@
 					"drag_factor": 0.5
 				},
 				"minecraft:behavior.random_stroll": {
-					"priority": 20
+					"priority": 18
 				},
 				"minecraft:behavior.random_look_around": {
-					"priority": 21
+					"priority": 19
 				}
 			},
 			"rift:wild_standing_hypnotized_by_tenontosaurus": {
@@ -1504,36 +1284,21 @@
 					"drag_factor": 0.5
 				}
 			},
-			"rift:mounted_by_illager_standing": {
-				"minecraft:movement": {
-					"value": 0.25
-				},
-				"minecraft:underwater_movement": {
-					"value": 0.25
-				},
-				"minecraft:water_movement": {
-					"drag_factor": 0.5
-				},
-                "minecraft:behavior.mount_pathing": {
-                    "priority": 19,
-                    "target_dist": 0.0,
-                    "track_target": true
-                },
-				"minecraft:behavior.random_stroll": {
-					"priority": 20
-				}
-			},
 			"rift:follow_tenontosaurus": {
 				"minecraft:behavior.nearest_prioritized_attackable_target": {
-					"priority": 7,
+					"priority": 8,
 					"within_radius": 32.0,
 					"entity_types": [
 						{
 							"filters": {
-                                "test": "has_tag",
-                                "subject": "other",
-                                "value": "tenontoTarget"
-                            },
+								"all_of": [
+									{
+										"test": "has_tag",
+										"subject": "other",
+										"value": "tenontoTarget"
+									}
+								]
+							},
 							"max_dist": 48,
 							"priority": 0
 						},
@@ -1586,57 +1351,6 @@
 					"target": "self"
 				}
 			},
-			"rift:follow_tamed_tenontosaurus": {
-				"minecraft:behavior.nearest_prioritized_attackable_target": {
-					"priority": 7,
-					"within_radius": 32.0,
-					"entity_types": [
-						{
-							"filters": {
-                                "test": "has_tag",
-                                "subject": "other",
-                                "value": "tenontoTamedTarget"
-                            },
-							"max_dist": 48,
-							"priority": 0
-						},
-						{
-							"filters": {
-								"all_of": [
-									{
-										"test": "is_family",
-										"subject": "other",
-										"value": "tenontosaurus"
-									},
-									{
-										"test": "has_component",
-										"subject": "other",
-										"value": "minecraft:is_tamed"
-									}
-								]
-							},
-							"max_dist": 48,
-							"priority": 1
-						}
-					]
-				}
-			},
-			"rift:follow_tamed_tenontosaurus_no_target": {
-				"minecraft:behavior.ranged_attack": {
-					"priority": 13,
-					"attack_radius": 8.0,
-					"attack_radius_min": 4
-				},
-				"minecraft:on_target_acquired": {
-					"filters": {
-                        "test": "has_tag",
-                        "subject": "target",
-                        "value": "tenontoTamedTarget"
-                    },
-					"event": "rift:attack_for_tenontosaurus",
-					"target": "self"
-				}
-			},
 			"rift:attacking_for_tenontosaurus": {
 				"minecraft:on_target_escape": {
 					"event": "rift:stop_attacking_for_tenontosaurus",
@@ -1670,7 +1384,7 @@
 					"priority": 1
 				},
 				"minecraft:behavior.random_stroll": {
-					"priority": 20
+					"priority": 18
 				}
 			},
 			"rift:tamed_can_move": {
@@ -1708,10 +1422,10 @@
 			},
 			"rift:assist_behavior": {
 				"minecraft:behavior.owner_hurt_by_target": {
-					"priority": 5
+					"priority": 6
 				},
 				"minecraft:behavior.owner_hurt_target": {
-					"priority": 6
+					"priority": 7
 				}
             },
 			"rift:neutral_behavior": {
@@ -1729,7 +1443,7 @@
 			},
 			"rift:aggressive_behavior": {
 				"minecraft:behavior.nearest_attackable_target": {
-				  	"priority": 7,
+				  	"priority": 5,
 					"within_radius": 32.0,
 					"must_see": true,
 				  	"entity_types": [
@@ -1892,11 +1606,6 @@
 				"minecraft:transformation": {
 					"into": "rift:baryonyx<rift:transform_into_hypnotized_variant_four>"
 				}
-			},
-			"rift:transform_into_hypnotized_by_tamed": {
-				"minecraft:transformation": {
-					"into": "rift:baryonyx<rift:transform_into_hypnotized_by_tamed>"
-				}
 			}
         },
         "components": {
@@ -1907,8 +1616,7 @@
 					"mob",
 					"carnivore",
 					"dinosaur",
-					"waterMount",
-                    "mediumSize"
+					"waterMount"
 				]
 			},
             "minecraft:movement.amphibious": {},
@@ -2281,18 +1989,6 @@
 												"test": "has_equipment",
 												"subject": "other",
 												"domain": "hand",
-												"value": "rift:raw_fibrous_meat"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "rift:cooked_fibrous_meat"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
 												"value": "rift:raw_dodo_meat"
 											},
 											{
@@ -2395,21 +2091,7 @@
 										"domain": "hand",
 										"operator": "!=",
 										"value": "minecraft:shears"
-									},
-                                    {
-                                        "test": "has_equipment",
-                                        "subject": "other",
-                                        "domain": "hand",
-										"operator": "!=",
-                                        "value": "rift:raw_fibrous_meat"
-                                    },
-                                    {
-                                        "test": "has_equipment",
-                                        "subject": "other",
-                                        "domain": "hand",
-										"operator": "!=",
-                                        "value": "rift:cooked_fibrous_meat"
-                                    }
+									}
 								]
 							},
 							"event": "rift:manage_state",
@@ -2486,134 +2168,6 @@
 						},
 						"interact_text": "action.interact.attachchest",
 						"use_item": true
-					},
-					{
-						"on_interact": {
-							"filters": {
-								"all_of": [
-									{
-                                        "test": "has_equipment",
-                                        "subject": "other",
-                                        "domain": "hand",
-                                        "value": "rift:raw_fibrous_meat"
-                                    },
-									{
-										"test": "has_component",
-										"subject": "self",
-										"value": "minecraft:is_baby",
-										"operator": "!="
-									},
-									{
-										"test": "has_component",
-										"subject": "self",
-										"value": "minecraft:is_tamed"
-									},
-									{
-										"test": "is_sneaking",
-										"subject": "other",
-										"value": true
-									},
-                                    {
-                                        "test": "int_property",
-                                        "subject": "self",
-                                        "domain": "rift:energy",
-                                        "operator": "<",
-                                        "value": 450
-                                    }
-								]
-							},
-							"event": "rift:regenerate_energy_from_raw_food",
-							"target": "self"
-						},
-						"use_item": true
-					},
-					{
-						"on_interact": {
-							"filters": {
-								"all_of": [
-									{
-                                        "test": "has_equipment",
-                                        "subject": "other",
-                                        "domain": "hand",
-                                        "value": "rift:cooked_fibrous_meat"
-                                    },
-									{
-										"test": "has_component",
-										"subject": "self",
-										"value": "minecraft:is_baby",
-										"operator": "!="
-									},
-									{
-										"test": "has_component",
-										"subject": "self",
-										"value": "minecraft:is_tamed"
-									},
-									{
-										"test": "is_sneaking",
-										"subject": "other",
-										"value": true
-									},
-                                    {
-                                        "test": "int_property",
-                                        "subject": "self",
-                                        "domain": "rift:energy",
-                                        "operator": "<",
-                                        "value": 450
-                                    }
-								]
-							},
-							"event": "rift:regenerate_energy_from_cooked_food",
-							"target": "self"
-						},
-						"use_item": true
-					},
-					{
-						"on_interact": {
-							"filters": {
-								"all_of": [
-									{
-                                        "any_of": [
-                                            {
-                                                "test": "has_equipment",
-                                                "subject": "other",
-                                                "domain": "hand",
-                                                "value": "rift:raw_fibrous_meat"
-                                            },
-                                            {
-                                                "test": "has_equipment",
-                                                "subject": "other",
-                                                "domain": "hand",
-                                                "value": "rift:cooked_fibrous_meat"
-                                            }
-                                        ]
-                                    },
-									{
-										"test": "has_component",
-										"subject": "self",
-										"value": "minecraft:is_baby",
-										"operator": "!="
-									},
-									{
-										"test": "has_component",
-										"subject": "self",
-										"value": "minecraft:is_tamed"
-									},
-									{
-										"test": "is_sneaking",
-										"subject": "other",
-										"value": true
-									},
-                                    {
-                                        "test": "int_property",
-                                        "subject": "self",
-                                        "domain": "rift:energy",
-                                        "value": 450
-                                    }
-								]
-							},
-							"event": "rift:lol4",
-							"target": "self"
-						}
 					},
 					{
 						"on_interact": {
@@ -4574,7 +4128,7 @@
 							}
 						},
 						"damage_multiplier": 0.5,
-						"cause": "entity_attack"
+						"cause": "attack"
 					},
 					{
 						"deals_damage": false,
@@ -4598,30 +4152,9 @@
 							}
 						},
 						"deals_damage": false
-					},
-                    {
-                        "on_damage": {
-                            "filters": {
-                                "all_of": [
-                                    {
-                                        "test": "is_family",
-                                        "subject": "other",
-                                        "value": "illager"
-                                    },
-                                    {
-                                        "test": "bool_property",
-                                        "subject": "self",
-                                        "domain": "rift:owned_by_illager",
-                                        "value": true
-                                    }
-                                ]
-                            }
-                        },
-						"deals_damage": false
-                    }
+					}
 				]
-			},
-            "minecraft:conditional_bandwidth_optimization": {}
+			}
         },
 		"events": {
 			"minecraft:entity_spawned": {
@@ -4862,70 +4395,29 @@
 				},
 				"remove": {
 					"component_groups": [
-						"rift:follow_tenontosaurus_no_target",
-                        "rift:follow_tamed_tenontosaurus_no_target"
+						"rift:follow_tenontosaurus_no_target"
+					]
+				},
+				"run_command": {
+					"command": [
+						"say FOR THE QUEEN"
 					]
 				}
 			},
 			"rift:stop_attacking_for_tenontosaurus": {
-                "sequence": [
-                    {
-                        "remove": {
-                            "component_groups": [
-                                "rift:attacking_for_tenontosaurus",
-                                "rift:can_bite_attack",
-                                "rift:can_claw_attack"
-                            ]
-                        }
-                    },
-                    {
-                        "filters": {
-                            "all_of": [
-                                {
-                                    "test": "bool_property",
-                                    "subject": "self",
-                                    "domain": "rift:is_hypnotized",
-                                    "value": true
-                                },
-                                {
-                                    "test": "bool_property",
-                                    "subject": "self",
-                                    "domain": "rift:is_hypnotized_tamed",
-                                    "value": false
-                                }
-                            ]
-                        },
-                        "add": {
-                            "component_groups": [
-                                "rift:follow_tenontosaurus_no_target"
-                            ]
-                        }
-                    },
-                    {
-                        "filters": {
-                            "all_of": [
-                                {
-                                    "test": "bool_property",
-                                    "subject": "self",
-                                    "domain": "rift:is_hypnotized",
-                                    "value": false
-                                },
-                                {
-                                    "test": "bool_property",
-                                    "subject": "self",
-                                    "domain": "rift:is_hypnotized_tamed",
-                                    "value": true
-                                }
-                            ]
-                        },
-                        "add": {
-                            "component_groups": [
-                                "rift:follow_tamed_tenontosaurus_no_target"
-                            ]
-                        }
-                    }
-                ]
-            },
+				"add": {
+					"component_groups": [
+						"rift:follow_tenontosaurus_no_target"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:attacking_for_tenontosaurus",
+						"rift:can_bite_attack",
+						"rift:can_claw_attack"
+					]
+				}
+			},
 			"rift:hypnotized_by_tenontosaurus": {
 				"sequence": [
 					{},
@@ -5051,83 +4543,6 @@
 					"rift:is_hypnotized": true
 				}
 			},
-            "rift:hypnotized_by_tamed_tenontosaurus": {
-                "add": {
-                    "component_groups": [
-                        "rift:transform_into_hypnotized_by_tamed"
-                    ]
-                }
-            },
-            "rift:transform_into_hypnotized_by_tamed": {
-                "sequence": [
-                    {
-                        "add": {
-                            "component_groups": [
-                                "rift:baryonyx_adult",
-                                "rift:baryonyx_adult_hypnotized",
-                                "rift:baryonyx_adult_hypnotized_poison_area",
-                                "rift:default_navigation",
-                                "rift:pushable",
-                                "rift:wild_standing_hypnotized_by_tenontosaurus",
-                                "rift:variant_four",
-                                "rift:follow_tamed_tenontosaurus",
-                                "rift:follow_tamed_tenontosaurus_no_target"
-                            ]
-                        },
-                        "set_property": {
-                            "rift:is_hypnotized_tamed": true
-                        }
-                    },
-                    {
-                        "filters": {
-                            "test": "is_variant",
-                            "subject": "other",
-                            "value": 0
-                        },
-                        "add": {
-                            "component_groups": [
-                                "rift:variant_one"
-                            ]
-                        }
-                    },
-                    {
-                        "filters": {
-                            "test": "is_variant",
-                            "subject": "other",
-                            "value": 1
-                        },
-                        "add": {
-                            "component_groups": [
-                                "rift:variant_two"
-                            ]
-                        }
-                    },
-                    {
-                        "filters": {
-                            "test": "is_variant",
-                            "subject": "other",
-                            "value": 2
-                        },
-                        "add": {
-                            "component_groups": [
-                                "rift:variant_three"
-                            ]
-                        }
-                    },
-                    {
-                        "filters": {
-                            "test": "is_variant",
-                            "subject": "other",
-                            "value": 3
-                        },
-                        "add": {
-                            "component_groups": [
-                                "rift:variant_four"
-                            ]
-                        }
-                    }
-                ]
-            },
 			"rift:spawn_for_the_flood": {
 				"randomize": [
 					{
@@ -5426,174 +4841,6 @@
 					}
 				]
 			},
-            "rift:spawn_as_illager_patrol_mount": {
-                "randomize": [
-                    {
-                        "weight": 1,
-                        "add": {
-                            "component_groups": [
-                                "rift:baryonyx_adult",
-                                "rift:baryonyx_adult_illager_patrol",
-                                "rift:default_navigation",
-                                "rift:has_illager_mount",
-                                "rift:baryonyx_adult_owned_by_illager_poison_area",
-                                "rift:mounted_by_illager_targets",
-                                "rift:pushable",
-                                "rift:mounted_by_illager_standing",
-                                "rift:variant_one",
-                                "rift:baryonyx_mounted_by_illager_saddled"
-                            ]
-                        },
-                        "set_property": {
-                            "rift:owned_by_illager": true
-                        }
-                    },
-                    {
-                        "weight": 1,
-                        "add": {
-                            "component_groups": [
-                                "rift:baryonyx_adult",
-                                "rift:baryonyx_adult_illager_patrol",
-                                "rift:default_navigation",
-                                "rift:has_illager_mount",
-                                "rift:baryonyx_adult_owned_by_illager_poison_area",
-                                "rift:mounted_by_illager_targets",
-                                "rift:pushable",
-                                "rift:mounted_by_illager_standing",
-                                "rift:variant_two",
-                                "rift:baryonyx_mounted_by_illager_saddled"
-                            ]
-                        },
-                        "set_property": {
-                            "rift:owned_by_illager": true
-                        }
-                    },
-                    {
-                        "weight": 1,
-                        "add": {
-                            "component_groups": [
-                                "rift:baryonyx_adult",
-                                "rift:baryonyx_adult_illager_patrol",
-                                "rift:default_navigation",
-                                "rift:has_illager_mount",
-                                "rift:baryonyx_adult_owned_by_illager_poison_area",
-                                "rift:mounted_by_illager_targets",
-                                "rift:pushable",
-                                "rift:mounted_by_illager_standing",
-                                "rift:variant_three",
-                                "rift:baryonyx_mounted_by_illager_saddled"
-                            ]
-                        },
-                        "set_property": {
-                            "rift:owned_by_illager": true
-                        }
-                    },
-                    {
-                        "weight": 1,
-                        "add": {
-                            "component_groups": [
-                                "rift:baryonyx_adult",
-                                "rift:baryonyx_adult_illager_patrol",
-                                "rift:default_navigation",
-                                "rift:has_illager_mount",
-                                "rift:baryonyx_adult_owned_by_illager_poison_area",
-                                "rift:mounted_by_illager_targets",
-                                "rift:pushable",
-                                "rift:mounted_by_illager_standing",
-                                "rift:variant_four",
-                                "rift:baryonyx_mounted_by_illager_saddled"
-                            ]
-                        },
-                        "set_property": {
-                            "rift:owned_by_illager": true
-                        }
-                    }
-                ]
-            },
-            "rift:spawn_as_illager_raid_mount": {
-                "randomize": [
-                    {
-                        "weight": 1,
-                        "add": {
-                            "component_groups": [
-                                "rift:baryonyx_adult",
-                                "rift:baryonyx_adult_raid_mount",
-                                "rift:default_navigation",
-                                "rift:has_illager_mount",
-                                "rift:baryonyx_adult_owned_by_illager_poison_area",
-                                "rift:mounted_by_illager_targets",
-                                "rift:pushable",
-                                "rift:mounted_by_illager_standing",
-                                "rift:variant_one",
-                                "rift:baryonyx_mounted_by_illager_saddled"
-                            ]
-                        },
-                        "set_property": {
-                            "rift:owned_by_illager": true
-                        }
-                    },
-                    {
-                        "weight": 1,
-                        "add": {
-                            "component_groups": [
-                                "rift:baryonyx_adult",
-                                "rift:baryonyx_adult_raid_mount",
-                                "rift:default_navigation",
-                                "rift:has_illager_mount",
-                                "rift:baryonyx_adult_owned_by_illager_poison_area",
-                                "rift:mounted_by_illager_targets",
-                                "rift:pushable",
-                                "rift:mounted_by_illager_standing",
-                                "rift:variant_two",
-                                "rift:baryonyx_mounted_by_illager_saddled"
-                            ]
-                        },
-                        "set_property": {
-                            "rift:owned_by_illager": true
-                        }
-                    },
-                    {
-                        "weight": 1,
-                        "add": {
-                            "component_groups": [
-                                "rift:baryonyx_adult",
-                                "rift:baryonyx_adult_raid_mount",
-                                "rift:default_navigation",
-                                "rift:has_illager_mount",
-                                "rift:baryonyx_adult_owned_by_illager_poison_area",
-                                "rift:mounted_by_illager_targets",
-                                "rift:pushable",
-                                "rift:mounted_by_illager_standing",
-                                "rift:variant_three",
-                                "rift:baryonyx_mounted_by_illager_saddled"
-                            ]
-                        },
-                        "set_property": {
-                            "rift:owned_by_illager": true
-                        }
-                    },
-                    {
-                        "weight": 1,
-                        "add": {
-                            "component_groups": [
-                                "rift:baryonyx_adult",
-                                "rift:baryonyx_adult_raid_mount",
-                                "rift:default_navigation",
-                                "rift:has_illager_mount",
-                                "rift:baryonyx_adult_owned_by_illager_poison_area",
-                                "rift:mounted_by_illager_targets",
-                                "rift:pushable",
-                                "rift:mounted_by_illager_standing",
-                                "rift:variant_four",
-                                "rift:baryonyx_mounted_by_illager_saddled"
-                            ]
-                        },
-                        "set_property": {
-                            "rift:owned_by_illager": true
-                        }
-                    }
-                ]
-            },
 			"rift:baby_grow_up": {
 				"sequence": [
 					{
@@ -5679,8 +4926,7 @@
 					]
 				},
 				"set_property": {
-					"rift:behavior_state": "3",
-                    "rift:affected_by_bola": false
+					"rift:behavior_state": "3"
 				}
 			},
 			"rift:on_trust": {
@@ -5696,9 +4942,7 @@
 						"rift:default_targets",
 						"rift:the_flood_targets",
 						"rift:baryonyx_adult_not_trusting",
-						"rift:baryonyx_adult_wild",
-						"rift:can_bite_attack",
-						"rift:can_claw_attack"
+						"rift:baryonyx_adult_wild"
 					]
 				},
 				"run_command": {
@@ -5813,8 +5057,7 @@
 					]
 				},
 				"set_property": {
-					"rift:undergoing_taming": false,
-                    "rift:affected_by_bola": false
+					"rift:undergoing_taming": false
 				}
 			},
 			"rift:attach_saddle": {
@@ -5856,13 +5099,6 @@
 				"run_command": {
 					"command": [
 						"tellraw @p {\"rawtext\":[{\"translate\":\"reminder.cannot_use_regular_food.text\"}]}"
-					]
-				}
-			},
-			"rift:lol4": {
-				"run_command": {
-					"command": [
-						"tellraw @p {\"rawtext\":[{\"translate\":\"reminder.cannot_use_energy_boosters.text\"}]}"
 					]
 				}
 			},
@@ -6203,9 +5439,16 @@
 					"rift:forced_attack_mode": "0"
 				}
 			},
-            "rift:using_forced_attack": {},
-            "rift:eat_from_inventory": {},
-            "rift:refill_energy_from_inventory": {},
+			"rift:start_eat_from_inventory_cooldown": {
+				"set_property": {
+					"rift:eat_from_inventory_cooldown": true
+				}
+			},
+			"rift:stop_eat_from_inventory_cooldown": {
+				"set_property": {
+					"rift:eat_from_inventory_cooldown": false
+				}
+			},
 			"rift:moving_slowly_low_energy": {
 				"add": {
 					"component_groups": [
@@ -6383,27 +5626,7 @@
 			},
 			"rift:regenerate_energy": {
 				"set_property": {
-					"rift:energy": "query.property('rift:energy') + 10"
-				}
-			},
-			"rift:regenerate_energy_from_raw_food": {
-				"set_property": {
-					"rift:energy": "query.property('rift:energy') + 15"
-				},
-				"run_command": {
-					"command": [
-						"playsound random.eat @a[r=4]"
-					]
-				}
-			},
-			"rift:regenerate_energy_from_cooked_food": {
-				"set_property": {
-					"rift:energy": "query.property('rift:energy') + 45"
-				},
-				"run_command": {
-					"command": [
-						"playsound random.eat @a[r=4]"
-					]
+					"rift:energy": "query.property('rift:energy') + 5"
 				}
 			},
 			//for potion effects
@@ -6675,28 +5898,7 @@
 						"effect @s clear"
 					]
 				}
-			},
-            "rift:start_bleeding": {
-                "set_property": {
-                    "rift:bleeding": true
-                }
-            },
-            "rift:stop_bleeding": {
-                "set_property": {
-                    "rift:bleeding": false
-                }
-            },
-            "rift:affected_by_bola": {
-                "set_property": {
-                    "rift:affected_by_bola": true
-                }
-            },
-            "rift:stop_being_affected_by_bola": {
-                "set_property": {
-                    "rift:affected_by_bola": false
-                }
-            },
-            "rift:force_go_down": {}
+			}
 		}
     }
 }

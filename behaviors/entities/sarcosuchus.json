@@ -12,15 +12,14 @@
 					"default": false,
 					"client_sync": true
 				},
-				"rift:is_hypnotized_tamed": {
-					"type": "bool",
-					"default": false,
-					"client_sync": true
-				},
 				"rift:undergoing_taming": {
 					"type": "bool",
 					"default": false,
 					"client_sync": true
+				},
+				"rift:eat_from_inventory_cooldown": {
+					"type": "bool",
+					"default": true
 				},
 				"rift:is_forced_attacking": {
 					"type": "bool",
@@ -29,10 +28,10 @@
                 "rift:energy": {
                     "range": [
 						0,
-						450
+						150
 					],
 					"type": "int",
-					"default": 450,
+					"default": 150,
 					"client_sync": true
                 },
                 "rift:tame_state": { //0 for standing, 1 for sitting, 2 for wandering
@@ -51,35 +50,17 @@
 					],
 					"type": "int",
 					"default": 0
-                },
-				"rift:bleeding": {
-					"type": "bool",
-					"default": false,
-					"client_sync": true
-                },
-				"rift:owned_by_illager": {
-					"type": "bool",
-					"default": false
-                },
-                "rift:affected_by_bola": {
-					"type": "bool",
-					"default": false
                 }
 			},
 			"animations": {
-                "contEatFromInventory": "controller.animation.general_eat_from_inventory",
-                "contRefillEnergyFromInventory": "controller.animation.general_refill_energy_from_inventory",
-                "contInWaterTag": "controller.animation.add_in_water_tag",
-				"contMovingTag": "controller.animation.add_moving_tag",
+				"contEatFromInventoryCooldown": "controller.animation.general_eat_from_inventory_cooldown",
 				"contTameTag": "controller.animation.add_tame_tag",
 				"contBabyTag": "controller.animation.add_baby_tag",
 				"contRiddenTag": "controller.animation.add_ridden_tag",
 				"contPoweredTag": "controller.animation.add_powered_tag",
 				"contInLoveTag": "controller.animation.add_in_love_tag",
 				"contHypnotizedTag": "controller.animation.add_hypnotized_tag",
-				"contHypnotizedTamedTag": "controller.animation.add_hypnotized_by_tamed_tag",
-				"contOwnedByIllagerTag": "controller.animation.add_owned_by_illager_tag",
-                "contForcedAttack": "controller.animation.general_forced_attack",
+				"contForcedAttack": "controller.animation.general_forced_attack",
 				"contSpinAttack": "controller.animation.sarco_use_spin_attack",
 				"contSarcoEndSpinCooldown": "controller.animation.sarco_end_spin_cooldown",
 				"contTameState": "controller.animation.manage_tame_state",
@@ -87,11 +68,7 @@
 				"contEnergyUsage": "controller.animation.sarcosuchus_energy_movement_usage",
 				"contWarnLowEnergy": "controller.animation.warn_of_low_energy",
 				"contDieWithoutTenontosaurus": "controller.animation.general_die_without_tenontosaurus",
-                "contDieWithoutTamedTenontosaurus": "controller.animation.general_death_timer_tamed_tenontosaurus",
-				"contBleed": "controller.animation.general_manage_bleed",
-				"contBola": "controller.animation.general_manage_bola",
-				"animEatFromInventory": "animation.use_eat_from_inventory",
-                "animRefillEnergyFromInventory": "animation.use_refill_energy_from_inventory",
+				"animEatFromInventoryCooldown": "animation.eat_from_inventory_cooldown",
 				"animUseEnergyWhileMoving": "animation.sarcosuchus_decrease_energy_while_moving",
 				"animEnergyRegenDelay": "animation.regenerate_energy_delay",
 				"animRegenerateEnergyLand": "animation.sarcosuchus_regenerate_energy_on_land",
@@ -105,27 +82,17 @@
 				"animTamedSpinAttackLand": "animation.sarco_spin_attack_tamed_land",
 				"animSarcoSpinCooldown": "animation.sarcosuchus_spin_cooldown",
 				"animFindTenontosaurus": "animation.find_tenontosaurus",
-				"animDeathTimer": "animation.hypnosis_death_timer",
-                "animTamedDeathTimer": "animation.hypnosis_death_timer_tamed",
-                "animBleed": "animation.general_bleed",
-                "animBleedCountdown": "animation.general_bleed_countdown",
-                "animBolaEffect": "animation.general_bola_effect",
-                "animBolaEffectCountdown": "animation.general_bola_effect_countdown"
+				"animDeathTimer": "animation.hypnosis_death_timer"
 			},
 			"scripts": {
 				"animate": [
-                    "contEatFromInventory",
-                    "contRefillEnergyFromInventory",
-                    "contInWaterTag",
-                    "contMovingTag",
+					"contEatFromInventoryCooldown",
 					"contTameTag",
 					"contBabyTag",
 					"contRiddenTag",
 					"contPoweredTag",
 					"contInLoveTag",
 					"contHypnotizedTag",
-                    "contHypnotizedTamedTag",
-                    "contOwnedByIllagerTag",
 					"contForcedAttack",
 					"contSpinAttack",
 					"contSarcoEndSpinCooldown",
@@ -133,10 +100,7 @@
 					"contBehaviorState",
 					"contEnergyUsage",
 					"contWarnLowEnergy",
-					"contDieWithoutTenontosaurus",
-                    "contDieWithoutTamedTenontosaurus",
-                    "contBleed",
-                    "contBola"
+					"contDieWithoutTenontosaurus"
 				]
 			}
         },
@@ -538,16 +502,6 @@
 							"max_amount": 1 
 						},
 						{ 
-							"item": "rift:raw_fibrous_meat", 
-							"priority": 0, 
-							"max_amount": 1 
-						},
-						{ 
-							"item": "rift:cooked_fibrous_meat", 
-							"priority": 0, 
-							"max_amount": 1 
-						},
-						{ 
 							"item": "rift:raw_dodo_meat", 
 							"priority": 0, 
 							"max_amount": 1 
@@ -599,42 +553,6 @@
 				"minecraft:despawn": {
 					"despawn_from_distance": {}
 				}
-            },
-            "rift:sarcosuchus_adult_illager_patrol": {
-                "minecraft:health": {
-                    "value": 80,
-                    "max": 80
-                },
-				"minecraft:despawn": {
-					"despawn_from_distance": {}
-				},
-				"minecraft:behavior.hurt_by_target": {
-					"priority": 6
-				}
-            },
-            "rift:sarcosuchus_adult_raid_mount": {
-                "minecraft:health": {
-                    "value": 80,
-                    "max": 80
-                },
-				"minecraft:behavior.hurt_by_target": {
-					"priority": 6
-				},
-                "minecraft:behavior.move_to_village": {
-                    "goal_radius": 2.0,
-                    "priority": 17,
-                    "speed_multiplier": 1.0
-                },
-                "minecraft:dweller": {
-                    "can_find_poi": false,
-                    "can_migrate": true,
-                    "dweller_role": "hostile",
-                    "dwelling_type": "village",
-                    "first_founding_reward": 0,
-                    "update_interval_base": 60,
-                    "update_interval_variant": 40
-                },
-                "minecraft:persistent": {}
             },
             "rift:sarcosuchus_adult_not_trusting": {
                 "minecraft:trusting": {
@@ -771,79 +689,6 @@
 						 	},
 							"max_dist": 48
 					  	}
-					]
-				}
-			},
-            "rift:mounted_by_illager_targets": {
-				"minecraft:behavior.nearest_attackable_target": {
-					"priority": 7,
-					"within_radius": 12.0,
-					"must_see": true,
-					"entity_types": [
-						{
-							"filters": {
-								"any_of": [
-									{
-										"test": "is_family",
-										"subject": "other",
-										"value": "wandering_trader"
-									},
-									{
-										"test": "is_family",
-										"subject": "other",
-										"value": "iron_golem"
-									},
-									{
-                                        "all_of": [
-                                            {
-                                                "subject": "other",
-                                                "test": "is_family",
-                                                "value": "villager"
-                                            },
-                                            {
-                                                "operator": "!=",
-                                                "subject": "other",
-                                                "test": "has_component",
-                                                "value": "minecraft:is_baby"
-                                            }
-                                        ]
-									},
-                                    {
-                                        "all_of": [
-                                            {
-                                                "test": "is_family",
-                                                "subject": "other",
-                                                "value": "player"
-                                            },
-                                            {
-                                                "test": "is_riding",
-                                                "subject": "other",
-                                                "value": false
-                                            }
-                                        ]
-                                    }
-								]
-							},
-							"max_dist": 12
-						},
-						{
-							"filters": {
-								"all_of": [
-									{
-										"test": "has_component",
-										"subject": "other",
-										"value": "minecraft:is_tamed"
-									},
-									{
-										"test": "rider_count",
-										"subject": "other",
-										"operator": ">",
-										"value": 0
-									}
-								]
-							},
-							"max_dist": 12
-						}
 					]
 				}
 			},
@@ -1071,7 +916,7 @@
 			},
 			"rift:sarcosuchus_wild_not_in_water": {
 				"minecraft:behavior.random_stroll": {
-					"priority": 19
+					"priority": 17
 				},
 				"minecraft:behavior.avoid_block": {
 					"priority": 3,
@@ -1263,14 +1108,7 @@
 						},
 						{
 							"item": "rift:cooked_megapiranha",
-							"heal_amount": 6,
-							"effects": [
-								{
-									"name": "regeneration",
-									"duration": 30,
-									"amplifier": 3
-								}
-							]
+							"heal_amount": 6
 						},
 						{
 							"item": "rift:mixed_meat",
@@ -1363,9 +1201,6 @@
 					}
                 }
             },
-            "rift:sarcosuchus_mounted_by_illager_saddled": {
-                "minecraft:is_saddled": {}
-            },
             "rift:sarcosuchus_chested": {
                 "minecraft:is_chested": {}
             },
@@ -1384,22 +1219,6 @@
 						}
 					],
 					"interact_text": "action.interact.mount"
-				}
-            },
-			"rift:has_illager_mount": {
-                "minecraft:rideable": {
-					"family_types": [
-						"illager"
-					],
-					"seats": [
-						{
-							"position": [
-								0,
-								0.5,
-								-0.1
-							]
-						}
-					]
 				}
             },
 			"rift:can_bite_attack": {
@@ -1524,7 +1343,7 @@
 					"value": 0.3
 				},
 				"minecraft:behavior.random_look_around": {
-					"priority": 20
+					"priority": 18
 				}
 			},
 			"rift:wild_standing_hypnotized_by_tenontosaurus": {
@@ -1535,23 +1354,6 @@
 					"value": 0.3
 				}
 			},
-            "rift:mounted_by_illager_standing": {
-				"minecraft:movement": {
-					"value": 0.1
-				},
-				"minecraft:underwater_movement": {
-					"value": 0.3
-				},
-                "minecraft:behavior.mount_pathing": {
-                    "priority": 18,
-                    "speed_multiplier": 1.0,
-                    "target_dist": 0.0,
-                    "track_target": true
-                },
-				"minecraft:behavior.random_stroll": {
-					"priority": 19
-				}
-            },
 			"rift:follow_tenontosaurus": {
 				"minecraft:behavior.nearest_prioritized_attackable_target": {
 					"priority": 7,
@@ -1559,10 +1361,14 @@
 					"entity_types": [
 						{
 							"filters": {
-                                "test": "has_tag",
-                                "subject": "other",
-                                "value": "tenontoTarget"
-                            },
+								"all_of": [
+									{
+										"test": "has_tag",
+										"subject": "other",
+										"value": "tenontoTarget"
+									}
+								]
+							},
 							"max_dist": 48,
 							"priority": 0
 						},
@@ -1611,57 +1417,6 @@
 							}
 						]
 					},
-					"event": "rift:attack_for_tenontosaurus",
-					"target": "self"
-				}
-			},
-			"rift:follow_tamed_tenontosaurus": {
-				"minecraft:behavior.nearest_prioritized_attackable_target": {
-					"priority": 7,
-					"within_radius": 32.0,
-					"entity_types": [
-						{
-							"filters": {
-                                "test": "has_tag",
-                                "subject": "other",
-                                "value": "tenontoTamedTarget"
-                            },
-							"max_dist": 48,
-							"priority": 0
-						},
-						{
-							"filters": {
-								"all_of": [
-									{
-										"test": "is_family",
-										"subject": "other",
-										"value": "tenontosaurus"
-									},
-									{
-										"test": "has_component",
-										"subject": "other",
-										"value": "minecraft:is_tamed"
-									}
-								]
-							},
-							"max_dist": 48,
-							"priority": 1
-						}
-					]
-				}
-			},
-			"rift:follow_tamed_tenontosaurus_no_target": {
-				"minecraft:behavior.ranged_attack": {
-					"priority": 13,
-					"attack_radius": 8.0,
-					"attack_radius_min": 4
-				},
-				"minecraft:on_target_acquired": {
-					"filters": {
-                        "test": "has_tag",
-                        "subject": "target",
-                        "value": "tenontoTamedTarget"
-                    },
 					"event": "rift:attack_for_tenontosaurus",
 					"target": "self"
 				}
@@ -1737,7 +1492,7 @@
 					"priority": 1
 				},
 				"minecraft:behavior.random_stroll": {
-					"priority": 19
+					"priority": 17
 				}
 			},
 			"rift:tamed_can_move": {
@@ -1903,12 +1658,7 @@
 				"minecraft:transformation": {
 					"into": "rift:sarcosuchus<rift:transform_into_hypnotized_variant_three>"
 				}
-			},
-            "rift:transform_into_hypnotized_by_tamed": {
-                "minecraft:transformation": {
-					"into": "rift:sarcosuchus<rift:transform_into_hypnotized_by_tamed>"
-				}
-            }
+			}
         },
         "components": {
             "minecraft:type_family": {
@@ -1918,8 +1668,7 @@
 					"mob",
 					"carnivore",
 					"reptile",
-					"waterMount",
-                    "mediumSize"
+					"waterMount"
 				]
 			},
             "minecraft:water_movement": {
@@ -2295,18 +2044,6 @@
 												"test": "has_equipment",
 												"subject": "other",
 												"domain": "hand",
-												"value": "rift:raw_fibrous_meat"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "rift:cooked_fibrous_meat"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
 												"value": "rift:raw_dodo_meat"
 											},
 											{
@@ -2416,21 +2153,7 @@
 										"domain": "hand",
 										"operator": "!=",
 										"value": "minecraft:shears"
-									},
-                                    {
-                                        "test": "has_equipment",
-                                        "subject": "other",
-                                        "domain": "hand",
-                                        "operator": "!=",
-                                        "value": "rift:raw_fibrous_meat"
-                                    },
-                                    {
-                                        "test": "has_equipment",
-                                        "subject": "other",
-                                        "domain": "hand",
-                                        "operator": "!=",
-                                        "value": "rift:cooked_fibrous_meat"
-                                    }
+									}
 								]
 							},
 							"event": "rift:manage_state",
@@ -2507,134 +2230,6 @@
 						},
 						"interact_text": "action.interact.attachchest",
 						"use_item": true
-					},
-					{
-						"on_interact": {
-							"filters": {
-								"all_of": [
-									{
-                                        "test": "has_equipment",
-                                        "subject": "other",
-                                        "domain": "hand",
-                                        "value": "rift:raw_fibrous_meat"
-                                    },
-									{
-										"test": "has_component",
-										"subject": "self",
-										"value": "minecraft:is_baby",
-										"operator": "!="
-									},
-									{
-										"test": "has_component",
-										"subject": "self",
-										"value": "minecraft:is_tamed"
-									},
-									{
-										"test": "is_sneaking",
-										"subject": "other",
-										"value": true
-									},
-                                    {
-                                        "test": "int_property",
-                                        "subject": "self",
-                                        "domain": "rift:energy",
-                                        "operator": "<",
-                                        "value": 450
-                                    }
-								]
-							},
-							"event": "rift:regenerate_energy_from_raw_food",
-							"target": "self"
-						},
-						"use_item": true
-					},
-					{
-						"on_interact": {
-							"filters": {
-								"all_of": [
-									{
-                                        "test": "has_equipment",
-                                        "subject": "other",
-                                        "domain": "hand",
-                                        "value": "rift:cooked_fibrous_meat"
-                                    },
-									{
-										"test": "has_component",
-										"subject": "self",
-										"value": "minecraft:is_baby",
-										"operator": "!="
-									},
-									{
-										"test": "has_component",
-										"subject": "self",
-										"value": "minecraft:is_tamed"
-									},
-									{
-										"test": "is_sneaking",
-										"subject": "other",
-										"value": true
-									},
-                                    {
-                                        "test": "int_property",
-                                        "subject": "self",
-                                        "domain": "rift:energy",
-                                        "operator": "<",
-                                        "value": 450
-                                    }
-								]
-							},
-							"event": "rift:regenerate_energy_from_cooked_food",
-							"target": "self"
-						},
-						"use_item": true
-					},
-					{
-						"on_interact": {
-							"filters": {
-								"all_of": [
-									{
-                                        "any_of": [
-                                            {
-                                                "test": "has_equipment",
-                                                "subject": "other",
-                                                "domain": "hand",
-                                                "value": "rift:raw_fibrous_meat"
-                                            },
-                                            {
-                                                "test": "has_equipment",
-                                                "subject": "other",
-                                                "domain": "hand",
-                                                "value": "rift:cooked_fibrous_meat"
-                                            }
-                                        ]
-                                    },
-									{
-										"test": "has_component",
-										"subject": "self",
-										"value": "minecraft:is_baby",
-										"operator": "!="
-									},
-									{
-										"test": "has_component",
-										"subject": "self",
-										"value": "minecraft:is_tamed"
-									},
-									{
-										"test": "is_sneaking",
-										"subject": "other",
-										"value": true
-									},
-                                    {
-                                        "test": "int_property",
-                                        "subject": "self",
-                                        "domain": "rift:energy",
-                                        "value": 450
-                                    }
-								]
-							},
-							"event": "rift:lol4",
-							"target": "self"
-						}
 					},
 					{
 						"on_interact": {
@@ -4837,12 +4432,6 @@
 									"subject": "self",
 									"domain": "rift:is_hypnotized",
 									"value": false
-								},
-								{
-									"test": "bool_property",
-									"subject": "self",
-									"domain": "rift:owned_by_illager",
-									"value": false
 								}
 							]
 						},
@@ -4866,12 +4455,6 @@
 									"test": "bool_property",
 									"subject": "self",
 									"domain": "rift:is_hypnotized",
-									"value": false
-								},
-								{
-									"test": "bool_property",
-									"subject": "self",
-									"domain": "rift:owned_by_illager",
 									"value": false
 								}
 							]
@@ -4926,7 +4509,7 @@
 							}
 						},
 						"damage_multiplier": 0.5,
-						"cause": "entity_attack"
+						"cause": "attack"
 					},
 					{
 						"deals_damage": false,
@@ -4950,30 +4533,9 @@
 							}
 						},
 						"deals_damage": false
-					},
-                    {
-                        "on_damage": {
-                            "filters": {
-                                "all_of": [
-                                    {
-                                        "test": "is_family",
-                                        "subject": "other",
-                                        "value": "illager"
-                                    },
-                                    {
-                                        "test": "bool_property",
-                                        "subject": "self",
-                                        "domain": "rift:owned_by_illager",
-                                        "value": true
-                                    }
-                                ]
-                            }
-                        },
-						"deals_damage": false
-                    }
+					}
 				]
-			},
-            "minecraft:conditional_bandwidth_optimization": {}
+			}
         },
         "events": {
             "minecraft:entity_spawned": {
@@ -5128,68 +4690,27 @@
 				},
 				"remove": {
 					"component_groups": [
-						"rift:follow_tenontosaurus_no_target",
-                        "rift:follow_tamed_tenontosaurus_no_target"
+						"rift:follow_tenontosaurus_no_target"
+					]
+				},
+				"run_command": {
+					"command": [
+						"say FOR THE QUEEN"
 					]
 				}
 			},
 			"rift:stop_attacking_for_tenontosaurus": {
-                "sequence": [
-                    {
-                        "remove": {
-                            "component_groups": [
-                                "rift:attacking_for_tenontosaurus"
-                            ]
-                        }
-                    },
-                    {
-                        "filters": {
-                            "all_of": [
-                                {
-                                    "test": "bool_property",
-                                    "subject": "self",
-                                    "domain": "rift:is_hypnotized",
-                                    "value": true
-                                },
-                                {
-                                    "test": "bool_property",
-                                    "subject": "self",
-                                    "domain": "rift:is_hypnotized_tamed",
-                                    "value": false
-                                }
-                            ]
-                        },
-                        "add": {
-                            "component_groups": [
-                                "rift:follow_tenontosaurus_no_target"
-                            ]
-                        }
-                    },
-                    {
-                        "filters": {
-                            "all_of": [
-                                {
-                                    "test": "bool_property",
-                                    "subject": "self",
-                                    "domain": "rift:is_hypnotized",
-                                    "value": false
-                                },
-                                {
-                                    "test": "bool_property",
-                                    "subject": "self",
-                                    "domain": "rift:is_hypnotized_tamed",
-                                    "value": true
-                                }
-                            ]
-                        },
-                        "add": {
-                            "component_groups": [
-                                "rift:follow_tamed_tenontosaurus_no_target"
-                            ]
-                        }
-                    }
-                ]
-            },
+				"add": {
+					"component_groups": [
+						"rift:follow_tenontosaurus_no_target"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:attacking_for_tenontosaurus"
+					]
+				}
+			},
 			"rift:hypnotized_by_tenontosaurus": {
 				"sequence": [
 					{},
@@ -5311,81 +4832,6 @@
 					"rift:is_hypnotized": true
 				}
 			},
-            "rift:hypnotized_by_tamed_tenontosaurus": {
-                "add": {
-                    "component_groups": [
-                        "rift:transform_into_hypnotized_by_tamed"
-                    ]
-                }
-            },
-            "rift:transform_into_hypnotized_by_tamed": {
-                "sequence": [
-                    {
-                        "add": {
-                            "component_groups": [
-                                "rift:sarcosuchus_adult",
-                                "rift:sarcosuchus_adult_hypnotized",
-								"rift:default_navigation",
-                                "rift:pushable",
-								"rift:follow_tamed_tenontosaurus",
-								"rift:follow_tamed_tenontosaurus_no_target",
-								"rift:wild_standing_hypnotized_by_tenontosaurus"
-                            ]
-                        },
-                        "set_property": {
-                            "rift:is_hypnotized_tamed": true
-                        }
-                    },
-                    {
-                        "filters": {
-                            "test": "is_variant",
-                            "subject": "other",
-                            "value": 0
-                        },
-                        "add": {
-                            "component_groups": [
-                                "rift:variant_zero"
-                            ]
-                        }
-                    },
-                    {
-                        "filters": {
-                            "test": "is_variant",
-                            "subject": "other",
-                            "value": 1
-                        },
-                        "add": {
-                            "component_groups": [
-                                "rift:variant_one"
-                            ]
-                        }
-                    },
-                    {
-                        "filters": {
-                            "test": "is_variant",
-                            "subject": "other",
-                            "value": 2
-                        },
-                        "add": {
-                            "component_groups": [
-                                "rift:variant_two"
-                            ]
-                        }
-                    },
-                    {
-                        "filters": {
-                            "test": "is_variant",
-                            "subject": "other",
-                            "value": 3
-                        },
-                        "add": {
-                            "component_groups": [
-                                "rift:variant_three"
-                            ]
-                        }
-                    }
-                ]
-            },
             "rift:spawn_for_the_flood": {
                 "randomize": [
                     {
@@ -5538,8 +4984,7 @@
 					]
 				},
 				"set_property": {
-					"rift:behavior_state": "3",
-                    "rift:affected_by_bola": false
+					"rift:behavior_state": "3"
 				}
 			},
 			"rift:on_trust": {
@@ -5554,8 +4999,7 @@
 					"component_groups": [
 						"rift:sarcosuchus_adult_not_trusting",
 						"rift:default_targets",
-						"rift:the_flood_targets",
-                        "rift:can_bite_attack"
+						"rift:the_flood_targets"
 					]
 				},
 				"run_command": {
@@ -5571,8 +5015,7 @@
 				"add": {
 					"component_groups": [
 						"rift:default_targets",
-						"rift:sarcosuchus_adult_not_trusting",
-                        "rift:can_bite_attack"
+						"rift:sarcosuchus_adult_not_trusting"
 					]
 				},
 				"remove": {
@@ -5646,8 +5089,7 @@
 						"rift:sarcosuchus_adult_tamed",
 						"rift:sarcosuchus_tamed",
 						"rift:rideable",
-						"rift:tamed_can_move",
-                        "rift:can_bite_attack"
+						"rift:tamed_can_move"
 					]
 				},
 				"remove": {
@@ -5670,8 +5112,7 @@
 					]
 				},
 				"set_property": {
-					"rift:undergoing_taming": false,
-                    "rift:affected_by_bola": false
+					"rift:undergoing_taming": false
 				}
 			},
 			"rift:attach_saddle": {
@@ -6096,185 +5537,17 @@
                     }
                 ]
 			},
-            "rift:spawn_as_illager_patrol_mount": {
-                "randomize": [
-                    {
-                        "weight": 1,
-                        "add": {
-                            "component_groups": [
-                                "rift:sarcosuchus_adult",
-                                "rift:sarcosuchus_adult_illager_patrol",
-								"rift:can_bite_attack",
-                                "rift:has_illager_mount",
-								"rift:mounted_by_illager_targets",
-								"rift:default_navigation",
-                                "rift:pushable",
-                                "rift:variant_zero",
-                                "rift:sarcosuchus_mounted_by_illager_saddled",
-                                "rift:mounted_by_illager_standing"
-                            ]
-                        },
-                        "set_property": {
-                            "rift:owned_by_illager": true
-                        }
-                    },
-                    {
-                        "weight": 1,
-                        "add": {
-                            "component_groups": [
-                                "rift:sarcosuchus_adult",
-                                "rift:sarcosuchus_adult_illager_patrol",
-								"rift:can_bite_attack",
-                                "rift:has_illager_mount",
-								"rift:mounted_by_illager_targets",
-								"rift:default_navigation",
-                                "rift:pushable",
-                                "rift:variant_one",
-                                "rift:sarcosuchus_mounted_by_illager_saddled",
-                                "rift:mounted_by_illager_standing"
-                            ]
-                        },
-                        "set_property": {
-                            "rift:owned_by_illager": true
-                        }
-                    },
-                    {
-                        "weight": 1,
-                        "add": {
-                            "component_groups": [
-                                "rift:sarcosuchus_adult",
-                                "rift:sarcosuchus_adult_illager_patrol",
-								"rift:can_bite_attack",
-                                "rift:has_illager_mount",
-								"rift:mounted_by_illager_targets",
-								"rift:default_navigation",
-                                "rift:pushable",
-                                "rift:variant_two",
-                                "rift:sarcosuchus_mounted_by_illager_saddled",
-                                "rift:mounted_by_illager_standing"
-                            ]
-                        },
-                        "set_property": {
-                            "rift:owned_by_illager": true
-                        }
-                    },
-                    {
-                        "weight": 1,
-                        "add": {
-                            "component_groups": [
-                                "rift:sarcosuchus_adult",
-                                "rift:sarcosuchus_adult_illager_patrol",
-								"rift:can_bite_attack",
-                                "rift:has_illager_mount",
-								"rift:mounted_by_illager_targets",
-								"rift:default_navigation",
-                                "rift:pushable",
-                                "rift:variant_three",
-                                "rift:sarcosuchus_mounted_by_illager_saddled",
-                                "rift:mounted_by_illager_standing"
-                            ]
-                        },
-                        "set_property": {
-                            "rift:owned_by_illager": true
-                        }
-                    }
-                ]
-            },
-            "rift:spawn_as_illager_raid_mount": {
-                "randomize": [
-                    {
-                        "weight": 1,
-                        "add": {
-                            "component_groups": [
-                                "rift:sarcosuchus_adult",
-                                "rift:sarcosuchus_adult_raid_mount",
-								"rift:can_bite_attack",
-                                "rift:has_illager_mount",
-								"rift:mounted_by_illager_targets",
-								"rift:default_navigation",
-                                "rift:pushable",
-                                "rift:variant_zero",
-                                "rift:sarcosuchus_mounted_by_illager_saddled",
-                                "rift:mounted_by_illager_standing"
-                            ]
-                        },
-                        "set_property": {
-                            "rift:owned_by_illager": true
-                        }
-                    },
-                    {
-                        "weight": 1,
-                        "add": {
-                            "component_groups": [
-                                "rift:sarcosuchus_adult",
-                                "rift:sarcosuchus_adult_raid_mount",
-								"rift:can_bite_attack",
-                                "rift:has_illager_mount",
-								"rift:mounted_by_illager_targets",
-								"rift:default_navigation",
-                                "rift:pushable",
-                                "rift:variant_one",
-                                "rift:sarcosuchus_mounted_by_illager_saddled",
-                                "rift:mounted_by_illager_standing"
-                            ]
-                        },
-                        "set_property": {
-                            "rift:owned_by_illager": true
-                        }
-                    },
-                    {
-                        "weight": 1,
-                        "add": {
-                            "component_groups": [
-                                "rift:sarcosuchus_adult",
-                                "rift:sarcosuchus_adult_raid_mount",
-								"rift:can_bite_attack",
-                                "rift:has_illager_mount",
-								"rift:mounted_by_illager_targets",
-								"rift:default_navigation",
-                                "rift:pushable",
-                                "rift:variant_two",
-                                "rift:sarcosuchus_mounted_by_illager_saddled",
-                                "rift:mounted_by_illager_standing"
-                            ]
-                        },
-                        "set_property": {
-                            "rift:owned_by_illager": true
-                        }
-                    },
-                    {
-                        "weight": 1,
-                        "add": {
-                            "component_groups": [
-                                "rift:sarcosuchus_adult",
-                                "rift:sarcosuchus_adult_raid_mount",
-								"rift:can_bite_attack",
-                                "rift:has_illager_mount",
-								"rift:mounted_by_illager_targets",
-								"rift:default_navigation",
-                                "rift:pushable",
-                                "rift:variant_three",
-                                "rift:sarcosuchus_mounted_by_illager_saddled",
-                                "rift:mounted_by_illager_standing"
-                            ]
-                        },
-                        "set_property": {
-                            "rift:owned_by_illager": true
-                        }
-                    }
-                ]
-            },
 			"rift:can_wild_spin_attack": {
-                "add": {
-                    "component_groups": [
-                        "rift:wild_spin_attack"
-                    ]
-                },
-                "remove": {
-                    "component_groups": [
-                        "rift:can_bite_attack"
-                    ]
-                }
+				"add": {
+					"component_groups": [
+						"rift:wild_spin_attack"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:can_bite_attack"
+					]
+				}
 			},
 			"rift:return_to_bite_attack": {
 				"add": {
@@ -6458,9 +5731,16 @@
 					"rift:is_forced_attacking": false
 				}
 			},
-            "rift:using_forced_attack": {},
-            "rift:eat_from_inventory": {},
-            "rift:refill_energy_from_inventory": {},
+			"rift:start_eat_from_inventory_cooldown": {
+				"set_property": {
+					"rift:eat_from_inventory_cooldown": true
+				}
+			},
+			"rift:stop_eat_from_inventory_cooldown": {
+				"set_property": {
+					"rift:eat_from_inventory_cooldown": false
+				}
+			},
 			"rift:moving_slowly_low_energy": {
 				"add": {
 					"component_groups": [
@@ -6638,27 +5918,7 @@
 			},
 			"rift:regenerate_energy": {
 				"set_property": {
-					"rift:energy": "query.property('rift:energy') + 10"
-				}
-			},
-			"rift:regenerate_energy_from_raw_food": {
-				"set_property": {
-					"rift:energy": "query.property('rift:energy') + 15"
-				},
-				"run_command": {
-					"command": [
-						"playsound random.eat @a[r=4]"
-					]
-				}
-			},
-			"rift:regenerate_energy_from_cooked_food": {
-				"set_property": {
-					"rift:energy": "query.property('rift:energy') + 45"
-				},
-				"run_command": {
-					"command": [
-						"playsound random.eat @a[r=4]"
-					]
+					"rift:energy": "query.property('rift:energy') + 5"
 				}
 			},
 			//for potion effects
@@ -6945,41 +6205,13 @@
 					]
 				}
 			},
-			"rift:lol4": {
-				"run_command": {
-					"command": [
-						"tellraw @p {\"rawtext\":[{\"translate\":\"reminder.cannot_use_energy_boosters.text\"}]}"
-					]
-				}
-			},
 			"rift:costume_disabled_message": {
 				"run_command": {
 					"command": [
 						"tellraw @p {\"rawtext\":[{\"text\":\"Costumes have been temporarily disabled until the next update.\"}]}"
 					]
 				}
-			},
-            "rift:start_bleeding": {
-                "set_property": {
-                    "rift:bleeding": true
-                }
-            },
-            "rift:stop_bleeding": {
-                "set_property": {
-                    "rift:bleeding": false
-                }
-            },
-            "rift:affected_by_bola": {
-                "set_property": {
-                    "rift:affected_by_bola": true
-                }
-            },
-            "rift:stop_being_affected_by_bola": {
-                "set_property": {
-                    "rift:affected_by_bola": false
-                }
-            },
-            "rift:force_go_down": {}
+			}
         }
     }
 }

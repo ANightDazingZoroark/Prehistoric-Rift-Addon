@@ -12,11 +12,6 @@
 					"default": false,
 					"client_sync": true
 				},
-				"rift:is_hypnotized_tamed": {
-					"type": "bool",
-					"default": false,
-					"client_sync": true
-				},
 				"rift:undergoing_taming": {
 					"type": "bool",
 					"default": false,
@@ -25,10 +20,10 @@
                 "rift:energy": {
                     "range": [
 						0,
-						450
+						150
 					],
 					"type": "int",
-					"default": 450,
+					"default": 150,
 					"client_sync": true
                 },
                 "rift:tame_state": { //0 for standing, 1 for sitting, 2 for wandering
@@ -47,37 +42,21 @@
 					],
 					"type": "int",
 					"default": 0
-                },
-				"rift:bleeding": {
-					"type": "bool",
-					"default": false,
-					"client_sync": true
-                },
-                "rift:affected_by_bola": {
-					"type": "bool",
-					"default": false
                 }
 			},
 			"animations": {
-				"contInWaterTag": "controller.animation.add_in_water_tag",
 				"contTameTag": "controller.animation.add_tame_tag",
-				"contMovingTag": "controller.animation.add_moving_tag",
 				"contBabyTag": "controller.animation.add_baby_tag",
 				"contInLoveTag": "controller.animation.add_in_love_tag",
 				"contHypnotizedTag": "controller.animation.add_hypnotized_tag",
-				"contHypnotizedTamedTag": "controller.animation.add_hypnotized_by_tamed_tag",
-				"contOwnedByIllagerTag": "controller.animation.add_owned_by_illager_tag",
 				"contTameState": "controller.animation.manage_tame_state",
 				"contBehaviorState": "controller.animation.manage_tame_behavior",
 				"contEnergyUsage": "controller.animation.dimetrodon_energy_movement_usage",
 				"contWarnLowEnergy": "controller.animation.warn_of_low_energy",
 				"contDieWithoutTenontosaurus": "controller.animation.general_die_without_tenontosaurus",
-                "contDieWithoutTamedTenontosaurus": "controller.animation.general_death_timer_tamed_tenontosaurus",
-				"contBleed": "controller.animation.general_manage_bleed",
-				"contBola": "controller.animation.general_manage_bola",
-				"animRegenerateEnergyNormal": "animation.dimetrodon_regenerate_energy_normal",
-				"animRegenerateEnergyFrost": "animation.dimetrodon_regenerate_energy_frost",
-				"animRegenerateEnergyFlame": "animation.dimetrodon_regenerate_energy_flame",
+				"animRegenerateEnergyNormal": "animation.dimetrodon_decrease_energy_while_moving_normal",
+				"animRegenerateEnergyFrost": "animation.dimetrodon_decrease_energy_while_moving_frost",
+				"animRegenerateEnergyFlame": "animation.dimetrodon_decrease_energy_while_moving_flame",
 				"animEnergyRegenDelay": "animation.regenerate_energy_delay",
 				"animUseEnergyWhileMovingNormal": "animation.dimetrodon_regenerate_energy_normal",
 				"animUseEnergyWhileMovingFrost": "animation.dimetrodon_regenerate_energy_frost",
@@ -85,31 +64,19 @@
 				"animLowOnEnergyEffects": "animation.effects_while_low_on_energy",
 				"animNoEnergyEffects": "animation.effects_while_no_energy",
 				"animFindTenontosaurus": "animation.find_tenontosaurus",
-				"animDeathTimer": "animation.hypnosis_death_timer",
-                "animTamedDeathTimer": "animation.hypnosis_death_timer_tamed",
-                "animBleed": "animation.general_bleed",
-                "animBleedCountdown": "animation.general_bleed_countdown",
-                "animBolaEffect": "animation.general_bola_effect",
-                "animBolaEffectCountdown": "animation.general_bola_effect_countdown"
+				"animDeathTimer": "animation.hypnosis_death_timer"
 			},
 			"scripts": {
 				"animate": [
-                    "contInWaterTag",
 					"contTameTag",
-                    "contMovingTag",
 					"contBabyTag",
 					"contInLoveTag",
 					"contHypnotizedTag",
-                    "contHypnotizedTamedTag",
-                    "contOwnedByIllagerTag",
 					"contTameState",
 					"contBehaviorState",
 					"contEnergyUsage",
 					"contWarnLowEnergy",
-					"contDieWithoutTenontosaurus",
-                    "contDieWithoutTamedTenontosaurus",
-                    "contBleed",
-                    "contBola"
+					"contDieWithoutTenontosaurus"
 				]
 			}
         },
@@ -372,16 +339,6 @@
 						},
 						{ 
 							"item": "rift:cooked_exotic_meat", 
-							"priority": 0, 
-							"max_amount": 1 
-						},
-						{ 
-							"item": "rift:raw_fibrous_meat", 
-							"priority": 0, 
-							"max_amount": 1 
-						},
-						{ 
-							"item": "rift:cooked_fibrous_meat", 
 							"priority": 0, 
 							"max_amount": 1 
 						},
@@ -1153,10 +1110,14 @@
 					"entity_types": [
 						{
 							"filters": {
-                                "test": "has_tag",
-                                "subject": "other",
-                                "value": "tenontoTarget"
-                            },
+								"all_of": [
+									{
+										"test": "has_tag",
+										"subject": "other",
+										"value": "tenontoTarget"
+									}
+								]
+							},
 							"max_dist": 48,
 							"priority": 0
 						},
@@ -1205,57 +1166,6 @@
 							}
 						]
 					},
-					"event": "rift:attack_for_tenontosaurus",
-					"target": "self"
-				}
-			},
-			"rift:follow_tamed_tenontosaurus": {
-				"minecraft:behavior.nearest_prioritized_attackable_target": {
-					"priority": 6,
-					"within_radius": 32.0,
-					"entity_types": [
-						{
-							"filters": {
-                                "test": "has_tag",
-                                "subject": "other",
-                                "value": "tenontoTamedTarget"
-                            },
-							"max_dist": 48,
-							"priority": 0
-						},
-						{
-							"filters": {
-								"all_of": [
-									{
-										"test": "is_family",
-										"subject": "other",
-										"value": "tenontosaurus"
-									},
-									{
-										"test": "has_component",
-										"subject": "other",
-										"value": "minecraft:is_tamed"
-									}
-								]
-							},
-							"max_dist": 48,
-							"priority": 1
-						}
-					]
-				}
-			},
-			"rift:follow_tamed_tenontosaurus_no_target": {
-				"minecraft:behavior.ranged_attack": {
-					"priority": 13,
-					"attack_radius": 8.0,
-					"attack_radius_min": 4
-				},
-				"minecraft:on_target_acquired": {
-					"filters": {
-                        "test": "has_tag",
-                        "subject": "target",
-                        "value": "tenontoTamedTarget"
-                    },
 					"event": "rift:attack_for_tenontosaurus",
 					"target": "self"
 				}
@@ -1483,7 +1393,7 @@
 					"attack_duration": 0.52,
 					"hit_delay_pct": 1,
 					"track_target": true,
-					"reach_multiplier": 3
+					"reach_multiplier": 5
 				}
 			},
 			"rift:transform_into_hypnotized_variant_one": {
@@ -1505,11 +1415,6 @@
 				"minecraft:transformation": {
 					"into": "rift:dimetrodon<rift:transform_into_hypnotized_variant_four>"
 				}
-			},
-            "rift:transform_into_hypnotized_by_tamed": {
-				"minecraft:transformation": {
-					"into": "rift:dimetrodon<rift:transform_into_hypnotized_by_tamed>"
-				}
 			}
         },
         "components": {
@@ -1519,8 +1424,7 @@
 					"dimetrodon",
 					"mob",
 					"carnivore",
-					"mammal",
-                    "mediumSize"
+					"mammal"
 				]
 			},
 			"minecraft:navigation.walk": {
@@ -1938,18 +1842,6 @@
 												"test": "has_equipment",
 												"subject": "other",
 												"domain": "hand",
-												"value": "rift:raw_fibrous_meat"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "rift:cooked_fibrous_meat"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
 												"value": "rift:raw_dodo_meat"
 											},
 											{
@@ -2058,21 +1950,7 @@
 										"domain": "hand",
 										"operator": "!=",
 										"value": "rift:carrion_treat"
-									},
-                                    {
-                                        "test": "has_equipment",
-                                        "subject": "other",
-                                        "domain": "hand",
-                                        "operator": "!=",
-                                        "value": "rift:raw_fibrous_meat"
-                                    },
-                                    {
-                                        "test": "has_equipment",
-                                        "subject": "other",
-                                        "domain": "hand",
-                                        "operator": "!=",
-                                        "value": "rift:cooked_fibrous_meat"
-                                    }
+									}
 								]
 							},
 							"event": "rift:manage_state",
@@ -2160,134 +2038,6 @@
 							"target": "self"
 						},
 						"use_item": true
-					},
-					{
-						"on_interact": {
-							"filters": {
-								"all_of": [
-									{
-                                        "test": "has_equipment",
-                                        "subject": "other",
-                                        "domain": "hand",
-                                        "value": "rift:raw_fibrous_meat"
-                                    },
-									{
-										"test": "has_component",
-										"subject": "self",
-										"value": "minecraft:is_baby",
-										"operator": "!="
-									},
-									{
-										"test": "has_component",
-										"subject": "self",
-										"value": "minecraft:is_tamed"
-									},
-									{
-										"test": "is_sneaking",
-										"subject": "other",
-										"value": true
-									},
-                                    {
-                                        "test": "int_property",
-                                        "subject": "self",
-                                        "domain": "rift:energy",
-                                        "operator": "<",
-                                        "value": 450
-                                    }
-								]
-							},
-							"event": "rift:regenerate_energy_from_raw_food",
-							"target": "self"
-						},
-						"use_item": true
-					},
-					{
-						"on_interact": {
-							"filters": {
-								"all_of": [
-									{
-                                        "test": "has_equipment",
-                                        "subject": "other",
-                                        "domain": "hand",
-                                        "value": "rift:cooked_fibrous_meat"
-                                    },
-									{
-										"test": "has_component",
-										"subject": "self",
-										"value": "minecraft:is_baby",
-										"operator": "!="
-									},
-									{
-										"test": "has_component",
-										"subject": "self",
-										"value": "minecraft:is_tamed"
-									},
-									{
-										"test": "is_sneaking",
-										"subject": "other",
-										"value": true
-									},
-                                    {
-                                        "test": "int_property",
-                                        "subject": "self",
-                                        "domain": "rift:energy",
-                                        "operator": "<",
-                                        "value": 450
-                                    }
-								]
-							},
-							"event": "rift:regenerate_energy_from_cooked_food",
-							"target": "self"
-						},
-						"use_item": true
-					},
-					{
-						"on_interact": {
-							"filters": {
-								"all_of": [
-									{
-                                        "any_of": [
-                                            {
-                                                "test": "has_equipment",
-                                                "subject": "other",
-                                                "domain": "hand",
-                                                "value": "rift:raw_fibrous_meat"
-                                            },
-                                            {
-                                                "test": "has_equipment",
-                                                "subject": "other",
-                                                "domain": "hand",
-                                                "value": "rift:cooked_fibrous_meat"
-                                            }
-                                        ]
-                                    },
-									{
-										"test": "has_component",
-										"subject": "self",
-										"value": "minecraft:is_baby",
-										"operator": "!="
-									},
-									{
-										"test": "has_component",
-										"subject": "self",
-										"value": "minecraft:is_tamed"
-									},
-									{
-										"test": "is_sneaking",
-										"subject": "other",
-										"value": true
-									},
-                                    {
-                                        "test": "int_property",
-                                        "subject": "self",
-                                        "domain": "rift:energy",
-                                        "value": 450
-                                    }
-								]
-							},
-							"event": "rift:lol4",
-							"target": "self"
-						}
 					},
 					{
 						"on_interact": {
@@ -4196,7 +3946,7 @@
 							}
 						},
 						"damage_multiplier": 0.5,
-						"cause": "entity_attack"
+						"cause": "attack"
 					},
 					{
 						"on_damage": {
@@ -4218,8 +3968,7 @@
 						"deals_damage": false
 					}
 				]
-			},
-            "minecraft:conditional_bandwidth_optimization": {}
+			}
         },
         "events": {
 			"minecraft:entity_spawned": {
@@ -4370,68 +4119,27 @@
 				},
 				"remove": {
 					"component_groups": [
-						"rift:follow_tenontosaurus_no_target",
-                        "rift:follow_tamed_tenontosaurus_no_target"
+						"rift:follow_tenontosaurus_no_target"
+					]
+				},
+				"run_command": {
+					"command": [
+						"say FOR THE QUEEN"
 					]
 				}
 			},
 			"rift:stop_attacking_for_tenontosaurus": {
-                "sequence": [
-                    {
-                        "remove": {
-                            "component_groups": [
-                                "rift:attacking_for_tenontosaurus"
-                            ]
-                        }
-                    },
-                    {
-                        "filters": {
-                            "all_of": [
-                                {
-                                    "test": "bool_property",
-                                    "subject": "self",
-                                    "domain": "rift:is_hypnotized",
-                                    "value": true
-                                },
-                                {
-                                    "test": "bool_property",
-                                    "subject": "self",
-                                    "domain": "rift:is_hypnotized_tamed",
-                                    "value": false
-                                }
-                            ]
-                        },
-                        "add": {
-                            "component_groups": [
-                                "rift:follow_tenontosaurus_no_target"
-                            ]
-                        }
-                    },
-                    {
-                        "filters": {
-                            "all_of": [
-                                {
-                                    "test": "bool_property",
-                                    "subject": "self",
-                                    "domain": "rift:is_hypnotized",
-                                    "value": false
-                                },
-                                {
-                                    "test": "bool_property",
-                                    "subject": "self",
-                                    "domain": "rift:is_hypnotized_tamed",
-                                    "value": true
-                                }
-                            ]
-                        },
-                        "add": {
-                            "component_groups": [
-                                "rift:follow_tamed_tenontosaurus_no_target"
-                            ]
-                        }
-                    }
-                ]
-            },
+				"add": {
+					"component_groups": [
+						"rift:follow_tenontosaurus_no_target"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:attacking_for_tenontosaurus"
+					]
+				}
+			},
 			"rift:hypnotized_by_tenontosaurus": {
 				"sequence": [
 					{},
@@ -4549,80 +4257,6 @@
 					"rift:is_hypnotized": true
 				}
 			},
-            "rift:hypnotized_by_tamed_tenontosaurus": {
-                "add": {
-                    "component_groups": [
-                        "rift:transform_into_hypnotized_by_tamed"
-                    ]
-                }
-            },
-            "rift:transform_into_hypnotized_by_tamed": {
-                "sequence": [
-                    {
-                        "add": {
-                            "component_groups": [
-                                "rift:dimetrodon_adult",
-                                "rift:dimetrodon_adult_hypnotized",
-                                "rift:dimetrodon_default_temperature_mode",
-                                "rift:tamed_can_move_normal",
-                                "rift:follow_tamed_tenontosaurus",
-                                "rift:follow_tamed_tenontosaurus_no_target"
-                            ]
-                        },
-                        "set_property": {
-                            "rift:is_hypnotized_tamed": true
-                        }
-                    },
-                    {
-                        "filters": {
-                            "test": "is_variant",
-                            "subject": "other",
-                            "value": 0
-                        },
-                        "add": {
-                            "component_groups": [
-                                "rift:variant_one"
-                            ]
-                        }
-                    },
-                    {
-                        "filters": {
-                            "test": "is_variant",
-                            "subject": "other",
-                            "value": 1
-                        },
-                        "add": {
-                            "component_groups": [
-                                "rift:variant_two"
-                            ]
-                        }
-                    },
-                    {
-                        "filters": {
-                            "test": "is_variant",
-                            "subject": "other",
-                            "value": 2
-                        },
-                        "add": {
-                            "component_groups": [
-                                "rift:variant_three"
-                            ]
-                        }
-                    },
-                    {
-                        "filters": {
-                            "test": "is_variant",
-                            "subject": "other",
-                            "value": 3
-                        },
-                        "add": {
-                            "component_groups": [
-                                "rift:variant_four"
-                            ]
-                        }
-                    }
-                ]
-            },
 			"rift:baby_grow_up": {
 				"sequence": [
 					{
@@ -4681,8 +4315,7 @@
 					]
 				},
 				"set_property": {
-					"rift:behavior_state": "3",
-                    "rift:affected_by_bola": false
+					"rift:behavior_state": "3"
 				}
 			},
 			"rift:on_trust": {
@@ -4697,8 +4330,7 @@
 					"component_groups": [
 						"rift:default_targets",
 						"rift:dimetrodon_adult_not_trusting",
-						"rift:dimetrodon_adult_wild",
-                        "rift:can_attack"
+						"rift:dimetrodon_adult_wild"
 					]
 				},
 				"run_command": {
@@ -4714,8 +4346,7 @@
 				"add": {
 					"component_groups": [
 						"rift:default_targets",
-						"rift:dimetrodon_adult_not_trusting",
-                        "rift:can_attack"
+						"rift:dimetrodon_adult_not_trusting"
 					]
 				},
 				"remove": {
@@ -4787,8 +4418,7 @@
 				"add": {
 					"component_groups": [
 						"rift:dimetrodon_adult_tamed",
-						"rift:dimetrodon_tamed",
-                        "rift:can_attack"
+						"rift:dimetrodon_tamed"
 					]
 				},
 				"remove": {
@@ -4808,8 +4438,7 @@
 					]
 				},
 				"set_property": {
-					"rift:undergoing_taming": false,
-                    "rift:affected_by_bola": false
+					"rift:undergoing_taming": false
 				}
 			},
 			"rift:on_standing": {
@@ -5789,27 +5418,7 @@
 			},
 			"rift:regenerate_energy": {
 				"set_property": {
-					"rift:energy": "query.property('rift:energy') + 10"
-				}
-			},
-			"rift:regenerate_energy_from_raw_food": {
-				"set_property": {
-					"rift:energy": "query.property('rift:energy') + 15"
-				},
-				"run_command": {
-					"command": [
-						"playsound random.eat @a[r=4]"
-					]
-				}
-			},
-			"rift:regenerate_energy_from_cooked_food": {
-				"set_property": {
-					"rift:energy": "query.property('rift:energy') + 45"
-				},
-				"run_command": {
-					"command": [
-						"playsound random.eat @a[r=4]"
-					]
+					"rift:energy": "query.property('rift:energy') - 5"
 				}
 			},
 			//for potion effects
@@ -6095,35 +5704,7 @@
 						"tellraw @p {\"rawtext\":[{\"translate\":\"reminder.cannot_use_regular_food.text\"}]}"
 					]
 				}
-			},
-			"rift:lol4": {
-				"run_command": {
-					"command": [
-						"tellraw @p {\"rawtext\":[{\"translate\":\"reminder.cannot_use_energy_boosters.text\"}]}"
-					]
-				}
-			},
-            "rift:start_bleeding": {
-                "set_property": {
-                    "rift:bleeding": true
-                }
-            },
-            "rift:stop_bleeding": {
-                "set_property": {
-                    "rift:bleeding": false
-                }
-            },
-            "rift:affected_by_bola": {
-                "set_property": {
-                    "rift:affected_by_bola": true
-                }
-            },
-            "rift:stop_being_affected_by_bola": {
-                "set_property": {
-                    "rift:affected_by_bola": false
-                }
-            },
-            "rift:force_go_down": {}
+			}
         }
     }
 }

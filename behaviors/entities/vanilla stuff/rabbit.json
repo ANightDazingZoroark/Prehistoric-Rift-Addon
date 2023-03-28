@@ -1,547 +1,384 @@
 {
-    "format_version": "1.17.20",
-    "minecraft:entity": {
-        "component_groups": {
-            "adult": {
-                "minecraft:behavior.breed": {
-                    "priority": 2,
-                    "speed_multiplier": 1.0
-                },
-                "minecraft:breedable": {
-                    "breed_items": [
-                        "golden_carrot",
-                        "carrot",
-                        "yellow_flower"
-                    ],
-                    "breeds_with": {
-                        "baby_type": "minecraft:rabbit",
-                        "mate_type": "minecraft:rabbit"
-                    },
-                    "mutation_factor": {
-                        "variant": 0.2
-                    },
-                    "require_tame": false
-                },
-                "minecraft:experience_reward": {
-                    "on_bred": "Math.Random(1,7)",
-                    "on_death": "query.last_hit_by_player ? Math.Random(1,3) : 0"
-                },
-                "minecraft:loot": {
-                    "table": "loot_tables/entities/rabbit.json"
-                },
-                "minecraft:scale": {
-                    "value": 0.6
-                }
-            },
-            "baby": {
-                "minecraft:ageable": {
-                    "duration": 1200,
-                    "feed_items": [
-                        "golden_carrot",
-                        "carrot",
-                        "yellow_flower"
-                    ],
-                    "grow_up": {
-                        "event": "grow_up",
-                        "target": "self"
-                    }
-                },
-                "minecraft:behavior.follow_parent": {
-                    "priority": 8,
-                    "speed_multiplier": 1.1
-                },
-                "minecraft:is_baby": {},
-                "minecraft:scale": {
-                    "value": 0.4
-                }
-            },
-            "coat_black": {
-                "minecraft:variant": {
-                    "value": 2
-                }
-            },
-            "coat_brown": {
-                "minecraft:variant": {
-                    "value": 0
-                }
-            },
-            "coat_desert": {
-                "minecraft:variant": {
-                    "value": 4
-                }
-            },
-            "coat_salt": {
-                "minecraft:variant": {
-                    "value": 5
-                }
-            },
-            "coat_splotched": {
-                "minecraft:variant": {
-                    "value": 3
-                }
-            },
-            "coat_white": {
-                "minecraft:variant": {
-                    "value": 1
-                }
-            }
+  "format_version": "1.17.20",
+  "minecraft:entity": {
+    "description": {
+      "identifier": "minecraft:rabbit",
+      "is_spawnable": true,
+      "is_summonable": true,
+      "is_experimental": false
+    },
+
+    "component_groups": {
+      "baby": {
+        "minecraft:is_baby": {
         },
-        "components": {
-            "minecraft:attack": {
-                "damage": 0
-            },
-            "minecraft:balloonable": {
-                "mass": 0.4
-            },
-            "minecraft:behavior.avoid_mob_type": {
-                "entity_types": [
-                    {
-                        "filters": {
-                            "all_of": [
-                                {
-                                    "subject": "other",
-                                    "test": "is_family",
-                                    "value": "player"
-                                },
-                                {
-                                    "subject": "other",
-                                    "test": "is_riding",
-                                    "value": false
-                                }
-                            ]
-                        },
-                        "max_dist": 8,
-                        "sprint_speed_multiplier": 1.8,
-                        "walk_speed_multiplier": 1.5
-                    },
-                    {
-                        "filters": {
-                            "subject": "other",
-                            "test": "is_family",
-                            "value": "wolf"
-                        },
-                        "max_dist": 4,
-                        "sprint_speed_multiplier": 1.8,
-                        "walk_speed_multiplier": 1.5
-                    },
-                    {
-                        "filters": {
-                            "subject": "other",
-                            "test": "is_family",
-                            "value": "monster"
-                        },
-                        "max_dist": 4,
-                        "sprint_speed_multiplier": 1.5,
-                        "walk_speed_multiplier": 1.5
-                    },
-                    {
-                        "filters": {
-                            "any_of": [
-                                {
-                                    "subject": "other",
-                                    "test": "is_family",
-                                    "value": "parasaurScary"
-                                },
-                                {
-                                    "subject": "other",
-                                    "test": "is_family",
-                                    "value": "carnivore"
-                                }
-                            ]
-                        },
-                        "max_dist": 12,
-                        "must_see": true,
-                        "sprint_speed_multiplier": 1.2,
-                        "walk_speed_multiplier": 1.2
-                    }
-                ],
-                "priority": 4
-            },
-            "minecraft:behavior.breed": {
-                "priority": 2,
-                "speed_multiplier": 0.8
-            },
-            "minecraft:behavior.float": {
-                "priority": 0
-            },
-            "minecraft:behavior.look_at_player": {
-                "priority": 11
-            },
-            "minecraft:behavior.melee_attack": {
-                "priority": 6
-            },
-            "minecraft:behavior.nearest_attackable_target": {
-                "entity_types": [
-                    {
-                        "filters": {
-                            "subject": "other",
-                            "test": "is_family",
-                            "value": "parasaurAngerer"
-                        },
-                        "max_dist": 64
-                    }
-                ],
-                "priority": 5
-            },
-            "minecraft:behavior.panic": {
-                "priority": 1,
-                "speed_multiplier": 2.2
-            },
-            "minecraft:behavior.raid_garden": {
-                "blocks": [
-                    "minecraft:carrots"
-                ],
-                "goal_radius": 0.8,
-                "priority": 7,
-                "search_range": 16
-            },
-            "minecraft:behavior.random_stroll": {
-                "priority": 8,
-                "speed_multiplier": 0.6,
-                "xz_dist": 2,
-                "y_dist": 1
-            },
-            "minecraft:behavior.tempt": {
-                "items": [
-                    "golden_carrot",
-                    "carrot",
-                    "yellow_flower"
-                ],
-                "priority": 3,
-                "speed_multiplier": 1
-            },
-            "minecraft:block_climber": {},
-            "minecraft:breathable": {
-                "suffocate_time": 0,
-                "total_supply": 15
-            },
-            "minecraft:can_climb": {},
-            "minecraft:collision_box": {
-                "height": 0.67,
-                "width": 0.67
-            },
-            "minecraft:conditional_bandwidth_optimization": {},
-            "minecraft:despawn": {
-                "despawn_from_distance": {}
-            },
-            "minecraft:health": {
-                "max": 3,
-                "value": 3
-            },
-            "minecraft:hurt_on_condition": {
-                "damage_conditions": [
-                    {
-                        "cause": "lava",
-                        "damage_per_tick": 4,
-                        "filters": {
-                            "operator": "==",
-                            "subject": "self",
-                            "test": "in_lava",
-                            "value": true
-                        }
-                    }
-                ]
-            },
-            "minecraft:is_hidden_when_invisible": {},
-            "minecraft:jump.dynamic": {},
-            "minecraft:leashable": {
-                "hard_distance": 6.0,
-                "max_distance": 10.0,
-                "soft_distance": 4.0
-            },
-            "minecraft:movement": {
-                "value": 0.3
-            },
-            "minecraft:movement.skip": {},
-            "minecraft:nameable": {},
-            "minecraft:navigation.walk": {
-                "avoid_water": true,
-                "can_path_over_water": true
-            },
-            "minecraft:physics": {},
-            "minecraft:pushable": {
-                "is_pushable": true,
-                "is_pushable_by_piston": true
-            },
-            "minecraft:scale": {
-                "value": 0.6
-            },
-            "minecraft:type_family": {
-                "family": [
-                    "rabbit",
-                    "lightweight",
-                    "mob",
-                    "animal"
-                ]
-            }
+        "minecraft:scale": {
+          "value":0.4
         },
-        "description": {
-            "animations": {
-                "animBleed": "animation.general_bleed",
-                "animBleedCountdown": "animation.general_bleed_countdown",
-                "animBolaEffect": "animation.general_bola_effect",
-                "animBolaEffectCountdown": "animation.general_bola_effect_countdown",
-                "contBleed": "controller.animation.general_manage_bleed",
-                "contBola": "controller.animation.general_manage_bola",
-                "contInWaterTag": "controller.animation.add_in_water_tag",
-                "contMovingTag": "controller.animation.add_moving_tag"
-            },
-            "identifier": "minecraft:rabbit",
-            "is_experimental": false,
-            "is_spawnable": true,
-            "is_summonable": true,
-            "properties": {
-                "rift:affected_by_bola": {
-                    "default": false,
-                    "type": "bool"
-                },
-                "rift:bleeding": {
-                    "client_sync": true,
-                    "default": false,
-                    "type": "bool"
-                }
-            },
-            "scripts": {
-                "animate": [
-                    "contBleed",
-                    "contMovingTag",
-                    "contInWaterTag",
-                    "contBola"
-                ]
-            }
+        "minecraft:ageable": {
+          "duration": 1200,
+          "feed_items": [
+            "golden_carrot",
+            "carrot",
+            "yellow_flower"
+          ],
+          "grow_up": {
+            "event": "grow_up",
+            "target": "self"
+          }
         },
-        "events": {
-            "grow_up": {
-                "add": {
-                    "component_groups": [
-                        "adult"
-                    ]
-                },
-                "remove": {
-                    "component_groups": [
-                        "baby"
-                    ]
-                }
-            },
-            "in_desert": {
-                "add": {
-                    "component_groups": [
-                        "coat_desert"
-                    ]
-                }
-            },
-            "in_snow": {
-                "randomize": [
-                    {
-                        "add": {
-                            "component_groups": [
-                                "coat_white"
-                            ]
-                        },
-                        "weight": 80
-                    },
-                    {
-                        "add": {
-                            "component_groups": [
-                                "coat_splotched"
-                            ]
-                        },
-                        "weight": 20
-                    }
-                ]
-            },
-            "minecraft:entity_born": {
-                "sequence": [
-                    {
-                        "add": {
-                            "component_groups": [
-                                "baby"
-                            ]
-                        }
-                    },
-                    {
-                        "filters": {
-                            "operator": "!=",
-                            "test": "has_component",
-                            "value": "minecraft:variant"
-                        },
-                        "randomize": [
-                            {
-                                "add": {
-                                    "component_groups": [
-                                        "coat_brown"
-                                    ]
-                                },
-                                "weight": 50
-                            },
-                            {
-                                "add": {
-                                    "component_groups": [
-                                        "coat_black"
-                                    ]
-                                },
-                                "weight": 40
-                            },
-                            {
-                                "add": {
-                                    "component_groups": [
-                                        "coat_salt"
-                                    ]
-                                },
-                                "weight": 10
-                            }
-                        ]
-                    },
-                    {
-                        "add": {
-                            "component_groups": [
-                                "coat_desert"
-                            ]
-                        },
-                        "filters": {
-                            "test": "is_biome",
-                            "value": "desert"
-                        }
-                    },
-                    {
-                        "filters": {
-                            "test": "is_snow_covered",
-                            "value": true
-                        },
-                        "randomize": [
-                            {
-                                "add": {
-                                    "component_groups": [
-                                        "coat_white"
-                                    ]
-                                },
-                                "weight": 80
-                            },
-                            {
-                                "add": {
-                                    "component_groups": [
-                                        "coat_splotched"
-                                    ]
-                                },
-                                "weight": 20
-                            }
-                        ]
-                    }
-                ]
-            },
-            "minecraft:entity_spawned": {
-                "sequence": [
-                    {
-                        "randomize": [
-                            {
-                                "add": {
-                                    "component_groups": [
-                                        "adult"
-                                    ]
-                                },
-                                "weight": 3
-                            },
-                            {
-                                "add": {
-                                    "component_groups": [
-                                        "baby"
-                                    ]
-                                },
-                                "weight": 1
-                            }
-                        ]
-                    },
-                    {
-                        "filters": {
-                            "operator": "!=",
-                            "test": "has_component",
-                            "value": "minecraft:variant"
-                        },
-                        "randomize": [
-                            {
-                                "add": {
-                                    "component_groups": [
-                                        "coat_brown"
-                                    ]
-                                },
-                                "weight": 50
-                            },
-                            {
-                                "add": {
-                                    "component_groups": [
-                                        "coat_black"
-                                    ]
-                                },
-                                "weight": 40
-                            },
-                            {
-                                "add": {
-                                    "component_groups": [
-                                        "coat_salt"
-                                    ]
-                                },
-                                "weight": 10
-                            }
-                        ]
-                    },
-                    {
-                        "add": {
-                            "component_groups": [
-                                "coat_desert"
-                            ]
-                        },
-                        "filters": {
-                            "test": "is_biome",
-                            "value": "desert"
-                        }
-                    },
-                    {
-                        "filters": {
-                            "test": "is_snow_covered",
-                            "value": true
-                        },
-                        "randomize": [
-                            {
-                                "add": {
-                                    "component_groups": [
-                                        "coat_white"
-                                    ]
-                                },
-                                "weight": 80
-                            },
-                            {
-                                "add": {
-                                    "component_groups": [
-                                        "coat_splotched"
-                                    ]
-                                },
-                                "weight": 20
-                            }
-                        ]
-                    }
-                ]
-            },
-            "rift:affected_by_bola": {
-                "set_property": {
-                    "rift:affected_by_bola": true
-                }
-            },
-            "rift:force_go_down": {},
-            "rift:start_bleeding": {
-                "set_property": {
-                    "rift:bleeding": true
-                }
-            },
-            "rift:stop_being_affected_by_bola": {
-                "set_property": {
-                    "rift:affected_by_bola": false
-                }
-            },
-            "rift:stop_bleeding": {
-                "set_property": {
-                    "rift:bleeding": false
-                }
-            }
+        "minecraft:behavior.follow_parent": {
+          "priority": 8,
+          "speed_multiplier": 1.1
         }
+      },
+
+      "adult": {
+        "minecraft:experience_reward": {
+          "on_bred": "Math.Random(1,7)",
+          "on_death": "query.last_hit_by_player ? Math.Random(1,3) : 0"
+        },
+        "minecraft:loot": {
+          "table": "loot_tables/entities/rabbit.json"
+        },
+        "minecraft:scale": {
+          "value": 0.6
+        },
+        "minecraft:behavior.breed": {
+          "priority": 2,
+          "speed_multiplier": 1.0
+        },
+        "minecraft:breedable": {
+          "breed_items": [
+            "golden_carrot",
+            "carrot",
+            "yellow_flower"
+          ],
+          "breeds_with": {
+            "mate_type": "minecraft:rabbit",
+            "baby_type": "minecraft:rabbit"
+          },
+          "require_tame": false,
+          "mutation_factor": {
+            "variant": 0.2
+          }
+        }
+      },
+
+      "coat_brown": {
+        "minecraft:variant": { "value": 0 }
+      },
+      "coat_white": {
+        "minecraft:variant": { "value": 1 }
+      },
+      "coat_black": {
+        "minecraft:variant": { "value": 2 }
+      },
+      "coat_splotched": {
+        "minecraft:variant": { "value": 3 }
+      },
+      "coat_desert": {
+        "minecraft:variant": { "value": 4 }
+      },
+      "coat_salt": {
+        "minecraft:variant": { "value": 5 }
+      }
+
+    },
+
+    "components": {
+      "minecraft:is_hidden_when_invisible": {
+      },
+      "minecraft:type_family": {
+        "family":["rabbit", "lightweight", "mob", "animal"]
+      },
+
+      "minecraft:breathable": {
+        "total_supply": 15,
+        "suffocate_time": 0
+      },
+      "minecraft:nameable": {
+      },
+      "minecraft:health": {
+        "value": 3,
+        "max": 3
+      },
+      "minecraft:attack": {
+        "damage": 0
+      },
+      "minecraft:scale": {
+        "value": 0.6
+      },
+      "minecraft:hurt_on_condition": {
+        "damage_conditions": [
+          {
+            "filters": { "test": "in_lava", "subject": "self", "operator": "==", "value": true },
+            "cause": "lava",
+            "damage_per_tick": 4
+          }
+        ]
+      },
+      "minecraft:collision_box": {
+        "width": 0.67,
+        "height": 0.67
+      },
+      "minecraft:movement": {
+        "value": 0.3
+      },
+      "minecraft:navigation.walk": {
+        "can_path_over_water": true,
+        "avoid_water": true
+      },
+      "minecraft:movement.skip": {
+      },
+      "minecraft:jump.dynamic": {
+      },
+      "minecraft:can_climb": {
+      },
+      "minecraft:leashable": {
+        "soft_distance": 4.0,
+        "hard_distance": 6.0,
+        "max_distance":  10.0
+      },
+      "minecraft:balloonable": {
+        "mass": 0.4
+      },
+      "minecraft:despawn": {
+        "despawn_from_distance": {}
+      },
+      "minecraft:behavior.float": {
+        "priority": 0
+      },
+      "minecraft:behavior.panic" : {
+        "priority": 1,
+        "speed_multiplier": 2.2
+      },
+      "minecraft:behavior.avoid_mob_type": {
+        "priority": 4,
+        "entity_types":[
+          {
+            "filters": {
+              "all_of": [
+                {
+                  "test": "is_family",
+                  "subject": "other",
+                  "value": "player"
+                },
+                {
+                  "test": "is_riding",
+                  "subject": "other",
+                  "value": false
+                }
+              ]
+            },
+            "max_dist": 8,
+            "walk_speed_multiplier": 1.5,
+            "sprint_speed_multiplier": 1.8
+          },
+          {
+            "filters": { "test" :  "is_family", "subject" : "other", "value" :  "wolf"},
+            "max_dist": 4,
+            "walk_speed_multiplier": 1.5,
+            "sprint_speed_multiplier": 1.8
+          },
+          {
+            "filters": { "test" :  "is_family", "subject" : "other", "value" :  "monster"},
+            "max_dist": 4,
+            "walk_speed_multiplier": 1.5,
+            "sprint_speed_multiplier": 1.5
+          },
+          {
+            "filters": {
+              "any_of": [
+                {
+                  "test": "is_family",
+                  "value": "parasaurScary",
+                  "subject": "other"
+                },
+                {
+                  "test": "is_family",
+                  "value": "carnivore",
+                  "subject": "other"
+                }
+              ]
+            },
+            "max_dist": 12,
+            "must_see": true,
+            "walk_speed_multiplier": 1.2,
+            "sprint_speed_multiplier": 1.2
+          }
+        ]
+      },
+      "minecraft:behavior.breed": {
+        "priority": 2,
+        "speed_multiplier": 0.8
+      },
+      "minecraft:behavior.tempt": {
+        "priority": 3,
+        "speed_multiplier": 1,
+        "items": [
+          "golden_carrot",
+          "carrot",
+          "yellow_flower"
+        ]
+      },
+      "minecraft:behavior.nearest_attackable_target": {
+        "priority": 5,
+        "entity_types": [
+            {
+              "filters": {
+                "test": "is_family",
+                "subject": "other",
+                "value": "parasaurAngerer"
+              },
+              "max_dist": 64
+            }
+          ]
+      },
+      "minecraft:behavior.melee_attack": {
+        "priority": 6
+      },
+      "minecraft:behavior.raid_garden": {
+        "priority": 7,
+        "blocks": [
+          "minecraft:carrots"
+        ],
+        "search_range": 16,
+        "goal_radius": 0.8
+      },
+      "minecraft:behavior.random_stroll": {
+        "priority": 8,
+        "speed_multiplier": 0.6,
+        "xz_dist": 2,
+        "y_dist": 1
+      },
+      "minecraft:behavior.look_at_player": {
+        "priority": 11
+      },
+        "minecraft:physics": {
+      },
+      "minecraft:pushable": {
+        "is_pushable": true,
+        "is_pushable_by_piston": true
+      },
+      "minecraft:conditional_bandwidth_optimization": {
+      },
+      "minecraft:block_climber": {
+      }
+    },
+
+    "events": {
+
+      "in_desert": { "add": { "component_groups": [ "coat_desert" ] } },
+
+      "in_snow": {
+        "randomize": [
+          {
+            "weight": 80,
+            "add": { "component_groups": [ "coat_white" ] }
+          },
+          {
+            "weight": 20,
+            "add": { "component_groups": [ "coat_splotched" ] }
+          }
+        ]
+      },
+
+      "minecraft:entity_spawned": {
+        "sequence": [
+          {
+            "randomize": [
+              {
+                "weight": 3,
+                "add": { "component_groups": [ "adult" ] }
+              },
+              {
+                "weight": 1,
+                "add": { "component_groups": [ "baby" ] }
+              }
+            ]
+          },
+          {
+            "filters": { "test" :  "has_component", "operator": "!=", "value" :  "minecraft:variant"},
+            "randomize": [
+              {
+                "weight": 50,
+                "add": { "component_groups": [ "coat_brown" ] }
+              },
+              {
+                "weight": 40,
+                "add": { "component_groups": [ "coat_black" ] }
+              },
+              {
+                "weight": 10,
+                "add": { "component_groups": [ "coat_salt" ] }
+              }
+            ]
+          },
+          {
+            "filters": { "test": "is_biome", "value": "desert" },
+            "add": { "component_groups": [ "coat_desert" ] }
+          },
+          {
+            "filters": { "test": "is_snow_covered", "value": true },
+            "randomize": [
+              {
+                "weight": 80,
+                "add": { "component_groups": [ "coat_white" ] }
+              },
+              {
+                "weight": 20,
+                "add": { "component_groups": [ "coat_splotched" ] }
+              }
+            ]
+          }
+        ]
+      },
+
+      "minecraft:entity_born": {
+        "sequence": [
+          { "add": { "component_groups": [ "baby" ] } },
+          {
+            "filters": { "test" :  "has_component", "operator": "!=", "value" :  "minecraft:variant"},
+            "randomize": [
+              {
+                "weight": 50,
+                "add": { "component_groups": [ "coat_brown" ] }
+              },
+              {
+                "weight": 40,
+                "add": { "component_groups": [ "coat_black" ] }
+              },
+              {
+                "weight": 10,
+                "add": { "component_groups": [ "coat_salt" ] }
+              }
+            ]
+          },
+          {
+            "filters": { "test": "is_biome", "value": "desert" },
+            "add": { "component_groups": [ "coat_desert" ] }
+          },
+          {
+            "filters": { "test": "is_snow_covered", "value": true },
+            "randomize": [
+              {
+                "weight": 80,
+                "add": { "component_groups": [ "coat_white" ] }
+              },
+              {
+                "weight": 20,
+                "add": { "component_groups": [ "coat_splotched" ] }
+              }
+            ]
+          }
+        ]
+      },
+
+      "grow_up": {
+        "remove": { "component_groups": [ "baby" ] },
+        "add": { "component_groups": [ "adult" ] }
+      }
     }
+  }
 }

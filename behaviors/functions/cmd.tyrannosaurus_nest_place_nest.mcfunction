@@ -1,2 +1,2 @@
-summon rift:egg_nest ~ ~ ~ rift:spawned_tyrannosaurus_egg
+summon rift:egg_nest ~ ~ ~
 setblock ~ ~ ~ air

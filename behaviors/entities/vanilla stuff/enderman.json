@@ -1,100 +1,144 @@
 {
     "format_version": "1.16.0",
     "minecraft:entity": {
-        "component_groups": {
-            "minecraft:enderman_angry": {
-                "minecraft:angry": {
-                    "calm_event": {
-                        "event": "minecraft:on_calm",
-                        "target": "self"
-                    },
-                    "duration": 25
-                },
-                "minecraft:behavior.melee_attack": {
-                    "priority": 2
-                },
-                "minecraft:movement": {
-                    "value": 0.45
-                }
+        "description": {
+            "identifier": "minecraft:enderman",
+            "is_spawnable": true,
+            "is_summonable": true,
+            "is_experimental": false,
+            "animations": {
+                "contHypnotizedTag": "controller.animation.add_hypnotized_tag",
+                "contDieWithoutTenontosaurus": "controller.animation.general_die_without_tenontosaurus",
+                "animFindTenontosaurus": "animation.find_tenontosaurus",
+                "animDeathTimer": "animation.hypnosis_death_timer"
             },
+            "scripts": {
+                "animate": [
+                    "contHypnotizedTag",
+                    "contDieWithoutTenontosaurus"
+                ]
+            },
+            "properties": {
+                "rift:is_hypnotized": {
+                    "type": "bool",
+                    "default": false,
+                    "client_sync": true
+                }
+            }
+        },
+        "component_groups": {
             "minecraft:enderman_calm": {
-                "minecraft:movement": {
-                    "value": 0.3
-                },
                 "minecraft:on_target_acquired": {
                     "event": "minecraft:become_angry",
                     "target": "self"
+                },
+                "minecraft:movement": {
+                    "value": 0.3
                 }
             },
-            "rift:attacking_for_tenontosaurus": {
+            "minecraft:enderman_angry": {
+                "minecraft:angry": {
+                    "duration": 25,
+                    "calm_event": {
+                        "event": "minecraft:on_calm",
+                        "target": "self"
+                    }
+                },
+                "minecraft:movement": {
+                    "value": 0.45
+                },
                 "minecraft:behavior.melee_attack": {
                     "priority": 2
-                },
-                "minecraft:on_target_escape": {
-                    "event": "rift:stop_attacking_for_tenontosaurus",
-                    "target": "self"
                 }
             },
-            "rift:follow_tamed_tenontosaurus": {
-                "minecraft:behavior.nearest_prioritized_attackable_target": {
+            "rift:not_hypnotized": {
+                "minecraft:lookat": {
+                    "search_radius": 64.0,
+                    "set_target": true,
+                    "look_cooldown": 5.0,
+                    "filters": {
+                        "all_of": [
+                            {
+                                "subject": "other",
+                                "test": "is_family",
+                                "value": "player"
+                            },
+                            {
+                                "test": "has_equipment",
+                                "domain": "head",
+                                "subject": "other",
+                                "operator": "not",
+                                "value": "carved_pumpkin"
+                            }
+                        ]
+                    }
+                },
+                "minecraft:teleport": {
+                    "random_teleports": true,
+                    "max_random_teleport_time": 30,
+                    "random_teleport_cube": [ 32, 32, 32 ],
+                    "target_distance": 16,
+                    "target_teleport_chance": 0.05,
+                    "light_teleport_chance": 0.05
+                },
+                "minecraft:behavior.nearest_attackable_target": {
+                    "priority": 5,
+                    "must_see": true,
+                    "attack_interval": 10,
                     "entity_types": [
                         {
                             "filters": {
+                                "test": "is_family",
                                 "subject": "other",
-                                "test": "has_tag",
-                                "value": "tenontoTamedTarget"
+                                "value": "endermite"
                             },
-                            "max_dist": 48,
-                            "priority": 0
-                        },
-                        {
-                            "filters": {
-                                "all_of": [
-                                    {
-                                        "subject": "other",
-                                        "test": "is_family",
-                                        "value": "tenontosaurus"
-                                    },
-                                    {
-                                        "subject": "other",
-                                        "test": "has_component",
-                                        "value": "minecraft:is_tamed"
-                                    }
-                                ]
-                            },
-                            "max_dist": 48,
-                            "priority": 1
+                            "max_dist": 64
                         }
-                    ],
-                    "priority": 5,
-                    "within_radius": 32.0
+                    ]
+                },
+                "minecraft:behavior.random_stroll": {
+                    "priority": 7,
+                    "speed_multiplier": 1.0
+                },
+                "minecraft:behavior.look_at_player": {
+                    "priority": 8,
+                    "look_distance": 8.0,
+                    "probability": 8.0
+                },
+                "minecraft:behavior.random_look_around": {
+                    "priority": 8
+                },
+                "minecraft:behavior.hurt_by_target": {
+                    "priority": 3
+                },
+                "minecraft:behavior.enderman_leave_block": {
+                    "priority": 10
+                },
+                "minecraft:behavior.enderman_take_block": {
+                    "priority": 11
                 }
             },
-            "rift:follow_tamed_tenontosaurus_no_target": {
-                "minecraft:behavior.ranged_attack": {
-                    "attack_radius": 6.0,
-                    "attack_radius_min": 4,
-                    "priority": 7
-                },
-                "minecraft:on_target_acquired": {
-                    "event": "rift:attack_for_tenontosaurus",
-                    "filters": {
-                        "subject": "target",
-                        "test": "has_tag",
-                        "value": "tenontoTamedTarget"
-                    },
-                    "target": "self"
+            "rift:hypnotized": {
+                "minecraft:teleport": {
+                    "random_teleports": false,
+                    "max_random_teleport_time": 69420666,
+                    "random_teleport_cube": [ 0, 0, 0 ],
+                    "target_distance": 16,
+                    "target_teleport_chance": 1,
+                    "light_teleport_chance": 1
                 }
             },
             "rift:follow_tenontosaurus": {
                 "minecraft:behavior.nearest_prioritized_attackable_target": {
+                    "priority": 5,
+                    "within_radius": 32.0,
                     "entity_types": [
                         {
                             "filters": {
                                 "all_of": [
                                     {
-                                        "subject": "other",
                                         "test": "has_tag",
+                                        "subject": "other",
                                         "value": "tenontoTarget"
                                     }
                                 ]
@@ -106,14 +150,14 @@
                             "filters": {
                                 "all_of": [
                                     {
-                                        "subject": "other",
                                         "test": "is_family",
+                                        "subject": "other",
                                         "value": "tenontosaurus"
                                     },
                                     {
-                                        "operator": "!=",
-                                        "subject": "other",
                                         "test": "has_component",
+                                        "subject": "other",
+                                        "operator": "!=",
                                         "value": "minecraft:is_tamed"
                                     }
                                 ]
@@ -121,121 +165,43 @@
                             "max_dist": 48,
                             "priority": 1
                         }
-                    ],
-                    "priority": 5,
-                    "within_radius": 32.0
+                    ]
                 }
             },
             "rift:follow_tenontosaurus_no_target": {
                 "minecraft:behavior.ranged_attack": {
+                    "priority": 7,
                     "attack_radius": 6.0,
-                    "attack_radius_min": 4,
-                    "priority": 7
+                    "attack_radius_min": 4
                 },
                 "minecraft:on_target_acquired": {
-                    "event": "rift:attack_for_tenontosaurus",
                     "filters": {
                         "all_of": [
                             {
-                                "operator": "!=",
-                                "subject": "target",
                                 "test": "has_component",
+                                "subject": "target",
+                                "operator": "!=",
                                 "value": "minecraft:is_tamed"
                             },
                             {
-                                "operator": "!=",
-                                "subject": "target",
                                 "test": "is_family",
+                                "subject": "target",
+                                "operator": "!=",
                                 "value": "tenontosaurus"
                             }
                         ]
                     },
+                    "event": "rift:attack_for_tenontosaurus",
                     "target": "self"
                 }
             },
-            "rift:hypnotized": {
-                "minecraft:teleport": {
-                    "light_teleport_chance": 1,
-                    "max_random_teleport_time": 69420666,
-                    "random_teleport_cube": [
-                        0,
-                        0,
-                        0
-                    ],
-                    "random_teleports": false,
-                    "target_distance": 16,
-                    "target_teleport_chance": 1
-                }
-            },
-            "rift:not_hypnotized": {
-                "minecraft:behavior.enderman_leave_block": {
-                    "priority": 10
+            "rift:attacking_for_tenontosaurus": {
+                "minecraft:behavior.melee_attack": {
+                  "priority": 2
                 },
-                "minecraft:behavior.enderman_take_block": {
-                    "priority": 11
-                },
-                "minecraft:behavior.hurt_by_target": {
-                    "priority": 3
-                },
-                "minecraft:behavior.look_at_player": {
-                    "look_distance": 8.0,
-                    "priority": 8,
-                    "probability": 8.0
-                },
-                "minecraft:behavior.nearest_attackable_target": {
-                    "attack_interval": 10,
-                    "entity_types": [
-                        {
-                            "filters": {
-                                "subject": "other",
-                                "test": "is_family",
-                                "value": "endermite"
-                            },
-                            "max_dist": 64
-                        }
-                    ],
-                    "must_see": true,
-                    "priority": 5
-                },
-                "minecraft:behavior.random_look_around": {
-                    "priority": 8
-                },
-                "minecraft:behavior.random_stroll": {
-                    "priority": 7,
-                    "speed_multiplier": 1.0
-                },
-                "minecraft:lookat": {
-                    "filters": {
-                        "all_of": [
-                            {
-                                "subject": "other",
-                                "test": "is_family",
-                                "value": "player"
-                            },
-                            {
-                                "domain": "head",
-                                "operator": "not",
-                                "subject": "other",
-                                "test": "has_equipment",
-                                "value": "carved_pumpkin"
-                            }
-                        ]
-                    },
-                    "look_cooldown": 5.0,
-                    "search_radius": 64.0,
-                    "set_target": true
-                },
-                "minecraft:teleport": {
-                    "light_teleport_chance": 0.05,
-                    "max_random_teleport_time": 30,
-                    "random_teleport_cube": [
-                        32,
-                        32,
-                        32
-                    ],
-                    "random_teleports": true,
-                    "target_distance": 16,
-                    "target_teleport_chance": 0.05
+                "minecraft:on_target_escape": {
+                    "event": "rift:stop_attacking_for_tenontosaurus",
+                    "target": "self"
                 }
             },
             "rift:transform_into_hypnotized": {
@@ -243,217 +209,85 @@
                     "into": "minecraft:enderman<rift:transform_into_hypnotized>",
                     "preserve_equipment": true
                 }
-            },
-            "rift:transform_into_hypnotized_by_tamed": {
-                "minecraft:transformation": {
-                    "into": "minecraft:enderman<rift:transform_into_hypnotized_by_tamed>",
-                    "preserve_equipment": true
-                }
             }
         },
         "components": {
-            "minecraft:attack": {
-                "damage": 7
-            },
-            "minecraft:behavior.float": {
-                "priority": 0
-            },
-            "minecraft:breathable": {
-                "suffocate_time": 0,
-                "total_supply": 15
-            },
-            "minecraft:can_climb": {},
-            "minecraft:collision_box": {
-                "height": 2.9,
-                "width": 0.6
-            },
-            "minecraft:conditional_bandwidth_optimization": {
-                "default_values": {
-                    "max_dropped_ticks": 10,
-                    "max_optimized_distance": 80.0,
-                    "use_motion_prediction_hints": true
-                }
-            },
-            "minecraft:despawn": {
-                "despawn_from_distance": {}
-            },
+            "minecraft:is_hidden_when_invisible": {},
             "minecraft:experience_reward": {
                 "on_death": "query.last_hit_by_player ? 5 : 0"
             },
-            "minecraft:follow_range": {
-                "max": 32,
-                "value": 32
+            "minecraft:type_family": {
+                "family": [ "enderman", "monster", "mob" ]
+            },
+            "minecraft:breathable": {
+                "total_supply": 15,
+                "suffocate_time": 0
+            },
+            "minecraft:nameable": {},
+            "minecraft:loot": {
+                "table": "loot_tables/entities/enderman.json"
             },
             "minecraft:health": {
-                "max": 40,
-                "value": 40
+                "value": 40,
+                "max": 40
             },
             "minecraft:hurt_on_condition": {
                 "damage_conditions": [
                     {
+                        "filters": { "test": "in_lava", "subject": "self", "operator": "==", "value": true },
                         "cause": "lava",
-                        "damage_per_tick": 4,
-                        "filters": {
-                            "operator": "==",
-                            "subject": "self",
-                            "test": "in_lava",
-                            "value": true
-                        }
+                        "damage_per_tick": 4
                     },
                     {
+                        "filters": { "test": "in_contact_with_water", "operator": "==", "value": true },
                         "cause": "drowning",
-                        "damage_per_tick": 1,
-                        "filters": {
-                            "operator": "==",
-                            "test": "in_contact_with_water",
-                            "value": true
-                        }
+                        "damage_per_tick": 1
                     }
                 ]
             },
-            "minecraft:is_hidden_when_invisible": {},
-            "minecraft:jump.static": {},
-            "minecraft:loot": {
-                "table": "loot_tables/entities/enderman.json"
+            "minecraft:attack": {
+                "damage": 7
+            },
+            "minecraft:follow_range": {
+                "value": 32,
+                "max": 32
+            },
+            "minecraft:collision_box": {
+                "width": 0.6,
+                "height": 2.9
+            },
+            "minecraft:despawn": {
+                "despawn_from_distance": {}
+            },
+            "minecraft:navigation.walk": {
+                "can_path_over_water": false,
+                "avoid_water": true
             },
             "minecraft:movement.basic": {},
-            "minecraft:nameable": {},
-            "minecraft:navigation.walk": {
-                "avoid_water": true,
-                "can_path_over_water": false
+            "minecraft:jump.static": {},
+            "minecraft:can_climb": {},
+            "minecraft:behavior.float": {
+                "priority": 0
             },
             "minecraft:physics": {},
             "minecraft:pushable": {
                 "is_pushable": true,
                 "is_pushable_by_piston": true
             },
-            "minecraft:type_family": {
-                "family": [
-                    "enderman",
-                    "monster",
-                    "mob"
-                ]
-            }
-        },
-        "description": {
-            "animations": {
-                "animBleed": "animation.general_bleed",
-                "animBleedCountdown": "animation.general_bleed_countdown",
-                "animBolaEffect": "animation.general_bola_effect",
-                "animBolaEffectCountdown": "animation.general_bola_effect_countdown",
-                "animDeathTimer": "animation.hypnosis_death_timer",
-                "animFindTenontosaurus": "animation.find_tenontosaurus",
-                "animTamedDeathTimer": "animation.hypnosis_death_timer_tamed",
-                "contBleed": "controller.animation.general_manage_bleed",
-                "contBola": "controller.animation.general_manage_bola",
-                "contDieWithoutTamedTenontosaurus": "controller.animation.general_death_timer_tamed_tenontosaurus",
-                "contDieWithoutTenontosaurus": "controller.animation.general_die_without_tenontosaurus",
-                "contHypnotizedTag": "controller.animation.add_hypnotized_tag",
-                "contHypnotizedTamedTag": "controller.animation.add_hypnotized_by_tamed_tag",
-                "contInWaterTag": "controller.animation.add_in_water_tag",
-                "contMovingTag": "controller.animation.add_moving_tag"
-            },
-            "identifier": "minecraft:enderman",
-            "is_experimental": false,
-            "is_spawnable": true,
-            "is_summonable": true,
-            "properties": {
-                "rift:affected_by_bola": {
-                    "default": false,
-                    "type": "bool"
-                },
-                "rift:bleeding": {
-                    "client_sync": true,
-                    "default": false,
-                    "type": "bool"
-                },
-                "rift:is_hypnotized": {
-                    "client_sync": true,
-                    "default": false,
-                    "type": "bool"
-                },
-                "rift:is_hypnotized_tamed": {
-                    "client_sync": true,
-                    "default": false,
-                    "type": "bool"
+            "minecraft:conditional_bandwidth_optimization": {
+                "default_values": {
+                    "max_optimized_distance": 80.0,
+                    "max_dropped_ticks": 10,
+                    "use_motion_prediction_hints": true
                 }
-            },
-            "scripts": {
-                "animate": [
-                    "contHypnotizedTag",
-                    "contHypnotizedTamedTag",
-                    "contDieWithoutTenontosaurus",
-                    "contDieWithoutTamedTenontosaurus",
-                    "contBleed",
-                    "contMovingTag",
-                    "contInWaterTag",
-                    "contBola"
-                ]
             }
         },
         "events": {
-            "minecraft:become_angry": {
-                "add": {
-                    "component_groups": [
-                        "minecraft:enderman_angry"
-                    ]
-                },
-                "remove": {
-                    "component_groups": [
-                        "minecraft:enderman_calm"
-                    ]
-                }
-            },
             "minecraft:entity_spawned": {
                 "add": {
                     "component_groups": [
                         "minecraft:enderman_calm",
                         "rift:not_hypnotized"
-                    ]
-                }
-            },
-            "minecraft:on_calm": {
-                "add": {
-                    "component_groups": [
-                        "minecraft:enderman_calm"
-                    ]
-                },
-                "remove": {
-                    "component_groups": [
-                        "minecraft:enderman_angry"
-                    ]
-                }
-            },
-            "rift:affected_by_bola": {
-                "set_property": {
-                    "rift:affected_by_bola": true
-                }
-            },
-            "rift:attack_for_tenontosaurus": {
-                "add": {
-                    "component_groups": [
-                        "rift:attacking_for_tenontosaurus"
-                    ]
-                },
-                "remove": {
-                    "component_groups": [
-                        "rift:follow_tenontosaurus_no_target",
-                        "rift:follow_tamed_tenontosaurus_no_target"
-                    ]
-                }
-            },
-            "rift:force_go_down": {},
-            "rift:hypnotized_by_tamed_tenontosaurus": {
-                "add": {
-                    "component_groups": [
-                        "rift:transform_into_hypnotized_by_tamed"
-                    ]
-                }
-            },
-            "rift:hypnotized_by_tenontosaurus": {
-                "add": {
-                    "component_groups": [
-                        "rift:transform_into_hypnotized"
                     ]
                 }
             },
@@ -469,76 +303,40 @@
                     "rift:is_hypnotized": true
                 }
             },
-            "rift:start_bleeding": {
-                "set_property": {
-                    "rift:bleeding": true
+            "rift:attack_for_tenontosaurus": {
+                "add": {
+                    "component_groups": [
+                        "rift:attacking_for_tenontosaurus"
+                    ]
+                },
+                "remove": {
+                    "component_groups": [
+                        "rift:follow_tenontosaurus_no_target"
+                    ]
+                },
+                "run_command": {
+                    "command": [
+                        "say FOR THE QUEEN"
+                    ]
                 }
             },
             "rift:stop_attacking_for_tenontosaurus": {
-                "sequence": [
-                    {
-                        "remove": {
-                            "component_groups": [
-                                "rift:attacking_for_tenontosaurus"
-                            ]
-                        }
-                    },
-                    {
-                        "add": {
-                            "component_groups": [
-                                "rift:follow_tenontosaurus_no_target"
-                            ]
-                        },
-                        "filters": {
-                            "all_of": [
-                                {
-                                    "domain": "rift:is_hypnotized",
-                                    "subject": "self",
-                                    "test": "bool_property",
-                                    "value": true
-                                },
-                                {
-                                    "domain": "rift:is_hypnotized_tamed",
-                                    "subject": "self",
-                                    "test": "bool_property",
-                                    "value": false
-                                }
-                            ]
-                        }
-                    },
-                    {
-                        "add": {
-                            "component_groups": [
-                                "rift:follow_tamed_tenontosaurus_no_target"
-                            ]
-                        },
-                        "filters": {
-                            "all_of": [
-                                {
-                                    "domain": "rift:is_hypnotized",
-                                    "subject": "self",
-                                    "test": "bool_property",
-                                    "value": false
-                                },
-                                {
-                                    "domain": "rift:is_hypnotized_tamed",
-                                    "subject": "self",
-                                    "test": "bool_property",
-                                    "value": true
-                                }
-                            ]
-                        }
-                    }
-                ]
-            },
-            "rift:stop_being_affected_by_bola": {
-                "set_property": {
-                    "rift:affected_by_bola": false
+                "add": {
+                    "component_groups": [
+                        "rift:follow_tenontosaurus_no_target"
+                    ]
+                },
+                "remove": {
+                    "component_groups": [
+                        "rift:attacking_for_tenontosaurus"
+                    ]
                 }
             },
-            "rift:stop_bleeding": {
-                "set_property": {
-                    "rift:bleeding": false
+            "rift:hypnotized_by_tenontosaurus": {
+                "add": {
+                    "component_groups": [
+                        "rift:transform_into_hypnotized"
+                    ]
                 }
             },
             "rift:transform_into_hypnotized": {
@@ -553,16 +351,28 @@
                     "rift:is_hypnotized": true
                 }
             },
-            "rift:transform_into_hypnotized_by_tamed": {
-                "add": {
+            "minecraft:become_angry": {
+                "remove": {
                     "component_groups": [
-                        "rift:hypnotized",
-                        "rift:follow_tamed_tenontosaurus",
-                        "rift:follow_tamed_tenontosaurus_no_target"
+                        "minecraft:enderman_calm"
                     ]
                 },
-                "set_property": {
-                    "rift:is_hypnotized_tamed": true
+                "add": {
+                    "component_groups": [
+                        "minecraft:enderman_angry"
+                    ]
+                }
+            },
+            "minecraft:on_calm": {
+                "remove": {
+                    "component_groups": [
+                        "minecraft:enderman_angry"
+                    ]
+                },
+                "add": {
+                    "component_groups": [
+                        "minecraft:enderman_calm"
+                    ]
                 }
             }
         }

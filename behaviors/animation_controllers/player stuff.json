@@ -106,9 +106,6 @@
                         },
                         {
                             "ascending": "query.is_jumping"
-                        },
-                        {
-                            "hovering": "query.equipped_item_any_tag('slot.weapon.mainhand', 'rift:gun')"
                         }
                     ],
                     "on_entry": [
@@ -118,7 +115,7 @@
                 "jumpCooldown": {
 					"transitions": [
                         {
-							"hovering": "return (query.is_jumping && query.life_time - variable.jump_cooldown < 0.5) || query.equipped_item_any_tag('slot.weapon.mainhand', 'rift:gun');"
+							"hovering": "return query.is_jumping && query.life_time - variable.jump_cooldown < 0.5;"
 						},
 						{
 							"descending": "return !query.is_jumping && query.life_time - variable.jump_cooldown > 0.5;"
@@ -141,18 +138,13 @@
                         },
                         {
                             "jumpCooldown": "variable.jump_cooldown = query.life_time; return (!query.is_jumping);"
-                        },
-                        {
-                            "hovering": "query.equipped_item_any_tag('slot.weapon.mainhand', 'rift:gun')"
                         }
                     ]
                 },
                 "hovering": {
                     "on_entry": [
                         "/event entity @e[tag=waterMountHasRider, c=1, tag=tamed] rift:swim_to_float",
-                        "/tellraw @p {\"rawtext\":[{\"text\":\"Enabled hover mode\"}]}",
-                        "/effect @e[c=1, tag=waterMountHasRider, tag=tamed] levitation 0 0",
-                        "/effect @e[c=1, tag=waterMountHasRider, tag=tamed] slow_falling 0 0"
+                        "/tellraw @p {\"rawtext\":[{\"text\":\"Enabled hover mode\"}]}"
                     ],
                     "on_exit": [
                         "/tellraw @p {\"rawtext\":[{\"text\":\"Disabled hover mode\"}]}",
@@ -160,131 +152,11 @@
                     ],
                     "transitions": [
                         {
-                            "ascending": "return query.life_time - variable.jump_cooldown > 1 && (query.is_jumping == 1.0) && !query.equipped_item_any_tag('slot.weapon.mainhand', 'rift:gun');"
+                            "ascending": "return query.life_time - variable.jump_cooldown > 1 && (query.is_jumping == 1.0);"
                         },
                         {
                             "default": "!query.is_riding || (query.is_riding ? (query.get_ride -> query.is_in_water) == 0)"
                         }
-                    ]
-                }
-            }
-        },
-        "controller.animation.flying_mount_toggle_hover_mode": {
-            "initial_state": "default",
-            "states": {
-                "default": {
-                    "transitions": [
-                        {
-                            "descending": "query.is_riding && (query.is_riding ? (query.get_ride -> query.owner_identifier) == 'rift:pteranodon') && (query.is_riding ? (query.get_ride -> query.is_saddled))"
-                        }
-                    ],
-                    "on_exit": [
-                        "/event entity @e[tag=flyingMountHasRider, c=1, tag=tamed] rift:hover_to_fly"
-                    ]
-                },
-                "descending": {
-                    "animations": [
-						"animFlyingMountDescend"
-					],
-                    "transitions": [
-                        {
-                            "default": "!query.is_riding || (query.is_riding ? (query.get_ride -> query.is_saddled) == 0)"
-                        },
-                        {
-                            "ascending": "query.is_jumping && (query.get_ride -> query.property('rift:energy')) > 0"
-                        },
-                        {
-                            "notEnoughEnergy": "query.is_jumping && (query.get_ride -> query.property('rift:energy')) == 0"
-                        },
-                        {
-                            "hovering": "query.equipped_item_any_tag('slot.weapon.mainhand', 'rift:gun') && (query.get_ride -> query.property('rift:energy')) > 0"
-                        }
-                    ],
-                    "on_entry": [
-                        "/effect @e[c=1, tag=flyingMountHasRider, tag=tamed] levitation 0 0"
-                    ]
-                },
-                "jumpCooldown": {
-                    "animations": [
-						"animFlyingMountDescend"
-					],
-					"transitions": [
-                        {
-							"hovering": "return ((query.get_ride -> query.property('rift:energy')) > 0 && query.is_jumping && query.life_time - variable.jump_cooldown < 0.5) || (query.equipped_item_any_tag('slot.weapon.mainhand', 'rift:gun') && (query.get_ride -> query.property('rift:energy')) > 0);"
-						},
-						{
-							"descending": "return !query.is_jumping && query.life_time - variable.jump_cooldown > 0.5;"
-						},
-                        {
-                            "notEnoughEnergy": "return (query.get_ride -> query.property('rift:energy')) == 0 && query.is_jumping && query.life_time - variable.jump_cooldown < 0.5;"
-                        }
-					],
-                    "on_entry": [
-                        "/effect @e[c=1, tag=flyingMountHasRider, tag=tamed] levitation 0 0"
-                    ]
-                },
-                "ascending": {
-                    "animations": [
-						"animFlyingMountAscend"
-					],
-                    "transitions": [
-                        {
-                            "default": "!query.is_riding || (query.is_riding ? (query.get_ride -> query.is_saddled) == 0)"
-                        },
-                        {
-                            "jumpCooldown": "variable.jump_cooldown = query.life_time; return (!query.is_jumping);"
-                        },
-                        {
-                            "notEnoughEnergy": "query.is_riding && (query.is_riding ? (query.get_ride -> query.property('rift:energy')) == 0)"
-                        },
-                        {
-                            "hovering": "query.equipped_item_any_tag('slot.weapon.mainhand', 'rift:gun')"
-                        }
-                    ],
-                    "on_entry": [
-                        "/effect @e[c=1, tag=flyingMountHasRider, tag=tamed] slow_falling 0 0"
-                    ]
-                },
-                "hovering": {
-                    "on_entry": [
-                        "/event entity @e[tag=flyingMountHasRider, c=1, tag=tamed] rift:fly_to_hover",
-                        "/tellraw @p {\"rawtext\":[{\"text\":\"Enabled hover mode\"}]}",
-                        "/event entity @e[tag=flyingMountHasRider, c=1, tag=tamed] rift:fly_to_hover",
-                        "/execute as @e[tag=flyingMountHasRider, c=1, tag=tamed] positioned as @e[tag=flyingMountHasRider, c=1, tag=tamed] run tp @s ~ ~ ~",
-                        "/effect @e[tag=flyingMountHasRider, c=1, tag=tamed] levitation 0 0",
-                        "/effect @e[tag=flyingMountHasRider, c=1, tag=tamed] slow_falling 0 0"
-                    ],
-                    "on_exit": [
-                        "/tellraw @p {\"rawtext\":[{\"text\":\"Disabled hover mode\"}]}",
-                        "/event entity @e[tag=flyingMountHasRider, c=1, tag=tamed] rift:hover_to_fly"
-                    ],
-                    "transitions": [
-                        {
-                            "ascending": "return query.life_time - variable.jump_cooldown > 1 && (query.is_jumping == 1.0) && !query.equipped_item_any_tag('slot.weapon.mainhand', 'rift:gun');"
-                        },
-                        {
-                            "default": "!query.is_riding"
-                        },
-                        {
-                            "notEnoughEnergy": "(query.get_ride -> query.property('rift:energy')) == 0"
-                        }
-                    ]
-                },
-                "notEnoughEnergy": {
-                    "animations": [
-						"animFlyingMountDescend"
-					],
-                    "transitions": [
-                        {
-                            "descending": "!query.is_jumping"
-                        },
-                        {
-                            "default": "!query.is_riding || (query.is_riding ? (query.get_ride -> query.is_saddled) == 0)"
-                        }
-                    ],
-                    "on_entry": [
-                        "/tellraw @p {\"rawtext\":[{\"text\":\"Not enough energy to fly!\"}]}",
-                        "/effect @e[tag=flyingMountHasRider, c=1, tag=tamed] levitation 0"
                     ]
                 }
             }
@@ -476,7 +348,7 @@
                 },
                 "north": {
                     "on_entry": [
-                        "/say 2"
+                        "/say 0"
                     ],
                     "transitions": [
                         {
@@ -492,7 +364,7 @@
                 },
                 "south": {
                     "on_entry": [
-                        "/say 3"
+                        "/say 1"
                     ],
                     "transitions": [
                         {
@@ -508,7 +380,7 @@
                 },
                 "west": {
                     "on_entry": [
-                        "/say 4"
+                        "/say 2"
                     ],
                     "transitions": [
                         {
@@ -524,7 +396,7 @@
                 },
                 "east": {
                     "on_entry": [
-                        "/say 5"
+                        "/say 3"
                     ],
                     "transitions": [
                         {
@@ -612,7 +484,7 @@
 				"default": {
                     "transitions": [
                         {
-                            "riding": "query.is_riding && ((query.get_ride -> query.owner_identifier) == 'rift:tyrannosaurus' || (query.get_ride -> query.owner_identifier) == 'rift:stegosaurus' || (query.get_ride -> query.owner_identifier) == 'rift:triceratops' || (query.get_ride -> query.owner_identifier) == 'rift:utahraptor' || (query.get_ride -> query.owner_identifier) == 'rift:apatosaurus' || (query.get_ride -> query.owner_identifier) == 'rift:parasaurolophus' || (query.get_ride -> query.owner_identifier) == 'rift:sarcosuchus' || (query.get_ride -> query.owner_identifier) == 'rift:anomalocaris' || (query.get_ride -> query.owner_identifier) == 'rift:saruophaganax' || (query.get_ride -> query.owner_identifier) == 'rift:direwolf' || (query.get_ride -> query.owner_identifier) == 'rift:megaloceros' || (query.get_ride -> query.owner_identifier) == 'rift:baryonyx' || (query.get_ride -> query.owner_identifier) == 'rift:ankylosaurus' || (query.get_ride -> query.owner_identifier) == 'rift:dilophosaurus' || (query.get_ride -> query.owner_identifier) == 'rift:gallimimus' || (query.get_ride -> query.owner_identifier) == 'rift:tenontosaurus' || (query.get_ride -> query.owner_identifier) == 'rift:direbear')"
+                            "riding": "query.is_riding && ((query.get_ride -> query.owner_identifier) == 'rift:tyrannosaurus' || (query.get_ride -> query.owner_identifier) == 'rift:stegosaurus' || (query.get_ride -> query.owner_identifier) == 'rift:triceratops' || (query.get_ride -> query.owner_identifier) == 'rift:utahraptor' || (query.get_ride -> query.owner_identifier) == 'rift:apatosaurus' || (query.get_ride -> query.owner_identifier) == 'rift:parasaurolophus' || (query.get_ride -> query.owner_identifier) == 'rift:sarcosuchus' || (query.get_ride -> query.owner_identifier) == 'rift:anomalocaris' || (query.get_ride -> query.owner_identifier) == 'rift:saruophaganax' || (query.get_ride -> query.owner_identifier) == 'rift:direwolf' || (query.get_ride -> query.owner_identifier) == 'rift:megaloceros' || (query.get_ride -> query.owner_identifier) == 'rift:baryonyx' || (query.get_ride -> query.owner_identifier) == 'rift:ankylosaurus' || (query.get_ride -> query.owner_identifier) == 'rift:dilophosaurus')"
                         }
                     ]
                 },
@@ -663,7 +535,7 @@
                 "dead": {
                     "transitions": [
                         {
-                            "messageOne": "v.message = (math.floor(math.random(0,16))); return query.is_alive && v.message == 0;"
+                            "messageOne": "v.message = (math.floor(math.random(0,13))); return query.is_alive && v.message == 0;"
                         },
                         {
                             "messageTwo": " query.is_alive && v.message == 1"
@@ -700,15 +572,6 @@
                         },
                         {
                             "messageThirteen": " query.is_alive && v.message == 12"
-                        },
-                        {
-                            "messageFourteen": " query.is_alive && v.message == 13"
-                        },
-                        {
-                            "messageFifteen": " query.is_alive && v.message == 14"
-                        },
-                        {
-                            "messageSixteen": " query.is_alive && v.message == 15"
                         }
                     ],
                     "on_entry": [
@@ -722,7 +585,7 @@
                         }
                     ],
                     "on_entry": [
-                        "/tellraw @s {\"rawtext\":[{\"text\":\"§7§oANightDazingZoroark whispers to you: Killed by a Tyrannosaurus unfairly? Complain on the Discord at https://discord.gg/qVWaKRMCRc!\"}]}"
+                        "/tellraw @s {\"rawtext\":[{\"text\":\"§7§oBorgyDudeMan whispers to you: Killed by a Tyrannosaurus unfairly? Complain on the Discord at https://discord.gg/qVWaKRMCRc!\"}]}"
                     ]
                 },
                 "messageTwo": {
@@ -732,7 +595,7 @@
                         }
                     ],
                     "on_entry": [
-                        "/tellraw @s {\"rawtext\":[{\"text\":\"§7§oANightDazingZoroark whispers to you: Next time try not dying, ok?\"}]}"
+                        "/tellraw @s {\"rawtext\":[{\"text\":\"§7§oBorgyDudeMan whispers to you: Next time try not dying, ok?\"}]}"
                     ]
                 },
                 "messageThree": {
@@ -742,7 +605,7 @@
                         }
                     ],
                     "on_entry": [
-                        "/tellraw @s {\"rawtext\":[{\"text\":\"§7§oANightDazingZoroark whispers to you: lol\"}]}"
+                        "/tellraw @s {\"rawtext\":[{\"text\":\"§7§oBorgyDudeMan whispers to you: lol\"}]}"
                     ]
                 },
                 "messageFour": {
@@ -752,7 +615,7 @@
                         }
                     ],
                     "on_entry": [
-                        "/tellraw @s {\"rawtext\":[{\"text\":\"§7§oANightDazingZoroark whispers to you: What happened? Why is everything in tinted red? And why are there also two buttons on the screen?\"}]}"
+                        "/tellraw @s {\"rawtext\":[{\"text\":\"§7§oBorgyDudeMan whispers to you: What happened? Why is everything in tinted red? And why are there also two buttons on the screen?\"}]}"
                     ]
                 },
                 "messageFive": {
@@ -762,7 +625,7 @@
                         }
                     ],
                     "on_entry": [
-                        "/tellraw @s {\"rawtext\":[{\"text\":\"§7§oANightDazingZoroark whispers to you: rip\"}]}"
+                        "/tellraw @s {\"rawtext\":[{\"text\":\"§7§oBorgyDudeMan whispers to you: rip\"}]}"
                     ]
                 },
                 "messageSix": {
@@ -772,7 +635,7 @@
                         }
                     ],
                     "on_entry": [
-                        "/tellraw @s {\"rawtext\":[{\"text\":\"§7§oANightDazingZoroark whispers to you: haha, owned\"}]}"
+                        "/tellraw @s {\"rawtext\":[{\"text\":\"§7§oBorgyDudeMan whispers to you: haha, owned\"}]}"
                     ]
                 },
                 "messageSeven": {
@@ -782,7 +645,7 @@
                         }
                     ],
                     "on_entry": [
-                        "/tellraw @s {\"rawtext\":[{\"text\":\"§7§oANightDazingZoroark whispers to you: Don't worry, you will meet your waifu in the afterlife!\"}]}"
+                        "/tellraw @s {\"rawtext\":[{\"text\":\"§7§oBorgyDudeMan whispers to you: Don't worry, you will meet your waifu in the afterlife!\"}]}"
                     ]
                 },
                 "messageEight": {
@@ -792,7 +655,7 @@
                         }
                     ],
                     "on_entry": [
-                        "/tellraw @s {\"rawtext\":[{\"text\":\"§7§oANightDazingZoroark whispers to you: HA! NOOB!\"}]}"
+                        "/tellraw @s {\"rawtext\":[{\"text\":\"§7§oBorgyDudeMan whispers to you: HA! NOOB!\"}]}"
                     ]
                 },
                 "messageNine": {
@@ -802,7 +665,7 @@
                         }
                     ],
                     "on_entry": [
-                        "/tellraw @s {\"rawtext\":[{\"text\":\"§7§oANightDazingZoroark whispers to you: \\\"nomnomnom mmmmm tasty hooman flesh\\\" -whatever killed you, <insert year here>\"}]}"
+                        "/tellraw @s {\"rawtext\":[{\"text\":\"§7§oBorgyDudeMan whispers to you: \\\"nomnomnom mmmmm tasty hooman flesh\\\" -whatever killed you, <insert year here>\"}]}"
                     ]
                 },
                 "messageTen": {
@@ -812,7 +675,7 @@
                         }
                     ],
                     "on_entry": [
-                        "/tellraw @s {\"rawtext\":[{\"text\":\"§7§oANightDazingZoroark whispers to you: Life's just cruel sometimes\"}]}"
+                        "/tellraw @s {\"rawtext\":[{\"text\":\"§7§oBorgyDudeMan whispers to you: Life's just cruel sometimes\"}]}"
                     ]
                 },
                 "messageEleven": {
@@ -822,7 +685,7 @@
                         }
                     ],
                     "on_entry": [
-                        "/tellraw @s {\"rawtext\":[{\"text\":\"§7§oANightDazingZoroark whispers to you: Alt+F4 may solve your problems!\"}]}"
+                        "/tellraw @s {\"rawtext\":[{\"text\":\"§7§oBorgyDudeMan whispers to you: Alt+F4 may solve your problems!\"}]}"
                     ]
                 },
                 "messageTwelve": {
@@ -832,7 +695,7 @@
                         }
                     ],
                     "on_entry": [
-                        "/tellraw @s {\"rawtext\":[{\"text\":\"§7§oANightDazingZoroark whispers to you: Insert coin to try again\"}]}"
+                        "/tellraw @s {\"rawtext\":[{\"text\":\"§7§oBorgyDudeMan whispers to you: Insert coin to try again\"}]}"
                     ]
                 },
                 "messageThirteen": {
@@ -842,62 +705,7 @@
                         }
                     ],
                     "on_entry": [
-                        "/tellraw @s {\"rawtext\":[{\"text\":\"§7§oANightDazingZoroark whispers to you: It ain't worth your time dying all over again you know\"}]}"
-                    ]
-                },
-                "messageFourteen": {
-                    "transitions": [
-                        {
-                            "default": "1.0"
-                        }
-                    ],
-                    "on_entry": [
-                        "/tellraw @s {\"rawtext\":[{\"text\":\"§7§oANightDazingZoroark whispers to you: Blame the lag lmao\"}]}"
-                    ]
-                },
-                "messageFifteen": {
-                    "transitions": [
-                        {
-                            "default": "1.0"
-                        }
-                    ],
-                    "on_entry": [
-                        "/tellraw @s {\"rawtext\":[{\"text\":\"§7§oANightDazingZoroark whispers to you: Given up?\"}]}"
-                    ]
-                },
-                "messageSixteen": {
-                    "transitions": [
-                        {
-                            "default": "1.0"
-                        }
-                    ],
-                    "on_entry": [
-                        "/tellraw @s {\"rawtext\":[{\"text\":\"§7§oANightDazingZoroark whispers to you: I heard Hard mode with this addon is far easier!\"}]}"
-                    ]
-                }
-            }
-        },
-        "controller.animation.use_gun_abilities": {
-            "initial_state": "default",
-            "states": {
-                "default": {
-                    "transitions": [
-                        {
-                            "snipingRifle": "(query.is_riding ? query.is_jumping : query.is_sneaking) && query.get_equipped_item_name('main_hand') == 'sniping_rifle'"
-                        }
-                    ]
-                },
-                "snipingRifle": {
-                    "transitions": [
-                        {
-                            "default": "(!query.is_sneaking && !query.is_jumping) || query.get_equipped_item_name('main_hand') != 'sniping_rifle'"
-                        }
-                    ],
-                    "on_entry": [
-                        "/effect @s slowness 69420666 255 true"
-                    ],
-                    "on_exit": [
-                        "/effect @s slowness 0"
+                        "/tellraw @s {\"rawtext\":[{\"text\":\"§7§oBorgyDudeMan whispers to you: It ain't worth your time dying all over again you know\"}]}"
                     ]
                 }
             }

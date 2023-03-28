@@ -7,6 +7,10 @@
 			"is_summonable": true,
 			"is_experimental": false,
 			"properties": {
+				"rift:eat_from_inventory_cooldown": {
+					"type": "bool",
+					"default": false
+				},
 				"rift:is_forced_attacking": {
 					"type": "bool",
 					"default": false
@@ -14,10 +18,10 @@
                 "rift:energy": {
                     "range": [
 						0,
-						450
+						150
 					],
 					"type": "int",
-					"default": 450,
+					"default": 150,
 					"client_sync": true
                 },
                 "rift:tame_state": { //0 for standing, 1 for sitting, 2 for wandering
@@ -36,17 +40,10 @@
 					],
 					"type": "int",
 					"default": 0
-                },
-				"rift:bleeding": {
-					"type": "bool",
-					"default": false,
-					"client_sync": true
                 }
 			},
 			"animations": {
-                "contEatFromInventory": "controller.animation.general_eat_from_inventory",
-                "contRefillEnergyFromInventory": "controller.animation.general_refill_energy_from_inventory",
-				"contMovingTag": "controller.animation.add_moving_tag",
+				"contEatFromInventoryCooldown": "controller.animation.general_eat_from_inventory_cooldown",
 				"contTameTag": "controller.animation.add_tame_tag",
 				"contBabyTag": "controller.animation.add_baby_tag",
 				"contRiddenTag": "controller.animation.add_ridden_tag",
@@ -60,9 +57,7 @@
 				"contBreakStuff": "controller.animation.trike_break_stuff",
 				"contEnergyUsage": "controller.animation.triceratops_energy_movement_usage",
 				"contWarnLowEnergy": "controller.animation.warn_of_low_energy",
-				"contBleed": "controller.animation.general_manage_bleed",
-				"animEatFromInventory": "animation.use_eat_from_inventory",
-                "animRefillEnergyFromInventory": "animation.use_refill_energy_from_inventory",
+				"animEatFromInventoryCooldown": "animation.eat_from_inventory_cooldown",
 				"animUseEnergyWhileMoving": "animation.triceratops_decrease_energy_while_moving",
 				"animEnergyRegenDelay": "animation.regenerate_energy_delay",
 				"animRegenerateEnergy": "animation.triceratops_regenerate_energy",
@@ -73,15 +68,11 @@
 				"animRivalBuffEffects": "animation.trike_rival_buff_effects",
 				"animTrikeChargeCooldown": "animation.trike_charge_cooldown",
 				"animStayWhenForcedAttack": "animation.stay_when_forced_attack",
-				"animBreakLargeGate": "animation.break_wooden_large_gate",
-                "animBleed": "animation.general_bleed",
-                "animBleedCountdown": "animation.general_bleed_countdown"
+				"animBreakLargeGate": "animation.break_wooden_large_gate"
 			},
 			"scripts": {
 				"animate": [
-                    "contEatFromInventory",
-                    "contRefillEnergyFromInventory",
-                    "contMovingTag",
+					"contEatFromInventoryCooldown",
 					"contTameTag",
 					"contBabyTag",
 					"contRiddenTag",
@@ -94,8 +85,7 @@
 					"contBehaviorState",
 					"contBreakStuff",
 					"contEnergyUsage",
-					"contWarnLowEnergy",
-                    "contBleed"
+					"contWarnLowEnergy"
 				]
 			}
 		},
@@ -1496,8 +1486,7 @@
 					"triceratops",
 					"mob",
 					"herbivore",
-					"dinosaur",
-                    "mediumSize"
+					"dinosaur"
 				]
 			},
 			"minecraft:navigation.walk": {
@@ -1726,13 +1715,7 @@
 												"subject": "other",
 												"domain": "hand",
 												"value": "minecraft:sweet_berries"
-											},
-                                            {
-                                                "test": "has_equipment",
-                                                "subject": "other",
-                                                "domain": "hand",
-                                                "value": "rift:fiber_bar"
-                                            }
+											}
 										]
 									},
 									{
@@ -1824,13 +1807,6 @@
 										"domain": "hand",
 										"operator": "!=",
 										"value": "minecraft:shears"
-									},
-									{
-										"test": "has_equipment",
-										"subject": "other",
-										"domain": "hand",
-                                        "operator": "!=",
-										"value": "rift:fiber_bar"
 									}
 								]
 							},
@@ -1908,84 +1884,6 @@
 						},
 						"interact_text": "action.interact.attachchest",
 						"use_item": true
-					},
-					{
-						"on_interact": {
-							"filters": {
-								"all_of": [
-									{
-										"test": "has_equipment",
-										"subject": "other",
-										"domain": "hand",
-										"value": "rift:fiber_bar"
-									},
-									{
-										"test": "has_component",
-										"subject": "self",
-										"value": "minecraft:is_baby",
-										"operator": "!="
-									},
-									{
-										"test": "has_component",
-										"subject": "self",
-										"value": "minecraft:is_tamed"
-									},
-									{
-										"test": "is_sneaking",
-										"subject": "other",
-										"value": true
-									},
-                                    {
-                                        "test": "int_property",
-                                        "subject": "self",
-                                        "domain": "rift:energy",
-                                        "operator": "<",
-                                        "value": 450
-                                    }
-								]
-							},
-							"event": "rift:regenerate_energy_from_food",
-							"target": "self"
-						},
-						"use_item": true
-					},
-					{
-						"on_interact": {
-							"filters": {
-								"all_of": [
-									{
-										"test": "has_equipment",
-										"subject": "other",
-										"domain": "hand",
-										"value": "rift:fiber_bar"
-									},
-									{
-										"test": "has_component",
-										"subject": "self",
-										"value": "minecraft:is_baby",
-										"operator": "!="
-									},
-									{
-										"test": "has_component",
-										"subject": "self",
-										"value": "minecraft:is_tamed"
-									},
-									{
-										"test": "is_sneaking",
-										"subject": "other",
-										"value": true
-									},
-                                    {
-                                        "test": "int_property",
-                                        "subject": "self",
-                                        "domain": "rift:energy",
-                                        "value": 450
-                                    }
-								]
-							},
-							"event": "rift:lol4",
-							"target": "self"
-						}
 					},
 					{
 						"on_interact": {
@@ -4071,7 +3969,7 @@
 							}
 						},
 						"damage_multiplier": 0.5,
-						"cause": "entity_attack"
+						"cause": "attack"
 					},
 					{
 						"on_damage": {
@@ -4092,7 +3990,7 @@
 							}
 						},
 						"deals_damage": false,
-						"cause": "entity_attack"
+						"cause": "attack"
 					},
 					{
 						"on_damage": {
@@ -4328,8 +4226,7 @@
 					}
 				]
 			},
-            "minecraft:behavior.float": {},
-            "minecraft:conditional_bandwidth_optimization": {}
+            "minecraft:behavior.float": {}
 		},
 		"events": {
 			"minecraft:entity_spawned": {
@@ -5368,9 +5265,16 @@
 					"rift:is_forced_attacking": false
 				}
 			},
-            "rift:using_forced_attack": {},
-            "rift:eat_from_inventory": {},
-            "rift:refill_energy_from_inventory": {},
+			"rift:start_eat_from_inventory_cooldown": {
+				"set_property": {
+					"rift:eat_from_inventory_cooldown": true
+				}
+			},
+			"rift:stop_eat_from_inventory_cooldown": {
+				"set_property": {
+					"rift:eat_from_inventory_cooldown": false
+				}
+			},
 			"rift:moving_slowly_low_energy": {
 				"sequence": [
 					{},
@@ -5658,17 +5562,7 @@
 			},
 			"rift:regenerate_energy": {
 				"set_property": {
-					"rift:energy": "query.property('rift:energy') + 10"
-				}
-			},
-			"rift:regenerate_energy_from_food": {
-				"set_property": {
-					"rift:energy": "query.property('rift:energy') + 45"
-				},
-				"run_command": {
-					"command": [
-						"playsound random.eat @a[r=4]"
-					]
+					"rift:energy": "query.property('rift:energy') + 5"
 				}
 			},
 			//for potion effects
@@ -5955,30 +5849,13 @@
 					]
 				}
 			},
-			"rift:lol4": {
-				"run_command": {
-					"command": [
-						"tellraw @p {\"rawtext\":[{\"translate\":\"reminder.cannot_use_energy_boosters.text\"}]}"
-					]
-				}
-			},
 			"rift:costume_disabled_message": {
 				"run_command": {
 					"command": [
 						"tellraw @p {\"rawtext\":[{\"text\":\"Costumes have been temporarily disabled until the next update.\"}]}"
 					]
 				}
-			},
-            "rift:start_bleeding": {
-                "set_property": {
-                    "rift:bleeding": true
-                }
-            },
-            "rift:stop_bleeding": {
-                "set_property": {
-                    "rift:bleeding": false
-                }
-            }
+			}
 		}
 	}
 }

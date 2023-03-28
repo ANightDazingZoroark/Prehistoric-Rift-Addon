@@ -1,460 +1,318 @@
 {
-    "format_version": "1.16.0",
-    "minecraft:entity": {
-        "component_groups": {
-            "despawning": {
-                "minecraft:type_family": {
-                    "family": [
-                        "human",
-                        "wandering_trader",
-                        "wandering_trader_despawning",
-                        "mob"
-                    ]
-                }
-            },
-            "managed": {
-                "minecraft:managed_wandering_trader": {}
-            },
-            "minecraft:scared": {
-                "minecraft:angry": {
-                    "broadcastAnger": true,
-                    "broadcastRange": 10,
-                    "broadcast_filters": {
-                        "subject": "other",
-                        "test": "is_leashed_to",
-                        "value": true
-                    },
-                    "broadcast_targets": [
-                        "llama"
-                    ],
-                    "calm_event": {
-                        "event": "minecraft:become_calm",
-                        "target": "self"
-                    },
-                    "duration": 5
-                }
-            }
-        },
-        "components": {
-            "minecraft:behavior.avoid_mob_type": {
-                "entity_types": [
-                    {
-                        "filters": {
-                            "any_of": [
-                                {
-                                    "subject": "other",
-                                    "test": "is_family",
-                                    "value": "zombie"
-                                },
-                                {
-                                    "subject": "other",
-                                    "test": "is_family",
-                                    "value": "zombie_villager"
-                                },
-                                {
-                                    "subject": "other",
-                                    "test": "is_family",
-                                    "value": "zombie_pigman"
-                                },
-                                {
-                                    "subject": "other",
-                                    "test": "is_family",
-                                    "value": "illager"
-                                },
-                                {
-                                    "subject": "other",
-                                    "test": "is_family",
-                                    "value": "vex"
-                                }
-                            ]
-                        },
-                        "sprint_speed_multiplier": 0.6,
-                        "walk_speed_multiplier": 0.6
-                    },
-                    {
-                        "filters": {
-                            "all_of": [
-                                {
-                                    "subject": "other",
-                                    "test": "is_family",
-                                    "value": "carnivore"
-                                },
-                                {
-                                    "operator": "!=",
-                                    "subject": "other",
-                                    "test": "has_component",
-                                    "value": "minecraft:is_tamed"
-                                }
-                            ]
-                        },
-                        "max_dist": 12,
-                        "must_see": true,
-                        "sprint_speed_multiplier": 1.2,
-                        "walk_speed_multiplier": 1.2
-                    }
-                ],
-                "max_dist": 6,
-                "priority": 2
-            },
-            "minecraft:behavior.drink_potion": {
-                "potions": [
-                    {
-                        "chance": 1.0,
-                        "filters": {
-                            "all_of": [
-                                {
-                                    "any_of": [
-                                        {
-                                            "operator": ">=",
-                                            "test": "hourly_clock_time",
-                                            "value": 18000
-                                        },
-                                        {
-                                            "operator": "<",
-                                            "test": "hourly_clock_time",
-                                            "value": 12000
-                                        }
-                                    ]
-                                },
-                                {
-                                    "subject": "self",
-                                    "test": "is_visible",
-                                    "value": true
-                                },
-                                {
-                                    "any_of": [
-                                        {
-                                            "subject": "self",
-                                            "test": "is_avoiding_mobs",
-                                            "value": true
-                                        },
-                                        {
-                                            "all_of": [
-                                                {
-                                                    "subject": "self",
-                                                    "test": "has_component",
-                                                    "value": "minecraft:angry"
-                                                },
-                                                {
-                                                    "operator": "!=",
-                                                    "subject": "target",
-                                                    "test": "is_family",
-                                                    "value": "player"
-                                                }
-                                            ]
-                                        }
-                                    ]
-                                }
-                            ]
-                        },
-                        "id": 7
-                    },
-                    {
-                        "chance": 1.0,
-                        "filters": {
-                            "all_of": [
-                                {
-                                    "operator": ">=",
-                                    "test": "hourly_clock_time",
-                                    "value": 12000
-                                },
-                                {
-                                    "operator": "<",
-                                    "test": "hourly_clock_time",
-                                    "value": 18000
-                                },
-                                {
-                                    "subject": "self",
-                                    "test": "is_visible",
-                                    "value": true
-                                },
-                                {
-                                    "any_of": [
-                                        {
-                                            "subject": "self",
-                                            "test": "is_avoiding_mobs",
-                                            "value": true
-                                        },
-                                        {
-                                            "subject": "self",
-                                            "test": "has_component",
-                                            "value": "minecraft:angry"
-                                        }
-                                    ]
-                                }
-                            ]
-                        },
-                        "id": 8
-                    }
-                ],
-                "priority": 1,
-                "speed_modifier": -0.2
-            },
-            "minecraft:behavior.float": {
-                "priority": 0
-            },
-            "minecraft:behavior.look_at_player": {
-                "look_distance": 8,
-                "priority": 8,
-                "probability": 0.02
-            },
-            "minecraft:behavior.look_at_trading_player": {
-                "priority": 4
-            },
-            "minecraft:behavior.move_towards_home_restriction": {
-                "priority": 6,
-                "speed_multiplier": 0.6
-            },
-            "minecraft:behavior.panic": {
-                "priority": 1,
-                "speed_multiplier": 0.6
-            },
-            "minecraft:behavior.random_look_around": {
-                "priority": 9
-            },
-            "minecraft:behavior.random_stroll": {
-                "priority": 7,
-                "speed_multiplier": 0.6
-            },
-            "minecraft:behavior.trade_interest": {
-                "carried_item_switch_time": 2.0,
-                "cooldown": 2.0,
-                "interest_time": 45.0,
-                "priority": 3,
-                "remove_item_time": 1.0,
-                "within_radius": 6.0
-            },
-            "minecraft:behavior.trade_with_player": {
-                "priority": 1
-            },
-            "minecraft:breathable": {
-                "suffocate_time": 0,
-                "total_supply": 15
-            },
-            "minecraft:can_climb": {},
-            "minecraft:collision_box": {
-                "height": 1.9,
-                "width": 0.6
-            },
-            "minecraft:conditional_bandwidth_optimization": {},
-            "minecraft:damage_sensor": {
-                "triggers": [
-                    {
-                        "cause": "entity_attack",
-                        "deals_damage": true,
-                        "on_damage": {
-                            "event": "minecraft:become_scared"
-                        }
-                    },
-                    {
-                        "cause": "projectile",
-                        "deals_damage": true,
-                        "on_damage": {
-                            "event": "minecraft:become_scared"
-                        }
-                    },
-                    {
-                        "cause": "magic",
-                        "deals_damage": true,
-                        "on_damage": {
-                            "event": "minecraft:become_scared"
-                        }
-                    }
-                ]
-            },
-            "minecraft:despawn": {
-                "filters": {
-                    "all_of": [
-                        {
-                            "any_of": [
-                                {
-                                    "subject": "self",
-                                    "test": "is_family",
-                                    "value": "wandering_trader_despawning"
-                                },
-                                {
-                                    "subject": "self",
-                                    "test": "has_trade_supply",
-                                    "value": false
-                                }
-                            ]
-                        },
-                        {
-                            "operator": ">",
-                            "test": "distance_to_nearest_player",
-                            "value": 24
-                        }
-                    ]
-                },
-                "remove_child_entities": true
-            },
-            "minecraft:economy_trade_table": {
-                "display_name": "entity.wandering_trader.name",
-                "new_screen": true,
-                "table": "trading/economy_trades/wandering_trader_trades.json"
-            },
-            "minecraft:health": {
-                "max": 20,
-                "value": 20
-            },
-            "minecraft:home": {
-                "restriction_radius": 16
-            },
-            "minecraft:hurt_on_condition": {
-                "damage_conditions": [
-                    {
-                        "cause": "lava",
-                        "damage_per_tick": 4,
-                        "filters": {
-                            "operator": "==",
-                            "subject": "self",
-                            "test": "in_lava",
-                            "value": true
-                        }
-                    }
-                ]
-            },
-            "minecraft:is_hidden_when_invisible": {},
-            "minecraft:jump.static": {},
-            "minecraft:movement": {
-                "value": 0.5
-            },
-            "minecraft:movement.basic": {},
-            "minecraft:nameable": {},
-            "minecraft:navigation.walk": {
-                "avoid_water": true,
-                "can_open_doors": false,
-                "can_pass_doors": true,
-                "can_path_over_water": true
-            },
-            "minecraft:physics": {},
-            "minecraft:pushable": {
-                "is_pushable": true,
-                "is_pushable_by_piston": true
-            },
-            "minecraft:spawn_entity": {
-                "entities": [
-                    {
-                        "max_wait_time": 0,
-                        "min_wait_time": 0,
-                        "num_to_spawn": 2,
-                        "should_leash": true,
-                        "single_use": true,
-                        "spawn_entity": "llama",
-                        "spawn_event": "minecraft:from_wandering_trader"
-                    }
-                ]
-            },
-            "minecraft:timer": {
-                "looping": false,
-                "random_time_choices": [
-                    {
-                        "value": 2400,
-                        "weight": 50
-                    },
-                    {
-                        "value": 3600,
-                        "weight": 50
-                    }
-                ],
-                "time_down_event": {
-                    "event": "minecraft:start_despawn",
-                    "target": "self"
-                }
-            },
-            "minecraft:type_family": {
-                "family": [
-                    "human",
-                    "wandering_trader",
-                    "mob"
-                ]
-            }
-        },
-        "description": {
-            "animations": {
-                "animBleed": "animation.general_bleed",
-                "animBleedCountdown": "animation.general_bleed_countdown",
-                "animBolaEffect": "animation.general_bola_effect",
-                "animBolaEffectCountdown": "animation.general_bola_effect_countdown",
-                "contBleed": "controller.animation.general_manage_bleed",
-                "contBola": "controller.animation.general_manage_bola",
-                "contInWaterTag": "controller.animation.add_in_water_tag",
-                "contMovingTag": "controller.animation.add_moving_tag"
-            },
-            "identifier": "minecraft:wandering_trader",
-            "is_experimental": false,
-            "is_spawnable": true,
-            "is_summonable": true,
-            "properties": {
-                "rift:affected_by_bola": {
-                    "default": false,
-                    "type": "bool"
-                },
-                "rift:bleeding": {
-                    "client_sync": true,
-                    "default": false,
-                    "type": "bool"
-                }
-            },
-            "scripts": {
-                "animate": [
-                    "contBleed",
-                    "contMovingTag",
-                    "contInWaterTag",
-                    "contBola"
-                ]
-            }
-        },
-        "events": {
-            "minecraft:become_calm": {
-                "remove": {
-                    "component_groups": [
-                        "minecraft:scared"
-                    ]
-                }
-            },
-            "minecraft:become_scared": {
-                "add": {
-                    "component_groups": [
-                        "minecraft:scared"
-                    ]
-                }
-            },
-            "minecraft:scheduled": {
-                "add": {
-                    "component_groups": [
-                        "managed"
-                    ]
-                }
-            },
-            "minecraft:start_despawn": {
-                "add": {
-                    "component_groups": [
-                        "despawning"
-                    ]
-                }
-            },
-            "rift:affected_by_bola": {
-                "set_property": {
-                    "rift:affected_by_bola": true
-                }
-            },
-            "rift:force_go_down": {},
-            "rift:start_bleeding": {
-                "set_property": {
-                    "rift:bleeding": true
-                }
-            },
-            "rift:stop_being_affected_by_bola": {
-                "set_property": {
-                    "rift:affected_by_bola": false
-                }
-            },
-            "rift:stop_bleeding": {
-                "set_property": {
-                    "rift:bleeding": false
-                }
-            }
+  "format_version": "1.16.0",
+  "minecraft:entity": {
+    "description": {
+      "identifier": "minecraft:wandering_trader",
+      "is_spawnable": true,
+      "is_summonable": true,
+      "is_experimental": false
+    },
+
+    "component_groups": {
+      "managed": {
+        "minecraft:managed_wandering_trader": {}
+      },
+      "despawning": {
+        "minecraft:type_family": {
+          "family": [ "wandering_trader", "wandering_trader_despawning", "mob" ]
         }
+      },
+      "minecraft:scared": {
+        "minecraft:angry": {
+          "duration": 5,
+          "broadcastAnger": true,
+          "broadcastRange": 10,
+          "broadcast_targets": [
+            "llama"
+          ],
+          "broadcast_filters": { "test": "is_leashed_to", "subject": "other", "value": true },
+          "calm_event": {
+            "event": "minecraft:become_calm",
+            "target": "self"
+          }
+        }
+      }
+    },
+
+    "components": {
+      "minecraft:type_family": {
+        "family": [ "wandering_trader", "mob" ]
+      },
+      "minecraft:is_hidden_when_invisible": {
+      },
+      "minecraft:timer": {
+        "looping": false,
+        "random_time_choices": [
+          { "weight": 50, "value": 2400 },
+          { "weight": 50, "value": 3600 }
+        ],
+        "time_down_event": {
+          "event": "minecraft:start_despawn",
+          "target": "self"
+        }
+      },
+      "minecraft:spawn_entity": {
+        "entities": [
+          {
+            "min_wait_time": 0,
+            "max_wait_time": 0,
+            "spawn_entity": "llama",
+            "spawn_event": "minecraft:from_wandering_trader",
+            "single_use": true,
+            "num_to_spawn": 2,
+            "should_leash": true
+          }
+        ]
+      },
+      "minecraft:economy_trade_table": {
+        "display_name": "entity.wandering_trader.name",
+        "table": "trading/economy_trades/wandering_trader_trades.json",
+        "new_screen": true
+      },
+      "minecraft:breathable": {
+        "total_supply": 15,
+        "suffocate_time": 0
+      },
+      "minecraft:health": {
+        "value": 20,
+        "max": 20
+      },
+      "minecraft:hurt_on_condition": {
+        "damage_conditions": [
+          {
+            "filters": { "test": "in_lava", "subject": "self", "operator": "==", "value": true },
+            "cause": "lava",
+            "damage_per_tick": 4
+          }
+        ]
+      },
+      "minecraft:collision_box": {
+        "width": 0.6,
+        "height": 1.9
+      },
+      "minecraft:movement": {
+        "value": 0.5
+      },
+      "minecraft:navigation.walk": {
+        "can_path_over_water": true,
+        "can_pass_doors": true,
+        "can_open_doors": false,
+        "avoid_water": true
+      },
+      "minecraft:movement.basic": {
+      },
+      "minecraft:jump.static": {
+      },
+      "minecraft:can_climb": {
+      },
+      "minecraft:home": {
+        "restriction_radius": 16
+      },
+      "minecraft:behavior.float": {
+        "priority": 0
+      },
+      "minecraft:conditional_bandwidth_optimization": {
+      },
+      "minecraft:despawn": {
+        "remove_child_entities": true,
+        "filters": {
+          "all_of": [
+            {
+              "any_of": [
+                { "test": "is_family", "subject": "self", "value": "wandering_trader_despawning" },
+                { "test": "has_trade_supply", "subject": "self", "value": false }
+              ]
+            },
+            { "test": "distance_to_nearest_player", "operator": ">", "value": 24 }
+          ]
+        }
+      },
+      "minecraft:damage_sensor": {
+        "triggers": [
+          {
+            "cause": "entity_attack",
+            "deals_damage": true,
+            "on_damage": {
+              "event": "minecraft:become_scared"
+            }
+          },
+          {
+            "cause": "projectile",
+            "deals_damage": true,
+            "on_damage": {
+              "event": "minecraft:become_scared"
+            }
+          },
+          {
+            "cause": "magic",
+            "deals_damage": true,
+            "on_damage": {
+              "event": "minecraft:become_scared"
+            }
+          }
+        ]
+      },
+      "minecraft:behavior.trade_with_player": {
+        "priority": 1
+      },
+      "minecraft:behavior.trade_interest": {
+          "priority": 3,
+          "within_radius": 6.0,
+          "interest_time": 45.0,
+          "remove_item_time": 1.0,
+          "carried_item_switch_time": 2.0,
+          "cooldown": 2.0
+      },
+      "minecraft:behavior.look_at_trading_player": {
+        "priority": 4
+      },
+      "minecraft:behavior.panic": {
+        "priority": 1,
+        "speed_multiplier": 0.6
+      },
+      "minecraft:behavior.drink_potion": {
+        "priority": 1,
+        "speed_modifier": -0.2,
+        "potions": [
+          {
+            "id": 7, // Short invisibility
+            "chance": 1.0,
+            "filters": {
+              "all_of": [
+                {
+                  "any_of": [
+                    { "test": "hourly_clock_time", "operator": ">=", "value": 18000 },
+                    { "test": "hourly_clock_time", "operator": "<", "value": 12000 }
+                  ]
+                },
+                { "test": "is_visible", "subject": "self", "value": true },
+                {
+                  "any_of": [
+                    { "test": "is_avoiding_mobs", "subject": "self", "value": true },
+                    {
+                      "all_of": [
+                        { "test": "has_component", "subject": "self", "value": "minecraft:angry" },
+                        { "test": "is_family", "subject": "target", "operator": "!=", "value": "player" }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "id": 8, // Long invisibility
+            "chance": 1.0,
+            "filters": {
+              "all_of": [
+                { "test": "hourly_clock_time", "operator": ">=", "value": 12000 },
+                { "test": "hourly_clock_time", "operator": "<", "value": 18000 },
+                { "test": "is_visible", "subject": "self", "value": true },
+                {
+                  "any_of": [
+                    { "test": "is_avoiding_mobs", "subject": "self", "value": true },
+                    { "test": "has_component", "subject": "self", "value": "minecraft:angry" }
+                  ]
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "minecraft:behavior.avoid_mob_type": {
+        "priority": 2,
+        "entity_types": [
+          {
+            "filters": {
+              "any_of": [
+                { "test": "is_family", "subject": "other", "value": "zombie" },
+                { "test": "is_family", "subject": "other", "value": "zombie_villager" },
+                { "test": "is_family", "subject": "other", "value": "zombie_pigman" },
+                { "test": "is_family", "subject": "other", "value": "illager" },
+                { "test": "is_family", "subject": "other", "value": "vex" }
+              ]
+            },
+            "walk_speed_multiplier": 0.6,
+            "sprint_speed_multiplier": 0.6
+          },
+          {
+            "filters": {
+              "all_of": [
+                {
+                  "test": "is_family",
+                  "subject": "other",
+                  "value": "carnivore"
+                },
+                {
+                  "test": "has_component",
+                  "subject": "other",
+                  "operator": "!=",
+                  "value": "minecraft:is_tamed"
+                }
+              ]
+            },
+            "max_dist": 12,
+            "must_see": true,
+            "walk_speed_multiplier": 1.2,
+            "sprint_speed_multiplier": 1.2
+          }
+        ],
+        "max_dist": 6
+      },
+      "minecraft:behavior.move_towards_home_restriction": {
+        "priority": 6,
+        "speed_multiplier": 0.6
+      },
+      "minecraft:behavior.random_stroll": {
+        "priority": 7,
+        "speed_multiplier": 0.6
+      },
+      "minecraft:behavior.look_at_player": {
+        "priority": 8,
+        "look_distance": 8,
+        "probability": 0.02
+      },
+      "minecraft:behavior.random_look_around": {
+        "priority": 9
+      },
+      "minecraft:physics": {
+      },
+      "minecraft:pushable": {
+        "is_pushable": true,
+        "is_pushable_by_piston": true
+      },
+      "minecraft:nameable": {
+      }
+    },
+    "events": {
+      "minecraft:scheduled": {
+        "add": {
+          "component_groups": [
+            "managed"
+          ]
+        }
+      },
+      "minecraft:start_despawn": {
+        "add": {
+          "component_groups": [
+            "despawning"
+          ]
+        }
+      },
+      "minecraft:become_scared": {
+        "add": {
+          "component_groups": [
+            "minecraft:scared"
+          ]
+        }
+      },
+      "minecraft:become_calm": {
+        "remove": {
+          "component_groups": [
+            "minecraft:scared"
+          ]
+        }
+      }
     }
+  }
 }

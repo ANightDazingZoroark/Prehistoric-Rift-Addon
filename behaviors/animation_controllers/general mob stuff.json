@@ -7,14 +7,14 @@
 				"default": {
 					"transitions": [
 						{
-							"hasTag": "query.is_moving"
+							"hasTag": "query.ground_speed > 0"
 						}
 					]
 				},
 				"hasTag": {
 					"transitions": [
 						{
-							"default": "!query.is_moving"
+							"default": "query.ground_speed == 0"
 						}
 					],
                     "on_entry": [
@@ -351,31 +351,6 @@
 				}
 			}
 		},
-        "controller.animation.add_on_ground_tag": {
-			"initial_state": "default",
-			"states": {
-				"default": {
-					"transitions": [
-						{
-							"hasTag": "query.is_on_ground"
-						}
-					]
-				},
-				"hasTag": {
-					"transitions": [
-						{
-							"default": "!query.is_on_ground"
-						}
-					],
-                    "on_entry": [
-                        "/tag @s add onGround"
-                    ],
-                    "on_exit": [
-                        "/tag @s remove onGround"
-                    ]
-				}
-			}
-		},
 		"controller.animation.add_in_love_tag": {
 			"initial_state": "default",
 			"states": {
@@ -426,31 +401,6 @@
 				}
 			}
 		},
-		"controller.animation.add_hypnotized_by_tamed_tag": {
-			"initial_state": "default",
-			"states": {
-				"default": {
-					"transitions": [
-						{
-							"hasTag": "query.property('rift:is_hypnotized_tamed') == true"
-						}
-					]
-				},
-				"hasTag": {
-					"transitions": [
-						{
-							"default": "query.property('rift:is_hypnotized_tamed') == false"
-						}
-					],
-                    "on_entry": [
-                        "/tag @s add hypnotizedTamed"
-                    ],
-                    "on_exit": [
-                        "/tag @s remove hypnotizedTamed"
-                    ]
-				}
-			}
-		},
 		"controller.animation.add_out_of_control_tag": {
 			"initial_state": "default",
 			"states": {
@@ -472,31 +422,6 @@
                     ],
                     "on_exit": [
                         "/tag @s remove outOfControl"
-                    ]
-				}
-			}
-		},
-		"controller.animation.add_owned_by_illager_tag": {
-			"initial_state": "default",
-			"states": {
-				"default": {
-					"transitions": [
-						{
-							"hasTag": "query.property('rift:owned_by_illager') == true"
-						}
-					]
-				},
-				"hasTag": {
-					"transitions": [
-						{
-							"default": "query.property('rift:owned_by_illager') == false"
-						}
-					],
-                    "on_entry": [
-                        "/tag @s add ownedByIllager"
-                    ],
-                    "on_exit": [
-                        "/tag @s remove ownedByIllager"
                     ]
 				}
 			}
@@ -713,6 +638,34 @@
 				}
 			}
 		},
+		"controller.animation.general_eat_from_inventory_cooldown": {
+			"initial_state": "default",
+			"states": {
+				"default": {
+					"transitions": [
+						{
+							"cooldown": "query.property('rift:eat_from_inventory_cooldown') == true"
+						}
+					]
+				},
+				"cooldown": {
+					"animations": [
+						"animEatFromInventoryCooldown"
+					],
+					"transitions": [
+						{
+							"default": "query.all_animations_finished"
+						}
+					],
+					"on_entry": [
+						"/tag @s add eatFromInventoryCooldown"
+					],
+					"on_exit": [
+						"/tag @s remove eatFromInventoryCooldown"
+					]
+				}
+			}
+		},
 		"controller.animation.general_die_without_tenontosaurus": {
 			"initial_state": "default",
 			"states": {
@@ -738,124 +691,6 @@
 					]
 				}
 			}
-		},
-		"controller.animation.general_death_timer_tamed_tenontosaurus": {
-			"initial_state": "default",
-			"states": {
-				"default": {
-					"transitions": [
-						{
-							"timer": "query.property('rift:is_hypnotized_tamed') == true"
-						}
-					]
-				},
-				"timer": {
-					"animations": [
-						"animTamedDeathTimer"
-					]
-				}
-			}
-		},
-        "controller.animation.general_manage_bleed": {
-            "initial_state": "default",
-            "states": {
-                "default": {
-                    "transitions": [
-                        {
-                            "bleeding": "query.property('rift:bleeding') == true && query.is_alive"
-                        }
-                    ],
-                    "on_entry": [
-                        "@s rift:stop_bleeding"
-                    ]
-                },
-                "bleeding": {
-                    "animations": [
-                        "animBleed",
-                        "animBleedCountdown"
-                    ],
-                    "transitions": [
-                        {
-                            "default": "query.property('rift:bleeding') == false || !query.is_alive"
-                        }
-                    ]
-                }
-            }
-        },
-        "controller.animation.general_eat_from_inventory": {
-            "initial_state": "default",
-            "states": {
-                "default": {
-                    "transitions": [
-                        {
-                            "eating": "query.is_tamed && (query.max_health > query.health)"
-                        }
-                    ]
-                },
-                "eating": {
-                    "animations": [
-                        "animEatFromInventory"
-                    ],
-                    "transitions": [
-                        {
-                            "default": "query.max_health == query.health"
-                        }
-                    ]
-                }
-            }
-        },
-        "controller.animation.general_refill_energy_from_inventory": {
-            "initial_state": "default",
-            "states": {
-                "default": {
-                    "transitions": [
-                        {
-                            "eating": "query.is_tamed && (query.property('rift:energy') < 450)"
-                        }
-                    ]
-                },
-                "eating": {
-                    "animations": [
-                        "animRefillEnergyFromInventory"
-                    ],
-                    "transitions": [
-                        {
-                            "default": "query.property('rift:energy') == 450"
-                        }
-                    ]
-                }
-            }
-        },
-        "controller.animation.general_manage_bola": {
-            "initial_state": "default",
-            "states": {
-                "default": {
-                    "transitions": [
-                        {
-                            "affectedByBola": "query.property('rift:affected_by_bola') == true"
-                        }
-                    ],
-                    "on_entry": [
-                        "@s rift:stop_being_affected_by_bola",
-                        "/effect @s slowness 0"
-                    ]
-                },
-                "affectedByBola": {
-                    "animations": [
-                        "animBolaEffect",
-                        "animBolaEffectCountdown"
-                    ],
-                    "transitions": [
-                        {
-                            "default": "query.property('rift:affected_by_bola') == false"
-                        }
-                    ],
-                    "on_entry": [
-                        "/effect @s[tag=!inWater] slowness 5 255 true",
-                        "/event entity @s[tag=!onGround] rift:force_go_down"
-                    ]
-                }
-            }
-        }
+		}
 	}
 }

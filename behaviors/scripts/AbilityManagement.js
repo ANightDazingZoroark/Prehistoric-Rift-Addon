@@ -1,25 +1,31 @@
-import { world } from "@minecraft/server"
-import { setTimeout } from "./externals/timers"
+import { system, world } from "@minecraft/server"
 
-world.events.beforeDataDrivenEntityTriggerEvent.subscribe(data => {
-    if (data.entity.typeId == 'rift:tenontosaurus' && data.id == 'rift:adult_become_angry') {
-        data.entity.target.addTag('tenontoTarget')
-        setTimeout(() => {
-            data.entity.target.removeTag('tenontoTarget')
-        }, 1000)
-    }
-    if (data.entity.typeId == 'rift:tenontosaurus' && data.id == 'rift:tamed_on_anger') {
-        data.entity.target.addTag('tenontoTamedTarget')
-        data.entity.runCommandAsync(`event entity @e[r=24, tag=!tamed, tag=hypnotizedTamed] rift:attack_for_tenontosaurus`)
-        setTimeout(() => {
-            data.entity.target.removeTag('tenontoTamedTarget')
-        }, 1000)
-    }
-    if (data.id == 'rift:force_go_down') {
-        data.entity.setVelocity({
-            x: 0,
-            y: -1,
-            z: 0
-        })
+system.run(function everyTick(tick) {
+    system.run(everyTick)
+    let entities = Array.from(world.getDimension('overworld').getEntities())
+    for (let i = 0; i < entities.length; i++) {
+        try {
+            if (entities[i].typeId == 'rift:saurophaganax') {
+                let score = world.scoreboard.getObjective('saurophLightBlst').getScore(entities[i].scoreboard)
+                if (score >= 10 && entities[i].hasTag('canNotify')) {
+                    entities[i].runCommandAsync(`execute as @s[tag=ridden] run tellraw @p {"rawtext":[{"text":"Light Blast Available!"}]}`)
+                    entities[i].triggerEvent('rift:cannot_notify')
+                }
+                if (score < 10) {
+                    entities[i].triggerEvent('rift:can_notify')
+                }
+            }
+        }
+        catch (e) {}
+        if (entities[i].typeId == 'rift:dilophosaurus' && entities[i].getComponent('is_sheared') && !!entities[i].target) {
+            entities[i].target.addTag('diloTarget')
+            entities[i].runCommandAsync(`tp @s ~ ~ ~ facing @e[tag=diloTarget, c=1]`)
+        }
+        if (entities[i].typeId == 'rift:dilophosaurus' && entities[i].getComponent('is_sheared') && !entities[i].target) {
+            entities[i].runCommandAsync(`tag @e remove diloTarget`)
+        }
+        if (entities[i].typeId == 'rift:tenontosaurus' && !!entities[i].target) {
+            entities[i].target.addTag('tenontoTarget')
+        }
     }
 })
