@@ -10,45 +10,40 @@ let axes = [
 ]
 
 world.events.beforeItemUseOn.subscribe(data => {
-    if (axes.includes(data.item.typeId)) {
-        switch (world.getDimension('overworld').getBlock(data.blockLocation).typeId) {
-            case 'minecraft:log':
-                for (let x = 0; x < 16; x++) {
-                    try {
-                        if (world.getDimension('overworld').runCommandAsync(`testforblock `+data.blockLocation.x+` `+data.blockLocation.y+` `+data.blockLocation.z+` log `+x).matches && x % 4 == 0) {
-                            world.getDimension('overworld').spawnItem(new ItemStack(Items.get('rift:oak_thatch'), 2, 0), data.blockLocation)
-                        }
-                        else if (world.getDimension('overworld').runCommandAsync(`testforblock `+data.blockLocation.x+` `+data.blockLocation.y+` `+data.blockLocation.z+` log `+x).matches && (x - 1) % 4 == 0) {
-                            world.getDimension('overworld').spawnItem(new ItemStack(Items.get('rift:spruce_thatch'), 2, 0), data.blockLocation)
-                        }
-                        else if (world.getDimension('overworld').runCommandAsync(`testforblock `+data.blockLocation.x+` `+data.blockLocation.y+` `+data.blockLocation.z+` log `+x).matches && (x - 2) % 4 == 0) {
-                            world.getDimension('overworld').spawnItem(new ItemStack(Items.get('rift:birch_thatch'), 2, 0), data.blockLocation)
-                        }
-                        else if (world.getDimension('overworld').runCommandAsync(`testforblock `+data.blockLocation.x+` `+data.blockLocation.y+` `+data.blockLocation.z+` log `+x).matches && (x - 3) % 4 == 0) {
-                            world.getDimension('overworld').spawnItem(new ItemStack(Items.get('rift:jungle_thatch'), 2, 0), data.blockLocation)
-                        }
-                    }
-                    catch (e) {}
-                }
+    let block = world.getDimension('overworld').getBlock(data.getBlockLocation())
+    if (axes.includes(data.item.typeId) && block.typeId == 'minecraft:log') {
+        switch (block.permutation.getProperty('old_log_type')) {
+            case 'oak':
+                world.getDimension('overworld').spawnItem(new ItemStack(Items.get('rift:oak_thatch'), 2), data.getBlockLocation())
                 break
-            case 'minecraft:log2':
-                for (let x = 0; x < 16; x++) {
-                    try {
-                        if (world.getDimension('overworld').runCommandAsync(`testforblock `+data.blockLocation.x+` `+data.blockLocation.y+` `+data.blockLocation.z+` log2 `+x).matches && x - 1 % 4 == 0) {
-                            world.getDimension('overworld').spawnItem(new ItemStack(Items.get('rift:dark_oak_thatch'), 2, 0), data.blockLocation)
-                        }
-                        else if (world.getDimension('overworld').runCommandAsync(`testforblock `+data.blockLocation.x+` `+data.blockLocation.y+` `+data.blockLocation.z+` log2 `+x).matches && x - 1 % 4 != 0 && x >= 0) {
-                            world.getDimension('overworld').spawnItem(new ItemStack(Items.get('rift:acacia_thatch'), 2, 0), data.blockLocation)
-                        }
-                    }
-                    catch (e) {}
-                }
+            case 'spruce':
+                world.getDimension('overworld').spawnItem(new ItemStack(Items.get('rift:spruce_thatch'), 2), data.getBlockLocation())
+                break
+            case 'birch':
+                world.getDimension('overworld').spawnItem(new ItemStack(Items.get('rift:birch_thatch'), 2), data.getBlockLocation())
+                break
+            case 'jungle':
+                world.getDimension('overworld').spawnItem(new ItemStack(Items.get('rift:jungle_thatch'), 2), data.getBlockLocation())
                 break
         }
     }
-
-    if (world.getDimension('overworld').getBlock(data.blockLocation).typeId == 'minecraft:end_portal_frame' && data.item.typeId == 'minecraft:ender_eye') {
-        data.source.tell('It doesn\'t seem to work anymore...')
-        data.cancel = true
+    if (axes.includes(data.item.typeId) && block.typeId == 'minecraft:log2') {
+        switch (block.permutation.getProperty('new_log_type')) {
+            case 'acacia':
+                world.getDimension('overworld').spawnItem(new ItemStack(Items.get('rift:acacia_thatch'), 2), data.getBlockLocation())
+                break
+            case 'dark_oak':
+                world.getDimension('overworld').spawnItem(new ItemStack(Items.get('rift:dark_oak_thatch'), 2), data.getBlockLocation())
+                break
+        }
+    }
+    if (axes.includes(data.item.typeId) && block.typeId == 'minecraft:mangrove_log') {
+        world.getDimension('overworld').spawnItem(new ItemStack(Items.get('rift:mangrove_thatch'), 2), data.getBlockLocation())
+    }
+    if (axes.includes(data.item.typeId) && block.typeId == 'minecraft:crimson_stem') {
+        world.getDimension('overworld').spawnItem(new ItemStack(Items.get('rift:crimson_thatch'), 2), data.getBlockLocation())
+    }
+    if (axes.includes(data.item.typeId) && block.typeId == 'minecraft:warped_stem') {
+        world.getDimension('overworld').spawnItem(new ItemStack(Items.get('rift:warped_thatch'), 2), data.getBlockLocation())
     }
 })

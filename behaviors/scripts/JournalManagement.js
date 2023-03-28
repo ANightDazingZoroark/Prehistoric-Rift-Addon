@@ -381,8 +381,9 @@ world.events.beforeItemUse.subscribe(data => {
     }
 })
 
-world.events.beforeItemUseOn.subscribe(data => {
-    if (unlockItemsList.includes(data.item.typeId) && world.getDimension('overworld').getBlock(data.blockLocation).typeId == 'rift:journal_enscriber' && world.getDimension('overworld').getBlock(data.blockLocation).permutation.getProperty('rift:has_book').value == true) {
+world.events.itemUseOn.subscribe(data => {
+    let block = world.getDimension('overworld').getBlock(data.getBlockLocation())
+    if (unlockItemsList.includes(data.item.typeId) && block.typeId == 'rift:journal_enscriber' && block.permutation.getProperty('rift:has_book') == true) {
         switch (data.item.typeId) {
             case 'rift:tyrannosaurus_arm':
                 data.source.setDynamicProperty('JournalTyrannosaurus', true)
@@ -459,7 +460,7 @@ world.events.beforeItemUseOn.subscribe(data => {
                 data.source.setDynamicProperty('JournalVillagers', true)
                 data.source.tell('You have unlocked the journal entry for Villagers! Open your journal to read it!')
         }
-        world.getDimension('overworld').getBlock(data.blockLocation).setPermutation(MinecraftBlockTypes.get('rift:journal_enscriber').createDefaultBlockPermutation().clone())
+        world.getDimension('overworld').runCommandAsync('setblock '+data.getBlockLocation().x+' '+data.getBlockLocation().y+' '+data.getBlockLocation().z+' rift:journal_enscriber ["rift:facing_direction":'+block.permutation.getProperty('rift:facing_direction')+']')
     }
 })
 

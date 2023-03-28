@@ -1,4 +1,4 @@
-import { MinecraftEffectTypes, system, world } from "@minecraft/server"
+import { MinecraftEffectTypes, world } from "@minecraft/server"
 
 function damageOutput(entity, value) {
     if (entity.getEffect(MinecraftEffectTypes.strength) && !entity.hasTag('chargeOne') && !entity.hasTag('chargeTwo') && !entity.hasTag('chargeThree') && !entity.hasTag('chargeFour') && !entity.hasTag('chargeFive')) {
@@ -15,165 +15,83 @@ function damageOutput(entity, value) {
     return value
 }
 
-system.run(function everyTick(tick) {
-    system.run(everyTick)
-    let entities = Array.from(world.getDimension('overworld').getEntities({
-        tags: [
-            'tamed',
-            'forcedAttack'
-        ],
-        families: [
-            'riftCreature'
-        ]
-    }))
-    for (let i = 0; i < entities.length; i++) {
-        if (entities[i].typeId == 'rift:tyrannosaurus') {
-            try {
-                entities[i].runCommandAsync(`damage @e[tag=!tamed, family=!inanimate, type=!player, type=!item, r=8] `+damageOutput(entities[i], 35)+` entity_attack entity @s`)
-            }
-            catch (e) {}
-        }
-        if (entities[i].typeId == 'rift:stegosaurus') {
-            if (entities[i].hasTag('chargeOne')) {
-                try {
-                    entities[i].runCommandAsync(`damage @e[tag=!tamed, family=!inanimate, type=!player, type=!item, r=10] `+damageOutput(entities[i], 30)+` entity_attack entity @s`)
+world.events.beforeDataDrivenEntityTriggerEvent.subscribe(data => {
+    if (data.id == 'rift:using_forced_attack') {
+        switch (data.entity.typeId) {
+            case 'rift:tyrannosaurus':
+                data.entity.runCommandAsync(`damage @e[tag=!tamed, family=!inanimate, type=!player, type=!item, tag=!hypnotizedTamed, r=8] `+damageOutput(data.entity, 35)+` entity_attack entity @s`)
+                break
+            case 'rift:stegosaurus': 
+                if (data.entity.hasTag('chargeOne')) {
+                    data.entity.runCommandAsync(`damage @e[tag=!tamed, family=!inanimate, type=!player, type=!item, tag=!hypnotizedTamed, r=10] `+damageOutput(data.entity, 30)+` entity_attack entity @s`)
                 }
-                catch (e) {}
-            }
-            else if (entities[i].hasTag('chargeTwo')) {
-                try {
-                    entities[i].runCommandAsync(`damage @e[tag=!tamed, family=!inanimate, type=!player, type=!item, r=10] `+damageOutput(entities[i], 40)+` entity_attack entity @s`)
+                else if (data.entity.hasTag('chargeTwo')) {
+                    data.entity.runCommandAsync(`damage @e[tag=!tamed, family=!inanimate, type=!player, type=!item, tag=!hypnotizedTamed, r=10] `+damageOutput(data.entity, 40)+` entity_attack entity @s`)
                 }
-                catch (e) {}
-            }
-            else if (entities[i].hasTag('chargeThree')) {
-                try {
-                    entities[i].runCommandAsync(`damage @e[tag=!tamed, family=!inanimate, type=!player, type=!item, r=10] `+damageOutput(entities[i], 50)+` entity_attack entity @s`)
+                else if (data.entity.hasTag('chargeThree')) {
+                    data.entity.runCommandAsync(`damage @e[tag=!tamed, family=!inanimate, type=!player, type=!item, tag=!hypnotizedTamed, r=10] `+damageOutput(data.entity, 50)+` entity_attack entity @s`)
                 }
-                catch (e) {}
-            }
-            else if (entities[i].hasTag('chargeFour')) {
-                try {
-                    entities[i].runCommandAsync(`damage @e[tag=!tamed, family=!inanimate, type=!player, type=!item, r=10] `+damageOutput(entities[i], 60)+` entity_attack entity @s`)
+                else if (data.entity.hasTag('chargeFour')) {
+                    data.entity.runCommandAsync(`damage @e[tag=!tamed, family=!inanimate, type=!player, type=!item, tag=!hypnotizedTamed, r=10] `+damageOutput(data.entity, 60)+` entity_attack entity @s`)
                 }
-                catch (e) {}
-            }
-            else if (entities[i].hasTag('chargeFive')) {
-                try {
-                    entities[i].runCommandAsync(`damage @e[tag=!tamed, family=!inanimate, type=!player, type=!item, r=10] `+damageOutput(entities[i], 70)+` entity_attack entity @s`)
+                else if (data.entity.hasTag('chargeFive')) {
+                    data.entity.runCommandAsync(`damage @e[tag=!tamed, family=!inanimate, type=!player, type=!item, tag=!hypnotizedTamed, r=10] `+damageOutput(data.entity, 70)+` entity_attack entity @s`)
                 }
-                catch (e) {}
-            }
-            else {
-                try {
-                    entities[i].runCommandAsync(`damage @e[tag=!tamed, family=!inanimate, type=!player, type=!item, r=10] `+damageOutput(entities[i], 30)+` entity_attack entity @s`)
+                else {
+                    data.entity.runCommandAsync(`damage @e[tag=!tamed, family=!inanimate, type=!player, type=!item, tag=!hypnotizedTamed, r=10] `+damageOutput(data.entity, 30)+` entity_attack entity @s`)
                 }
-                catch (e) {}
-            }
-        }
-        if (entities[i].typeId == 'rift:triceratops') {
-            try {
-                entities[i].runCommandAsync(`damage @e[tag=!tamed, family=!inanimate, type=!player, type=!item, r=7] `+damageOutput(entities[i], 25)+` entity_attack entity @s`)
-            }
-            catch (e) {}
-        }
-        if (entities[i].typeId == 'rift:utahraptor') {
-            try {
-                entities[i].runCommandAsync(`damage @e[tag=!tamed, family=!inanimate, type=!player, type=!item, r=7] `+damageOutput(entities[i], 12)+` entity_attack entity @s`)
-            }
-            catch (e) {}
-        }
-        if (entities[i].typeId == 'rift:apatosaurus') {
-            try {
-                entities[i].runCommandAsync(`damage @e[tag=!tamed, family=!inanimate, type=!player, type=!item, r=8] `+damageOutput(entities[i], 80)+` entity_attack entity @s`)
-            }
-            catch (e) {}
-        }
-        if (entities[i].typeId == 'rift:sarcosuchus') {
-            try {
-                entities[i].runCommandAsync(`damage @e[tag=!tamed, family=!inanimate, type=!player, type=!item, r=8] `+damageOutput(entities[i], 15)+` entity_attack entity @s`)
-            }
-            catch (e) {}
-        }
-        if (entities[i].typeId == 'rift:anomalocaris') {
-            try {
-                entities[i].runCommandAsync(`damage @e[tag=!tamed, family=!inanimate, type=!player, type=!item, r=6] `+damageOutput(entities[i], 10)+` entity_attack entity @s`)
-            }
-            catch (e) {}
-        }
-        if (entities[i].typeId == 'rift:saurophaganax' && !entities[i].getComponent('is_sheared')) {
-            try {
-                entities[i].runCommandAsync(`damage @e[tag=!tamed, family=!inanimate, type=!player, type=!item, r=8] `+damageOutput(entities[i], 60)+` entity_attack entity @s`)
-            }
-            catch (e) {}
-        }
-        if (entities[i].typeId == 'rift:saurophaganax' && entities[i].getComponent('is_sheared')) {
-            try {
-                entities[i].runCommandAsync(`damage @e[tag=!tamed, family=!inanimate, type=!player, type=!item, r=8] `+damageOutput(entities[i], 5)+` entity_attack entity @s`)
-            }
-            catch (e) {}
-        }
-        if (entities[i].typeId == 'rift:direwolf' && !entities[i].getComponent('is_ignited')) {
-            try {
-                entities[i].runCommandAsync(`damage @e[tag=!tamed, family=!inanimate, type=!player, type=!item, r=8] `+damageOutput(entities[i], 8)+` entity_attack entity @s`)
-            }
-            catch (e) {}
-        }
-        if (entities[i].typeId == 'rift:direwolf' && entities[i].getComponent('is_ignited')) {
-            if (entities[i].hasTag('werewolfBite')) {
-                try {
-                    entities[i].runCommandAsync(`damage @e[tag=!tamed, family=!inanimate, type=!player, type=!item, r=8] `+damageOutput(entities[i], 16)+` entity_attack entity @s`)
+                break
+            case 'rift:triceratops': 
+                data.entity.runCommandAsync(`damage @e[tag=!tamed, family=!inanimate, type=!player, type=!item, tag=!hypnotizedTamed, r=7] `+damageOutput(data.entity, 25)+` entity_attack entity @s`)
+                break
+            case 'rift:utahraptor': 
+                data.entity.runCommandAsync(`damage @e[tag=!tamed, family=!inanimate, type=!player, type=!item, tag=!hypnotizedTamed, r=7] `+damageOutput(data.entity, 5)+` entity_attack entity @s`)
+                break
+            case 'rift:apatosaurus': 
+                data.entity.runCommandAsync(`damage @e[tag=!tamed, family=!inanimate, type=!player, type=!item, tag=!hypnotizedTamed, r=8] `+damageOutput(data.entity, 80)+` entity_attack entity @s`)
+                break
+            case 'rift:sarcosuchus': 
+                data.entity.runCommandAsync(`damage @e[tag=!tamed, family=!inanimate, type=!player, type=!item, tag=!hypnotizedTamed, r=8] `+damageOutput(data.entity, 15)+` entity_attack entity @s`)
+                break
+            case 'rift:anomalocaris':
+                data.entity.runCommandAsync(`damage @e[tag=!tamed, family=!inanimate, type=!player, type=!item, tag=!hypnotizedTamed, r=6] `+damageOutput(data.entity, 10)+` entity_attack entity @s`)
+                break
+            case 'rift:saurophaganax':
+                if (!data.entity.getComponent('is_sheared')) {
+                    data.entity.runCommandAsync(`damage @e[tag=!tamed, family=!inanimate, type=!player, type=!item, tag=!hypnotizedTamed, r=8] `+damageOutput(data.entity, 60)+` entity_attack entity @s`)
                 }
-                catch (e) {}
-            }
-            else if (entities[i].hasTag('werewolfSlash')) {
-                try {
-                    entities[i].runCommandAsync(`damage @e[tag=!tamed, family=!inanimate, type=!player, type=!item, r=8] `+damageOutput(entities[i], 12)+` entity_attack entity @s`)
+                else {
+                    data.entity.runCommandAsync(`damage @e[tag=!tamed, family=!inanimate, type=!player, type=!item, tag=!hypnotizedTamed, r=8] `+damageOutput(data.entity, 5)+` entity_attack entity @s`)
                 }
-                catch (e) {}
-            }
-        }
-        if (entities[i].typeId == 'rift:megaloceros') {
-            try {
-                entities[i].runCommandAsync(`damage @e[tag=!tamed, family=!inanimate, type=!player, type=!item, r=7] `+damageOutput(entities[i], 5)+` entity_attack entity @s`)
-            }
-            catch (e) {}
-        }
-        if (entities[i].typeId == 'rift:baryonyx') {
-            if (entities[i].hasTag('baryonyxBite')) {
-                try {
-                    entities[i].runCommandAsync(`damage @e[tag=!tamed, family=!inanimate, type=!player, type=!item, r=8] `+damageOutput(entities[i], 10)+` entity_attack entity @s`)
+                break
+            case 'rift:direwolf': 
+                if (!data.entity.getComponent('is_ignited')) {
+                    data.entity.runCommandAsync(`damage @e[tag=!tamed, family=!inanimate, type=!player, type=!item, tag=!hypnotizedTamed, r=8] `+damageOutput(data.entity, 8)+` entity_attack entity @s`)
                 }
-                catch (e) {}
-            }
-            else if (entities[i].hasTag('baryonyxClaw')) {
-                try {
-                    entities[i].runCommandAsync(`damage @e[tag=!tamed, family=!inanimate, type=!player, type=!item, r=8] `+damageOutput(entities[i], 7)+` entity_attack entity @s`)
+                else {
+                    if (data.entity.hasTag('werewolfBite')) {
+                        data.entity.runCommandAsync(`damage @e[tag=!tamed, family=!inanimate, type=!player, type=!item, tag=!hypnotizedTamed, r=8] `+damageOutput(data.entity, 16)+` entity_attack entity @s`)
+                    }
+                    else if (data.entity.hasTag('werewolfSlash')) {
+                        data.entity.runCommandAsync(`damage @e[tag=!tamed, family=!inanimate, type=!player, type=!item, tag=!hypnotizedTamed, r=8] `+damageOutput(data.entity, 12)+` entity_attack entity @s`)
+                    }
                 }
-                catch (e) {}
-            }
+                break
+            case 'rift:megaloceros': 
+                data.entity.runCommandAsync(`damage @e[tag=!tamed, family=!inanimate, type=!player, type=!item, tag=!hypnotizedTamed, r=7] `+damageOutput(data.entity, 5)+` entity_attack entity @s`)
+                break
+            case 'rift:baryonyx':
+                if (data.entity.hasTag('baryonyxBite')) {
+                    data.entity.runCommandAsync(`damage @e[tag=!tamed, family=!inanimate, type=!player, type=!item, tag=!hypnotizedTamed, r=8] `+damageOutput(data.entity, 10)+` entity_attack entity @s`)
+                }
+                else if (data.entity.hasTag('baryonyxClaw')) {
+                    data.entity.runCommandAsync(`damage @e[tag=!tamed, family=!inanimate, type=!player, type=!item, tag=!hypnotizedTamed, r=8] `+damageOutput(data.entity, 7)+` entity_attack entity @s`)
+                }
+                break
         }
-        if (entities[i].typeId == 'rift:ankylosaurus') {
-            try {
-                entities[i].runCommandAsync(`damage @e[tag=!tamed, family=!inanimate, type=!player, type=!item, r=10] `+damageOutput(entities[i], 25)+` entity_attack entity @s`)
-            }
-            catch (e) {}
-        }
-        if (entities[i].typeId == 'rift:dilophosaurus') {
-            try {
-                entities[i].runCommandAsync(`damage @e[tag=!tamed, family=!inanimate, type=!player, type=!item, r=7] `+damageOutput(entities[i], 6)+` entity_attack entity @s`)
-            }
-            catch (e) {}
-        }
-        entities[i].removeTag('forcedAttack')
-        entities[i].removeTag('chargeOne')
-        entities[i].removeTag('chargeTwo')
-        entities[i].removeTag('chargeThree')
-        entities[i].removeTag('chargeFour')
-        entities[i].removeTag('chargeFive')
-        entities[i].removeTag('werewolfBite')
-        entities[i].removeTag('werewolfSlash')
-        entities[i].removeTag('baryonyxBite')
-        entities[i].removeTag('baryonyxClaw')
+        data.entity.removeTag('werewolfBite')
+        data.entity.removeTag('werewolfSlash')
+        data.entity.removeTag('baryonyxBite')
+        data.entity.removeTag('baryonyxClaw')
     }
 })
