@@ -8,17 +8,28 @@
 			"is_experimental": false
         },
         "component_groups": {
+            "rift:commit_disappear_countdown": {
+                "minecraft:timer": {
+                    "time": 0.5,
+                    "time_down_event": {
+                        "event": "rift:commit_disappear",
+                        "target": "self"
+                    }
+                }
+            },
             "rift:commit_disappear": {
                 "minecraft:instant_despawn": {}
             }
         },
         "components": {
-            "minecraft:timer": {
-                "time": 0.5,
-                "time_down_event": {
-                    "event": "rift:commit_disappear",
-                    "target": "self"
-                }
+            "minecraft:entity_sensor": {
+                "sensor_range": 1,
+                "event_filters": {
+                    "test": "is_family",
+                    "subject": "other",
+                    "value": "player"
+                },
+                "event": "rift:start_committing_disappear"
             },
             "minecraft:physics": {
                 "has_collision": false,
@@ -28,9 +39,24 @@
                 "is_pushable": false,
                 "is_pushable_by_piston": false
             },
+			"minecraft:damage_sensor": {
+				"triggers": [
+					{
+                        "cause": "all",
+						"deals_damage": false
+					}
+				]
+			},
             "minecraft:conditional_bandwidth_optimization": {}
         },
         "events": {
+            "rift:start_committing_disappear": {
+                "add": {
+                    "component_groups": [
+                        "rift:commit_disappear_countdown"
+                    ]
+                }
+            },
             "rift:generate_room_0_0": {
                 "randomize": [
                     {

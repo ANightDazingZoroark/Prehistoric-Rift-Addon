@@ -415,7 +415,7 @@ world.events.beforeItemUse.subscribe(data => {
 })
 
 world.events.itemUseOn.subscribe(data => {
-    let block = world.getDimension('overworld').getBlock(data.getBlockLocation());
+    let block = world.getDimension('overworld').getBlock(data.getBlockLocation())
     if (unlockItemsList.includes(data.item.typeId) && block.typeId == 'rift:journal_enscriber' && block.permutation.getProperty('rift:has_book') == true) {
         switch (data.item.typeId) {
             case 'rift:stegosaurus_plate':
