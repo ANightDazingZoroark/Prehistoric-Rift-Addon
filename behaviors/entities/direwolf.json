@@ -7,11 +7,6 @@
             "is_summonable": true,
             "is_experimental": false,
 			"properties": {
-				"rift:is_hypnotized": {
-					"type": "bool",
-					"default": false,
-					"client_sync": true
-				},
 				"rift:undergoing_taming": {
 					"type": "bool",
 					"default": false,
@@ -28,15 +23,6 @@
 				"rift:forced_transform": {
 					"type": "bool",
 					"default": false,
-					"client_sync": true
-                },
-                "rift:energy": {
-                    "range": [
-						0,
-						150
-					],
-					"type": "int",
-					"default": 150,
 					"client_sync": true
                 },
                 "rift:tame_state": { //0 for standing, 1 for sitting, 2 for wandering
@@ -56,10 +42,9 @@
 					"type": "int",
 					"default": 0
                 },
-				"rift:sonic_boom_cooldown": {
+				"rift:is_pack_buffed": {
 					"type": "bool",
-					"default": false,
-					"client_sync": true
+					"default": false
                 }
 			},
 			"animations": {
@@ -75,22 +60,11 @@
 				"contRiddenTag": "controller.animation.add_ridden_tag",
 				"contIgnitedTag": "controller.animation.add_ignited_tag",
 				"contSonicBoomTag": "controller.animation.add_sonic_boom_tag",
-				"contInLoveTag": "controller.animation.add_in_love_tag",
-				"contHypnotizedTag": "controller.animation.add_hypnotized_tag",
-				"contOutOfControlTag": "controller.animation.add_out_of_control_tag",
 				"contTameState": "controller.animation.manage_tame_state",
 				"contBehaviorState": "controller.animation.manage_tame_behavior",
 				"contBreathManage": "controller.animation.direwolf_werewolf_breath_management",
-				"contEnergyUsage": "controller.animation.direwolf_energy_movement_usage",
-				"contWarnLowEnergy": "controller.animation.warn_of_low_energy",
-				"contDieWithoutTenontosaurus": "controller.animation.general_die_without_tenontosaurus",
-				"animUseEnergyWhileMovingNormal": "animation.direwolf_decrease_energy_while_moving_normal",
-				"animUseEnergyWhileMovingWerewolf": "animation.direwolf_decrease_energy_while_moving_werewolf",
-				"animEnergyRegenDelay": "animation.regenerate_energy_delay",
-				"animRegenerateEnergyNormal": "animation.direwolf_regenerate_energy_normal",
-				"animRegenerateEnergyWerewolf": "animation.direwolf_regenerate_energy_werewolf",
-				"animLowOnEnergyEffects": "animation.effects_while_low_on_energy",
-				"animNoEnergyEffects": "animation.effects_while_no_energy",
+				"contPackBuffed": "controller.animation.direwolf_pack_buffed",
+				"contPackBuffCountdown": "controller.animation.direwolf_pack_buff_countdown",
 				"animForcedAttackNormal": "animation.forced_attack_direwolf",
 				"animForcedAttackBiteWerewolf": "animation.forced_attack_direwolf_werewolf_bite",
 				"animForcedAttackSlashWerewolfOne": "animation.forced_attack_direwolf_werewolf_slash_one",
@@ -99,10 +73,7 @@
 				"animForcedTransformCountdown": "animation.direwolf_forced_transform_countdown",
 				"animPackBuffed": "animation.pack_buffed",
 				"animPackBuffCountdown": "animation.buff_countdown",
-				"animDirewolfBreathCountdown": "animation.direwolf_breath_countdown",
-				"animDirewolfBreathCooldown": "animation.direwolf_breath_cooldown",
-				"animFindTenontosaurus": "animation.find_tenontosaurus",
-				"animDeathTimer": "animation.hypnosis_death_timer"
+				"animStay": "animation.direwolf_werewolf_stay"
 			},
 			"scripts": {
 				"animate": [
@@ -118,15 +89,11 @@
 					"contRiddenTag",
 					"contIgnitedTag",
 					"contSonicBoomTag",
-					"contInLoveTag",
-					"contHypnotizedTag",
-					"contOutOfControlTag",
 					"contTameState",
 					"contBehaviorState",
 					"contBreathManage",
-					"contEnergyUsage",
-					"contWarnLowEnergy",
-					"contDieWithoutTenontosaurus"
+					"contPackBuffed",
+					"contPackBuffCountdown"
 				]
 			}
         },
@@ -215,13 +182,11 @@
 				"minecraft:health": {
 					"value": 15
 				},
-				"minecraft:navigation.walk": {
-					"avoid_water": true,
-					"avoid_damage_blocks": true
+				"minecraft:movement": {
+					"value": 0.25
 				},
-				"minecraft:movement.generic": {},
 				"minecraft:behavior.follow_parent": {
-					"priority": 17
+					"priority": 16
 				},
 				"minecraft:tameable": {
 					"probability": 0.25,
@@ -251,62 +216,16 @@
 						]
 					}
 				},
-				"minecraft:behavior.avoid_block": {
-					"priority": 4,
-					"tick_interval": 5,
-					"search_range": 12,
-					"search_height": 4,
-					"walk_speed_modifier": 1.2,
-					"sprint_speed_modifier": 1.2,
-					"target_selection_method": "nearest",
-					"target_blocks": [
-						"minecraft:fire",
-						"minecraft:soul_fire",
-						"minecraft:item.campfire",
-						"minecraft:item.soul_campfire",
-					  	"minecraft:torch",
-					  	"minecraft:soul_torch"
-					]
-				},
 				"minecraft:behavior.avoid_mob_type": {
 					"priority": 3,
 					"entity_types": [
 						{
 							"filters": {
-								"any_of": [
-									{
-										"test": "is_family",
-										"value": "parasaurScary",
-										"subject": "other"
-									},
-									{
-										"all_of": [
-											{
-												"test": "is_family",
-												"value": "player",
-												"subject": "other"
-											},
-											{
-												"any_of": [
-													{
-														"test": "has_equipment",
-														"subject": "other",
-														"domain": "hand",
-														"value": "minecraft:torch"
-													},
-													{
-														"test": "has_equipment",
-														"subject": "other",
-														"domain": "hand",
-														"value": "minecraft:soul_torch"
-													}
-												]
-											}
-										]
-									}
-								]
+								"test": "is_family",
+								"value": "parasaurScary",
+								"subject": "other"
 							},
-							"max_flee": 16,
+							"max_flee": 5,
 							"max_dist": 35,
 							"walk_speed_multiplier": 1.6,
 							"sprint_speed_multiplier": 1.6
@@ -314,27 +233,7 @@
 					]
 				},
 				"minecraft:behavior.hurt_by_target": {
-					"priority": 7,
-					"entity_types": {
-						"filters": {
-							"all_of": [
-								{
-									"test": "has_equipment",
-									"subject": "other",
-									"domain": "hand",
-									"operator": "!=",
-									"value": "minecraft:torch"
-								},
-								{
-									"test": "has_equipment",
-									"subject": "other",
-									"domain": "hand",
-									"operator": "!=",
-									"value": "minecraft:soul_torch"
-								}
-							]
-						}
-					}
+					"priority": 6
 				},
 				"minecraft:despawn": {
 					"despawn_from_distance": {}
@@ -351,7 +250,7 @@
 					"broadcast_anger": true,
 					"broadcast_range": 30,
 					"broadcast_filters": {
-						"test": "has_component",
+						"test": "is_family",
 						"subject": "other",
 						"operator": "!=",
 						"value": "minecraft:is_tamed"
@@ -372,11 +271,6 @@
                     "value": 15,
                     "max": 25
                 },
-				"minecraft:navigation.walk": {
-					"avoid_water": true,
-					"avoid_damage_blocks": true
-				},
-				"minecraft:movement.generic": {},
                 "minecraft:attack": {
                     "damage": 4
                 }
@@ -414,6 +308,9 @@
 				"minecraft:attack": {
 					"damage": 8
 				},
+				"minecraft:movement": {
+					"value": 0.25
+				},
                 "minecraft:scale": {
                     "value": 1.25
                 },
@@ -440,60 +337,14 @@
                         ]
                     }
 				},
-				"minecraft:behavior.avoid_block": {
-					"priority": 4,
-					"tick_interval": 5,
-					"search_range": 12,
-					"search_height": 4,
-					"walk_speed_modifier": 1.2,
-					"sprint_speed_modifier": 1.2,
-					"target_selection_method": "nearest",
-					"target_blocks": [
-						"minecraft:fire",
-						"minecraft:soul_fire",
-						"minecraft:item.campfire",
-						"minecraft:item.soul_campfire",
-					  	"minecraft:torch",
-					  	"minecraft:soul_torch"
-					]
-				},
 				"minecraft:behavior.avoid_mob_type": {
 					"priority": 3,
 					"entity_types": [
 						{
 							"filters": {
-								"any_of": [
-									{
-										"test": "is_family",
-										"value": "parasaurScary",
-										"subject": "other"
-									},
-									{
-										"all_of": [
-											{
-												"test": "is_family",
-												"value": "player",
-												"subject": "other"
-											},
-											{
-												"any_of": [
-													{
-														"test": "has_equipment",
-														"subject": "other",
-														"domain": "hand",
-														"value": "minecraft:torch"
-													},
-													{
-														"test": "has_equipment",
-														"subject": "other",
-														"domain": "hand",
-														"value": "minecraft:soul_torch"
-													}
-												]
-											}
-										]
-									}
-								]
+								"test": "is_family",
+								"value": "parasaurScary",
+								"subject": "other"
 							},
 							"max_dist": 12,
 							"must_see": true,
@@ -503,27 +354,7 @@
 					]
 				},
 				"minecraft:behavior.hurt_by_target": {
-					"priority": 7,
-					"entity_types": {
-						"filters": {
-							"all_of": [
-								{
-									"test": "has_equipment",
-									"subject": "other",
-									"domain": "hand",
-									"operator": "!=",
-									"value": "minecraft:torch"
-								},
-								{
-									"test": "has_equipment",
-									"subject": "other",
-									"domain": "hand",
-									"operator": "!=",
-									"value": "minecraft:soul_torch"
-								}
-							]
-						}
-					}
+					"priority": 6
 				},
 				"minecraft:despawn": {
 					"despawn_from_distance": {}
@@ -614,35 +445,15 @@
 				  	]
 				},
 				"minecraft:behavior.pickup_items": {
-					"priority": 15,
+					"priority": 14,
 					"max_dist": 32,
 					"goal_radius": 2,
 					"speed_multiplier": 1,
 					"track_target": true
 				},
 				"minecraft:behavior.eat_carried_item": {
-					"priority": 16,
+					"priority": 15,
 					"delay_before_eating": 0
-				}
-            },
-			"rift:direwolf_adult_hypnotized": {
-                "minecraft:health": {
-                    "value": 30,
-                    "max": 30
-                },
-				"minecraft:attack": {
-					"damage": 8
-				},
-                "minecraft:scale": {
-                    "value": 1.25
-                },
-				"minecraft:navigation.walk": {
-					"avoid_water": true,
-					"avoid_damage_blocks": true
-				},
-				"minecraft:movement.generic": {},
-				"minecraft:despawn": {
-					"despawn_from_distance": {}
 				}
             },
 			"rift:direwolf_adult_werewolf_wild": {
@@ -651,6 +462,9 @@
                     "value": 100,
                     "max": 100
                 },
+				"minecraft:movement": {
+					"value": 0.25
+				},
                 "minecraft:scale": {
                     "value": 2
                 },
@@ -680,7 +494,7 @@
                     }
 				},
 				"minecraft:behavior.hurt_by_target": {
-					"priority": 7
+					"priority": 6
 				},
 				"minecraft:despawn": {
 					"despawn_from_distance": {}
@@ -771,22 +585,22 @@
 				  	]
 				},
 				"minecraft:behavior.pickup_items": {
-					"priority": 15,
+					"priority": 14,
 					"max_dist": 32,
 					"goal_radius": 2,
 					"speed_multiplier": 1,
 					"track_target": true
 				},
 				"minecraft:behavior.eat_carried_item": {
-					"priority": 16,
+					"priority": 15,
 					"delay_before_eating": 0
 				}
 			},
 			"rift:normal_mode_attack": {
 				"minecraft:behavior.melee_attack": {
-					"priority": 12,
+					"priority": 11,
 					"track_target": true,
-					"reach_multiplier": 3,
+					"reach_multiplier": 2.5,
 					"speed_multiplier": 1.5
 				}
 			},
@@ -801,7 +615,7 @@
                     "value": 0
                 },
 				"minecraft:behavior.delayed_attack": {
-					"priority": 11,
+					"priority": 10,
 					"attack_duration": 0.76,
 					"hit_delay_pct": 0.68,
 					"track_target": true,
@@ -816,7 +630,7 @@
                     "value": 1
                 },
 				"minecraft:behavior.delayed_attack": {
-					"priority": 11,
+					"priority": 10,
 					"attack_duration": 0.72,
 					"hit_delay_pct": 0.55,
 					"track_target": true,
@@ -825,7 +639,7 @@
 			},
 			"rift:can_pounce_attack_werewolf": {
 				"minecraft:behavior.stalk_and_pounce_on_target": {
-					"priority": 9,
+					"priority": 8,
 					"stalk_speed": 1.2,
 					"max_stalk_dist": 16,
 					"leap_height": 0.9,
@@ -837,10 +651,27 @@
 			},
 			"rift:can_breath_werewolf": {
 				"minecraft:behavior.sonic_boom": {
-					"priority": 10,
+					"priority": 9,
 					"duration": 3.0,
-					"speed_multiplier": 0,
+					"speed_multiplier": 1.2,
 					"attack_damage": 0,
+					"attack_range_horizontal": 15,
+					"attack_range_vertical": 20,
+					"attack_cooldown": 10,
+					"knockback_vertical_strength": 0.5,
+					"knockback_horizontal_strength": 2.5,
+					"knockback_height_cap": 0.5,
+					"duration_until_attack_sound": 1.7,
+					"charge_sound": "sonic_charge",
+					"attack_sound": "sonic_boom"
+				}
+			},
+			"rift:forced_breath_werewolf": {
+				"minecraft:behavior.sonic_boom": {
+					"priority": 0,
+					"duration": 3.0,
+					"speed_multiplier": 1.2,
+					"attack_damage": 10,
 					"attack_range_horizontal": 15,
 					"attack_range_vertical": 20,
 					"attack_cooldown": 0,
@@ -850,19 +681,6 @@
 					"duration_until_attack_sound": 1.7,
 					"charge_sound": "sonic_charge",
 					"attack_sound": "sonic_boom"
-				}
-			},
-			"rift:cannot_move_sonic_boom": {
-				"minecraft:movement": {
-					"value": 0
-				},
-				"minecraft:underwater_movement": {
-					"value": 0
-				}
-			},
-			"rift:reset_movement_sonic_boom": {
-				"minecraft:movement": {
-					"value": 0.25
 				}
 			},
 			"rift:direwolf_adult_calm": {
@@ -898,7 +716,7 @@
 			},
 			"rift:default_targets_normal": {
 				"minecraft:behavior.nearest_attackable_target": {
-					"priority": 8,
+					"priority": 7,
 					"within_radius": 32.0,
 					"entity_types": [
 						{
@@ -944,54 +762,12 @@
 									{
 										"test": "has_equipment",
 										"subject": "other",
-										"domain": "hand",
 										"operator": "!=",
-										"value": "minecraft:torch"
-									},
-									{
-										"test": "has_equipment",
-										"subject": "other",
 										"domain": "hand",
-										"operator": "!=",
-										"value": "minecraft:soul_torch"
-									},
-									{
-										"test": "has_equipment",
-										"subject": "other",
-										"domain": "hand",
-										"operator": "!=",
 										"value": "rift:flesh_treat"
 									},
 									{
 										"test": "is_riding",
-										"subject": "other",
-										"value": false
-									},
-									{
-										"test": "is_sneaking",
-										"subject": "other",
-										"value": false
-									}
-								]
-							},
-							"max_dist": 48
-						},
-						{
-							"filters": {
-								"all_of": [
-									{
-										"test": "is_family",
-										"subject": "other",
-										"value": "player"
-									},
-									{
-										"test": "has_equipment",
-										"subject": "other",
-										"domain": "hand",
-										"value": "rift:flesh_treat"
-									},
-									{
-										"test": "is_sneaking",
 										"subject": "other",
 										"value": false
 									}
@@ -1045,7 +821,7 @@
 			},
 			"rift:default_targets_werewolf": {
 				"minecraft:behavior.nearest_attackable_target": {
-					"priority": 8,
+					"priority": 7,
 					"within_radius": 48.0,
 					"entity_types": [
 						{
@@ -1094,6 +870,13 @@
 										"value": "player"
 									},
 									{
+										"test": "has_equipment",
+										"subject": "other",
+										"operator": "!=",
+										"domain": "hand",
+										"value": "rift:flesh_treat"
+									},
+									{
 										"test": "is_riding",
 										"subject": "other",
 										"value": false
@@ -1128,65 +911,9 @@
 					]
 				}
 			},
-			"rift:direwolf_adult_werewolf_angry_because_of_fire": {
-				"minecraft:timer": {
-					"time": 15,
-					"time_down_event": {
-						"event": "rift:stop_being_angry_because_of_fire",
-						"target": "self"
-					}
-				},
-				"minecraft:behavior.nearest_attackable_target": {
-					"priority": 8,
-					"within_radius": 48.0,
-					"entity_types": [
-						{
-							"filters": {
-								"all_of": [
-									{
-										"test": "is_family",
-										"subject": "other",
-										"value": "mob"
-									},
-									{
-										"test": "is_family",
-										"subject": "other",
-										"operator": "!=",
-										"value": "direwolf"
-									},
-									{
-										"test": "is_family",
-										"subject": "other",
-										"operator": "!=",
-										"value": "wolf"
-									}
-								]
-							},
-							"max_dist": 64
-						},
-						{
-							"filters": {
-								"all_of": [
-									{
-										"test": "is_family",
-										"subject": "other",
-										"value": "player"
-									},
-									{
-										"test": "is_riding",
-										"subject": "other",
-										"value": false
-									}
-								]
-							},
-							"max_dist": 64
-						}
-					]
-				}
-			},
 			"rift:aggravating_horn_attack": {
 				"minecraft:behavior.nearest_attackable_target": {
-					"priority": 8,
+					"priority": 7,
 					"within_radius": 48.0,
 					"entity_types": [
 						{
@@ -1273,6 +1000,9 @@
                 },
 				"minecraft:attack": {
 					"damage": 8
+				},
+				"minecraft:movement": {
+					"value": 0.25
 				},
                 "minecraft:scale": {
                     "value": 1.25
@@ -1417,6 +1147,9 @@
                     "value": 100,
                     "max": 100
                 },
+				"minecraft:movement": {
+					"value": 0.25
+				},
                 "minecraft:scale": {
                     "value": 2
                 },
@@ -1557,12 +1290,7 @@
 				}
 			},
 			"rift:direwolf_tamed": {
-				"minecraft:is_tamed": {},
-				"minecraft:leashable": {
-					"soft_distance": 4,
-					"hard_distance": 10,
-					"max_distance": 15
-				}
+				"minecraft:is_tamed": {}
 			},
 			"rift:direwolf_normal_rideable": {
 				"minecraft:is_saddled": {},
@@ -1672,7 +1400,7 @@
 			},
 			"rift:temptable": {
                 "minecraft:behavior.tempt": {
-                    "priority": 13,
+                    "priority": 12,
 					"within_radius": 16,
                     "items": [
                         "minecraft:beef",
@@ -1696,97 +1424,11 @@
 				}
 			},
 			"rift:wild_standing": {
-				"minecraft:movement": {
-					"value": 0.25
-				},
                 "minecraft:behavior.random_stroll": {
-					"priority": 19
+					"priority": 17
 				},
 				"minecraft:behavior.random_look_around": {
-					"priority": 20
-				}
-			},
-			"rift:wild_standing_hypnotized_by_tenontosaurus": {
-				"minecraft:movement": {
-					"value": 0.25
-				}
-			},
-			"rift:follow_tenontosaurus": {
-				"minecraft:behavior.nearest_prioritized_attackable_target": {
-					"priority": 8,
-					"within_radius": 32.0,
-					"entity_types": [
-						{
-							"filters": {
-								"all_of": [
-									{
-										"test": "has_tag",
-										"subject": "other",
-										"value": "tenontoTarget"
-									}
-								]
-							},
-							"max_dist": 48,
-							"priority": 0
-						},
-						{
-							"filters": {
-								"all_of": [
-									{
-										"test": "is_family",
-										"subject": "other",
-										"value": "tenontosaurus"
-									},
-									{
-										"test": "has_component",
-										"subject": "other",
-										"operator": "!=",
-										"value": "minecraft:is_tamed"
-									}
-								]
-							},
-							"max_dist": 48,
-							"priority": 1
-						}
-					]
-				}
-			},
-			"rift:follow_tenontosaurus_no_target": {
-				"minecraft:behavior.ranged_attack": {
-					"priority": 18,
-					"attack_radius": 8.0,
-					"attack_radius_min": 4
-				},
-				"minecraft:on_target_acquired": {
-					"filters": {
-						"all_of": [
-							{
-								"test": "has_component",
-								"subject": "target",
-								"operator": "!=",
-								"value": "minecraft:is_tamed"
-							},
-							{
-								"test": "is_family",
-								"subject": "target",
-								"operator": "!=",
-								"value": "tenontosaurus"
-							}
-						]
-					},
-					"event": "rift:attack_for_tenontosaurus",
-					"target": "self"
-				}
-			},
-			"rift:attacking_for_tenontosaurus": {
-				"minecraft:behavior.melee_attack": {
-					"priority": 12,
-					"reach_multiplier": 3,
-					"speed_multiplier": 1.5
-				},
-				"minecraft:on_target_escape": {
-					"event": "rift:stop_attacking_for_tenontosaurus",
-					"target": "self"
+					"priority": 18
 				}
 			},
 			"rift:tamed_standing": {
@@ -1794,7 +1436,7 @@
 					"priority": 2
 				},
 				"minecraft:behavior.follow_owner": {
-					"priority": 14
+					"priority": 13
 				}
 			},
 			"rift:wandering": {
@@ -1802,46 +1444,25 @@
 					"priority": 2
 				},
                 "minecraft:behavior.random_stroll": {
-					"priority": 19
-				}
-			},
-			"rift:tamed_can_move": {
-				"minecraft:movement": {
-					"value": 0.25
-				}
-			},
-			"rift:tamed_can_move_low_energy": { //formula for speed reduction from slowness effect is speed * 0.15 * level
-				"minecraft:movement": {
-					"value": 0.1125
-				}
-			},
-			"rift:tamed_cannot_move": {
-				"minecraft:movement": {
-					"value": 0
-				},
-				"minecraft:underwater_movement": {
-					"value": 0
-				},
-				"minecraft:water_movement": {
-					"drag_factor": 0
+					"priority": 17
 				}
 			},
 			"rift:assist_behavior": {
 				"minecraft:behavior.owner_hurt_by_target": {
-					"priority": 5
+					"priority": 4
 				},
 				"minecraft:behavior.owner_hurt_target": {
-					"priority": 6
+					"priority": 5
 				}
 			},
 			"rift:neutral_behavior": {
 				"minecraft:behavior.hurt_by_target": {
-					"priority": 7
+					"priority": 6
 				}
 			},
 			"rift:aggressive_behavior": {
 				"minecraft:behavior.nearest_attackable_target": {
-					"priority": 8,
+					"priority": 7,
 					"within_radius": 48.0,
 					"entity_types": [
 						{
@@ -1877,7 +1498,7 @@
 					]
 				},
 				"minecraft:behavior.hurt_by_target": {
-					"priority": 7
+					"priority": 6
 				}
 			},
 			"rift:direwolf_tamed_pounceable": {
@@ -1979,32 +1600,11 @@
 					"width": 1.2,
 					"height": 0.25
 				}
-			},
-			"rift:transform_into_hypnotized_variant_one": {
-				"minecraft:transformation": {
-					"into": "rift:direwolf<rift:transform_into_hypnotized_variant_one>"
-				}
-			},
-			"rift:transform_into_hypnotized_variant_two": {
-				"minecraft:transformation": {
-					"into": "rift:direwolf<rift:transform_into_hypnotized_variant_two>"
-				}
-			},
-			"rift:transform_into_hypnotized_variant_three": {
-				"minecraft:transformation": {
-					"into": "rift:direwolf<rift:transform_into_hypnotized_variant_three>"
-				}
-			},
-			"rift:transform_into_hypnotized_variant_four": {
-				"minecraft:transformation": {
-					"into": "rift:direwolf<rift:transform_into_hypnotized_variant_four>"
-				}
 			}
 		},
 		"components": {
 			"minecraft:type_family": {
 				"family": [
-					"riftCreature",
 					"direwolf",
 					"mob",
 					"carnivore",
@@ -2018,6 +1618,11 @@
 			"minecraft:breathable": {
 				"total_supply": 15,
 				"suffocate_time": 0
+			},
+			"minecraft:leashable": {
+				"soft_distance": 4,
+				"hard_distance": 10,
+				"max_distance": 15
 			},
 			"minecraft:interact": {
 				"interactions": [
@@ -2044,292 +1649,6 @@
 								]
 							},
 							"event": "rift:lol2",
-							"target": "self"
-						},
-						"interact_text": "action.interact.tame"
-					},
-					{
-						"on_interact": {
-							"filters": {
-								"all_of": [
-									{
-										"test": "has_equipment",
-										"subject": "other",
-										"domain": "hand",
-										"value": "rift:flesh_treat"
-									},
-									{
-										"test": "has_component",
-										"subject": "self",
-										"value": "minecraft:is_tamed"
-									},
-									{
-										"test": "has_component",
-										"subject": "self",
-										"operator": "!=",
-										"value": "minecraft:is_baby"
-									},
-									{
-										"any_of": [
-											{
-												"test": "is_missing_health",
-												"subject": "self",
-												"value": true
-											},
-											{
-												"test": "has_tag",
-												"subject": "self",
-												"value": "inLove"
-											}
-										]
-									}
-								]
-							},
-							"event": "rift:lol2",
-							"target": "self"
-						},
-						"interact_text": "action.interact.tame"
-					},
-					{
-						"on_interact": {
-							"filters": {
-								"all_of": [
-                                    {
-                                        "any_of": [
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "minecraft:beef"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "minecraft:cooked_beef"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "minecraft:porkchop"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "minecraft:cooked_porkchop"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "minecraft:chicken"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "minecraft:cooked_chicken"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "minecraft:mutton"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "minecraft:cooked_mutton"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "minecraft:rabbit"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "minecraft:cooked_rabbit"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "rift:raw_exotic_meat"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "rift:cooked_exotic_meat"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "rift:raw_dodo_meat"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "rift:cooked_dodo_meat"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "rift:raw_hadrosaur_meat"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "rift:cooked_hadrosaur_meat"
-											}
-                                        ]
-                                    },
-									{
-										"test": "has_component",
-										"subject": "self",
-										"value": "minecraft:is_tamed"
-									},
-									{
-										"test": "has_component",
-										"subject": "self",
-										"operator": "!=",
-										"value": "minecraft:is_baby"
-									},
-									{
-										"test": "is_missing_health",
-										"subject": "self",
-										"value": false
-									}
-								]
-							},
-							"event": "rift:lol3",
-							"target": "self"
-						},
-						"interact_text": "action.interact.tame"
-					},
-					{
-						"on_interact": {
-							"filters": {
-								"all_of": [
-                                    {
-                                        "any_of": [
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "minecraft:beef"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "minecraft:cooked_beef"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "minecraft:porkchop"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "minecraft:cooked_porkchop"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "minecraft:chicken"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "minecraft:cooked_chicken"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "minecraft:mutton"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "minecraft:cooked_mutton"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "minecraft:rabbit"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "minecraft:cooked_rabbit"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "rift:raw_exotic_meat"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "rift:cooked_exotic_meat"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "rift:raw_dodo_meat"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "rift:cooked_dodo_meat"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "rift:raw_hadrosaur_meat"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "rift:cooked_hadrosaur_meat"
-											}
-                                        ]
-                                    },
-									{
-										"test": "has_component",
-										"subject": "self",
-										"operator": "!=",
-										"value": "minecraft:is_tamed"
-									}
-								]
-							},
-							"event": "rift:lol3",
 							"target": "self"
 						},
 						"interact_text": "action.interact.tame"
@@ -4357,6 +3676,26 @@
 							"filters": {
 								"all_of": [
 									{
+										"test": "is_family",
+										"subject": "other",
+										"value": "direwolf"
+									},
+									{
+										"test": "has_component",
+										"subject": "self",
+										"operator": "!=",
+										"value": "minecraft:is_tamed"
+									}
+								]
+							}
+						},
+						"deals_damage": false
+					},
+					{
+						"on_damage": {
+							"filters": {
+								"all_of": [
+									{
 										"any_of": [
 											{
 												"test": "is_family",
@@ -4397,12 +3736,6 @@
 										"subject": "self",
 										"operator": "!=",
 										"value": "minecraft:is_tamed"
-									},
-									{
-										"test": "bool_property",
-										"subject": "self",
-										"domain": "rift:is_hypnotized",
-										"value": false
 									}
 								]
 							},
@@ -4773,235 +4106,8 @@
 						"rift:direwolf_tamed",
 						"rift:normal_mode_attack",
 						"rift:temptable",
-						"rift:default_collision",
-						"rift:tamed_can_move"
+						"rift:default_collision"
 					]
-				}
-			},
-			"rift:spawn_hypnotized_by_tenontosaurus": {
-				"randomize": [
-					{
-						"weight": 25,
-						"add": {
-							"component_groups": [
-								"rift:direwolf_adult",
-								"rift:direwolf_adult_hypnotized",
-								"rift:variant_one",
-								"rift:pushable",
-								"rift:wild_standing_hypnotized_by_tenontosaurus",
-								"rift:default_collision",
-								"rift:follow_tenontosaurus",
-								"rift:follow_tenontosaurus_no_target"
-							]
-						},
-						"set_property": {
-							"rift:is_hypnotized": true
-						}
-					},
-					{
-						"weight": 25,
-						"add": {
-							"component_groups": [
-								"rift:direwolf_adult",
-								"rift:direwolf_adult_hypnotized",
-								"rift:variant_two",
-								"rift:pushable",
-								"rift:wild_standing_hypnotized_by_tenontosaurus",
-								"rift:default_collision",
-								"rift:follow_tenontosaurus",
-								"rift:follow_tenontosaurus_no_target"
-							]
-						},
-						"set_property": {
-							"rift:is_hypnotized": true
-						}
-					},
-					{
-						"weight": 25,
-						"add": {
-							"component_groups": [
-								"rift:direwolf_adult",
-								"rift:direwolf_adult_hypnotized",
-								"rift:variant_three",
-								"rift:pushable",
-								"rift:wild_standing_hypnotized_by_tenontosaurus",
-								"rift:default_collision",
-								"rift:follow_tenontosaurus",
-								"rift:follow_tenontosaurus_no_target"
-							]
-						},
-						"set_property": {
-							"rift:is_hypnotized": true
-						}
-					},
-					{
-						"weight": 25,
-						"add": {
-							"component_groups": [
-								"rift:direwolf_adult",
-								"rift:direwolf_adult_hypnotized",
-								"rift:variant_four",
-								"rift:pushable",
-								"rift:wild_standing_hypnotized_by_tenontosaurus",
-								"rift:default_collision",
-								"rift:follow_tenontosaurus",
-								"rift:follow_tenontosaurus_no_target"
-							]
-						},
-						"set_property": {
-							"rift:is_hypnotized": true
-						}
-					}
-				]
-			},
-			"rift:attack_for_tenontosaurus": {
-				"add": {
-					"component_groups": [
-						"rift:attacking_for_tenontosaurus"
-					]
-				},
-				"remove": {
-					"component_groups": [
-						"rift:follow_tenontosaurus_no_target"
-					]
-				},
-				"run_command": {
-					"command": [
-						"say FOR THE QUEEN"
-					]
-				}
-			},
-			"rift:stop_attacking_for_tenontosaurus": {
-				"add": {
-					"component_groups": [
-						"rift:follow_tenontosaurus_no_target"
-					]
-				},
-				"remove": {
-					"component_groups": [
-						"rift:attacking_for_tenontosaurus"
-					]
-				}
-			},
-			"rift:hypnotized_by_tenontosaurus": {
-				"sequence": [
-					{},
-					{
-						"filters": {
-							"test": "is_variant",
-							"subject": "self",
-							"value": 0
-						},
-						"add": {
-							"component_groups": [
-								"rift:transform_into_hypnotized_variant_one"
-							]
-						}
-					},
-					{
-						"filters": {
-							"test": "is_variant",
-							"subject": "self",
-							"value": 1
-						},
-						"add": {
-							"component_groups": [
-								"rift:transform_into_hypnotized_variant_two"
-							]
-						}
-					},
-					{
-						"filters": {
-							"test": "is_variant",
-							"subject": "self",
-							"value": 2
-						},
-						"add": {
-							"component_groups": [
-								"rift:transform_into_hypnotized_variant_three"
-							]
-						}
-					},
-					{
-						"filters": {
-							"test": "is_variant",
-							"subject": "self",
-							"value": 3
-						},
-						"add": {
-							"component_groups": [
-								"rift:transform_into_hypnotized_variant_four"
-							]
-						}
-					}
-				]
-			},
-			"rift:transform_into_hypnotized_variant_one": {
-				"add": {
-					"component_groups": [
-						"rift:direwolf_adult",
-						"rift:direwolf_adult_hypnotized",
-						"rift:variant_one",
-						"rift:pushable",
-						"rift:wild_standing_hypnotized_by_tenontosaurus",
-						"rift:default_collision",
-						"rift:follow_tenontosaurus",
-						"rift:follow_tenontosaurus_no_target"
-					]
-				},
-				"set_property": {
-					"rift:is_hypnotized": true
-				}
-			},
-			"rift:transform_into_hypnotized_variant_two": {
-				"add": {
-					"component_groups": [
-						"rift:direwolf_adult",
-						"rift:direwolf_adult_hypnotized",
-						"rift:variant_two",
-						"rift:pushable",
-						"rift:wild_standing_hypnotized_by_tenontosaurus",
-						"rift:default_collision",
-						"rift:follow_tenontosaurus",
-						"rift:follow_tenontosaurus_no_target"
-					]
-				},
-				"set_property": {
-					"rift:is_hypnotized": true
-				}
-			},
-			"rift:transform_into_hypnotized_variant_three": {
-				"add": {
-					"component_groups": [
-						"rift:direwolf_adult",
-						"rift:direwolf_adult_hypnotized",
-						"rift:variant_three",
-						"rift:pushable",
-						"rift:wild_standing_hypnotized_by_tenontosaurus",
-						"rift:default_collision",
-						"rift:follow_tenontosaurus",
-						"rift:follow_tenontosaurus_no_target"
-					]
-				},
-				"set_property": {
-					"rift:is_hypnotized": true
-				}
-			},
-			"rift:transform_into_hypnotized_variant_four": {
-				"add": {
-					"component_groups": [
-						"rift:direwolf_adult",
-						"rift:direwolf_adult_hypnotized",
-						"rift:variant_four",
-						"rift:pushable",
-						"rift:wild_standing_hypnotized_by_tenontosaurus",
-						"rift:default_collision",
-						"rift:follow_tenontosaurus",
-						"rift:follow_tenontosaurus_no_target"
-					]
-				},
-				"set_property": {
-					"rift:is_hypnotized": true
 				}
 			},
 			"rift:spawn_as_baby": {
@@ -5236,13 +4342,7 @@
 						"remove": {
 							"component_groups": [
 								"rift:direwolf_adult_werewolf_wild",
-								"rift:default_targets_werewolf",
-								"rift:direwolf_adult_werewolf_angry_because_of_fire"
-							]
-						},
-						"run_command": {
-							"command": [
-								"tag @s remove angeredByFire"
+								"rift:default_targets_werewolf"
 							]
 						}
 					},
@@ -5467,13 +4567,7 @@
 						"rift:can_pounce_attack_werewolf",
 						"rift:can_breath_werewolf",
 						"rift:direwolf_adult_werewolf_wild",
-						"rift:default_targets_werewolf",
-						"rift:direwolf_adult_werewolf_angry_because_of_fire"
-					]
-				},
-				"run_command": {
-					"command": [
-						"tag @s remove angeredByFire"
+						"rift:default_targets_werewolf"
 					]
 				}
 			},
@@ -5499,13 +4593,7 @@
 						"rift:can_pounce_attack_werewolf",
 						"rift:can_breath_werewolf",
 						"rift:direwolf_adult_werewolf_wild",
-						"rift:default_targets_werewolf",
-						"rift:direwolf_adult_werewolf_angry_because_of_fire"
-					]
-				},
-				"run_command": {
-					"command": [
-						"tag @s remove angeredByFire"
+						"rift:default_targets_werewolf"
 					]
 				}
 			},
@@ -5531,13 +4619,7 @@
 						"rift:can_pounce_attack_werewolf",
 						"rift:can_breath_werewolf",
 						"rift:direwolf_adult_werewolf_wild",
-						"rift:default_targets_werewolf",
-						"rift:direwolf_adult_werewolf_angry_because_of_fire"
-					]
-				},
-				"run_command": {
-					"command": [
-						"tag @s remove angeredByFire"
+						"rift:default_targets_werewolf"
 					]
 				}
 			},
@@ -5563,13 +4645,7 @@
 						"rift:can_pounce_attack_werewolf",
 						"rift:can_breath_werewolf",
 						"rift:direwolf_adult_werewolf_wild",
-						"rift:default_targets_werewolf",
-						"rift:direwolf_adult_werewolf_angry_because_of_fire"
-					]
-				},
-				"run_command": {
-					"command": [
-						"tag @s remove angeredByFire"
+						"rift:default_targets_werewolf"
 					]
 				}
 			},
@@ -5705,58 +4781,6 @@
 					"rift:behavior_state": "0"
 				}
 			},
-			"rift:cannot_move_while_sonic_boom": {
-				"add": {
-					"component_groups": [
-						"rift:cannot_move_sonic_boom"
-					]
-				},
-				"remove": {
-					"component_groups": [
-						"rift:reset_movement_sonic_boom"
-					]
-				}
-			},
-			"rift:can_move_after_sonic_boom": {
-				"add": {
-					"component_groups": [
-						"rift:reset_movement_sonic_boom"
-					]
-				},
-				"remove": {
-					"component_groups": [
-						"rift:cannot_move_sonic_boom",
-						"rift:can_breath_werewolf"
-					]
-				},
-				"set_property": {
-					"rift:sonic_boom_cooldown": true
-				}
-			},
-			"rift:end_sonic_boom_cooldown": {
-				"add": {
-					"component_groups": [
-						"rift:can_breath_werewolf"
-					]
-				},
-				"set_property": {
-					"rift:sonic_boom_cooldown": false
-				}
-			},
-			"rift:disable_sonic_boom": {
-				"remove": {
-					"component_groups": [
-						"rift:can_breath_werewolf"
-					]
-				}
-			},
-			"rift:reenable_sonic_boom": {
-				"add": {
-					"component_groups": [
-						"rift:can_breath_werewolf"
-					]
-				}
-			},
 			"rift:forced_transform": {
 				"remove": {
 					"component_groups": [
@@ -5811,25 +4835,18 @@
 				"add": {
 					"component_groups": [
 						"rift:direwolf_tamed_baby",
-						"rift:direwolf_tamed",
-						"rift:tamed_can_move"
+						"rift:direwolf_tamed"
 					]
 				},
 				"remove": {
 					"component_groups": [
 						"rift:direwolf_wild_baby",
 						"rift:direwolf_baby_calm",
-						"rift:direwolf_baby_scared",
-						"rift:wild_standing"
+						"rift:direwolf_baby_scared"
 					]
 				},
 				"set_property": {
 					"rift:behavior_state": "3"
-				},
-				"run_command": {
-					"command": [
-						"tag @s add sniffMobs"
-					]
 				}
 			},
 			"rift:baby_become_scared": {
@@ -6004,8 +5021,7 @@
 						"rift:direwolf_tamed",
 						"rift:direwolf_adult_tamed",
 						"rift:direwolf_normal_rideable",
-						"rift:cannot_power_jump",
-						"rift:tamed_can_move"
+						"rift:cannot_power_jump"
 					]
 				},
 				"remove": {
@@ -6015,14 +5031,12 @@
 						"rift:direwolf_adult_tameable",
 						"rift:direwolf_adult_chance_for_tame",
 						"rift:direwolf_adult_trusting",
-						"rift:temptable",
-						"rift:wild_standing"
+						"rift:temptable"
 					]
 				},
 				"run_command": {
 					"command": [
-						"tellraw @p {\"rawtext\":[{\"text\":\"You have succesfully tamed a Direwolf!\"}]}",
-						"tag @s add sniffMobs"
+						"tellraw @p {\"rawtext\":[{\"text\":\"You have succesfully tamed a Direwolf!\"}]}"
 					]
 				},
 				"set_property": {
@@ -6129,26 +5143,16 @@
 				]
 			},
 			"rift:enable_jump": {
-				"sequence": [
-					{},
-					{
-						"filters": {
-							"test": "has_component",
-							"subject": "self",
-							"value": "minecraft:is_ignited"
-						},
-						"add": {
-							"component_groups": [
-								"rift:can_power_jump"
-							]
-						},
-						"remove": {
-							"component_groups": [
-								"rift:cannot_power_jump"
-							]
-						}
-					}
-				]
+				"add": {
+					"component_groups": [
+						"rift:can_power_jump"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:cannot_power_jump"
+					]
+				}
 			},
 			"rift:disable_jump": {
 				"add": {
@@ -6318,8 +5322,7 @@
 					{
 						"run_command": {
 							"command": [
-								"function cmd.direwolf_pack_buff",
-								"event entity @s rift:decrease_energy_while_pack_buffing"
+								"function cmd.direwolf_pack_buff"
 							]
 						}
 					},
@@ -6349,6 +5352,16 @@
 						}
 					}
 				]
+			},
+			"rift:start_self_pack_buff": {
+				"set_property": {
+					"rift:is_pack_buffed": true
+				}
+			},
+			"rift:stop_self_pack_buff": {
+				"set_property": {
+					"rift:is_pack_buffed": false
+				}
 			},
 			"rift:wild_direwolf_buffing": {
 				"sequence": [
@@ -6391,41 +5404,6 @@
 					"command": [
 						"effect @s speed 0",
 						"effect @s strength 0"
-					]
-				}
-			},
-			"rift:angered_by_fire": {
-				"add": {
-					"component_groups": [
-						"rift:direwolf_adult_werewolf_angry_because_of_fire"
-					]
-				},
-				"remove": {
-					"component_groups": [
-						"rift:default_targets_werewolf",
-						"rift:default_targets_normal"
-					]
-				},
-				"run_command": {
-					"command": [
-						"tag @s add angeredByFire"
-					]
-				}
-			},
-			"rift:stop_being_angry_because_of_fire": {
-				"add": {
-					"component_groups": [
-						"rift:default_targets_werewolf"
-					]
-				},
-				"remove": {
-					"component_groups": [
-						"rift:direwolf_adult_werewolf_angry_because_of_fire"
-					]
-				},
-				"run_command": {
-					"command": [
-						"tag @s remove angeredByFire"
 					]
 				}
 			},
@@ -6496,220 +5474,14 @@
 					]
 				}
 			},
-			"rift:moving_slowly_low_energy": {
-				"add": {
-					"component_groups": [
-						"rift:tamed_can_move_low_energy"
-					]
-				},
-				"remove": {
-					"component_groups": [
-						"rift:tamed_can_move",
-						"rift:tamed_cannot_move",
-						"rift:cannot_move_sonic_boom",
-						"rift:reset_movement_sonic_boom"
-					]
-				}
-			},
-			"rift:stop_moving_low_energy": {
-				"add": {
-					"component_groups": [
-						"rift:tamed_cannot_move"
-					]
-				},
-				"remove": {
-					"component_groups": [
-						"rift:tamed_can_move",
-						"rift:tamed_can_move_low_energy",
-						"rift:cannot_move_sonic_boom",
-						"rift:reset_movement_sonic_boom"
-					]
-				}
-			},
-			"rift:return_to_moving_normally": {
-				"add": {
-					"component_groups": [
-						"rift:tamed_can_move"
-					]
-				},
-				"remove": {
-					"component_groups": [
-						"rift:tamed_cannot_move",
-						"rift:tamed_can_move_low_energy",
-						"rift:cannot_move_sonic_boom",
-						"rift:reset_movement_sonic_boom"
-					]
-				}
-			},
 			"rift:manage_state": {
-				"sequence": [
-					{},
-					{
-						"filters": {
-							"test": "int_property",
-							"subject": "self",
-							"domain": "rift:tame_state",
-							"value": 0
-						},
-						"run_command": {
-							"command": [
-								"tellraw @a {\"rawtext\":[{\"translate\":\"reminder.state_sitting.text\",\"with\":{\"rawtext\":[{\"selector\":\"@s\"}]}}]}"
-							]
-						}
-					},
-					{
-						"filters": {
-							"test": "int_property",
-							"subject": "self",
-							"domain": "rift:tame_state",
-							"value": 1
-						},
-						"run_command": {
-							"command": [
-								"tellraw @a {\"rawtext\":[{\"translate\":\"reminder.state_wandering.text\",\"with\":{\"rawtext\":[{\"selector\":\"@s\"}]}}]}"
-							]
-						}
-					},
-					{
-						"filters": {
-							"test": "int_property",
-							"subject": "self",
-							"domain": "rift:tame_state",
-							"value": 2
-						},
-						"run_command": {
-							"command": [
-								"tellraw @a {\"rawtext\":[{\"translate\":\"reminder.state_standing.text\",\"with\":{\"rawtext\":[{\"selector\":\"@s\"}]}}]}"
-							]
-						}
-					},
-					{
-						"set_property": {
-							"rift:tame_state": "query.property('rift:energy') > 0 ? ((query.property('rift:tame_state') >= 0 && query.property('rift:tame_state') <= 1) ? query.property('rift:tame_state') + 1 : 0) : 1"
-						}
-					}
-				]
+				"set_property": {
+					"rift:tame_state": "(query.property('rift:tame_state') >= 0 && query.property('rift:tame_state') <= 1) ? query.property('rift:tame_state') + 1 : 0"
+				}
 			},
 			"rift:manage_behavior": {
-				"sequence": [
-					{},
-					{
-						"filters": {
-							"test": "int_property",
-							"subject": "self",
-							"domain": "rift:behavior_state",
-							"value": 0
-						},
-						"run_command": {
-							"command": [
-								"tellraw @a {\"rawtext\":[{\"translate\":\"reminder.behavior_neutral.text\",\"with\":{\"rawtext\":[{\"selector\":\"@s\"}]}}]}"
-							]
-						}
-					},
-					{
-						"filters": {
-							"test": "int_property",
-							"subject": "self",
-							"domain": "rift:behavior_state",
-							"value": 1
-						},
-						"run_command": {
-							"command": [
-								"tellraw @a {\"rawtext\":[{\"translate\":\"reminder.behavior_aggressive.text\",\"with\":{\"rawtext\":[{\"selector\":\"@s\"}]}}]}"
-							]
-						}
-					},
-					{
-						"filters": {
-							"test": "int_property",
-							"subject": "self",
-							"domain": "rift:behavior_state",
-							"value": 2
-						},
-						"run_command": {
-							"command": [
-								"tellraw @a {\"rawtext\":[{\"translate\":\"reminder.behavior_passive.text\",\"with\":{\"rawtext\":[{\"selector\":\"@s\"}]}}]}"
-							]
-						}
-					},
-					{
-						"filters": {
-							"test": "int_property",
-							"subject": "self",
-							"domain": "rift:behavior_state",
-							"value": 3
-						},
-						"run_command": {
-							"command": [
-								"tellraw @a {\"rawtext\":[{\"translate\":\"reminder.behavior_assist.text\",\"with\":{\"rawtext\":[{\"selector\":\"@s\"}]}}]}"
-							]
-						}
-					},
-					{
-						"set_property": {
-							"rift:behavior_state": "query.property('rift:energy') > 0 ? ((query.property('rift:behavior_state') >= 0 && query.property('rift:behavior_state') <= 2) ? query.property('rift:behavior_state') + 1 : 0) : 3"
-						}
-					}
-				]
-			},
-			"rift:sit_at_no_energy": {
 				"set_property": {
-					"rift:tame_state": "1"
-				}
-			},
-			"rift:passive_at_no_energy": {
-				"set_property": {
-					"rift:behavior_state": "3"
-				}
-			},
-			"rift:decrease_energy_while_moving": {
-				"set_property": {
-					"rift:energy": "query.property('rift:energy') - 15"
-				}
-			},
-			"rift:decrease_energy_while_jumping": {
-				"set_property": {
-					"rift:energy": "query.property('rift:energy') - 30"
-				}
-			},
-			"rift:decrease_energy_while_biting_normal": {
-				"set_property": {
-					"rift:energy": "query.property('rift:energy') - 10"
-				}
-			},
-			"rift:decrease_energy_while_biting_werewolf": {
-				"set_property": {
-					"rift:energy": "query.property('rift:energy') - 15"
-				}
-			},
-			"rift:decrease_energy_while_slashing_werewolf": {
-				"set_property": {
-					"rift:energy": "query.property('rift:energy') - 10"
-				}
-			},
-			"rift:decrease_energy_while_breathing_werewolf": {
-				"set_property": {
-					"rift:energy": "query.property('rift:energy') - 30"
-				}
-			},
-			"rift:decrease_energy_while_pack_buffing": {
-				"set_property": {
-					"rift:energy": "query.property('rift:energy') - 7"
-				}
-			},
-			"rift:decrease_energy_while_sniffing": {
-				"set_property": {
-					"rift:energy": "query.property('rift:energy') - 5"
-				}
-			},
-			"rift:decrease_energy_while_snarling": {
-				"set_property": {
-					"rift:energy": "query.property('rift:energy') - 7"
-				}
-			},
-			"rift:regenerate_energy": {
-				"set_property": {
-					"rift:energy": "query.property('rift:energy') + 5"
+					"rift:behavior_state": "(query.property('rift:behavior_state') >= 0 && query.property('rift:behavior_state') <= 2) ? query.property('rift:behavior_state') + 1 : 0"
 				}
 			},
 			//for potion effects
@@ -6985,14 +5757,7 @@
 			"rift:lol2": {
 				"run_command": {
 					"command": [
-						"tellraw @p {\"rawtext\":[{\"translate\":\"reminder.cannot_use_treat.text\"}]}"
-					]
-				}
-			},
-			"rift:lol3": {
-				"run_command": {
-					"command": [
-						"tellraw @p {\"rawtext\":[{\"translate\":\"reminder.cannot_use_regular_food.text\"}]}"
+						"tellraw @p {\"rawtext\":[{\"text\":\"Treats are for healing and breeding only! Use regular foods to heal adults or speed up growth for babies!\"}]}"
 					]
 				}
 			}

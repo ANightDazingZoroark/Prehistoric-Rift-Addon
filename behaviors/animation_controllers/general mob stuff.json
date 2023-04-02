@@ -1,31 +1,6 @@
 {
 	"format_version": "1.10.0",
 	"animation_controllers": {
-		"controller.animation.add_moving_tag": {
-			"initial_state": "default",
-			"states": {
-				"default": {
-					"transitions": [
-						{
-							"hasTag": "query.ground_speed > 0"
-						}
-					]
-				},
-				"hasTag": {
-					"transitions": [
-						{
-							"default": "query.ground_speed == 0"
-						}
-					],
-                    "on_entry": [
-                        "/tag @s add moving"
-                    ],
-                    "on_exit": [
-                        "/tag @s remove moving"
-                    ]
-				}
-			}
-		},
 		"controller.animation.add_riding_tag": {
 			"initial_state": "default",
 			"states": {
@@ -351,81 +326,6 @@
 				}
 			}
 		},
-		"controller.animation.add_in_love_tag": {
-			"initial_state": "default",
-			"states": {
-				"default": {
-					"transitions": [
-						{
-							"hasTag": "query.is_in_love"
-						}
-					]
-				},
-				"hasTag": {
-					"transitions": [
-						{
-							"default": "!query.is_in_love"
-						}
-					],
-                    "on_entry": [
-                        "/tag @s add inLove"
-                    ],
-                    "on_exit": [
-                        "/tag @s remove inLove"
-                    ]
-				}
-			}
-		},
-		"controller.animation.add_hypnotized_tag": {
-			"initial_state": "default",
-			"states": {
-				"default": {
-					"transitions": [
-						{
-							"hasTag": "query.property('rift:is_hypnotized') == true"
-						}
-					]
-				},
-				"hasTag": {
-					"transitions": [
-						{
-							"default": "query.property('rift:is_hypnotized') == false"
-						}
-					],
-                    "on_entry": [
-                        "/tag @s add hypnotized"
-                    ],
-                    "on_exit": [
-                        "/tag @s remove hypnotized"
-                    ]
-				}
-			}
-		},
-		"controller.animation.add_out_of_control_tag": {
-			"initial_state": "default",
-			"states": {
-				"default": {
-					"transitions": [
-						{
-							"hasTag": "query.out_of_control"
-						}
-					]
-				},
-				"hasTag": {
-					"transitions": [
-						{
-							"default": "!query.out_of_control"
-						}
-					],
-                    "on_entry": [
-                        "/tag @s add outOfControl"
-                    ],
-                    "on_exit": [
-                        "/tag @s remove outOfControl"
-                    ]
-				}
-			}
-		},
 		"controller.animation.become_unsittable_when_ridden": {
 			"initial_state": "default",
 			"states": {
@@ -483,6 +383,9 @@
 					],
 					"on_entry": [
 						"@s rift:on_standing"
+					],
+					"on_exit": [
+						"/tellraw @p {\"rawtext\":[{\"selector\": \"@s\"}, {\"text\":\" is now sitting\"}]}"
 					]
 				},
 				"sitting": {
@@ -499,6 +402,9 @@
 					],
 					"on_entry": [
 						"@s rift:on_sitting"
+					],
+					"on_exit": [
+						"/tellraw @p {\"rawtext\":[{\"selector\": \"@s\"}, {\"text\":\" is now wandering\"}]}"
 					]
 				},
 				"wandering": {
@@ -515,6 +421,9 @@
 					],
 					"on_entry": [
 						"@s rift:on_wandering"
+					],
+					"on_exit": [
+						"/tellraw @p {\"rawtext\":[{\"selector\": \"@s\"}, {\"text\":\" is now following\"}]}"
 					]
 				}
 			}
@@ -555,6 +464,9 @@
 					],
 					"on_entry": [
 						"@s rift:on_assist_behavior"
+					],
+					"on_exit": [
+						"/tellraw @p {\"rawtext\":[{\"selector\": \"@s\"}, {\"text\":\" will now be neutral\"}]}"
 					]
 				},
 				"neutral": {
@@ -574,6 +486,9 @@
 					],
 					"on_entry": [
 						"@s rift:on_neutral_behavior"
+					],
+					"on_exit": [
+						"/tellraw @p {\"rawtext\":[{\"selector\": \"@s\"}, {\"text\":\" will now be aggressive\"}]}"
 					]
 				},
 				"aggressive": {
@@ -593,6 +508,9 @@
 					],
 					"on_entry": [
 						"@s rift:on_aggressive_behavior"
+					],
+					"on_exit": [
+						"/tellraw @p {\"rawtext\":[{\"selector\": \"@s\"}, {\"text\":\" will now be passive\"}]}"
 					]
 				},
 				"passive": {
@@ -612,6 +530,9 @@
 					],
 					"on_entry": [
 						"@s rift:on_passive_behavior"
+					],
+					"on_exit": [
+						"/tellraw @p {\"rawtext\":[{\"selector\": \"@s\"}, {\"text\":\" will now assist you in combat\"}]}"
 					]
 				}
 			}
@@ -662,32 +583,6 @@
 					],
 					"on_exit": [
 						"/tag @s remove eatFromInventoryCooldown"
-					]
-				}
-			}
-		},
-		"controller.animation.general_die_without_tenontosaurus": {
-			"initial_state": "default",
-			"states": {
-				"default": {
-					"animations": [
-						"animFindTenontosaurus"
-					],
-					"transitions": [
-						{
-							"timer": "v.tenonto == 0 && query.property('rift:is_hypnotized') == true"
-						}
-					]
-				},
-				"timer": {
-					"animations": [
-						"animFindTenontosaurus",
-						"animDeathTimer"
-					],
-					"transitions": [
-						{
-							"default": "v.tenonto > 0"
-						}
 					]
 				}
 			}

@@ -2,29 +2,10 @@
   "format_version": "1.16.0",
   "minecraft:entity": {
     "description": {
-        "identifier": "minecraft:zombie_pigman",
-        "is_spawnable": true,
-        "is_summonable": true,
-        "is_experimental": false,
-        "animations": {
-            "contHypnotizedTag": "controller.animation.add_hypnotized_tag",
-            "contDieWithoutTenontosaurus": "controller.animation.general_die_without_tenontosaurus",
-            "animFindTenontosaurus": "animation.find_tenontosaurus",
-            "animDeathTimer": "animation.hypnosis_death_timer"
-        },
-        "scripts": {
-            "animate": [
-                "contHypnotizedTag",
-                "contDieWithoutTenontosaurus"
-            ]
-        },
-        "properties": {
-			"rift:is_hypnotized": {
-				"type": "bool",
-				"default": false,
-			    "client_sync": true
-			}
-        }
+      "identifier": "minecraft:zombie_pigman",
+      "is_spawnable": true,
+      "is_summonable": true,
+      "is_experimental": false
     },
     "component_groups": {
       "minecraft:pig_zombie_baby": {
@@ -74,171 +55,10 @@
         "minecraft:equipment": {
           "table": "loot_tables/entities/zombified_piglin_rider_gear.json"
         }
-      },
-      "rift:not_hypnotized": {
-        "minecraft:behavior.avoid_mob_type": {
-          "priority": 0,
-          "entity_types": [
-            {
-              "filters": {
-                "test": "is_family",
-                "value": "parasaurScary",
-                "subject": "other"
-              },
-              "max_dist": 12,
-              "must_see": true,
-              "walk_speed_multiplier": 1.2,
-              "sprint_speed_multiplier": 1.2
-            }
-          ]
-        },
-        "minecraft:behavior.hurt_by_target": {
-          "priority": 1
-        },
-        "minecraft:behavior.mount_pathing": {
-          "priority": 2,
-          "speed_multiplier": 1.25,
-          "target_dist": 0,
-          "track_target": true
-        },
-        "minecraft:behavior.equip_item": {
-          "priority": 3
-        },
-        "minecraft:behavior.nearest_attackable_target": {
-          "priority": 4,
-          "entity_types": [
-              {
-                "filters": {
-                  "test": "is_family",
-                  "subject": "other",
-                  "value": "parasaurAngerer"
-                },
-                "max_dist": 64
-              }
-            ]
-        },
-        "minecraft:behavior.melee_attack": {
-          "priority": 5,
-          "speed_multiplier": 1.5
-        },
-        "minecraft:behavior.stomp_turtle_egg": {
-          "priority": 6,
-          "speed_multiplier": 1,
-          "search_range": 10,
-          "search_height": 2,
-          "goal_radius": 1.14,
-          "interval": 20
-        },
-        "minecraft:behavior.pickup_items": {
-          "priority": 7,
-          "max_dist": 3,
-          "goal_radius": 2,
-          "speed_multiplier": 1.0,
-          "pickup_based_on_chance": true,
-          "can_pickup_any_item": true
-        },
-        "minecraft:behavior.random_stroll": {
-          "priority": 8,
-          "speed_multiplier": 1.0
-        },
-        "minecraft:behavior.look_at_player": {
-          "priority": 9,
-          "look_distance": 6.0,
-          "probability": 0.02
-        },
-        "minecraft:behavior.random_look_around": {
-          "priority": 10
-        }
-      },
-      "rift:follow_tenontosaurus": {
-          "minecraft:behavior.nearest_prioritized_attackable_target": {
-              "priority": 4,
-              "within_radius": 32.0,
-              "entity_types": [
-                  {
-                      "filters": {
-                          "all_of": [
-                              {
-                                  "test": "has_tag",
-                                  "subject": "other",
-                                  "value": "tenontoTarget"
-                              }
-                          ]
-                      },
-                      "max_dist": 48,
-                      "priority": 0
-                  },
-                  {
-                      "filters": {
-                          "all_of": [
-                              {
-                                  "test": "is_family",
-                                  "subject": "other",
-                                  "value": "tenontosaurus"
-                              },
-                              {
-                                  "test": "has_component",
-                                  "subject": "other",
-                                  "operator": "!=",
-                                  "value": "minecraft:is_tamed"
-                              }
-                          ]
-                      },
-                      "max_dist": 48,
-                      "priority": 1
-                  }
-              ]
-          }
-      },
-      "rift:follow_tenontosaurus_no_target": {
-          "minecraft:behavior.ranged_attack": {
-              "priority": 8,
-              "attack_radius": 6.0,
-              "attack_radius_min": 4
-          },
-          "minecraft:on_target_acquired": {
-              "filters": {
-                  "all_of": [
-                      {
-                          "test": "has_component",
-                          "subject": "target",
-                          "operator": "!=",
-                          "value": "minecraft:is_tamed"
-                      },
-                      {
-                          "test": "is_family",
-                          "subject": "target",
-                          "operator": "!=",
-                          "value": "tenontosaurus"
-                      }
-                  ]
-              },
-              "event": "rift:attack_for_tenontosaurus",
-              "target": "self"
-          }
-      },
-      "rift:attacking_for_tenontosaurus": {
-          "minecraft:behavior.melee_attack": {
-            "priority": 5,
-            "speed_multiplier": 1.5
-          },
-          "minecraft:on_target_escape": {
-              "event": "rift:stop_attacking_for_tenontosaurus",
-              "target": "self"
-          }
-      },
-      "rift:transform_into_hypnotized": {
-        "minecraft:transformation": {
-            "into": "minecraft:zombie_pigman<rift:transform_into_hypnotized>",
-            "preserve_equipment": true
-        }
       }
     },
 
     "components": {
-        "minecraft:equipment": {
-          "table": "loot_tables/entities/zombie_pigman_gear.json"
-        },
       "minecraft:is_hidden_when_invisible": {
       },
       "minecraft:breathable": {
@@ -274,6 +94,9 @@
       },
       "minecraft:loot": {
         "table": "loot_tables/entities/zombie_pigman.json"
+      },
+      "minecraft:equipment": {
+        "table": "loot_tables/entities/zombie_pigman_gear.json"
       },
       "minecraft:health": {
         "value": 20,
@@ -496,6 +319,79 @@
           }
         ]
       },
+      "minecraft:behavior.avoid_mob_type": {
+        "priority": 0,
+        "entity_types": [
+          {
+            "filters": {
+              "test": "is_family",
+              "value": "parasaurScary",
+              "subject": "other"
+            },
+            "max_dist": 12,
+            "must_see": true,
+            "walk_speed_multiplier": 1.2,
+            "sprint_speed_multiplier": 1.2
+          }
+        ]
+      },
+      "minecraft:behavior.hurt_by_target": {
+        "priority": 1
+      },
+      "minecraft:behavior.mount_pathing": {
+        "priority": 2,
+        "speed_multiplier": 1.25,
+        "target_dist": 0,
+        "track_target": true
+      },
+      "minecraft:behavior.equip_item": {
+        "priority": 3
+      },
+      "minecraft:behavior.nearest_attackable_target": {
+        "priority": 4,
+        "entity_types": [
+            {
+              "filters": {
+                "test": "is_family",
+                "subject": "other",
+                "value": "parasaurAngerer"
+              },
+              "max_dist": 64
+            }
+          ]
+      },
+      "minecraft:behavior.melee_attack": {
+        "priority": 5,
+        "speed_multiplier": 1.5
+      },
+      "minecraft:behavior.stomp_turtle_egg": {
+        "priority": 6,
+        "speed_multiplier": 1,
+        "search_range": 10,
+        "search_height": 2,
+        "goal_radius": 1.14,
+        "interval": 20
+      },
+      "minecraft:behavior.pickup_items": {
+        "priority": 7,
+        "max_dist": 3,
+        "goal_radius": 2,
+        "speed_multiplier": 1.0,
+        "pickup_based_on_chance": true,
+        "can_pickup_any_item": true
+      },
+      "minecraft:behavior.random_stroll": {
+        "priority": 8,
+        "speed_multiplier": 1.0
+      },
+      "minecraft:behavior.look_at_player": {
+        "priority": 9,
+        "look_distance": 6.0,
+        "probability": 0.02
+      },
+      "minecraft:behavior.random_look_around": {
+        "priority": 10
+      },
       "minecraft:physics": {
       },
       "minecraft:pushable": {
@@ -520,8 +416,7 @@
             "add": {
               "component_groups": [
                 "minecraft:pig_zombie_baby",
-                "minecraft:pig_zombie_calm",
-                "rift:not_hypnotized"
+                "minecraft:pig_zombie_calm"
               ]
             }
           },
@@ -536,8 +431,7 @@
             "add": {
               "component_groups": [
                 "minecraft:pig_zombie_adult",
-                "minecraft:pig_zombie_calm",
-                "rift:not_hypnotized"
+                "minecraft:pig_zombie_calm"
               ]
             }
           }
@@ -552,8 +446,7 @@
             "add": {
               "component_groups": [
                 "minecraft:pig_zombie_adult",
-                "minecraft:pig_zombie_calm",
-                "rift:not_hypnotized"
+                "minecraft:pig_zombie_calm"
               ]
             }
           },
@@ -564,153 +457,11 @@
             "add": {
               "component_groups": [
                 "minecraft:pig_zombie_baby",
-                "minecraft:pig_zombie_calm",
-                "rift:not_hypnotized"
+                "minecraft:pig_zombie_calm"
               ]
+
             }
           }
-        ]
-      },
-      "rift:spawn_hypnotized_by_tenontosaurus": {
-        "randomize": [
-          {
-            "weight": 95,
-            "remove": {
-            },
-            "add": {
-              "component_groups": [
-                "minecraft:pig_zombie_adult",
-                "rift:follow_tenontosaurus",
-                "rift:follow_tenontosaurus_no_target"
-              ]
-            },
-            "set_property": {
-                "rift:is_hypnotized": true
-            }
-          },
-          {
-            "weight": 5,
-            "remove": {
-            },
-            "add": {
-              "component_groups": [
-                "minecraft:pig_zombie_baby",
-                "rift:follow_tenontosaurus",
-                "rift:follow_tenontosaurus_no_target"
-              ]
-            },
-            "set_property": {
-                "rift:is_hypnotized": true
-            }
-          }
-        ]
-      },
-      "rift:attack_for_tenontosaurus": {
-          "add": {
-              "component_groups": [
-                  "rift:attacking_for_tenontosaurus"
-              ]
-          },
-          "remove": {
-              "component_groups": [
-                  "rift:follow_tenontosaurus_no_target"
-              ]
-          },
-          "run_command": {
-              "command": [
-                  "say FOR THE QUEEN"
-              ]
-          }
-      },
-      "rift:stop_attacking_for_tenontosaurus": {
-          "add": {
-              "component_groups": [
-                  "rift:follow_tenontosaurus_no_target"
-              ]
-          },
-          "remove": {
-              "component_groups": [
-                  "rift:attacking_for_tenontosaurus"
-              ]
-          }
-      },
-      "rift:hypnotized_by_tenontosaurus": {
-        "add": {
-            "component_groups": [
-                "rift:transform_into_hypnotized"
-            ]
-        }
-      },
-      "rift:transform_into_hypnotized": {
-        "sequence": [
-            {},
-            {
-                "filters": {
-                    "all_of": [
-                        {
-                            "test": "is_riding",
-                            "subject": "other",
-                            "value": false
-                        },
-                        {
-                            "test": "has_component",
-                            "subject": "other",
-                            "value": "minecraft:is_baby"
-                        }
-                    ]
-                },
-                "add": {
-                  "component_groups": [
-                    "minecraft:pig_zombie_baby",
-                    "rift:follow_tenontosaurus",
-                    "rift:follow_tenontosaurus_no_target"
-                  ]
-                },
-                "set_property": {
-                    "rift:is_hypnotized": true
-                }
-            },
-            {
-                "filters": {
-                    "all_of": [
-                        {
-                            "test": "is_riding",
-                            "subject": "other",
-                            "value": false
-                        },
-                        {
-                            "test": "has_component",
-                            "subject": "other",
-                            "operator": "!=",
-                            "value": "minecraft:is_baby"
-                        }
-                    ]
-                },
-                "add": {
-                    "component_groups": [
-                        "minecraft:pig_zombie_adult",
-                        "rift:follow_tenontosaurus",
-                        "rift:follow_tenontosaurus_no_target"
-                    ]
-                },
-                "set_property": {
-                    "rift:is_hypnotized": true
-                }
-            },
-            {
-                "filters": {
-                    "test": "is_riding",
-                    "subject": "other",
-                    "value": true
-                },
-                "add": {
-                    "component_groups": [
-                        "minecraft:strider_jockey",
-                        "rift:follow_tenontosaurus",
-                        "rift:follow_tenontosaurus_no_target"
-                    ]
-                }
-            }
         ]
       },
       "minecraft:on_calm": {
@@ -740,8 +491,7 @@
       "minecraft:spawn_as_strider_jockey": {
         "add": {
           "component_groups": [
-            "minecraft:strider_jockey",
-            "rift:not_hypnotized"
+            "minecraft:strider_jockey"
           ]
         }
       }

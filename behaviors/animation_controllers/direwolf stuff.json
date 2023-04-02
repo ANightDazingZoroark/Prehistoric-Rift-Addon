@@ -7,13 +7,13 @@
                 "default": {
                     "transitions": [
                         {
-                            "find_friends": "query.has_target && !query.is_tamed && query.property('rift:is_hypnotized') == false"
+                            "find_friends": "query.has_target && !query.is_tamed"
                         }
                     ]
                 },
                 "find_friends": {
                     "on_entry": [
-                        "v.x = 0.0; for_each(t.direwolf, query.get_nearby_entities_except_self(16, 'rift:direwolf'), { v.x = v.x + !(t.direwolf -> query.is_tamed); });",
+                        "v.x = 0.0; for_each(t.direwolf, query.get_nearby_entities_except_self(16, 'rift:direwolf'), { v.x = v.x + !(t.direwolf -> query.is_tamed); }); for_each(t.direwolf_werewolf, query.get_nearby_entities_except_self(16, 'rift:direwolf_werewolf'), { v.x = v.x + !(t.direwolf_werewolf -> query.is_tamed); });",
                         "v.chance = Math.random_integer(0, 2);"
                     ],
                     "transitions": [
@@ -21,7 +21,7 @@
                             "use_buff": "v.chance == 0 && v.x >= 3"
                         },
                         {
-                            "default": "!query.has_target || query.property('rift:is_hypnotized') == true"
+                            "default": "!query.has_target"
                         }
                     ]
                 },
@@ -31,7 +31,7 @@
                     ],
                     "transitions": [
                         {
-                            "default": "!query.has_target || query.property('rift:is_hypnotized') == true"
+                            "default": "!query.has_target"
                         }
                     ]
                 }
@@ -313,61 +313,75 @@
                     "transitions": [
                         {
                             "breath": "query.is_sonic_boom"
-                        },
-                        {
-                            "breathCooldown": "query.property('rift:sonic_boom_cooldown') == true"
-                        },
-                        {
-                            "cannotBreath": "query.is_ignited && !query.is_baby && (!query.is_on_ground || query.is_in_water)"
                         }
                     ]
                 },
                 "breath": {
                     "animations": [
-                        "animDirewolfBreathCountdown"
-                    ],
-                    "on_entry": [
-                        "@s rift:cannot_move_while_sonic_boom"
-                    ],
-                    "on_exit": [
-                        "@s rift:can_move_after_sonic_boom"
+                        "animStay"
                     ],
                     "transitions": [
                         {
-                            "default": "query.all_animations_finished"
-                        },
-                        {
-                            "cannotBreath": "!query.is_on_ground || query.is_in_water"
-                        }
-                    ]
-                },
-                "breathCooldown": {
-                    "animations": [
-                        "animDirewolfBreathCooldown"
-                    ],
-                    "on_exit": [
-                        "@s rift:end_sonic_boom_cooldown"
-                    ],
-                    "transitions": [
-                        {
-                            "default": "query.all_animations_finished"
-                        }
-                    ]
-                },
-                "cannotBreath": {
-                    "on_entry": [
-                        "@s rift:disable_sonic_boom"
-                    ],
-                    "on_exit": [
-                        "@s rift:reenable_sonic_boom"
-                    ],
-                    "transitions": [
-                        {
-                            "default": "query.is_on_ground && !query.is_in_water"
+                            "default": "!query.is_sonic_boom"
                         }
                     ]
                 }
             }
-        }
+        },
+        "controller.animation.direwolf_pack_buffed": {
+			"initial_state": "default",
+			"states": {
+				"default": {
+					"transitions": [
+						{
+							"buffed": "query.property('rift:is_pack_buffed') == true"
+						}
+					]
+				},
+				"buffed": {
+					"transitions": [
+						{
+							"default": "query.property('rift:is_pack_buffed') == false"
+						}
+					],
+                    "on_entry": [
+                        "/tag @s add packBuffed"
+                    ],
+                    "on_exit": [
+                        "/tag @s remove packBuffed"
+                    ],
+					"animations": [
+					 	"animPackBuffed"
+					]
+				}
+			}
+		},
+        "controller.animation.direwolf_pack_buff_countdown": {
+			"initial_state": "default",
+			"states": {
+				"default": {
+					"transitions": [
+						{
+							"buffed": "query.property('rift:is_pack_buffed') == true"
+						}
+					]
+				},
+				"buffed": {
+					"transitions": [
+						{
+							"default": "query.all_animations_finished"
+						}
+					],
+					"animations": [
+					 	"animPackBuffCountdown"
+					],
+                    "on_exit": [
+                        "/event entity @s rift:stop_self_pack_buff",
+                        "/effect @s speed 0",
+                        "/effect @s strength 0"
+                    ]
+				}
+			}
+		}
     }
 }

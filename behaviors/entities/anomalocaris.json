@@ -20,15 +20,6 @@
 					"type": "bool",
 					"default": false
 				},
-                "rift:energy": {
-                    "range": [
-						0,
-						150
-					],
-					"type": "int",
-					"default": 150,
-					"client_sync": true
-                },
                 "rift:tame_state": { //0 for standing, 1 for sitting, 2 for wandering
                     "range": [
 						0,
@@ -52,20 +43,11 @@
 				"contTameTag": "controller.animation.add_tame_tag",
 				"contBabyTag": "controller.animation.add_baby_tag",
 				"contRiddenTag": "controller.animation.add_ridden_tag",
-				"contInLoveTag": "controller.animation.add_in_love_tag",
 				"contForcedAttack": "controller.animation.general_forced_attack",
 				"contCarry": "controller.animation.anomalocaris_carrying",
 				"contInvisibility": "controller.animation.anomalocaris_invisibility",
 				"contTameState": "controller.animation.manage_tame_state",
 				"contBehaviorState": "controller.animation.manage_tame_behavior",
-				"contEnergyUsage": "controller.animation.anomalocaris_energy_movement_usage",
-				"contWarnLowEnergy": "controller.animation.warn_of_low_energy",
-				"animUseEnergyWhileMoving": "animation.anomalocaris_decrease_energy_while_moving",
-				"animUseEnergyWhileMovingInvisible": "animation.anomalocaris_decrease_energy_while_moving_invisible",
-				"animEnergyRegenDelay": "animation.regenerate_energy_delay",
-				"animRegenerateEnergy": "animation.anomalocaris_regenerate_energy",
-				"animLowOnEnergyEffects": "animation.effects_while_low_on_energy",
-				"animNoEnergyEffects": "animation.effects_while_no_energy",
 				"animEatFromInventoryCooldown": "animation.eat_from_inventory_cooldown",
 				"animInvisibility": "animation.invisibility",
 				"animForcedAttack": "animation.forced_attack_anomalocaris",
@@ -77,14 +59,11 @@
 					"contTameTag",
 					"contBabyTag",
 					"contRiddenTag",
-					"contInLoveTag",
 					"contForcedAttack",
 					"contInvisibility",
 					"contCarry",
 					"contTameState",
-					"contBehaviorState",
-					"contEnergyUsage",
-					"contWarnLowEnergy"
+					"contBehaviorState"
 				]
 			}
         },
@@ -865,12 +844,7 @@
 				"minecraft:behavior.player_ride_tamed": {}
 			},
 			"rift:anomalocaris_tamed": {
-				"minecraft:is_tamed": {},
-				"minecraft:leashable": {
-					"soft_distance": 4,
-					"hard_distance": 8,
-					"max_distance": 12
-				}
+				"minecraft:is_tamed": {}
 			},
             "rift:anomalocaris_saddled": {
                 "minecraft:is_saddled": {},
@@ -998,15 +972,33 @@
 					"start_distance": 4,
 					"stop_distance": 40,
 					"priority": 10
+				},
+				"minecraft:movement": {
+					"value": 0.05
+				},
+				"minecraft:underwater_movement": {
+					"value": 0.25
 				}
 			},
 			"rift:sitting": {
+				"minecraft:movement": {
+					"value": 0.05
+				},
+				"minecraft:underwater_movement": {
+					"value": 0.25
+				},
 				"minecraft:on_target_acquired": {
 					"event": "rift:sitting_on_anger",
 					"target": "self"
 				}
 			},
 			"rift:sitting_angered": {
+				"minecraft:movement": {
+					"value": 0.05
+				},
+				"minecraft:underwater_movement": {
+					"value": 0.25
+				},
 				"minecraft:on_target_escape": {
 					"event": "rift:sitting_on_calm",
 				  	"target": "self"
@@ -1022,30 +1014,12 @@
                     "xz_dist": 20,
                     "y_dist": 2,
                     "speed_multiplier": 1
-                }
-			},
-			"rift:tamed_can_move": {
+                },
 				"minecraft:movement": {
 					"value": 0.05
 				},
 				"minecraft:underwater_movement": {
-					"value": 0.10
-				}
-			},
-			"rift:tamed_can_move_low_energy": { //formula for speed reduction from slowness effect is speed * 0.15 * level
-				"minecraft:movement": {
-					"value": 0.0225
-				},
-				"minecraft:underwater_movement": {
-					"value": 0.0475
-				}
-			},
-			"rift:tamed_cannot_move": {
-				"minecraft:movement": {
-					"value": 0.0
-				},
-				"minecraft:underwater_movement": {
-					"value": 0.0
+					"value": 0.25
 				}
 			},
 			"rift:assist_behavior": {
@@ -1186,7 +1160,6 @@
         "components": {
             "minecraft:type_family": {
 				"family": [
-					"riftCreature",
 					"anomalocaris",
 					"mob",
 					"carnivore",
@@ -1208,6 +1181,11 @@
 				"suffocate_time": 0,
                 "breathes_air": false,
                 "breathes_water": true
+			},
+			"minecraft:leashable": {
+				"soft_distance": 4,
+				"hard_distance": 8,
+				"max_distance": 12
 			},
 			"minecraft:interact": {
 				"interactions": [
@@ -1244,422 +1222,6 @@
 								]
 							},
 							"event": "rift:lol2",
-							"target": "self"
-						},
-						"interact_text": "action.interact.tame"
-					},
-					{
-						"on_interact": {
-							"filters": {
-								"all_of": [
-									{
-										"any_of": [
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "rift:fish_treat"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "rift:bug_treat"
-											}
-										]
-									},
-									{
-										"test": "has_component",
-										"subject": "self",
-										"value": "minecraft:is_tamed"
-									},
-									{
-										"test": "has_component",
-										"subject": "self",
-										"operator": "!=",
-										"value": "minecraft:is_baby"
-									},
-									{
-										"any_of": [
-											{
-												"test": "is_missing_health",
-												"subject": "self",
-												"value": true
-											},
-											{
-												"test": "has_tag",
-												"subject": "self",
-												"value": "inLove"
-											}
-										]
-									}
-								]
-							},
-							"event": "rift:lol2",
-							"target": "self"
-						},
-						"interact_text": "action.interact.tame"
-					},
-					{
-						"on_interact": {
-							"filters": {
-								"all_of": [
-									{
-										"any_of": [
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "minecraft:beef"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "minecraft:cooked_beef"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "minecraft:porkchop"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "minecraft:cooked_porkchop"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "minecraft:chicken"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "minecraft:cooked_chicken"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "minecraft:mutton"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "minecraft:cooked_mutton"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "minecraft:rabbit"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "minecraft:cooked_rabbit"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "minecraft:cod"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "minecraft:cooked_cod"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "minecraft:salmon"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "minecraft:cooked_salmon"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "minecraft:tropical_fish"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "rift:raw_exotic_meat"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "rift:cooked_exotic_meat"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "rift:raw_dodo_meat"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "rift:cooked_dodo_meat"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "rift:raw_hadrosaur_meat"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "rift:cooked_hadrosaur_meat"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "rift:raw_coelacanth"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "rift:raw_megapiranha"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "rift:cooked_megapiranha"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "rift:raw_hemolymph"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "rift:boiled_hemolymph"
-											}
-										]
-									},
-									{
-										"test": "has_component",
-										"subject": "self",
-										"value": "minecraft:is_tamed"
-									},
-									{
-										"test": "has_component",
-										"subject": "self",
-										"operator": "!=",
-										"value": "minecraft:is_baby"
-									},
-									{
-										"test": "is_missing_health",
-										"subject": "self",
-										"value": false
-									}
-								]
-							},
-							"event": "rift:lol3",
-							"target": "self"
-						},
-						"interact_text": "action.interact.tame"
-					},
-					{
-						"on_interact": {
-							"filters": {
-								"all_of": [
-									{
-										"any_of": [
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "minecraft:beef"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "minecraft:cooked_beef"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "minecraft:porkchop"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "minecraft:cooked_porkchop"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "minecraft:chicken"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "minecraft:cooked_chicken"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "minecraft:mutton"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "minecraft:cooked_mutton"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "minecraft:rabbit"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "minecraft:cooked_rabbit"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "minecraft:cod"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "minecraft:cooked_cod"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "minecraft:salmon"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "minecraft:cooked_salmon"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "minecraft:tropical_fish"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "rift:raw_exotic_meat"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "rift:cooked_exotic_meat"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "rift:raw_dodo_meat"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "rift:cooked_dodo_meat"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "rift:raw_hadrosaur_meat"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "rift:cooked_hadrosaur_meat"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "rift:raw_coelacanth"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "rift:raw_megapiranha"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "rift:cooked_megapiranha"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "rift:raw_hemolymph"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "rift:boiled_hemolymph"
-											}
-										]
-									},
-									{
-										"test": "has_component",
-										"subject": "self",
-										"operator": "!=",
-										"value": "minecraft:is_tamed"
-									}
-								]
-							},
-							"event": "rift:lol3",
 							"target": "self"
 						},
 						"interact_text": "action.interact.tame"
@@ -4045,8 +3607,7 @@
 				"add": {
 					"component_groups": [
 						"rift:anomalocaris_baby_tamed",
-						"rift:anomalocaris_tamed",
-						"rift:tamed_can_move"
+						"rift:anomalocaris_tamed"
 					]
 				},
 				"remove": {
@@ -4161,8 +3722,7 @@
 					"component_groups": [
 						"rift:anomalocaris_adult_tamed",
 						"rift:anomalocaris_tamed",
-						"rift:rideable",
-						"rift:tamed_can_move"
+						"rift:rideable"
 					]
 				},
 				"remove": {
@@ -4572,7 +4132,7 @@
 								"rift:anomalocaris_tamed",
 								"rift:default_navigation",
                                 "rift:pushable",
-								"rift:tamed_can_move",
+								"rift:wild_standing",
                                 "rift:variant_zero",
 								"rift:temptable"
                             ]
@@ -4590,7 +4150,7 @@
 								"rift:anomalocaris_tamed",
 								"rift:default_navigation",
                                 "rift:pushable",
-								"rift:tamed_can_move",
+								"rift:wild_standing",
                                 "rift:variant_one",
 								"rift:temptable"
                             ]
@@ -4608,7 +4168,7 @@
 								"rift:anomalocaris_tamed",
 								"rift:default_navigation",
                                 "rift:pushable",
-								"rift:tamed_can_move",
+								"rift:wild_standing",
                                 "rift:variant_two",
 								"rift:temptable"
                             ]
@@ -4626,7 +4186,7 @@
 								"rift:anomalocaris_tamed",
 								"rift:default_navigation",
                                 "rift:pushable",
-								"rift:tamed_can_move",
+								"rift:wild_standing",
                                 "rift:variant_three",
 								"rift:temptable"
                             ]
@@ -4728,8 +4288,7 @@
 				},
 				"run_command": {
 					"command": [
-						"ride @e[c=1, r=5, type=!rift:anomalocaris, type=!player] summon_ride rift:anomalo_carry_stuff",
-						"event entity @s rift:decrease_energy_while_slashing"
+						"ride @e[c=1, r=5, type=!rift:anomalocaris, type=!player] summon_ride rift:anomalo_carry_stuff"
 					]
 				}
 			},
@@ -4772,179 +4331,14 @@
 					"rift:eat_from_inventory_cooldown": false
 				}
 			},
-			"rift:moving_slowly_low_energy": {
-				"add": {
-					"component_groups": [
-						"rift:tamed_can_move_low_energy"
-					]
-				},
-				"remove": {
-					"component_groups": [
-						"rift:tamed_can_move",
-						"rift:tamed_cannot_move"
-					]
-				}
-			},
-			"rift:stop_moving_low_energy": {
-				"add": {
-					"component_groups": [
-						"rift:tamed_cannot_move"
-					]
-				},
-				"remove": {
-					"component_groups": [
-						"rift:tamed_can_move",
-						"rift:tamed_can_move_low_energy"
-					]
-				}
-			},
-			"rift:return_to_moving_normally": {
-				"add": {
-					"component_groups": [
-						"rift:tamed_can_move"
-					]
-				},
-				"remove": {
-					"component_groups": [
-						"rift:tamed_cannot_move",
-						"rift:tamed_can_move_low_energy"
-					]
-				}
-			},
 			"rift:manage_state": {
-				"sequence": [
-					{},
-					{
-						"filters": {
-							"test": "int_property",
-							"subject": "self",
-							"domain": "rift:tame_state",
-							"value": 0
-						},
-						"run_command": {
-							"command": [
-								"tellraw @a {\"rawtext\":[{\"translate\":\"reminder.state_sitting.text\",\"with\":{\"rawtext\":[{\"selector\":\"@s\"}]}}]}"
-							]
-						}
-					},
-					{
-						"filters": {
-							"test": "int_property",
-							"subject": "self",
-							"domain": "rift:tame_state",
-							"value": 1
-						},
-						"run_command": {
-							"command": [
-								"tellraw @a {\"rawtext\":[{\"translate\":\"reminder.state_wandering.text\",\"with\":{\"rawtext\":[{\"selector\":\"@s\"}]}}]}"
-							]
-						}
-					},
-					{
-						"filters": {
-							"test": "int_property",
-							"subject": "self",
-							"domain": "rift:tame_state",
-							"value": 2
-						},
-						"run_command": {
-							"command": [
-								"tellraw @a {\"rawtext\":[{\"translate\":\"reminder.state_standing.text\",\"with\":{\"rawtext\":[{\"selector\":\"@s\"}]}}]}"
-							]
-						}
-					},
-					{
-						"set_property": {
-							"rift:tame_state": "query.property('rift:energy') > 0 ? ((query.property('rift:tame_state') >= 0 && query.property('rift:tame_state') <= 1) ? query.property('rift:tame_state') + 1 : 0) : 1"
-						}
-					}
-				]
+				"set_property": {
+					"rift:tame_state": "(query.property('rift:tame_state') >= 0 && query.property('rift:tame_state') <= 1) ? query.property('rift:tame_state') + 1 : 0"
+				}
 			},
 			"rift:manage_behavior": {
-				"sequence": [
-					{},
-					{
-						"filters": {
-							"test": "int_property",
-							"subject": "self",
-							"domain": "rift:behavior_state",
-							"value": 0
-						},
-						"run_command": {
-							"command": [
-								"tellraw @a {\"rawtext\":[{\"translate\":\"reminder.behavior_neutral.text\",\"with\":{\"rawtext\":[{\"selector\":\"@s\"}]}}]}"
-							]
-						}
-					},
-					{
-						"filters": {
-							"test": "int_property",
-							"subject": "self",
-							"domain": "rift:behavior_state",
-							"value": 1
-						},
-						"run_command": {
-							"command": [
-								"tellraw @a {\"rawtext\":[{\"translate\":\"reminder.behavior_aggressive.text\",\"with\":{\"rawtext\":[{\"selector\":\"@s\"}]}}]}"
-							]
-						}
-					},
-					{
-						"filters": {
-							"test": "int_property",
-							"subject": "self",
-							"domain": "rift:behavior_state",
-							"value": 2
-						},
-						"run_command": {
-							"command": [
-								"tellraw @a {\"rawtext\":[{\"translate\":\"reminder.behavior_passive.text\",\"with\":{\"rawtext\":[{\"selector\":\"@s\"}]}}]}"
-							]
-						}
-					},
-					{
-						"filters": {
-							"test": "int_property",
-							"subject": "self",
-							"domain": "rift:behavior_state",
-							"value": 3
-						},
-						"run_command": {
-							"command": [
-								"tellraw @a {\"rawtext\":[{\"translate\":\"reminder.behavior_assist.text\",\"with\":{\"rawtext\":[{\"selector\":\"@s\"}]}}]}"
-							]
-						}
-					},
-					{
-						"set_property": {
-							"rift:behavior_state": "query.property('rift:energy') > 0 ? ((query.property('rift:behavior_state') >= 0 && query.property('rift:behavior_state') <= 2) ? query.property('rift:behavior_state') + 1 : 0) : 3"
-						}
-					}
-				]
-			},
-			"rift:sit_at_no_energy": {
 				"set_property": {
-					"rift:tame_state": "1"
-				}
-			},
-			"rift:passive_at_no_energy": {
-				"set_property": {
-					"rift:behavior_state": "3"
-				}
-			},
-			"rift:decrease_energy_while_moving": {
-				"set_property": {
-					"rift:energy": "query.property('rift:energy') - 15"
-				}
-			},
-			"rift:decrease_energy_while_slashing": {
-				"set_property": {
-					"rift:energy": "query.property('rift:energy') - 10"
-				}
-			},
-			"rift:regenerate_energy": {
-				"set_property": {
-					"rift:energy": "query.property('rift:energy') + 5"
+					"rift:behavior_state": "(query.property('rift:behavior_state') >= 0 && query.property('rift:behavior_state') <= 2) ? query.property('rift:behavior_state') + 1 : 0"
 				}
 			},
 			//for potion effects
@@ -5220,14 +4614,7 @@
 			"rift:lol2": {
 				"run_command": {
 					"command": [
-						"tellraw @p {\"rawtext\":[{\"translate\":\"reminder.cannot_use_treat.text\"}]}"
-					]
-				}
-			},
-			"rift:lol3": {
-				"run_command": {
-					"command": [
-						"tellraw @p {\"rawtext\":[{\"translate\":\"reminder.cannot_use_regular_food.text\"}]}"
+						"tellraw @p {\"rawtext\":[{\"text\":\"Treats are for healing and breeding only! Use regular foods to heal adults or speed up growth for babies!\"}]}"
 					]
 				}
 			}

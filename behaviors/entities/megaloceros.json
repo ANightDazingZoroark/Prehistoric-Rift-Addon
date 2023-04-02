@@ -15,15 +15,6 @@
 					"type": "bool",
 					"default": false
 				},
-                "rift:energy": {
-                    "range": [
-						0,
-						150
-					],
-					"type": "int",
-					"default": 150,
-					"client_sync": true
-                },
                 "rift:tame_state": { //0 for standing, 1 for sitting, 2 for wandering
                     "range": [
 						0,
@@ -47,22 +38,14 @@
 				"contTameTag": "controller.animation.add_tame_tag",
 				"contBabyTag": "controller.animation.add_baby_tag",
 				"contRiddenTag": "controller.animation.add_ridden_tag",
-				"contInLoveTag": "controller.animation.add_in_love_tag",
 				"contForcedAttack": "controller.animation.general_forced_attack",
 				"contWildBreakStuff": "controller.animation.megaloceros_wild_can_break_blocks",
 				"contTamedBreakStuff": "controller.animation.megaloceros_tamed_can_break_blocks",
 				"contTameState": "controller.animation.manage_tame_state",
 				"contBehaviorState": "controller.animation.manage_tame_behavior",
-				"contEnergyUsage": "controller.animation.megaloceros_energy_movement_usage",
-				"contWarnLowEnergy": "controller.animation.warn_of_low_energy",
 				"animEatFromInventoryCooldown": "animation.eat_from_inventory_cooldown",
 				"animBreakStuff": "animation.megaloceros_break_stuff",
-				"animForcedAttack": "animation.forced_attack_megaloceros",
-				"animUseEnergyWhileMoving": "animation.megaloceros_decrease_energy_while_moving",
-				"animEnergyRegenDelay": "animation.regenerate_energy_delay",
-				"animRegenerateEnergy": "animation.megaloceros_regenerate_energy",
-				"animLowOnEnergyEffects": "animation.effects_while_low_on_energy",
-				"animNoEnergyEffects": "animation.effects_while_no_energy"
+				"animForcedAttack": "animation.forced_attack_megaloceros"
 			},
 			"scripts": {
 				"animate": [
@@ -70,14 +53,11 @@
 					"contTameTag",
 					"contBabyTag",
 					"contRiddenTag",
-					"contInLoveTag",
 					"contForcedAttack",
 					"contWildBreakStuff",
 					"contTamedBreakStuff",
 					"contTameState",
-					"contBehaviorState",
-					"contEnergyUsage",
-					"contWarnLowEnergy"
+					"contBehaviorState"
 				]
 			}
         },
@@ -151,7 +131,7 @@
 					"value": 12
 				},
 				"minecraft:behavior.follow_parent": {
-					"priority": 12
+					"priority": 11
 				},
 				"minecraft:tameable": {
 					"probability": 0.25,
@@ -165,62 +145,16 @@
 						"target": "self"
 					}
 				},
-				"minecraft:behavior.avoid_block": {
-					"priority": 4,
-					"tick_interval": 5,
-					"search_range": 12,
-					"search_height": 4,
-					"walk_speed_modifier": 1.2,
-					"sprint_speed_modifier": 1.2,
-					"target_selection_method": "nearest",
-					"target_blocks": [
-						"minecraft:fire",
-						"minecraft:soul_fire",
-						"minecraft:item.campfire",
-						"minecraft:item.soul_campfire",
-					  	"minecraft:torch",
-					  	"minecraft:soul_torch"
-					]
-				},
                 "minecraft:behavior.avoid_mob_type": {
 					"priority": 3,
                     "entity_types": [
 						{
-							"filters": {
-								"any_of": [
-									{
-										"test": "is_family",
-										"value": "parasaurScary",
-										"subject": "other"
-									},
-									{
-										"all_of": [
-											{
-												"test": "is_family",
-												"value": "player",
-												"subject": "other"
-											},
-											{
-												"any_of": [
-													{
-														"test": "has_equipment",
-														"subject": "other",
-														"domain": "hand",
-														"value": "minecraft:torch"
-													},
-													{
-														"test": "has_equipment",
-														"subject": "other",
-														"domain": "hand",
-														"value": "minecraft:soul_torch"
-													}
-												]
-											}
-										]
-									}
-								]
+                            "filters": {
+                                "test": "is_family",
+                                "value": "parasaurScary",
+                                "subject": "other"
 							},
-							"max_flee": 16,
+							"max_flee": 5,
                             "max_dist": 35,
                             "walk_speed_multiplier": 1.6,
                             "sprint_speed_multiplier": 1.6
@@ -246,27 +180,7 @@
 					}
 				},
 				"minecraft:behavior.hurt_by_target": {
-					"priority": 7,
-					"entity_types": {
-						"filters": {
-							"all_of": [
-								{
-									"test": "has_equipment",
-									"subject": "other",
-									"domain": "hand",
-									"operator": "!=",
-									"value": "minecraft:torch"
-								},
-								{
-									"test": "has_equipment",
-									"subject": "other",
-									"domain": "hand",
-									"operator": "!=",
-									"value": "minecraft:soul_torch"
-								}
-							]
-						}
-					}
+					"priority": 6
 				},
 				"minecraft:despawn": {
 					"despawn_from_distance": {}
@@ -336,23 +250,6 @@
 						"target": "self"
 					}
 				},
-				"minecraft:behavior.avoid_block": {
-					"priority": 4,
-					"tick_interval": 5,
-					"search_range": 12,
-					"search_height": 4,
-					"walk_speed_modifier": 1.2,
-					"sprint_speed_modifier": 1.2,
-					"target_selection_method": "nearest",
-					"target_blocks": [
-						"minecraft:fire",
-						"minecraft:soul_fire",
-						"minecraft:item.campfire",
-						"minecraft:item.soul_campfire",
-					  	"minecraft:torch",
-					  	"minecraft:soul_torch"
-					]
-				},
                 "minecraft:behavior.avoid_mob_type": {
 					"priority": 3,
                     "entity_types": [
@@ -362,7 +259,7 @@
                                 "value": "parasaurScary",
                                 "subject": "other"
 							},
-							"max_flee": 16,
+							"max_flee": 5,
                             "max_dist": 35,
                             "walk_speed_multiplier": 1.6,
                             "sprint_speed_multiplier": 1.6
@@ -391,27 +288,7 @@
 					"despawn_from_distance": {}
 				},
 				"minecraft:behavior.hurt_by_target": {
-					"priority": 7,
-					"entity_types": {
-						"filters": {
-							"all_of": [
-								{
-									"test": "has_equipment",
-									"subject": "other",
-									"domain": "hand",
-									"operator": "!=",
-									"value": "minecraft:torch"
-								},
-								{
-									"test": "has_equipment",
-									"subject": "other",
-									"domain": "hand",
-									"operator": "!=",
-									"value": "minecraft:soul_torch"
-								}
-							]
-						}
-					}
+					"priority": 6
 				}
             },
             "rift:megaloceros_adult_calm": {
@@ -458,7 +335,7 @@
                                 "subject": "other",
                                 "operator": "!="
 							},
-							"max_flee": 16,
+							"max_flee": 5,
                             "max_dist": 35,
                             "walk_speed_multiplier": 1.6,
                             "sprint_speed_multiplier": 1.6
@@ -469,7 +346,7 @@
                                 "value": "parasaurScary",
                                 "subject": "other"
 							},
-							"max_flee": 16,
+							"max_flee": 5,
                             "max_dist": 35,
                             "walk_speed_multiplier": 1.6,
                             "sprint_speed_multiplier": 1.6
@@ -496,7 +373,7 @@
 			},
             "rift:default_targets": {
 				"minecraft:behavior.nearest_attackable_target": {
-					"priority": 8,
+					"priority": 7,
 					"within_radius": 32.0,
 					"must_see": true,
 					"entity_types": [
@@ -555,7 +432,7 @@
 			},
             "rift:aggravating_horn_attack": {
 				"minecraft:behavior.nearest_attackable_target": {
-					"priority": 8,
+					"priority": 7,
 					"within_radius": 32.0,
 					"must_see": true,
 					"entity_types": [
@@ -741,12 +618,7 @@
 				"minecraft:behavior.player_ride_tamed": {}
             },
             "rift:megaloceros_tamed": {
-                "minecraft:is_tamed": {},
-				"minecraft:leashable": {
-					"soft_distance": 4,
-					"hard_distance": 8,
-					"max_distance": 12
-				}
+                "minecraft:is_tamed": {}
             },
 			"rift:megaloceros_tamed_charging": {
 				"minecraft:is_ignited": {},
@@ -792,7 +664,7 @@
 			},
 			"rift:temptable": {
 				"minecraft:behavior.tempt": {
-					"priority": 10,
+					"priority": 9,
 					"within_radius": 16,
 					"speed_multiplier": 0.75,
 					"items": [
@@ -815,15 +687,12 @@
 				}
 			},
 			"rift:wild_standing": {
-				"minecraft:movement": {
-					"value": 0.35
-				},
 				"minecraft:behavior.random_stroll": {
-					"priority": 13,
+					"priority": 12,
 					"speed_multiplier": 0.75
 				},
 				"minecraft:behavior.random_look_around": {
-					"priority": 14
+					"priority": 13
 				}
 			},
 			"rift:tamed_standing": {
@@ -833,7 +702,7 @@
 				"minecraft:behavior.follow_owner": {
 					"start_distance": 8,
 					"stop_distance": 40,
-					"priority": 11
+					"priority": 10
 				}
 			},
 			"rift:sitting": {
@@ -853,34 +722,13 @@
 					"priority": 1
 				},
 				"minecraft:behavior.random_stroll": {
-					"priority": 13,
+					"priority": 12,
 					"speed_multiplier": 0.75
-				}
-			},
-			"rift:tamed_can_move": {
-				"minecraft:movement": {
-					"value": 0.35
-				}
-			},
-			"rift:tamed_can_move_low_energy": { //formula for speed reduction from slowness effect is speed * 0.15 * level
-				"minecraft:movement": {
-					"value": 0.1575
-				}
-			},
-			"rift:tamed_cannot_move": {
-				"minecraft:movement": {
-					"value": 0
-				},
-				"minecraft:underwater_movement": {
-					"value": 0
-				},
-				"minecraft:water_movement": {
-					"drag_factor": 0
 				}
 			},
 			"rift:assist_behavior": {
 				"minecraft:behavior.owner_hurt_by_target": {
-					"priority": 5,
+					"priority": 4,
 					"entity_types": [
 						{
 							"filters": {
@@ -893,7 +741,7 @@
 					]
 				},
 				"minecraft:behavior.owner_hurt_target": {
-					"priority": 6,
+					"priority": 5,
 					"entity_types": [
 						{
 							"filters": {
@@ -908,20 +756,30 @@
 			},
 			"rift:neutral_behavior": {
 				"minecraft:behavior.hurt_by_target": {
-					"priority": 7,
+					"priority": 6,
 					"entity_types": {
 						"filters": {
-							"test": "has_component",
-							"subject": "self",
-							"operator": "!=",
-							"value": "minecraft:is_baby"
+							"all_of": [
+								{
+									"test": "is_family",
+									"subject": "other",
+									"operator": "!=",
+									"value": "forcedAttack"
+								},
+								{
+									"test": "has_component",
+									"subject": "self",
+									"operator": "!=",
+									"value": "minecraft:is_baby"
+								}
+							]
 						}
 					}
 				}
 			},
 			"rift:aggressive_behavior": {
 				"minecraft:behavior.nearest_attackable_target": {
-					"priority": 8,
+					"priority": 7,
 					"within_radius": 32.0,
 					"must_see": true,
 					"entity_types": [
@@ -958,13 +816,23 @@
 					]
 				},
 				"minecraft:behavior.hurt_by_target": {
-					"priority": 7,
+					"priority": 6,
 					"entity_types": {
 						"filters": {
-							"test": "has_component",
-							"subject": "self",
-							"operator": "!=",
-							"value": "minecraft:is_baby"
+							"all_of": [
+								{
+									"test": "is_family",
+									"subject": "other",
+									"operator": "!=",
+									"value": "forcedAttack"
+								},
+								{
+									"test": "has_component",
+									"subject": "self",
+									"operator": "!=",
+									"value": "minecraft:is_baby"
+								}
+							]
 						}
 					}
 				}
@@ -1040,7 +908,7 @@
 			},
             "rift:can_attack": {
 				"minecraft:behavior.melee_attack": {
-					"priority": 9,
+					"priority": 8,
 					"track_target": true,
 					"reach_multiplier": 2.5,
 					"speed_multiplier": 1.5
@@ -1050,7 +918,6 @@
         "components": {
             "minecraft:type_family": {
 				"family": [
-					"riftCreature",
 					"megaloceros",
 					"mob",
 					"herbivore",
@@ -1062,6 +929,9 @@
 				"avoid_damage_blocks": true
 			},
             "minecraft:movement.basic": {},
+            "minecraft:movement": {
+                "value": 0.35
+            },
 			"minecraft:jump.static": {},
             "minecraft:behavior.move_to_land": {},
             "minecraft:behavior.float": {},
@@ -1075,6 +945,11 @@
 			"minecraft:breathable": {
 				"total_supply": 15,
 				"suffocate_time": 0
+			},
+			"minecraft:leashable": {
+				"soft_distance": 4,
+				"hard_distance": 8,
+				"max_distance": 12
 			},
             "minecraft:interact": {
 				"interactions": [
@@ -1117,212 +992,6 @@
 								]
 							},
 							"event": "rift:lol2",
-							"target": "self"
-						},
-						"interact_text": "action.interact.tame"
-					},
-					{
-						"on_interact": {
-							"filters": {
-								"all_of": [
-									{
-										"any_of": [
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "rift:berry_treat"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "rift:grassy_treat"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "rift:leafy_treat"
-											}
-										]
-									},
-									{
-										"test": "has_component",
-										"subject": "self",
-										"value": "minecraft:is_tamed"
-									},
-									{
-										"test": "has_component",
-										"subject": "self",
-										"operator": "!=",
-										"value": "minecraft:is_baby"
-									},
-									{
-										"any_of": [
-											{
-												"test": "is_missing_health",
-												"subject": "self",
-												"value": true
-											},
-											{
-												"test": "has_tag",
-												"subject": "self",
-												"value": "inLove"
-											}
-										]
-									}
-								]
-							},
-							"event": "rift:lol2",
-							"target": "self"
-						},
-						"interact_text": "action.interact.tame"
-					},
-					{
-						"on_interact": {
-							"filters": {
-								"all_of": [
-									{
-										"any_of": [
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "minecraft:wheat"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "minecraft:leaves"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "minecraft:leaves2"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "minecraft:azalea_leaves"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "minecraft:azalea_leaves_flowered"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "minecraft:mangrove_leaves"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "minecraft:apple"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "minecraft:sweet_berries"
-											}
-										]
-									},
-									{
-										"test": "has_component",
-										"subject": "self",
-										"value": "minecraft:is_tamed"
-									},
-									{
-										"test": "has_component",
-										"subject": "self",
-										"operator": "!=",
-										"value": "minecraft:is_baby"
-									},
-									{
-										"test": "is_missing_health",
-										"subject": "self",
-										"value": false
-									}
-								]
-							},
-							"event": "rift:lol3",
-							"target": "self"
-						},
-						"interact_text": "action.interact.tame"
-					},
-					{
-						"on_interact": {
-							"filters": {
-								"all_of": [
-									{
-										"any_of": [
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "minecraft:wheat"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "minecraft:leaves"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "minecraft:leaves2"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "minecraft:azalea_leaves"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "minecraft:azalea_leaves_flowered"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "minecraft:mangrove_leaves"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "minecraft:apple"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "minecraft:sweet_berries"
-											}
-										]
-									},
-									{
-										"test": "has_component",
-										"subject": "self",
-										"operator": "!=",
-										"value": "minecraft:is_tamed"
-									}
-								]
-							},
-							"event": "rift:lol3",
 							"target": "self"
 						},
 						"interact_text": "action.interact.tame"
@@ -3531,8 +3200,7 @@
 										"rift:megaloceros_baby_calm",
 										"rift:pushable",
 										"rift:variant_zero",
-										"rift:temptable",
-										"rift:wild_standing"
+										"rift:temptable"
 									]
 								}
 							},
@@ -3545,8 +3213,7 @@
 										"rift:megaloceros_baby_calm",
 										"rift:pushable",
 										"rift:variant_one",
-										"rift:temptable",
-										"rift:wild_standing"
+										"rift:temptable"
 									]
 								}
 							},
@@ -3559,8 +3226,7 @@
 										"rift:megaloceros_baby_calm",
 										"rift:pushable",
 										"rift:variant_two",
-										"rift:temptable",
-										"rift:wild_standing"
+										"rift:temptable"
 									]
 								}
 							},
@@ -3573,8 +3239,7 @@
 										"rift:megaloceros_baby_calm",
 										"rift:pushable",
 										"rift:variant_three",
-										"rift:temptable",
-										"rift:wild_standing"
+										"rift:temptable"
 									]
 								}
 							}
@@ -3589,8 +3254,7 @@
                         "rift:megaloceros_baby_tamed",
                         "rift:megaloceros_tamed",
 						"rift:pushable",
-						"rift:temptable",
-						"rift:tamed_can_move"
+						"rift:temptable"
                     ]
                 }
             },
@@ -3652,16 +3316,14 @@
                 "add": {
                     "component_groups": [
                         "rift:megaloceros_baby_tamed",
-                        "rift:megaloceros_tamed",
-						"rift:tamed_can_move"
+                        "rift:megaloceros_tamed"
                     ]
                 },
                 "remove": {
                     "component_groups": [
                         "rift:megaloceros_baby_wild",
                         "rift:megaloceros_baby_calm",
-                        "rift:megaloceros_baby_scared",
-						"rift:wild_standing"
+                        "rift:megaloceros_baby_scared"
                     ]
                 },
 				"set_property": {
@@ -3697,8 +3359,7 @@
                     "component_groups": [
                         "rift:megaloceros_adult_tamed",
                         "rift:megaloceros_tamed",
-                        "rift:is_rideable",
-						"rift:tamed_can_move"
+                        "rift:is_rideable"
                     ]
                 },
                 "remove": {
@@ -3821,6 +3482,34 @@
 				"remove": {
 					"component_groups": [
 						"rift:attack_cooldown"
+					]
+				}
+			},
+			"rift:use_forced_headbutt": {
+				"add": {
+					"component_groups": [
+						"rift:forced_headbutt"
+					]
+				}
+			},
+			"rift:stop_forced_headbutt": {
+				"remove": {
+					"component_groups": [
+						"rift:forced_headbutt"
+					]
+				}
+			},
+			"rift:on_summon_forced_headbutt_entity": {
+				"add": {
+					"component_groups": [
+						"rift:summon_forced_headbutt_entity"
+					]
+				}
+			},
+			"rift:no_summon_forced_headbutt_entity": {
+				"remove": {
+					"component_groups": [
+						"rift:summon_forced_headbutt_entity"
 					]
 				}
 			},
@@ -4021,8 +3710,7 @@
 								"rift:pushable",
 								"rift:wild_standing",
                                 "rift:variant_zero",
-								"rift:temptable",
-								"rift:wild_standing"
+								"rift:temptable"
 							]
 						}
 					},
@@ -4036,8 +3724,7 @@
 								"rift:pushable",
 								"rift:wild_standing",
                                 "rift:variant_one",
-								"rift:temptable",
-								"rift:wild_standing"
+								"rift:temptable"
 							]
 						}
 					},
@@ -4051,8 +3738,7 @@
 								"rift:pushable",
 								"rift:wild_standing",
                                 "rift:variant_two",
-								"rift:temptable",
-								"rift:wild_standing"
+								"rift:temptable"
 							]
 						}
 					},
@@ -4066,8 +3752,7 @@
 								"rift:pushable",
 								"rift:wild_standing",
                                 "rift:variant_three",
-								"rift:temptable",
-								"rift:wild_standing"
+								"rift:temptable"
 							]
 						}
 					}
@@ -4127,7 +3812,6 @@
 				"run_command": {
 					"command": [
 						"playanimation @s animation.megaloceros.headbutt",
-						"event entity @s rift:decrease_energy_while_harvesting",
 						"function cmd.megaloceros_harvest_oak_leaves",
 						"function cmd.megaloceros_harvest_spruce_leaves",
 						"function cmd.megaloceros_harvest_birch_leaves",
@@ -4171,13 +3855,6 @@
 				"add": {
 					"component_groups": [
 						"rift:megaloceros_chested"
-					]
-				}
-			},
-			"rift:commit_suicide": {
-				"run_command": {
-					"command": [
-						"kill @s"
 					]
 				}
 			},
@@ -4265,194 +3942,14 @@
 					"rift:eat_from_inventory_cooldown": false
 				}
 			},
-			"rift:moving_slowly_low_energy": {
-				"add": {
-					"component_groups": [
-						"rift:tamed_can_move_low_energy"
-					]
-				},
-				"remove": {
-					"component_groups": [
-						"rift:tamed_can_move",
-						"rift:tamed_cannot_move"
-					]
-				}
-			},
-			"rift:stop_moving_low_energy": {
-				"add": {
-					"component_groups": [
-						"rift:tamed_cannot_move"
-					]
-				},
-				"remove": {
-					"component_groups": [
-						"rift:tamed_can_move",
-						"rift:tamed_can_move_low_energy"
-					]
-				}
-			},
-			"rift:return_to_moving_normally": {
-				"add": {
-					"component_groups": [
-						"rift:tamed_can_move"
-					]
-				},
-				"remove": {
-					"component_groups": [
-						"rift:tamed_cannot_move",
-						"rift:tamed_can_move_low_energy"
-					]
-				}
-			},
 			"rift:manage_state": {
-				"sequence": [
-					{},
-					{
-						"filters": {
-							"test": "int_property",
-							"subject": "self",
-							"domain": "rift:tame_state",
-							"value": 0
-						},
-						"run_command": {
-							"command": [
-								"tellraw @a {\"rawtext\":[{\"translate\":\"reminder.state_sitting.text\",\"with\":{\"rawtext\":[{\"selector\":\"@s\"}]}}]}"
-							]
-						}
-					},
-					{
-						"filters": {
-							"test": "int_property",
-							"subject": "self",
-							"domain": "rift:tame_state",
-							"value": 1
-						},
-						"run_command": {
-							"command": [
-								"tellraw @a {\"rawtext\":[{\"translate\":\"reminder.state_wandering.text\",\"with\":{\"rawtext\":[{\"selector\":\"@s\"}]}}]}"
-							]
-						}
-					},
-					{
-						"filters": {
-							"test": "int_property",
-							"subject": "self",
-							"domain": "rift:tame_state",
-							"value": 2
-						},
-						"run_command": {
-							"command": [
-								"tellraw @a {\"rawtext\":[{\"translate\":\"reminder.state_standing.text\",\"with\":{\"rawtext\":[{\"selector\":\"@s\"}]}}]}"
-							]
-						}
-					},
-					{
-						"set_property": {
-							"rift:tame_state": "query.property('rift:energy') > 0 ? ((query.property('rift:tame_state') >= 0 && query.property('rift:tame_state') <= 1) ? query.property('rift:tame_state') + 1 : 0) : 1"
-						}
-					}
-				]
+				"set_property": {
+					"rift:tame_state": "(query.property('rift:tame_state') >= 0 && query.property('rift:tame_state') <= 1) ? query.property('rift:tame_state') + 1 : 0"
+				}
 			},
 			"rift:manage_behavior": {
-				"sequence": [
-					{},
-					{
-						"filters": {
-							"test": "int_property",
-							"subject": "self",
-							"domain": "rift:behavior_state",
-							"value": 0
-						},
-						"run_command": {
-							"command": [
-								"tellraw @a {\"rawtext\":[{\"translate\":\"reminder.behavior_neutral.text\",\"with\":{\"rawtext\":[{\"selector\":\"@s\"}]}}]}"
-							]
-						}
-					},
-					{
-						"filters": {
-							"test": "int_property",
-							"subject": "self",
-							"domain": "rift:behavior_state",
-							"value": 1
-						},
-						"run_command": {
-							"command": [
-								"tellraw @a {\"rawtext\":[{\"translate\":\"reminder.behavior_aggressive.text\",\"with\":{\"rawtext\":[{\"selector\":\"@s\"}]}}]}"
-							]
-						}
-					},
-					{
-						"filters": {
-							"test": "int_property",
-							"subject": "self",
-							"domain": "rift:behavior_state",
-							"value": 2
-						},
-						"run_command": {
-							"command": [
-								"tellraw @a {\"rawtext\":[{\"translate\":\"reminder.behavior_passive.text\",\"with\":{\"rawtext\":[{\"selector\":\"@s\"}]}}]}"
-							]
-						}
-					},
-					{
-						"filters": {
-							"test": "int_property",
-							"subject": "self",
-							"domain": "rift:behavior_state",
-							"value": 3
-						},
-						"run_command": {
-							"command": [
-								"tellraw @a {\"rawtext\":[{\"translate\":\"reminder.behavior_assist.text\",\"with\":{\"rawtext\":[{\"selector\":\"@s\"}]}}]}"
-							]
-						}
-					},
-					{
-						"set_property": {
-							"rift:behavior_state": "query.property('rift:energy') > 0 ? ((query.property('rift:behavior_state') >= 0 && query.property('rift:behavior_state') <= 2) ? query.property('rift:behavior_state') + 1 : 0) : 3"
-						}
-					}
-				]
-			},
-			"rift:sit_at_no_energy": {
 				"set_property": {
-					"rift:tame_state": "1"
-				}
-			},
-			"rift:passive_at_no_energy": {
-				"set_property": {
-					"rift:behavior_state": "3"
-				}
-			},
-			"rift:decrease_energy_while_moving": {
-				"set_property": {
-					"rift:energy": "query.property('rift:energy') - 15"
-				}
-			},
-			"rift:decrease_energy_while_jumping": {
-				"set_property": {
-					"rift:energy": "query.property('rift:energy') - 30"
-				}
-			},
-			"rift:decrease_energy_while_headbutting": {
-				"set_property": {
-					"rift:energy": "query.property('rift:energy') - 10"
-				}
-			},
-			"rift:decrease_energy_while_harvesting": {
-				"set_property": {
-					"rift:energy": "query.property('rift:energy') - 10"
-				}
-			},
-			"rift:decrease_energy_while_rage_mode": {
-				"set_property": {
-					"rift:energy": "query.property('rift:energy') - 15"
-				}
-			},
-			"rift:regenerate_energy": {
-				"set_property": {
-					"rift:energy": "query.property('rift:energy') + 5"
+					"rift:behavior_state": "(query.property('rift:behavior_state') >= 0 && query.property('rift:behavior_state') <= 2) ? query.property('rift:behavior_state') + 1 : 0"
 				}
 			},
 			//for potion effects
@@ -4728,14 +4225,7 @@
 			"rift:lol2": {
 				"run_command": {
 					"command": [
-						"tellraw @p {\"rawtext\":[{\"translate\":\"reminder.cannot_use_treat.text\"}]}"
-					]
-				}
-			},
-			"rift:lol3": {
-				"run_command": {
-					"command": [
-						"tellraw @p {\"rawtext\":[{\"translate\":\"reminder.cannot_use_regular_food.text\"}]}"
+						"tellraw @p {\"rawtext\":[{\"text\":\"Treats are for healing and breeding only! Use regular foods to heal adults or speed up growth for babies!\"}]}"
 					]
 				}
 			},

@@ -7,25 +7,11 @@
             "is_summonable": true,
             "is_experimental": false,
 			"properties": {
-				"rift:is_hypnotized": {
-					"type": "bool",
-					"default": false,
-					"client_sync": true
-				},
 				"rift:undergoing_taming": {
 					"type": "bool",
 					"default": false,
 					"client_sync": true
 				},
-                "rift:energy": {
-                    "range": [
-						0,
-						150
-					],
-					"type": "int",
-					"default": 150,
-					"client_sync": true
-                },
                 "rift:tame_state": { //0 for standing, 1 for sitting, 2 for wandering
                     "range": [
 						0,
@@ -47,36 +33,15 @@
 			"animations": {
 				"contTameTag": "controller.animation.add_tame_tag",
 				"contBabyTag": "controller.animation.add_baby_tag",
-				"contInLoveTag": "controller.animation.add_in_love_tag",
-				"contHypnotizedTag": "controller.animation.add_hypnotized_tag",
 				"contTameState": "controller.animation.manage_tame_state",
-				"contBehaviorState": "controller.animation.manage_tame_behavior",
-				"contEnergyUsage": "controller.animation.dimetrodon_energy_movement_usage",
-				"contWarnLowEnergy": "controller.animation.warn_of_low_energy",
-				"contDieWithoutTenontosaurus": "controller.animation.general_die_without_tenontosaurus",
-				"animRegenerateEnergyNormal": "animation.dimetrodon_decrease_energy_while_moving_normal",
-				"animRegenerateEnergyFrost": "animation.dimetrodon_decrease_energy_while_moving_frost",
-				"animRegenerateEnergyFlame": "animation.dimetrodon_decrease_energy_while_moving_flame",
-				"animEnergyRegenDelay": "animation.regenerate_energy_delay",
-				"animUseEnergyWhileMovingNormal": "animation.dimetrodon_regenerate_energy_normal",
-				"animUseEnergyWhileMovingFrost": "animation.dimetrodon_regenerate_energy_frost",
-				"animUseEnergyWhileMovingFlame": "animation.dimetrodon_regenerate_energy_flame",
-				"animLowOnEnergyEffects": "animation.effects_while_low_on_energy",
-				"animNoEnergyEffects": "animation.effects_while_no_energy",
-				"animFindTenontosaurus": "animation.find_tenontosaurus",
-				"animDeathTimer": "animation.hypnosis_death_timer"
+				"contBehaviorState": "controller.animation.manage_tame_behavior"
 			},
 			"scripts": {
 				"animate": [
 					"contTameTag",
 					"contBabyTag",
-					"contInLoveTag",
-					"contHypnotizedTag",
 					"contTameState",
-					"contBehaviorState",
-					"contEnergyUsage",
-					"contWarnLowEnergy",
-					"contDieWithoutTenontosaurus"
+					"contBehaviorState"
 				]
 			}
         },
@@ -386,15 +351,6 @@
 					"delay_before_eating": 0
 				}
 			},
-            "rift:dimetrodon_adult_hypnotized": {
-				"minecraft:health": {
-                    "value": 40,
-                    "max": 40
-                },
-				"minecraft:despawn": {
-					"despawn_from_distance": {}
-				}
-			},
 			"rift:dimetrodon_adult_not_trusting": {
 				"minecraft:trusting": {
                     "probability": 0.25,
@@ -447,12 +403,6 @@
 										"subject": "other",
 										"operator": "!=",
 										"value": "apatosaurus"
-									},
-									{
-										"test": "is_family",
-										"subject": "other",
-										"operator": "!=",
-										"value": "ankylosaurus"
 									},
 									{
 										"any_of": [
@@ -549,6 +499,9 @@
                 }
 			},
 			"rift:dimetrodon_default_temperature_mode": {
+				"minecraft:movement": {
+					"value": 0.175
+				},
 				"minecraft:water_movement": {
 					"drag_factor": 1
 				},
@@ -626,6 +579,9 @@
 			},
 			"rift:dimetrodon_flame_mode": {
 				"minecraft:is_ignited": {},
+				"minecraft:movement": {
+					"value": 0.225
+				},
 				"minecraft:water_movement": {
 					"drag_factor": 1
 				},
@@ -701,6 +657,9 @@
 			},
 			"rift:dimetrodon_flame_mode_grace_period": {
 				"minecraft:is_ignited": {},
+				"minecraft:movement": {
+					"value": 0.225
+				},
 				"minecraft:water_movement": {
 					"drag_factor": 1
 				},
@@ -748,6 +707,9 @@
 			},
 			"rift:dimetrodon_frost_mode": {
 				"minecraft:is_charged": {},
+				"minecraft:movement": {
+					"value": 0.175
+				},
 				"minecraft:water_movement": {
 					"drag_factor": 1
 				},
@@ -818,6 +780,9 @@
 			},
 			"rift:dimetrodon_frost_mode_grace_period": {
 				"minecraft:is_charged": {},
+				"minecraft:movement": {
+					"value": 0.175
+				},
 				"minecraft:water_movement": {
 					"drag_factor": 1
 				},
@@ -842,6 +807,9 @@
 			},
 			"rift:dimetrodon_forced_flame_mode": {
 				"minecraft:is_ignited": {},
+				"minecraft:movement": {
+					"value": 0.225
+				},
 				"minecraft:water_movement": {
 					"drag_factor": 1
 				},
@@ -859,6 +827,9 @@
 			},
 			"rift:dimetrodon_forced_frost_mode": {
 				"minecraft:is_charged": {},
+				"minecraft:movement": {
+					"value": 0.175
+				},
 				"minecraft:water_movement": {
 					"drag_factor": 1
 				},
@@ -897,6 +868,9 @@
 				}
 			},
 			"rift:dimetrodon_forced_neutral_mode": {
+				"minecraft:movement": {
+					"value": 0.175
+				},
 				"minecraft:water_movement": {
 					"drag_factor": 1
 				},
@@ -1054,12 +1028,7 @@
                 }
 			},
 			"rift:dimetrodon_tamed": {
-				"minecraft:is_tamed": {},
-				"minecraft:leashable": {
-					"soft_distance": 4,
-					"hard_distance": 8,
-					"max_distance": 12
-				}
+				"minecraft:is_tamed": {}
 			},
 			"rift:temptable": {
                 "minecraft:behavior.tempt": {
@@ -1097,90 +1066,10 @@
 			},
 			"rift:wild_standing": {
 				"minecraft:behavior.random_stroll": {
-					"priority": 14
+					"priority": 13
 				},
 				"minecraft:behavior.random_look_around": {
-					"priority": 15
-				}
-			},
-			"rift:follow_tenontosaurus": {
-				"minecraft:behavior.nearest_prioritized_attackable_target": {
-					"priority": 6,
-					"within_radius": 32.0,
-					"entity_types": [
-						{
-							"filters": {
-								"all_of": [
-									{
-										"test": "has_tag",
-										"subject": "other",
-										"value": "tenontoTarget"
-									}
-								]
-							},
-							"max_dist": 48,
-							"priority": 0
-						},
-						{
-							"filters": {
-								"all_of": [
-									{
-										"test": "is_family",
-										"subject": "other",
-										"value": "tenontosaurus"
-									},
-									{
-										"test": "has_component",
-										"subject": "other",
-										"operator": "!=",
-										"value": "minecraft:is_tamed"
-									}
-								]
-							},
-							"max_dist": 48,
-							"priority": 1
-						}
-					]
-				}
-			},
-			"rift:follow_tenontosaurus_no_target": {
-				"minecraft:behavior.ranged_attack": {
-					"priority": 13,
-					"attack_radius": 8.0,
-					"attack_radius_min": 4
-				},
-				"minecraft:on_target_acquired": {
-					"filters": {
-						"all_of": [
-							{
-								"test": "has_component",
-								"subject": "target",
-								"operator": "!=",
-								"value": "minecraft:is_tamed"
-							},
-							{
-								"test": "is_family",
-								"subject": "target",
-								"operator": "!=",
-								"value": "tenontosaurus"
-							}
-						]
-					},
-					"event": "rift:attack_for_tenontosaurus",
-					"target": "self"
-				}
-			},
-			"rift:attacking_for_tenontosaurus": {
-				"minecraft:behavior.delayed_attack": {
-					"priority": 7,
-					"attack_duration": 0.52,
-					"hit_delay_pct": 1,
-					"track_target": true,
-					"reach_multiplier": 3
-				},
-				"minecraft:on_target_escape": {
-					"event": "rift:stop_attacking_for_tenontosaurus",
-					"target": "self"
+					"priority": 14
 				}
 			},
 			"rift:tamed_standing": {
@@ -1210,70 +1099,7 @@
 					"priority": 1
 				},
 				"minecraft:behavior.random_stroll": {
-					"priority": 14
-				}
-			},
-			"rift:tamed_can_move_normal": {
-				"minecraft:movement": {
-					"value": 0.175
-				}
-			},
-			"rift:tamed_can_move_frost": {
-				"minecraft:movement": {
-					"value": 0.175
-				}
-			},
-			"rift:tamed_can_move_flame": {
-				"minecraft:movement": {
-					"value": 0.225
-				}
-			},
-			"rift:tamed_can_move_low_energy_normal": {
-				"minecraft:movement": {
-					"value": 0.07875
-				}
-			},
-			"rift:tamed_can_move_low_energy_frost": {
-				"minecraft:movement": {
-					"value": 0.07875
-				}
-			},
-			"rift:tamed_can_move_low_energy_flame": {
-				"minecraft:movement": {
-					"value": 0.10125
-				}
-			},
-			"rift:tamed_cannot_move_normal": {
-				"minecraft:movement": {
-					"value": 0.0
-				},
-				"minecraft:underwater_movement": {
-					"value": 0
-				},
-				"minecraft:water_movement": {
-					"drag_factor": 0
-				}
-			},
-			"rift:tamed_cannot_move_frost": {
-				"minecraft:movement": {
-					"value": 0.0
-				},
-				"minecraft:underwater_movement": {
-					"value": 0
-				},
-				"minecraft:water_movement": {
-					"drag_factor": 0
-				}
-			},
-			"rift:tamed_cannot_move_flame": {
-				"minecraft:movement": {
-					"value": 0.0
-				},
-				"minecraft:underwater_movement": {
-					"value": 0
-				},
-				"minecraft:water_movement": {
-					"drag_factor": 0
+					"priority": 13
 				}
 			},
 			"rift:assist_behavior": {
@@ -1386,46 +1212,19 @@
 				"minecraft:variant": {
 					"value": 3
 				}
-			},
-			"rift:can_attack": {
-				"minecraft:behavior.delayed_attack": {
-					"priority": 7,
-					"attack_duration": 0.52,
-					"hit_delay_pct": 1,
-					"track_target": true,
-					"reach_multiplier": 5
-				}
-			},
-			"rift:transform_into_hypnotized_variant_one": {
-				"minecraft:transformation": {
-					"into": "rift:dimetrodon<rift:transform_into_hypnotized_variant_one>"
-				}
-			},
-			"rift:transform_into_hypnotized_variant_two": {
-				"minecraft:transformation": {
-					"into": "rift:dimetrodon<rift:transform_into_hypnotized_variant_two>"
-				}
-			},
-			"rift:transform_into_hypnotized_variant_three": {
-				"minecraft:transformation": {
-					"into": "rift:dimetrodon<rift:transform_into_hypnotized_variant_three>"
-				}
-			},
-			"rift:transform_into_hypnotized_variant_four": {
-				"minecraft:transformation": {
-					"into": "rift:dimetrodon<rift:transform_into_hypnotized_variant_four>"
-				}
 			}
         },
         "components": {
 			"minecraft:type_family": {
 				"family": [
-					"riftCreature",
 					"dimetrodon",
 					"mob",
 					"carnivore",
 					"mammal"
 				]
+			},
+			"minecraft:movement": {
+				"value": 0.175
 			},
 			"minecraft:navigation.walk": {
 				"is_amphibious": true,
@@ -1440,6 +1239,13 @@
 			"minecraft:jump.static": {
 				"jump_power": 0.65
 			},
+			"minecraft:behavior.delayed_attack": {
+				"priority": 7,
+				"attack_duration": 0.52,
+				"hit_delay_pct": 1,
+				"track_target": true,
+				"reach_multiplier": 3
+			},
 			"minecraft:is_hidden_when_invisible": {},
 			"minecraft:pushable": {},
 			"minecraft:physics": {},
@@ -1451,6 +1257,11 @@
 			"minecraft:breathable": {
 				"total_supply": 15,
 				"suffocate_time": 0
+			},
+			"minecraft:leashable": {
+				"soft_distance": 4,
+				"hard_distance": 8,
+				"max_distance": 12
 			},
 			"minecraft:interact": {
 				"interactions": [
@@ -1493,404 +1304,6 @@
 								]
 							},
 							"event": "rift:lol2",
-							"target": "self"
-						},
-						"interact_text": "action.interact.tame"
-					},
-					{
-						"on_interact": {
-							"filters": {
-								"all_of": [
-									{
-										"any_of": [
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "rift:carrion_treat"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "rift:flesh_treat"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "rift:fish_treat"
-											}
-										]
-									},
-									{
-										"test": "has_component",
-										"subject": "self",
-										"value": "minecraft:is_tamed"
-									},
-									{
-										"test": "has_component",
-										"subject": "self",
-										"operator": "!=",
-										"value": "minecraft:is_baby"
-									},
-									{
-										"any_of": [
-											{
-												"test": "is_missing_health",
-												"subject": "self",
-												"value": true
-											},
-											{
-												"test": "has_tag",
-												"subject": "self",
-												"value": "inLove"
-											}
-										]
-									}
-								]
-							},
-							"event": "rift:lol2",
-							"target": "self"
-						},
-						"interact_text": "action.interact.tame"
-					},
-					{
-						"on_interact": {
-							"filters": {
-								"all_of": [
-                                    {
-                                        "any_of": [
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "minecraft:beef"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "minecraft:cooked_beef"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "minecraft:porkchop"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "minecraft:cooked_porkchop"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "minecraft:chicken"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "minecraft:cooked_chicken"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "minecraft:mutton"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "minecraft:cooked_mutton"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "minecraft:rabbit"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "minecraft:cooked_rabbit"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "minecraft:cod"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "minecraft:cooked_cod"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "minecraft:salmon"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "minecraft:cooked_salmon"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "minecraft:tropical_fish"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "rift:raw_exotic_meat"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "rift:cooked_exotic_meat"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "rift:raw_dodo_meat"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "rift:cooked_dodo_meat"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "rift:raw_hadrosaur_meat"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "rift:cooked_hadrosaur_meat"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "rift:raw_megapiranha"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "rift:cooked_megapiranha"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "minecraft:rotten_flesh"
-											}
-                                        ]
-                                    },
-									{
-										"test": "has_component",
-										"subject": "self",
-										"value": "minecraft:is_tamed"
-									},
-									{
-										"test": "has_component",
-										"subject": "self",
-										"operator": "!=",
-										"value": "minecraft:is_baby"
-									},
-									{
-										"test": "is_missing_health",
-										"subject": "self",
-										"value": false
-									}
-								]
-							},
-							"event": "rift:lol3",
-							"target": "self"
-						},
-						"interact_text": "action.interact.tame"
-					},
-					{
-						"on_interact": {
-							"filters": {
-								"all_of": [
-                                    {
-                                        "any_of": [
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "minecraft:beef"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "minecraft:cooked_beef"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "minecraft:porkchop"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "minecraft:cooked_porkchop"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "minecraft:chicken"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "minecraft:cooked_chicken"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "minecraft:mutton"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "minecraft:cooked_mutton"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "minecraft:rabbit"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "minecraft:cooked_rabbit"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "minecraft:cod"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "minecraft:cooked_cod"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "minecraft:salmon"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "minecraft:cooked_salmon"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "minecraft:tropical_fish"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "rift:raw_exotic_meat"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "rift:cooked_exotic_meat"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "rift:raw_dodo_meat"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "rift:cooked_dodo_meat"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "rift:raw_hadrosaur_meat"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "rift:cooked_hadrosaur_meat"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "rift:raw_megapiranha"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "rift:cooked_megapiranha"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "minecraft:rotten_flesh"
-											}
-                                        ]
-                                    },
-									{
-										"test": "has_component",
-										"subject": "self",
-										"operator": "!=",
-										"value": "minecraft:is_tamed"
-									}
-								]
-							},
-							"event": "rift:lol3",
 							"target": "self"
 						},
 						"interact_text": "action.interact.tame"
@@ -3983,9 +3396,7 @@
 								"rift:dimetrodon_adult_not_trusting",
 								"rift:dimetrodon_default_temperature_mode",
 								"rift:wild_standing",
-								"rift:variant_one",
-								"rift:tamed_can_move_normal",
-								"rift:can_attack"
+								"rift:variant_one"
 							]
 						}
 					},
@@ -3999,9 +3410,7 @@
 								"rift:dimetrodon_adult_not_trusting",
 								"rift:dimetrodon_default_temperature_mode",
 								"rift:wild_standing",
-								"rift:variant_two",
-								"rift:tamed_can_move_normal",
-								"rift:can_attack"
+								"rift:variant_two"
 							]
 						}
 					},
@@ -4015,9 +3424,7 @@
 								"rift:dimetrodon_adult_not_trusting",
 								"rift:dimetrodon_default_temperature_mode",
 								"rift:wild_standing",
-								"rift:variant_three",
-								"rift:tamed_can_move_normal",
-								"rift:can_attack"
+								"rift:variant_three"
 							]
 						}
 					},
@@ -4031,231 +3438,11 @@
 								"rift:dimetrodon_adult_not_trusting",
 								"rift:dimetrodon_default_temperature_mode",
 								"rift:wild_standing",
-								"rift:variant_four",
-								"rift:tamed_can_move_normal",
-								"rift:can_attack"
+								"rift:variant_four"
 							]
 						}
 					}
 				]
-			},
-			"rift:spawn_hypnotized_by_tenontosaurus": {
-				"randomize": [
-					{
-						"weight": 25,
-						"add": {
-							"component_groups": [
-								"rift:dimetrodon_adult",
-								"rift:dimetrodon_adult_hypnotized",
-								"rift:dimetrodon_default_temperature_mode",
-								"rift:variant_one",
-								"rift:tamed_can_move_normal",
-								"rift:follow_tenontosaurus",
-								"rift:follow_tenontosaurus_no_target"
-							]
-						},
-						"set_property": {
-							"rift:is_hypnotized": true
-						}
-					},
-					{
-						"weight": 25,
-						"add": {
-							"component_groups": [
-								"rift:dimetrodon_adult",
-								"rift:dimetrodon_adult_hypnotized",
-								"rift:dimetrodon_default_temperature_mode",
-								"rift:variant_two",
-								"rift:tamed_can_move_normal",
-								"rift:follow_tenontosaurus",
-								"rift:follow_tenontosaurus_no_target"
-							]
-						},
-						"set_property": {
-							"rift:is_hypnotized": true
-						}
-					},
-					{
-						"weight": 25,
-						"add": {
-							"component_groups": [
-								"rift:dimetrodon_adult",
-								"rift:dimetrodon_adult_hypnotized",
-								"rift:dimetrodon_default_temperature_mode",
-								"rift:variant_three",
-								"rift:tamed_can_move_normal",
-								"rift:follow_tenontosaurus",
-								"rift:follow_tenontosaurus_no_target"
-							]
-						},
-						"set_property": {
-							"rift:is_hypnotized": true
-						}
-					},
-					{
-						"weight": 25,
-						"add": {
-							"component_groups": [
-								"rift:dimetrodon_adult",
-								"rift:dimetrodon_adult_hypnotized",
-								"rift:dimetrodon_default_temperature_mode",
-								"rift:variant_four",
-								"rift:tamed_can_move_normal",
-								"rift:follow_tenontosaurus",
-								"rift:follow_tenontosaurus_no_target"
-							]
-						},
-						"set_property": {
-							"rift:is_hypnotized": true
-						}
-					}
-				]
-			},
-			"rift:attack_for_tenontosaurus": {
-				"add": {
-					"component_groups": [
-						"rift:attacking_for_tenontosaurus"
-					]
-				},
-				"remove": {
-					"component_groups": [
-						"rift:follow_tenontosaurus_no_target"
-					]
-				},
-				"run_command": {
-					"command": [
-						"say FOR THE QUEEN"
-					]
-				}
-			},
-			"rift:stop_attacking_for_tenontosaurus": {
-				"add": {
-					"component_groups": [
-						"rift:follow_tenontosaurus_no_target"
-					]
-				},
-				"remove": {
-					"component_groups": [
-						"rift:attacking_for_tenontosaurus"
-					]
-				}
-			},
-			"rift:hypnotized_by_tenontosaurus": {
-				"sequence": [
-					{},
-					{
-						"filters": {
-							"test": "is_variant",
-							"subject": "self",
-							"value": 0
-						},
-						"add": {
-							"component_groups": [
-								"rift:transform_into_hypnotized_variant_one"
-							]
-						}
-					},
-					{
-						"filters": {
-							"test": "is_variant",
-							"subject": "self",
-							"value": 1
-						},
-						"add": {
-							"component_groups": [
-								"rift:transform_into_hypnotized_variant_two"
-							]
-						}
-					},
-					{
-						"filters": {
-							"test": "is_variant",
-							"subject": "self",
-							"value": 2
-						},
-						"add": {
-							"component_groups": [
-								"rift:transform_into_hypnotized_variant_three"
-							]
-						}
-					},
-					{
-						"filters": {
-							"test": "is_variant",
-							"subject": "self",
-							"value": 3
-						},
-						"add": {
-							"component_groups": [
-								"rift:transform_into_hypnotized_variant_four"
-							]
-						}
-					}
-				]
-			},
-			"rift:transform_into_hypnotized_variant_one": {
-				"add": {
-					"component_groups": [
-						"rift:dimetrodon_adult",
-						"rift:dimetrodon_adult_hypnotized",
-						"rift:dimetrodon_default_temperature_mode",
-						"rift:variant_one",
-						"rift:tamed_can_move_normal",
-						"rift:follow_tenontosaurus",
-						"rift:follow_tenontosaurus_no_target"
-					]
-				},
-				"set_property": {
-					"rift:is_hypnotized": true
-				}
-			},
-			"rift:transform_into_hypnotized_variant_two": {
-				"add": {
-					"component_groups": [
-						"rift:dimetrodon_adult",
-						"rift:dimetrodon_adult_hypnotized",
-						"rift:dimetrodon_default_temperature_mode",
-						"rift:variant_two",
-						"rift:tamed_can_move_normal",
-						"rift:follow_tenontosaurus",
-						"rift:follow_tenontosaurus_no_target"
-					]
-				},
-				"set_property": {
-					"rift:is_hypnotized": true
-				}
-			},
-			"rift:transform_into_hypnotized_variant_three": {
-				"add": {
-					"component_groups": [
-						"rift:dimetrodon_adult",
-						"rift:dimetrodon_adult_hypnotized",
-						"rift:dimetrodon_default_temperature_mode",
-						"rift:variant_three",
-						"rift:tamed_can_move_normal",
-						"rift:follow_tenontosaurus",
-						"rift:follow_tenontosaurus_no_target"
-					]
-				},
-				"set_property": {
-					"rift:is_hypnotized": true
-				}
-			},
-			"rift:transform_into_hypnotized_variant_four": {
-				"add": {
-					"component_groups": [
-						"rift:dimetrodon_adult",
-						"rift:dimetrodon_adult_hypnotized",
-						"rift:dimetrodon_default_temperature_mode",
-						"rift:variant_four",
-						"rift:tamed_can_move_normal",
-						"rift:follow_tenontosaurus",
-						"rift:follow_tenontosaurus_no_target"
-					]
-				},
-				"set_property": {
-					"rift:is_hypnotized": true
-				}
 			},
 			"rift:baby_grow_up": {
 				"sequence": [
@@ -4636,9 +3823,7 @@
 								"rift:dimetrodon_baby_wild",
 								"rift:wild_standing",
 								"rift:variant_one",
-								"rift:temptable",
-								"rift:tamed_can_move_normal",
-								"rift:can_attack"
+								"rift:temptable"
 							]
 						}
 					},
@@ -4650,9 +3835,7 @@
 								"rift:dimetrodon_baby_wild",
 								"rift:wild_standing",
 								"rift:variant_two",
-								"rift:temptable",
-								"rift:tamed_can_move_normal",
-								"rift:can_attack"
+								"rift:temptable"
 							]
 						}
 					},
@@ -4664,9 +3847,7 @@
 								"rift:dimetrodon_baby_wild",
 								"rift:wild_standing",
 								"rift:variant_three",
-								"rift:temptable",
-								"rift:tamed_can_move_normal",
-								"rift:can_attack"
+								"rift:temptable"
 							]
 						}
 					},
@@ -4678,9 +3859,7 @@
 								"rift:dimetrodon_baby_wild",
 								"rift:wild_standing",
 								"rift:variant_four",
-								"rift:temptable",
-								"rift:tamed_can_move_normal",
-								"rift:can_attack"
+								"rift:temptable"
 							]
 						}
 					}
@@ -4696,9 +3875,7 @@
 								"rift:dimetrodon_baby_tamed",
 								"rift:dimetrodon_tamed",
 								"rift:variant_one",
-								"rift:temptable",
-								"rift:tamed_can_move_normal",
-								"rift:can_attack"
+								"rift:temptable"
 							]
 						},
 						"set_property": {
@@ -4713,9 +3890,7 @@
 								"rift:dimetrodon_baby_tamed",
 								"rift:dimetrodon_tamed",
 								"rift:variant_two",
-								"rift:temptable",
-								"rift:tamed_can_move_normal",
-								"rift:can_attack"
+								"rift:temptable"
 							]
 						},
 						"set_property": {
@@ -4730,9 +3905,7 @@
 								"rift:dimetrodon_baby_tamed",
 								"rift:dimetrodon_tamed",
 								"rift:variant_three",
-								"rift:temptable",
-								"rift:tamed_can_move_normal",
-								"rift:can_attack"
+								"rift:temptable"
 							]
 						},
 						"set_property": {
@@ -4747,9 +3920,7 @@
 								"rift:dimetrodon_baby_tamed",
 								"rift:dimetrodon_tamed",
 								"rift:variant_four",
-								"rift:temptable",
-								"rift:tamed_can_move_normal",
-								"rift:can_attack"
+								"rift:temptable"
 							]
 						},
 						"set_property": {
@@ -4761,16 +3932,13 @@
 			"rift:frost_mode": {
 				"add": {
 					"component_groups": [
-						"rift:dimetrodon_frost_mode",
-						"rift:tamed_can_move_frost"
+						"rift:dimetrodon_frost_mode"
 					]
 				},
 				"remove": {
 					"component_groups": [
 						"rift:dimetrodon_flame_mode",
-						"rift:dimetrodon_default_temperature_mode",
-						"rift:tamed_can_move_normal",
-						"rift:tamed_can_move_flame"
+						"rift:dimetrodon_default_temperature_mode"
 					]
 				},
 				"run_command": {
@@ -4806,15 +3974,12 @@
 			"rift:stop_frost_mode": {
 				"add": {
 					"component_groups": [
-						"rift:dimetrodon_default_temperature_mode",
-						"rift:tamed_can_move_normal"
+						"rift:dimetrodon_default_temperature_mode"
 					]
 				},
 				"remove": {
 					"component_groups": [
-						"rift:dimetrodon_frost_mode_grace_period",
-						"rift:tamed_can_move_flame",
-						"rift:tamed_can_move_frost"
+						"rift:dimetrodon_frost_mode_grace_period"
 					]
 				}
 			},
@@ -4822,15 +3987,12 @@
 				"add": {
 					"component_groups": [
 						"rift:dimetrodon_flame_mode",
-						"rift:use_flame_weapon",
-						"rift:tamed_can_move_flame"
+						"rift:use_flame_weapon"
 					]
 				},
 				"remove": {
 					"component_groups": [
-						"rift:dimetrodon_default_temperature_mode",
-						"rift:tamed_can_move_normal",
-						"rift:tamed_can_move_frost"
+						"rift:dimetrodon_default_temperature_mode"
 					]
 				}
 			},
@@ -4849,16 +4011,13 @@
 			"rift:stop_flame_mode": {
 				"add": {
 					"component_groups": [
-						"rift:dimetrodon_default_temperature_mode",
-						"rift:tamed_can_move_normal"
+						"rift:dimetrodon_default_temperature_mode"
 					]
 				},
 				"remove": {
 					"component_groups": [
 						"rift:dimetrodon_flame_mode_grace_period",
-						"rift:use_flame_weapon",
-						"rift:tamed_can_move_flame",
-						"rift:tamed_can_move_frost"
+						"rift:use_flame_weapon"
 					]
 				},
 				"run_command": {
@@ -4871,8 +4030,7 @@
 				"add": {
 					"component_groups": [
 						"rift:dimetrodon_forced_flame_mode",
-						"rift:use_flame_weapon",
-						"rift:tamed_can_move_flame"
+						"rift:use_flame_weapon"
 					]
 				},
 				"remove": {
@@ -4881,25 +4039,20 @@
 						"rift:dimetrodon_frost_mode",
 						"rift:dimetrodon_frost_mode_grace_period",
 						"rift:dimetrodon_forced_frost_mode",
-						"rift:dimetrodon_forced_neutral_mode",
-						"rift:tamed_can_move_normal",
-						"rift:tamed_can_move_frost"
+						"rift:dimetrodon_forced_neutral_mode"
 					]
 				}
 			},
 			"rift:stop_forced_flame_mode": {
 				"add": {
 					"component_groups": [
-						"rift:dimetrodon_default_temperature_mode",
-						"rift:tamed_can_move_normal"
+						"rift:dimetrodon_default_temperature_mode"
 					]
 				},
 				"remove": {
 					"component_groups": [
 						"rift:dimetrodon_forced_flame_mode",
-						"rift:use_flame_weapon",
-						"rift:tamed_can_move_flame",
-						"rift:tamed_can_move_frost"
+						"rift:use_flame_weapon"
 					]
 				},
 				"run_command": {
@@ -4930,8 +4083,7 @@
 			"rift:forced_frost_mode": {
 				"add": {
 					"component_groups": [
-						"rift:dimetrodon_forced_frost_mode",
-						"rift:tamed_can_move_frost"
+						"rift:dimetrodon_forced_frost_mode"
 					]
 				},
 				"remove": {
@@ -4940,9 +4092,7 @@
 						"rift:dimetrodon_flame_mode",
 						"rift:dimetrodon_flame_mode_grace_period",
 						"rift:dimetrodon_forced_flame_mode",
-						"rift:dimetrodon_forced_neutral_mode",
-						"rift:tamed_can_move_normal",
-						"rift:tamed_can_move_flame"
+						"rift:dimetrodon_forced_neutral_mode"
 					]
 				},
 				"run_command": {
@@ -4954,23 +4104,19 @@
 			"rift:stop_forced_frost_mode": {
 				"add": {
 					"component_groups": [
-						"rift:dimetrodon_default_temperature_mode",
-						"rift:tamed_can_move_normal"
+						"rift:dimetrodon_default_temperature_mode"
 					]
 				},
 				"remove": {
 					"component_groups": [
-						"rift:dimetrodon_forced_frost_mode",
-						"rift:tamed_can_move_frost",
-						"rift:tamed_can_move_flame"
+						"rift:dimetrodon_forced_frost_mode"
 					]
 				}
 			},
 			"rift:forced_neutral_mode": {
 				"add": {
 					"component_groups": [
-						"rift:dimetrodon_forced_neutral_mode",
-						"rift:tamed_can_move_normal"
+						"rift:dimetrodon_forced_neutral_mode"
 					]
 				},
 				"remove": {
@@ -4982,9 +4128,7 @@
 						"rift:dimetrodon_frost_mode",
 						"rift:dimetrodon_frost_mode_grace_period",
 						"rift:dimetrodon_forced_frost_mode",
-						"rift:dimetrodon_forced_neutral_mode",
-						"rift:tamed_can_move_frost",
-						"rift:tamed_can_move_flame"
+						"rift:dimetrodon_forced_neutral_mode"
 					]
 				},
 				"run_command": {
@@ -5026,399 +4170,14 @@
 					]
 				}
 			},
-			"rift:moving_slowly_low_energy": {
-				"sequence": [
-					{
-						"remove": {
-							"component_groups": [
-								"rift:tamed_can_move_normal",
-								"rift:tamed_can_move_flame",
-								"rift:tamed_can_move_frost",
-								"rift:tamed_cannot_move_normal",
-								"rift:tamed_cannot_move_flame",
-								"rift:tamed_cannot_move_frost"
-							]
-						}
-					},
-					{
-						"filters": {
-							"all_of": [
-								{
-									"test": "has_component",
-									"subject": "self",
-									"operator": "!=",
-									"value": "minecraft:is_ignited"
-								},
-								{
-									"test": "has_component",
-									"subject": "self",
-									"operator": "!=",
-									"value": "minecraft:is_charged"
-								}
-							]
-						},
-						"add": {
-							"component_groups": [
-								"rift:tamed_can_move_low_energy_normal"
-							]
-						}
-					},
-					{
-						"filters": {
-							"all_of": [
-								{
-									"test": "has_component",
-									"subject": "self",
-									"value": "minecraft:is_ignited"
-								},
-								{
-									"test": "has_component",
-									"subject": "self",
-									"operator": "!=",
-									"value": "minecraft:is_charged"
-								}
-							]
-						},
-						"add": {
-							"component_groups": [
-								"rift:tamed_can_move_low_energy_flame"
-							]
-						}
-					},
-					{
-						"filters": {
-							"all_of": [
-								{
-									"test": "has_component",
-									"subject": "self",
-									"operator": "!=",
-									"value": "minecraft:is_ignited"
-								},
-								{
-									"test": "has_component",
-									"subject": "self",
-									"value": "minecraft:is_charged"
-								}
-							]
-						},
-						"add": {
-							"component_groups": [
-								"rift:tamed_can_move_low_energy_frost"
-							]
-						}
-					}
-				]
-			},
-			"rift:stop_moving_low_energy": {
-				"sequence": [
-					{
-						"remove": {
-							"component_groups": [
-								"rift:tamed_can_move_normal",
-								"rift:tamed_can_move_flame",
-								"rift:tamed_can_move_frost",
-								"rift:tamed_can_move_low_energy_normal",
-								"rift:tamed_can_move_low_energy_flame",
-								"rift:tamed_can_move_low_energy_frost"
-							]
-						}
-					},
-					{
-						"filters": {
-							"all_of": [
-								{
-									"test": "has_component",
-									"subject": "self",
-									"operator": "!=",
-									"value": "minecraft:is_ignited"
-								},
-								{
-									"test": "has_component",
-									"subject": "self",
-									"operator": "!=",
-									"value": "minecraft:is_charged"
-								}
-							]
-						},
-						"add": {
-							"component_groups": [
-								"rift:tamed_cannot_move_normal"
-							]
-						}
-					},
-					{
-						"filters": {
-							"all_of": [
-								{
-									"test": "has_component",
-									"subject": "self",
-									"value": "minecraft:is_ignited"
-								},
-								{
-									"test": "has_component",
-									"subject": "self",
-									"operator": "!=",
-									"value": "minecraft:is_charged"
-								}
-							]
-						},
-						"add": {
-							"component_groups": [
-								"rift:tamed_cannot_move_flame"
-							]
-						}
-					},
-					{
-						"filters": {
-							"all_of": [
-								{
-									"test": "has_component",
-									"subject": "self",
-									"operator": "!=",
-									"value": "minecraft:is_ignited"
-								},
-								{
-									"test": "has_component",
-									"subject": "self",
-									"value": "minecraft:is_charged"
-								}
-							]
-						},
-						"add": {
-							"component_groups": [
-								"rift:tamed_cannot_move_frost"
-							]
-						}
-					}
-				]
-			},
-			"rift:return_to_moving_normally": {
-				"sequence": [
-					{
-						"remove": {
-							"component_groups": [
-								"rift:tamed_can_move_low_energy_normal",
-								"rift:tamed_can_move_low_energy_flame",
-								"rift:tamed_can_move_low_energy_frost",
-								"rift:tamed_cannot_move_normal",
-								"rift:tamed_cannot_move_flame",
-								"rift:tamed_cannot_move_frost"
-							]
-						}
-					},
-					{
-						"filters": {
-							"all_of": [
-								{
-									"test": "has_component",
-									"subject": "self",
-									"operator": "!=",
-									"value": "minecraft:is_ignited"
-								},
-								{
-									"test": "has_component",
-									"subject": "self",
-									"operator": "!=",
-									"value": "minecraft:is_charged"
-								}
-							]
-						},
-						"add": {
-							"component_groups": [
-								"rift:tamed_can_move_normal"
-							]
-						}
-					},
-					{
-						"filters": {
-							"all_of": [
-								{
-									"test": "has_component",
-									"subject": "self",
-									"value": "minecraft:is_ignited"
-								},
-								{
-									"test": "has_component",
-									"subject": "self",
-									"operator": "!=",
-									"value": "minecraft:is_charged"
-								}
-							]
-						},
-						"add": {
-							"component_groups": [
-								"rift:tamed_can_move_flame"
-							]
-						}
-					},
-					{
-						"filters": {
-							"all_of": [
-								{
-									"test": "has_component",
-									"subject": "self",
-									"operator": "!=",
-									"value": "minecraft:is_ignited"
-								},
-								{
-									"test": "has_component",
-									"subject": "self",
-									"value": "minecraft:is_charged"
-								}
-							]
-						},
-						"add": {
-							"component_groups": [
-								"rift:tamed_can_move_frost"
-							]
-						}
-					}
-				]
-			},
 			"rift:manage_state": {
-				"sequence": [
-					{},
-					{
-						"filters": {
-							"test": "int_property",
-							"subject": "self",
-							"domain": "rift:tame_state",
-							"value": 0
-						},
-						"run_command": {
-							"command": [
-								"tellraw @a {\"rawtext\":[{\"translate\":\"reminder.state_sitting.text\",\"with\":{\"rawtext\":[{\"selector\":\"@s\"}]}}]}"
-							]
-						}
-					},
-					{
-						"filters": {
-							"test": "int_property",
-							"subject": "self",
-							"domain": "rift:tame_state",
-							"value": 1
-						},
-						"run_command": {
-							"command": [
-								"tellraw @a {\"rawtext\":[{\"translate\":\"reminder.state_wandering.text\",\"with\":{\"rawtext\":[{\"selector\":\"@s\"}]}}]}"
-							]
-						}
-					},
-					{
-						"filters": {
-							"test": "int_property",
-							"subject": "self",
-							"domain": "rift:tame_state",
-							"value": 2
-						},
-						"run_command": {
-							"command": [
-								"tellraw @a {\"rawtext\":[{\"translate\":\"reminder.state_standing.text\",\"with\":{\"rawtext\":[{\"selector\":\"@s\"}]}}]}"
-							]
-						}
-					},
-					{
-						"set_property": {
-							"rift:tame_state": "query.property('rift:energy') > 0 ? ((query.property('rift:tame_state') >= 0 && query.property('rift:tame_state') <= 1) ? query.property('rift:tame_state') + 1 : 0) : 1"
-						}
-					}
-				]
+				"set_property": {
+					"rift:tame_state": "(query.property('rift:tame_state') >= 0 && query.property('rift:tame_state') <= 1) ? query.property('rift:tame_state') + 1 : 0"
+				}
 			},
 			"rift:manage_behavior": {
-				"sequence": [
-					{},
-					{
-						"filters": {
-							"test": "int_property",
-							"subject": "self",
-							"domain": "rift:behavior_state",
-							"value": 0
-						},
-						"run_command": {
-							"command": [
-								"tellraw @a {\"rawtext\":[{\"translate\":\"reminder.behavior_neutral.text\",\"with\":{\"rawtext\":[{\"selector\":\"@s\"}]}}]}"
-							]
-						}
-					},
-					{
-						"filters": {
-							"test": "int_property",
-							"subject": "self",
-							"domain": "rift:behavior_state",
-							"value": 1
-						},
-						"run_command": {
-							"command": [
-								"tellraw @a {\"rawtext\":[{\"translate\":\"reminder.behavior_aggressive.text\",\"with\":{\"rawtext\":[{\"selector\":\"@s\"}]}}]}"
-							]
-						}
-					},
-					{
-						"filters": {
-							"test": "int_property",
-							"subject": "self",
-							"domain": "rift:behavior_state",
-							"value": 2
-						},
-						"run_command": {
-							"command": [
-								"tellraw @a {\"rawtext\":[{\"translate\":\"reminder.behavior_passive.text\",\"with\":{\"rawtext\":[{\"selector\":\"@s\"}]}}]}"
-							]
-						}
-					},
-					{
-						"filters": {
-							"test": "int_property",
-							"subject": "self",
-							"domain": "rift:behavior_state",
-							"value": 3
-						},
-						"run_command": {
-							"command": [
-								"tellraw @a {\"rawtext\":[{\"translate\":\"reminder.behavior_assist.text\",\"with\":{\"rawtext\":[{\"selector\":\"@s\"}]}}]}"
-							]
-						}
-					},
-					{
-						"set_property": {
-							"rift:behavior_state": "query.property('rift:energy') > 0 ? ((query.property('rift:behavior_state') >= 0 && query.property('rift:behavior_state') <= 2) ? query.property('rift:behavior_state') + 1 : 0) : 3"
-						}
-					}
-				]
-			},
-			"rift:sit_at_no_energy": {
 				"set_property": {
-					"rift:tame_state": "1"
-				}
-			},
-			"rift:passive_at_no_energy": {
-				"set_property": {
-					"rift:behavior_state": "3"
-				}
-			},
-			"rift:decrease_energy_while_moving": {
-				"set_property": {
-					"rift:energy": "query.property('rift:energy') - 15"
-				}
-			},
-			"rift:decrease_energy_while_biting_normal": {
-				"set_property": {
-					"rift:energy": "query.property('rift:energy') - 10"
-				}
-			},
-			"rift:decrease_energy_while_biting_frost": {
-				"set_property": {
-					"rift:energy": "query.property('rift:energy') - 12"
-				}
-			},
-			"rift:decrease_energy_while_biting_flame": {
-				"set_property": {
-					"rift:energy": "query.property('rift:energy') - 7"
-				}
-			},
-			"rift:regenerate_energy": {
-				"set_property": {
-					"rift:energy": "query.property('rift:energy') - 5"
+					"rift:behavior_state": "(query.property('rift:behavior_state') >= 0 && query.property('rift:behavior_state') <= 2) ? query.property('rift:behavior_state') + 1 : 0"
 				}
 			},
 			//for potion effects
@@ -5694,14 +4453,7 @@
 			"rift:lol2": {
 				"run_command": {
 					"command": [
-						"tellraw @p {\"rawtext\":[{\"translate\":\"reminder.cannot_use_treat.text\"}]}"
-					]
-				}
-			},
-			"rift:lol3": {
-				"run_command": {
-					"command": [
-						"tellraw @p {\"rawtext\":[{\"translate\":\"reminder.cannot_use_regular_food.text\"}]}"
+						"tellraw @p {\"rawtext\":[{\"text\":\"Treats are for healing and breeding only! Use regular foods to heal adults or speed up growth for babies!\"}]}"
 					]
 				}
 			}

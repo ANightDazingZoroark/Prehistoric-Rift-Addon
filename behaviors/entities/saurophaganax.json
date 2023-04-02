@@ -24,15 +24,6 @@
 					"type": "bool",
 					"default": false
 				},
-                "rift:energy": {
-                    "range": [
-						0,
-						150
-					],
-					"type": "int",
-					"default": 150,
-					"client_sync": true
-                },
                 "rift:tame_state": { //0 for standing, 1 for sitting, 2 for wandering
                     "range": [
 						0,
@@ -62,24 +53,12 @@
 				"contSleepingTag": "controller.animation.add_sleeping_tag",
 				"contHasTargetTag": "controller.animation.add_has_target_tag",
 				"contShearedTag": "controller.animation.add_sheared_tag",
-				"contInLoveTag": "controller.animation.add_in_love_tag",
-				"contForcedAttack": "controller.animation.saurophaganax_forced_attack",
+				"contForcedAttack": "controller.animation.general_forced_attack",
 				"contUnsittableWhenRidden": "controller.animation.become_unsittable_when_ridden",
 				"contTameState": "controller.animation.manage_tame_state",
 				"contBehaviorState": "controller.animation.manage_tame_behavior",
-				"contEnergyUsage": "controller.animation.saurophaganax_energy_movement_usage",
-				"contWarnLowEnergy": "controller.animation.warn_of_low_energy",
-				"contForcedReturnToSleep": "controller.animation.saurophaganax_forced_sleep_when_no_energy",
 				"animEatFromInventoryCooldown": "animation.eat_from_inventory_cooldown",
-				"animUseEnergyWhileMoving": "animation.saurophaganax_decrease_energy_while_moving",
-				"animUseEnergyWhileMovingWeakened": "animation.saurophaganax_decrease_energy_while_moving_weakened",
-				"animEnergyRegenDelay": "animation.regenerate_energy_delay",
-				"animRegenerateEnergy": "animation.saurophaganax_regenerate_energy",
-				"animRefillEnergyWhileSleeping": "animation.saurophaganax_refill_energy_while_sleeping",
-				"animLowOnEnergyEffects": "animation.effects_while_low_on_energy",
-				"animNoEnergyEffects": "animation.effects_while_no_energy",
 				"animForcedAttack": "animation.forced_attack_saurophaganax",
-				"animForcedAttackWeakened": "animation.forced_attack_saurophaganax_weakened",
 				"animResetLightBlastCharge": "animation.reset_saurophaganax_light_blast_charge",
 				"animUnriddenLightBlast": "animation.saurophaganax_activate_light_blast"
 			},
@@ -95,14 +74,10 @@
 					"contSleepingTag",
 					"contHasTargetTag",
 					"contShearedTag",
-					"contInLoveTag",
 					"contForcedAttack",
 					"contUnsittableWhenRidden",
 					"contTameState",
 					"contBehaviorState",
-					"contEnergyUsage",
-					"contWarnLowEnergy",
-					"contForcedReturnToSleep",
 					"animUnriddenLightBlast"
 				]
 			}
@@ -209,6 +184,9 @@
 				"minecraft:attack": {
 					"damage": 1
 				},
+				"minecraft:movement": {
+					"value": 0.15
+				},
 				"minecraft:behavior.nap": {
 					"priority": 3,
 					"can_nap_filters": {
@@ -235,13 +213,26 @@
 			"rift:saurophaganax_baby_prime": {
 				"minecraft:attack": {
 					"damage": 8
+				},
+				"minecraft:movement": {
+					"value": 0.25
 				}
 			},
 			"rift:saurophaganax_baby_forced_awake": {
+				"minecraft:timer": {
+					"time": 60,
+					"time_down_event": {
+						"event": "rift:baby_return_to_sleep",
+						"target": "self"
+					}
+				},
 				"minecraft:is_sheared": {},
 				"minecraft:out_of_control": {},
 				"minecraft:attack": {
 					"damage": 1
+				},
+				"minecraft:movement": {
+					"value": 0.15
 				}
 			},
             "rift:saurophaganax_adult": {
@@ -720,6 +711,9 @@
 				"minecraft:attack": {
 					"damage": 5
 				},
+				"minecraft:movement": {
+					"value": 0.05
+				},
 				"minecraft:behavior.nap": {
 					"priority": 3,
 					"can_nap_filters": {
@@ -746,22 +740,30 @@
 			"rift:saurophaganax_adult_prime": {
 				"minecraft:attack": {
 					"damage": 60
+				},
+				"minecraft:movement": {
+					"value": 0.25
 				}
 			},
 			"rift:saurophaganax_adult_forced_awake": {
+				"minecraft:timer": {
+					"time": 60,
+					"time_down_event": {
+						"event": "rift:adult_return_to_sleep",
+						"target": "self"
+					}
+				},
 				"minecraft:is_sheared": {},
 				"minecraft:out_of_control": {},
 				"minecraft:attack": {
 					"damage": 5
+				},
+				"minecraft:movement": {
+					"value": 0.05
 				}
 			},
 			"rift:saurophaganax_tamed": {
-				"minecraft:is_tamed": {},
-				"minecraft:leashable": {
-					"soft_distance": 4,
-					"hard_distance": 10,
-					"max_distance": 15
-				}
+				"minecraft:is_tamed": {}
 			},
 			"rift:saurophaganax_saddled": {
 				"minecraft:is_saddled": {},
@@ -818,21 +820,7 @@
 					]
 				}
 			},
-			"rift:wild_standing_prime": {
-				"minecraft:movement": {
-					"value": 0.25
-				},
-				"minecraft:behavior.random_stroll": {
-					"priority": 14
-				},
-				"minecraft:behavior.random_look_around": {
-					"priority": 15
-				}
-			},
-			"rift:wild_standing_weakened": {
-				"minecraft:movement": {
-					"value": 0.05
-				},
+			"rift:wild_standing": {
 				"minecraft:behavior.random_stroll": {
 					"priority": 14
 				},
@@ -866,48 +854,6 @@
 				},
 				"minecraft:behavior.random_stroll": {
 					"priority": 14
-				}
-			},
-			"rift:tamed_can_move_prime": {
-				"minecraft:movement": {
-					"value": 0.25
-				}
-			},
-			"rift:tamed_can_move_low_energy_prime": { //formula for speed reduction from slowness effect is speed * 0.15 * level
-				"minecraft:movement": {
-					"value": 0.1125
-				}
-			},
-			"rift:tamed_cannot_move_prime": {
-				"minecraft:movement": {
-					"value": 0
-				},
-				"minecraft:underwater_movement": {
-					"value": 0
-				},
-				"minecraft:water_movement": {
-					"drag_factor": 0
-				}
-			},
-			"rift:tamed_can_move_weakened": {
-				"minecraft:movement": {
-					"value": 0.05
-				}
-			},
-			"rift:tamed_can_move_low_energy_weakened": {
-				"minecraft:movement": {
-					"value": 0.0225
-				}
-			},
-			"rift:tamed_cannot_move_weakened": {
-				"minecraft:movement": {
-					"value": 0
-				},
-				"minecraft:underwater_movement": {
-					"value": 0
-				},
-				"minecraft:water_movement": {
-					"drag_factor": 0
 				}
 			},
 			"rift:assist_behavior": {
@@ -1092,7 +1038,6 @@
         "components": {
             "minecraft:type_family": {
 				"family": [
-					"riftCreature",
 					"saurophaganax",
 					"mob",
 					"carnivore",
@@ -1111,6 +1056,11 @@
 			"minecraft:breathable": {
 				"total_supply": 15,
 				"suffocate_time": 0
+			},
+			"minecraft:leashable": {
+				"soft_distance": 4,
+				"hard_distance": 10,
+				"max_distance": 15
 			},
 			"minecraft:interact": {
 				"interactions": [
@@ -1147,266 +1097,6 @@
 								]
 							},
 							"event": "rift:lol2",
-							"target": "self"
-						},
-						"interact_text": "action.interact.tame"
-					},
-					{
-						"on_interact": {
-							"filters": {
-								"all_of": [
-									{
-										"any_of": [
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "rift:carrion_treat"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "rift:bug_treat"
-											}
-										]
-									},
-									{
-										"test": "has_component",
-										"subject": "self",
-										"value": "minecraft:is_tamed"
-									},
-									{
-										"test": "has_component",
-										"subject": "self",
-										"operator": "!=",
-										"value": "minecraft:is_baby"
-									},
-									{
-										"any_of": [
-											{
-												"test": "is_missing_health",
-												"subject": "self",
-												"value": true
-											},
-											{
-												"test": "has_tag",
-												"subject": "self",
-												"value": "inLove"
-											}
-										]
-									}
-								]
-							},
-							"event": "rift:lol2",
-							"target": "self"
-						},
-						"interact_text": "action.interact.tame"
-					},
-					{
-						"on_interact": {
-							"filters": {
-								"all_of": [
-									{
-										"any_of": [
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "minecraft:rotten_flesh"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "minecraft:bone"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "minecraft:gunpowder"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "minecraft:spider_eye"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "minecraft:ender_pearl"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "minecraft:slime_ball"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "minecraft:phantom_membrane"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "minecraft:ghast_tear"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "minecraft:blaze_rod"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "minecraft:blaze_powder"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "minecraft:magma_cream"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "rift:raw_hemolymph"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "rift:boiled_hemolymph"
-											}
-										]
-									},
-									{
-										"test": "has_component",
-										"subject": "self",
-										"value": "minecraft:is_tamed"
-									},
-									{
-										"test": "has_component",
-										"subject": "self",
-										"operator": "!=",
-										"value": "minecraft:is_baby"
-									},
-									{
-										"test": "is_missing_health",
-										"subject": "self",
-										"value": false
-									}
-								]
-							},
-							"event": "rift:lol3",
-							"target": "self"
-						},
-						"interact_text": "action.interact.tame"
-					},
-					{
-						"on_interact": {
-							"filters": {
-								"all_of": [
-									{
-										"any_of": [
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "minecraft:rotten_flesh"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "minecraft:bone"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "minecraft:gunpowder"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "minecraft:spider_eye"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "minecraft:ender_pearl"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "minecraft:slime_ball"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "minecraft:phantom_membrane"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "minecraft:ghast_tear"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "minecraft:blaze_rod"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "minecraft:blaze_powder"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "minecraft:magma_cream"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "rift:raw_hemolymph"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "rift:boiled_hemolymph"
-											}
-										]
-									},
-									{
-										"test": "has_component",
-										"subject": "self",
-										"operator": "!=",
-										"value": "minecraft:is_tamed"
-									}
-								]
-							},
-							"event": "rift:lol3",
 							"target": "self"
 						},
 						"interact_text": "action.interact.tame"
@@ -3839,7 +3529,7 @@
 								"rift:saurophaganax_adult_wild",
 								"rift:saurophaganax_adult_wild_not_trusting",
 								"rift:default_targets",
-								"rift:wild_standing_prime",
+								"rift:wild_standing",
 								"rift:variant_zero",
 								"rift:pushable",
 								"rift:can_attack"
@@ -3859,7 +3549,7 @@
 								"rift:saurophaganax_adult_wild",
 								"rift:saurophaganax_adult_wild_not_trusting",
 								"rift:default_targets",
-								"rift:wild_standing_prime",
+								"rift:wild_standing",
 								"rift:variant_one",
 								"rift:pushable",
 								"rift:can_attack"
@@ -3879,7 +3569,7 @@
 								"rift:saurophaganax_adult_wild",
 								"rift:saurophaganax_adult_wild_not_trusting",
 								"rift:default_targets",
-								"rift:wild_standing_prime",
+								"rift:wild_standing",
 								"rift:variant_two",
 								"rift:pushable",
 								"rift:can_attack"
@@ -3899,7 +3589,7 @@
 								"rift:saurophaganax_adult_wild",
 								"rift:saurophaganax_adult_wild_not_trusting",
 								"rift:default_targets",
-								"rift:wild_standing_prime",
+								"rift:wild_standing",
 								"rift:variant_three",
 								"rift:pushable",
 								"rift:can_attack"
@@ -3914,39 +3604,17 @@
 				]
 			},
 			"rift:become_weakened_baby": {
-				"sequence": [
-					{
-						"add": {
-							"component_groups": [
-								"rift:saurophaganax_baby_weakened"
-							]
-						},
-						"remove": {
-							"component_groups": [
-								"rift:saurophaganax_baby_prime",
-								"rift:saurophaganax_baby_tameable"
-							]
-						}
-					},
-					{
-						"filters": {
-							"test": "has_component",
-							"subject": "self",
-							"operator": "!=",
-							"value": "minecraft:is_tamed"
-						},
-						"add": {
-							"component_groups": [
-								"rift:wild_standing_weakened"
-							]
-						},
-						"remove": {
-							"component_groups": [
-								"rift:wild_standing_prime"
-							]
-						}
-					}
-				]
+				"add": {
+					"component_groups": [
+						"rift:saurophaganax_baby_weakened"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:saurophaganax_baby_prime",
+						"rift:saurophaganax_baby_tameable"
+					]
+				}
 			},
 			"rift:become_prime_baby": {
 				"sequence": [
@@ -3972,60 +3640,32 @@
 						},
 						"add": {
 							"component_groups": [
-								"rift:saurophaganax_baby_tameable",
-								"rift:wild_standing_prime"
-							]
-						},
-						"remove": {
-							"component_groups": [
-								"rift:wild_standing_weakened"
+								"rift:saurophaganax_baby_tameable"
 							]
 						}
 					}
 				]
 			},
 			"rift:become_weakened_adult": {
-				"sequence": [
-					{
-						"add": {
-							"component_groups": [
-								"rift:saurophaganax_adult_weakened"
-							]
-						},
-						"remove": {
-							"component_groups": [
-								"rift:saurophaganax_adult_prime",
-								"rift:default_targets",
-								"rift:saurophaganax_adult_wild_not_trusting",
-								"rift:rideable",
-								"rift:aggravating_horn_attack"
-							]
-						},
-						"run_command": {
-							"command": [
-								"scoreboard players set @s saurophLightBlst 0"
-							]
-						}
-					},
-					{
-						"filters": {
-							"test": "has_component",
-							"subject": "self",
-							"operator": "!=",
-							"value": "minecraft:is_tamed"
-						},
-						"add": {
-							"component_groups": [
-								"rift:wild_standing_weakened"
-							]
-						},
-						"remove": {
-							"component_groups": [
-								"rift:wild_standing_prime"
-							]
-						}
-					}
-				]
+				"add": {
+					"component_groups": [
+						"rift:saurophaganax_adult_weakened"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:saurophaganax_adult_prime",
+						"rift:default_targets",
+						"rift:saurophaganax_adult_wild_not_trusting",
+						"rift:rideable",
+						"rift:aggravating_horn_attack"
+					]
+				},
+				"run_command": {
+					"command": [
+						"scoreboard players set @s saurophLightBlst 0"
+					]
+				}
 			},
 			"rift:become_prime_adult": {
 				"sequence": [
@@ -4053,13 +3693,7 @@
 						"add": {
 							"component_groups": [
 								"rift:default_targets",
-								"rift:saurophaganax_adult_wild_not_trusting",
-								"rift:wild_standing_prime"
-							]
-						},
-						"remove": {
-							"component_groups": [
-								"rift:wild_standing_weakened"
+								"rift:saurophaganax_adult_wild_not_trusting"
 							]
 						}
 					},
@@ -4122,9 +3756,7 @@
 						"remove": {
 							"component_groups": [
 								"rift:saurophaganax_adult_wild",
-								"rift:default_targets",
-								"rift:wild_standing_prime",
-								"rift:wild_standing_weakened"
+								"rift:default_targets"
 							]
 						}
 					}
@@ -4140,9 +3772,7 @@
 				"remove": {
 					"component_groups": [
 						"rift:saurophaganax_baby_wild",
-						"rift:saurophaganax_baby_tameable",
-						"rift:wild_standing_prime",
-						"rift:wild_standing_weakened"
+						"rift:saurophaganax_baby_tameable"
 					]
 				},
 				"set_property": {
@@ -4254,10 +3884,8 @@
 						"rift:saurophaganax_adult_tameable",
 						"rift:saurophaganax_adult_chance_for_tame",
 						"rift:saurophaganax_adult_trusting",
-						"rift:wild_standing_prime",
-						"rift:temptable",
-						"rift:wild_standing_prime",
-						"rift:wild_standing_weakened"
+						"rift:wild_standing",
+						"rift:temptable"
 					]
 				},
 				"run_command": {
@@ -4428,7 +4056,6 @@
 				},
 				"run_command": {
 					"command": [
-						"event entity @s rift:decrease_energy_while_light_blasting",
 						"scoreboard players set @s saurophLightBlst 0"
 					]
 				}
@@ -4443,7 +4070,7 @@
 						},
 						"remove": {
 							"component_groups": [
-								"rift:wild_standing_prime",
+								"rift:wild_standing",
 								"rift:sitting",
 								"rift:sitting_angered",
 								"rift:wandering"
@@ -4477,7 +4104,7 @@
 				},
 				"remove": {
 					"component_groups": [
-						"rift:wild_standing_prime",
+						"rift:wild_standing",
 						"rift:tamed_standing",
 						"rift:sitting_angered",
 						"rift:wandering",
@@ -4500,7 +4127,7 @@
 						},
 						"remove": {
 							"component_groups": [
-								"rift:wild_standing_prime",
+								"rift:wild_standing",
 								"rift:tamed_standing",
 								"rift:sitting",
 								"rift:sitting_angered"
@@ -4627,7 +4254,7 @@
 								"rift:saurophaganax_baby",
 								"rift:saurophaganax_baby_wild",
 								"rift:saurophaganax_baby_tameable",
-								"rift:wild_standing_prime",
+								"rift:wild_standing",
 								"rift:variant_zero",
 								"rift:pushable",
 								"rift:can_attack",
@@ -4642,7 +4269,7 @@
 								"rift:saurophaganax_baby",
 								"rift:saurophaganax_baby_wild",
 								"rift:saurophaganax_baby_tameable",
-								"rift:wild_standing_prime",
+								"rift:wild_standing",
 								"rift:variant_one",
 								"rift:pushable",
 								"rift:can_attack",
@@ -4657,7 +4284,7 @@
 								"rift:saurophaganax_baby",
 								"rift:saurophaganax_baby_wild",
 								"rift:saurophaganax_baby_tameable",
-								"rift:wild_standing_prime",
+								"rift:wild_standing",
 								"rift:variant_two",
 								"rift:pushable",
 								"rift:can_attack",
@@ -4672,7 +4299,7 @@
 								"rift:saurophaganax_baby",
 								"rift:saurophaganax_baby_wild",
 								"rift:saurophaganax_baby_tameable",
-								"rift:wild_standing_prime",
+								"rift:wild_standing",
 								"rift:variant_three",
 								"rift:pushable",
 								"rift:can_attack",
@@ -4691,7 +4318,7 @@
 								"rift:saurophaganax_baby",
 								"rift:saurophaganax_baby_tamed",
 								"rift:saurophaganax_tamed",
-								"rift:tamed_can_move_prime",
+								"rift:wild_standing",
 								"rift:variant_zero",
 								"rift:pushable",
 								"rift:can_attack",
@@ -4709,7 +4336,7 @@
 								"rift:saurophaganax_baby",
 								"rift:saurophaganax_baby_tamed",
 								"rift:saurophaganax_tamed",
-								"rift:tamed_can_move_prime",
+								"rift:wild_standing",
 								"rift:variant_one",
 								"rift:pushable",
 								"rift:can_attack",
@@ -4727,7 +4354,7 @@
 								"rift:saurophaganax_baby",
 								"rift:saurophaganax_baby_tamed",
 								"rift:saurophaganax_tamed",
-								"rift:tamed_can_move_prime",
+								"rift:wild_standing",
 								"rift:variant_two",
 								"rift:pushable",
 								"rift:can_attack",
@@ -4745,7 +4372,7 @@
 								"rift:saurophaganax_baby",
 								"rift:saurophaganax_baby_tamed",
 								"rift:saurophaganax_tamed",
-								"rift:tamed_can_move_prime",
+								"rift:wild_standing",
 								"rift:variant_three",
 								"rift:pushable",
 								"rift:can_attack",
@@ -4802,299 +4429,14 @@
 					"rift:eat_from_inventory_cooldown": false
 				}
 			},
-			"rift:moving_slowly_low_energy": {
-				"sequence": [
-					{},
-					{
-						"filters": {
-							"test": "has_component",
-							"subject": "self",
-							"operator": "!=",
-							"value": "minecraft:is_sheared"
-						},
-						"add": {
-							"component_groups": [
-								"rift:tamed_can_move_low_energy_prime"
-							]
-						},
-						"remove": {
-							"component_groups": [
-								"rift:tamed_can_move_weakened",
-								"rift:tamed_can_move_low_energy_weakened",
-								"rift:tamed_cannot_move_weakened",
-								"rift:tamed_can_move_prime",
-								"rift:tamed_cannot_move_prime"
-							]
-						}
-					},
-					{
-						"filters": {
-							"test": "has_component",
-							"subject": "self",
-							"value": "minecraft:is_sheared"
-						},
-						"add": {
-							"component_groups": [
-								"rift:tamed_can_move_low_energy_weakened"
-							]
-						},
-						"remove": {
-							"component_groups": [
-								"rift:tamed_can_move_weakened",
-								"rift:tamed_cannot_move_weakened",
-								"rift:tamed_can_move_prime",
-								"rift:tamed_can_move_low_energy_prime",
-								"rift:tamed_cannot_move_prime"
-							]
-						}
-					}
-				]
-			},
-			"rift:stop_moving_low_energy": {
-				"sequence": [
-					{},
-					{
-						"filters": {
-							"test": "has_component",
-							"subject": "self",
-							"operator": "!=",
-							"value": "minecraft:is_sheared"
-						},
-						"add": {
-							"component_groups": [
-								"rift:tamed_cannot_move_prime"
-							]
-						},
-						"remove": {
-							"component_groups": [
-								"rift:tamed_can_move_weakened",
-								"rift:tamed_can_move_low_energy_weakened",
-								"rift:tamed_cannot_move_weakened",
-								"rift:tamed_can_move_prime",
-								"rift:tamed_can_move_low_energy_prime"
-							]
-						}
-					},
-					{
-						"filters": {
-							"test": "has_component",
-							"subject": "self",
-							"value": "minecraft:is_sheared"
-						},
-						"add": {
-							"component_groups": [
-								"rift:tamed_cannot_move_weakened"
-							]
-						},
-						"remove": {
-							"component_groups": [
-								"rift:tamed_can_move_weakened",
-								"rift:tamed_can_move_low_energy_weakened",
-								"rift:tamed_can_move_prime",
-								"rift:tamed_can_move_low_energy_prime",
-								"rift:tamed_cannot_move_prime"
-							]
-						}
-					}
-				]
-			},
-			"rift:return_to_moving_normally": {
-				"sequence": [
-					{},
-					{
-						"filters": {
-							"test": "has_component",
-							"subject": "self",
-							"operator": "!=",
-							"value": "minecraft:is_sheared"
-						},
-						"add": {
-							"component_groups": [
-								"rift:tamed_can_move_prime"
-							]
-						},
-						"remove": {
-							"component_groups": [
-								"rift:tamed_can_move_weakened",
-								"rift:tamed_can_move_low_energy_weakened",
-								"rift:tamed_cannot_move_weakened",
-								"rift:tamed_can_move_low_energy_prime",
-								"rift:tamed_cannot_move_prime"
-							]
-						}
-					},
-					{
-						"filters": {
-							"test": "has_component",
-							"subject": "self",
-							"value": "minecraft:is_sheared"
-						},
-						"add": {
-							"component_groups": [
-								"rift:tamed_can_move_weakened"
-							]
-						},
-						"remove": {
-							"component_groups": [
-								"rift:tamed_can_move_low_energy_weakened",
-								"rift:tamed_cannot_move_weakened",
-								"rift:tamed_can_move_prime",
-								"rift:tamed_can_move_low_energy_prime",
-								"rift:tamed_cannot_move_prime"
-							]
-						}
-					}
-				]
-			},
 			"rift:manage_state": {
-				"sequence": [
-					{},
-					{
-						"filters": {
-							"test": "int_property",
-							"subject": "self",
-							"domain": "rift:tame_state",
-							"value": 0
-						},
-						"run_command": {
-							"command": [
-								"tellraw @a {\"rawtext\":[{\"translate\":\"reminder.state_sitting.text\",\"with\":{\"rawtext\":[{\"selector\":\"@s\"}]}}]}"
-							]
-						}
-					},
-					{
-						"filters": {
-							"test": "int_property",
-							"subject": "self",
-							"domain": "rift:tame_state",
-							"value": 1
-						},
-						"run_command": {
-							"command": [
-								"tellraw @a {\"rawtext\":[{\"translate\":\"reminder.state_wandering.text\",\"with\":{\"rawtext\":[{\"selector\":\"@s\"}]}}]}"
-							]
-						}
-					},
-					{
-						"filters": {
-							"test": "int_property",
-							"subject": "self",
-							"domain": "rift:tame_state",
-							"value": 2
-						},
-						"run_command": {
-							"command": [
-								"tellraw @a {\"rawtext\":[{\"translate\":\"reminder.state_standing.text\",\"with\":{\"rawtext\":[{\"selector\":\"@s\"}]}}]}"
-							]
-						}
-					},
-					{
-						"set_property": {
-							"rift:tame_state": "query.property('rift:energy') > 0 ? ((query.property('rift:tame_state') >= 0 && query.property('rift:tame_state') <= 1) ? query.property('rift:tame_state') + 1 : 0) : 1"
-						}
-					}
-				]
+				"set_property": {
+					"rift:tame_state": "(query.property('rift:tame_state') >= 0 && query.property('rift:tame_state') <= 1) ? query.property('rift:tame_state') + 1 : 0"
+				}
 			},
 			"rift:manage_behavior": {
-				"sequence": [
-					{},
-					{
-						"filters": {
-							"test": "int_property",
-							"subject": "self",
-							"domain": "rift:behavior_state",
-							"value": 0
-						},
-						"run_command": {
-							"command": [
-								"tellraw @a {\"rawtext\":[{\"translate\":\"reminder.behavior_neutral.text\",\"with\":{\"rawtext\":[{\"selector\":\"@s\"}]}}]}"
-							]
-						}
-					},
-					{
-						"filters": {
-							"test": "int_property",
-							"subject": "self",
-							"domain": "rift:behavior_state",
-							"value": 1
-						},
-						"run_command": {
-							"command": [
-								"tellraw @a {\"rawtext\":[{\"translate\":\"reminder.behavior_aggressive.text\",\"with\":{\"rawtext\":[{\"selector\":\"@s\"}]}}]}"
-							]
-						}
-					},
-					{
-						"filters": {
-							"test": "int_property",
-							"subject": "self",
-							"domain": "rift:behavior_state",
-							"value": 2
-						},
-						"run_command": {
-							"command": [
-								"tellraw @a {\"rawtext\":[{\"translate\":\"reminder.behavior_passive.text\",\"with\":{\"rawtext\":[{\"selector\":\"@s\"}]}}]}"
-							]
-						}
-					},
-					{
-						"filters": {
-							"test": "int_property",
-							"subject": "self",
-							"domain": "rift:behavior_state",
-							"value": 3
-						},
-						"run_command": {
-							"command": [
-								"tellraw @a {\"rawtext\":[{\"translate\":\"reminder.behavior_assist.text\",\"with\":{\"rawtext\":[{\"selector\":\"@s\"}]}}]}"
-							]
-						}
-					},
-					{
-						"set_property": {
-							"rift:behavior_state": "query.property('rift:energy') > 0 ? ((query.property('rift:behavior_state') >= 0 && query.property('rift:behavior_state') <= 2) ? query.property('rift:behavior_state') + 1 : 0) : 3"
-						}
-					}
-				]
-			},
-			"rift:sit_at_no_energy": {
 				"set_property": {
-					"rift:tame_state": "1"
-				}
-			},
-			"rift:passive_at_no_energy": {
-				"set_property": {
-					"rift:behavior_state": "3"
-				}
-			},
-			"rift:decrease_energy_while_moving": {
-				"set_property": {
-					"rift:energy": "query.property('rift:energy') - 15"
-				}
-			},
-			"rift:decrease_energy_while_biting": {
-				"set_property": {
-					"rift:energy": "query.property('rift:energy') - 10"
-				}
-			},
-			"rift:decrease_energy_while_biting_weakened": {
-				"set_property": {
-					"rift:energy": "query.property('rift:energy') - 50"
-				}
-			},
-			"rift:decrease_energy_while_light_blasting": {
-				"set_property": {
-					"rift:energy": "query.property('rift:energy') - 15"
-				}
-			},
-			"rift:regenerate_energy": {
-				"set_property": {
-					"rift:energy": "query.property('rift:energy') + 5"
-				}
-			},
-			"rift:refill_energy": {
-				"set_property": {
-					"rift:energy": "150"
+					"rift:behavior_state": "(query.property('rift:behavior_state') >= 0 && query.property('rift:behavior_state') <= 2) ? query.property('rift:behavior_state') + 1 : 0"
 				}
 			},
 			//for potion effects
@@ -5370,14 +4712,7 @@
 			"rift:lol2": {
 				"run_command": {
 					"command": [
-						"tellraw @p {\"rawtext\":[{\"translate\":\"reminder.cannot_use_treat.text\"}]}"
-					]
-				}
-			},
-			"rift:lol3": {
-				"run_command": {
-					"command": [
-						"tellraw @p {\"rawtext\":[{\"translate\":\"reminder.cannot_use_regular_food.text\"}]}"
+						"tellraw @p {\"rawtext\":[{\"text\":\"Treats are for healing and breeding only! Use regular foods to heal adults or speed up growth for babies!\"}]}"
 					]
 				}
 			}

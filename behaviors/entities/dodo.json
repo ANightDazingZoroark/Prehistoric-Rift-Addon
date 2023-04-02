@@ -6,7 +6,15 @@
 			"is_spawnable": true,
 			"is_summonable": true,
 			"is_experimental": false,
-			"runtime_identifier": "minecraft:chicken"
+			"runtime_identifier": "minecraft:chicken",
+			"animations": {
+				"contRemoveCostume": "controller.animation.dodo_remove_costume"
+			},
+			"scripts": {
+				"animate": [
+					"contRemoveCostume"
+				]
+			}
 		},
 		"component_groups": {
 			"rift:dodo_baby": {
@@ -15,7 +23,7 @@
 					"value": 0.5
 				},
 				"minecraft:behavior.follow_parent": {
-					"priority": 7
+					"priority": 4
 				},
 				"minecraft:ageable": {
 					"duration": 1200,
@@ -62,8 +70,9 @@
 					],
 					"require_tame": false
 				},
+				"minecraft:behavior.breed": {},
 				"minecraft:behavior.random_sitting": {
-					"priority": 6,
+					"priority": 3,
 					"start_chance": 0.45,
 					"stop_chance": 0.45,
 					"min_sit_time": 30
@@ -86,9 +95,7 @@
 						"subject": "other"
 					}
 				},
-				"minecraft:behavior.stay_while_sitting": {
-					"priority": 4
-				},
+				"minecraft:behavior.stay_while_sitting": {},
 				"minecraft:spawn_entity": {
 					"entities": [
 						{
@@ -169,7 +176,6 @@
 			},
 			"minecraft:type_family": {
 				"family": [
-					"riftCreature",
 					"dodo",
 					"mob",
 					"herbivore",
@@ -178,9 +184,7 @@
 			},
 			"minecraft:navigation.walk": {},
 			"minecraft:movement.basic": {},
-			"minecraft:behavior.breed": {
-				"priority": 5
-			},
+			"minecraft:behavior.breed": {},
 			"minecraft:jump.static": {},
 			"minecraft:is_hidden_when_invisible": {},
 			"minecraft:pushable": {
@@ -200,19 +204,15 @@
 				"total_supply": 15,
 				"suffocate_time": 0
 			},
-			"minecraft:leashable": {
-				"soft_distance": 4,
-				"hard_distance": 8,
-				"max_distance": 12
-			},
+			"minecraft:leashable": {},
 			"minecraft:behavior.random_stroll": {
-				"priority": 8
+				"priority": 5
 			},
 			"minecraft:movement": {
 				"value": 0.125
 			},
 			"minecraft:behavior.panic": {
-				"priority": 3
+				"priority": 1
 			},
 			"minecraft:damage_sensor": {
 				"triggers": [
@@ -227,7 +227,11 @@
 				"despawn_from_distance": {}
 			},
 			"minecraft:behavior.random_look_around": {
-				"priority": 9
+				"priority": 3,
+				"look_time": [
+					15,
+					30
+				]
 			},
 			"minecraft:interact": {
 				"interactions": [
@@ -236,9 +240,9 @@
 							"filters": {
 								"all_of": [
 									{
-										"test": "is_variant",
+										"test": "has_component",
 										"subject": "self",
-										"value": 0
+										"value": "minecraft:is_tamed"
 									},
 									{
 										"test": "has_component",
@@ -247,518 +251,515 @@
 										"value": "minecraft:is_baby"
 									},
 									{
-										"test": "has_equipment",
-										"subject": "other",
-										"domain": "hand",
-										"value": "rift:halloween_costume"
+										"any_of": [
+											{
+												"test": "has_equipment",
+												"subject": "other",
+												"domain": "hand",
+												"value": "rift:halloween_costume"
+											},
+											{
+												"test": "has_equipment",
+												"subject": "other",
+												"domain": "hand",
+												"value": "rift:christmas_costume"
+											},
+											{
+												"test": "has_equipment",
+												"subject": "other",
+												"domain": "hand",
+												"value": "rift:birthday_costume"
+											}
+										]
 									}
 								]
 							},
-							"event": "rift:halloween_costume_zero",
+							"event": "rift:costume_disabled_message",
 							"target": "self"
-						},
-						"use_item": true
-					},
-					{
-						"on_interact": {
-							"filters": {
-								"all_of": [
-									{
-										"test": "is_variant",
-										"subject": "self",
-										"value": 1
-									},
-									{
-										"test": "has_component",
-										"operator": "!=",
-										"subject": "self",
-										"value": "minecraft:is_baby"
-									},
-									{
-										"test": "has_equipment",
-										"subject": "other",
-										"domain": "hand",
-										"value": "rift:halloween_costume"
-									}
-								]
-							},
-							"event": "rift:halloween_costume_one",
-							"target": "self"
-						},
-						"use_item": true
-					},
-					{
-						"on_interact": {
-							"filters": {
-								"all_of": [
-									{
-										"test": "is_variant",
-										"subject": "self",
-										"value": 2
-									},
-									{
-										"test": "has_component",
-										"operator": "!=",
-										"subject": "self",
-										"value": "minecraft:is_baby"
-									},
-									{
-										"test": "has_equipment",
-										"subject": "other",
-										"domain": "hand",
-										"value": "rift:halloween_costume"
-									}
-								]
-							},
-							"event": "rift:halloween_costume_two",
-							"target": "self"
-						},
-						"use_item": true
-					},
-					{
-						"on_interact": {
-							"filters": {
-								"all_of": [
-									{
-										"test": "is_variant",
-										"subject": "self",
-										"value": 3
-									},
-									{
-										"test": "has_component",
-										"operator": "!=",
-										"subject": "self",
-										"value": "minecraft:is_baby"
-									},
-									{
-										"test": "has_equipment",
-										"subject": "other",
-										"domain": "hand",
-										"value": "rift:halloween_costume"
-									}
-								]
-							},
-							"event": "rift:halloween_costume_three",
-							"target": "self"
-						},
-						"use_item": true
-					},
-					{
-						"on_interact": {
-							"filters": {
-								"all_of": [
-									{
-										"test": "is_variant",
-										"subject": "self",
-										"value": 4
-									},
-									{
-										"test": "has_component",
-										"operator": "!=",
-										"subject": "self",
-										"value": "minecraft:is_baby"
-									},
-									{
-										"test": "has_equipment",
-										"subject": "other",
-										"domain": "hand",
-										"value": "minecraft:shears"
-									}
-								]
-							},
-							"event": "rift:remove_halloween_costume_zero",
-							"target": "self"
-						},
-						"add_items": {
-							"table": "loot_tables/others/remove halloween costume.json"
-						},
-						"hurt_item": 1
-					},
-					{
-						"on_interact": {
-							"filters": {
-								"all_of": [
-									{
-										"test": "is_variant",
-										"subject": "self",
-										"value": 5
-									},
-									{
-										"test": "has_component",
-										"operator": "!=",
-										"subject": "self",
-										"value": "minecraft:is_baby"
-									},
-									{
-										"test": "has_equipment",
-										"subject": "other",
-										"domain": "hand",
-										"value": "minecraft:shears"
-									}
-								]
-							},
-							"event": "rift:remove_halloween_costume_one",
-							"target": "self"
-						},
-						"add_items": {
-							"table": "loot_tables/others/remove halloween costume.json"
-						},
-						"hurt_item": 1
-					},
-					{
-						"on_interact": {
-							"filters": {
-								"all_of": [
-									{
-										"test": "is_variant",
-										"subject": "self",
-										"value": 6
-									},
-									{
-										"test": "has_component",
-										"operator": "!=",
-										"subject": "self",
-										"value": "minecraft:is_baby"
-									},
-									{
-										"test": "has_equipment",
-										"subject": "other",
-										"domain": "hand",
-										"value": "minecraft:shears"
-									}
-								]
-							},
-							"event": "rift:remove_halloween_costume_two",
-							"target": "self"
-						},
-						"add_items": {
-							"table": "loot_tables/others/remove halloween costume.json"
-						},
-						"hurt_item": 1
-					},
-					{
-						"on_interact": {
-							"filters": {
-								"all_of": [
-									{
-										"test": "is_variant",
-										"subject": "self",
-										"value": 7
-									},
-									{
-										"test": "has_component",
-										"operator": "!=",
-										"subject": "self",
-										"value": "minecraft:is_baby"
-									},
-									{
-										"test": "has_equipment",
-										"subject": "other",
-										"domain": "hand",
-										"value": "minecraft:shears"
-									}
-								]
-							},
-							"event": "rift:remove_halloween_costume_three",
-							"target": "self"
-						},
-						"add_items": {
-							"table": "loot_tables/others/remove halloween costume.json"
-						},
-						"hurt_item": 1
-					},
-					{
-						"on_interact": {
-							"filters": {
-								"all_of": [
-									{
-										"test": "is_variant",
-										"subject": "self",
-										"value": 0
-									},
-									{
-										"test": "has_component",
-										"operator": "!=",
-										"subject": "self",
-										"value": "minecraft:is_baby"
-									},
-									{
-										"test": "has_equipment",
-										"subject": "other",
-										"domain": "hand",
-										"value": "rift:christmas_costume"
-									}
-								]
-							},
-							"event": "rift:christmas_costume_zero",
-							"target": "self"
-						},
-						"use_item": true
-					},
-					{
-						"on_interact": {
-							"filters": {
-								"all_of": [
-									{
-										"test": "is_variant",
-										"subject": "self",
-										"value": 1
-									},
-									{
-										"test": "has_component",
-										"operator": "!=",
-										"subject": "self",
-										"value": "minecraft:is_baby"
-									},
-									{
-										"test": "has_equipment",
-										"subject": "other",
-										"domain": "hand",
-										"value": "rift:christmas_costume"
-									}
-								]
-							},
-							"event": "rift:christmas_costume_one",
-							"target": "self"
-						},
-						"use_item": true
-					},
-					{
-						"on_interact": {
-							"filters": {
-								"all_of": [
-									{
-										"test": "is_variant",
-										"subject": "self",
-										"value": 2
-									},
-									{
-										"test": "has_component",
-										"operator": "!=",
-										"subject": "self",
-										"value": "minecraft:is_baby"
-									},
-									{
-										"test": "has_equipment",
-										"subject": "other",
-										"domain": "hand",
-										"value": "rift:christmas_costume"
-									}
-								]
-							},
-							"event": "rift:christmas_costume_two",
-							"target": "self"
-						},
-						"use_item": true
-					},
-					{
-						"on_interact": {
-							"filters": {
-								"all_of": [
-									{
-										"test": "is_variant",
-										"subject": "self",
-										"value": 3
-									},
-									{
-										"test": "has_component",
-										"operator": "!=",
-										"subject": "self",
-										"value": "minecraft:is_baby"
-									},
-									{
-										"test": "has_equipment",
-										"subject": "other",
-										"domain": "hand",
-										"value": "rift:christmas_costume"
-									}
-								]
-							},
-							"event": "rift:christmas_costume_three",
-							"target": "self"
-						},
-						"use_item": true
-					},
-					{
-						"on_interact": {
-							"filters": {
-								"all_of": [
-									{
-										"test": "is_variant",
-										"subject": "self",
-										"value": 8
-									},
-									{
-										"test": "has_component",
-										"operator": "!=",
-										"subject": "self",
-										"value": "minecraft:is_baby"
-									},
-									{
-										"test": "has_equipment",
-										"subject": "other",
-										"domain": "hand",
-										"value": "minecraft:shears"
-									}
-								]
-							},
-							"event": "rift:remove_christmas_costume_zero",
-							"target": "self"
-						},
-						"add_items": {
-							"table": "loot_tables/others/remove christmas costume.json"
-						},
-						"hurt_item": 1
-					},
-					{
-						"on_interact": {
-							"filters": {
-								"all_of": [
-									{
-										"test": "is_variant",
-										"subject": "self",
-										"value": 9
-									},
-									{
-										"test": "has_component",
-										"operator": "!=",
-										"subject": "self",
-										"value": "minecraft:is_baby"
-									},
-									{
-										"test": "has_equipment",
-										"subject": "other",
-										"domain": "hand",
-										"value": "minecraft:shears"
-									}
-								]
-							},
-							"event": "rift:remove_christmas_costume_one",
-							"target": "self"
-						},
-						"add_items": {
-							"table": "loot_tables/others/remove christmas costume.json"
-						},
-						"hurt_item": 1
-					},
-					{
-						"on_interact": {
-							"filters": {
-								"all_of": [
-									{
-										"test": "is_variant",
-										"subject": "self",
-										"value": 10
-									},
-									{
-										"test": "has_component",
-										"operator": "!=",
-										"subject": "self",
-										"value": "minecraft:is_baby"
-									},
-									{
-										"test": "has_equipment",
-										"subject": "other",
-										"domain": "hand",
-										"value": "minecraft:shears"
-									}
-								]
-							},
-							"event": "rift:remove_christmas_costume_two",
-							"target": "self"
-						},
-						"add_items": {
-							"table": "loot_tables/others/remove christmas costume.json"
-						},
-						"hurt_item": 1
-					},
-					{
-						"on_interact": {
-							"filters": {
-								"all_of": [
-									{
-										"test": "is_variant",
-										"subject": "self",
-										"value": 11
-									},
-									{
-										"test": "has_component",
-										"operator": "!=",
-										"subject": "self",
-										"value": "minecraft:is_baby"
-									},
-									{
-										"test": "has_equipment",
-										"subject": "other",
-										"domain": "hand",
-										"value": "minecraft:shears"
-									}
-								]
-							},
-							"event": "rift:remove_christmas_costume_three",
-							"target": "self"
-						},
-						"add_items": {
-							"table": "loot_tables/others/remove christmas costume.json"
-						},
-						"hurt_item": 1
+						}
 					}
+					// {
+					// 	"on_interact": {
+					// 		"filters": {
+					// 			"all_of": [
+					// 				{
+					// 					"test": "is_variant",
+					// 					"subject": "self",
+					// 					"value": 0
+					// 				},
+					// 				{
+					// 					"test": "has_component",
+					// 					"operator": "!=",
+					// 					"subject": "self",
+					// 					"value": "minecraft:is_baby"
+					// 				},
+					// 				{
+					// 					"test": "has_equipment",
+					// 					"subject": "other",
+					// 					"domain": "hand",
+					// 					"value": "rift:halloween_costume"
+					// 				}
+					// 			]
+					// 		},
+					// 		"event": "rift:halloween_costume_zero",
+					// 		"target": "self"
+					// 	},
+					// 	"use_item": true
+					// },
+					// {
+					// 	"on_interact": {
+					// 		"filters": {
+					// 			"all_of": [
+					// 				{
+					// 					"test": "is_variant",
+					// 					"subject": "self",
+					// 					"value": 1
+					// 				},
+					// 				{
+					// 					"test": "has_component",
+					// 					"operator": "!=",
+					// 					"subject": "self",
+					// 					"value": "minecraft:is_baby"
+					// 				},
+					// 				{
+					// 					"test": "has_equipment",
+					// 					"subject": "other",
+					// 					"domain": "hand",
+					// 					"value": "rift:halloween_costume"
+					// 				}
+					// 			]
+					// 		},
+					// 		"event": "rift:halloween_costume_one",
+					// 		"target": "self"
+					// 	},
+					// 	"use_item": true
+					// },
+					// {
+					// 	"on_interact": {
+					// 		"filters": {
+					// 			"all_of": [
+					// 				{
+					// 					"test": "is_variant",
+					// 					"subject": "self",
+					// 					"value": 2
+					// 				},
+					// 				{
+					// 					"test": "has_component",
+					// 					"operator": "!=",
+					// 					"subject": "self",
+					// 					"value": "minecraft:is_baby"
+					// 				},
+					// 				{
+					// 					"test": "has_equipment",
+					// 					"subject": "other",
+					// 					"domain": "hand",
+					// 					"value": "rift:halloween_costume"
+					// 				}
+					// 			]
+					// 		},
+					// 		"event": "rift:halloween_costume_two",
+					// 		"target": "self"
+					// 	},
+					// 	"use_item": true
+					// },
+					// {
+					// 	"on_interact": {
+					// 		"filters": {
+					// 			"all_of": [
+					// 				{
+					// 					"test": "is_variant",
+					// 					"subject": "self",
+					// 					"value": 3
+					// 				},
+					// 				{
+					// 					"test": "has_component",
+					// 					"operator": "!=",
+					// 					"subject": "self",
+					// 					"value": "minecraft:is_baby"
+					// 				},
+					// 				{
+					// 					"test": "has_equipment",
+					// 					"subject": "other",
+					// 					"domain": "hand",
+					// 					"value": "rift:halloween_costume"
+					// 				}
+					// 			]
+					// 		},
+					// 		"event": "rift:halloween_costume_three",
+					// 		"target": "self"
+					// 	},
+					// 	"use_item": true
+					// },
+					// {
+					// 	"on_interact": {
+					// 		"filters": {
+					// 			"all_of": [
+					// 				{
+					// 					"test": "is_variant",
+					// 					"subject": "self",
+					// 					"value": 4
+					// 				},
+					// 				{
+					// 					"test": "has_component",
+					// 					"operator": "!=",
+					// 					"subject": "self",
+					// 					"value": "minecraft:is_baby"
+					// 				},
+					// 				{
+					// 					"test": "has_equipment",
+					// 					"subject": "other",
+					// 					"domain": "hand",
+					// 					"value": "minecraft:shears"
+					// 				}
+					// 			]
+					// 		},
+					// 		"event": "rift:remove_halloween_costume_zero",
+					// 		"target": "self"
+					// 	},
+					// 	"add_items": {
+					// 		"table": "loot_tables/others/remove halloween costume.json"
+					// 	},
+					// 	"hurt_item": 1
+					// },
+					// {
+					// 	"on_interact": {
+					// 		"filters": {
+					// 			"all_of": [
+					// 				{
+					// 					"test": "is_variant",
+					// 					"subject": "self",
+					// 					"value": 5
+					// 				},
+					// 				{
+					// 					"test": "has_component",
+					// 					"operator": "!=",
+					// 					"subject": "self",
+					// 					"value": "minecraft:is_baby"
+					// 				},
+					// 				{
+					// 					"test": "has_equipment",
+					// 					"subject": "other",
+					// 					"domain": "hand",
+					// 					"value": "minecraft:shears"
+					// 				}
+					// 			]
+					// 		},
+					// 		"event": "rift:remove_halloween_costume_one",
+					// 		"target": "self"
+					// 	},
+					// 	"add_items": {
+					// 		"table": "loot_tables/others/remove halloween costume.json"
+					// 	},
+					// 	"hurt_item": 1
+					// },
+					// {
+					// 	"on_interact": {
+					// 		"filters": {
+					// 			"all_of": [
+					// 				{
+					// 					"test": "is_variant",
+					// 					"subject": "self",
+					// 					"value": 6
+					// 				},
+					// 				{
+					// 					"test": "has_component",
+					// 					"operator": "!=",
+					// 					"subject": "self",
+					// 					"value": "minecraft:is_baby"
+					// 				},
+					// 				{
+					// 					"test": "has_equipment",
+					// 					"subject": "other",
+					// 					"domain": "hand",
+					// 					"value": "minecraft:shears"
+					// 				}
+					// 			]
+					// 		},
+					// 		"event": "rift:remove_halloween_costume_two",
+					// 		"target": "self"
+					// 	},
+					// 	"add_items": {
+					// 		"table": "loot_tables/others/remove halloween costume.json"
+					// 	},
+					// 	"hurt_item": 1
+					// },
+					// {
+					// 	"on_interact": {
+					// 		"filters": {
+					// 			"all_of": [
+					// 				{
+					// 					"test": "is_variant",
+					// 					"subject": "self",
+					// 					"value": 7
+					// 				},
+					// 				{
+					// 					"test": "has_component",
+					// 					"operator": "!=",
+					// 					"subject": "self",
+					// 					"value": "minecraft:is_baby"
+					// 				},
+					// 				{
+					// 					"test": "has_equipment",
+					// 					"subject": "other",
+					// 					"domain": "hand",
+					// 					"value": "minecraft:shears"
+					// 				}
+					// 			]
+					// 		},
+					// 		"event": "rift:remove_halloween_costume_three",
+					// 		"target": "self"
+					// 	},
+					// 	"add_items": {
+					// 		"table": "loot_tables/others/remove halloween costume.json"
+					// 	},
+					// 	"hurt_item": 1
+					// },
+					// {
+					// 	"on_interact": {
+					// 		"filters": {
+					// 			"all_of": [
+					// 				{
+					// 					"test": "is_variant",
+					// 					"subject": "self",
+					// 					"value": 0
+					// 				},
+					// 				{
+					// 					"test": "has_component",
+					// 					"operator": "!=",
+					// 					"subject": "self",
+					// 					"value": "minecraft:is_baby"
+					// 				},
+					// 				{
+					// 					"test": "has_equipment",
+					// 					"subject": "other",
+					// 					"domain": "hand",
+					// 					"value": "rift:christmas_costume"
+					// 				}
+					// 			]
+					// 		},
+					// 		"event": "rift:christmas_costume_zero",
+					// 		"target": "self"
+					// 	},
+					// 	"use_item": true
+					// },
+					// {
+					// 	"on_interact": {
+					// 		"filters": {
+					// 			"all_of": [
+					// 				{
+					// 					"test": "is_variant",
+					// 					"subject": "self",
+					// 					"value": 1
+					// 				},
+					// 				{
+					// 					"test": "has_component",
+					// 					"operator": "!=",
+					// 					"subject": "self",
+					// 					"value": "minecraft:is_baby"
+					// 				},
+					// 				{
+					// 					"test": "has_equipment",
+					// 					"subject": "other",
+					// 					"domain": "hand",
+					// 					"value": "rift:christmas_costume"
+					// 				}
+					// 			]
+					// 		},
+					// 		"event": "rift:christmas_costume_one",
+					// 		"target": "self"
+					// 	},
+					// 	"use_item": true
+					// },
+					// {
+					// 	"on_interact": {
+					// 		"filters": {
+					// 			"all_of": [
+					// 				{
+					// 					"test": "is_variant",
+					// 					"subject": "self",
+					// 					"value": 2
+					// 				},
+					// 				{
+					// 					"test": "has_component",
+					// 					"operator": "!=",
+					// 					"subject": "self",
+					// 					"value": "minecraft:is_baby"
+					// 				},
+					// 				{
+					// 					"test": "has_equipment",
+					// 					"subject": "other",
+					// 					"domain": "hand",
+					// 					"value": "rift:christmas_costume"
+					// 				}
+					// 			]
+					// 		},
+					// 		"event": "rift:christmas_costume_two",
+					// 		"target": "self"
+					// 	},
+					// 	"use_item": true
+					// },
+					// {
+					// 	"on_interact": {
+					// 		"filters": {
+					// 			"all_of": [
+					// 				{
+					// 					"test": "is_variant",
+					// 					"subject": "self",
+					// 					"value": 3
+					// 				},
+					// 				{
+					// 					"test": "has_component",
+					// 					"operator": "!=",
+					// 					"subject": "self",
+					// 					"value": "minecraft:is_baby"
+					// 				},
+					// 				{
+					// 					"test": "has_equipment",
+					// 					"subject": "other",
+					// 					"domain": "hand",
+					// 					"value": "rift:christmas_costume"
+					// 				}
+					// 			]
+					// 		},
+					// 		"event": "rift:christmas_costume_three",
+					// 		"target": "self"
+					// 	},
+					// 	"use_item": true
+					// },
+					// {
+					// 	"on_interact": {
+					// 		"filters": {
+					// 			"all_of": [
+					// 				{
+					// 					"test": "is_variant",
+					// 					"subject": "self",
+					// 					"value": 8
+					// 				},
+					// 				{
+					// 					"test": "has_component",
+					// 					"operator": "!=",
+					// 					"subject": "self",
+					// 					"value": "minecraft:is_baby"
+					// 				},
+					// 				{
+					// 					"test": "has_equipment",
+					// 					"subject": "other",
+					// 					"domain": "hand",
+					// 					"value": "minecraft:shears"
+					// 				}
+					// 			]
+					// 		},
+					// 		"event": "rift:remove_christmas_costume_zero",
+					// 		"target": "self"
+					// 	},
+					// 	"add_items": {
+					// 		"table": "loot_tables/others/remove christmas costume.json"
+					// 	},
+					// 	"hurt_item": 1
+					// },
+					// {
+					// 	"on_interact": {
+					// 		"filters": {
+					// 			"all_of": [
+					// 				{
+					// 					"test": "is_variant",
+					// 					"subject": "self",
+					// 					"value": 9
+					// 				},
+					// 				{
+					// 					"test": "has_component",
+					// 					"operator": "!=",
+					// 					"subject": "self",
+					// 					"value": "minecraft:is_baby"
+					// 				},
+					// 				{
+					// 					"test": "has_equipment",
+					// 					"subject": "other",
+					// 					"domain": "hand",
+					// 					"value": "minecraft:shears"
+					// 				}
+					// 			]
+					// 		},
+					// 		"event": "rift:remove_christmas_costume_one",
+					// 		"target": "self"
+					// 	},
+					// 	"add_items": {
+					// 		"table": "loot_tables/others/remove christmas costume.json"
+					// 	},
+					// 	"hurt_item": 1
+					// },
+					// {
+					// 	"on_interact": {
+					// 		"filters": {
+					// 			"all_of": [
+					// 				{
+					// 					"test": "is_variant",
+					// 					"subject": "self",
+					// 					"value": 10
+					// 				},
+					// 				{
+					// 					"test": "has_component",
+					// 					"operator": "!=",
+					// 					"subject": "self",
+					// 					"value": "minecraft:is_baby"
+					// 				},
+					// 				{
+					// 					"test": "has_equipment",
+					// 					"subject": "other",
+					// 					"domain": "hand",
+					// 					"value": "minecraft:shears"
+					// 				}
+					// 			]
+					// 		},
+					// 		"event": "rift:remove_christmas_costume_two",
+					// 		"target": "self"
+					// 	},
+					// 	"add_items": {
+					// 		"table": "loot_tables/others/remove christmas costume.json"
+					// 	},
+					// 	"hurt_item": 1
+					// },
+					// {
+					// 	"on_interact": {
+					// 		"filters": {
+					// 			"all_of": [
+					// 				{
+					// 					"test": "is_variant",
+					// 					"subject": "self",
+					// 					"value": 11
+					// 				},
+					// 				{
+					// 					"test": "has_component",
+					// 					"operator": "!=",
+					// 					"subject": "self",
+					// 					"value": "minecraft:is_baby"
+					// 				},
+					// 				{
+					// 					"test": "has_equipment",
+					// 					"subject": "other",
+					// 					"domain": "hand",
+					// 					"value": "minecraft:shears"
+					// 				}
+					// 			]
+					// 		},
+					// 		"event": "rift:remove_christmas_costume_three",
+					// 		"target": "self"
+					// 	},
+					// 	"add_items": {
+					// 		"table": "loot_tables/others/remove christmas costume.json"
+					// 	},
+					// 	"hurt_item": 1
+					// }
 				]
 			},
-			"minecraft:behavior.avoid_block": {
-				"priority": 2,
-				"tick_interval": 5,
-				"search_range": 12,
-				"search_height": 4,
-				"walk_speed_modifier": 1.2,
-				"sprint_speed_modifier": 1.2,
-				"target_selection_method": "nearest",
-				"target_blocks": [
-					"minecraft:fire",
-					"minecraft:soul_fire",
-					"minecraft:item.campfire",
-					"minecraft:item.soul_campfire",
-					"minecraft:torch",
-					"minecraft:soul_torch"
-				]
-			},
+			"minecraft:behavior.move_to_land": {},
 			"minecraft:behavior.avoid_mob_type": {
-				"priority": 1,
 				"entity_types": [
 					{
 						"filters": {
-							"any_of": [
-								{
-									"test": "is_family",
-									"value": "parasaurScary",
-									"subject": "other"
-								},
-								{
-									"all_of": [
-										{
-											"test": "is_family",
-											"value": "player",
-											"subject": "other"
-										},
-										{
-											"any_of": [
-												{
-													"test": "has_equipment",
-													"subject": "other",
-													"domain": "hand",
-													"value": "minecraft:torch"
-												},
-												{
-													"test": "has_equipment",
-													"subject": "other",
-													"domain": "hand",
-													"value": "minecraft:soul_torch"
-												}
-											]
-										}
-									]
-								}
-							]
+							"test": "is_family",
+							"value": "parasaurScary",
+							"subject": "other"
 						},
 						"max_dist": 12,
 						"must_see": true,

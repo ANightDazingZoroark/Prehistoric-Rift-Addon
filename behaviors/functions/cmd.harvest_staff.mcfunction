@@ -4,5 +4,3 @@ tag @e[type=rift:apatosaurus, tag=tamed, tag=!baby, c=1] add apatoHarvest
 tag @e[type=rift:parasaurolophus, tag=tamed, tag=!baby, c=1] add parasaurHarvest
 tag @e[type=rift:megaloceros, tag=tamed, tag=!baby, c=1] add megalocerosHarvest
 tag @e[type=rift:baryonyx, tag=tamed, tag=!baby, c=1] add baryonyxHarvest
-tag @e[type=rift:ankylosaurus, tag=tamed, tag=!baby, c=1] add ankyloHarvest
-tag @e[type=rift:gallimimus, tag=tamed, tag=!baby, c=1] add galliHarvest

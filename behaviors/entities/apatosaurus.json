@@ -29,15 +29,6 @@
 					"default": false,
 					"client_sync": true
                 },
-                "rift:energy": {
-                    "range": [
-						0,
-						150
-					],
-					"type": "int",
-					"default": 150,
-					"client_sync": true
-                },
                 "rift:tame_state": { //0 for standing, 1 for sitting, 2 for wandering
                     "range": [
 						0,
@@ -62,7 +53,6 @@
 				"contTameTag": "controller.animation.add_tame_tag",
 				"contBabyTag": "controller.animation.add_baby_tag",
 				"contRiddenTag": "controller.animation.add_ridden_tag",
-				"contInLoveTag": "controller.animation.add_in_love_tag",
 				"contForcedAttack": "controller.animation.general_forced_attack",
 				"contDetectWeapon": "controller.animation.apato_detect_stationary_weapon",
 				"contWildLowHealth": "controller.animation.apato_wild_low_on_health",
@@ -70,16 +60,8 @@
 				"contTamedBreakStuff": "controller.animation.apato_tamed_can_break_blocks",
 				"contTameState": "controller.animation.apato_manage_tame_state",
 				"contBehaviorState": "controller.animation.manage_tame_behavior",
-				"contEnergyUsage": "controller.animation.apatosaurus_energy_movement_usage",
-				"contWarnLowEnergy": "controller.animation.warn_of_low_energy",
 				"animSmeltFurnace": "animation.smelting_countdown",
 				"animEatFromInventoryCooldown": "animation.eat_from_inventory_cooldown",
-				"animUseEnergyWhileMoving": "animation.apatosaurus_decrease_energy_while_moving",
-				"animUseEnergyWhileMovingBulldoze": "animation.apatosaurus_decrease_energy_while_moving_bulldozing",
-				"animEnergyRegenDelay": "animation.regenerate_energy_delay",
-				"animRegenerateEnergy": "animation.apatosaurus_regenerate_energy",
-				"animLowOnEnergyEffects": "animation.effects_while_low_on_energy",
-				"animNoEnergyEffects": "animation.effects_while_no_energy",
 				"animForcedAttack": "animation.forced_attack_apatosaurus",
 				"animBreakStuff": "animation.apato_break_stuff"
 			},
@@ -90,16 +72,13 @@
 					"contTameTag",
 					"contBabyTag",
 					"contRiddenTag",
-					"contInLoveTag",
 					"contDetectWeapon",
 					"contWildLowHealth",
 					"contWildBreakStuff",
 					"contTamedBreakStuff",
 					"contTameState",
 					"contForcedAttack",
-					"contBehaviorState",
-					"contEnergyUsage",
-					"contWarnLowEnergy"
+					"contBehaviorState"
 				]
 			}
         },
@@ -734,12 +713,7 @@
 				}
 			},
             "rift:apatosaurus_tamed": {
-				"minecraft:is_tamed": {},
-				"minecraft:leashable": {
-					"soft_distance": 4,
-					"hard_distance": 8,
-					"max_distance": 15
-				}
+				"minecraft:is_tamed": {}
             },
             "rift:apatosaurus_platformed": {
                 "minecraft:is_saddled": {},
@@ -858,17 +832,9 @@
 					"within_radius": 16,
 					"speed_multiplier": 0.75,
 					"items": [
-						"minecraft:sweet_berries",
 						"minecraft:wheat",
-						"minecraft:double_plant:2",
-						"minecraft:double_plant:3",
-						"minecraft:tallgrass:1",
-						"minecraft:tallgrass:2",
-						"minecraft:leaves",
-						"minecraft:leaves2",
-						"minecraft:azalea_leaves",
-						"minecraft:azalea_leaves_flowered",
-						"minecraft:mangrove_leaves",
+						"minecraft:apple",
+						"minecraft:sweet_berries",
 						"rift:leafy_treat",
 						"rift:grassy_treat",
 						"rift:berry_treat"
@@ -905,6 +871,9 @@
 					"start_distance": 8,
 					"stop_distance": 40,
 					"priority": 8
+				},
+                "minecraft:movement": {
+                    "value": 0.10
 				}
 			},
 			"rift:tamed_baby_standing": {
@@ -912,16 +881,29 @@
 					"start_distance": 8,
 					"stop_distance": 40,
 					"priority": 8
+				},
+                "minecraft:movement": {
+                    "value": 0.25
 				}
 			},
 			"rift:adult_sitting": {
+                "minecraft:movement": {
+                    "value": 0.10
+				},
 				"minecraft:on_target_acquired": {
 					"event": "rift:sitting_on_anger",
 					"target": "self"
 				}
 			},
-			"rift:baby_sitting": {},
+			"rift:baby_sitting": {
+                "minecraft:movement": {
+                    "value": 0.25
+				}
+			},
 			"rift:adult_sitting_angered": {
+                "minecraft:movement": {
+                    "value": 0.10
+				},
 				"minecraft:on_target_escape": {
 					"event": "rift:sitting_on_calm",
 				  	"target": "self"
@@ -933,53 +915,17 @@
 				},
                 "minecraft:behavior.random_stroll": {
 					"priority": 10
+				},
+                "minecraft:movement": {
+                    "value": 0.10
 				}
 			},
 			"rift:baby_wandering": {
                 "minecraft:behavior.random_stroll": {
 					"priority": 10
-				}
-			},
-			"rift:tamed_adult_can_move": {
-				"minecraft:movement": {
-					"value": 0.10
-				}
-			},
-			"rift:tamed_adult_can_move_low_energy": { //formula for speed reduction from slowness effect is speed * 0.15 * level
-				"minecraft:movement": {
-					"value": 0.045
-				}
-			},
-			"rift:tamed_adult_cannot_move": {
-				"minecraft:movement": {
-					"value": 0.0
 				},
-				"minecraft:underwater_movement": {
-					"value": 0
-				},
-				"minecraft:water_movement": {
-					"drag_factor": 0
-				}
-			},
-			"rift:tamed_baby_can_move": {
-				"minecraft:movement": {
-					"value": 0.25
-				}
-			},
-			"rift:tamed_baby_can_move_low_energy": {
-				"minecraft:movement": {
-					"value": 0.1125
-				}
-			},
-			"rift:tamed_baby_cannot_move": {
-				"minecraft:movement": {
-					"value": 0.0
-				},
-				"minecraft:underwater_movement": {
-					"value": 0
-				},
-				"minecraft:water_movement": {
-					"drag_factor": 0
+                "minecraft:movement": {
+                    "value": 0.25
 				}
 			},
 			"rift:assist_behavior": {
@@ -1253,7 +1199,6 @@
         "components": {
 			"minecraft:type_family": {
 				"family": [
-					"riftCreature",
 					"apatosaurus",
 					"mob",
 					"herbivore",
@@ -1276,6 +1221,11 @@
 			"minecraft:breathable": {
 				"total_supply": 15,
 				"suffocate_time": 0
+			},
+			"minecraft:leashable": {
+				"soft_distance": 4,
+				"hard_distance": 8,
+				"max_distance": 12
 			},
 			"minecraft:damage_sensor": {
 				"triggers": [
@@ -1377,19 +1327,13 @@
 												"test": "has_equipment",
 												"subject": "other",
 												"domain": "hand",
-												"value": "rift:berry_treat"
+												"value": "rift:carrion_treat"
 											},
 											{
 												"test": "has_equipment",
 												"subject": "other",
 												"domain": "hand",
-												"value": "rift:grassy_treat"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "rift:leafy_treat"
+												"value": "rift:flesh_treat"
 											}
 										]
 									},
@@ -1406,253 +1350,6 @@
 								]
 							},
 							"event": "rift:lol2",
-							"target": "self"
-						},
-						"interact_text": "action.interact.tame"
-					},
-					{
-						"on_interact": {
-							"filters": {
-								"all_of": [
-									{
-										"any_of": [
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "rift:berry_treat"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "rift:grassy_treat"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "rift:leafy_treat"
-											}
-										]
-									},
-									{
-										"test": "has_component",
-										"subject": "self",
-										"value": "minecraft:is_tamed"
-									},
-									{
-										"test": "has_component",
-										"subject": "self",
-										"operator": "!=",
-										"value": "minecraft:is_baby"
-									},
-									{
-										"any_of": [
-											{
-												"test": "is_missing_health",
-												"subject": "self",
-												"value": true
-											},
-											{
-												"test": "has_tag",
-												"subject": "self",
-												"value": "inLove"
-											}
-										]
-									}
-								]
-							},
-							"event": "rift:lol2",
-							"target": "self"
-						},
-						"interact_text": "action.interact.tame"
-					},
-					{
-						"on_interact": {
-							"filters": {
-								"all_of": [
-									{
-										"any_of": [
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "minecraft:sweet_berries"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "minecraft:wheat"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "minecraft:double_plant:2"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "minecraft:double_plant:3"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "minecraft:tallgrass:1"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "minecraft:tallgrass:2"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "minecraft:leaves"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "minecraft:leaves2"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "minecraft:azalea_leaves"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "minecraft:azalea_leaves_flowered"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "minecraft:mangrove_leaves"
-											}
-										]
-									},
-									{
-										"test": "has_component",
-										"subject": "self",
-										"value": "minecraft:is_tamed"
-									},
-									{
-										"test": "has_component",
-										"subject": "self",
-										"operator": "!=",
-										"value": "minecraft:is_baby"
-									},
-									{
-										"test": "is_missing_health",
-										"subject": "self",
-										"value": false
-									}
-								]
-							},
-							"event": "rift:lol3",
-							"target": "self"
-						},
-						"interact_text": "action.interact.tame"
-					},
-					{
-						"on_interact": {
-							"filters": {
-								"all_of": [
-									{
-										"any_of": [
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "minecraft:sweet_berries"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "minecraft:wheat"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "minecraft:double_plant:2"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "minecraft:double_plant:3"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "minecraft:tallgrass:1"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "minecraft:tallgrass:2"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "minecraft:leaves"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "minecraft:leaves2"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "minecraft:azalea_leaves"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "minecraft:azalea_leaves_flowered"
-											},
-											{
-												"test": "has_equipment",
-												"subject": "other",
-												"domain": "hand",
-												"value": "minecraft:mangrove_leaves"
-											}
-										]
-									},
-									{
-										"test": "has_component",
-										"subject": "self",
-										"operator": "!=",
-										"value": "minecraft:is_tamed"
-									},
-									{
-										"test": "has_component",
-										"subject": "self",
-										"value": "minecraft:is_baby"
-									}
-								]
-							},
-							"event": "rift:lol3",
 							"target": "self"
 						},
 						"interact_text": "action.interact.tame"
@@ -4369,8 +4066,7 @@
 								"rift:apatosaurus_adult",
 								"rift:apatosaurus_adult_tamed",
 								"rift:apatosaurus_rideable",
-								"rift:tamed_adult_standing",
-								"rift:tamed_adult_can_move"
+								"rift:tamed_adult_standing"
 							]
 						},
 						"remove": {
@@ -4379,21 +4075,12 @@
 								"rift:apatosaurus_adult_calm",
 								"rift:tamed_baby_standing",
 								"rift:wild_adult_standing",
-								"rift:wild_baby_standing",
-								"rift:baby_sitting",
-								"rift:baby_wandering"
+								"rift:wild_baby_standing"
 							]
 						}
 					}
                 ]
             },
-			"rift:force_implement_adult_speed": {
-				"add": {
-					"component_groups": [
-						"rift:tamed_adult_can_move"
-					]
-				}
-			},
             "rift:baby_become_scared": {
                 "add": {
                     "component_groups": [
@@ -5107,8 +4794,7 @@
                                 "rift:variant_one",
 								"rift:pushable",
 								"rift:can_attack",
-								"rift:temptable",
-								"rift:tamed_can_move"
+								"rift:temptable"
                             ]
                         },
 						"set_property": {
@@ -5126,8 +4812,7 @@
                                 "rift:variant_two",
 								"rift:pushable",
 								"rift:can_attack",
-								"rift:temptable",
-								"rift:tamed_can_move"
+								"rift:temptable"
                             ]
                         },
 						"set_property": {
@@ -5145,8 +4830,7 @@
                                 "rift:variant_three",
 								"rift:pushable",
 								"rift:can_attack",
-								"rift:temptable",
-								"rift:tamed_can_move"
+								"rift:temptable"
                             ]
                         },
 						"set_property": {
@@ -5164,8 +4848,7 @@
                                 "rift:variant_four",
 								"rift:pushable",
 								"rift:can_attack",
-								"rift:temptable",
-								"rift:tamed_can_move"
+								"rift:temptable"
                             ]
                         },
 						"set_property": {
@@ -5361,288 +5044,13 @@
 				}
 			},
 			"rift:manage_state": {
-				"sequence": [
-					{},
-					{
-						"filters": {
-							"test": "int_property",
-							"subject": "self",
-							"domain": "rift:tame_state",
-							"value": 0
-						},
-						"run_command": {
-							"command": [
-								"tellraw @a {\"rawtext\":[{\"translate\":\"reminder.state_sitting.text\",\"with\":{\"rawtext\":[{\"selector\":\"@s\"}]}}]}"
-							]
-						}
-					},
-					{
-						"filters": {
-							"test": "int_property",
-							"subject": "self",
-							"domain": "rift:tame_state",
-							"value": 1
-						},
-						"run_command": {
-							"command": [
-								"tellraw @a {\"rawtext\":[{\"translate\":\"reminder.state_wandering.text\",\"with\":{\"rawtext\":[{\"selector\":\"@s\"}]}}]}"
-							]
-						}
-					},
-					{
-						"filters": {
-							"test": "int_property",
-							"subject": "self",
-							"domain": "rift:tame_state",
-							"value": 2
-						},
-						"run_command": {
-							"command": [
-								"tellraw @a {\"rawtext\":[{\"translate\":\"reminder.state_standing.text\",\"with\":{\"rawtext\":[{\"selector\":\"@s\"}]}}]}"
-							]
-						}
-					},
-					{
-						"set_property": {
-							"rift:tame_state": "query.property('rift:energy') > 0 ? ((query.property('rift:tame_state') >= 0 && query.property('rift:tame_state') <= 1) ? query.property('rift:tame_state') + 1 : 0) : 1"
-						}
-					}
-				]
+				"set_property": {
+					"rift:tame_state": "(query.property('rift:tame_state') >= 0 && query.property('rift:tame_state') <= 1) ? query.property('rift:tame_state') + 1 : 0"
+				}
 			},
 			"rift:manage_behavior": {
-				"sequence": [
-					{},
-					{
-						"filters": {
-							"test": "int_property",
-							"subject": "self",
-							"domain": "rift:behavior_state",
-							"value": 0
-						},
-						"run_command": {
-							"command": [
-								"tellraw @a {\"rawtext\":[{\"translate\":\"reminder.behavior_neutral.text\",\"with\":{\"rawtext\":[{\"selector\":\"@s\"}]}}]}"
-							]
-						}
-					},
-					{
-						"filters": {
-							"test": "int_property",
-							"subject": "self",
-							"domain": "rift:behavior_state",
-							"value": 1
-						},
-						"run_command": {
-							"command": [
-								"tellraw @a {\"rawtext\":[{\"translate\":\"reminder.behavior_aggressive.text\",\"with\":{\"rawtext\":[{\"selector\":\"@s\"}]}}]}"
-							]
-						}
-					},
-					{
-						"filters": {
-							"test": "int_property",
-							"subject": "self",
-							"domain": "rift:behavior_state",
-							"value": 2
-						},
-						"run_command": {
-							"command": [
-								"tellraw @a {\"rawtext\":[{\"translate\":\"reminder.behavior_passive.text\",\"with\":{\"rawtext\":[{\"selector\":\"@s\"}]}}]}"
-							]
-						}
-					},
-					{
-						"filters": {
-							"test": "int_property",
-							"subject": "self",
-							"domain": "rift:behavior_state",
-							"value": 3
-						},
-						"run_command": {
-							"command": [
-								"tellraw @a {\"rawtext\":[{\"translate\":\"reminder.behavior_assist.text\",\"with\":{\"rawtext\":[{\"selector\":\"@s\"}]}}]}"
-							]
-						}
-					},
-					{
-						"set_property": {
-							"rift:behavior_state": "query.property('rift:energy') > 0 ? ((query.property('rift:behavior_state') >= 0 && query.property('rift:behavior_state') <= 2) ? query.property('rift:behavior_state') + 1 : 0) : 3"
-						}
-					}
-				]
-			},
-			"rift:sit_at_no_energy": {
 				"set_property": {
-					"rift:tame_state": "1"
-				}
-			},
-			"rift:passive_at_no_energy": {
-				"set_property": {
-					"rift:behavior_state": "3"
-				}
-			},
-			"rift:moving_slowly_low_energy": {
-				"sequence": [
-					{},
-					{
-						"filters": {
-							"test": "has_component",
-							"subject": "self",
-							"operator": "!=",
-							"value": "minecraft:is_baby"
-						},
-						"add": {
-							"component_groups": [
-								"rift:tamed_adult_can_move_low_energy"
-							]
-						},
-						"remove": {
-							"component_groups": [
-								"rift:tamed_adult_can_move",
-								"rift:tamed_adult_cannot_move",
-								"rift:tamed_baby_can_move",
-								"rift:tamed_baby_cannot_move",
-								"rift:tamed_baby_can_move_low_energy"
-							]
-						}
-					},
-					{
-						"filters": {
-							"test": "has_component",
-							"subject": "self",
-							"value": "minecraft:is_baby"
-						},
-						"add": {
-							"component_groups": [
-								"rift:tamed_baby_can_move_low_energy"
-							]
-						},
-						"remove": {
-							"component_groups": [
-								"rift:tamed_adult_can_move",
-								"rift:tamed_adult_can_move_low_energy",
-								"rift:tamed_adult_cannot_move",
-								"rift:tamed_baby_can_move",
-								"rift:tamed_baby_cannot_move"
-							]
-						}
-					}
-				]
-			},
-			"rift:stop_moving_low_energy": {
-				"sequence": [
-					{},
-					{
-						"filters": {
-							"test": "has_component",
-							"subject": "self",
-							"operator": "!=",
-							"value": "minecraft:is_baby"
-						},
-						"add": {
-							"component_groups": [
-								"rift:tamed_adult_cannot_move"
-							]
-						},
-						"remove": {
-							"component_groups": [
-								"rift:tamed_adult_can_move",
-								"rift:tamed_adult_can_move_low_energy",
-								"rift:tamed_baby_can_move",
-								"rift:tamed_baby_cannot_move",
-								"rift:tamed_baby_can_move_low_energy"
-							]
-						}
-					},
-					{
-						"filters": {
-							"test": "has_component",
-							"subject": "self",
-							"value": "minecraft:is_baby"
-						},
-						"add": {
-							"component_groups": [
-								"rift:tamed_baby_cannot_move"
-							]
-						},
-						"remove": {
-							"component_groups": [
-								"rift:tamed_adult_can_move",
-								"rift:tamed_adult_can_move_low_energy",
-								"rift:tamed_adult_cannot_move",
-								"rift:tamed_baby_can_move",
-								"rift:tamed_baby_can_move_low_energy"
-							]
-						}
-					}
-				]
-			},
-			"rift:return_to_moving_normally": {
-				"sequence": [
-					{},
-					{
-						"filters": {
-							"test": "has_component",
-							"subject": "self",
-							"operator": "!=",
-							"value": "minecraft:is_baby"
-						},
-						"add": {
-							"component_groups": [
-								"rift:tamed_adult_can_move"
-							]
-						},
-						"remove": {
-							"component_groups": [
-								"rift:tamed_adult_cannot_move",
-								"rift:tamed_adult_can_move_low_energy",
-								"rift:tamed_baby_can_move",
-								"rift:tamed_baby_cannot_move",
-								"rift:tamed_baby_can_move_low_energy"
-							]
-						}
-					},
-					{
-						"filters": {
-							"test": "has_component",
-							"subject": "self",
-							"value": "minecraft:is_baby"
-						},
-						"add": {
-							"component_groups": [
-								"rift:tamed_baby_can_move"
-							]
-						},
-						"remove": {
-							"component_groups": [
-								"rift:tamed_adult_can_move",
-								"rift:tamed_adult_cannot_move",
-								"rift:tamed_adult_can_move_low_energy",
-								"rift:tamed_baby_cannot_move",
-								"rift:tamed_baby_can_move_low_energy"
-							]
-						}
-					}
-				]
-			},
-			"rift:decrease_energy_while_moving": {
-				"set_property": {
-					"rift:energy": "query.property('rift:energy') - 15"
-				}
-			},
-			"rift:decrease_energy_while_stomping": {
-				"set_property": {
-					"rift:energy": "query.property('rift:energy') - 30"
-				}
-			},
-			"rift:decrease_energy_while_tail_whipping": {
-				"set_property": {
-					"rift:energy": "query.property('rift:energy') - 10"
-				}
-			},
-			"rift:regenerate_energy": {
-				"set_property": {
-					"rift:energy": "query.property('rift:energy') + 5"
+					"rift:behavior_state": "(query.property('rift:behavior_state') >= 0 && query.property('rift:behavior_state') <= 2) ? query.property('rift:behavior_state') + 1 : 0"
 				}
 			},
 			//for potion effects
@@ -5918,21 +5326,14 @@
 			"rift:lol": {
 				"run_command": {
 					"command": [
-						"tellraw @p {\"rawtext\":[{\"translate\":\"reminder.cannot_tame_tier_three.text\"}]}"
+						"tellraw @p {\"rawtext\":[{\"text\":\"Tier 3 Creatures cannot be tamed this way, you need to kill them for a chance to get their eggs before taming them!\"}]}"
 					]
 				}
 			},
 			"rift:lol2": {
 				"run_command": {
 					"command": [
-						"tellraw @p {\"rawtext\":[{\"translate\":\"reminder.cannot_use_treat.text\"}]}"
-					]
-				}
-			},
-			"rift:lol3": {
-				"run_command": {
-					"command": [
-						"tellraw @p {\"rawtext\":[{\"translate\":\"reminder.cannot_use_regular_food.text\"}]}"
+						"tellraw @p {\"rawtext\":[{\"text\":\"Treats are for healing and breeding only! Use regular foods to heal adults or speed up growth for babies!\"}]}"
 					]
 				}
 			}
