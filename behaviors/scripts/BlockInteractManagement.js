@@ -79,7 +79,7 @@ function pistolCraft(source) {
     .show(source).then(result => {
         switch(result.selection) {
             case 0:
-                if (testForItem(source, 'rift:black_plastic_frame', -1, '>=', function() {return 4}) && testForItem(source, 'minecraft:iron_ingot', -1, '>=', function() {return 2}) && testForItem(source, 'minecraft:gold_nugget', -1, '>=', function() {return 3}) && testForItem(source, 'minecraft:redstone', -1, '>=', function() {return 1})) {
+                if (testForItem(source, 'rift:black_plastic_frame', -1, '>=', 4) && testForItem(source, 'minecraft:iron_ingot', -1, '>=', 2) && testForItem(source, 'minecraft:gold_nugget', -1, '>=', 3) && testForItem(source, 'minecraft:redstone', -1, '>=', 1)) {
                     source.runCommandAsync('give @s rift:pistol')
                     source.runCommandAsync('clear @s rift:black_plastic_frame -1 4')
                     source.runCommandAsync('clear @s minecraft:iron_ingot -1 2')
@@ -106,7 +106,7 @@ function pistolAmmoCraft(source) {
     .show(source).then(result => {
         switch(result.selection) {
             case 0:
-                if (testForItem(source, 'rift:black_plastic_frame', -1, '>=', function() {return 1}) && testForItem(source, 'minecraft:gold_ingot', -1, '>=', function() {return 1}) && testForItem(source, 'minecraft:gunpowder', -1, '>=', function() {return 2})) {
+                if (testForItem(source, 'rift:black_plastic_frame', -1, '>=', 1) && testForItem(source, 'minecraft:gold_ingot', -1, '>=', 1) && testForItem(source, 'minecraft:gunpowder', -1, '>=', 2)) {
                     source.runCommandAsync('give @s rift:magazine 8')
                     source.runCommandAsync('clear @s rift:black_plastic_frame -1 1')
                     source.runCommandAsync('clear @s minecraft:gold_ingot -1 1')
@@ -150,7 +150,7 @@ function smgCraft(source) {
     .show(source).then(result => {
         switch(result.selection) {
             case 0:
-                if (testForItem(source, 'rift:black_plastic_frame', -1, '>=', function() {return 6}) && testForItem(source, 'minecraft:iron_ingot', -1, '>=', function() {return 3}) && testForItem(source, 'minecraft:gold_nugget', -1, '>=', function() {return 3}) && testForItem(source, 'minecraft:redstone', -1, '>=', function() {return 2})) {
+                if (testForItem(source, 'rift:black_plastic_frame', -1, '>=', 6) && testForItem(source, 'minecraft:iron_ingot', -1, '>=', 3) && testForItem(source, 'minecraft:gold_nugget', -1, '>=', 3) && testForItem(source, 'minecraft:redstone', -1, '>=', 2)) {
                     source.runCommandAsync('give @s rift:smg')
                     source.runCommandAsync('clear @s rift:black_plastic_frame -1 6')
                     source.runCommandAsync('clear @s minecraft:iron_ingot -1 3')
@@ -177,7 +177,7 @@ function smgAmmoCraft(source) {
     .show(source).then(result => {
         switch(result.selection) {
             case 0:
-                if (testForItem(source, 'rift:black_plastic_frame', -1, '>=', function() {return 1}) && testForItem(source, 'minecraft:gold_ingot', -1, '>=', function() {return 1}) && testForItem(source, 'minecraft:gunpowder', -1, '>=', function() {return 2})) {
+                if (testForItem(source, 'rift:black_plastic_frame', -1, '>=', 1) && testForItem(source, 'minecraft:gold_ingot', -1, '>=', 1) && testForItem(source, 'minecraft:gunpowder', -1, '>=', 2)) {
                     source.runCommandAsync('give @s rift:magazine 8')
                     source.runCommandAsync('clear @s rift:black_plastic_frame -1 1')
                     source.runCommandAsync('clear @s minecraft:gold_ingot -1 1')
@@ -221,7 +221,7 @@ function shotgunCraft(source) {
     .show(source).then(result => {
         switch(result.selection) {
             case 0:
-                if (testForItem(source, 'rift:black_plastic_frame', -1, '>=', function() {return 4}) && testForItem(source, 'minecraft:iron_ingot', -1, '>=', function() {return 6}) && testForItem(source, 'minecraft:gold_nugget', -1, '>=', function() {return 3}) && testForItem(source, 'minecraft:redstone', -1, '>=', function() {return 1})) {
+                if (testForItem(source, 'rift:black_plastic_frame', -1, '>=', 4) && testForItem(source, 'minecraft:iron_ingot', -1, '>=', 6) && testForItem(source, 'minecraft:gold_nugget', -1, '>=', 3) && testForItem(source, 'minecraft:redstone', -1, '>=', 1)) {
                     source.runCommandAsync('give @s rift:shotgun')
                     source.runCommandAsync('clear @s rift:black_plastic_frame -1 4')
                     source.runCommandAsync('clear @s minecraft:iron_ingot -1 6')
@@ -248,7 +248,7 @@ function shotgunAmmoCraft(source) {
     .show(source).then(result => {
         switch(result.selection) {
             case 0:
-                if (testForItem(source, 'minecraft:leather', -1, '>=', function() {return 1}) && testForItem(source, 'minecraft:gold_nugget', -1, '>=', function() {return 1}) && testForItem(source, 'minecraft:gunpowder', -1, '>=', function() {return 2})) {
+                if (testForItem(source, 'minecraft:leather', -1, '>=', 1) && testForItem(source, 'minecraft:gold_nugget', -1, '>=', 1) && testForItem(source, 'minecraft:gunpowder', -1, '>=', 2)) {
                     source.runCommandAsync('give @s rift:shotgun_shells 8')
                     source.runCommandAsync('clear @s minecraft:leather -1 1')
                     source.runCommandAsync('clear @s minecraft:gold_nugget -1 1')
@@ -292,7 +292,7 @@ function snipingRifleCraft(source) {
     .show(source).then(result => {
         switch(result.selection) {
             case 0:
-                if (testForItem(source, 'rift:orange_plastic_frame', -1, '>=', function() {return 4}) && testForItem(source, 'minecraft:spyglass', -1, '>=', function() {return 1}) && testForItem(source, 'minecraft:iron_ingot', -1, '>=', function() {return 4}) && testForItem(source, 'minecraft:gold_nugget', -1, '>=', function() {return 3}) && testForItem(source, 'minecraft:redstone', -1, '>=', function() {return 3})) {
+                if (testForItem(source, 'rift:orange_plastic_frame', -1, '>=', 4) && testForItem(source, 'minecraft:spyglass', -1, '>=', 1) && testForItem(source, 'minecraft:iron_ingot', -1, '>=', 4) && testForItem(source, 'minecraft:gold_nugget', -1, '>=', 3) && testForItem(source, 'minecraft:redstone', -1, '>=', 3)) {
                     source.runCommandAsync('give @s rift:sniping_rifle')
                     source.runCommandAsync('clear @s rift:orange_plastic_frame -1 4')
                     source.runCommandAsync('clear @s minecraft:spyglass -1 1')
@@ -320,7 +320,7 @@ function snipingRifleAmmoCraft(source) {
     .show(source).then(result => {
         switch(result.selection) {
             case 0:
-                if (testForItem(source, 'minecraft:gold_ingot', -1, '>=', function() {return 1}) && testForItem(source, 'minecraft:gunpowder', -1, '>=', function() {return 4})) {
+                if (testForItem(source, 'minecraft:gold_ingot', -1, '>=', 1) && testForItem(source, 'minecraft:gunpowder', -1, '>=', 4)) {
                     source.runCommandAsync('give @s rift:rifle_bullets 8')
                     source.runCommandAsync('clear @s minecraft:gold_ingot -1 1')
                     source.runCommandAsync('clear @s minecraft:gunpowder -1 4')
@@ -363,7 +363,7 @@ function rocketLauncherCraft(source) {
     .show(source).then(result => {
         switch(result.selection) {
             case 0:
-                if (testForItem(source, 'rift:black_plastic_frame', -1, '>=', function() {return 4}) && testForItem(source, 'rift:orange_plastic_frame', -1, '>=', function() {return 2}) && testForItem(source, 'minecraft:iron_ingot', -1, '>=', function() {return 8}) && testForItem(source, 'minecraft:gold_nugget', -1, '>=', function() {return 4}) && testForItem(source, 'minecraft:redstone', -1, '>=', function() {return 4})) {
+                if (testForItem(source, 'rift:black_plastic_frame', -1, '>=', 4) && testForItem(source, 'rift:orange_plastic_frame', -1, '>=', 2) && testForItem(source, 'minecraft:iron_ingot', -1, '>=', 8) && testForItem(source, 'minecraft:gold_nugget', -1, '>=', 4) && testForItem(source, 'minecraft:redstone', -1, '>=', 4)) {
                     source.runCommandAsync('give @s rift:rocket_launcher')
                     source.runCommandAsync('clear @s rift:black_plastic_frame -1 4')
                     source.runCommandAsync('clear @s rift:orange_plastic_frame -1 2')
@@ -391,7 +391,7 @@ function rocketLauncherAmmoCraft(source) {
     .show(source).then(result => {
         switch(result.selection) {
             case 0:
-                if (testForItem(source, 'rift:green_plastic_frame', -1, '>=', function() {return 3}) && testForItem(source, 'minecraft:gunpowder', -1, '>=', function() {return 4})) {
+                if (testForItem(source, 'rift:green_plastic_frame', -1, '>=', 3) && testForItem(source, 'minecraft:gunpowder', -1, '>=', 4)) {
                     source.runCommandAsync('give @s rift:rocket 1')
                     source.runCommandAsync('clear @s rift:green_plastic_frame -1 3')
                     source.runCommandAsync('clear @s minecraft:gunpowder -1 4')
@@ -416,7 +416,7 @@ function grenadeCraft(source) {
     .show(source).then(result => {
         switch(result.selection) {
             case 0:
-                if (testForItem(source, 'rift:green_plastic_frame', -1, '>=', function() {return 1}) && testForItem(source, 'minecraft:gunpowder', -1, '>=', function() {return 2}) && testForItem(source, 'minecraft:redstone', -1, '>=', function() {return 1}) && testForItem(source, 'minecraft:iron_nugget', -1, '>=', function() {return 1}) && testForItem(source, 'minecraft:gold_nugget', -1, '>=', function() {return 1})) {
+                if (testForItem(source, 'rift:green_plastic_frame', -1, '>=', 1) && testForItem(source, 'minecraft:gunpowder', -1, '>=', 2) && testForItem(source, 'minecraft:redstone', -1, '>=', 1) && testForItem(source, 'minecraft:iron_nugget', -1, '>=', 1) && testForItem(source, 'minecraft:gold_nugget', -1, '>=', 1)) {
                     source.runCommandAsync('give @s rift:grenade 4')
                     source.runCommandAsync('clear @s rift:green_plastic_frame -1 1')
                     source.runCommandAsync('clear @s minecraft:gunpowder -1 2')
@@ -444,13 +444,13 @@ function flameBombCraft(source) {
     .show(source).then(result => {
         switch(result.selection) {
             case 0:
-                if (testForItem(source, 'minecraft:leather', -1, '>=', function() {return 2}) && testForItem(source, 'rift:crude_oil', -1, '>=', function() {return 1}) && testForItem(source, 'minecraft:string', -1, '>=', function() {return 1})) {
+                if (testForItem(source, 'minecraft:leather', -1, '>=', 2) && testForItem(source, 'rift:crude_oil', -1, '>=', 1) && testForItem(source, 'minecraft:string', -1, '>=', 1)) {
                     source.runCommandAsync('give @s rift:flame_bomb 4')
                     source.runCommandAsync('clear @s minecraft:leather -1 2')
                     source.runCommandAsync('clear @s rift:crude_oil -1 1')
                     source.runCommandAsync('clear @s minecraft:string -1 1')
                 }
-                else if (testForItem(source, 'minecraft:leather', -1, '>=', function() {return 2}) && testForItem(source, 'rift:crude_oil', -1, '>=', function() {return 1}) && testForItem(source, 'rift:grass_fiber', -1, '>=', function() {return 1})) {
+                else if (testForItem(source, 'minecraft:leather', -1, '>=', 2) && testForItem(source, 'rift:crude_oil', -1, '>=', 1) && testForItem(source, 'rift:grass_fiber', -1, '>=', 1)) {
                     source.runCommandAsync('give @s rift:flame_bomb 4')
                     source.runCommandAsync('clear @s minecraft:leather -1 2')
                     source.runCommandAsync('clear @s rift:crude_oil -1 1')
