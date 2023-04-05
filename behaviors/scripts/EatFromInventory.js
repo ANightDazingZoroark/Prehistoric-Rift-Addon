@@ -88,7 +88,7 @@ world.events.beforeDataDrivenEntityTriggerEvent.subscribe(data => {
             try {
                 if (fiberBarEaters.includes(data.entity.typeId) && data.entity.getComponent('inventory').container.getItem(j).typeId == 'rift:fiber_bar') {
                     data.entity.triggerEvent('rift:regenerate_energy_from_food')
-                    clearEntity(data.entity, 'rift:fiber_bar', -1, 1)
+                    clearEntity(data.entity, 'rift:fiber_bar', 0, 1)
                 }
             }
             catch (e) {}
@@ -96,7 +96,7 @@ world.events.beforeDataDrivenEntityTriggerEvent.subscribe(data => {
             try {
                 if (fibrousMeatEaters.includes(data.entity.typeId) && data.entity.getComponent('inventory').container.getItem(j).typeId == 'rift:raw_fibrous_meat') {
                     data.entity.triggerEvent('rift:regenerate_energy_from_raw_food')
-                    clearEntity(data.entity, 'rift:raw_fibrous_meat', -1, 1)
+                    clearEntity(data.entity, 'rift:raw_fibrous_meat', 0, 1)
                 }
             }
             catch (e) {}
@@ -104,7 +104,7 @@ world.events.beforeDataDrivenEntityTriggerEvent.subscribe(data => {
             try {
                 if (fibrousMeatEaters.includes(data.entity.typeId) && data.entity.getComponent('inventory').container.getItem(j).typeId == 'rift:cooked_fibrous_meat') {
                     data.entity.triggerEvent('rift:regenerate_energy_from_cooked_food')
-                    clearEntity(data.entity, 'rift:cooked_fibrous_meat', -1, 1)
+                    clearEntity(data.entity, 'rift:cooked_fibrous_meat', 0, 1)
                 }
             }
             catch (e) {}

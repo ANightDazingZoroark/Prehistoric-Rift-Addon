@@ -5,7 +5,7 @@ export function clearEntity() {
     let data //= arguments[2]
     let num //= arguments[3]
     if (arguments.length <= 2) {
-        data = -1
+        data = 0
     }
     else {
         data = arguments[2]
@@ -14,7 +14,7 @@ export function clearEntity() {
         num = 0
         for (let x = 0; x < entity.getComponent('inventory').inventorySize; x++) {
             try {
-                if (entity.getComponent('inventory').container.getItem(x).typeId == item && (data == -1 ? true : entity.getComponent('inventory').container.getItem(x).data == data)) {
+                if (entity.getComponent('inventory').container.getItem(x).typeId == item) {
                     num += entity.getComponent('inventory').container.getItem(x).amount
                 }
             }
@@ -26,7 +26,7 @@ export function clearEntity() {
     }
 
     //clear stuff
-    if (item == undefined) {
+    if (arguments.length < 2) {
         for (let i = entity.getComponent('inventory').inventorySize; i > 0; i--) {
             entity.runCommandAsync(`replaceitem entity @s slot.inventory `+i+` air 1 0`)
         }
@@ -35,36 +35,36 @@ export function clearEntity() {
         let invAmount = 0
         for (let i = entity.getComponent('inventory').inventorySize; i > 0; i--) {
             try {
-                if (entity.getComponent('inventory').container.getItem(i).typeId == item && (data == -1 ? true : entity.getComponent('inventory').container.getItem(i).data == data)) {
+                if (entity.getComponent('inventory').container.getItem(i).typeId == item) {
                     invAmount += entity.getComponent('inventory').container.getItem(i).amount
                 }
             }
             catch (e) {}
         }
-        if (invAmount == amount) {
+        if (invAmount == num) {
             for (let i = entity.getComponent('inventory').inventorySize; i > 0; i--) {
                 try {
-                    if (entity.getComponent('inventory').container.getItem(i).typeId == item && (data == -1 ? true : entity.getComponent('inventory').container.getItem(i).data == data)) {
+                    if (entity.getComponent('inventory').container.getItem(i).typeId == item) {
                         entity.runCommandAsync(`replaceitem entity @s slot.inventory `+i+` air 1 0`)
                     }
                 }
                 catch (e) {}
             }
         }
-        if (invAmount > amount) {
+        if (invAmount > num) {
             let reducAmount = 0
             for (let i = entity.getComponent('inventory').inventorySize; i > 0; i--) {
                 try {
-                    for (let j = 0; j < amount; j++) {
-                        if (entity.getComponent('inventory').container.getItem(i).typeId == item && (data == -1 ? true : entity.getComponent('inventory').container.getItem(i).data == data)) {
-                            if (reducAmount >= amount) {
+                    for (let j = 0; j < num; j++) {
+                        if (entity.getComponent('inventory').container.getItem(i).typeId == item) {
+                            if (reducAmount >= num) {
                                 break
                             }
                             if (entity.getComponent('inventory').container.getItem(i).amount > 1) {
-                                entity.runCommandAsync(`replaceitem entity @s slot.inventory `+i+` `+entity.getComponent('inventory').container.getItem(i).typeId+` `+(entity.getComponent('inventory').container.getItem(i).amount-1).toString()+` `+entity.getComponent('inventory').container.getItem(i).data)
+                                entity.runCommandAsync('replaceitem entity @s slot.inventory '+i+' '+entity.getComponent('inventory').container.getItem(i).typeId+' '+(entity.getComponent('inventory').container.getItem(i).amount-1).toString()+' '+data)
                             }
                             else {
-                                entity.runCommandAsync(`replaceitem entity @s slot.inventory `+i+` air 1 0`)
+                                entity.runCommandAsync('replaceitem entity @s slot.inventory '+i+' air 1 0')
                             }
                             reducAmount += 1
                         }

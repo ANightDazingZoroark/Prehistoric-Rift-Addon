@@ -9,7 +9,7 @@ world.events.beforeDataDrivenEntityTriggerEvent.subscribe(data => {
             try {
                 for (let m = 0; m < guiCrafting.apatosaurusFuel.length; m++) {
                     try {
-                        if (guiCrafting.apatosaurusFuel[m].itemId == data.entity.getComponent('inventory').container.getItem(l).typeId && (guiCrafting.apatosaurusFuel[m].itemData == -1 ? true : guiCrafting.apatosaurusFuel[m].itemData == data.entity.getComponent('inventory').container.getItem(l).data)) {
+                        if (guiCrafting.apatosaurusFuel[m].itemId == data.entity.getComponent('inventory').container.getItem(l).typeId) {
                             data.entity.fuelStackAmount++
                             break
                         }
@@ -24,9 +24,9 @@ world.events.beforeDataDrivenEntityTriggerEvent.subscribe(data => {
                 for (let j = data.entity.getComponent('inventory').inventorySize - 1; j >= 0; j--) {
                     for (let k = 0; k < guiCrafting.apatosaurusSmeltables.length; k++) {
                         try {
-                            if (guiCrafting.apatosaurusSmeltables[k].itemId == data.entity.getComponent('inventory').container.getItem(j).typeId && (guiCrafting.apatosaurusSmeltables[k].itemData == -1 ? true : guiCrafting.apatosaurusSmeltables[k].itemData == data.entity.getComponent('inventory').container.getItem(j).data)) {
-                                data.entity.getComponent('inventory').container.addItem(new ItemStack(Items.get(guiCrafting.apatosaurusSmeltables[k].outputId), 1, guiCrafting.apatosaurusSmeltables[k].outputData))
-                                clearEntity(data.entity, data.entity.getComponent('inventory').container.getItem(j).typeId, data.entity.getComponent('inventory').container.getItem(j).data, 1)
+                            if (guiCrafting.apatosaurusSmeltables[k].itemId == data.entity.getComponent('inventory').container.getItem(j).typeId) {
+                                data.entity.getComponent('inventory').container.addItem(new ItemStack(Items.get(guiCrafting.apatosaurusSmeltables[k].outputId), 1))
+                                clearEntity(data.entity, data.entity.getComponent('inventory').container.getItem(j).typeId, 0, 1)
                                 if (data.entity.hasOwnProperty('smeltedAmount')) {
                                     data.entity.smeltedAmount += 1
                                 }
@@ -36,9 +36,9 @@ world.events.beforeDataDrivenEntityTriggerEvent.subscribe(data => {
                                 outer: for (let n = data.entity.getComponent('inventory').inventorySize - 1; n >= 0; n--) {
                                     try {
                                         for (let m = 0; m < guiCrafting.apatosaurusFuel.length; m++) {
-                                            if (guiCrafting.apatosaurusFuel[m].itemId == data.entity.getComponent('inventory').container.getItem(n).typeId && (guiCrafting.apatosaurusFuel[m].itemData == -1 ? true : guiCrafting.apatosaurusFuel[m].itemData == data.entity.getComponent('inventory').container.getItem(n).data)) {
+                                            if (guiCrafting.apatosaurusFuel[m].itemId == data.entity.getComponent('inventory').container.getItem(n).typeId) {
                                                 if (data.entity.smeltedAmount % guiCrafting.apatosaurusFuel[m].burnAmount == 0) {
-                                                    clearEntity(data.entity, guiCrafting.apatosaurusFuel[m].itemId, guiCrafting.apatosaurusFuel[m].data, 1)
+                                                    clearEntity(data.entity, guiCrafting.apatosaurusFuel[m].itemId, 0, 1)
                                                 }
                                                 data.entity.removeTag('startSmelt')
                                                 break outer

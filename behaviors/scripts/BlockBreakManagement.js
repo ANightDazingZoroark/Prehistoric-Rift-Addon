@@ -38,6 +38,6 @@ world.events.blockBreak.subscribe(data => {
         world.getDimension('overworld').runCommandAsync(`fill `+Math.trunc((data.block.location.x-1).toString())+` `+Math.trunc((data.block.location.y-1).toString())+` `+Math.trunc((data.block.location.z-1).toString())+` `+Math.trunc((data.block.location.x+1).toString())+` `+Math.trunc((data.block.location.y+1).toString())+` `+Math.trunc((data.block.location.z+1).toString())+` air 0 destroy`)
     }
     if (tallPlants.includes(data.brokenBlockPermutation.type.id) && Math.floor(Math.random() * 4) == 0) {
-        world.getDimension('overworld').spawnItem(new ItemStack(Items.get('rift:grass_fiber'), 1, 0), data.block.location)
+        world.getDimension('overworld').spawnItem(new ItemStack(Items.get('rift:grass_fiber'), 1), data.block.location)
     }
 })
