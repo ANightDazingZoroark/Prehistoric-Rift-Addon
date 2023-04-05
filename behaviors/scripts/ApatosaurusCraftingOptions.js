@@ -1687,7 +1687,7 @@ export const apatosaurusSmeltables = [
         outputData: 0
     },
     {
-        itemId: 'minecraft:emeral_ore',
+        itemId: 'minecraft:emerald_ore',
         itemData: 0,
         outputId: 'minecraft:emerald',
         outputData: 0
@@ -1985,37 +1985,30 @@ export const apatosaurusSmeltables = [
 export const apatosaurusFuel = [
     {
         itemId: 'minecraft:coal',
-        itemData: 0,
         burnAmount: 8
     },
     {
         itemId: 'minecraft:charcoal',
-        itemData: 0,
         burnAmount: 8
     },
     {
         itemId: 'minecraft:blaze_rod',
-        itemData: 0,
         burnAmount: 12
     },
     {
         itemId: 'minecraft:stick',
-        itemData: 0,
         burnAmount: 1
     },
     {
         itemId: 'minecraft:bamboo',
-        itemData: 0,
         burnAmount: 1
     },
     {
         itemId: 'minecraft:coal_block',
-        itemData: 0,
         burnAmount: 80
     },
     {
         itemId: 'minecraft:dried_kelp_block',
-        itemData: 0,
         burnAmount: 20
     }
 ]
@@ -2054,10 +2047,12 @@ export function furnaceMenuGui(entity, hitEntity) {
     .show(entity).then(result => {
         if (result.formValues[0] == true) {
             hitEntity.addTag('smelting')
+            hitEntity.triggerEvent('rift:start_smelting')
             entity.runCommandAsync(`tellraw @s {"rawtext":[{"text":"Smelting mode activated. All items in this creature's inventory will be used as both fuel and smelting materials at the same time"}]}`)
         }
         else {
             hitEntity.removeTag('smelting')
+            hitEntity.triggerEvent('rift:stop_smelting')
             entity.runCommandAsync(`tellraw @s {"rawtext":[{"text":"Smelting mode deactivated"}]}`)
         }
     })

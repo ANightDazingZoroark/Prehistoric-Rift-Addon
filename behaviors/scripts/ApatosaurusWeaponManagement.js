@@ -1,100 +1,34 @@
-import { system, world } from "@minecraft/server"
+import { world } from "@minecraft/server"
+import { clearEntity, testForItem } from "./externals/itemmanagement"
 
-system.run(function everyTick(tick) {
-    system.run(everyTick)
-    let apatosaurus = Array.from(world.getDimension('overworld').getEntities({
-        type: 'rift:apatosaurus'
-    }))
-    for (let i = 0; i < apatosaurus.length; i++) {
-        if (apatosaurus[i].hasTag('apatoUseBackWeapon') && apatosaurus[i].getComponent('skin_id').value == 1) {
-            try {
-                if (apatosaurus[i].runCommandAsync(`testfor @s[hasitem={item=rift:cannonball}]`)) {
-                    for (let j = apatosaurus[i].getComponent('inventory').inventorySize - 1; j >= 0; j--) {
-                        try {
-                            if (apatosaurus[i].getComponent('inventory').container.getItem(j).typeId == 'rift:cannonball') {
-                                apatosaurus[i].runCommandAsync(`event entity @s rift:apato_firing`)
-                                if (apatosaurus[i].getComponent('inventory').container.getItem(j).amount > 1) {
-                                    apatosaurus[i].runCommandAsync(`replaceitem entity @s slot.inventory `+j+` `+apatosaurus[i].getComponent('inventory').container.getItem(j).typeId+` `+(apatosaurus[i].getComponent('inventory').container.getItem(j).amount-1).toString()+` 0`)
-                                }
-                                else {
-                                    apatosaurus[i].runCommandAsync(`replaceitem entity @s slot.inventory `+j+` air 1 0`)
-                                }
-                                break
-                            }
-                            else {
-                                continue
-                            }
-                        }
-                        catch (e) {
-                            continue
-                        }
-                    }
-                }
+world.events.beforeDataDrivenEntityTriggerEvent.subscribe(data => {
+    if (data.id == 'rift:use_mounted_weapon') {
+        if (data.entity.getComponent('skin_id').value == 1) {
+            if (testForItem(data.entity, 'rift:cannonball')) {
+                data.entity.triggerEvent('rift:apato_firing')
+                clearEntity(data.entity, 'rift:cannonball', 0, 1)
             }
-            catch (e) {
-                apatosaurus[i].runCommandAsync(`tellraw @p {\"rawtext\":[{\"text\":\"No cannonballs left in stock!\"}]}`)
+            else {
+                data.entity.runCommandAsync(`tellraw @p {\"rawtext\":[{\"text\":\"No cannonballs left in stock!\"}]}`)
             }
-            apatosaurus[i].removeTag('apatoUseBackWeapon')
         }
-        if (apatosaurus[i].hasTag('apatoUseBackWeapon') && apatosaurus[i].getComponent('skin_id').value == 2) {
-            try {
-                if (apatosaurus[i].runCommandAsync(`testfor @s[hasitem={item=rift:mortar_shell}]`)) {
-                    for (let j = apatosaurus[i].getComponent('inventory').inventorySize - 1; j >= 0; j--) {
-                        try {
-                            if (apatosaurus[i].getComponent('inventory').container.getItem(j).typeId == 'rift:mortar_shell') {
-                                apatosaurus[i].runCommandAsync(`event entity @s rift:apato_mortaring_not_underground`)
-                                if (apatosaurus[i].getComponent('inventory').container.getItem(j).amount > 1) {
-                                    apatosaurus[i].runCommandAsync(`replaceitem entity @s slot.inventory `+j+` `+apatosaurus[i].getComponent('inventory').container.getItem(j).typeId+` `+(apatosaurus[i].getComponent('inventory').container.getItem(j).amount-1).toString()+` 0`)
-                                }
-                                else {
-                                    apatosaurus[i].runCommandAsync(`replaceitem entity @s slot.inventory `+j+` air 1 0`)
-                                }
-                                break
-                            }
-                            else {
-                                continue
-                            }
-                        }
-                        catch (e) {
-                            continue
-                        }
-                    }
-                }
+        if (data.entity.getComponent('skin_id').value == 2) {
+            if (testForItem(data.entity, 'rift:mortar_shell')) {
+                data.entity.triggerEvent('rift:apato_mortaring')
+                clearEntity(data.entity, 'rift:mortar_shell', 0, 1)
             }
-            catch (e) {
-                apatosaurus[i].runCommandAsync(`tellraw @p {\"rawtext\":[{\"text\":\"No mortar shells left in stock!\"}]}`)
+            else {
+                data.entity.runCommandAsync(`tellraw @p {\"rawtext\":[{\"text\":\"No mortar shells left in stock!\"}]}`)
             }
-            apatosaurus[i].removeTag('apatoUseBackWeapon')
         }
-        if (apatosaurus[i].hasTag('apatoUseBackWeapon') && apatosaurus[i].getComponent('skin_id').value == 3) {
-            try {
-                if (apatosaurus[i].runCommandAsync(`testfor @s[hasitem={item=rift:catapult_boulder}]`)) {
-                    for (let j = apatosaurus[i].getComponent('inventory').inventorySize - 1; j >= 0; j--) {
-                        try {
-                            if (apatosaurus[i].getComponent('inventory').container.getItem(j).typeId == 'rift:catapult_boulder') {
-                                apatosaurus[i].runCommandAsync(`event entity @s rift:apato_play_catapult_anim`)
-                                if (apatosaurus[i].getComponent('inventory').container.getItem(j).amount > 1) {
-                                    apatosaurus[i].runCommandAsync(`replaceitem entity @s slot.inventory `+j+` `+apatosaurus[i].getComponent('inventory').container.getItem(j).typeId+` `+(apatosaurus[i].getComponent('inventory').container.getItem(j).amount-1).toString()+` 0`)
-                                }
-                                else {
-                                    apatosaurus[i].runCommandAsync(`replaceitem entity @s slot.inventory `+j+` air 1 0`)
-                                }
-                                break
-                            }
-                            else {
-                                continue
-                            }
-                        }
-                        catch (e) {
-                            continue
-                        }
-                    }
-                }
+        if (data.entity.getComponent('skin_id').value == 3) {
+            if (testForItem(data.entity, 'rift:catapult_boulder')) {
+                data.entity.triggerEvent('rift:apato_play_catapult_anim')
+                clearEntity(data.entity, 'rift:catapult_boulder', 0, 1)
             }
-            catch (e) {
-                apatosaurus[i].runCommandAsync(`tellraw @p {\"rawtext\":[{\"text\":\"No catapult boulders left in stock!\"}]}`)
+            else {
+                data.entity.runCommandAsync(`tellraw @p {\"rawtext\":[{\"text\":\"No catapult boulders left in stock!\"}]}`)
             }
-            apatosaurus[i].removeTag('apatoUseBackWeapon')
         }
     }
 })

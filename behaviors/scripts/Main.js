@@ -6,8 +6,8 @@ import "BlockBreakManagement.js"
 import "DamageManagement.js"
 import "EatFromInventory.js"
 import "JournalManagement.js"
-import { world } from "@minecraft/server"
+import { system, world } from "@minecraft/server"
 
-world.events.playerJoin.subscribe((ev) => {
-    ev.player.triggerEvent(`rift:remove_warning`)
-})
+world.events.playerSpawn.subscribe(ev => ev.player.triggerEvent(`rift:remove_warning`))
+
+system.events.beforeWatchdogTerminate.subscribe(ev => ev.cancel = true)
