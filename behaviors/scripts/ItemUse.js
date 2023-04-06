@@ -26,13 +26,13 @@ world.events.itemUseOn.subscribe(data => {
                 world.getDimension('overworld').runCommandAsync('loot spawn '+getPlaceCoords(data.getBlockLocation())+' loot "loot sacks/super rare drops"')
                 if (Math.floor(Math.random() * 4) == 0) {
                     if (date.getMonth() == 0) {
-                        world.getDimension('overworld').spawnItem(new ItemStack(Items.get('rift:birthday_costume'), 1, 0), new BlockLocation(data.getBlockLocation().x, data.getBlockLocation().y + 1, data.getBlockLocation().z))
+                        world.getDimension('overworld').spawnItem(new ItemStack(Items.get('rift:birthday_costume'), 1), new BlockLocation(data.getBlockLocation().x, data.getBlockLocation().y + 1, data.getBlockLocation().z))
                     }
                     if (date.getMonth() == 9) {
-                        world.getDimension('overworld').spawnItem(new ItemStack(Items.get('rift:halloween_costume'), 1, 0), new BlockLocation(data.getBlockLocation().x, data.getBlockLocation().y + 1, data.getBlockLocation().z))
+                        world.getDimension('overworld').spawnItem(new ItemStack(Items.get('rift:halloween_costume'), 1), new BlockLocation(data.getBlockLocation().x, data.getBlockLocation().y + 1, data.getBlockLocation().z))
                     }
                     if (date.getMonth() == 11) {
-                        world.getDimension('overworld').spawnItem(new ItemStack(Items.get('rift:christmas_costume'), 1, 0), new BlockLocation(data.getBlockLocation().x, data.getBlockLocation().y + 1, data.getBlockLocation().z))
+                        world.getDimension('overworld').spawnItem(new ItemStack(Items.get('rift:christmas_costume'), 1), new BlockLocation(data.getBlockLocation().x, data.getBlockLocation().y + 1, data.getBlockLocation().z))
                     }
                 }
                 data.source.runCommandAsync('clear @s rift:loot_sack_super_rare -1 1')
