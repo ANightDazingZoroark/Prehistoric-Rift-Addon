@@ -1,5 +1,4 @@
 import { world } from "@minecraft/server"
-import { clearEntity, testForItem } from "./externals/itemmanagement"
 
 let alphabet = 'abcdefghijklmnopqrstuvwxyz'.split('')
 
