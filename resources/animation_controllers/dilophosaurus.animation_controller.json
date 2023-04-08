@@ -37,43 +37,7 @@
                     ],
                     "transitions": [
                         {
-                            "spitting": "query.property('rift:forced_attack_mode') == 2"
-                        },
-                        {
-                            "angryDelay": "query.is_sheared"
-                        }
-                    ]
-                },
-                "angryDelay": {
-                    "animations": [
-                        "animAngryDelay"
-                    ],
-                    "transitions": [
-                        {
-                            "angry": "query.all_animations_finished"
-                        }
-                    ]
-                },
-                "angry": {
-                    "animations": [
-                        "animAngry",
-                        {
-                            "animBite": "query.is_delayed_attacking"
-                        }
-                    ],
-                    "transitions": [
-                        {
-                            "calmDown": "!query.is_angry && !query.has_target"
-                        }
-                    ]
-                },
-                "calmDown": {
-                    "animations": [
-                        "animCalmDown"
-                    ],
-                    "transitions": [
-                        {
-                            "default": "query.all_animations_finished"
+                            "spitting": "query.is_sheared || query.property('rift:forced_attack_mode') == 2"
                         }
                     ]
                 },
@@ -83,7 +47,7 @@
                     ],
                     "transitions": [
                         {
-                            "default": "query.property('rift:forced_attack_mode') == 0"
+                            "default": "!query.is_sheared && query.property('rift:forced_attack_mode') == 0"
                         }
                     ]
                 }

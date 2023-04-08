@@ -1,0 +1,539 @@
+{
+    "format_version": "1.16.0",
+    "minecraft:entity": {
+        "description": {
+            "identifier": "rift:cavern_megapiranha",
+            "is_spawnable": false,
+            "is_summonable": true,
+            "is_experimental": false,
+            "runtime_identifier": "minecraft:cod",
+            "properties": {
+				"rift:bleeding": {
+					"type": "bool",
+					"default": false,
+					"client_sync": true
+                }
+			},
+            "animations": {
+				"contBleed": "controller.animation.general_manage_bleed",
+				"contMovingTag": "controller.animation.add_moving_tag",
+                "animBleed": "animation.general_bleed",
+                "animBleedCountdown": "animation.general_bleed_countdown"
+            },
+            "scripts": {
+                "animate": [
+                    "contBleed",
+                    "contMovingTag"
+                ]
+            }
+        },
+        "component_groups": {
+            "rift:in_water": {
+                "minecraft:behavior.melee_attack": {
+                    "priority": 4,
+                    "track_target": true,
+                    "reach_multiplier": 2
+                },
+                "minecraft:environment_sensor": {
+                    "triggers": [
+                        {
+                            "filters": {
+                                "test": "in_water", 
+                                "subject": "self", 
+                                "value": false
+                            },
+                            "event": "rift:leave_water_event",
+                            "target": "self"
+                        }
+                    ]
+                },
+				"minecraft:shareables": {
+					"all_items_max_amount": 1,
+					"items": [
+						{ 
+							"item": "minecraft:beef", 
+							"priority": 0, 
+							"max_amount": 1 
+						},
+						{ 
+							"item": "minecraft:cooked_beef", 
+							"priority": 0, 
+							"max_amount": 1 
+						},
+						{ 
+							"item": "minecraft:porkchop", 
+							"priority": 0, 
+							"max_amount": 1 
+						},
+						{ 
+							"item": "minecraft:cooked_porkchop", 
+							"priority": 0, 
+							"max_amount": 1 
+						},
+						{ 
+							"item": "minecraft:chicken", 
+							"priority": 0, 
+							"max_amount": 1 
+						},
+						{ 
+							"item": "minecraft:cooked_chicken", 
+							"priority": 0, 
+							"max_amount": 1 
+						},
+						{ 
+							"item": "minecraft:mutton", 
+							"priority": 0, 
+							"max_amount": 1 
+						},
+						{ 
+							"item": "minecraft:cooked_mutton", 
+							"priority": 0, 
+							"max_amount": 1 
+						},
+						{ 
+							"item": "minecraft:rabbit", 
+							"priority": 0, 
+							"max_amount": 1 
+						},
+						{ 
+							"item": "minecraft:cooked_rabbit", 
+							"priority": 0, 
+							"max_amount": 1 
+						},
+						{ 
+							"item": "minecraft:cod", 
+							"priority": 0, 
+							"max_amount": 1 
+						},
+						{ 
+							"item": "minecraft:cooked_cod", 
+							"priority": 0, 
+							"max_amount": 1 
+						},
+						{ 
+							"item": "minecraft:salmon", 
+							"priority": 0, 
+							"max_amount": 1 
+						},
+						{ 
+							"item": "minecraft:cooked_salmon", 
+							"priority": 0, 
+							"max_amount": 1 
+						},
+						{ 
+							"item": "minecraft:tropical_fish", 
+							"priority": 0, 
+							"max_amount": 1 
+						},
+						{ 
+							"item": "rift:raw_exotic_meat", 
+							"priority": 0, 
+							"max_amount": 1 
+						},
+						{ 
+							"item": "rift:cooked_exotic_meat", 
+							"priority": 0, 
+							"max_amount": 1 
+						},
+						{ 
+							"item": "rift:raw_fibrous_meat", 
+							"priority": 0, 
+							"max_amount": 1 
+						},
+						{ 
+							"item": "rift:cooked_fibrous_meat", 
+							"priority": 0, 
+							"max_amount": 1 
+						},
+						{ 
+							"item": "rift:raw_dodo_meat", 
+							"priority": 0, 
+							"max_amount": 1 
+						},
+						{ 
+							"item": "rift:cooked_dodo_meat", 
+							"priority": 0, 
+							"max_amount": 1 
+						},
+						{ 
+							"item": "rift:raw_hadrosaur_meat", 
+							"priority": 0, 
+							"max_amount": 1 
+						},
+						{ 
+							"item": "rift:cooked_hadrosaur_meat", 
+							"priority": 0, 
+							"max_amount": 1 
+						},
+						{ 
+							"item": "rift:raw_megapiranha", 
+							"priority": 0, 
+							"max_amount": 1 
+						},
+						{ 
+							"item": "rift:cooked_megapiranha", 
+							"priority": 0, 
+							"max_amount": 1 
+						}
+				  	]
+				},
+				"minecraft:behavior.pickup_items": {
+					"priority": 5,
+					"max_dist": 32,
+					"goal_radius": 2,
+					"speed_multiplier": 1,
+					"track_target": true
+				},
+				"minecraft:behavior.eat_carried_item": {
+					"priority": 6,
+					"delay_before_eating": 0
+				}
+            },
+            "rift:not_in_water": {
+                "minecraft:environment_sensor": {
+                    "triggers": [
+                        {
+                            "filters": {
+                                "test": "in_water", 
+                                "subject": "self", 
+                                "value": true
+                            },
+                            "event": "rift:return_to_water_event",
+                            "target": "self"
+                        }
+                    ]
+                }
+            },
+            "rift:variant_one": {
+                "minecraft:variant": {
+                    "value": 0
+                }
+            },
+            "rift:variant_two": {
+                "minecraft:variant": {
+                    "value": 1
+                }
+            },
+            "rift:variant_three": {
+                "minecraft:variant": {
+                    "value": 2
+                }
+            },
+            "rift:variant_four": {
+                "minecraft:variant": {
+                    "value": 3
+                }
+            },
+            "rift:no_target": {
+                "minecraft:behavior.swim_idle": {
+                    "priority": 9,
+                    "idle_time": 5.0,
+                    "success_rate": 0.1
+                },
+                "minecraft:behavior.random_swim": {
+                    "priority": 8,
+                    "speed_multiplier": 1.0,
+                    "xz_dist": 16,
+                    "y_dist": 4,
+                    "interval": 0
+                },
+                "minecraft:behavior.swim_wander": {
+                    "priority": 10,
+                    "interval": 0.1,
+                    "look_ahead": 2.0,
+                    "speed_multiplier": 1.0,
+                    "wander_time": 5.0
+                },
+                "minecraft:on_target_acquired": {
+					"event": "rift:become_angry",
+					"target": "self"
+				},
+				"minecraft:on_friendly_anger": {
+					"event": "rift:become_angry",
+					"target": "self"
+				}
+            },
+            "rift:has_target": {
+                "minecraft:angry": {
+					"broadcast_anger": true,
+					"broadcast_range": 30,
+					"broadcast_filters": {
+						"test": "is_family",
+						"subject": "other",
+						"operator": "!=",
+						"value": "minecraft:is_tamed"
+					},
+					"broadcast_targets": [
+						"megapiranha"
+					],
+					"duration": 60,
+					"calm_event": {
+						"event": "rift:become_calm",
+						"target": "self"
+					}
+				},
+                "minecraft:on_target_escape": {
+                    "event": "rift:become_calm",
+                    "target": "self"
+                }
+            }
+        },
+        "components": {
+            "minecraft:experience_reward": {
+                "on_death": "query.last_hit_by_player ? Math.Random(1,3) : 0"
+            },
+            "minecraft:type_family": {
+                "family": [
+					"riftCreature",
+                    "megapiranha",
+                    "mob",
+                    "carnivore",
+                    "fish",
+                    "smallSize"
+                ]
+            },
+            "minecraft:collision_box": {
+                "width": 1,
+                "height": 1
+            },
+            "minecraft:health": {
+                "value": 15,
+                "max": 15
+            },
+            "minecraft:attack": {
+                "damage": 5
+            },
+            "minecraft:behavior.nearest_attackable_target": {
+                "priority": 3,
+                "reselect_targets": true,
+                "within_radius": 32.0,
+                "must_see": true,
+                "entity_types": [
+                    {
+                        "filters": {
+                            "all_of": [
+                                {
+                                    "test": "in_water", 
+                                    "subject": "other", 
+                                    "value": true
+                                },
+                                {
+                                    "test": "is_family", 
+                                    "subject": "other", 
+                                    "operator": "!=",
+                                    "value": "megapiranha"
+                                },
+                                {
+                                    "test": "is_family", 
+                                    "subject": "other", 
+                                    "operator": "!=",
+                                    "value": "player"
+                                }
+                            ]
+                        },
+                        "max_dist": 48
+                    },
+                    {
+                        "filters": {
+                            "test": "is_family", 
+                            "subject": "other",
+                            "value": "boat"
+                        },
+                        "max_dist": 48
+                    },
+                    {
+                        "filters": {
+                            "all_of": [
+                                {
+                                    "test": "is_family", 
+                                    "subject": "other",
+                                    "value": "player"
+                                },
+                                {
+                                    "test": "is_riding",
+                                    "subject": "other",
+                                    "value": false
+                                }
+                            ]
+                        },
+                        "max_dist": 48
+                    }
+                ]
+            },
+            "minecraft:scale": {
+                "value": 0.75
+            },
+            "minecraft:breathable": {
+                "total_supply": 15,
+                "suffocate_time": 0,
+                "breathes_air": false,
+                "breathes_water": true
+            },
+            "minecraft:movement": {
+                "value": 0.25
+            },
+            "minecraft:underwater_movement": {
+                "value": 0.25
+            },
+            "minecraft:navigation.generic": {
+                "is_amphibious": false,
+                "can_path_over_water": false,
+                "can_swim": true,
+                "can_walk": false,
+                "can_breach": false,
+                "can_sink": false
+            },
+            "minecraft:physics": {},
+            "minecraft:pushable": {
+                "is_pushable": true,
+                "is_pushable_by_piston": true
+            },
+            "minecraft:movement.sway": {
+                "sway_amplitude": 0.0
+            },
+            "minecraft:despawn": {
+                "despawn_from_distance": { 
+                    "min_distance": 32,
+                    "max_distance": 40
+                }
+            },
+            "minecraft:behavior.avoid_mob_type": {
+                "priority": 2,
+                "entity_types": [
+                    {
+                        "filters": {
+                            "any_of": [
+                                {
+                                    "test": "is_family",
+                                    "subject": "other",
+                                    "value": "sarcosuchus"
+                                },
+                                {
+                                    "test": "is_family",
+                                    "subject": "other",
+                                    "value": "anomalocaris"
+                                },
+                                {
+                                    "test": "is_family",
+                                    "subject": "other",
+                                    "value": "baryonyx"
+                                }
+                            ]
+                        },
+                        "max_dist": 6,
+                        "walk_speed_multiplier": 1.5,
+                        "sprint_speed_multiplier": 2.0
+                    }
+                ]
+            },
+            "minecraft:nameable": {
+                "always_show": true
+            },
+            "minecraft:conditional_bandwidth_optimization": {}
+        },
+        "events": {
+            "minecraft:entity_spawned": {
+                "randomize": [
+                    {
+                        "weight": 1,
+                        "add": {
+                            "component_groups": [
+                                "rift:in_water",
+                                "rift:no_target",
+                                "rift:variant_one"
+                            ]
+                        }
+                    },
+                    {
+                        "weight": 1,
+                        "add": {
+                            "component_groups": [
+                                "rift:in_water",
+                                "rift:no_target",
+                                "rift:variant_two"
+                            ]
+                        }
+                    },
+                    {
+                        "weight": 1,
+                        "add": {
+                            "component_groups": [
+                                "rift:in_water",
+                                "rift:no_target",
+                                "rift:variant_three"
+                            ]
+                        }
+                    },
+                    {
+                        "weight": 1,
+                        "add": {
+                            "component_groups": [
+                                "rift:in_water",
+                                "rift:no_target",
+                                "rift:variant_four"
+                            ]
+                        }
+                    }
+                ]
+            },
+            "rift:leave_water_event": {
+                "add": {
+                    "component_groups": [
+                        "rift:not_in_water"
+                    ]
+                },
+                "remove": {
+                    "component_groups": [
+                        "rift:in_water"
+                    ]
+                }
+            },
+            "rift:return_to_water_event": {
+                "add": {
+                    "component_groups": [
+                        "rift:in_water"
+                    ]
+                },
+                "remove": {
+                    "component_groups": [
+                        "rift:not_in_water"
+                    ]
+                }
+            },
+            "rift:become_angry": {
+                "add": {
+                    "component_groups": [
+                        "rift:has_target"
+                    ]
+                },
+                "remove": {
+                    "component_groups": [
+                        "rift:no_target"
+                    ]
+                }
+            },
+            "rift:become_calm": {
+                "add": {
+                    "component_groups": [
+                        "rift:no_target"
+                    ]
+                },
+                "remove": {
+                    "component_groups": [
+                        "rift:has_target"
+                    ]
+                }
+            },
+            "rift:start_bleeding": {
+                "set_property": {
+                    "rift:bleeding": true
+                }
+            },
+            "rift:stop_bleeding": {
+                "set_property": {
+                    "rift:bleeding": false
+                }
+            }
+        }
+    }
+}

@@ -34,6 +34,9 @@ world.events.beforeChat.subscribe(async (ev) => {
                         ev.sender.setDynamicProperty(alphabet[i], false)
                     }
                     break
+                default:
+                    ev.sender.sendMessage('That doesn\'t seem like a valid command. Use r!commands to get all commands!')
+                    break
             }
         }
         else {

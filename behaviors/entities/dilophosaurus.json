@@ -97,7 +97,8 @@
 				"contBehaviorState": "controller.animation.dilophosaurus_manage_tame_behavior",
 				"contDieWithoutTenontosaurus": "controller.animation.general_die_without_tenontosaurus",
                 "contDieWithoutTamedTenontosaurus": "controller.animation.general_death_timer_tamed_tenontosaurus",
-				"contBleed": "controller.animation.general_manage_bleed",
+				"contShoot": "controller.animation.dilophosaurus_shoot",
+                "contBleed": "controller.animation.general_manage_bleed",
 				"contBola": "controller.animation.general_manage_bola",
 				"animEatFromInventory": "animation.use_eat_from_inventory",
                 "animRefillEnergyFromInventory": "animation.use_refill_energy_from_inventory",
@@ -140,6 +141,7 @@
 					"contBehaviorState",
 					"contDieWithoutTenontosaurus",
                     "contDieWithoutTamedTenontosaurus",
+                    "contShoot",
                     "contBleed",
                     "contBola"
                 ]
@@ -383,29 +385,19 @@
                     "table": "loot_tables/entities/dilophosaurus.loot.json"
                 },
 				"minecraft:attack": {
-					"damage": 6
+					"damage": 4
 				}
             },
 			"rift:dilophosaurus_adult_calm": {
 				"minecraft:on_target_acquired": {
-					"event": "rift:adult_become_angry_delay",
+					"event": "rift:adult_become_angry",
 					"target": "self"
 				},
 				"minecraft:on_friendly_anger": {
-					"event": "rift:adult_become_angry_delay",
+					"event": "rift:adult_become_angry",
 					"target": "self"
 				}
 			},
-            "rift:dilophosaurus_adult_angry_delay": {
-                "minecraft:is_sheared": {},
-                "minecraft:timer": {
-                    "time": 2.12,
-                    "time_down_event": {
-                        "event": "rift:adult_become_angry",
-                        "target": "self"
-                    }
-                }
-            },
 			"rift:dilophosaurus_adult_angry": {
 				"minecraft:angry": {
 					"broadcast_anger": false,
@@ -697,14 +689,12 @@
 				}
 			},
 			"rift:ranged_attack": {
+                "minecraft:is_sheared": {},
 				"minecraft:behavior.ranged_attack": {
 					"attack_interval_min": 1,
 					"attack_interval_max": 1,
 					"priority": 9,
 					"attack_radius": 16.0
-				},
-				"minecraft:shooter": {
-					"def": "rift:dilophosaurus_spit"
 				}
 			},
 			"rift:can_spawn_trap": {
@@ -4265,10 +4255,6 @@
 						"damage_multiplier": 5
 					},
 					{
-						"deals_damage": false,
-						"cause": "fall"
-					},
-					{
 						"on_damage": {
 							"filters": {
 								"all_of": [
@@ -5163,7 +5149,6 @@
 								"rift:dilophosaurus_adult_wild",
 								"rift:default_targets",
 								"rift:dilophosaurus_adult_wild_not_trusting",
-                                "rift:dilophosaurus_adult_angry_delay",
                                 "rift:dilophosaurus_adult_angry"
 							]
 						}
@@ -5214,18 +5199,6 @@
 					]
 				}
 			},
-            "rift:adult_become_angry_delay": {
-                "add": {
-                    "component_groups": [
-                        "rift:dilophosaurus_adult_angry_delay"
-                    ]
-                },
-                "remove": {
-                    "component_groups": [
-                        "rift:dilophosaurus_adult_calm"
-                    ]
-                }
-            },
             "rift:adult_become_angry": {
                 "add": {
                     "component_groups": [
@@ -5235,7 +5208,7 @@
                 },
                 "remove": {
                     "component_groups": [
-                        "rift:dilophosaurus_adult_angry_delay"
+                        "rift:dilophosaurus_adult_calm"
                     ]
                 }
             },
@@ -5307,7 +5280,6 @@
 						"rift:default_targets",
 						"rift:wild_cannot_move",
                         "rift:dilophosaurus_adult_calm",
-                        "rift:dilophosaurus_adult_angry_delay",
                         "rift:dilophosaurus_adult_angry",
                         "rift:can_attack",
                         "rift:can_melee_attack",

@@ -92,7 +92,7 @@ world.events.beforeDataDrivenEntityTriggerEvent.subscribe(data => {
                 data.entity.runCommandAsync(`damage @e[tag=!tamed, family=!inanimate, type=!player, type=!item, tag=!hypnotizedTamed, r=10] `+damageOutput(data.entity, 25)+` entity_attack entity @s`)
                 break
             case 'rift:dilophosaurus':
-                data.entity.runCommandAsync(`damage @e[tag=!tamed, family=!inanimate, type=!player, type=!item, tag=!hypnotizedTamed, r=7] `+damageOutput(data.entity, 6)+` entity_attack entity @s`)
+                data.entity.runCommandAsync(`damage @e[tag=!tamed, family=!inanimate, type=!player, type=!item, tag=!hypnotizedTamed, r=7] `+damageOutput(data.entity, 4)+` entity_attack entity @s`)
                 break
             case 'rift:tenontosaurus': 
                 data.entity.runCommandAsync(`damage @e[tag=!tamed, family=!inanimate, type=!player, type=!item, tag=!hypnotizedTamed, r=8] `+damageOutput(data.entity, 5)+` entity_attack entity @s`)

@@ -1,0 +1,1358 @@
+{
+    "format_version": "1.16.0",
+    "minecraft:entity": {
+        "description": {
+            "identifier": "rift:cavern_utahraptor",
+            "is_spawnable": false,
+            "is_summonable": true,
+			"is_experimental": false,
+			"properties": {
+				"rift:is_hypnotized": {
+					"type": "bool",
+					"default": false,
+					"client_sync": true
+				},
+				"rift:is_hypnotized_tamed": {
+					"type": "bool",
+					"default": false,
+					"client_sync": true
+				},
+				"rift:bleeding": {
+					"type": "bool",
+					"default": false,
+					"client_sync": true
+                },
+                "rift:affected_by_bola": {
+					"type": "bool",
+					"default": false
+                }
+			},
+			"animations": {
+				"contPackBuff": "controller.animation.wild_utahraptor_pack_buff",
+				"contWildRemoveBuffs": "controller.animation.wild_utahraptor_remove_buffs",
+                "contInWaterTag": "controller.animation.add_in_water_tag",
+				"contMovingTag": "controller.animation.add_moving_tag",
+				"contHypnotizedTag": "controller.animation.add_hypnotized_tag",
+				"contHypnotizedTamedTag": "controller.animation.add_hypnotized_by_tamed_tag",
+                "contTameState": "controller.animation.manage_tame_state",
+                "contOnGroundTag": "controller.animation.add_on_ground_tag",
+				"contDieWithoutTenontosaurus": "controller.animation.general_die_without_tenontosaurus",
+                "contDieWithoutTamedTenontosaurus": "controller.animation.general_death_timer_tamed_tenontosaurus",
+				"contBleed": "controller.animation.general_manage_bleed",
+				"contBola": "controller.animation.general_manage_bola",
+				"animPackBuffed": "animation.pack_buffed",
+				"animPackBuffCountdown": "animation.buff_countdown",
+				"animFindTenontosaurus": "animation.find_tenontosaurus",
+				"animDeathTimer": "animation.hypnosis_death_timer",
+                "animTamedDeathTimer": "animation.hypnosis_death_timer_tamed",
+                "animBleed": "animation.general_bleed",
+                "animBleedCountdown": "animation.general_bleed_countdown",
+                "animBolaEffect": "animation.general_bola_effect",
+                "animBolaEffectCountdown": "animation.general_bola_effect_countdown"
+			},
+			"scripts": {
+				"animate": [
+					"contPackBuff",
+					"contWildRemoveBuffs",
+                    "contInWaterTag",
+					"contMovingTag",
+					"contHypnotizedTag",
+                    "contHypnotizedTamedTag",
+					"contTameState",
+                    "contOnGroundTag",
+					"contDieWithoutTenontosaurus",
+                    "contDieWithoutTamedTenontosaurus",
+                    "contBleed",
+                    "contBola"
+				]
+			}
+        },
+        "component_groups": {
+            "rift:cavern_utahraptor_adult": {
+                "minecraft:scale": {
+                    "value": 1
+                },
+                "minecraft:experience_reward": {
+                    "on_bred": "Math.random(4, 6)",
+                    "on_death": "query.last_hit_by_player ? Math.random(5, 9) : 0"
+                },
+                "minecraft:loot": {
+                    "table": "loot_tables/entities/utahraptor.loot.json"
+                },
+				"minecraft:attack": {
+					"damage": 7
+				}
+            },
+            "rift:cavern_utahraptor_adult_wild": {
+                "minecraft:health": {
+                    "value": 38,
+                    "max": 38
+                },
+				"minecraft:behavior.hurt_by_target": {
+					"priority": 6,
+					"entity_types": {
+						"filters": {
+							"all_of": [
+								{
+									"test": "has_equipment",
+									"subject": "other",
+									"domain": "hand",
+									"operator": "!=",
+									"value": "minecraft:torch"
+								},
+								{
+									"test": "has_equipment",
+									"subject": "other",
+									"domain": "hand",
+									"operator": "!=",
+									"value": "minecraft:soul_torch"
+								}
+							]
+						}
+					}
+				},
+                "minecraft:group_size": {
+                    "radius": 10,
+                    "filters": {
+                        "all_of": [
+							{
+								"test": "is_family",
+								"value": "utahraptor",
+								"subject": "other"
+							},
+							{
+								"test": "has_component",
+								"value": "minecraft:is_tamed",
+								"operator": "!=",
+								"subject": "other"
+							}                            
+                        ]
+                    }
+				},
+				"minecraft:navigation.climb": {
+					"avoid_water": true,
+					"avoid_damage_blocks": true
+				},
+				"minecraft:behavior.avoid_block": {
+					"priority": 3,
+					"tick_interval": 5,
+					"search_range": 8,
+					"search_height": 4,
+					"walk_speed_modifier": 1.2,
+					"sprint_speed_modifier": 1.2,
+					"target_selection_method": "nearest",
+					"target_blocks": [
+						"minecraft:fire",
+						"minecraft:soul_fire",
+						"minecraft:item.campfire",
+						"minecraft:item.soul_campfire",
+					  	"minecraft:torch",
+					  	"minecraft:soul_torch"
+					]
+				},
+				"minecraft:behavior.avoid_mob_type": {
+					"priority": 2,
+					"entity_types": [
+						{
+							"filters": {
+								"any_of": [
+									{
+										"test": "is_family",
+										"value": "parasaurScary",
+										"subject": "other"
+									},
+									{
+										"all_of": [
+											{
+												"test": "is_family",
+												"value": "player",
+												"subject": "other"
+											},
+											{
+												"any_of": [
+													{
+														"test": "has_equipment",
+														"subject": "other",
+														"domain": "hand",
+														"value": "minecraft:torch"
+													},
+													{
+														"test": "has_equipment",
+														"subject": "other",
+														"domain": "hand",
+														"value": "minecraft:soul_torch"
+													}
+												]
+											}
+										]
+									}
+								]
+							},
+							"max_dist": 12,
+							"walk_speed_multiplier": 1.2,
+							"sprint_speed_multiplier": 1.2
+					  	}
+					]
+				},
+				"minecraft:persistent": {},
+				"minecraft:shareables": {
+					"all_items_max_amount": 1,
+					"items": [
+						{ 
+							"item": "minecraft:beef", 
+							"priority": 0, 
+							"max_amount": 1 
+						},
+						{ 
+							"item": "minecraft:cooked_beef", 
+							"priority": 0, 
+							"max_amount": 1 
+						},
+						{ 
+							"item": "minecraft:porkchop", 
+							"priority": 0, 
+							"max_amount": 1 
+						},
+						{ 
+							"item": "minecraft:cooked_porkchop", 
+							"priority": 0, 
+							"max_amount": 1 
+						},
+						{ 
+							"item": "minecraft:chicken", 
+							"priority": 0, 
+							"max_amount": 1 
+						},
+						{ 
+							"item": "minecraft:cooked_chicken", 
+							"priority": 0, 
+							"max_amount": 1 
+						},
+						{ 
+							"item": "minecraft:mutton", 
+							"priority": 0, 
+							"max_amount": 1 
+						},
+						{ 
+							"item": "minecraft:cooked_mutton", 
+							"priority": 0, 
+							"max_amount": 1 
+						},
+						{ 
+							"item": "minecraft:rabbit", 
+							"priority": 0, 
+							"max_amount": 1 
+						},
+						{ 
+							"item": "minecraft:cooked_rabbit", 
+							"priority": 0, 
+							"max_amount": 1 
+						},
+						{ 
+							"item": "rift:raw_exotic_meat", 
+							"priority": 0, 
+							"max_amount": 1 
+						},
+						{ 
+							"item": "rift:cooked_exotic_meat", 
+							"priority": 0, 
+							"max_amount": 1 
+						},
+						{ 
+							"item": "rift:raw_fibrous_meat", 
+							"priority": 0, 
+							"max_amount": 1 
+						},
+						{ 
+							"item": "rift:cooked_fibrous_meat", 
+							"priority": 0, 
+							"max_amount": 1 
+						},
+						{ 
+							"item": "rift:raw_dodo_meat", 
+							"priority": 0, 
+							"max_amount": 1 
+						},
+						{ 
+							"item": "rift:cooked_dodo_meat", 
+							"priority": 0, 
+							"max_amount": 1 
+						},
+						{ 
+							"item": "rift:raw_hadrosaur_meat", 
+							"priority": 0, 
+							"max_amount": 1 
+						},
+						{ 
+							"item": "rift:cooked_hadrosaur_meat", 
+							"priority": 0, 
+							"max_amount": 1 
+						}
+				  	]
+				},
+				"minecraft:behavior.pickup_items": {
+					"priority": 11,
+					"max_dist": 32,
+					"goal_radius": 2,
+					"speed_multiplier": 1,
+					"track_target": true
+				},
+				"minecraft:behavior.eat_carried_item": {
+					"priority": 12,
+					"delay_before_eating": 0
+				}
+            },
+            "rift:cavern_utahraptor_adult_hypnotized": {
+                "minecraft:health": {
+                    "value": 38,
+                    "max": 38
+                },
+				"minecraft:navigation.climb": {
+					"avoid_water": true,
+					"avoid_damage_blocks": true
+				},
+				"minecraft:despawn": {
+                    "despawn_from_distance": {}
+                }
+            },
+			"rift:cavern_utahraptor_adult_calm": {
+				"minecraft:on_target_acquired": {
+					"event": "rift:become_angry",
+					"target": "self"
+				},
+				"minecraft:on_friendly_anger": {
+					"event": "rift:become_angry",
+					"target": "self"
+				}
+			},
+			"rift:cavern_utahraptor_adult_angry": {
+				"minecraft:angry": {
+					"broadcast_anger": true,
+					"broadcast_range": 30,
+					"broadcast_filters": {
+						"test": "has_component",
+						"subject": "other",
+						"operator": "!=",
+						"value": "minecraft:is_tamed"
+					},
+					"broadcast_targets": [
+						"utahraptor"
+					],
+					"duration": 60,
+					"calm_event": {
+						"event": "rift:become_calm",
+						"target": "self"
+					}
+				}
+			},
+			"rift:cavern_utahraptor_adult_can_pounce": {
+				"minecraft:behavior.stalk_and_pounce_on_target": {
+					"priority": 8,
+					"stalk_speed": 1.2,
+					"max_stalk_dist": 12.0,
+					"leap_height": 0.9,
+					"leap_dist": 1.5,
+					"pounce_max_dist": 11,
+					"interest_time": 0,
+					"strike_dist": 8
+				}
+			},
+			"rift:default_targets": {
+				"minecraft:behavior.nearest_attackable_target": {
+					"priority": 7,
+					"within_radius": 32.0,
+					"must_see": true,
+					"entity_types": [
+						{
+							"filters": {
+								"any_of": [
+									{
+										"test": "is_family",
+										"subject": "other",
+										"value": "wandering_trader"
+									},
+									{
+										"test": "is_family",
+										"subject": "other",
+										"value": "villager"
+									},
+									{
+										"test": "is_family",
+										"subject": "other",
+										"value": "animal"
+									}
+								]
+							},
+							"max_dist": 48
+						},
+						{
+							"filters": {
+								"all_of": [
+									{
+										"test": "is_family",
+										"subject": "other",
+										"value": "player"
+									},
+									{
+										"test": "has_equipment",
+										"subject": "other",
+										"domain": "hand",
+										"operator": "!=",
+										"value": "minecraft:torch"
+									},
+									{
+										"test": "has_equipment",
+										"subject": "other",
+										"domain": "hand",
+										"operator": "!=",
+										"value": "minecraft:soul_torch"
+									},
+									{
+										"test": "is_riding",
+										"subject": "other",
+										"value": false
+									}
+								]
+							},
+							"max_dist": 48
+						},
+						{
+							"filters": {
+								"all_of": [
+									{
+										"test": "is_family",
+										"subject": "other",
+										"value": "herbivore"
+									},
+									{
+										"test": "is_family",
+										"subject": "other",
+										"operator": "!=",
+										"value": "apatosaurus"
+									}
+								]
+							},
+							"max_dist": 48
+						},
+						{
+							"filters": {
+                                "test": "has_component",
+                                "subject": "other",
+                                "value": "minecraft:is_tamed"
+                            },
+							"max_dist": 48
+						}
+					]
+				}
+			},
+			"rift:wild_standing": {
+				"minecraft:home": {
+                    "restriction_radius": 10
+                },
+                "minecraft:behavior.move_towards_home_restriction": {
+                    "priority": 16
+                },
+                "minecraft:behavior.random_stroll": {
+					"priority": 17
+				},
+				"minecraft:behavior.random_look_around": {
+					"priority": 18
+				},
+				"minecraft:movement": {
+					"value": 0.35
+				}
+			},
+			"rift:wild_standing_hypnotized_by_tenontosaurus": {
+				"minecraft:movement": {
+					"value": 0.35
+				}
+			},
+			"rift:follow_tenontosaurus": {
+				"minecraft:behavior.nearest_prioritized_attackable_target": {
+					"priority": 7,
+					"within_radius": 32.0,
+					"entity_types": [
+						{
+							"filters": {
+                                "test": "has_tag",
+                                "subject": "other",
+                                "value": "tenontoTarget"
+                            },
+							"max_dist": 48,
+							"priority": 0
+						},
+						{
+							"filters": {
+								"all_of": [
+									{
+										"test": "is_family",
+										"subject": "other",
+										"value": "tenontosaurus"
+									},
+									{
+										"test": "has_component",
+										"subject": "other",
+										"operator": "!=",
+										"value": "minecraft:is_tamed"
+									}
+								]
+							},
+							"max_dist": 48,
+							"priority": 1
+						}
+					]
+				}
+			},
+			"rift:follow_tenontosaurus_no_target": {
+				"minecraft:behavior.ranged_attack": {
+					"priority": 16,
+					"attack_radius": 8.0,
+					"attack_radius_min": 4
+				},
+				"minecraft:on_target_acquired": {
+					"filters": {
+						"all_of": [
+							{
+								"test": "has_component",
+								"subject": "target",
+								"operator": "!=",
+								"value": "minecraft:is_tamed"
+							},
+							{
+								"test": "is_family",
+								"subject": "target",
+								"operator": "!=",
+								"value": "tenontosaurus"
+							}
+						]
+					},
+					"event": "rift:attack_for_tenontosaurus",
+					"target": "self"
+				}
+			},
+			"rift:follow_tamed_tenontosaurus": {
+				"minecraft:behavior.nearest_prioritized_attackable_target": {
+					"priority": 7,
+					"within_radius": 32.0,
+					"entity_types": [
+						{
+							"filters": {
+                                "test": "has_tag",
+                                "subject": "other",
+                                "value": "tenontoTamedTarget"
+                            },
+							"max_dist": 48,
+							"priority": 0
+						},
+						{
+							"filters": {
+								"all_of": [
+									{
+										"test": "is_family",
+										"subject": "other",
+										"value": "tenontosaurus"
+									},
+									{
+										"test": "has_component",
+										"subject": "other",
+										"value": "minecraft:is_tamed"
+									}
+								]
+							},
+							"max_dist": 48,
+							"priority": 1
+						}
+					]
+				}
+			},
+			"rift:follow_tamed_tenontosaurus_no_target": {
+				"minecraft:behavior.ranged_attack": {
+					"priority": 16,
+					"attack_radius": 8.0,
+					"attack_radius_min": 4
+				},
+				"minecraft:on_target_acquired": {
+					"filters": {
+                        "test": "has_tag",
+                        "subject": "target",
+                        "value": "tenontoTamedTarget"
+                    },
+					"event": "rift:attack_for_tenontosaurus",
+					"target": "self"
+				}
+			},
+			"rift:attacking_for_tenontosaurus": {
+				"minecraft:behavior.stalk_and_pounce_on_target": {
+					"priority": 8,
+					"stalk_speed": 1.2,
+					"max_stalk_dist": 12.0,
+					"leap_height": 0.9,
+					"leap_dist": 1.5,
+					"pounce_max_dist": 11,
+					"interest_time": 0,
+					"strike_dist": 8
+				},
+				"minecraft:behavior.delayed_attack": {
+					"priority": 9,
+					"attack_duration": 0.28,
+					"hit_delay_pct": 1,
+					"track_target": true,
+					"reach_multiplier": 2.5,
+					"speed_multiplier": 1.5
+				},
+				"minecraft:on_target_escape": {
+					"event": "rift:stop_attacking_for_tenontosaurus",
+					"target": "self"
+				}
+			},
+			"rift:variant_zero": {
+				"minecraft:variant": {
+					"value": 0
+				}
+			},
+			"rift:variant_one": {
+				"minecraft:variant": {
+					"value": 1
+				}
+			},
+			"rift:variant_two": {
+				"minecraft:variant": {
+					"value": 2
+				}
+			},
+			"rift:variant_three": {
+				"minecraft:variant": {
+					"value": 3
+				}
+            },
+			"rift:pushable": {
+				"minecraft:pushable": {
+					"is_pushable": true,
+					"is_pushable_by_piston": true
+				}
+			},
+			"rift:unpushable": {
+				"minecraft:pushable": {
+					"is_pushable": false,
+					"is_pushable_by_piston": false
+				}
+			},
+			"rift:can_attack": {
+				"minecraft:behavior.delayed_attack": {
+					"priority": 9,
+					"attack_duration": 0.28,
+					"hit_delay_pct": 1,
+					"track_target": true,
+					"reach_multiplier": 2.5,
+					"speed_multiplier": 1.5
+				}
+			},
+			"rift:transform_into_hypnotized_variant_zero": {
+				"minecraft:transformation": {
+					"into": "rift:cavern_utahraptor<rift:transform_into_hypnotized_variant_zero>"
+				}
+			},
+			"rift:transform_into_hypnotized_variant_one": {
+				"minecraft:transformation": {
+					"into": "rift:cavern_utahraptor<rift:transform_into_hypnotized_variant_one>"
+				}
+			},
+			"rift:transform_into_hypnotized_variant_two": {
+				"minecraft:transformation": {
+					"into": "rift:cavern_utahraptor<rift:transform_into_hypnotized_variant_two>"
+				}
+			},
+			"rift:transform_into_hypnotized_variant_three": {
+				"minecraft:transformation": {
+					"into": "rift:cavern_utahraptor<rift:transform_into_hypnotized_variant_three>"
+				}
+			},
+            "rift:transform_into_hypnotized_by_tamed": {
+                "minecraft:transformation": {
+					"into": "rift:cavern_utahraptor<rift:transform_into_hypnotized_by_tamed>"
+				}
+            }
+        },
+        "components": {
+			"minecraft:type_family": {
+				"family": [
+					"riftCreature",
+                    "cavernVariant",
+					"utahraptor",
+					"mob",
+					"carnivore",
+					"dinosaur",
+                    "mediumSize"
+				]
+			},
+			"minecraft:can_climb": {},
+			"minecraft:movement.basic": {},
+			"minecraft:jump.static": {},
+			"minecraft:is_hidden_when_invisible": {},
+			"minecraft:physics": {
+				"has_collision": true,
+				"has_gravity": true
+			},
+			"minecraft:nameable": {
+                "always_show": true
+            },
+			"minecraft:breathable": {
+				"total_supply": 15,
+				"suffocate_time": 0
+			},
+			"minecraft:interact": {
+				"interactions": [
+					{
+						"on_interact": {
+							"filters": {
+                                "any_of": [
+                                    {
+                                        "test": "has_equipment",
+                                        "subject": "other",
+                                        "domain": "hand",
+                                        "value": "minecraft:beef"
+                                    },
+                                    {
+                                        "test": "has_equipment",
+                                        "subject": "other",
+                                        "domain": "hand",
+                                        "value": "minecraft:cooked_beef"
+                                    },
+                                    {
+                                        "test": "has_equipment",
+                                        "subject": "other",
+                                        "domain": "hand",
+                                        "value": "minecraft:porkchop"
+                                    },
+                                    {
+                                        "test": "has_equipment",
+                                        "subject": "other",
+                                        "domain": "hand",
+                                        "value": "minecraft:cooked_porkchop"
+                                    },
+                                    {
+                                        "test": "has_equipment",
+                                        "subject": "other",
+                                        "domain": "hand",
+                                        "value": "minecraft:chicken"
+                                    },
+                                    {
+                                        "test": "has_equipment",
+                                        "subject": "other",
+                                        "domain": "hand",
+                                        "value": "minecraft:cooked_chicken"
+                                    },
+                                    {
+                                        "test": "has_equipment",
+                                        "subject": "other",
+                                        "domain": "hand",
+                                        "value": "minecraft:mutton"
+                                    },
+                                    {
+                                        "test": "has_equipment",
+                                        "subject": "other",
+                                        "domain": "hand",
+                                        "value": "minecraft:cooked_mutton"
+                                    },
+                                    {
+                                        "test": "has_equipment",
+                                        "subject": "other",
+                                        "domain": "hand",
+                                        "value": "minecraft:rabbit"
+                                    },
+                                    {
+                                        "test": "has_equipment",
+                                        "subject": "other",
+                                        "domain": "hand",
+                                        "value": "minecraft:cooked_rabbit"
+                                    },
+                                    {
+                                        "test": "has_equipment",
+                                        "subject": "other",
+                                        "domain": "hand",
+                                        "value": "rift:raw_exotic_meat"
+                                    },
+                                    {
+                                        "test": "has_equipment",
+                                        "subject": "other",
+                                        "domain": "hand",
+                                        "value": "rift:cooked_exotic_meat"
+                                    },
+                                    {
+                                        "test": "has_equipment",
+                                        "subject": "other",
+                                        "domain": "hand",
+                                        "value": "rift:raw_fibrous_meat"
+                                    },
+                                    {
+                                        "test": "has_equipment",
+                                        "subject": "other",
+                                        "domain": "hand",
+                                        "value": "rift:cooked_fibrous_meat"
+                                    },
+                                    {
+                                        "test": "has_equipment",
+                                        "subject": "other",
+                                        "domain": "hand",
+                                        "value": "rift:raw_dodo_meat"
+                                    },
+                                    {
+                                        "test": "has_equipment",
+                                        "subject": "other",
+                                        "domain": "hand",
+                                        "value": "rift:cooked_dodo_meat"
+                                    },
+                                    {
+                                        "test": "has_equipment",
+                                        "subject": "other",
+                                        "domain": "hand",
+                                        "value": "rift:raw_hadrosaur_meat"
+                                    },
+                                    {
+                                        "test": "has_equipment",
+                                        "subject": "other",
+                                        "domain": "hand",
+                                        "value": "rift:cooked_hadrosaur_meat"
+                                    },
+                                    {
+                                        "test": "has_equipment",
+                                        "subject": "other",
+                                        "domain": "hand",
+                                        "value": "rift:flesh_treat"
+                                    }
+                                ]
+                            },
+							"event": "rift:lol6",
+							"target": "self"
+						},
+						"interact_text": "action.interact.tame"
+					}
+				]
+            },
+			"minecraft:damage_sensor": {
+				"triggers": [
+					{
+						"on_damage": {
+							"filters": {
+                                "test": "is_family",
+                                "subject": "other",
+                                "value": "cavernVariant"
+                            }
+						},
+						"deals_damage": false
+					},
+					{
+						"on_damage": {
+							"filters": {
+								"test": "is_family",
+								"value": "stegosaurus",
+								"subject": "other"
+							}
+						},
+						"deals_damage": true,
+						"damage_multiplier": 5
+					},
+					{
+						"deals_damage": false,
+						"cause": "fall"
+					}
+				]
+			},
+			"minecraft:collision_box": {
+				"width": 1.25,
+				"height": 1.5
+            },
+            "minecraft:behavior.float": {},
+            "minecraft:conditional_bandwidth_optimization": {}
+        },
+        "events": {
+			"minecraft:entity_spawned": {
+				"randomize": [
+					{
+						"weight": 25,
+						"add": {
+							"component_groups": [
+								"rift:cavern_utahraptor_adult",
+								"rift:cavern_utahraptor_adult_wild",
+								"rift:cavern_utahraptor_adult_calm",
+								"rift:default_targets",
+								"rift:variant_zero",
+								"rift:cavern_utahraptor_adult_can_pounce",
+								"rift:pushable",
+								"rift:can_attack",
+								"rift:wild_standing"
+							]
+						}
+					},
+					{
+						"weight": 25,
+						"add": {
+							"component_groups": [
+								"rift:cavern_utahraptor_adult",
+								"rift:cavern_utahraptor_adult_wild",
+								"rift:cavern_utahraptor_adult_calm",
+								"rift:default_targets",
+								"rift:variant_one",
+								"rift:cavern_utahraptor_adult_can_pounce",
+								"rift:pushable",
+								"rift:can_attack",
+								"rift:wild_standing"
+							]
+						}
+					},
+					{
+						"weight": 25,
+						"add": {
+							"component_groups": [
+								"rift:cavern_utahraptor_adult",
+								"rift:cavern_utahraptor_adult_wild",
+								"rift:cavern_utahraptor_adult_calm",
+								"rift:default_targets",
+								"rift:variant_two",
+								"rift:cavern_utahraptor_adult_can_pounce",
+								"rift:pushable",
+								"rift:can_attack",
+								"rift:wild_standing"
+							]
+						}
+					},
+					{
+						"weight": 25,
+						"add": {
+							"component_groups": [
+								"rift:cavern_utahraptor_adult",
+								"rift:cavern_utahraptor_adult_wild",
+								"rift:cavern_utahraptor_adult_calm",
+								"rift:default_targets",
+								"rift:variant_three",
+								"rift:cavern_utahraptor_adult_can_pounce",
+								"rift:pushable",
+								"rift:can_attack",
+								"rift:wild_standing"
+							]
+						}
+					}
+				]
+            },
+			"rift:spawn_hypnotized_by_tenontosaurus": {
+				"randomize": [
+					{
+						"weight": 25,
+						"add": {
+							"component_groups": [
+								"rift:cavern_utahraptor_adult",
+								"rift:cavern_utahraptor_adult_hypnotized",
+								"rift:variant_zero",
+								"rift:pushable",
+								"rift:wild_standing_hypnotized_by_tenontosaurus",
+								"rift:follow_tenontosaurus",
+								"rift:follow_tenontosaurus_no_target"
+							]
+						},
+						"set_property": {
+							"rift:is_hypnotized": true
+						}
+					},
+					{
+						"weight": 25,
+						"add": {
+							"component_groups": [
+								"rift:cavern_utahraptor_adult",
+								"rift:cavern_utahraptor_adult_hypnotized",
+								"rift:variant_one",
+								"rift:pushable",
+								"rift:wild_standing_hypnotized_by_tenontosaurus",
+								"rift:follow_tenontosaurus",
+								"rift:follow_tenontosaurus_no_target"
+							]
+						},
+						"set_property": {
+							"rift:is_hypnotized": true
+						}
+					},
+					{
+						"weight": 25,
+						"add": {
+							"component_groups": [
+								"rift:cavern_utahraptor_adult",
+								"rift:cavern_utahraptor_adult_hypnotized",
+								"rift:variant_two",
+								"rift:pushable",
+								"rift:wild_standing_hypnotized_by_tenontosaurus",
+								"rift:follow_tenontosaurus",
+								"rift:follow_tenontosaurus_no_target"
+							]
+						},
+						"set_property": {
+							"rift:is_hypnotized": true
+						}
+					},
+					{
+						"weight": 25,
+						"add": {
+							"component_groups": [
+								"rift:cavern_utahraptor_adult",
+								"rift:cavern_utahraptor_adult_hypnotized",
+								"rift:variant_three",
+								"rift:pushable",
+								"rift:wild_standing_hypnotized_by_tenontosaurus",
+								"rift:follow_tenontosaurus",
+								"rift:follow_tenontosaurus_no_target"
+							]
+						},
+						"set_property": {
+							"rift:is_hypnotized": true
+						}
+					}
+				]
+            },
+			"rift:attack_for_tenontosaurus": {
+				"add": {
+					"component_groups": [
+						"rift:attacking_for_tenontosaurus"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:follow_tenontosaurus_no_target",
+                        "rift:follow_tamed_tenontosaurus_no_target"
+					]
+				}
+			},
+			"rift:stop_attacking_for_tenontosaurus": {
+                "sequence": [
+                    {
+                        "remove": {
+                            "component_groups": [
+                                "rift:attacking_for_tenontosaurus"
+                            ]
+                        }
+                    },
+                    {
+                        "filters": {
+                            "all_of": [
+                                {
+                                    "test": "bool_property",
+                                    "subject": "self",
+                                    "domain": "rift:is_hypnotized",
+                                    "value": true
+                                },
+                                {
+                                    "test": "bool_property",
+                                    "subject": "self",
+                                    "domain": "rift:is_hypnotized_tamed",
+                                    "value": false
+                                }
+                            ]
+                        },
+                        "add": {
+                            "component_groups": [
+                                "rift:follow_tenontosaurus_no_target"
+                            ]
+                        }
+                    },
+                    {
+                        "filters": {
+                            "all_of": [
+                                {
+                                    "test": "bool_property",
+                                    "subject": "self",
+                                    "domain": "rift:is_hypnotized",
+                                    "value": false
+                                },
+                                {
+                                    "test": "bool_property",
+                                    "subject": "self",
+                                    "domain": "rift:is_hypnotized_tamed",
+                                    "value": true
+                                }
+                            ]
+                        },
+                        "add": {
+                            "component_groups": [
+                                "rift:follow_tamed_tenontosaurus_no_target"
+                            ]
+                        }
+                    }
+                ]
+            },
+			"rift:hypnotized_by_tenontosaurus": {
+				"sequence": [
+					{},
+					{
+						"filters": {
+							"test": "is_variant",
+							"subject": "self",
+							"value": 0
+						},
+						"add": {
+							"component_groups": [
+								"rift:transform_into_hypnotized_variant_zero"
+							]
+						}
+					},
+					{
+						"filters": {
+							"test": "is_variant",
+							"subject": "self",
+							"value": 1
+						},
+						"add": {
+							"component_groups": [
+								"rift:transform_into_hypnotized_variant_one"
+							]
+						}
+					},
+					{
+						"filters": {
+							"test": "is_variant",
+							"subject": "self",
+							"value": 2
+						},
+						"add": {
+							"component_groups": [
+								"rift:transform_into_hypnotized_variant_two"
+							]
+						}
+					},
+					{
+						"filters": {
+							"test": "is_variant",
+							"subject": "self",
+							"value": 3
+						},
+						"add": {
+							"component_groups": [
+								"rift:transform_into_hypnotized_variant_three"
+							]
+						}
+					}
+				]
+			},
+			"rift:transform_into_hypnotized_variant_zero": {
+				"add": {
+					"component_groups": [
+						"rift:cavern_utahraptor_adult",
+						"rift:cavern_utahraptor_adult_hypnotized",
+						"rift:variant_zero",
+						"rift:pushable",
+						"rift:wild_standing_hypnotized_by_tenontosaurus",
+						"rift:follow_tenontosaurus",
+						"rift:follow_tenontosaurus_no_target"
+					]
+				},
+				"set_property": {
+					"rift:is_hypnotized": true
+				}
+			},
+			"rift:transform_into_hypnotized_variant_one": {
+				"add": {
+					"component_groups": [
+						"rift:cavern_utahraptor_adult",
+						"rift:cavern_utahraptor_adult_hypnotized",
+						"rift:variant_one",
+						"rift:pushable",
+						"rift:wild_standing_hypnotized_by_tenontosaurus",
+						"rift:follow_tenontosaurus",
+						"rift:follow_tenontosaurus_no_target"
+					]
+				},
+				"set_property": {
+					"rift:is_hypnotized": true
+				}
+			},
+			"rift:transform_into_hypnotized_variant_two": {
+				"add": {
+					"component_groups": [
+						"rift:cavern_utahraptor_adult",
+						"rift:cavern_utahraptor_adult_hypnotized",
+						"rift:variant_two",
+						"rift:pushable",
+						"rift:wild_standing_hypnotized_by_tenontosaurus",
+						"rift:follow_tenontosaurus",
+						"rift:follow_tenontosaurus_no_target"
+					]
+				},
+				"set_property": {
+					"rift:is_hypnotized": true
+				}
+			},
+			"rift:transform_into_hypnotized_variant_three": {
+				"add": {
+					"component_groups": [
+						"rift:cavern_utahraptor_adult",
+						"rift:cavern_utahraptor_adult_hypnotized",
+						"rift:variant_three",
+						"rift:pushable",
+						"rift:wild_standing_hypnotized_by_tenontosaurus",
+						"rift:follow_tenontosaurus",
+						"rift:follow_tenontosaurus_no_target"
+					]
+				},
+				"set_property": {
+					"rift:is_hypnotized": true
+				}
+			},
+            "rift:hypnotized_by_tamed_tenontosaurus": {
+                "add": {
+                    "component_groups": [
+                        "rift:transform_into_hypnotized_by_tamed"
+                    ]
+                }
+            },
+            "rift:transform_into_hypnotized_by_tamed": {
+                "sequence": [
+                    {
+                        "add": {
+                            "component_groups": [
+                                "rift:cavern_utahraptor_adult",
+                                "rift:cavern_utahraptor_adult_hypnotized",
+                                "rift:pushable",
+                                "rift:wild_standing_hypnotized_by_tenontosaurus",
+                                "rift:follow_tamed_tenontosaurus",
+                                "rift:follow_tamed_tenontosaurus_no_target"
+                            ]
+                        },
+                        "set_property": {
+                            "rift:is_hypnotized_tamed": true
+                        }
+                    },
+                    {
+                        "filters": {
+                            "test": "is_variant",
+                            "subject": "other",
+                            "value": 0
+                        },
+                        "add": {
+                            "component_groups": [
+                                "rift:variant_zero"
+                            ]
+                        }
+                    },
+                    {
+                        "filters": {
+                            "test": "is_variant",
+                            "subject": "other",
+                            "value": 1
+                        },
+                        "add": {
+                            "component_groups": [
+                                "rift:variant_one"
+                            ]
+                        }
+                    },
+                    {
+                        "filters": {
+                            "test": "is_variant",
+                            "subject": "other",
+                            "value": 2
+                        },
+                        "add": {
+                            "component_groups": [
+                                "rift:variant_two"
+                            ]
+                        }
+                    },
+                    {
+                        "filters": {
+                            "test": "is_variant",
+                            "subject": "other",
+                            "value": 3
+                        },
+                        "add": {
+                            "component_groups": [
+                                "rift:variant_three"
+                            ]
+                        }
+                    }
+                ]
+            },
+			"rift:buffing": {
+				"run_command": {
+					"command": [
+						"playanimation @s animation.utahraptor.calling",
+						"function cmd.utahraptor_pack_buff"
+					]
+				}
+			},
+			"rift:wild_utahraptor_buffing": {
+				"run_command": {
+					"command": [
+						"playanimation @s animation.utahraptor.calling",
+						"function cmd.utahraptor_wild_pack_buff"
+					]
+				}
+			},
+			"rift:start_self_pack_buff": {
+				"set_property": {
+					"rift:is_pack_buffed": true
+				}
+			},
+			"rift:stop_self_pack_buff": {
+				"set_property": {
+					"rift:is_pack_buffed": false
+				}
+			},
+			"rift:wild_utahraptor_remove_buffs": {
+				"run_command": {
+					"command": [
+						"effect @s speed 0",
+						"effect @s strength 0"
+					]
+				}
+			},
+			"rift:become_angry": {
+				"add": {
+					"component_groups": [
+						"rift:cavern_utahraptor_adult_angry"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:cavern_utahraptor_adult_calm"
+					]
+				}
+			},
+			"rift:become_calm": {
+				"add": {
+					"component_groups": [
+						"rift:cavern_utahraptor_adult_calm"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"rift:cavern_utahraptor_adult_angry"
+					]
+				}
+			},
+			"rift:lol6": {
+				"run_command": {
+					"command": [
+						"tellraw @p {\"rawtext\":[{\"translate\":\"reminder.cannot_tame_cavern_creature.text\"}]}"
+					]
+				}
+			},
+            "rift:start_bleeding": {
+                "set_property": {
+                    "rift:bleeding": true
+                }
+            },
+            "rift:stop_bleeding": {
+                "set_property": {
+                    "rift:bleeding": false
+                }
+            },
+            "rift:affected_by_bola": {
+                "set_property": {
+                    "rift:affected_by_bola": true
+                }
+            },
+            "rift:stop_being_affected_by_bola": {
+                "set_property": {
+                    "rift:affected_by_bola": false
+                }
+            },
+            "rift:force_go_down": {}
+        }
+    }
+}

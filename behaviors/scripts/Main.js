@@ -12,6 +12,7 @@ import 'ForcedAttackDamage.js'
 import 'ItemUse.js'
 import 'JournalManagement.js'
 import 'RiftCommands.js'
+import 'SpawnManagement.js'
 import { DynamicPropertiesDefinition, MinecraftEntityTypes, system, world } from "@minecraft/server"
 
 world.events.worldInitialize.subscribe((ev) => {
