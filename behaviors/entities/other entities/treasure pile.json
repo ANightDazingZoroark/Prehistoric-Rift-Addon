@@ -1,0 +1,145 @@
+{
+	"format_version": "1.16.0",
+	"minecraft:entity": {
+		"description": {
+			"identifier": "rift:treasure_pile",
+			"is_spawnable": false,
+			"is_summonable": true,
+			"is_experimental": false
+		},
+        "component_groups": {
+            "rift:layer_one": {
+                "minecraft:interact": {
+                    "interactions": [
+                        {
+                            "on_interact": {
+                                "event": "rift:dig_to_two",
+                                "target": "self"
+                            },
+                            "interact_text": "action.interact.dig",
+                            "spawn_items": {
+                                "table": "loot_tables/others/treasure pile goods.json"
+                            }
+                        }
+                    ]
+                }
+            },
+            "rift:layer_two": {
+                "minecraft:interact": {
+                    "interactions": [
+                        {
+                            "on_interact": {
+                                "event": "rift:dig_to_three",
+                                "target": "self"
+                            },
+                            "interact_text": "action.interact.dig",
+                            "spawn_items": {
+                                "table": "loot_tables/others/treasure pile goods.json"
+                            }
+                        }
+                    ]
+                }
+            },
+            "rift:layer_three": {
+                "minecraft:interact": {
+                    "interactions": [
+                        {
+                            "on_interact": {
+                                "event": "rift:commit_disappear",
+                                "target": "self"
+                            },
+                            "interact_text": "action.interact.dig",
+                            "spawn_items": {
+                                "table": "loot_tables/others/treasure pile goods.json"
+                            }
+                        }
+                    ]
+                }
+            },
+            "rift:commit_disappear": {
+                "minecraft:instant_despawn": {}
+            }
+        },
+        "components": {
+            "minecraft:type_family": {
+				"family": [
+					"treasurePile",
+					"inanimate"
+				]
+            },
+            "minecraft:pushable": {
+                "is_pushable": false,
+                "is_pushable_by_piston": false
+            },
+			"minecraft:physics": {},
+            "minecraft:collision_box": {
+                "width": 0.00001,
+                "height": 0.00001
+            },
+            "minecraft:scale": {
+                "value": 2
+            },
+            "minecraft:custom_hit_test": {
+                "hitboxes": [
+                    {
+                        "pivot": [
+                            0, 
+                            0,
+                            0
+                        ],
+                        "width": 1,
+                        "height": 1
+                    }
+                ]
+            },
+            "minecraft:damage_sensor": {
+				"triggers": [
+                    {
+						"deals_damage": false
+					}
+                ]
+            },
+            "minecraft:conditional_bandwidth_optimization": {}
+        },
+        "events": {
+            "minecraft:entity_spawned": {
+                "add": {
+                    "component_groups": [
+                        "rift:layer_one"
+                    ]
+                }
+            },
+            "rift:dig_to_two": {
+                "add": {
+                    "component_groups": [
+                        "rift:layer_two"
+                    ]
+                },
+                "remove": {
+                    "component_groups": [
+                        "rift:layer_one"
+                    ]
+                }
+            },
+            "rift:dig_to_three": {
+                "add": {
+                    "component_groups": [
+                        "rift:layer_three"
+                    ]
+                },
+                "remove": {
+                    "component_groups": [
+                        "rift:layer_two"
+                    ]
+                }
+            },
+            "rift:commit_disappear": {
+                "add": {
+                    "component_groups": [
+                        "rift:commit_disappear"
+                    ]
+                }
+            }
+        }
+    }
+}
