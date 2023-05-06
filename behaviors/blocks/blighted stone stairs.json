@@ -1,5 +1,5 @@
 {
-    "format_version": "1.16.100",
+    "format_version": "1.19.80",
     "minecraft:block": {
         "description": {
             "identifier": "rift:blighted_stone_stairs",
@@ -48,31 +48,91 @@
             {
                 "condition": "query.block_property('rift:orientation') <= 3",
                 "components": {
-					"minecraft:entity_collision": {
-						"origin": [ -8, 0, -8 ],
-						"size": [ 16, 8, 16 ] 
+					"minecraft:collision_box": {
+						"origin": [ 
+                            -8, 
+                            0, 
+                            -8 
+                        ],
+						"size": [ 
+                            16, 
+                            8, 
+                            16 
+                        ]
 					},
 					"minecraft:selection_box": {
-						"origin": [ -8, 0, -8 ],
-						"size": [ 16, 8, 16 ]
+						"origin": [ 
+                            -8, 
+                            0, 
+                            -8 
+                        ],
+						"size": [ 
+                            16, 
+                            8, 
+                            16 
+                        ]
 					}
                 }
             },
             {
                 "condition": "query.block_property('rift:orientation') > 3",
                 "components": {
-                    "minecraft:entity_collision": {
-                        "origin": [ -8, 8, -8 ],
-                        "size": [ 16, 8, 16 ] 
+                    "minecraft:collision_box": {
+                        "origin": [ 
+                            -8, 
+                            8, 
+                            -8 
+                        ],
+                        "size": [ 
+                            16, 
+                            8, 
+                            16 
+                        ] 
                     },
                     "minecraft:selection_box": {
-                        "origin": [ -8, 8, -8 ],
-                        "size": [ 16, 8, 16 ]
+                        "origin": [ 
+                            -8, 
+                            8, 
+                            -8 
+                        ],
+                        "size": [ 
+                            16, 
+                            8, 
+                            16 
+                        ]
                     }
                 }
             },
+            // {
+            //     "condition": "query.block_property('rift:north_corner') == 0 && query.block_property('rift:east_corner') == 0 && query.block_property('rift:south_corner') == 0 && query.block_property('rift:west_corner') == 0",
+            //     "components": {
+            //         "minecraft:queued_ticking": {
+            //             "looping": true,
+            //             "interval_range": [
+            //                 0,
+            //                 0
+            //             ],
+            //             "on_tick": {
+            //                 "event": "rift:check_for_nearby_blocks",
+            //                 "target": "self"
+            //             }
+            //         },
+            //         "minecraft:part_visibility": {
+            //             "conditions": {
+            //                 "top0": "query.block_property('rift:orientation') != 2 && query.block_property('rift:orientation') != 3",
+            //                 "top1": "query.block_property('rift:orientation') != 2 && query.block_property('rift:orientation') != 1",
+            //                 "top2": "query.block_property('rift:orientation') != 0 && query.block_property('rift:orientation') != 3",
+            //                 "top3": "query.block_property('rift:orientation') != 0 && query.block_property('rift:orientation') != 1",
+            //                 "bottom0": "query.block_property('rift:orientation') != 6 && query.block_property('rift:orientation') != 7",
+            //                 "bottom1": "query.block_property('rift:orientation') != 6 && query.block_property('rift:orientation') != 5",
+            //                 "bottom2": "query.block_property('rift:orientation') != 4 && query.block_property('rift:orientation') != 7",
+            //                 "bottom3": "query.block_property('rift:orientation') != 4 && query.block_property('rift:orientation') != 5"
+            //             }
+            //         }
+            //     }
+            // },
             {
-                "condition": "query.block_property('rift:north_corner') == 0 && query.block_property('rift:east_corner') == 0 && query.block_property('rift:south_corner') == 0 && query.block_property('rift:west_corner') == 0",
+                "condition": "query.block_property('rift:north_corner') == 0 && query.block_property('rift:east_corner') == 0 && query.block_property('rift:south_corner') == 0 && query.block_property('rift:west_corner') == 0 && query.block_property('rift:orientation') == 0",
                 "components": {
                     "minecraft:queued_ticking": {
                         "looping": true,
@@ -85,16 +145,220 @@
                             "target": "self"
                         }
                     },
-                    "minecraft:part_visibility": {
-                        "conditions": {
-                            "top0": "query.block_property('rift:orientation') != 2 && query.block_property('rift:orientation') != 3",
-                            "top1": "query.block_property('rift:orientation') != 2 && query.block_property('rift:orientation') != 1",
-                            "top2": "query.block_property('rift:orientation') != 0 && query.block_property('rift:orientation') != 3",
-                            "top3": "query.block_property('rift:orientation') != 0 && query.block_property('rift:orientation') != 1",
-                            "bottom0": "query.block_property('rift:orientation') != 6 && query.block_property('rift:orientation') != 7",
-                            "bottom1": "query.block_property('rift:orientation') != 6 && query.block_property('rift:orientation') != 5",
-                            "bottom2": "query.block_property('rift:orientation') != 4 && query.block_property('rift:orientation') != 7",
-                            "bottom3": "query.block_property('rift:orientation') != 4 && query.block_property('rift:orientation') != 5"
+                    "minecraft:geometry": {
+                        "identifier": "geometry.stairs",
+                        "bone_visibility": {
+                            "bottom0": true,
+                            "bottom1": true,
+                            "bottom2": true,
+                            "bottom3": true,
+                            "top0": true,
+                            "top1": true,
+                            "top2": false,
+                            "top3": false
+                        }
+                    }
+                }
+            },
+            {
+                "condition": "query.block_property('rift:north_corner') == 0 && query.block_property('rift:east_corner') == 0 && query.block_property('rift:south_corner') == 0 && query.block_property('rift:west_corner') == 0 && query.block_property('rift:orientation') == 1",
+                "components": {
+                    "minecraft:queued_ticking": {
+                        "looping": true,
+                        "interval_range": [
+                            0,
+                            0
+                        ],
+                        "on_tick": {
+                            "event": "rift:check_for_nearby_blocks",
+                            "target": "self"
+                        }
+                    },
+                    "minecraft:geometry": {
+                        "identifier": "geometry.stairs",
+                        "bone_visibility": {
+                            "bottom0": true,
+                            "bottom1": true,
+                            "bottom2": true,
+                            "bottom3": true,
+                            "top0": true,
+                            "top1": false,
+                            "top2": true,
+                            "top3": false
+                        }
+                    }
+                }
+            },
+            {
+                "condition": "query.block_property('rift:north_corner') == 0 && query.block_property('rift:east_corner') == 0 && query.block_property('rift:south_corner') == 0 && query.block_property('rift:west_corner') == 0 && query.block_property('rift:orientation') == 2",
+                "components": {
+                    "minecraft:queued_ticking": {
+                        "looping": true,
+                        "interval_range": [
+                            0,
+                            0
+                        ],
+                        "on_tick": {
+                            "event": "rift:check_for_nearby_blocks",
+                            "target": "self"
+                        }
+                    },
+                    "minecraft:geometry": {
+                        "identifier": "geometry.stairs",
+                        "bone_visibility": {
+                            "bottom0": true,
+                            "bottom1": true,
+                            "bottom2": true,
+                            "bottom3": true,
+                            "top0": false,
+                            "top1": false,
+                            "top2": true,
+                            "top3": true
+                        }
+                    }
+                }
+            },
+            {
+                "condition": "query.block_property('rift:north_corner') == 0 && query.block_property('rift:east_corner') == 0 && query.block_property('rift:south_corner') == 0 && query.block_property('rift:west_corner') == 0 && query.block_property('rift:orientation') == 3",
+                "components": {
+                    "minecraft:queued_ticking": {
+                        "looping": true,
+                        "interval_range": [
+                            0,
+                            0
+                        ],
+                        "on_tick": {
+                            "event": "rift:check_for_nearby_blocks",
+                            "target": "self"
+                        }
+                    },
+                    "minecraft:geometry": {
+                        "identifier": "geometry.stairs",
+                        "bone_visibility": {
+                            "bottom0": true,
+                            "bottom1": true,
+                            "bottom2": true,
+                            "bottom3": true,
+                            "top0": false,
+                            "top1": true,
+                            "top2": false,
+                            "top3": true
+                        }
+                    }
+                }
+            },
+            {
+                "condition": "query.block_property('rift:north_corner') == 0 && query.block_property('rift:east_corner') == 0 && query.block_property('rift:south_corner') == 0 && query.block_property('rift:west_corner') == 0 && query.block_property('rift:orientation') == 4",
+                "components": {
+                    "minecraft:queued_ticking": {
+                        "looping": true,
+                        "interval_range": [
+                            0,
+                            0
+                        ],
+                        "on_tick": {
+                            "event": "rift:check_for_nearby_blocks",
+                            "target": "self"
+                        }
+                    },
+                    "minecraft:geometry": {
+                        "identifier": "geometry.stairs",
+                        "bone_visibility": {
+                            "bottom0": true,
+                            "bottom1": true,
+                            "bottom2": false,
+                            "bottom3": false,
+                            "top0": true,
+                            "top1": true,
+                            "top2": true,
+                            "top3": true
+                        }
+                    }
+                }
+            },
+            {
+                "condition": "query.block_property('rift:north_corner') == 0 && query.block_property('rift:east_corner') == 0 && query.block_property('rift:south_corner') == 0 && query.block_property('rift:west_corner') == 0 && query.block_property('rift:orientation') == 5",
+                "components": {
+                    "minecraft:queued_ticking": {
+                        "looping": true,
+                        "interval_range": [
+                            0,
+                            0
+                        ],
+                        "on_tick": {
+                            "event": "rift:check_for_nearby_blocks",
+                            "target": "self"
+                        }
+                    },
+                    "minecraft:geometry": {
+                        "identifier": "geometry.stairs",
+                        "bone_visibility": {
+                            "bottom0": true,
+                            "bottom1": false,
+                            "bottom2": true,
+                            "bottom3": false,
+                            "top0": true,
+                            "top1": true,
+                            "top2": true,
+                            "top3": true
+                        }
+                    }
+                }
+            },
+            {
+                "condition": "query.block_property('rift:north_corner') == 0 && query.block_property('rift:east_corner') == 0 && query.block_property('rift:south_corner') == 0 && query.block_property('rift:west_corner') == 0 && query.block_property('rift:orientation') == 6",
+                "components": {
+                    "minecraft:queued_ticking": {
+                        "looping": true,
+                        "interval_range": [
+                            0,
+                            0
+                        ],
+                        "on_tick": {
+                            "event": "rift:check_for_nearby_blocks",
+                            "target": "self"
+                        }
+                    },
+                    "minecraft:geometry": {
+                        "identifier": "geometry.stairs",
+                        "bone_visibility": {
+                            "bottom0": false,
+                            "bottom1": false,
+                            "bottom2": true,
+                            "bottom3": true,
+                            "top0": true,
+                            "top1": true,
+                            "top2": true,
+                            "top3": true
+                        }
+                    }
+                }
+            },
+            {
+                "condition": "query.block_property('rift:north_corner') == 0 && query.block_property('rift:east_corner') == 0 && query.block_property('rift:south_corner') == 0 && query.block_property('rift:west_corner') == 0 && query.block_property('rift:orientation') == 7",
+                "components": {
+                    "minecraft:queued_ticking": {
+                        "looping": true,
+                        "interval_range": [
+                            0,
+                            0
+                        ],
+                        "on_tick": {
+                            "event": "rift:check_for_nearby_blocks",
+                            "target": "self"
+                        }
+                    },
+                    "minecraft:geometry": {
+                        "identifier": "geometry.stairs",
+                        "bone_visibility": {
+                            "bottom0": false,
+                            "bottom1": true,
+                            "bottom2": false,
+                            "bottom3": true,
+                            "top0": true,
+                            "top1": true,
+                            "top2": true,
+                            "top3": true
                         }
                     }
                 }
@@ -114,16 +378,17 @@
                             "target": "self"
                         }
                     },
-                    "minecraft:part_visibility": {
-                        "conditions": {
-                            "top0": "(1.0)",
-                            "top1": "(1.0)",
-                            "top2": "(1.0)",
-                            "top3": "(0.0)",
-                            "bottom0": "(1.0)",
-                            "bottom1": "(1.0)",
-                            "bottom2": "(1.0)",
-                            "bottom3": "(1.0)"
+                    "minecraft:geometry": {
+                        "identifier": "geometry.stairs",
+                        "bone_visibility": {
+                            "bottom0": true,
+                            "bottom1": true,
+                            "bottom2": true,
+                            "bottom3": true,
+                            "top0": true,
+                            "top1": true,
+                            "top2": true,
+                            "top3": false
                         }
                     }
                 }
@@ -142,16 +407,17 @@
                             "target": "self"
                         }
                     },
-                    "minecraft:part_visibility": {
-                        "conditions": {
-                            "top0": "(1.0)",
-                            "top1": "(1.0)",
-                            "top2": "(0.0)",
-                            "top3": "(1.0)",
-                            "bottom0": "(1.0)",
-                            "bottom1": "(1.0)",
-                            "bottom2": "(1.0)",
-                            "bottom3": "(1.0)"
+                    "minecraft:geometry": {
+                        "identifier": "geometry.stairs",
+                        "bone_visibility": {
+                            "bottom0": true,
+                            "bottom1": true,
+                            "bottom2": true,
+                            "bottom3": true,
+                            "top0": true,
+                            "top1": true,
+                            "top2": false,
+                            "top3": true
                         }
                     }
                 }
@@ -170,16 +436,17 @@
                             "target": "self"
                         }
                     },
-                    "minecraft:part_visibility": {
-                        "conditions": {
-                            "top0": "(1.0)",
-                            "top1": "(0.0)",
-                            "top2": "(0.0)",
-                            "top3": "(0.0)",
-                            "bottom0": "(1.0)",
-                            "bottom1": "(1.0)",
-                            "bottom2": "(1.0)",
-                            "bottom3": "(1.0)"
+                    "minecraft:geometry": {
+                        "identifier": "geometry.stairs",
+                        "bone_visibility": {
+                            "bottom0": true,
+                            "bottom1": true,
+                            "bottom2": true,
+                            "bottom3": true,
+                            "top0": true,
+                            "top1": false,
+                            "top2": false,
+                            "top3": false
                         }
                     }
                 }
@@ -198,16 +465,17 @@
                             "target": "self"
                         }
                     },
-                    "minecraft:part_visibility": {
-                        "conditions": {
-                            "top0": "(0.0)",
-                            "top1": "(1.0)",
-                            "top2": "(0.0)",
-                            "top3": "(0.0)",
-                            "bottom0": "(1.0)",
-                            "bottom1": "(1.0)",
-                            "bottom2": "(1.0)",
-                            "bottom3": "(1.0)"
+                    "minecraft:geometry": {
+                        "identifier": "geometry.stairs",
+                        "bone_visibility": {
+                            "bottom0": true,
+                            "bottom1": true,
+                            "bottom2": true,
+                            "bottom3": true,
+                            "top0": false,
+                            "top1": true,
+                            "top2": false,
+                            "top3": false
                         }
                     }
                 }
@@ -227,16 +495,17 @@
                             "target": "self"
                         }
                     },
-                    "minecraft:part_visibility": {
-                        "conditions": {
-                            "top0": "(1.0)",
-                            "top1": "(1.0)",
-                            "top2": "(1.0)",
-                            "top3": "(0.0)",
-                            "bottom0": "(1.0)",
-                            "bottom1": "(1.0)",
-                            "bottom2": "(1.0)",
-                            "bottom3": "(1.0)"
+                    "minecraft:geometry": {
+                        "identifier": "geometry.stairs",
+                        "bone_visibility": {
+                            "bottom0": true,
+                            "bottom1": true,
+                            "bottom2": true,
+                            "bottom3": true,
+                            "top0": true,
+                            "top1": true,
+                            "top2": true,
+                            "top3": false
                         }
                     }
                 }
@@ -255,16 +524,17 @@
                             "target": "self"
                         }
                     },
-                    "minecraft:part_visibility": {
-                        "conditions": {
-                            "top0": "(1.0)",
-                            "top1": "(0.0)",
-                            "top2": "(1.0)",
-                            "top3": "(1.0)",
-                            "bottom0": "(1.0)",
-                            "bottom1": "(1.0)",
-                            "bottom2": "(1.0)",
-                            "bottom3": "(1.0)"
+                    "minecraft:geometry": {
+                        "identifier": "geometry.stairs",
+                        "bone_visibility": {
+                            "bottom0": true,
+                            "bottom1": true,
+                            "bottom2": true,
+                            "bottom3": true,
+                            "top0": true,
+                            "top1": false,
+                            "top2": true,
+                            "top3": true
                         }
                     }
                 }
@@ -283,16 +553,17 @@
                             "target": "self"
                         }
                     },
-                    "minecraft:part_visibility": {
-                        "conditions": {
-                            "top0": "(1.0)",
-                            "top1": "(0.0)",
-                            "top2": "(0.0)",
-                            "top3": "(0.0)",
-                            "bottom0": "(1.0)",
-                            "bottom1": "(1.0)",
-                            "bottom2": "(1.0)",
-                            "bottom3": "(1.0)"
+                    "minecraft:geometry": {
+                        "identifier": "geometry.stairs",
+                        "bone_visibility": {
+                            "bottom0": true,
+                            "bottom1": true,
+                            "bottom2": true,
+                            "bottom3": true,
+                            "top0": true,
+                            "top1": false,
+                            "top2": false,
+                            "top3": false
                         }
                     }
                 }
@@ -311,16 +582,17 @@
                             "target": "self"
                         }
                     },
-                    "minecraft:part_visibility": {
-                        "conditions": {
-                            "top0": "(0.0)",
-                            "top1": "(0.0)",
-                            "top2": "(1.0)",
-                            "top3": "(0.0)",
-                            "bottom0": "(1.0)",
-                            "bottom1": "(1.0)",
-                            "bottom2": "(1.0)",
-                            "bottom3": "(1.0)"
+                    "minecraft:geometry": {
+                        "identifier": "geometry.stairs",
+                        "bone_visibility": {
+                            "bottom0": true,
+                            "bottom1": true,
+                            "bottom2": true,
+                            "bottom3": true,
+                            "top0": false,
+                            "top1": false,
+                            "top2": true,
+                            "top3": false
                         }
                     }
                 }
@@ -340,16 +612,17 @@
                             "target": "self"
                         }
                     },
-                    "minecraft:part_visibility": {
-                        "conditions": {
-                            "top0": "(0.0)",
-                            "top1": "(0.0)",
-                            "top2": "(1.0)",
-                            "top3": "(0.0)",
-                            "bottom0": "(1.0)",
-                            "bottom1": "(1.0)",
-                            "bottom2": "(1.0)",
-                            "bottom3": "(1.0)"
+                    "minecraft:geometry": {
+                        "identifier": "geometry.stairs",
+                        "bone_visibility": {
+                            "bottom0": true,
+                            "bottom1": true,
+                            "bottom2": true,
+                            "bottom3": true,
+                            "top0": false,
+                            "top1": false,
+                            "top2": true,
+                            "top3": false
                         }
                     }
                 }
@@ -368,16 +641,17 @@
                             "target": "self"
                         }
                     },
-                    "minecraft:part_visibility": {
-                        "conditions": {
-                            "top0": "(0.0)",
-                            "top1": "(0.0)",
-                            "top2": "(0.0)",
-                            "top3": "(1.0)",
-                            "bottom0": "(1.0)",
-                            "bottom1": "(1.0)",
-                            "bottom2": "(1.0)",
-                            "bottom3": "(1.0)"
+                    "minecraft:geometry": {
+                        "identifier": "geometry.stairs",
+                        "bone_visibility": {
+                            "bottom0": true,
+                            "bottom1": true,
+                            "bottom2": true,
+                            "bottom3": true,
+                            "top0": false,
+                            "top1": false,
+                            "top2": false,
+                            "top3": true
                         }
                     }
                 }
@@ -396,16 +670,17 @@
                             "target": "self"
                         }
                     },
-                    "minecraft:part_visibility": {
-                        "conditions": {
-                            "top0": "(1.0)",
-                            "top1": "(0.0)",
-                            "top2": "(1.0)",
-                            "top3": "(1.0)",
-                            "bottom0": "(1.0)",
-                            "bottom1": "(1.0)",
-                            "bottom2": "(1.0)",
-                            "bottom3": "(1.0)"
+                    "minecraft:geometry": {
+                        "identifier": "geometry.stairs",
+                        "bone_visibility": {
+                            "bottom0": true,
+                            "bottom1": true,
+                            "bottom2": true,
+                            "bottom3": true,
+                            "top0": true,
+                            "top1": false,
+                            "top2": true,
+                            "top3": true
                         }
                     }
                 }
@@ -424,16 +699,17 @@
                             "target": "self"
                         }
                     },
-                    "minecraft:part_visibility": {
-                        "conditions": {
-                            "top0": "(0.0)",
-                            "top1": "(1.0)",
-                            "top2": "(1.0)",
-                            "top3": "(1.0)",
-                            "bottom0": "(1.0)",
-                            "bottom1": "(1.0)",
-                            "bottom2": "(1.0)",
-                            "bottom3": "(1.0)"
+                    "minecraft:geometry": {
+                        "identifier": "geometry.stairs",
+                        "bone_visibility": {
+                            "bottom0": true,
+                            "bottom1": true,
+                            "bottom2": true,
+                            "bottom3": true,
+                            "top0": false,
+                            "top1": true,
+                            "top2": true,
+                            "top3": true
                         }
                     }
                 }
@@ -453,16 +729,17 @@
                             "target": "self"
                         }
                     },
-                    "minecraft:part_visibility": {
-                        "conditions": {
-                            "top0": "(0.0)",
-                            "top1": "(1.0)",
-                            "top2": "(0.0)",
-                            "top3": "(0.0)",
-                            "bottom0": "(1.0)",
-                            "bottom1": "(1.0)",
-                            "bottom2": "(1.0)",
-                            "bottom3": "(1.0)"
+                    "minecraft:geometry": {
+                        "identifier": "geometry.stairs",
+                        "bone_visibility": {
+                            "bottom0": true,
+                            "bottom1": true,
+                            "bottom2": true,
+                            "bottom3": true,
+                            "top0": false,
+                            "top1": true,
+                            "top2": false,
+                            "top3": false
                         }
                     }
                 }
@@ -481,16 +758,17 @@
                             "target": "self"
                         }
                     },
-                    "minecraft:part_visibility": {
-                        "conditions": {
-                            "top0": "(0.0)",
-                            "top1": "(0.0)",
-                            "top2": "(0.0)",
-                            "top3": "(1.0)",
-                            "bottom0": "(1.0)",
-                            "bottom1": "(1.0)",
-                            "bottom2": "(1.0)",
-                            "bottom3": "(1.0)"
+                    "minecraft:geometry": {
+                        "identifier": "geometry.stairs",
+                        "bone_visibility": {
+                            "bottom0": true,
+                            "bottom1": true,
+                            "bottom2": true,
+                            "bottom3": true,
+                            "top0": false,
+                            "top1": false,
+                            "top2": false,
+                            "top3": true
                         }
                     }
                 }
@@ -509,16 +787,17 @@
                             "target": "self"
                         }
                     },
-                    "minecraft:part_visibility": {
-                        "conditions": {
-                            "top0": "(1.0)",
-                            "top1": "(1.0)",
-                            "top2": "(0.0)",
-                            "top3": "(1.0)",
-                            "bottom0": "(1.0)",
-                            "bottom1": "(1.0)",
-                            "bottom2": "(1.0)",
-                            "bottom3": "(1.0)"
+                    "minecraft:geometry": {
+                        "identifier": "geometry.stairs",
+                        "bone_visibility": {
+                            "bottom0": true,
+                            "bottom1": true,
+                            "bottom2": true,
+                            "bottom3": true,
+                            "top0": true,
+                            "top1": true,
+                            "top2": false,
+                            "top3": true
                         }
                     }
                 }
@@ -537,16 +816,17 @@
                             "target": "self"
                         }
                     },
-                    "minecraft:part_visibility": {
-                        "conditions": {
-                            "top0": "(0.0)",
-                            "top1": "(1.0)",
-                            "top2": "(1.0)",
-                            "top3": "(1.0)",
-                            "bottom0": "(1.0)",
-                            "bottom1": "(1.0)",
-                            "bottom2": "(1.0)",
-                            "bottom3": "(1.0)"
+                    "minecraft:geometry": {
+                        "identifier": "geometry.stairs",
+                        "bone_visibility": {
+                            "bottom0": true,
+                            "bottom1": true,
+                            "bottom2": true,
+                            "bottom3": true,
+                            "top0": false,
+                            "top1": true,
+                            "top2": true,
+                            "top3": true
                         }
                     }
                 }
@@ -566,16 +846,17 @@
                             "target": "self"
                         }
                     },
-                    "minecraft:part_visibility": {
-                        "conditions": {
-                            "bottom0": "(1.0)",
-                            "bottom1": "(1.0)",
-                            "bottom2": "(1.0)",
-                            "bottom3": "(0.0)",
-                            "top0": "(1.0)",
-                            "top1": "(1.0)",
-                            "top2": "(1.0)",
-                            "top3": "(1.0)"
+                    "minecraft:geometry": {
+                        "identifier": "geometry.stairs",
+                        "bone_visibility": {
+                            "bottom0": true,
+                            "bottom1": true,
+                            "bottom2": true,
+                            "bottom3": false,
+                            "top0": true,
+                            "top1": true,
+                            "top2": true,
+                            "top3": true
                         }
                     }
                 }
@@ -594,16 +875,17 @@
                             "target": "self"
                         }
                     },
-                    "minecraft:part_visibility": {
-                        "conditions": {
-                            "bottom0": "(1.0)",
-                            "bottom1": "(1.0)",
-                            "bottom2": "(0.0)",
-                            "bottom3": "(1.0)",
-                            "top0": "(1.0)",
-                            "top1": "(1.0)",
-                            "top2": "(1.0)",
-                            "top3": "(1.0)"
+                    "minecraft:geometry": {
+                        "identifier": "geometry.stairs",
+                        "bone_visibility": {
+                            "bottom0": true,
+                            "bottom1": true,
+                            "bottom2": false,
+                            "bottom3": true,
+                            "top0": true,
+                            "top1": true,
+                            "top2": true,
+                            "top3": true
                         }
                     }
                 }
@@ -622,16 +904,17 @@
                             "target": "self"
                         }
                     },
-                    "minecraft:part_visibility": {
-                        "conditions": {
-                            "bottom0": "(1.0)",
-                            "bottom1": "(0.0)",
-                            "bottom2": "(0.0)",
-                            "bottom3": "(0.0)",
-                            "top0": "(1.0)",
-                            "top1": "(1.0)",
-                            "top2": "(1.0)",
-                            "top3": "(1.0)"
+                    "minecraft:geometry": {
+                        "identifier": "geometry.stairs",
+                        "bone_visibility": {
+                            "bottom0": true,
+                            "bottom1": false,
+                            "bottom2": false,
+                            "bottom3": false,
+                            "top0": true,
+                            "top1": true,
+                            "top2": true,
+                            "top3": true
                         }
                     }
                 }
@@ -650,16 +933,17 @@
                             "target": "self"
                         }
                     },
-                    "minecraft:part_visibility": {
-                        "conditions": {
-                            "bottom0": "(0.0)",
-                            "bottom1": "(1.0)",
-                            "bottom2": "(0.0)",
-                            "bottom3": "(0.0)",
-                            "top0": "(1.0)",
-                            "top1": "(1.0)",
-                            "top2": "(1.0)",
-                            "top3": "(1.0)"
+                    "minecraft:geometry": {
+                        "identifier": "geometry.stairs",
+                        "bone_visibility": {
+                            "bottom0": false,
+                            "bottom1": true,
+                            "bottom2": false,
+                            "bottom3": false,
+                            "top0": true,
+                            "top1": true,
+                            "top2": true,
+                            "top3": true
                         }
                     }
                 }
@@ -679,16 +963,17 @@
                             "target": "self"
                         }
                     },
-                    "minecraft:part_visibility": {
-                        "conditions": {
-                            "bottom0": "(1.0)",
-                            "bottom1": "(1.0)",
-                            "bottom2": "(1.0)",
-                            "bottom3": "(0.0)",
-                            "top0": "(1.0)",
-                            "top1": "(1.0)",
-                            "top2": "(1.0)",
-                            "top3": "(1.0)"
+                    "minecraft:geometry": {
+                        "identifier": "geometry.stairs",
+                        "bone_visibility": {
+                            "bottom0": true,
+                            "bottom1": true,
+                            "bottom2": true,
+                            "bottom3": false,
+                            "top0": true,
+                            "top1": true,
+                            "top2": true,
+                            "top3": true
                         }
                     }
                 }
@@ -707,16 +992,17 @@
                             "target": "self"
                         }
                     },
-                    "minecraft:part_visibility": {
-                        "conditions": {
-                            "bottom0": "(1.0)",
-                            "bottom1": "(0.0)",
-                            "bottom2": "(1.0)",
-                            "bottom3": "(1.0)",
-                            "top0": "(1.0)",
-                            "top1": "(1.0)",
-                            "top2": "(1.0)",
-                            "top3": "(1.0)"
+                    "minecraft:geometry": {
+                        "identifier": "geometry.stairs",
+                        "bone_visibility": {
+                            "bottom0": true,
+                            "bottom1": false,
+                            "bottom2": true,
+                            "bottom3": true,
+                            "top0": true,
+                            "top1": true,
+                            "top2": true,
+                            "top3": true
                         }
                     }
                 }
@@ -735,16 +1021,17 @@
                             "target": "self"
                         }
                     },
-                    "minecraft:part_visibility": {
-                        "conditions": {
-                            "bottom0": "(1.0)",
-                            "bottom1": "(0.0)",
-                            "bottom2": "(0.0)",
-                            "bottom3": "(0.0)",
-                            "top0": "(1.0)",
-                            "top1": "(1.0)",
-                            "top2": "(1.0)",
-                            "top3": "(1.0)"
+                    "minecraft:geometry": {
+                        "identifier": "geometry.stairs",
+                        "bone_visibility": {
+                            "bottom0": true,
+                            "bottom1": false,
+                            "bottom2": false,
+                            "bottom3": false,
+                            "top0": true,
+                            "top1": true,
+                            "top2": true,
+                            "top3": true
                         }
                     }
                 }
@@ -763,16 +1050,17 @@
                             "target": "self"
                         }
                     },
-                    "minecraft:part_visibility": {
-                        "conditions": {
-                            "bottom0": "(0.0)",
-                            "bottom1": "(0.0)",
-                            "bottom2": "(1.0)",
-                            "bottom3": "(0.0)",
-                            "top0": "(1.0)",
-                            "top1": "(1.0)",
-                            "top2": "(1.0)",
-                            "top3": "(1.0)"
+                    "minecraft:geometry": {
+                        "identifier": "geometry.stairs",
+                        "bone_visibility": {
+                            "bottom0": false,
+                            "bottom1": false,
+                            "bottom2": true,
+                            "bottom3": false,
+                            "top0": true,
+                            "top1": true,
+                            "top2": true,
+                            "top3": true
                         }
                     }
                 }
@@ -792,16 +1080,17 @@
                             "target": "self"
                         }
                     },
-                    "minecraft:part_visibility": {
-                        "conditions": {
-                            "bottom0": "(0.0)",
-                            "bottom1": "(0.0)",
-                            "bottom2": "(1.0)",
-                            "bottom3": "(0.0)",
-                            "top0": "(1.0)",
-                            "top1": "(1.0)",
-                            "top2": "(1.0)",
-                            "top3": "(1.0)"
+                    "minecraft:geometry": {
+                        "identifier": "geometry.stairs",
+                        "bone_visibility": {
+                            "bottom0": false,
+                            "bottom1": false,
+                            "bottom2": true,
+                            "bottom3": false,
+                            "top0": true,
+                            "top1": true,
+                            "top2": true,
+                            "top3": true
                         }
                     }
                 }
@@ -820,16 +1109,17 @@
                             "target": "self"
                         }
                     },
-                    "minecraft:part_visibility": {
-                        "conditions": {
-                            "bottom0": "(0.0)",
-                            "bottom1": "(0.0)",
-                            "bottom2": "(0.0)",
-                            "bottom3": "(1.0)",
-                            "top0": "(1.0)",
-                            "top1": "(1.0)",
-                            "top2": "(1.0)",
-                            "top3": "(1.0)"
+                    "minecraft:geometry": {
+                        "identifier": "geometry.stairs",
+                        "bone_visibility": {
+                            "bottom0": false,
+                            "bottom1": false,
+                            "bottom2": false,
+                            "bottom3": true,
+                            "top0": true,
+                            "top1": true,
+                            "top2": true,
+                            "top3": true
                         }
                     }
                 }
@@ -848,16 +1138,17 @@
                             "target": "self"
                         }
                     },
-                    "minecraft:part_visibility": {
-                        "conditions": {
-                            "bottom0": "(1.0)",
-                            "bottom1": "(0.0)",
-                            "bottom2": "(1.0)",
-                            "bottom3": "(1.0)",
-                            "top0": "(1.0)",
-                            "top1": "(1.0)",
-                            "top2": "(1.0)",
-                            "top3": "(1.0)"
+                    "minecraft:geometry": {
+                        "identifier": "geometry.stairs",
+                        "bone_visibility": {
+                            "bottom0": true,
+                            "bottom1": false,
+                            "bottom2": true,
+                            "bottom3": true,
+                            "top0": true,
+                            "top1": true,
+                            "top2": true,
+                            "top3": true
                         }
                     }
                 }
@@ -876,16 +1167,17 @@
                             "target": "self"
                         }
                     },
-                    "minecraft:part_visibility": {
-                        "conditions": {
-                            "bottom0": "(0.0)",
-                            "bottom1": "(1.0)",
-                            "bottom2": "(1.0)",
-                            "bottom3": "(1.0)",
-                            "top0": "(1.0)",
-                            "top1": "(1.0)",
-                            "top2": "(1.0)",
-                            "top3": "(1.0)"
+                    "minecraft:geometry": {
+                        "identifier": "geometry.stairs",
+                        "bone_visibility": {
+                            "bottom0": false,
+                            "bottom1": true,
+                            "bottom2": true,
+                            "bottom3": true,
+                            "top0": true,
+                            "top1": true,
+                            "top2": true,
+                            "top3": true
                         }
                     }
                 }
@@ -905,16 +1197,17 @@
                             "target": "self"
                         }
                     },
-                    "minecraft:part_visibility": {
-                        "conditions": {
-                            "bottom0": "(0.0)",
-                            "bottom1": "(1.0)",
-                            "bottom2": "(0.0)",
-                            "bottom3": "(0.0)",
-                            "top0": "(1.0)",
-                            "top1": "(1.0)",
-                            "top2": "(1.0)",
-                            "top3": "(1.0)"
+                    "minecraft:geometry": {
+                        "identifier": "geometry.stairs",
+                        "bone_visibility": {
+                            "bottom0": false,
+                            "bottom1": true,
+                            "bottom2": false,
+                            "bottom3": false,
+                            "top0": true,
+                            "top1": true,
+                            "top2": true,
+                            "top3": true
                         }
                     }
                 }
@@ -933,16 +1226,17 @@
                             "target": "self"
                         }
                     },
-                    "minecraft:part_visibility": {
-                        "conditions": {
-                            "bottom0": "(0.0)",
-                            "bottom1": "(0.0)",
-                            "bottom2": "(0.0)",
-                            "bottom3": "(1.0)",
-                            "top0": "(1.0)",
-                            "top1": "(1.0)",
-                            "top2": "(1.0)",
-                            "top3": "(1.0)"
+                    "minecraft:geometry": {
+                        "identifier": "geometry.stairs",
+                        "bone_visibility": {
+                            "bottom0": false,
+                            "bottom1": false,
+                            "bottom2": false,
+                            "bottom3": true,
+                            "top0": true,
+                            "top1": true,
+                            "top2": true,
+                            "top3": true
                         }
                     }
                 }
@@ -961,16 +1255,17 @@
                             "target": "self"
                         }
                     },
-                    "minecraft:part_visibility": {
-                        "conditions": {
-                            "bottom0": "(1.0)",
-                            "bottom1": "(1.0)",
-                            "bottom2": "(0.0)",
-                            "bottom3": "(1.0)",
-                            "top0": "(1.0)",
-                            "top1": "(1.0)",
-                            "top2": "(1.0)",
-                            "top3": "(1.0)"
+                    "minecraft:geometry": {
+                        "identifier": "geometry.stairs",
+                        "bone_visibility": {
+                            "bottom0": true,
+                            "bottom1": true,
+                            "bottom2": false,
+                            "bottom3": true,
+                            "top0": true,
+                            "top1": true,
+                            "top2": true,
+                            "top3": true
                         }
                     }
                 }
@@ -989,16 +1284,17 @@
                             "target": "self"
                         }
                     },
-                    "minecraft:part_visibility": {
-                        "conditions": {
-                            "bottom0": "(0.0)",
-                            "bottom1": "(1.0)",
-                            "bottom2": "(1.0)",
-                            "bottom3": "(1.0)",
-                            "top0": "(1.0)",
-                            "top1": "(1.0)",
-                            "top2": "(1.0)",
-                            "top3": "(1.0)"
+                    "minecraft:geometry": {
+                        "identifier": "geometry.stairs",
+                        "bone_visibility": {
+                            "bottom0": false,
+                            "bottom1": true,
+                            "bottom2": true,
+                            "bottom3": true,
+                            "top0": true,
+                            "top1": true,
+                            "top2": true,
+                            "top3": true
                         }
                     }
                 }
@@ -1054,7 +1350,19 @@
             }
         ],
         "components": {
-			"minecraft:geometry": "geometry.stairs",
+			"minecraft:geometry": {
+                "identifier": "geometry.stairs",
+                "bone_visibility": {
+                    "bottom0": false,
+                    "bottom1": false,
+                    "bottom2": false,
+                    "bottom3": false,
+                    "top0": false,
+                    "top1": false,
+                    "top2": false,
+                    "top3": false
+                }
+            },
 			"minecraft:material_instances": {
 				"*": {
 					"texture": "blighted stone",
