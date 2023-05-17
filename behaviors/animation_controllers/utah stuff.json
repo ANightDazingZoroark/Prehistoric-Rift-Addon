@@ -114,6 +114,42 @@
                     ]
 				}
 			}
-		}
+		},
+        "controller.animation.cavern_utahraptor_pack_buff": {
+            "initial_state": "default",
+            "states": {
+                "default": {
+                    "transitions": [
+                        {
+                            "find_friends": "query.has_target && !query.is_tamed && query.property('rift:is_hypnotized') == false && query.property('rift:is_hypnotized_tamed') == false"
+                        }
+                    ]
+                },
+                "find_friends": {
+                    "on_entry": [
+                        "v.x = 0.0; for_each(t.utahraptor, query.get_nearby_entities_except_self(16, 'rift:cavern_utahraptor'), { v.x = v.x + !(t.utahraptor -> query.is_tamed); });",
+                        "v.chance = Math.random_integer(0, 2);"
+                    ],
+                    "transitions": [
+                        {
+                            "use_buff": "v.chance == 0 && v.x >= 3"
+                        },
+                        {
+                            "default": "!query.has_target || query.property('rift:is_hypnotized') == true || query.property('rift:is_hypnotized_tamed') == true"
+                        }
+                    ]
+                },
+                "use_buff": {
+                    "on_entry": [
+                        "@s rift:wild_utahraptor_buffing"
+                    ],
+                    "transitions": [
+                        {
+                            "default": "!query.has_target || query.property('rift:is_hypnotized') == true || query.property('rift:is_hypnotized_tamed') == true"
+                        }
+                    ]
+                }
+            }
+        }
     }
 }

@@ -1,0 +1,82 @@
+{
+	"format_version": "1.10.0",
+	"animation_controllers": {
+		"controller.animation.cavern_boss_movement": {
+			"initial_state": "default",
+			"states": {
+				"default": {
+					"animations": [
+						{
+							"animWalkTarbosaurus": "query.variant >= 0 && query.variant <= 3 && query.ground_speed > 0"
+						},
+						{
+							"animWalkMegaraptor": "query.variant >= 4 && query.variant <= 7 && query.ground_speed > 0 && query.is_on_ground"
+						},
+						{
+							"animPounceMegaraptor": "query.variant >= 4 && query.variant <= 7 && !query.is_on_ground"
+						},
+						{
+							"animWalkTorosaurus": "query.variant >= 8 && query.variant <= 11 && query.ground_speed > 0 && !query.is_powered"
+						},
+						{
+							"animChargingTorosaurus": "query.variant >= 8 && query.variant <= 11 && query.ground_speed > 0 && query.is_powered"
+						}
+					]
+				}
+			}
+		},
+		"controller.animation.cavern_boss_attack": {
+			"initial_state": "default",
+			"states": {
+				"default": {
+					"transitions": [
+						{
+							"attackTarbosaurus": "query.variant >= 0 && query.variant <= 3 && query.is_delayed_attacking"
+						},
+						{
+							"attackMegaraptor": "query.variant >= 4 && query.variant <= 7 && query.is_delayed_attacking"
+						}
+					]
+				},
+				"attackTarbosaurus": {
+					"animations": [
+						"animAttackTarbosaurus"
+					],
+					"transitions": [
+						{
+							"default": "!query.is_delayed_attacking"
+						}
+					]
+				},
+				"attackMegaraptor": {
+					"animations": [
+						"animAttackMegaraptor"
+					],
+					"transitions": [
+						{
+							"default": "!query.is_delayed_attacking"
+						}
+					]
+				}
+			}
+		},
+		"controller.animation.cavern_boss_look": {
+			"initial_state": "default",
+			"states": {
+				"default": {
+					"animations": [
+						{
+							"animLookTarbosaurus": "query.variant >= 0 && query.variant <= 3"
+						},
+						{
+							"animLookMegaraptor": "query.variant >= 4 && query.variant <= 7"
+						},
+						{
+							"animLookTorosaurus": "query.variant >= 8 && query.variant <= 11"
+						}
+					]
+				}
+			}
+		}
+	}
+}

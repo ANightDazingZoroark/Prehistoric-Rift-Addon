@@ -1,0 +1,744 @@
+{
+    "format_version": "1.16.0",
+    "minecraft:entity": {
+        "description": {
+            "identifier": "rift:cavern_boss",
+            "is_spawnable": false,
+            "is_summonable": true,
+            "is_experimental": false,
+			"properties": {
+				"rift:bleeding": {
+					"type": "bool",
+					"default": false,
+					"client_sync": true
+                }
+			},
+			"animations": {
+				"contInWaterTag": "controller.animation.add_in_water_tag",
+				"contMovingTag": "controller.animation.add_moving_tag",
+				"contShearedTag": "controller.animation.add_sheared_tag",
+                "contBleed": "controller.animation.general_manage_bleed",
+				"contMegaraptorPackBuff": "controller.animation.cavern_utahraptor_pack_buff",
+                "animBleed": "animation.general_bleed",
+                "animBleedCountdown": "animation.general_bleed_countdown"
+            },
+            "scripts": {
+                "animate": [
+                    "contInWaterTag",
+                    "contMovingTag",
+                    "contShearedTag",
+                    "contBleed",
+                    {
+                        "contMegaraptorPackBuff": "query.variant >= 4 && query.variant <= 7"
+                    }
+                ]
+            }
+        },
+        "component_groups": {
+            //tarbosaurus
+            "rift:tarbosaurus": {
+				"minecraft:attack": {
+					"damage": 35
+				},
+				"minecraft:scale": {
+					"value": 3.75
+				},
+				"minecraft:movement": {
+					"value": 0.20
+				},
+                "minecraft:collision_box": {
+                    "height": 1.5,
+                    "width": 1
+                },
+                "minecraft:navigation.walk": {
+                    "avoid_water": true,
+                    "avoid_damage_blocks": true
+                },
+                "minecraft:movement.generic": {},
+				"minecraft:behavior.float": {}
+            },
+            "rift:tarbosaurus_can_attack": {
+				"minecraft:behavior.delayed_attack": {
+					"priority": 9,
+					"attack_duration": 0.5,
+					"hit_delay_pct": 1,
+					"track_target": true,
+					"reach_multiplier": 2
+				}
+            },
+            "rift:tarbosaurus_roaring": {
+                "minecraft:spawn_entity": {
+					"entities": [
+						{
+							"spawn_entity": "rift:tyrannosaurus_roar_wild",
+							"single_use": true,
+							"min_wait_time": 0,
+							"max_wait_time": 0,
+							"spawn_event": "minecraft:entity_spawned"
+						}
+					]
+				},
+				"minecraft:timer": {
+					"time": 2.08,
+					"time_down_event": {
+						"event": "rift:tarbosaurus_stop_roaring",
+						"target": "self"
+					}
+				}
+            },
+            "rift:tarbosaurus_one": {
+                "minecraft:variant": {
+                    "value": 0
+                }
+            },
+            "rift:tarbosaurus_two": {
+                "minecraft:variant": {
+                    "value": 1
+                }
+            },
+            "rift:tarbosaurus_three": {
+                "minecraft:variant": {
+                    "value": 2
+                }
+            },
+            "rift:tarbosaurus_four": {
+                "minecraft:variant": {
+                    "value": 3
+                }
+            },
+            //megaraptor
+            "rift:megaraptor": {
+				"minecraft:attack": {
+					"damage": 12
+				},
+				"minecraft:scale": {
+					"value": 1.5
+				},
+				"minecraft:movement": {
+					"value": 0.35
+				},
+                "minecraft:collision_box": {
+                    "width": 1.25,
+                    "height": 1.5
+                },
+				"minecraft:navigation.climb": {
+					"avoid_water": true,
+					"avoid_damage_blocks": true
+				},
+                "minecraft:movement.basic": {},
+                "minecraft:can_climb": {},
+				"minecraft:behavior.float": {},
+				"minecraft:behavior.stalk_and_pounce_on_target": {
+					"priority": 8,
+					"stalk_speed": 1.2,
+					"max_stalk_dist": 12.0,
+					"leap_height": 0.9,
+					"leap_dist": 1.5,
+					"pounce_max_dist": 11,
+					"interest_time": 0,
+					"strike_dist": 8
+				},
+				"minecraft:behavior.delayed_attack": {
+					"priority": 9,
+					"attack_duration": 0.28,
+					"hit_delay_pct": 1,
+					"track_target": true,
+					"reach_multiplier": 2.5,
+					"speed_multiplier": 1.5
+				}
+            },
+            "rift:megaraptor_one": {
+                "minecraft:variant": {
+                    "value": 4
+                }
+            },
+            "rift:megaraptor_two": {
+                "minecraft:variant": {
+                    "value": 5
+                }
+            },
+            "rift:megaraptor_three": {
+                "minecraft:variant": {
+                    "value": 6
+                }
+            },
+            "rift:megaraptor_four": {
+                "minecraft:variant": {
+                    "value": 7
+                }
+            },
+            //torosaurus
+            "rift:torosaurus": {
+				"minecraft:attack": {
+					"damage": 30
+				},
+				"minecraft:scale": {
+					"value": 2
+				},
+				"minecraft:movement": {
+					"value": 0.175
+				},
+                "minecraft:collision_box": {
+                    "width": 1.25,
+                    "height": 2
+                },
+                "minecraft:navigation.walk": {
+                    "avoid_water": true,
+                    "avoid_damage_blocks": true
+                },
+                "minecraft:movement.basic": {},
+				"minecraft:behavior.float": {},
+				"minecraft:behavior.melee_attack": {
+					"priority": 9,
+					"reach_multiplier": 2
+				}
+            },
+            "rift:torosaurus_no_target": {
+                "minecraft:on_target_acquired": {
+                    "event": "rift:torosaurus_on_angry",
+                    "target": "self"
+                }
+            },
+            "rift:torosaurus_has_target": {
+				"minecraft:is_charged": {},
+				"minecraft:break_blocks": {
+					"breakable_blocks": [
+						"minecraft:planks",
+						"minecraft:leaves",
+						"minecraft:leaves2",
+						"minecraft:oak_log",
+						"minecraft:spruce_log",
+						"minecraft:birch_log",
+						"minecraft:jungle_log",
+						"minecraft:dark_oak_log",
+						"minecraft:acacia_log",
+						"minecraft:dirt",
+						"minecraft:grass",
+						"minecraft:double_plant",
+						"minecraft:glass",
+						"minecraft:stained_glass",
+						"minecraft:glass_pane",
+						"minecraft:stained_glass_pane",
+						"minecraft:wooden_slab",
+						"minecraft:double_wooden_slab",
+						"minecraft:wooden_door",
+						"minecraft:birch_door",
+						"minecraft:spruce_door",
+						"minecraft:acacia_door",
+						"minecraft:jungle_door",
+						"minecraft:dark_oak_door",
+						"minecraft:wood",
+						"minecraft:stripped_oak_log",
+						"minecraft:stripped_birch_log",
+						"minecraft:stripped_spruce_log",
+						"minecraft:stripped_jungle_log",
+						"minecraft:stripped_acacia_log",
+						"minecraft:stripped_dark_oak_log",
+						"minecraft:sand",
+						"minecraft:acacia_stairs",
+						"minecraft:birch_stairs",
+						"minecraft:dark_oak_stairs",
+						"minecraft:jungle_stairs",
+						"minecraft:oak_stairs",
+						"minecraft:spruce_stairs",
+						"minecraft:oak_fence",
+						"minecraft:spruce_fence",
+						"minecraft:birch_fence",
+						"minecraft:jungle_fence",
+						"minecraft:dark_oak_fence",
+						"minecraft:acacia_fence",
+						"minecraft:acacia_fence_gate",
+						"minecraft:birch_fence_gate",
+						"minecraft:dark_oak_fence_gate",
+						"minecraft:fence_gate",
+						"minecraft:jungle_fence_gate",
+						"minecraft:spruce_fence_gate",
+                        "minecraft:white_wool",
+                        "minecraft:orange_wool",
+                        "minecraft:magenta_wool",
+                        "minecraft:light_blue_wool",
+                        "minecraft:yellow_wool",
+                        "minecraft:lime_wool",
+                        "minecraft:pink_wool",
+                        "minecraft:gray_wool",
+                        "minecraft:light_gray_wool",
+                        "minecraft:cyan_wool",
+                        "minecraft:purple_wool",
+                        "minecraft:blue_wool",
+                        "minecraft:brown_wool",
+                        "minecraft:green_wool",
+                        "minecraft:red_wool",
+                        "minecraft:black_wool",
+						"minecraft:crimson_planks",
+						"minecraft:warped_planks",
+						"minecraft:mangrove_planks",
+						"minecraft:crimson_stem",
+						"minecraft:warped_stem",
+						"minecraft:stripped_crimson_stem",
+						"minecraft:stripped_warped_stem",
+						"minecraft:crimson_hyphae",
+						"minecraft:warped_hyphae",
+						"minecraft:stripped_crimson_hyphae",
+						"minecraft:stripped_warped_hyphae",
+						"minecraft:nether_wart_block",
+						"minecraft:warped_wart_block",
+						"minecraft:netherrack",
+						"minecraft:crimson_nylium",
+						"minecraft:warped_nylium",
+						"minecraft:soul_sand",
+						"minecraft:soul_soil",
+						"minecraft:crimson_door",
+						"minecraft:warped_door",
+						"minecraft:crimson_stairs",
+						"minecraft:warped_stairs",
+						"minecraft:crimson_fence",
+						"minecraft:warped_fence",
+						"minecraft:crimson_fence_gate",
+						"minecraft:warped_fence_gate",
+						"minecraft:mangrove_fence",
+						"minecraft:mangrove_fence_gate",
+						"minecraft:crimson_slab",
+						"minecraft:warped_slab",
+						"minecraft:mangrove_slab",
+						"minecraft:azalea_leaves",
+						"minecraft:azalea_leaves_flowered",
+						"minecraft:mangrove_leaves",
+						"minecraft:mangrove_roots",
+						"rift:oak_thatch_block",
+						"rift:spruce_thatch_block",
+						"rift:birch_thatch_block",
+						"rift:jungle_thatch_block",
+						"rift:dark_oak_thatch_block",
+						"rift:acacia_thatch_block",
+						"rift:crimson_thatch_block",
+						"rift:warped_thatch_block",
+						"rift:mangrove_thatch_block",
+						"rift:wooden_chair",
+						"rift:wooden_table",
+						"rift:glass_table",
+						"rift:sofa",
+						"rift:wooden_bench",
+						"rift:wooden_spiked_wall"
+					]
+				},
+                "minecraft:on_target_escape": {
+                    "event": "rift:torosaurus_on_calm",
+                    "target": "self"
+                }
+            },
+            "rift:torosaurus_one": {
+                "minecraft:variant": {
+                    "value": 8
+                }
+            },
+            "rift:torosaurus_two": {
+                "minecraft:variant": {
+                    "value": 9
+                }
+            },
+            "rift:torosaurus_three": {
+                "minecraft:variant": {
+                    "value": 10
+                }
+            },
+            "rift:torosaurus_four": {
+                "minecraft:variant": {
+                    "value": 11
+                }
+            },
+			"rift:pushable": {
+				"minecraft:pushable": {
+					"is_pushable": true,
+					"is_pushable_by_piston": true
+				}
+			},
+			"rift:unpushable": {
+				"minecraft:pushable": {
+					"is_pushable": false,
+					"is_pushable_by_piston": false
+				}
+			}
+        },
+        "components": {
+            "minecraft:boss": {
+                "name": "§5§kaaaaaaaaaa§r"
+            },
+            "minecraft:home": {
+                "restriction_radius": 8
+            },
+			"minecraft:type_family": {
+				"family": [
+					"riftCreature",
+                    "largeSize",
+                    "boss"
+				]
+			},
+            "minecraft:health": {
+                "value": 300,
+                "max": 300
+            },
+            "minecraft:experience_reward": {
+                "on_death": "query.last_hit_by_player ? Math.Random(160,200) : 0"
+            },
+            "minecraft:knockback_resistance": {
+                "value": 1
+            },
+			"minecraft:jump.static": {},
+			"minecraft:is_hidden_when_invisible": {},
+			"minecraft:physics": {},
+			"minecraft:nameable": {
+                "allow_name_tag_renaming": false,
+                "always_show": true
+            },
+			"minecraft:breathable": {
+				"total_supply": 15,
+				"suffocate_time": 0
+			},
+			"minecraft:damage_sensor": {
+				"triggers": [
+					{
+						"on_damage": {
+							"filters": {
+								"all_of": [
+									{
+										"any_of": [
+											{
+												"test": "is_family",
+												"subject": "other",
+												"value": "mob"
+											},
+											{
+												"test": "is_family",
+												"subject": "other",
+												"value": "player"
+											}
+										]
+									},
+									{
+										"test": "random_chance",
+										"value": 3,
+										"subject": "self"
+									},
+									{
+										"test": "has_damage",
+										"subject": "self",
+										"operator": "!=",
+										"value": "fatal"
+									},
+									{
+										"test": "is_variant",
+										"subject": "self",
+										"operator": ">=",
+										"value": 0
+									},
+									{
+										"test": "is_variant",
+										"subject": "self",
+										"operator": "<=",
+										"value": 3
+									}
+								]
+							},
+							"event": "rift:tarbosaurus_roar",
+							"target": "self"
+						}
+					}
+                ]
+            },
+            "minecraft:conditional_bandwidth_optimization": {},
+            "minecraft:persistent": {},
+            "minecraft:behavior.hurt_by_target": {
+                "priority": 4
+            },
+            "minecraft:behavior.nearest_attackable_target": {
+                "priority": 6,
+                "within_radius": 16.0,
+                "must_see": true,
+                "entity_types": [
+                    {
+                        "filters": {
+                            "any_of": [
+                                {
+                                    "test": "is_family",
+                                    "subject": "other",
+                                    "value": "wandering_trader"
+                                },
+                                {
+                                    "test": "is_family",
+                                    "subject": "other",
+                                    "value": "villager"
+                                }
+                            ]
+                        },
+                        "max_dist": 16
+                    },
+                    {
+                        "filters": {
+                            "all_of": [
+                                {
+                                    "test": "is_family",
+                                    "subject": "other",
+                                    "value": "player"
+                                },
+                                {
+                                    "test": "is_riding",
+                                    "subject": "other",
+                                    "value": false
+                                }
+                            ]
+                        },
+                        "max_dist": 16
+                    },
+                    {
+                        "filters": {
+                            "test": "has_component",
+                            "subject": "other",
+                            "value": "minecraft:is_tamed"
+                        },
+                        "max_dist": 16
+                    }
+                ]
+            },
+            "minecraft:behavior.move_towards_home_restriction": {
+                "priority": 16
+            },
+            "minecraft:behavior.random_stroll": {
+                "priority": 17
+            },
+            "minecraft:behavior.random_look_around": {
+                "priority": 18
+            }
+        },
+        "events": {
+            "rift:spawn_for_plains": {
+                "randomize": [
+                    {
+                        "weight": 1,
+                        "trigger": "rift:spawn_as_tarbosaurus"
+                    },
+                    {
+                        "weight": 1,
+                        "trigger": "rift:spawn_as_megaraptor"
+                    },
+                    {
+                        "weight": 1,
+                        "trigger": "rift:spawn_as_torosaurus"
+                    }
+                ]
+            },
+            "rift:spawn_as_tarbosaurus": {
+                "randomize": [
+                    {
+                        "weight": 1,
+                        "add": {
+                            "component_groups": [
+                                "rift:tarbosaurus",
+                                "rift:tarbosaurus_can_attack",
+                                "rift:tarbosaurus_one",
+                                "rift:pushable"
+                            ]
+                        }
+                    },
+                    {
+                        "weight": 1,
+                        "add": {
+                            "component_groups": [
+                                "rift:tarbosaurus",
+                                "rift:tarbosaurus_can_attack",
+                                "rift:tarbosaurus_two",
+                                "rift:pushable"
+                            ]
+                        }
+                    },
+                    {
+                        "weight": 1,
+                        "add": {
+                            "component_groups": [
+                                "rift:tarbosaurus",
+                                "rift:tarbosaurus_can_attack",
+                                "rift:tarbosaurus_three",
+                                "rift:pushable"
+                            ]
+                        }
+                    },
+                    {
+                        "weight": 1,
+                        "add": {
+                            "component_groups": [
+                                "rift:tarbosaurus",
+                                "rift:tarbosaurus_can_attack",
+                                "rift:tarbosaurus_four",
+                                "rift:pushable"
+                            ]
+                        }
+                    }
+                ]
+            },
+            "rift:spawn_as_megaraptor": {
+                "randomize": [
+                    {
+                        "weight": 1,
+                        "add": {
+                            "component_groups": [
+                                "rift:megaraptor",
+                                "rift:megaraptor_one",
+                                "rift:pushable"
+                            ]
+                        }
+                    },
+                    {
+                        "weight": 1,
+                        "add": {
+                            "component_groups": [
+                                "rift:megaraptor",
+                                "rift:megaraptor_two",
+                                "rift:pushable"
+                            ]
+                        }
+                    },
+                    {
+                        "weight": 1,
+                        "add": {
+                            "component_groups": [
+                                "rift:megaraptor",
+                                "rift:megaraptor_three",
+                                "rift:pushable"
+                            ]
+                        }
+                    },
+                    {
+                        "weight": 1,
+                        "add": {
+                            "component_groups": [
+                                "rift:megaraptor",
+                                "rift:megaraptor_four",
+                                "rift:pushable"
+                            ]
+                        }
+                    }
+                ]
+            },
+            "rift:spawn_as_torosaurus": {
+                "randomize": [
+                    {
+                        "weight": 1,
+                        "add": {
+                            "component_groups": [
+                                "rift:torosaurus",
+                                "rift:torosaurus_one",
+                                "rift:torosaurus_no_target",
+                                "rift:pushable"
+                            ]
+                        }
+                    },
+                    {
+                        "weight": 1,
+                        "add": {
+                            "component_groups": [
+                                "rift:torosaurus",
+                                "rift:torosaurus_two",
+                                "rift:torosaurus_no_target",
+                                "rift:pushable"
+                            ]
+                        }
+                    },
+                    {
+                        "weight": 1,
+                        "add": {
+                            "component_groups": [
+                                "rift:torosaurus",
+                                "rift:torosaurus_three",
+                                "rift:torosaurus_no_target",
+                                "rift:pushable"
+                            ]
+                        }
+                    },
+                    {
+                        "weight": 1,
+                        "add": {
+                            "component_groups": [
+                                "rift:torosaurus",
+                                "rift:torosaurus_four",
+                                "rift:torosaurus_no_target",
+                                "rift:pushable"
+                            ]
+                        }
+                    }
+                ]
+            },
+            "rift:tarbosaurus_roar": {
+                "add": {
+                    "component_groups": [
+                        "rift:tarbosaurus_roaring",
+						"rift:unpushable"
+                    ]
+                },
+                "remove": {
+                    "component_groups": [
+						"rift:pushable"
+                    ]
+                },
+                "run_command": {
+                    "command": [
+                        "playanimation @s animation.tyrannosaurus.roar"
+                    ]
+                }
+            },
+            "rift:tarbosaurus_stop_roaring": {
+                "add": {
+                    "component_groups": [
+                        "rift:pushable"
+                    ]
+                },
+                "remove": {
+                    "component_groups": [
+                        "rift:tarbosaurus_roaring",
+						"rift:unpushable"
+                    ]
+                }
+            },
+			"rift:wild_utahraptor_buffing": {
+				"run_command": {
+					"command": [
+						"playanimation @s animation.utahraptor.calling",
+						"function cmd.cavern_utahraptor_pack_buff"
+					]
+				}
+			},
+            "rift:torosaurus_on_angry": {
+                "add": {
+                    "component_groups": [
+                        "rift:torosaurus_has_target"
+                    ]
+                },
+                "remove": {
+                    "component_groups": [
+                        "rift:torosaurus_no_target"
+                    ]
+                },
+                "run_command": {
+                    "command": [
+                        "effect @s speed 60 3"
+                    ]
+                }
+            },
+            "rift:torosaurus_on_calm": {
+                "add": {
+                    "component_groups": [
+                        "rift:torosaurus_no_target"
+                    ]
+                },
+                "remove": {
+                    "component_groups": [
+                        "rift:torosaurus_has_target"
+                    ]
+                },
+                "run_command": {
+                    "command": [
+                        "effect @s speed 0"
+                    ]
+                }
+            }
+        }
+    }
+}
