@@ -1,0 +1,205 @@
+{
+    "format_version": "1.16.0",
+    "minecraft:entity": {
+        "description": {
+            "identifier": "rift:blighted",
+            "is_spawnable": true,
+            "is_summonable": true,
+            "is_experimental": false
+        },
+        "component_groups": {
+            "rift:claw_unit": {
+                "minecraft:variant": {
+                    "value": 0
+                },
+                "minecraft:health": {
+                    "value": 40,
+                    "max": 40
+                },
+				"minecraft:attack": {
+					"damage": 8
+				},
+                "minecraft:scale": {
+                    "value": 2
+                },
+				"minecraft:movement": {
+					"value": 0.25
+				},
+                "minecraft:navigation.walk": {
+                    "avoid_water": true,
+                    "avoid_damage_blocks": true
+                },
+                "minecraft:movement.generic": {},
+				"minecraft:behavior.float": {},
+				"minecraft:behavior.delayed_attack": {
+					"priority": 9,
+					"attack_duration": 0.52,
+					"hit_delay_pct": 0.46,
+					"track_target": true,
+					"reach_multiplier": 1.75
+				}
+            },
+            "rift:calm": {
+                "minecraft:on_target_acquired": {
+                    "event": "rift:on_angry",
+                    "target": "self"
+                }
+            },
+            "rift:angry": {
+				"minecraft:angry": {
+					"broadcast_anger": true,
+					"duration": 60,
+					"broadcast_range": 32,
+					"broadcast_targets": [
+						"blighted"
+					],
+					"calm_event": {
+						"event": "rift:on_calm",
+						"target": "self"
+					}
+				},
+                "minecraft:on_target_escape": {
+                    "event": "rift:on_calm",
+                    "target": "self"
+                }
+            }
+        },
+        "components": {
+			"minecraft:type_family": {
+				"family": [
+                    "blighted",
+                    "mob"
+				]
+			},
+			"minecraft:jump.static": {},
+			"minecraft:is_hidden_when_invisible": {},
+			"minecraft:physics": {},
+			"minecraft:nameable": {
+                "allow_name_tag_renaming": false,
+                "always_show": true
+            },
+			"minecraft:breathable": {
+				"total_supply": 15,
+				"suffocate_time": 0
+			},
+            "minecraft:conditional_bandwidth_optimization": {},
+            "minecraft:damage_sensor": {
+                "triggers": [
+                    {
+						"on_damage": {
+							"filters": {
+                                "all_of": [
+                                    {
+                                        "test": "is_family",
+                                        "subject": "other",
+                                        "operator": "!=",
+                                        "value": "riftCreature"
+                                    },
+                                    {
+                                        "test": "has_equipment",
+                                        "subject": "other",
+                                        "operator": "!=",
+                                        "value": "minecraft:netherite_sword"
+                                    }
+                                ]
+                            }
+                        },
+						"deals_damage": false
+                    }
+                ]
+            },
+            "minecraft:behavior.hurt_by_target": {
+                "priority": 4
+            },
+            "minecraft:behavior.nearest_attackable_target": {
+                "priority": 6,
+                "within_radius": 16.0,
+                "must_see": true,
+                "entity_types": [
+                    {
+                        "filters": {
+                            "any_of": [
+                                {
+                                    "test": "is_family",
+                                    "subject": "other",
+                                    "value": "wandering_trader"
+                                },
+                                {
+                                    "test": "is_family",
+                                    "subject": "other",
+                                    "value": "villager"
+                                }
+                            ]
+                        },
+                        "max_dist": 16
+                    },
+                    {
+                        "filters": {
+                            "all_of": [
+                                {
+                                    "test": "is_family",
+                                    "subject": "other",
+                                    "value": "player"
+                                },
+                                {
+                                    "test": "is_riding",
+                                    "subject": "other",
+                                    "value": false
+                                }
+                            ]
+                        },
+                        "max_dist": 16
+                    },
+                    {
+                        "filters": {
+                            "test": "has_component",
+                            "subject": "other",
+                            "value": "minecraft:is_tamed"
+                        },
+                        "max_dist": 16
+                    }
+                ]
+            },
+            "minecraft:behavior.random_stroll": {
+                "priority": 17
+            },
+            "minecraft:behavior.random_look_around": {
+                "priority": 18
+            }
+        },
+        "events": {
+            "minecraft:entity_spawned": {
+                "add": {
+                    "component_groups": [
+                        "rift:claw_unit",
+                        "rift:calm"
+                    ]
+                }
+            },
+            "rift:on_angry": {
+                "add": {
+                    "component_groups": [
+                        "rift:angry"
+                    ]
+                },
+                "remove": {
+                    "component_groups": [
+                        "rift:calm"
+                    ]
+                }
+            },
+            "rift:on_calm": {
+                "add": {
+                    "component_groups": [
+                        "rift:calm"
+                    ]
+                },
+                "remove": {
+                    "component_groups": [
+                        "rift:angry"
+                    ]
+                }
+            }
+        }
+    }
+}

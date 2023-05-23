@@ -816,3 +816,7 @@ world.events.entityHurt.subscribe((event) => {
         event.hurtEntity.triggerEvent('rift:affected_by_bola')
     }
 })
+
+// world.events.entityHit.subscribe((event) => {
+//     if (event.hitEntity.typeId == 'rift:blighted') {}
+// })
