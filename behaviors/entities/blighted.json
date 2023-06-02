@@ -37,8 +37,71 @@
 					"hit_delay_pct": 0.46,
 					"track_target": true,
 					"reach_multiplier": 1.75
-				}
+				},
+                "minecraft:behavior.random_stroll": {
+                    "priority": 17
+                }
             },
+            "rift:drone_unit": {
+                "minecraft:variant": {
+                    "value": 1
+                },
+                "minecraft:health": {
+                    "value": 12,
+                    "max": 12
+                },
+                "minecraft:scale": {
+                    "value": 1
+                },
+				"minecraft:movement": {
+					"value": 0.25
+				},
+                "minecraft:flying_speed": {
+                    "value": 0.25
+                },
+                "minecraft:can_fly": {},
+                "minecraft:navigation.hover": {
+                    "avoid_damage_blocks": true,
+                    "avoid_sun": false,
+                    "avoid_water": true,
+                    "can_pass_doors": false,
+                    "can_path_from_air": true,
+                    "can_path_over_water": true,
+                    "can_sink": false
+                },
+                "minecraft:movement.hover": {},
+				"minecraft:behavior.float": {},
+				"minecraft:shooter": {
+					"def": "rift:blighted_energy_blast"
+				},
+				"minecraft:behavior.ranged_attack": {
+					"priority": 9,
+					"attack_radius": 8.0,
+                    "charge_charged_trigger": 1,
+                    "charge_shoot_trigger": 2
+				},
+                "minecraft:behavior.random_hover": {
+                    "priority": 17,
+                    "hover_height": [
+                        1,
+                        4
+                    ],
+                    "interval": 1,
+                    "xz_dist": 8,
+                    "y_dist": 8,
+                    "y_offset": -1
+                }
+            },
+
+            "rift:spawn_in_caverns": {
+                "minecraft:home": {
+                    "restriction_radius": 16
+                },
+                "minecraft:behavior.move_towards_home_restriction": {
+                    "priority": 16
+                }
+            },
+
             "rift:calm": {
                 "minecraft:on_target_acquired": {
                     "event": "rift:on_angry",
@@ -86,25 +149,15 @@
             "minecraft:damage_sensor": {
                 "triggers": [
                     {
-						"on_damage": {
-							"filters": {
-                                "all_of": [
-                                    {
-                                        "test": "is_family",
-                                        "subject": "other",
-                                        "operator": "!=",
-                                        "value": "riftCreature"
-                                    },
-                                    {
-                                        "test": "has_equipment",
-                                        "subject": "other",
-                                        "operator": "!=",
-                                        "value": "minecraft:netherite_sword"
-                                    }
-                                ]
+                        "on_damage": {
+                            "filters": {
+                                "test": "is_variant",
+                                "subject": "self",
+                                "value": 1
                             }
                         },
-						"deals_damage": false
+						"deals_damage": false,
+						"cause": "fall"
                     }
                 ]
             },
@@ -160,19 +213,38 @@
                     }
                 ]
             },
-            "minecraft:behavior.random_stroll": {
-                "priority": 17
-            },
             "minecraft:behavior.random_look_around": {
                 "priority": 18
             }
         },
         "events": {
             "minecraft:entity_spawned": {
+                "randomize": [
+                    {
+                        "weight": 1,
+                        "add": {
+                            "component_groups": [
+                                "rift:claw_unit",
+                                "rift:calm"
+                            ]
+                        }
+                    },
+                    {
+                        "weight": 1,
+                        "add": {
+                            "component_groups": [
+                                "rift:drone_unit",
+                                "rift:calm"
+                            ]
+                        }
+                    }
+                ]
+            },
+            "rift:spawn_in_cavern": {
+                "trigger": "minecraft:entity_spawned",
                 "add": {
                     "component_groups": [
-                        "rift:claw_unit",
-                        "rift:calm"
+                        "rift:spawn_in_caverns"
                     ]
                 }
             },
