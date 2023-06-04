@@ -815,4 +815,12 @@ world.events.entityHurt.subscribe((event) => {
         event.hurtEntity.triggerEvent('rift:stop_being_affected_by_bola')
         event.hurtEntity.triggerEvent('rift:affected_by_bola')
     }
+
+    if (event.hurtEntity.typeId == 'rift:cavern_boss' && event.hurtEntity.getComponent('health').current <= 0) {
+        event.hurtEntity.runCommandAsync("tag @a[r=16] add bossOutroMusic")
+        event.hurtEntity.runCommandAsync("music play music.predator_cavern_boss_outro 1 0")
+        setTimeout(() => {
+            event.damageSource.damagingEntity.runCommandAsync('tag @a remove bossOutroMusic')
+        }, 20000)
+    }
 })

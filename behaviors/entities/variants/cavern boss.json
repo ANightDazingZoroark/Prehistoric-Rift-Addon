@@ -346,6 +346,10 @@
                     "value": 11
                 }
             },
+
+            "rift:is_dead": {
+                "minecraft:is_sheared": {}
+            },
 			"rift:pushable": {
 				"minecraft:pushable": {
 					"is_pushable": true,
@@ -443,11 +447,35 @@
 							"event": "rift:tarbosaurus_roar",
 							"target": "self"
 						}
-					}
+					},
+                    {
+                        "on_damage": {
+                            "filters": {
+                                "test": "has_damage",
+                                "subject": "self",
+                                "value": "fatal"
+                            },
+                            "event": "rift:on_dead",
+                            "target": "self"
+                        }
+                    }
                 ]
             },
             "minecraft:conditional_bandwidth_optimization": {},
             "minecraft:persistent": {},
+            // "minecraft:environment_sensor": {
+            //     "triggers": [
+            //         {
+            //             "filters": {
+            //                 "test": "has_damage",
+            //                 "subject": "self",
+            //                 "value": "fatal"
+            //             },
+            //             "event": "rift:on_dead",
+            //             "target": "self"
+            //         }
+            //     ]
+            // },
             "minecraft:behavior.hurt_by_target": {
                 "priority": 4
             },
@@ -737,6 +765,13 @@
                 "run_command": {
                     "command": [
                         "effect @s speed 0"
+                    ]
+                }
+            },
+            "rift:on_dead": {
+                "add": {
+                    "component_groups": [
+                        "rift:is_dead"
                     ]
                 }
             }
