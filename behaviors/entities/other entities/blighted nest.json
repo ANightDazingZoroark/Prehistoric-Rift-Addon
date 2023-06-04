@@ -1,0 +1,151 @@
+{
+    "format_version": "1.16.0",
+    "minecraft:entity": {
+        "description": {
+            "identifier": "rift:blighted_nest",
+            "is_spawnable": false,
+            "is_summonable": true,
+            "is_experimental": false,
+            "animations": {
+                "contGenerateBlighted": "controller.animation.blighted_nest_can_generate_blighted"
+            },
+            "scripts": {
+                "animate": [
+                    "contGenerateBlighted"
+                ]
+            }
+        },
+        "component_groups": {
+            "rift:can_spawn_blighted": {
+                "minecraft:behavior.summon_entity": {
+                    "priority": 1,
+                    "summon_choices": [
+                        {
+                            "cast_duration": 3.0,
+                            "cooldown_time": 10.0,
+                            "sequence": [
+                                {
+                                    "entity_type": "rift:blighted",
+                                    "num_entities_spawned": 3,
+                                    "shape": "circle",
+                                    "size": 1.0,
+                                    "sound_event": "prepare.summon",
+                                    "summon_cap": 8,
+                                    "summon_cap_radius": 80,
+                                    "target": "self"
+                                }
+                            ],
+                            "weight": 1
+                        }
+                    ]
+                },
+                "minecraft:behavior.nearest_attackable_target": {
+                    "priority": 2,
+                    "within_radius": 8.0,
+                    "must_see": true,
+                    "entity_types": [
+                        {
+                            "filters": {
+                                "any_of": [
+                                    {
+                                        "test": "is_family",
+                                        "subject": "other",
+                                        "value": "wandering_trader"
+                                    },
+                                    {
+                                        "test": "is_family",
+                                        "subject": "other",
+                                        "value": "villager"
+                                    }
+                                ]
+                            },
+                            "max_dist": 8
+                        },
+                        {
+                            "filters": {
+                                "all_of": [
+                                    {
+                                        "test": "is_family",
+                                        "subject": "other",
+                                        "value": "player"
+                                    },
+                                    {
+                                        "test": "is_riding",
+                                        "subject": "other",
+                                        "value": false
+                                    }
+                                ]
+                            },
+                            "max_dist": 8
+                        },
+                        {
+                            "filters": {
+                                "test": "has_component",
+                                "subject": "other",
+                                "value": "minecraft:is_tamed"
+                            },
+                            "max_dist": 8
+                        }
+                    ]
+                }
+            },
+            "rift:commit_disappear": {
+                "minecraft:instant_despawn": {}
+            }
+        },
+        "components": {
+            "minecraft:scale": {
+                "value": 1.25
+            },
+            "minecraft:type_family": {
+				"family": [
+					"blighted",
+					"inanimate"
+				]
+            },
+            "minecraft:physics": {
+                "has_gravity": true,
+                "has_collision": true
+            },
+            "minecraft:pushable": {
+                "is_pushable": false,
+                "is_pushable_by_piston": false
+            },
+            "minecraft:damage_sensor": {
+                "triggers": [
+                    {
+						"on_damage": {
+                            "event": "rift:commit_disappear",
+                            "target": "self"
+						},
+                        "deals_damage": false
+                    }
+                ]
+            },
+            "minecraft:conditional_bandwidth_optimization": {}
+        },
+        "events": {
+            "rift:start_summoning_blighted": {
+                "add": {
+                    "component_groups": [
+                        "rift:can_spawn_blighted"
+                    ]
+                }
+            },
+            "rift:stop_summoning_blighted": {
+                "remove": {
+                    "component_groups": [
+                        "rift:can_spawn_blighted"
+                    ]
+                }
+            },
+            "rift:commit_disappear": {
+                "add": {
+                    "component_groups": [
+                        "rift:commit_disappear"
+                    ]
+                }
+            }
+        }
+    }
+}

@@ -780,6 +780,9 @@ world.events.entityHurt.subscribe((event) => {
     if (event.damageSource.damagingEntity.typeId == 'rift:baryonyx' && (event.damageSource.damagingEntity.hasTag('forcedClaw') || event.damageSource.damagingEntity.getComponent('mark_variant').value == 1)) {
         event.hurtEntity.addEffect(MinecraftEffectTypes.poison, 200)
     }
+    if (event.damageSource.damagingEntity.typeId == 'rift:ankylosaurus' && !event.damageSource.damagingEntity.hasTag('sheared')) {
+        event.hurtEntity.applyKnockback(event.damageSource.damagingEntity.getViewDirection().x, event.damageSource.damagingEntity.getViewDirection().z, 5, 0.25)
+    }
     if (event.hurtEntity.typeId == 'rift:tenontosaurus' && event.hurtEntity.getComponent('is_tamed') && event.hurtEntity.hasTag('ridden')) {
         event.damageSource.damagingEntity.addTag('tenontoTamedTarget')
         event.hurtEntity.runCommandAsync(`event entity @e[r=24, tag=!tamed, tag=hypnotizedTamed] rift:attack_for_tenontosaurus`)
@@ -805,6 +808,10 @@ world.events.entityHurt.subscribe((event) => {
     if (event.damageSource.damagingEntity.typeId == 'rift:direbear' && event.damageSource.damagingEntity.hasTag('clawMode')) {
         event.hurtEntity.triggerEvent('rift:stop_bleeding')
         event.hurtEntity.triggerEvent('rift:start_bleeding')
+    }
+
+    if (event.damageSource.damagingEntity.getComponent('equipment_inventory').getEquipmentSlot('mainhand').typeId == 'rift:ankylosaurus_mace') {
+        event.hurtEntity.applyKnockback(event.damageSource.damagingEntity.getViewDirection().x, event.damageSource.damagingEntity.getViewDirection().z, 3, 0.25)
     }
 
     if (!event.hurtEntity.hasTag('inWater') && affectedByBola.includes(event.hurtEntity.typeId) && event.damageSource.damagingProjectile.typeId == 'rift:bola_projectile') {
