@@ -69,6 +69,10 @@ let affectedByBola = [
     'rift:sarcosuchus',
     'rift:tenontosaurus',
     'rift:utahraptor',
+
+    'rift:cavern_utahraptor',
+    'rift:cavern_dilophosaurus',
+
     'minecraft:player',
     'minecraft:axolotl',
     'minecraft:bat',
