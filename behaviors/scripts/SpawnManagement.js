@@ -1,6 +1,6 @@
 import { world } from "@minecraft/server"
 
-world.events.entitySpawn.subscribe((ev) => {
+world.afterEvents.entitySpawn.subscribe((ev) => {
     switch (ev.entity.typeId) {
         case 'rift:cavern_megapiranha':
             ev.entity.nameTag = '§4Cavern Megapiranha§r'

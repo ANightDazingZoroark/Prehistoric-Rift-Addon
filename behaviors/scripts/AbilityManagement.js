@@ -1,7 +1,7 @@
 import { world } from "@minecraft/server"
 import { setTimeout } from "./externals/timers"
 
-world.events.beforeDataDrivenEntityTriggerEvent.subscribe(data => {
+world.beforeEvents.dataDrivenEntityTriggerEvent.subscribe(data => {
     if (data.entity.typeId == 'rift:tenontosaurus' && data.id == 'rift:adult_become_angry') {
         data.entity.target.addTag('tenontoTarget')
         setTimeout(() => {

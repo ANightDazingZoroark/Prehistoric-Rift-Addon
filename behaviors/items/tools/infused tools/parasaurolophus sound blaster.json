@@ -1,0 +1,64 @@
+{
+	"format_version": "1.16.100",
+	"minecraft:item": {
+		"description": {
+			"identifier": "rift:parasaurolophus_sound_blaster",
+			"category": "Equipment"
+		},
+		"components": {
+			"minecraft:stacked_by_data": false,
+			"minecraft:foil": false,
+			"minecraft:max_stack_size": 1,
+			"minecraft:can_destroy_in_creative": false,
+			"minecraft:durability": {
+				"max_durability": 50
+			},
+            "minecraft:repairable": {
+                "repair_items": [
+                    {
+                        "items": [
+                            "rift:parasaurolophus_horn"
+                        ],
+                        "repair_amount": 10
+                    }
+                ]
+            },
+            "minecraft:cooldown": {
+                "category": "parasaurSoundBlaster",
+                "duration": 15
+            },
+			"minecraft:on_use": {
+				"on_use": {
+					"event": "rift:use",
+					"target": "self"
+				}
+			},
+			"minecraft:icon": {
+				"texture": "parasaurolophus sound blaster"
+			},
+			"minecraft:display_name": {
+				"value": "item.rift:parasaurolophus_sound_blaster.name"
+			},
+			"minecraft:creative_category": {
+				"parent": "itemGroup.name.riftTools"
+			},
+			"minecraft:render_offsets": "tools",
+			"minecraft:use_animation": "bow"
+		},
+        "events": {
+            "rift:use": {
+                "damage": {
+                    "type": "durability",
+                    "amount": 1
+                },
+                "run_command": {
+                    "command": [
+						"playsound mob.parasaurolophus.sound_blasting @a[r=10]",
+						"camerashake add @a[r=10] 4",
+						"effect @e[r=10, type=!player, tag=!tamed, family=!inanimate, tag=!riding] slowness 10 255"
+                    ]
+                }
+            }
+        }
+	}
+}

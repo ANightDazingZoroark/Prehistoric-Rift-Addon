@@ -1,7 +1,7 @@
 import { world } from "@minecraft/server"
 import { clearEntity, testForItem } from "./externals/itemmanagement"
 
-world.events.beforeDataDrivenEntityTriggerEvent.subscribe(data => {
+world.beforeEvents.dataDrivenEntityTriggerEvent.subscribe(data => {
     if (data.id == 'rift:use_mounted_weapon') {
         if (data.entity.getComponent('skin_id').value == 1) {
             if (testForItem(data.entity, 'rift:cannonball')) {

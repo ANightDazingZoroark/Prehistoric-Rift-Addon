@@ -45,7 +45,7 @@ function mainBothGui(entity, hitEntity) {
     })
 }
 
-world.events.entityHit.subscribe(({ hitEntity, entity }) => {
+world.afterEvents.entityHit.subscribe(({ hitEntity, entity }) => {
     try {
         if (hitEntity.typeId == 'rift:apatosaurus' && hitEntity.hasTag('hasCraftingTable') && !hitEntity.hasTag('hasFurnace')) {
             mainCraftingTableGui(entity)

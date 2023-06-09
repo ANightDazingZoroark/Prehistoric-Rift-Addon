@@ -132,7 +132,7 @@ function changeCommandStaffSniffGui(hitEntity, entity) {
     })
 }
 
-world.events.entityHit.subscribe(({ hitEntity, entity }) => {
+world.afterEvents.entityHit.subscribe(({ hitEntity, entity }) => {
     try {
         if (hitEntity.typeId == 'rift:direwolf' && hitEntity.getComponent('is_tamed') && !hitEntity.getComponent('is_baby')) {
             sniffMainGui(hitEntity, entity)
@@ -141,7 +141,7 @@ world.events.entityHit.subscribe(({ hitEntity, entity }) => {
     catch (e) {}
 })
 
-world.events.beforeDataDrivenEntityTriggerEvent.subscribe(data => {
+world.beforeEvents.dataDrivenEntityTriggerEvent.subscribe(data => {
     if (data.id == 'rift:use_chest_sniff') {
         for (let x = -12; x < 13; x++) {
             for (let y = -4; y < 16; y++) {

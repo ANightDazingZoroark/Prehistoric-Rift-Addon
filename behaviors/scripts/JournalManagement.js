@@ -407,130 +407,287 @@ function othersGui(source) {
     })
 }
 
-world.events.beforeItemUse.subscribe(data => {
+world.afterEvents.itemUse.subscribe(data => {
     const source = data.source
-    if (data.item.typeId === 'rift:journal') {
+    if (data.itemStack.typeId === 'rift:journal') {
         mainGui(source)
     }
 })
 
-world.events.itemUseOn.subscribe(data => {
-    let block = world.getDimension('overworld').getBlock(data.getBlockLocation())
-    if (unlockItemsList.includes(data.item.typeId) && block.typeId == 'rift:journal_enscriber' && block.permutation.getProperty('rift:has_book') == true) {
-        switch (data.item.typeId) {
+world.beforeEvents.itemUseOn.subscribe(data => {
+    let block = data.block
+    if (unlockItemsList.includes(data.itemStack.typeId) && block.typeId == 'rift:journal_enscriber' && block.permutation.getState('rift:has_book') == true) {
+        switch (data.itemStack.typeId) {
             case 'rift:stegosaurus_plate':
-                data.source.setDynamicProperty('0', true)
-                data.source.sendMessage('You have unlocked the journal entry for the Stegosaurus! Open your journal to read it!')
+                if (data.source.getDynamicProperty('0') == false) {
+                    data.source.setDynamicProperty('0', true)
+                    data.source.sendMessage('You have unlocked the journal entry for the Stegosaurus! Open your journal to read it!')
+                    world.getDimension('overworld').runCommandAsync('setblock '+block.location.x+' '+block.location.y+' '+block.location.z+' rift:journal_enscriber ["rift:facing_direction":'+block.permutation.getState('rift:facing_direction')+']')
+                }
+                else {
+                    data.source.sendMessage('You have already unlocked this entry!')
+                }
                 break
             case 'rift:tyrannosaurus_arm':
-                data.source.setDynamicProperty('1', true)
-                data.source.sendMessage('You have unlocked the journal entry for the Tyrannosaurus! Open your journal to read it!')
+                if (data.source.getDynamicProperty('1') == false) {
+                    data.source.setDynamicProperty('1', true)
+                    data.source.sendMessage('You have unlocked the journal entry for the Tyrannosaurus! Open your journal to read it!')
+                    world.getDimension('overworld').runCommandAsync('setblock '+block.location.x+' '+block.location.y+' '+block.location.z+' rift:journal_enscriber ["rift:facing_direction":'+block.permutation.getState('rift:facing_direction')+']')
+                }
+                else {
+                    data.source.sendMessage('You have already unlocked this entry!')
+                }
                 break
             case 'rift:dodo_beak':
-                data.source.setDynamicProperty('2', true)
-                data.source.sendMessage('You have unlocked the journal entry for the Dodo! Open your journal to read it!')
+                if (data.source.getDynamicProperty('2') == false) {
+                    data.source.setDynamicProperty('2', true)
+                    data.source.sendMessage('You have unlocked the journal entry for the Dodo! Open your journal to read it!')
+                    world.getDimension('overworld').runCommandAsync('setblock '+block.location.x+' '+block.location.y+' '+block.location.z+' rift:journal_enscriber ["rift:facing_direction":'+block.permutation.getState('rift:facing_direction')+']')
+                }
+                else {
+                    data.source.sendMessage('You have already unlocked this entry!')
+                }
                 break
             case 'rift:triceratops_horn':
                 if (data.source.getDynamicProperty('3') == false) {
                     data.source.setDynamicProperty('3', true)
                     data.source.sendMessage('You have unlocked the journal entry for the Triceratops! Open your journal to read it!')
+                    world.getDimension('overworld').runCommandAsync('setblock '+block.location.x+' '+block.location.y+' '+block.location.z+' rift:journal_enscriber ["rift:facing_direction":'+block.permutation.getState('rift:facing_direction')+']')
                 }
                 else {
                     data.source.sendMessage('You have already unlocked this entry!')
                 }
                 break
             case 'rift:utahraptor_claw':
-                data.source.setDynamicProperty('4', true)
-                data.source.sendMessage('You have unlocked the journal entry for the Utahraptor! Open your journal to read it!')
+                if (data.source.getDynamicProperty('4') == false) {
+                    data.source.setDynamicProperty('4', true)
+                    data.source.sendMessage('You have unlocked the journal entry for the Utahraptor! Open your journal to read it!')
+                    world.getDimension('overworld').runCommandAsync('setblock '+block.location.x+' '+block.location.y+' '+block.location.z+' rift:journal_enscriber ["rift:facing_direction":'+block.permutation.getState('rift:facing_direction')+']')
+                }
+                else {
+                    data.source.sendMessage('You have already unlocked this entry!')
+                }
                 break
             case 'rift:apatosaurus_vertebrae':
-                data.source.setDynamicProperty('5', true)
-                data.source.sendMessage('You have unlocked the journal entry for the Apatosaurus! Open your journal to read it!')
+                if (data.source.getDynamicProperty('5') == false) {
+                    data.source.setDynamicProperty('5', true)
+                    data.source.sendMessage('You have unlocked the journal entry for the Apatosaurus! Open your journal to read it!')
+                    world.getDimension('overworld').runCommandAsync('setblock '+block.location.x+' '+block.location.y+' '+block.location.z+' rift:journal_enscriber ["rift:facing_direction":'+block.permutation.getState('rift:facing_direction')+']')
+                }
+                else {
+                    data.source.sendMessage('You have already unlocked this entry!')
+                }
                 break
             case 'rift:parasaurolophus_horn':
-                data.source.setDynamicProperty('6', true)
-                data.source.sendMessage('You have unlocked the journal entry for the Parasaurolophus! Open your journal to read it!')
+                if (data.source.getDynamicProperty('6') == false) {
+                    data.source.setDynamicProperty('6', true)
+                    data.source.sendMessage('You have unlocked the journal entry for the Parasaurolophus! Open your journal to read it!')
+                    world.getDimension('overworld').runCommandAsync('setblock '+block.location.x+' '+block.location.y+' '+block.location.z+' rift:journal_enscriber ["rift:facing_direction":'+block.permutation.getState('rift:facing_direction')+']')
+                }
+                else {
+                    data.source.sendMessage('You have already unlocked this entry!')
+                }
                 break
             case 'rift:dimetrodon_sail':
-                data.source.setDynamicProperty('7', true)
-                data.source.sendMessage('You have unlocked the journal entry for the Dimetrodon! Open your journal to read it!')
+                if (data.source.getDynamicProperty('7') == false) {
+                    data.source.setDynamicProperty('7', true)
+                    data.source.sendMessage('You have unlocked the journal entry for the Dimetrodon! Open your journal to read it!')
+                    world.getDimension('overworld').runCommandAsync('setblock '+block.location.x+' '+block.location.y+' '+block.location.z+' rift:journal_enscriber ["rift:facing_direction":'+block.permutation.getState('rift:facing_direction')+']')
+                }  
+                else {
+                    data.source.sendMessage('You have already unlocked this entry!')
+                }
                 break
             case 'rift:coelacanth_scales':
-                data.source.setDynamicProperty('8', true)
-                data.source.sendMessage('You have unlocked the journal entry for the Coelacanth! Open your journal to read it!')
+                if (data.source.getDynamicProperty('8') == false) {
+                    data.source.setDynamicProperty('8', true)
+                    data.source.sendMessage('You have unlocked the journal entry for the Coelacanth! Open your journal to read it!')
+                    world.getDimension('overworld').runCommandAsync('setblock '+block.location.x+' '+block.location.y+' '+block.location.z+' rift:journal_enscriber ["rift:facing_direction":'+block.permutation.getState('rift:facing_direction')+']')
+                }  
+                else {
+                    data.source.sendMessage('You have already unlocked this entry!')
+                }
                 break
             case 'rift:megapiranha_scales':
-                data.source.setDynamicProperty('9', true)
-                data.source.sendMessage('You have unlocked the journal entry for the Megapiranha! Open your journal to read it!')
+                if (data.source.getDynamicProperty('9') == false) {
+                    data.source.setDynamicProperty('9', true)
+                    data.source.sendMessage('You have unlocked the journal entry for the Megapiranha! Open your journal to read it!')
+                    world.getDimension('overworld').runCommandAsync('setblock '+block.location.x+' '+block.location.y+' '+block.location.z+' rift:journal_enscriber ["rift:facing_direction":'+block.permutation.getState('rift:facing_direction')+']')
+                }
+                else {
+                    data.source.sendMessage('You have already unlocked this entry!')
+                }
                 break
             case 'rift:sarcosuchus_snout':
-                data.source.setDynamicProperty('10', true)
-                data.source.sendMessage('You have unlocked the journal entry for the Sarcosuchus! Open your journal to read it!')
+                if (data.source.getDynamicProperty('10') == false) {
+                    data.source.setDynamicProperty('10', true)
+                    data.source.sendMessage('You have unlocked the journal entry for the Sarcosuchus! Open your journal to read it!')
+                    world.getDimension('overworld').runCommandAsync('setblock '+block.location.x+' '+block.location.y+' '+block.location.z+' rift:journal_enscriber ["rift:facing_direction":'+block.permutation.getState('rift:facing_direction')+']')
+                }
+                else {
+                    data.source.sendMessage('You have already unlocked this entry!')
+                }
                 break
             case 'rift:anomalocaris_appendage':
-                data.source.setDynamicProperty('11', true)
-                data.source.sendMessage('You have unlocked the journal entry for the Anomalocaris! Open your journal to read it!')
+                if (data.source.getDynamicProperty('11') == false) {
+                    data.source.setDynamicProperty('11', true)
+                    data.source.sendMessage('You have unlocked the journal entry for the Anomalocaris! Open your journal to read it!')
+                    world.getDimension('overworld').runCommandAsync('setblock '+block.location.x+' '+block.location.y+' '+block.location.z+' rift:journal_enscriber ["rift:facing_direction":'+block.permutation.getState('rift:facing_direction')+']')
+                }
+                else {
+                    data.source.sendMessage('You have already unlocked this entry!')
+                }
                 break
             case 'rift:saruophaganax_eye':
-                data.source.setDynamicProperty('12', true)
-                data.source.sendMessage('You have unlocked the journal entry for the Saurophaganax! Open your journal to read it!')
+                if (data.source.getDynamicProperty('12') == false) {
+                    data.source.setDynamicProperty('12', true)
+                    data.source.sendMessage('You have unlocked the journal entry for the Saurophaganax! Open your journal to read it!')
+                    world.getDimension('overworld').runCommandAsync('setblock '+block.location.x+' '+block.location.y+' '+block.location.z+' rift:journal_enscriber ["rift:facing_direction":'+block.permutation.getState('rift:facing_direction')+']')
+                }
+                else {
+                    data.source.sendMessage('You have already unlocked this entry!')
+                }
                 break
             case 'rift:direwolf_tail':
-                data.source.setDynamicProperty('13', true)
-                data.source.sendMessage('You have unlocked the journal entry for the Direwolf! Open your journal to read it!')
+                if (data.source.getDynamicProperty('13') == false) {
+                    data.source.setDynamicProperty('13', true)
+                    data.source.sendMessage('You have unlocked the journal entry for the Direwolf! Open your journal to read it!')
+                    world.getDimension('overworld').runCommandAsync('setblock '+block.location.x+' '+block.location.y+' '+block.location.z+' rift:journal_enscriber ["rift:facing_direction":'+block.permutation.getState('rift:facing_direction')+']')
+                }
+                else {
+                    data.source.sendMessage('You have already unlocked this entry!')
+                }
                 break
             case 'rift:megaloceros_antler':
-                data.source.setDynamicProperty('14', true)
-                data.source.sendMessage('You have unlocked the journal entry for the Megaloceros! Open your journal to read it!')
+                if (data.source.getDynamicProperty('14') == false) {
+                    data.source.setDynamicProperty('14', true)
+                    data.source.sendMessage('You have unlocked the journal entry for the Megaloceros! Open your journal to read it!')
+                    world.getDimension('overworld').runCommandAsync('setblock '+block.location.x+' '+block.location.y+' '+block.location.z+' rift:journal_enscriber ["rift:facing_direction":'+block.permutation.getState('rift:facing_direction')+']')
+                }
+                else {
+                    data.source.sendMessage('You have already unlocked this entry!')
+                }
                 break
             case 'rift:baryonyx_claw':
-                data.source.setDynamicProperty('15', true)
-                data.source.sendMessage('You have unlocked the journal entry for the Baryonyx! Open your journal to read it!')
+                if (data.source.getDynamicProperty('15') == false) {
+                    data.source.setDynamicProperty('15', true)
+                    data.source.sendMessage('You have unlocked the journal entry for the Baryonyx! Open your journal to read it!')
+                    world.getDimension('overworld').runCommandAsync('setblock '+block.location.x+' '+block.location.y+' '+block.location.z+' rift:journal_enscriber ["rift:facing_direction":'+block.permutation.getState('rift:facing_direction')+']')
+                }
+                else {
+                    data.source.sendMessage('You have already unlocked this entry!')
+                }
                 break
             case 'rift:palaeocastor_tail':
-                data.source.setDynamicProperty('16', true)
-                data.source.sendMessage('You have unlocked the journal entry for the Baryonyx! Open your journal to read it!')
+                if (data.source.getDynamicProperty('16') == false) {
+                    data.source.setDynamicProperty('16', true)
+                    data.source.sendMessage('You have unlocked the journal entry for the Baryonyx! Open your journal to read it!')
+                    world.getDimension('overworld').runCommandAsync('setblock '+block.location.x+' '+block.location.y+' '+block.location.z+' rift:journal_enscriber ["rift:facing_direction":'+block.permutation.getState('rift:facing_direction')+']')
+                }
+                else {
+                    data.source.sendMessage('You have already unlocked this entry!')
+                }
                 break
             case 'rift:ankylosaurus_club':
-                data.source.setDynamicProperty('17', true)
-                data.source.sendMessage('You have unlocked the journal entry for the Ankylosaurus! Open your journal to read it!')
+                if (data.source.getDynamicProperty('17') == false) {
+                    data.source.setDynamicProperty('17', true)
+                    data.source.sendMessage('You have unlocked the journal entry for the Ankylosaurus! Open your journal to read it!')
+                    world.getDimension('overworld').runCommandAsync('setblock '+block.location.x+' '+block.location.y+' '+block.location.z+' rift:journal_enscriber ["rift:facing_direction":'+block.permutation.getState('rift:facing_direction')+']')
+                }
+                else {
+                    data.source.sendMessage('You have already unlocked this entry!')
+                }
                 break
             case 'rift:dilophosaurus_frill':
-                data.source.setDynamicProperty('18', true)
-                data.source.sendMessage('You have unlocked the journal entry for the Dilophosaurus! Open your journal to read it!')
+                if (data.source.getDynamicProperty('18') == false) {
+                    data.source.setDynamicProperty('18', true)
+                    data.source.sendMessage('You have unlocked the journal entry for the Dilophosaurus! Open your journal to read it!')
+                    world.getDimension('overworld').runCommandAsync('setblock '+block.location.x+' '+block.location.y+' '+block.location.z+' rift:journal_enscriber ["rift:facing_direction":'+block.permutation.getState('rift:facing_direction')+']')
+                }
+                else {
+                    data.source.sendMessage('You have already unlocked this entry!')
+                }
                 break
             case 'rift:gallimimus_foot':
-                data.source.setDynamicProperty('19', true)
-                data.source.sendMessage('You have unlocked the journal entry for the Gallimimus! Open your journal to read it!')
+                if (data.source.getDynamicProperty('19') == false) {
+                    data.source.setDynamicProperty('19', true)
+                    data.source.sendMessage('You have unlocked the journal entry for the Gallimimus! Open your journal to read it!')
+                    world.getDimension('overworld').runCommandAsync('setblock '+block.location.x+' '+block.location.y+' '+block.location.z+' rift:journal_enscriber ["rift:facing_direction":'+block.permutation.getState('rift:facing_direction')+']')
+                }
+                else {
+                    data.source.sendMessage('You have already unlocked this entry!')
+                }
                 break
             case 'rift:tenontosaurus_feather':
-                data.source.setDynamicProperty('20', true)
-                data.source.sendMessage('You have unlocked the journal entry for the Tenontosaurus! Open your journal to read it!')
+                if (data.source.getDynamicProperty('20') == false) {
+                    data.source.setDynamicProperty('20', true)
+                    data.source.sendMessage('You have unlocked the journal entry for the Tenontosaurus! Open your journal to read it!')
+                    world.getDimension('overworld').runCommandAsync('setblock '+block.location.x+' '+block.location.y+' '+block.location.z+' rift:journal_enscriber ["rift:facing_direction":'+block.permutation.getState('rift:facing_direction')+']')
+                }
+                else {
+                    data.source.sendMessage('You have already unlocked this entry!')
+                }
                 break
             case 'rift:direbear_fur':
-                data.source.setDynamicProperty('21', true)
-                data.source.sendMessage('You have unlocked the journal entry for the Direbear! Open your journal to read it!')
+                if (data.source.getDynamicProperty('21') == false) {
+                    data.source.setDynamicProperty('21', true)
+                    data.source.sendMessage('You have unlocked the journal entry for the Direbear! Open your journal to read it!')
+                    world.getDimension('overworld').runCommandAsync('setblock '+block.location.x+' '+block.location.y+' '+block.location.z+' rift:journal_enscriber ["rift:facing_direction":'+block.permutation.getState('rift:facing_direction')+']')
+                }
+                else {
+                    data.source.sendMessage('You have already unlocked this entry!')
+                }
                 break
             case 'rift:coelophysis_head':
-                data.source.setDynamicProperty('22', true)
-                data.source.sendMessage('You have unlocked the journal entry for the Coelophysis! Open your journal to read it!')
+                if (data.source.getDynamicProperty('22') == false) {
+                    data.source.setDynamicProperty('22', true)
+                    data.source.sendMessage('You have unlocked the journal entry for the Coelophysis! Open your journal to read it!')
+                    world.getDimension('overworld').runCommandAsync('setblock '+block.location.x+' '+block.location.y+' '+block.location.z+' rift:journal_enscriber ["rift:facing_direction":'+block.permutation.getState('rift:facing_direction')+']')
+                }
+                else {
+                    data.source.sendMessage('You have already unlocked this entry!')
+                }
                 break
             case 'rift:pteranodon_crest':
-                data.source.setDynamicProperty('23', true)
-                data.source.sendMessage('You have unlocked the journal entry for the Pteranodon! Open your journal to read it!')
+                if (data.source.getDynamicProperty('23') == false) {
+                    data.source.setDynamicProperty('23', true)
+                    data.source.sendMessage('You have unlocked the journal entry for the Pteranodon! Open your journal to read it!')
+                    world.getDimension('overworld').runCommandAsync('setblock '+block.location.x+' '+block.location.y+' '+block.location.z+' rift:journal_enscriber ["rift:facing_direction":'+block.permutation.getState('rift:facing_direction')+']')
+                }
+                else {
+                    data.source.sendMessage('You have already unlocked this entry!')
+                }
                 break
             case 'minecraft:diamond_sword':
-                data.source.setDynamicProperty('c', true)
-                data.source.sendMessage('You have unlocked the journal entry for Humans! Open your journal to read it!')
+                if (data.source.getDynamicProperty('c') == false) {
+                    data.source.setDynamicProperty('c', true)
+                    data.source.sendMessage('You have unlocked the journal entry for Humans! Open your journal to read it!')
+                    world.getDimension('overworld').runCommandAsync('setblock '+block.location.x+' '+block.location.y+' '+block.location.z+' rift:journal_enscriber ["rift:facing_direction":'+block.permutation.getState('rift:facing_direction')+']')
+                }
+                else {
+                    data.source.sendMessage('You have already unlocked this entry!')
+                }
                 break
             case 'minecraft:emerald':
-                data.source.setDynamicProperty('d', true)
-                data.source.sendMessage('You have unlocked the journal entry for Villagers! Open your journal to read it!')
+                if (data.source.getDynamicProperty('d') == false) {
+                    data.source.setDynamicProperty('d', true)
+                    data.source.sendMessage('You have unlocked the journal entry for Villagers! Open your journal to read it!')
+                    world.getDimension('overworld').runCommandAsync('setblock '+block.location.x+' '+block.location.y+' '+block.location.z+' rift:journal_enscriber ["rift:facing_direction":'+block.permutation.getState('rift:facing_direction')+']')
+                }
+                else {
+                    data.source.sendMessage('You have already unlocked this entry!')
+                }
+                break
             case 'minecraft:totem_of_undying':
-                data.source.setDynamicProperty('e', true)
-                data.source.sendMessage('You have unlocked the journal entry for Illagers! Open your journal to read it!')
+                if (data.source.getDynamicProperty('e') == false) {
+                    data.source.setDynamicProperty('e', true)
+                    data.source.sendMessage('You have unlocked the journal entry for Illagers! Open your journal to read it!')
+                    world.getDimension('overworld').runCommandAsync('setblock '+block.location.x+' '+block.location.y+' '+block.location.z+' rift:journal_enscriber ["rift:facing_direction":'+block.permutation.getState('rift:facing_direction')+']')
+                }
+                else {
+                    data.source.sendMessage('You have already unlocked this entry!')
+                }
+                break
         }
-        world.getDimension('overworld').runCommandAsync('setblock '+data.getBlockLocation().x+' '+data.getBlockLocation().y+' '+data.getBlockLocation().z+' rift:journal_enscriber ["rift:facing_direction":'+block.permutation.getProperty('rift:facing_direction')+']')
-        // world.getDimension('overworld').getBlock(data.getBlockLocation()).permutation.withProperty('rift:has_book', true )
     }
 })

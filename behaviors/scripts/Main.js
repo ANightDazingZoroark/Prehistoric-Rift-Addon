@@ -9,13 +9,14 @@ import 'DamageManagement.js'
 import 'DirewolfManageSniff.js'
 import 'EatFromInventory.js'
 import 'ForcedAttackDamage.js'
+import 'GunForge.js'
 import 'ItemUse.js'
 import 'JournalManagement.js'
 import 'RiftCommands.js'
 import 'SpawnManagement.js'
 import { DynamicPropertiesDefinition, MinecraftEntityTypes, system, world } from "@minecraft/server"
 
-world.events.worldInitialize.subscribe((ev) => {
+world.afterEvents.worldInitialize.subscribe((ev) => {
     //initialize journal related stuff so that you need to unlock journal entries b4 reading them
     //because of the fact that there's a character limit for all dynamic properties names im gonna
     //have to utilize numbers and letters to represent them and have what they mean in a comment next to them 
@@ -54,7 +55,7 @@ world.events.worldInitialize.subscribe((ev) => {
     ev.propertyRegistry.registerEntityTypeDynamicProperties(playerData, MinecraftEntityTypes.player)
 })
 
-world.events.playerSpawn.subscribe(ev => {
+world.afterEvents.playerSpawn.subscribe(ev => {
     ev.player.triggerEvent(`rift:remove_warning`)
     for (let i = 0; i < 24; i++) {
         if (ev.player.getDynamicProperty(i.toString()) == null) {

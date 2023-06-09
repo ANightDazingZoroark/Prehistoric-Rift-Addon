@@ -1,8 +1,8 @@
-import { Items, ItemStack, world } from "@minecraft/server"
+import { ItemTypes, ItemStack, world } from "@minecraft/server"
 import * as guiCrafting from "./ApatosaurusCraftingOptions"
 import { clearEntity } from "./externals/itemmanagement"
 
-world.events.beforeDataDrivenEntityTriggerEvent.subscribe(data => {
+world.beforeEvents.dataDrivenEntityTriggerEvent.subscribe(data => {
     if (data.id == 'rift:finish_smelt') {
         data.entity.fuelStackAmount = 0
         for (let l = data.entity.getComponent('inventory').inventorySize - 1; l >= 0; l--) {
@@ -25,7 +25,7 @@ world.events.beforeDataDrivenEntityTriggerEvent.subscribe(data => {
                     for (let k = 0; k < guiCrafting.apatosaurusSmeltables.length; k++) {
                         try {
                             if (guiCrafting.apatosaurusSmeltables[k].itemId == data.entity.getComponent('inventory').container.getItem(j).typeId) {
-                                data.entity.getComponent('inventory').container.addItem(new ItemStack(Items.get(guiCrafting.apatosaurusSmeltables[k].outputId), 1))
+                                data.entity.getComponent('inventory').container.addItem(new ItemStack(ItemTypes.get(guiCrafting.apatosaurusSmeltables[k].outputId), 1))
                                 clearEntity(data.entity, data.entity.getComponent('inventory').container.getItem(j).typeId, 0, 1)
                                 if (data.entity.hasOwnProperty('smeltedAmount')) {
                                     data.entity.smeltedAmount += 1

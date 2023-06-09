@@ -2,7 +2,7 @@ import { world } from "@minecraft/server"
 
 let alphabet = 'abcdefghijklmnopqrstuvwxyz'.split('')
 
-world.events.beforeChat.subscribe(async (ev) => {
+world.beforeEvents.chatSend.subscribe(async (ev) => {
     if (ev.message.substring(0,2) == 'r!') {
         if (ev.sender.hasTag('canRiftCommands')) {
             switch (ev.message) {

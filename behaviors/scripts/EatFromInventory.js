@@ -25,7 +25,7 @@ let fibrousMeatEaters = [
     'rift:utahraptor'
 ]
 
-world.events.beforeDataDrivenEntityTriggerEvent.subscribe(data => {
+world.beforeEvents.dataDrivenEntityTriggerEvent.subscribe(data => {
     if (data.id == 'rift:eat_from_inventory') {
         for (let j = data.entity.getComponent('inventory').inventorySize - 1; j >= 0; j--) {
             try {

@@ -1,16 +1,32 @@
 {
-    "format_version": "1.16.100",
+    "format_version": "1.19.50",
     "minecraft:block": {
         "description": {
-            "identifier": "rift:gun_forge"
+            "identifier": "rift:gun_forge",
+            "menu_category": {
+                "category": "Items"
+            }
         },
         "components": {
-            "minecraft:creative_category": {
-                "category": "Items"
+            "minecraft:destructible_by_mining": {
+                "seconds_to_destroy": 0.6
             },
-            "minecraft:destroy_time": 0.6,
-            "minecraft:block_light_absorption": 0.0,
-            "minecraft:unit_cube": {}
+            "minecraft:light_dampening": 0.0,
+            "minecraft:unit_cube": {},
+            "minecraft:on_interact": {
+                "event": "rift:use",
+                "target": "self"
+            }
+        },
+        "events": {
+            "rift:use": {
+                "run_command": {
+                    "command": [
+                        "event entity @s rift:use_gun_forge"
+                    ],
+                    "target": "other"
+                }
+            }
         }
     }
 }
