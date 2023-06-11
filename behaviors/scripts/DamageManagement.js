@@ -817,6 +817,9 @@ world.afterEvents.entityHurt.subscribe((event) => {
     if (event.damageSource.damagingEntity.getComponent('equipment_inventory').getEquipmentSlot('mainhand').typeId == 'rift:ankylosaurus_mace') {
         event.hurtEntity.applyKnockback(event.damageSource.damagingEntity.getViewDirection().x, event.damageSource.damagingEntity.getViewDirection().z, 3, 0.25)
     }
+    if (event.damageSource.damagingEntity.getComponent('equipment_inventory').getEquipmentSlot('mainhand').typeId == 'rift:anomalocaris_dagger') {
+        event.damageSource.damagingEntity.getComponent('health').setCurrent(event.damageSource.damagingEntity.getComponent('health').current + 3)
+    }
 
     if (!event.hurtEntity.hasTag('inWater') && affectedByBola.includes(event.hurtEntity.typeId) && event.damageSource.damagingProjectile.typeId == 'rift:bola_projectile') {
         event.hurtEntity.triggerEvent('rift:stop_being_affected_by_bola')
