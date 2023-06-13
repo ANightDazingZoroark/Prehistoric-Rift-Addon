@@ -749,7 +749,7 @@ world.afterEvents.entityHurt.subscribe((event) => {
     if ((event.damageSource.damagingEntity.typeId == 'rift:dilophosaurus' || event.damageSource.damagingEntity.typeId == 'rift:cavern_dilophosaurus') && event.damageSource.damagingProjectile.typeId == 'rift:dilophosaurus_spit') {
         event.hurtEntity.addEffect(MinecraftEffectTypes.poison, 200)
         event.hurtEntity.addEffect(MinecraftEffectTypes.blindness, 200)
-        event.hurtEntity.addEffect(MinecraftEffectTypes.slowness, 200, 2)
+        event.hurtEntity.addEffect(MinecraftEffectTypes.slowness, 200, { amplifier: 2 })
     }
     if (event.damageSource.damagingEntity.typeId == 'rift:utahraptor' && event.damageSource.damagingEntity.hasTag('onGround') && Math.floor(Math.random() * 4) == 0) {
         event.hurtEntity.runCommandAsync(`ride @s evict_riders`)
@@ -762,11 +762,12 @@ world.afterEvents.entityHurt.subscribe((event) => {
         event.damageSource.damagingEntity.jumpAttacking = 0
     }
     if (event.damageSource.damagingEntity.typeId == 'rift:dimetrodon' && event.damageSource.damagingEntity.getComponent('is_charged')) {
-        event.hurtEntity.addEffect(MinecraftEffectTypes.weakness, 400, 2)
-        event.hurtEntity.addEffect(MinecraftEffectTypes.slowness, 400, 2)
+        event.hurtEntity.addEffect(MinecraftEffectTypes.weakness, 400, { amplifier: 2 })
+        event.hurtEntity.addEffect(MinecraftEffectTypes.slowness, 400, { amplifier: 2 })
     }
     if (event.damageSource.damagingEntity.typeId == 'rift:sarcosuchus' && event.damageSource.damagingEntity.hasTag('powered')) {
-        event.hurtEntity.addEffect(MinecraftEffectTypes.slowness, 600, 1)
+        event.hurtEntity.addEffect(MinecraftEffectTypes.slowness, 600, { amplifier: 2 })
+        console.warn('oof')
     }
     if (event.damageSource.damagingEntity.typeId == 'rift:anomalocaris') {
         event.damageSource.damagingEntity.getComponent('health').setCurrent(event.damageSource.damagingEntity.getComponent('health').current + 4)
@@ -802,12 +803,12 @@ world.afterEvents.entityHurt.subscribe((event) => {
         }, 1000)
     }
     if (event.damageSource.damagingEntity.typeId == 'rift:direbear' && event.damageSource.damagingEntity.hasTag('stompMode')) {
-        event.hurtEntity.addEffect(MinecraftEffectTypes.slowness, 60, 255)
-        event.hurtEntity.addEffect(MinecraftEffectTypes.weakness, 60, 255)
+        event.hurtEntity.addEffect(MinecraftEffectTypes.slowness, 60, { amplifier: 255 })
+        event.hurtEntity.addEffect(MinecraftEffectTypes.weakness, 60, { amplifier: 255 })
     }
     if (event.damageSource.damagingEntity.typeId == 'rift:direbear_stomp') {
-        event.hurtEntity.addEffect(MinecraftEffectTypes.slowness, 60, 255)
-        event.hurtEntity.addEffect(MinecraftEffectTypes.weakness, 60, 255)
+        event.hurtEntity.addEffect(MinecraftEffectTypes.slowness, 60, { amplifier: 255 })
+        event.hurtEntity.addEffect(MinecraftEffectTypes.weakness, 60, { amplifier: 255 })
     }
     if (event.damageSource.damagingEntity.typeId == 'rift:direbear' && event.damageSource.damagingEntity.hasTag('clawMode')) {
         event.hurtEntity.triggerEvent('rift:stop_bleeding')
