@@ -257,7 +257,7 @@ function othersGui(source) {
 
 world.afterEvents.itemUse.subscribe(data => {
     const source = data.source
-    if (data.item.typeId === 'rift:journal') {
+    if (data.itemStack.typeId == 'rift:journal') {
         mainGui(source)
     }
 })
