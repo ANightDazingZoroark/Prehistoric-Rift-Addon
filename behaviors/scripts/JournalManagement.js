@@ -255,7 +255,7 @@ function othersGui(source) {
     })
 }
 
-world.events.beforeItemUse.subscribe(data => {
+world.afterEvents.itemUse.subscribe(data => {
     const source = data.source
     if (data.item.typeId === 'rift:journal') {
         mainGui(source)

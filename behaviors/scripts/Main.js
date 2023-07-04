@@ -8,6 +8,6 @@ import "EatFromInventory.js"
 import "JournalManagement.js"
 import { system, world } from "@minecraft/server"
 
-world.events.playerSpawn.subscribe(ev => ev.player.triggerEvent(`rift:remove_warning`))
+world.afterEvents.playerSpawn.subscribe(ev => ev.player.triggerEvent(`rift:remove_warning`))
 
 system.events.beforeWatchdogTerminate.subscribe(ev => ev.cancel = true)

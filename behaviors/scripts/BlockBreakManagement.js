@@ -1,4 +1,4 @@
-import { Items, ItemStack, world } from "@minecraft/server"
+import { ItemTypes, ItemStack, world } from "@minecraft/server"
 
 let ores = [
     'minecraft:coal_ore',
@@ -29,7 +29,7 @@ let tallPlants = [
     'minecraft:crimson_roots'
 ]
 
-world.events.blockBreak.subscribe(data => {
+world.afterEvents.blockBreak.subscribe(data => {
     if (ores.includes(data.brokenBlockPermutation.type.id) && Math.floor(Math.random() * 8) == 0) {
         let spawnNum = Math.floor(Math.random() * 3) + 2
         for (let x = 0; x < spawnNum; x++) {
@@ -38,6 +38,6 @@ world.events.blockBreak.subscribe(data => {
         world.getDimension('overworld').runCommandAsync(`fill `+Math.trunc((data.block.location.x-1).toString())+` `+Math.trunc((data.block.location.y-1).toString())+` `+Math.trunc((data.block.location.z-1).toString())+` `+Math.trunc((data.block.location.x+1).toString())+` `+Math.trunc((data.block.location.y+1).toString())+` `+Math.trunc((data.block.location.z+1).toString())+` air 0 destroy`)
     }
     if (tallPlants.includes(data.brokenBlockPermutation.type.id) && Math.floor(Math.random() * 4) == 0) {
-        world.getDimension('overworld').spawnItem(new ItemStack(Items.get('rift:grass_fiber'), 1, 0), data.block.location)
+        world.getDimension('overworld').spawnItem(new ItemStack(ItemTypes.get('rift:grass_fiber'), 1), data.block.location)
     }
 })
