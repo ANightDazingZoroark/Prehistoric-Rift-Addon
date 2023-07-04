@@ -29,7 +29,15 @@ let tallPlants = [
     'minecraft:crimson_roots'
 ]
 
+let flowers = [
+    'minecraft:yellow_flower',
+    'minecraft:red_flower',
+    'minecraft:torchflower',
+    'minecraft:wither_rose'
+]
+
 world.afterEvents.blockBreak.subscribe(data => {
+    //spawn palaeocastors
     if (ores.includes(data.brokenBlockPermutation.type.id) && Math.floor(Math.random() * 8) == 0) {
         let spawnNum = Math.floor(Math.random() * 3) + 2
         for (let x = 0; x < spawnNum; x++) {
@@ -37,6 +45,8 @@ world.afterEvents.blockBreak.subscribe(data => {
         }
         world.getDimension('overworld').runCommandAsync(`fill `+Math.trunc((data.block.location.x-1).toString())+` `+Math.trunc((data.block.location.y-1).toString())+` `+Math.trunc((data.block.location.z-1).toString())+` `+Math.trunc((data.block.location.x+1).toString())+` `+Math.trunc((data.block.location.y+1).toString())+` `+Math.trunc((data.block.location.z+1).toString())+` air 0 destroy`)
     }
+
+    //grass fiber from tall plants
     if (tallPlants.includes(data.brokenBlockPermutation.type.id) && Math.floor(Math.random() * 4) == 0) {
         world.getDimension('overworld').spawnItem(new ItemStack(ItemTypes.get('rift:grass_fiber'), 1), data.block.location)
     }

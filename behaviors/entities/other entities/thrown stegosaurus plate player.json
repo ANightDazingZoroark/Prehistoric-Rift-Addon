@@ -1,0 +1,60 @@
+{
+    "format_version": "1.16.0",
+    "minecraft:entity": {
+        "description": {
+            "identifier": "rift:thrown_stegosaurus_plate_player",
+            "is_spawnable": false,
+            "is_summonable": true,
+            "is_experimental": false,
+            "runtime_identifier": "minecraft:arrow"
+        },
+        "component_groups": {
+            "rift:go_commit_disappear": {
+                "minecraft:instant_despawn": {}
+            }
+        },
+        "components": {
+            "minecraft:collision_box": {
+                "width": 0.25,
+                "height": 0.25
+            },
+            "minecraft:projectile": {
+                "on_hit": {
+                    "impact_damage": {
+                        "damage": 5,
+                        "knockback": true
+                    },
+                    "remove_on_hit": {}
+                },
+                "power": 1.5,
+                "gravity": 0.03,
+                "angle_offset": 0.0
+            },
+            "minecraft:physics": {
+                "has_collision": true,
+                "has_gravity": true
+            },
+            "minecraft:pushable": {
+                "is_pushable": true,
+                "is_pushable_by_piston": true
+            },
+            "minecraft:timer": {
+                "time": 3,
+                "time_down_event": {
+                    "event": "rift:commit_disappear",
+                    "target": "self"
+                }
+            },
+            "minecraft:conditional_bandwidth_optimization": {}
+        },
+        "events": {
+            "rift:commit_disappear": {
+                "add": {
+                    "component_groups": [
+                        "rift:go_commit_disappear"
+                    ]
+                }
+            }
+        }
+    }
+}
