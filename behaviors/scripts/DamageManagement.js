@@ -761,6 +761,9 @@ world.afterEvents.entityHurt.subscribe((event) => {
     if (event.hurtEntity.typeId == 'rift:utahraptor' && !event.hurtEntity.hasTag('ridden') && event.hurtEntity.getComponent('is_tamed') && event.damageSource.damagingEntity.jumpAttacking > 10) {
         event.damageSource.damagingEntity.jumpAttacking = 0
     }
+    if (event.damageSource.damagingEntity.typeId == 'rift:dimetrodon' && event.damageSource.damagingEntity.getComponent('is_ignited')) {
+        event.hurtEntity.setOnFire(5, true)
+    }
     if (event.damageSource.damagingEntity.typeId == 'rift:dimetrodon' && event.damageSource.damagingEntity.getComponent('is_charged')) {
         event.hurtEntity.addEffect(MinecraftEffectTypes.weakness, 400, { amplifier: 2 })
         event.hurtEntity.addEffect(MinecraftEffectTypes.slowness, 400, { amplifier: 2 })

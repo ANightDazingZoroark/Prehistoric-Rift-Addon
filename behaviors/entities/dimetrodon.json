@@ -79,6 +79,7 @@
 				"animRegenerateEnergyFrost": "animation.dimetrodon_regenerate_energy_frost",
 				"animRegenerateEnergyFlame": "animation.dimetrodon_regenerate_energy_flame",
 				"animEnergyRegenDelay": "animation.regenerate_energy_delay",
+                "animBeforeEating": "animation.before_eat_countdown",
 				"animUseEnergyWhileMovingNormal": "animation.dimetrodon_regenerate_energy_normal",
 				"animUseEnergyWhileMovingFrost": "animation.dimetrodon_regenerate_energy_frost",
 				"animUseEnergyWhileMovingFlame": "animation.dimetrodon_regenerate_energy_flame",
@@ -852,11 +853,6 @@
 							"target": "self"
 						}
 					]
-				}
-			},
-			"rift:use_flame_weapon": {
-				"minecraft:equipment": {
-					"table": "loot_tables/entities/dimetrodon fire weapon.json"
 				}
 			},
 			"rift:dimetrodon_frost_mode_grace_period": {
@@ -4221,7 +4217,7 @@
 			},
             "minecraft:conditional_bandwidth_optimization": {
                 "default_values": {
-                    "max_optimized_distance": 60.0,
+                    "max_optimized_distance": 24.0,
                     "max_dropped_ticks": 20,
                     "use_motion_prediction_hints": true
                 },
@@ -4701,6 +4697,11 @@
 						"rift:dimetrodon_baby_wild"
 					]
 				},
+				"run_command": {
+					"command": [
+						"tellraw @p {\"rawtext\":[{\"translate\":\"notification.tame_success.text\",\"with\":{\"rawtext\":[{\"selector\":\"@s\"}]}}]}"
+					]
+				},
 				"set_property": {
 					"rift:behavior_state": "3",
                     "rift:affected_by_bola": false
@@ -4825,7 +4826,7 @@
 				},
 				"run_command": {
 					"command": [
-						"tellraw @p {\"rawtext\":[{\"text\":\"You have succesfully tamed a Dimetrodon!\"}]}"
+						"tellraw @p {\"rawtext\":[{\"translate\":\"notification.tame_success.text\",\"with\":{\"rawtext\":[{\"selector\":\"@s\"}]}}]}"
 					]
 				},
 				"set_property": {
@@ -5252,11 +5253,6 @@
 						"rift:tamed_can_move_flame",
 						"rift:tamed_can_move_frost"
 					]
-				},
-				"run_command": {
-					"command": [
-						"replaceitem entity @s slot.weapon.mainhand 0 air"
-					]
 				}
 			},
 			"rift:forced_flame_mode": {
@@ -5293,11 +5289,6 @@
 						"rift:tamed_can_move_flame",
 						"rift:tamed_can_move_frost"
 					]
-				},
-				"run_command": {
-					"command": [
-						"replaceitem entity @s slot.weapon.mainhand 0 air"
-					]
 				}
 			},
 			"rift:give_self_fire_weapon": {
@@ -5311,11 +5302,6 @@
 				"remove": {
 					"component_groups": [
 						"rift:use_flame_weapon"
-					]
-				},
-				"run_command": {
-					"command": [
-						"replaceitem entity @s slot.weapon.mainhand 0 air"
 					]
 				}
 			},
@@ -5335,11 +5321,6 @@
 						"rift:dimetrodon_forced_neutral_mode",
 						"rift:tamed_can_move_normal",
 						"rift:tamed_can_move_flame"
-					]
-				},
-				"run_command": {
-					"command": [
-						"replaceitem entity @s slot.weapon.mainhand 0 air"
 					]
 				}
 			},
@@ -5377,11 +5358,6 @@
 						"rift:dimetrodon_forced_neutral_mode",
 						"rift:tamed_can_move_frost",
 						"rift:tamed_can_move_flame"
-					]
-				},
-				"run_command": {
-					"command": [
-						"replaceitem entity @s slot.weapon.mainhand 0 air"
 					]
 				}
 			},
