@@ -746,11 +746,6 @@ world.afterEvents.entityHurt.subscribe((event) => {
         event.damageSource.damagingEntity.removeTag('chargeFour')
         event.damageSource.damagingEntity.removeTag('chargeFive')
     }
-    if (event.damageSource.damagingProjectile.typeId == 'rift:dilophosaurus_spit') {
-        event.hurtEntity.addEffect(MinecraftEffectTypes.poison, 200)
-        event.hurtEntity.addEffect(MinecraftEffectTypes.blindness, 200)
-        event.hurtEntity.addEffect(MinecraftEffectTypes.slowness, 200, { amplifier: 2 })
-    }
     if (event.damageSource.damagingEntity.typeId == 'rift:utahraptor' && event.damageSource.damagingEntity.hasTag('onGround') && Math.floor(Math.random() * 4) == 0) {
         event.hurtEntity.runCommandAsync(`ride @s evict_riders`)
     }
@@ -790,6 +785,11 @@ world.afterEvents.entityHurt.subscribe((event) => {
     }
     if (event.damageSource.damagingEntity.typeId == 'rift:ankylosaurus' && !event.damageSource.damagingEntity.hasTag('sheared')) {
         event.hurtEntity.applyKnockback(event.damageSource.damagingEntity.getViewDirection().x, event.damageSource.damagingEntity.getViewDirection().z, 5, 0.25)
+    }
+    if ((event.damageSource.damagingEntity.typeId == 'rift:dilophosaurus' || event.damageSource.damagingEntity.typeId == 'rift:cavern_dilophosaurus') && event.damageSource.damagingEntity.hasTag('sheared')) {
+        event.hurtEntity.addEffect(MinecraftEffectTypes.poison, 200)
+        event.hurtEntity.addEffect(MinecraftEffectTypes.blindness, 200)
+        event.hurtEntity.addEffect(MinecraftEffectTypes.slowness, 200, { amplifier: 2 })
     }
     if (event.hurtEntity.typeId == 'rift:tenontosaurus' && event.hurtEntity.getComponent('is_tamed') && event.hurtEntity.hasTag('ridden')) {
         event.damageSource.damagingEntity.addTag('tenontoTamedTarget')
@@ -842,3 +842,12 @@ world.afterEvents.entityHurt.subscribe((event) => {
         }, 20000)
     }
 })
+
+// world.afterEvents.projectileHit.subscribe((event) => {
+//     console.warn('yes')
+//     if (event.projectile.typeId == 'rift:dilophosaurus_spit') {
+//         event.getEntityHit().entity.addEffect(MinecraftEffectTypes.poison, 200)
+//         event.getEntityHit().entity.addEffect(MinecraftEffectTypes.blindness, 200)
+//         event.getEntityHit().entity.addEffect(MinecraftEffectTypes.slowness, 200, { amplifier: 2 })
+//     }
+// })

@@ -935,6 +935,9 @@
                     "transitions": [
                         {
                             "utahraptorDagger": "query.get_equipped_item_name('main_hand') == 'utahraptor_dagger'"
+                        },
+                        {
+                            "climbingPick": "query.get_equipped_item_name('main_hand') == 'climbing_pick'"
                         }
                     ]
                 },
@@ -949,6 +952,32 @@
                     ],
                     "on_exit": [
                         "/effect @s speed 0"
+                    ]
+                },
+                "climbingPick": {
+                    "transitions": [
+                        {
+                            "default": "query.get_equipped_item_name('main_hand') != 'climbing_pick'"
+                        },
+                        {
+                            "climbingPickClimbing": "query.is_jumping"
+                        }
+                    ]
+                },
+                "climbingPickClimbing": {
+                    "animations": [
+                        "animHoldingClimbingPick"
+                    ],
+                    "transitions": [
+                        {
+                            "default": "query.get_equipped_item_name('main_hand') != 'climbing_pick'"
+                        },
+                        {
+                            "climbingPick": "!query.is_jumping"
+                        }
+                    ],
+                    "on_exit": [
+                        "/effect @s levitation 0"
                     ]
                 }
             }

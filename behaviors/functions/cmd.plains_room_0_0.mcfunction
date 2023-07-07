@@ -1,2 +1,2 @@
-summon rift:predator_cavern_generator ~ ~ ~ rift:generate_room_0_0
+summon rift:predator_cavern_generator ~ ~ ~ rift:room_0_0
 setblock ~ ~ ~ air
