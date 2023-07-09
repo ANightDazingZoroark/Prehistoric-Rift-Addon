@@ -239,219 +239,219 @@ world.afterEvents.entityHurt.subscribe((event) => {
     }
     if (event.damageSource.damagingEntity.typeId == 'rift:utahraptor' && event.damageSource.damagingEntity.hasTag('tamed') && event.hurtEntity.getComponent('health').current <= 0) {
         if (exoticMeatDroppers.includes(event.hurtEntity.typeId)) {
-            event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('rift:raw_exotic_meat'), 3, 0), event.hurtEntity.location)
+            event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('rift:raw_exotic_meat'), 3), event.hurtEntity.location)
         }
         else if (fibrousMeatDroppers.includes(event.hurtEntity.typeId)) {
-            event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('rift:raw_fibrous_meat'), 3, 0), event.hurtEntity.location)
+            event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('rift:raw_fibrous_meat'), 3), event.hurtEntity.location)
         }
         else {
             switch (event.hurtEntity.typeId) {
                 case 'minecraft:pig':
-                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('minecraft:porkchop'), 3, 0), event.hurtEntity.location)
+                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('minecraft:porkchop'), 3), event.hurtEntity.location)
                     break
                 case 'minecraft:hoglin':
-                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('minecraft:porkchop'), 3, 0), event.hurtEntity.location)
+                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('minecraft:porkchop'), 3), event.hurtEntity.location)
                     break
                 case 'minecraft:sheep':
-                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('minecraft:mutton'), 3, 0), event.hurtEntity.location)
+                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('minecraft:mutton'), 3), event.hurtEntity.location)
                     break
                 case 'minecraft:cow':
-                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('minecraft:beef'), 3, 0), event.hurtEntity.location)
+                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('minecraft:beef'), 3), event.hurtEntity.location)
                     break
                 case 'minecraft:mooshroom':
-                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('minecraft:beef'), 3, 0), event.hurtEntity.location)
+                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('minecraft:beef'), 3), event.hurtEntity.location)
                     break
                 case 'minecraft:chicken':
-                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('minecraft:chicken'), 3, 0), event.hurtEntity.location)
+                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('minecraft:chicken'), 3), event.hurtEntity.location)
                     break
                 case 'minecraft:rabbit':
-                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('minecraft:rabbit'), 3, 0), event.hurtEntity.location)
+                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('minecraft:rabbit'), 3), event.hurtEntity.location)
                     break
                 case 'rift:dodo':
-                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('rift:raw_dodo_meat'), 3, 0), event.hurtEntity.location)
+                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('rift:raw_dodo_meat'), 3), event.hurtEntity.location)
                     break
                 case 'rift:parasaurolophus':
-                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('rift:raw_hadrosaur_meat'), 3, 0), event.hurtEntity.location)
+                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('rift:raw_hadrosaur_meat'), 3), event.hurtEntity.location)
                     break
                 case 'rift:tenontosaurus':
-                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('rift:raw_hadrosaur_meat'), 3, 0), event.hurtEntity.location)
+                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('rift:raw_hadrosaur_meat'), 3), event.hurtEntity.location)
                     break
             }
         }
     }
     if (event.damageSource.damagingEntity.typeId == 'rift:dimetrodon' && event.damageSource.damagingEntity.hasTag('tamed') && event.hurtEntity.getComponent('health').current <= 0) {
         if (exoticMeatDroppers.includes(event.hurtEntity.typeId)) {
-            event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('rift:raw_exotic_meat'), 3, 0), event.hurtEntity.location)
+            event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('rift:raw_exotic_meat'), 3), event.hurtEntity.location)
         }
         else if (fibrousMeatDroppers.includes(event.hurtEntity.typeId)) {
-            event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('rift:raw_fibrous_meat'), 3, 0), event.hurtEntity.location)
+            event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('rift:raw_fibrous_meat'), 3), event.hurtEntity.location)
         }
         else {
             switch (event.hurtEntity.typeId) {
                 case 'minecraft:pig':
-                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('minecraft:porkchop'), 3, 0), event.hurtEntity.location)
+                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('minecraft:porkchop'), 3), event.hurtEntity.location)
                     break
                 case 'minecraft:hoglin':
-                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('minecraft:porkchop'), 3, 0), event.hurtEntity.location)
+                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('minecraft:porkchop'), 3), event.hurtEntity.location)
                     break
                 case 'minecraft:sheep':
-                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('minecraft:mutton'), 3, 0), event.hurtEntity.location)
+                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('minecraft:mutton'), 3), event.hurtEntity.location)
                     break
                 case 'minecraft:cow':
-                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('minecraft:beef'), 3, 0), event.hurtEntity.location)
+                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('minecraft:beef'), 3), event.hurtEntity.location)
                     break
                 case 'minecraft:mooshroom':
-                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('minecraft:beef'), 3, 0), event.hurtEntity.location)
+                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('minecraft:beef'), 3), event.hurtEntity.location)
                     break
                 case 'minecraft:chicken':
-                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('minecraft:chicken'), 3, 0), event.hurtEntity.location)
+                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('minecraft:chicken'), 3), event.hurtEntity.location)
                     break
                 case 'minecraft:rabbit':
-                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('minecraft:rabbit'), 3, 0), event.hurtEntity.location)
+                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('minecraft:rabbit'), 3), event.hurtEntity.location)
                     break
                 case 'rift:dodo':
-                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('rift:raw_dodo_meat'), 3, 0), event.hurtEntity.location)
+                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('rift:raw_dodo_meat'), 3), event.hurtEntity.location)
                     break
                 case 'rift:parasaurolophus':
-                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('rift:raw_hadrosaur_meat'), 3, 0), event.hurtEntity.location)
+                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('rift:raw_hadrosaur_meat'), 3), event.hurtEntity.location)
                     break
                 case 'rift:tenontosaurus':
-                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('rift:raw_hadrosaur_meat'), 3, 0), event.hurtEntity.location)
+                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('rift:raw_hadrosaur_meat'), 3), event.hurtEntity.location)
                     break
                 case 'minecraft:cod':
-                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('minecraft:cod'), 1, 0), event.hurtEntity.location)
+                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('minecraft:cod'), 1), event.hurtEntity.location)
                     break
                 case 'minecraft:salmon':
-                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('minecraft:salmon'), 1, 0), event.hurtEntity.location)
+                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('minecraft:salmon'), 1), event.hurtEntity.location)
                     break
                 case 'minecraft:tropicalfish':
-                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('minecraft:tropical_fish'), 1, 0), event.hurtEntity.location)
+                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('minecraft:tropical_fish'), 1), event.hurtEntity.location)
                     break
                 case 'rift:megapiranha':
-                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('rift:raw_megapiranha'), 1, 0), event.hurtEntity.location)
+                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('rift:raw_megapiranha'), 1), event.hurtEntity.location)
                     break
             }
         }
     }
     if (event.damageSource.damagingEntity.typeId == 'rift:sarcosuchus' && event.damageSource.damagingEntity.hasTag('tamed') && event.hurtEntity.getComponent('health').current <= 0) {
         if (exoticMeatDroppers.includes(event.hurtEntity.typeId)) {
-            event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('rift:raw_exotic_meat'), 1, 0), event.hurtEntity.location)
+            event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('rift:raw_exotic_meat'), 1), event.hurtEntity.location)
         }
         else if (fibrousMeatDroppers.includes(event.hurtEntity.typeId)) {
-            event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('rift:raw_fibrous_meat'), 1, 0), event.hurtEntity.location)
+            event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('rift:raw_fibrous_meat'), 1), event.hurtEntity.location)
         }
         else {
             switch (event.hurtEntity.typeId) {
                 case 'minecraft:pig':
-                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('minecraft:porkchop'), 1, 0), event.hurtEntity.location)
+                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('minecraft:porkchop'), 1), event.hurtEntity.location)
                     break
                 case 'minecraft:hoglin':
-                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('minecraft:porkchop'), 1, 0), event.hurtEntity.location)
+                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('minecraft:porkchop'), 1), event.hurtEntity.location)
                     break
                 case 'minecraft:sheep':
-                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('minecraft:mutton'), 1, 0), event.hurtEntity.location)
+                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('minecraft:mutton'), 1), event.hurtEntity.location)
                     break
                 case 'minecraft:cow':
-                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('minecraft:beef'), 1, 0), event.hurtEntity.location)
+                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('minecraft:beef'), 1), event.hurtEntity.location)
                     break
                 case 'minecraft:mooshroom':
-                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('minecraft:beef'), 1, 0), event.hurtEntity.location)
+                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('minecraft:beef'), 1), event.hurtEntity.location)
                     break
                 case 'minecraft:chicken':
-                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('minecraft:chicken'), 1, 0), event.hurtEntity.location)
+                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('minecraft:chicken'), 1), event.hurtEntity.location)
                     break
                 case 'minecraft:rabbit':
-                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('minecraft:rabbit'), 1, 0), event.hurtEntity.location)
+                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('minecraft:rabbit'), 1), event.hurtEntity.location)
                     break
                 case 'rift:dodo':
-                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('rift:raw_dodo_meat'), 1, 0), event.hurtEntity.location)
+                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('rift:raw_dodo_meat'), 1), event.hurtEntity.location)
                     break
                 case 'rift:parasaurolophus':
-                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('rift:raw_hadrosaur_meat'), 1, 0), event.hurtEntity.location)
+                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('rift:raw_hadrosaur_meat'), 1), event.hurtEntity.location)
                     break
                 case 'rift:tenontosaurus':
-                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('rift:raw_hadrosaur_meat'), 1, 0), event.hurtEntity.location)
+                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('rift:raw_hadrosaur_meat'), 1), event.hurtEntity.location)
                     break
                 case 'minecraft:cod':
-                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('minecraft:cod'), 3, 0), event.hurtEntity.location)
+                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('minecraft:cod'), 3), event.hurtEntity.location)
                     break
                 case 'minecraft:salmon':
-                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('minecraft:salmon'), 3, 0), event.hurtEntity.location)
+                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('minecraft:salmon'), 3), event.hurtEntity.location)
                     break
                 case 'minecraft:tropicalfish':
-                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('minecraft:tropical_fish'), 3, 0), event.hurtEntity.location)
+                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('minecraft:tropical_fish'), 3), event.hurtEntity.location)
                     break
                 case 'rift:megapiranha':
-                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('rift:raw_megapiranha'), 3, 0), event.hurtEntity.location)
+                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('rift:raw_megapiranha'), 3), event.hurtEntity.location)
                     break
             }
         }
     }
     if (event.damageSource.damagingEntity.typeId == 'rift:anomalocaris' && event.damageSource.damagingEntity.hasTag('tamed') && event.hurtEntity.getComponent('health').current <= 0) {
         if (exoticMeatDroppers.includes(event.hurtEntity.typeId)) {
-            event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('rift:raw_exotic_meat'), 1, 0), event.hurtEntity.location)
+            event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('rift:raw_exotic_meat'), 1), event.hurtEntity.location)
         }
         else if (fibrousMeatDroppers.includes(event.hurtEntity.typeId)) {
-            event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('rift:raw_fibrous_meat'), 1, 0), event.hurtEntity.location)
+            event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('rift:raw_fibrous_meat'), 1), event.hurtEntity.location)
         }
         else {
             switch (event.hurtEntity.typeId) {
                 case 'minecraft:pig':
-                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('minecraft:porkchop'), 1, 0), event.hurtEntity.location)
+                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('minecraft:porkchop'), 1), event.hurtEntity.location)
                     break
                 case 'minecraft:hoglin':
-                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('minecraft:porkchop'), 1, 0), event.hurtEntity.location)
+                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('minecraft:porkchop'), 1), event.hurtEntity.location)
                     break
                 case 'minecraft:sheep':
-                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('minecraft:mutton'), 1, 0), event.hurtEntity.location)
+                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('minecraft:mutton'), 1), event.hurtEntity.location)
                     break
                 case 'minecraft:cow':
-                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('minecraft:beef'), 1, 0), event.hurtEntity.location)
+                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('minecraft:beef'), 1), event.hurtEntity.location)
                     break
                 case 'minecraft:mooshroom':
-                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('minecraft:beef'), 1, 0), event.hurtEntity.location)
+                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('minecraft:beef'), 1), event.hurtEntity.location)
                     break
                 case 'minecraft:chicken':
-                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('minecraft:chicken'), 1, 0), event.hurtEntity.location)
+                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('minecraft:chicken'), 1), event.hurtEntity.location)
                     break
                 case 'minecraft:rabbit':
-                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('minecraft:rabbit'), 1, 0), event.hurtEntity.location)
+                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('minecraft:rabbit'), 1), event.hurtEntity.location)
                     break
                 case 'rift:dodo':
-                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('rift:raw_dodo_meat'), 1, 0), event.hurtEntity.location)
+                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('rift:raw_dodo_meat'), 1), event.hurtEntity.location)
                     break
                 case 'rift:parasaurolophus':
-                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('rift:raw_hadrosaur_meat'), 1, 0), event.hurtEntity.location)
+                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('rift:raw_hadrosaur_meat'), 1), event.hurtEntity.location)
                     break
                 case 'rift:tenontosaurus':
-                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('rift:raw_hadrosaur_meat'), 1, 0), event.hurtEntity.location)
+                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('rift:raw_hadrosaur_meat'), 1), event.hurtEntity.location)
                     break
                 case 'minecraft:cod':
-                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('minecraft:cod'), 3, 0), event.hurtEntity.location)
+                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('minecraft:cod'), 3), event.hurtEntity.location)
                     break
                 case 'minecraft:salmon':
-                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('minecraft:salmon'), 3, 0), event.hurtEntity.location)
+                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('minecraft:salmon'), 3), event.hurtEntity.location)
                     break
                 case 'minecraft:tropicalfish':
-                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('minecraft:tropical_fish'), 3, 0), event.hurtEntity.location)
+                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('minecraft:tropical_fish'), 3), event.hurtEntity.location)
                     break
                 case 'rift:megapiranha':
-                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('rift:raw_megapiranha'), 3, 0), event.hurtEntity.location)
+                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('rift:raw_megapiranha'), 3), event.hurtEntity.location)
                     break
                 case 'minecraft:bee':
-                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('rift:raw_hemolymph'), 3, 0), event.hurtEntity.location)
+                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('rift:raw_hemolymph'), 3), event.hurtEntity.location)
                     break
                 case 'minecraft:spider':
-                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('rift:raw_hemolymph'), 3, 0), event.hurtEntity.location)
+                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('rift:raw_hemolymph'), 3), event.hurtEntity.location)
                     break
                 case 'minecraft:cave_spider':
-                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('rift:raw_hemolymph'), 3, 0), event.hurtEntity.location)
+                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('rift:raw_hemolymph'), 3), event.hurtEntity.location)
                     break
                 case 'minecraft:silverfish':
-                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('rift:raw_hemolymph'), 3, 0), event.hurtEntity.location)
+                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('rift:raw_hemolymph'), 3), event.hurtEntity.location)
                     break
                 case 'rift:anomalocaris':
-                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('rift:raw_hemolymph'), 3, 0), event.hurtEntity.location)
+                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('rift:raw_hemolymph'), 3), event.hurtEntity.location)
                     break
             }
         }
@@ -531,138 +531,138 @@ world.afterEvents.entityHurt.subscribe((event) => {
     }
     if (event.damageSource.damagingEntity.typeId == 'rift:direwolf' && event.damageSource.damagingEntity.hasTag('tamed') && event.hurtEntity.getComponent('health').current <= 0) {
         if (exoticMeatDroppers.includes(event.hurtEntity.typeId)) {
-            event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('rift:raw_exotic_meat'), 3, 0), event.hurtEntity.location)
+            event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('rift:raw_exotic_meat'), 3), event.hurtEntity.location)
         }
         else if (fibrousMeatDroppers.includes(event.hurtEntity.typeId)) {
-            event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('rift:raw_fibrous_meat'), 3, 0), event.hurtEntity.location)
+            event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('rift:raw_fibrous_meat'), 3), event.hurtEntity.location)
         }
         else {
             switch (event.hurtEntity.typeId) {
                 case 'minecraft:pig':
-                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('minecraft:porkchop'), 3, 0), event.hurtEntity.location)
+                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('minecraft:porkchop'), 3), event.hurtEntity.location)
                     break
                 case 'minecraft:hoglin':
-                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('minecraft:porkchop'), 3, 0), event.hurtEntity.location)
+                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('minecraft:porkchop'), 3), event.hurtEntity.location)
                     break
                 case 'minecraft:sheep':
-                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('minecraft:mutton'), 3, 0), event.hurtEntity.location)
+                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('minecraft:mutton'), 3), event.hurtEntity.location)
                     break
                 case 'minecraft:cow':
-                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('minecraft:beef'), 3, 0), event.hurtEntity.location)
+                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('minecraft:beef'), 3), event.hurtEntity.location)
                     break
                 case 'minecraft:mooshroom':
-                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('minecraft:beef'), 3, 0), event.hurtEntity.location)
+                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('minecraft:beef'), 3), event.hurtEntity.location)
                     break
                 case 'minecraft:chicken':
-                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('minecraft:chicken'), 3, 0), event.hurtEntity.location)
+                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('minecraft:chicken'), 3), event.hurtEntity.location)
                     break
                 case 'minecraft:rabbit':
-                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('minecraft:rabbit'), 3, 0), event.hurtEntity.location)
+                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('minecraft:rabbit'), 3), event.hurtEntity.location)
                     break
                 case 'rift:dodo':
-                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('rift:raw_dodo_meat'), 3, 0), event.hurtEntity.location)
+                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('rift:raw_dodo_meat'), 3), event.hurtEntity.location)
                     break
                 case 'rift:parasaurolophus':
-                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('rift:raw_hadrosaur_meat'), 3, 0), event.hurtEntity.location)
+                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('rift:raw_hadrosaur_meat'), 3), event.hurtEntity.location)
                     break
                 case 'rift:tenontosaurus':
-                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('rift:raw_hadrosaur_meat'), 3, 0), event.hurtEntity.location)
+                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('rift:raw_hadrosaur_meat'), 3), event.hurtEntity.location)
                     break
             }
         }
     }
     if (event.damageSource.damagingEntity.typeId == 'rift:baryonyx' && event.damageSource.damagingEntity.hasTag('tamed') && event.hurtEntity.getComponent('health').current <= 0) {
         if (exoticMeatDroppers.includes(event.hurtEntity.typeId)) {
-            event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('rift:raw_exotic_meat'), 3, 0), event.hurtEntity.location)
+            event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('rift:raw_exotic_meat'), 3), event.hurtEntity.location)
         }
         else if (fibrousMeatDroppers.includes(event.hurtEntity.typeId)) {
-            event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('rift:raw_fibrous_meat'), 3, 0), event.hurtEntity.location)
+            event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('rift:raw_fibrous_meat'), 3), event.hurtEntity.location)
         }
         else {
             switch (event.hurtEntity.typeId) {
                 case 'minecraft:pig':
-                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('minecraft:porkchop'), 3, 0), event.hurtEntity.location)
+                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('minecraft:porkchop'), 3), event.hurtEntity.location)
                     break
                 case 'minecraft:hoglin':
-                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('minecraft:porkchop'), 3, 0), event.hurtEntity.location)
+                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('minecraft:porkchop'), 3), event.hurtEntity.location)
                     break
                 case 'minecraft:sheep':
-                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('minecraft:mutton'), 3, 0), event.hurtEntity.location)
+                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('minecraft:mutton'), 3), event.hurtEntity.location)
                     break
                 case 'minecraft:cow':
-                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('minecraft:beef'), 3, 0), event.hurtEntity.location)
+                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('minecraft:beef'), 3), event.hurtEntity.location)
                     break
                 case 'minecraft:mooshroom':
-                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('minecraft:beef'), 3, 0), event.hurtEntity.location)
+                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('minecraft:beef'), 3), event.hurtEntity.location)
                     break
                 case 'minecraft:chicken':
-                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('minecraft:chicken'), 3, 0), event.hurtEntity.location)
+                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('minecraft:chicken'), 3), event.hurtEntity.location)
                     break
                 case 'minecraft:rabbit':
-                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('minecraft:rabbit'), 3, 0), event.hurtEntity.location)
+                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('minecraft:rabbit'), 3), event.hurtEntity.location)
                     break
                 case 'rift:dodo':
-                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('rift:raw_dodo_meat'), 3, 0), event.hurtEntity.location)
+                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('rift:raw_dodo_meat'), 3), event.hurtEntity.location)
                     break
                 case 'rift:parasaurolophus':
-                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('rift:raw_hadrosaur_meat'), 3, 0), event.hurtEntity.location)
+                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('rift:raw_hadrosaur_meat'), 3), event.hurtEntity.location)
                     break
                 case 'rift:tenontosaurus':
-                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('rift:raw_hadrosaur_meat'), 3, 0), event.hurtEntity.location)
+                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('rift:raw_hadrosaur_meat'), 3), event.hurtEntity.location)
                     break
                 case 'minecraft:cod':
-                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('minecraft:cod'), 3, 0), event.hurtEntity.location)
+                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('minecraft:cod'), 3), event.hurtEntity.location)
                     break
                 case 'minecraft:salmon':
-                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('minecraft:salmon'), 3, 0), event.hurtEntity.location)
+                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('minecraft:salmon'), 3), event.hurtEntity.location)
                     break
                 case 'minecraft:tropicalfish':
-                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('minecraft:tropical_fish'), 3, 0), event.hurtEntity.location)
+                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('minecraft:tropical_fish'), 3), event.hurtEntity.location)
                     break
                 case 'rift:megapiranha':
-                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('rift:raw_megapiranha'), 3, 0), event.hurtEntity.location)
+                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('rift:raw_megapiranha'), 3), event.hurtEntity.location)
                     break
             }
         }
     }
     if (event.damageSource.damagingEntity.typeId == 'rift:dilophosaurus' && event.damageSource.damagingEntity.hasTag('tamed') && event.hurtEntity.getComponent('health').current <= 0) {
         if (exoticMeatDroppers.includes(event.hurtEntity.typeId)) {
-            event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('rift:raw_exotic_meat'), 1, 0), event.hurtEntity.location)
+            event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('rift:raw_exotic_meat'), 1), event.hurtEntity.location)
         }
         else if (fibrousMeatDroppers.includes(event.hurtEntity.typeId)) {
-            event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('rift:raw_fibrous_meat'), 1, 0), event.hurtEntity.location)
+            event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('rift:raw_fibrous_meat'), 1), event.hurtEntity.location)
         }
         else {
             switch (event.hurtEntity.typeId) {
                 case 'minecraft:pig':
-                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('minecraft:porkchop'), 1, 0), event.hurtEntity.location)
+                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('minecraft:porkchop'), 1), event.hurtEntity.location)
                     break
                 case 'minecraft:hoglin':
-                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('minecraft:porkchop'), 1, 0), event.hurtEntity.location)
+                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('minecraft:porkchop'), 1), event.hurtEntity.location)
                     break
                 case 'minecraft:sheep':
-                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('minecraft:mutton'), 1, 0), event.hurtEntity.location)
+                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('minecraft:mutton'), 1), event.hurtEntity.location)
                     break
                 case 'minecraft:cow':
-                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('minecraft:beef'), 1, 0), event.hurtEntity.location)
+                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('minecraft:beef'), 1), event.hurtEntity.location)
                     break
                 case 'minecraft:mooshroom':
-                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('minecraft:beef'), 1, 0), event.hurtEntity.location)
+                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('minecraft:beef'), 1), event.hurtEntity.location)
                     break
                 case 'minecraft:chicken':
-                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('minecraft:chicken'), 1, 0), event.hurtEntity.location)
+                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('minecraft:chicken'), 1), event.hurtEntity.location)
                     break
                 case 'minecraft:rabbit':
-                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('minecraft:rabbit'), 1, 0), event.hurtEntity.location)
+                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('minecraft:rabbit'), 1), event.hurtEntity.location)
                     break
                 case 'rift:dodo':
-                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('rift:raw_dodo_meat'), 1, 0), event.hurtEntity.location)
+                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('rift:raw_dodo_meat'), 1), event.hurtEntity.location)
                     break
                 case 'rift:parasaurolophus':
-                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('rift:raw_hadrosaur_meat'), 1, 0), event.hurtEntity.location)
+                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('rift:raw_hadrosaur_meat'), 1), event.hurtEntity.location)
                     break
                 case 'rift:tenontosaurus':
-                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('rift:raw_hadrosaur_meat'), 1, 0), event.hurtEntity.location)
+                    event.hurtEntity.dimension.spawnItem(new ItemStack(ItemTypes.get('rift:raw_hadrosaur_meat'), 1), event.hurtEntity.location)
                     break
             }
         }
