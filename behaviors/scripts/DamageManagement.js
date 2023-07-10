@@ -786,10 +786,11 @@ world.afterEvents.entityHurt.subscribe((event) => {
     if (event.damageSource.damagingEntity.typeId == 'rift:ankylosaurus' && !event.damageSource.damagingEntity.hasTag('sheared')) {
         event.hurtEntity.applyKnockback(event.damageSource.damagingEntity.getViewDirection().x, event.damageSource.damagingEntity.getViewDirection().z, 5, 0.25)
     }
-    if ((event.damageSource.damagingEntity.typeId == 'rift:dilophosaurus' || event.damageSource.damagingEntity.typeId == 'rift:cavern_dilophosaurus') && event.damageSource.damagingEntity.hasTag('sheared')) {
+    if (event.damageSource.damagingProjectile.typeId == 'rift:dilophosaurus_spit') {
         event.hurtEntity.addEffect(MinecraftEffectTypes.poison, 200)
         event.hurtEntity.addEffect(MinecraftEffectTypes.blindness, 200)
         event.hurtEntity.addEffect(MinecraftEffectTypes.slowness, 200, { amplifier: 2 })
+        event.damageSource.damagingProjectile.triggerEvent('rift:commit_disappear')
     }
     if (event.hurtEntity.typeId == 'rift:tenontosaurus' && event.hurtEntity.getComponent('is_tamed') && event.hurtEntity.hasTag('ridden')) {
         event.damageSource.damagingEntity.addTag('tenontoTamedTarget')
@@ -840,6 +841,11 @@ world.afterEvents.entityHurt.subscribe((event) => {
         setTimeout(() => {
             event.damageSource.damagingEntity.runCommandAsync('tag @a remove bossOutroMusic')
         }, 20000)
+    }
+
+    if (saurophaganaxFood.includes(event.hurtEntity.typeId) && event.damageSource.damagingProjectile.typeId == 'rift:saurophaganax_light_blaster_light') {
+        event.hurtEntity.kill()
+        event.damageSource.damagingProjectile.triggerEvent('rift:affected_by_bola')
     }
 })
 
