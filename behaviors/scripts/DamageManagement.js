@@ -848,12 +848,3 @@ world.afterEvents.entityHurt.subscribe((event) => {
         event.damageSource.damagingProjectile.triggerEvent('rift:affected_by_bola')
     }
 })
-
-// world.afterEvents.projectileHit.subscribe((event) => {
-//     console.warn('yes')
-//     if (event.projectile.typeId == 'rift:dilophosaurus_spit') {
-//         event.getEntityHit().entity.addEffect(MinecraftEffectTypes.poison, 200)
-//         event.getEntityHit().entity.addEffect(MinecraftEffectTypes.blindness, 200)
-//         event.getEntityHit().entity.addEffect(MinecraftEffectTypes.slowness, 200, { amplifier: 2 })
-//     }
-// })

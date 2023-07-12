@@ -41,7 +41,7 @@
                 },
                 "minecraft:behavior.nearest_attackable_target": {
                     "priority": 2,
-                    "within_radius": 8.0,
+                    "within_radius": 12.0,
                     "must_see": true,
                     "entity_types": [
                         {
@@ -89,6 +89,20 @@
                     ]
                 }
             },
+            "rift:immediately_spawn_blighted": {
+				"minecraft:spawn_entity": {
+					"entities": [
+						{
+							"spawn_entity": "rift:blighted",
+                            "num_to_spawn": 4,
+							"single_use": true,
+							"min_wait_time": 0,
+							"max_wait_time": 0,
+							"spawn_event": "minecraft:entity_spawned"
+						}
+					]
+				}
+            },
             "rift:commit_disappear": {
                 "minecraft:instant_despawn": {}
             }
@@ -115,6 +129,24 @@
                 "triggers": [
                     {
 						"on_damage": {
+                            "filters": {
+                                "test": "has_ability",
+                                "subject": "other",
+                                "operator": "!=",
+                                "value": "invulnerable"
+                            },
+                            "event": "rift:on_destroy",
+                            "target": "self"
+						},
+                        "deals_damage": false
+                    },
+                    {
+						"on_damage": {
+                            "filters": {
+                                "test": "has_ability",
+                                "subject": "other",
+                                "value": "invulnerable"
+                            },
                             "event": "rift:commit_disappear",
                             "target": "self"
 						},
@@ -136,6 +168,14 @@
                 "remove": {
                     "component_groups": [
                         "rift:can_spawn_blighted"
+                    ]
+                }
+            },
+            "rift:on_destroy": {
+                "add": {
+                    "component_groups": [
+                        "rift:immediately_spawn_blighted",
+                        "rift:commit_disappear"
                     ]
                 }
             },
