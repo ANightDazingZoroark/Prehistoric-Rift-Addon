@@ -1,13 +1,13 @@
-import { MinecraftEffectTypes, world } from "@minecraft/server"
+import { EffectTypes, world } from "@minecraft/server"
 
 function damageOutput(entity, value) {
-    if (entity.getEffect(MinecraftEffectTypes.strength) && !entity.hasTag('chargeOne') && !entity.hasTag('chargeTwo') && !entity.hasTag('chargeThree') && !entity.hasTag('chargeFour') && !entity.hasTag('chargeFive')) {
-        for (let d = 0; d < entity.getEffect(MinecraftEffectTypes.strength).amplifier; d++) {
+    if (entity.getEffect(EffectTypes.get("strength")) && !entity.hasTag('chargeOne') && !entity.hasTag('chargeTwo') && !entity.hasTag('chargeThree') && !entity.hasTag('chargeFour') && !entity.hasTag('chargeFive')) {
+        for (let d = 0; d < entity.getEffect(EffectTypes.get("strength")).amplifier; d++) {
             value = value * 1.3 + 1
         }
     }
-    if (entity.getEffect(MinecraftEffectTypes.weakness) && !entity.hasTag('chargeOne') && !entity.hasTag('chargeTwo') && !entity.hasTag('chargeThree') && !entity.hasTag('chargeFour') && !entity.hasTag('chargeFive')) {
-        for (let d = 0; d < entity.getEffect(MinecraftEffectTypes.weakness).amplifier; d++) {
+    if (entity.getEffect(EffectTypes.get("weakness")) && !entity.hasTag('chargeOne') && !entity.hasTag('chargeTwo') && !entity.hasTag('chargeThree') && !entity.hasTag('chargeFour') && !entity.hasTag('chargeFive')) {
+        for (let d = 0; d < entity.getEffect(EffectTypes.get("weakness")).amplifier; d++) {
             value = value * 0.8 - 0.5
         }
     }

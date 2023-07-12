@@ -11,6 +11,11 @@
 					"type": "bool",
 					"default": false,
 					"client_sync": true
+                },
+				"rift:triceratops_shield_cooldown": {
+					"type": "bool",
+					"default": false,
+					"client_sync": true
                 }
             },
 			"animations": {
@@ -52,10 +57,12 @@
 				"contInformRidingHasCommandStaffUsability": "controller.animation.inform_riding_has_command_staff_usability",
 				"contComfortingDeathMessage": "controller.animation.comforting_death_message",
 				"contMovingTag": "controller.animation.add_moving_tag",
+                "contSneakingTag": "controller.animation.add_sneaking_tag",
 				"contBleed": "controller.animation.general_manage_bleed",
                 "contUseGunAbilities": "controller.animation.use_gun_abilities",
                 "contCavernBossMusic": "controller.animation.cavern_boss_music",
                 "contInfusedToolsEffects": "controller.animation.infused_tools_effects",
+                "contTriceratopsShieldCooldown": "controller.animation.triceratops_shield_cooldown",
                 // "contCardinalFacing": "controller.animation.cardinal_facing",
 				"animAbilitySwitchCooldown": "animation.command_staff_switch_cooldown",
 				"animClimbStay": "animation.stay_in_place",
@@ -89,7 +96,9 @@
                 "animBleedCountdown": "animation.general_bleed_countdown",
 
                 "animHoldingUtahraptorDagger": "animation.holding_utahraptor_dagger",
-                "animHoldingClimbingPick": "animation.holding_climbing_pick"
+                "animHoldingClimbingPick": "animation.holding_climbing_pick",
+                "animTriceratopsShieldUseUntilCooldown": "animation.triceratops_shield_use_until_cooldown",
+                "animTriceratopsShieldCooldown": "animation.triceratops_shield_cooldown"
 			},
 			"scripts": {
 				"animate": [
@@ -132,10 +141,12 @@
 					"contInformRidingHasCommandStaffUsability",
 					"contComfortingDeathMessage",
                     "contMovingTag",
+                    "contSneakingTag",
                     "contBleed",
                     "contUseGunAbilities",
                     "contCavernBossMusic",
-                    "contInfusedToolsEffects"
+                    "contInfusedToolsEffects",
+                    "contTriceratopsShieldCooldown"
 					// "contCardinalFacing"
 				]
 			}
@@ -401,6 +412,139 @@
 					"value": 32
 				}
 			},
+            "rift:using_triceratops_shield": {
+				"minecraft:area_attack": {
+					"damage_range": 0.5,
+					"damage_per_tick": 3,
+					"cause": "entity_attack",
+					"entity_filter": {
+                        "test": "has_component",
+                        "subject": "other",
+                        "operator": "!=",
+                        "value": "minecraft:is_tamed"
+					}
+				},
+				"minecraft:break_blocks": {
+					"breakable_blocks": [
+						"minecraft:planks",
+						"minecraft:leaves",
+						"minecraft:leaves2",
+						"minecraft:oak_log",
+						"minecraft:spruce_log",
+						"minecraft:birch_log",
+						"minecraft:jungle_log",
+						"minecraft:dark_oak_log",
+						"minecraft:acacia_log",
+						"minecraft:dirt",
+						"minecraft:grass",
+						"minecraft:double_plant",
+						"minecraft:glass",
+						"minecraft:stained_glass",
+						"minecraft:glass_pane",
+						"minecraft:stained_glass_pane",
+						"minecraft:wooden_slab",
+						"minecraft:double_wooden_slab",
+						"minecraft:wooden_door",
+						"minecraft:birch_door",
+						"minecraft:spruce_door",
+						"minecraft:acacia_door",
+						"minecraft:jungle_door",
+						"minecraft:dark_oak_door",
+						"minecraft:wood",
+						"minecraft:stripped_oak_log",
+						"minecraft:stripped_birch_log",
+						"minecraft:stripped_spruce_log",
+						"minecraft:stripped_jungle_log",
+						"minecraft:stripped_acacia_log",
+						"minecraft:stripped_dark_oak_log",
+						"minecraft:sand",
+						"minecraft:acacia_stairs",
+						"minecraft:birch_stairs",
+						"minecraft:dark_oak_stairs",
+						"minecraft:jungle_stairs",
+						"minecraft:oak_stairs",
+						"minecraft:spruce_stairs",
+						"minecraft:oak_fence",
+						"minecraft:spruce_fence",
+						"minecraft:birch_fence",
+						"minecraft:jungle_fence",
+						"minecraft:dark_oak_fence",
+						"minecraft:acacia_fence",
+						"minecraft:acacia_fence_gate",
+						"minecraft:birch_fence_gate",
+						"minecraft:dark_oak_fence_gate",
+						"minecraft:fence_gate",
+						"minecraft:jungle_fence_gate",
+						"minecraft:spruce_fence_gate",
+                        "minecraft:white_wool",
+                        "minecraft:orange_wool",
+                        "minecraft:magenta_wool",
+                        "minecraft:light_blue_wool",
+                        "minecraft:yellow_wool",
+                        "minecraft:lime_wool",
+                        "minecraft:pink_wool",
+                        "minecraft:gray_wool",
+                        "minecraft:light_gray_wool",
+                        "minecraft:cyan_wool",
+                        "minecraft:purple_wool",
+                        "minecraft:blue_wool",
+                        "minecraft:brown_wool",
+                        "minecraft:green_wool",
+                        "minecraft:red_wool",
+                        "minecraft:black_wool",
+						"minecraft:crimson_planks",
+						"minecraft:warped_planks",
+						"minecraft:mangrove_planks",
+						"minecraft:crimson_stem",
+						"minecraft:warped_stem",
+						"minecraft:stripped_crimson_stem",
+						"minecraft:stripped_warped_stem",
+						"minecraft:crimson_hyphae",
+						"minecraft:warped_hyphae",
+						"minecraft:stripped_crimson_hyphae",
+						"minecraft:stripped_warped_hyphae",
+						"minecraft:nether_wart_block",
+						"minecraft:warped_wart_block",
+						"minecraft:netherrack",
+						"minecraft:crimson_nylium",
+						"minecraft:warped_nylium",
+						"minecraft:soul_sand",
+						"minecraft:soul_soil",
+						"minecraft:crimson_door",
+						"minecraft:warped_door",
+						"minecraft:crimson_stairs",
+						"minecraft:warped_stairs",
+						"minecraft:crimson_fence",
+						"minecraft:warped_fence",
+						"minecraft:crimson_fence_gate",
+						"minecraft:warped_fence_gate",
+						"minecraft:mangrove_fence",
+						"minecraft:mangrove_fence_gate",
+						"minecraft:crimson_slab",
+						"minecraft:warped_slab",
+						"minecraft:mangrove_slab",
+						"minecraft:azalea_leaves",
+						"minecraft:azalea_leaves_flowered",
+						"minecraft:mangrove_leaves",
+						"minecraft:mangrove_roots",
+						"rift:oak_thatch_block",
+						"rift:spruce_thatch_block",
+						"rift:birch_thatch_block",
+						"rift:jungle_thatch_block",
+						"rift:dark_oak_thatch_block",
+						"rift:acacia_thatch_block",
+						"rift:crimson_thatch_block",
+						"rift:warped_thatch_block",
+						"rift:mangrove_thatch_block",
+						"rift:wooden_chair",
+						"rift:wooden_table",
+						"rift:glass_table",
+						"rift:sofa",
+						"rift:wooden_bench",
+						"rift:wooden_spiked_wall"
+					]
+				}
+            },
 			"rift:no_warning": {
 			  	"minecraft:is_ignited": {}
 			}
@@ -1003,6 +1147,27 @@
 						},
 						"damage_multiplier": 0.25,
 						"cause": "entity_attack"
+					},
+                    {
+						"on_damage": {
+							"filters": {
+                                "all_of": [
+                                    {
+                                        "test": "is_sneaking",
+                                        "subject": "self",
+                                        "value": true
+                                    },
+                                    {
+                                        "test": "has_equipment",
+                                        "subject": "self",
+                                        "domain": "hand",
+                                        "value": "rift:triceratops_shield"
+                                    }
+                                ]
+                            },
+                            "event": "rift:reduce_triceratops_shield_durability"
+						},
+                        "deals_damage": false
 					}
 				]
 			}
@@ -2697,6 +2862,29 @@
 				}
 			},
             "rift:reduce_climbing_pick_durability": {},
+            "rift:reduce_triceratops_shield_durability": {},
+            "rift:on_use_triceratops_shield": {
+                "add": {
+                    "component_groups": [
+                        "rift:using_triceratops_shield"
+                    ]
+                }
+            },
+            "rift:on_stop_use_triceratops_shield": {
+                "remove": {
+                    "component_groups": [
+                        "rift:using_triceratops_shield"
+                    ]
+                },
+                "set_property": {
+                    "rift:triceratops_shield_cooldown": true
+                }
+            },
+            "rift:stop_triceratops_shield_cooldown": {
+                "set_property": {
+                    "rift:triceratops_shield_cooldown": false
+                }
+            },
             "rift:start_bleeding": {
                 "set_property": {
                     "rift:bleeding": true

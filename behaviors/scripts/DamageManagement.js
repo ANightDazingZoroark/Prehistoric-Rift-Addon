@@ -1,4 +1,4 @@
-import { ItemTypes, ItemStack, world, MinecraftEffectTypes } from "@minecraft/server"
+import { ItemTypes, ItemStack, world, EffectTypes } from "@minecraft/server"
 import { clearTimeout, setTimeout } from "./externals/timers"
 
 let saurophaganaxFood = [
@@ -760,11 +760,11 @@ world.afterEvents.entityHurt.subscribe((event) => {
         event.hurtEntity.setOnFire(5, true)
     }
     if (event.damageSource.damagingEntity.typeId == 'rift:dimetrodon' && event.damageSource.damagingEntity.getComponent('is_charged')) {
-        event.hurtEntity.addEffect(MinecraftEffectTypes.weakness, 400, { amplifier: 2 })
-        event.hurtEntity.addEffect(MinecraftEffectTypes.slowness, 400, { amplifier: 2 })
+        event.hurtEntity.addEffect(EffectTypes.get("weakness"), 400, { amplifier: 2 })
+        event.hurtEntity.addEffect(EffectTypes.get("slowness"), 400, { amplifier: 2 })
     }
     if (event.damageSource.damagingEntity.typeId == 'rift:sarcosuchus' && event.damageSource.damagingEntity.hasTag('powered')) {
-        event.hurtEntity.addEffect(MinecraftEffectTypes.slowness, 600, { amplifier: 2 })
+        event.hurtEntity.addEffect(EffectTypes.get("slowness"), 600, { amplifier: 2 })
         console.warn('oof')
     }
     if (event.damageSource.damagingEntity.typeId == 'rift:anomalocaris') {
@@ -781,15 +781,15 @@ world.afterEvents.entityHurt.subscribe((event) => {
         event.hurtEntity.triggerEvent('rift:start_bleeding')
     }
     if (event.damageSource.damagingEntity.typeId == 'rift:baryonyx' && (event.damageSource.damagingEntity.hasTag('forcedClaw') || event.damageSource.damagingEntity.getComponent('mark_variant').value == 1)) {
-        event.hurtEntity.addEffect(MinecraftEffectTypes.poison, 200)
+        event.hurtEntity.addEffect(EffectTypes.get("poison"), 200)
     }
     if (event.damageSource.damagingEntity.typeId == 'rift:ankylosaurus' && !event.damageSource.damagingEntity.hasTag('sheared')) {
         event.hurtEntity.applyKnockback(event.damageSource.damagingEntity.getViewDirection().x, event.damageSource.damagingEntity.getViewDirection().z, 5, 0.25)
     }
     if (event.damageSource.damagingProjectile.typeId == 'rift:dilophosaurus_spit') {
-        event.hurtEntity.addEffect(MinecraftEffectTypes.poison, 200)
-        event.hurtEntity.addEffect(MinecraftEffectTypes.blindness, 200)
-        event.hurtEntity.addEffect(MinecraftEffectTypes.slowness, 200, { amplifier: 2 })
+        event.hurtEntity.addEffect(EffectTypes.get("poison"), 200)
+        event.hurtEntity.addEffect(EffectTypes.get("blindness"), 200)
+        event.hurtEntity.addEffect(EffectTypes.get("slowness"), 200, { amplifier: 2 })
         event.damageSource.damagingProjectile.triggerEvent('rift:commit_disappear')
     }
     if (event.hurtEntity.typeId == 'rift:tenontosaurus' && event.hurtEntity.getComponent('is_tamed') && event.hurtEntity.hasTag('ridden')) {
@@ -807,23 +807,16 @@ world.afterEvents.entityHurt.subscribe((event) => {
         }, 1000)
     }
     if (event.damageSource.damagingEntity.typeId == 'rift:direbear' && event.damageSource.damagingEntity.hasTag('stompMode')) {
-        event.hurtEntity.addEffect(MinecraftEffectTypes.slowness, 60, { amplifier: 255 })
-        event.hurtEntity.addEffect(MinecraftEffectTypes.weakness, 60, { amplifier: 255 })
+        event.hurtEntity.addEffect(EffectTypes.get("slowness"), 60, { amplifier: 255 })
+        event.hurtEntity.addEffect(EffectTypes.get("weakness"), 60, { amplifier: 255 })
     }
     if (event.damageSource.damagingEntity.typeId == 'rift:direbear_stomp') {
-        event.hurtEntity.addEffect(MinecraftEffectTypes.slowness, 60, { amplifier: 255 })
-        event.hurtEntity.addEffect(MinecraftEffectTypes.weakness, 60, { amplifier: 255 })
+        event.hurtEntity.addEffect(EffectTypes.get("slowness"), 60, { amplifier: 255 })
+        event.hurtEntity.addEffect(EffectTypes.get("weakness"), 60, { amplifier: 255 })
     }
     if (event.damageSource.damagingEntity.typeId == 'rift:direbear' && event.damageSource.damagingEntity.hasTag('clawMode')) {
         event.hurtEntity.triggerEvent('rift:stop_bleeding')
         event.hurtEntity.triggerEvent('rift:start_bleeding')
-    }
-
-    if (event.damageSource.damagingEntity.getComponent('equipment_inventory').getEquipmentSlot('mainhand').typeId == 'rift:ankylosaurus_mace') {
-        event.hurtEntity.applyKnockback(event.damageSource.damagingEntity.getViewDirection().x, event.damageSource.damagingEntity.getViewDirection().z, 3, 0.25)
-    }
-    if (event.damageSource.damagingEntity.getComponent('equipment_inventory').getEquipmentSlot('mainhand').typeId == 'rift:anomalocaris_dagger') {
-        event.damageSource.damagingEntity.getComponent('health').setCurrent(event.damageSource.damagingEntity.getComponent('health').current + 3)
     }
 
     if (!event.hurtEntity.hasTag('inWater') && affectedByBola.includes(event.hurtEntity.typeId) && event.damageSource.damagingProjectile.typeId == 'rift:bola_projectile') {

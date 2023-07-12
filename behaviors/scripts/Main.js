@@ -5,7 +5,6 @@ import 'ApatosaurusWeaponManagement.js'
 import 'BlockBreakManagement.js'
 // import 'BlockDetectManagement.js'
 import 'BlockInteractManagement.js'
-import 'ClimbingPick.js'
 import 'DamageManagement.js'
 import 'DirewolfManageSniff.js'
 import 'EatFromInventory.js'
@@ -15,6 +14,7 @@ import 'ItemUse.js'
 import 'JournalManagement.js'
 import 'RiftCommands.js'
 import 'SpawnManagement.js'
+import 'ToolManage.js'
 import { DynamicPropertiesDefinition, MinecraftEntityTypes, system, world } from "@minecraft/server"
 
 world.afterEvents.worldInitialize.subscribe((ev) => {
@@ -80,4 +80,4 @@ world.afterEvents.playerSpawn.subscribe(ev => {
     }
 })
 
-system.events.beforeWatchdogTerminate.subscribe(ev => ev.cancel = true)
+system.beforeEvents.watchdogTerminate.subscribe(ev => ev.cancel = true)

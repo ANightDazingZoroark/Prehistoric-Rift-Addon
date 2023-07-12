@@ -1,4 +1,4 @@
-import { system, MinecraftEffectTypes, world } from "@minecraft/server"
+import { system, EffectTypes, world } from "@minecraft/server"
 import { clearEntity } from "./externals/itemmanagement"
 
 let fiberBarEaters = [
@@ -37,30 +37,30 @@ world.afterEvents.dataDrivenEntityTriggerEvent.subscribe(data => {
                             try {
                                 switch (data.entity.getComponent('inventory').container.getItem(j).typeId) {
                                     case "rift:cooked_dodo_meat":
-                                        data.entity.addEffect(MinecraftEffectTypes.absorption, 600, { amplifier: 3 })
+                                        data.entity.addEffect(EffectTypes.get("absorption"), 600, { amplifier: 3 })
                                         break
                                     case "rift:cooked_hadrosaur_meat":
-                                        data.entity.addEffect(MinecraftEffectTypes.resistance, 1200, { amplifier: 3 })
+                                        data.entity.addEffect(EffectTypes.get("resistance"), 1200, { amplifier: 3 })
                                         break
                                     case "rift:mixed_meat":
-                                        data.entity.addEffect(MinecraftEffectTypes.absorption, 2400)
-                                        data.entity.addEffect(MinecraftEffectTypes.regeneration, 100, { amplifier: 1 })
+                                        data.entity.addEffect(EffectTypes.get("absorption"), 2400)
+                                        data.entity.addEffect(EffectTypes.get("regeneration"), 100, { amplifier: 1 })
                                         break
                                     case "minecraft:golden_apple":
-                                        data.entity.addEffect(MinecraftEffectTypes.absorption, 2400)
-                                        data.entity.addEffect(MinecraftEffectTypes.regeneration, 100, { amplifier: 1 })
+                                        data.entity.addEffect(EffectTypes.get("absorption"), 2400)
+                                        data.entity.addEffect(EffectTypes.get("regeneration"), 100, { amplifier: 1 })
                                         break
                                     case "rift:enchanted_mixed_meat":
-                                        data.entity.addEffect(MinecraftEffectTypes.absorption, 2400, { amplifier: 3 })
-                                        data.entity.addEffect(MinecraftEffectTypes.regeneration, 600, 1)
-                                        data.entity.addEffect(MinecraftEffectTypes.fire_resistance, 6000)
-                                        data.entity.addEffect(MinecraftEffectTypes.resistance, 6000)
+                                        data.entity.addEffect(EffectTypes.get("absorption"), 2400, { amplifier: 3 })
+                                        data.entity.addEffect(EffectTypes.get("regeneration"), 600, 1)
+                                        data.entity.addEffect(EffectTypes.get("fire_resistance"), 6000)
+                                        data.entity.addEffect(EffectTypes.get("resistance"), 6000)
                                         break
                                     case "minecraft:enchanted_golden_apple":
-                                        data.entity.addEffect(MinecraftEffectTypes.absorption, 2400, { amplifier: 3 })
-                                        data.entity.addEffect(MinecraftEffectTypes.regeneration, 600, { amplifier: 1 })
-                                        data.entity.addEffect(MinecraftEffectTypes.fire_resistance, 6000)
-                                        data.entity.addEffect(MinecraftEffectTypes.resistance, 6000)
+                                        data.entity.addEffect(EffectTypes.get("absorption"), 2400, { amplifier: 3 })
+                                        data.entity.addEffect(EffectTypes.get("regeneration"), 600, { amplifier: 1 })
+                                        data.entity.addEffect(EffectTypes.get("fire_resistance"), 6000)
+                                        data.entity.addEffect(EffectTypes.get("resistance"), 6000)
                                         break
                                 }
                             }

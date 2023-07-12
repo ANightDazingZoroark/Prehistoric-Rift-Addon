@@ -132,10 +132,10 @@ function changeCommandStaffSniffGui(hitEntity, entity) {
     })
 }
 
-world.afterEvents.entityHit.subscribe(({ hitEntity, entity }) => {
+world.afterEvents.entityHurt.subscribe((ev) => {
     try {
-        if (hitEntity.typeId == 'rift:direwolf' && hitEntity.getComponent('is_tamed') && !hitEntity.getComponent('is_baby')) {
-            sniffMainGui(hitEntity, entity)
+        if (ev.hurtEntity.typeId == 'rift:direwolf' && ev.hurtEntity.getComponent('is_tamed') && !ev.hurtEntity.getComponent('is_baby')) {
+            sniffMainGui(ev.hurtEntity, ev.damageSource.damagingEntity)
         }
     }
     catch (e) {}

@@ -928,6 +928,28 @@
                 }
             }
         },
+        "controller.animation.triceratops_shield_cooldown": {
+            "initial_state": "default",
+            "states": {
+                "default": {
+                    "transitions": [
+                        {
+                            "cooldown": "query.property('rift:triceratops_shield_cooldown') == true"
+                        }
+                    ]
+                },
+                "cooldown": {
+                    "animations": [
+                        "animTriceratopsShieldCooldown"
+                    ],
+                    "transitions": [
+                        {
+                            "default": "query.property('rift:triceratops_shield_cooldown') == false"
+                        }
+                    ]
+                }
+            }
+        },
         "controller.animation.infused_tools_effects": {
             "initial_state": "default",
             "states": {
@@ -938,7 +960,13 @@
                         },
                         {
                             "climbingPick": "query.get_equipped_item_name('main_hand') == 'climbing_pick'"
+                        },
+                        {
+                            "triceratopsShield": "(query.get_equipped_item_name('main_hand') == 'triceratops_shield' || query.get_equipped_item_name('off_hand') == 'triceratops_shield') && query.is_sprinting && query.property('rift:triceratops_shield_cooldown') == false"
                         }
+                    ],
+                    "on_entry": [
+                        "/effect @s speed 0"
                     ]
                 },
                 "utahraptorDagger": {
@@ -978,6 +1006,23 @@
                     ],
                     "on_exit": [
                         "/effect @s levitation 0"
+                    ]
+                },
+                "triceratopsShield": {
+                    "animations": [
+                        "animTriceratopsShieldUseUntilCooldown"
+                    ],
+                    "transitions": [
+                        {
+                            "default": "(query.get_equipped_item_name('main_hand') != 'triceratops_shield' && query.get_equipped_item_name('off_hand') != 'triceratops_shield') || !query.is_sprinting || query.all_animations_finished"
+                        }
+                    ],
+                    "on_entry": [
+                        "/effect @s speed 69420666 3 true",
+                        "@s rift:on_use_triceratops_shield"
+                    ],
+                    "on_exit": [
+                        "@s rift:on_stop_use_triceratops_shield"
                     ]
                 }
             }
