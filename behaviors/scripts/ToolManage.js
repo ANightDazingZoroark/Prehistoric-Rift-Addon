@@ -68,6 +68,17 @@ world.afterEvents.entityHurt.subscribe((ev) => {
     }
 })
 
+//for maintaining trike spear durability after throwing
 world.afterEvents.itemReleaseUse.subscribe((ev) => {
     ev.itemStack.getComponent('durability').damage += 1
+    ev.source.runCommandAsync('tag @e[type=rift:thrown_triceratops_spear, c=1] add '+'s'+ev.itemStack.getComponent('durability').damage)
+})
+
+world.afterEvents.dataDrivenEntityTriggerEvent.subscribe((ev) => {
+    if (ev.id == 'rift:give') {
+        let spear = new ItemStack(ItemTypes.get('rift:triceratops_spear'), 1)
+        spear.getComponent('durability').damage += parseInt(ev.entity.getTags()[0].split('')[1])
+        world.getDimension('overworld').spawnItem(spear, ev.entity.location)
+        ev.entity.triggerEvent('rift:commit_disappear')
+    }
 })
