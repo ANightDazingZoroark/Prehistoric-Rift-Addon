@@ -1,4 +1,10 @@
-import { world } from "@minecraft/server"
+import { system, ItemStack, ItemTypes, world } from "@minecraft/server"
+
+let triceratopsSpearVul = [
+    "rift:tyrannosaurus",
+    "minecraft:ender_dragon",
+    "minecraft:wither"
+]
 
 world.afterEvents.dataDrivenEntityTriggerEvent.subscribe((ev) => {
     if (ev.id == 'rift:reduce_climbing_pick_durability') {
@@ -49,10 +55,19 @@ world.afterEvents.dataDrivenEntityTriggerEvent.subscribe((ev) => {
 })
 
 world.afterEvents.entityHurt.subscribe((ev) => {
-    if (ev.damageSource.damagingEntity.getComponent('equipment_inventory').getEquipmentSlot('mainhand').typeId == 'rift:ankylosaurus_mace') {
-        ev.hurtEntity.applyKnockback(ev.damageSource.damagingEntity.getViewDirection().x, ev.damageSource.damagingEntity.getViewDirection().z, 3, 0.25)
+    const attacker = ev.damageSource.damagingEntity
+    const attacked = ev.hurtEntity
+    if (attacker.getComponent('equipment_inventory').getEquipmentSlot('mainhand').typeId == 'rift:ankylosaurus_mace') {
+        attacked.applyKnockback(attacker.getViewDirection().x, attacker.getViewDirection().z, 3, 0.25)
     }
-    if (ev.damageSource.damagingEntity.getComponent('equipment_inventory').getEquipmentSlot('mainhand').typeId == 'rift:anomalocaris_dagger') {
-        ev.damageSource.damagingEntity.getComponent('health').setCurrentValue(ev.damageSource.damagingEntity.getComponent('health').currentValue + 3)
+    if (attacker.getComponent('equipment_inventory').getEquipmentSlot('mainhand').typeId == 'rift:anomalocaris_dagger') {
+        attacker.getComponent('health').setCurrentValue(attacker.getComponent('health').currentValue + 3)
     }
+    if (attacker.getComponent('equipment_inventory').getEquipmentSlot('mainhand').typeId == 'rift:triceratops_spear' && triceratopsSpearVul.includes(attacked.typeId)) {
+        attacked.applyDamage(7)
+    }
+})
+
+world.afterEvents.itemReleaseUse.subscribe((ev) => {
+    ev.itemStack.getComponent('durability').damage += 1
 })

@@ -1,0 +1,97 @@
+{
+	"format_version": "1.12.0",
+	"minecraft:entity": {
+		"description": {
+			"identifier": "rift:thrown_triceratops_spear",
+			"is_spawnable": false,
+			"is_summonable": true,
+			"is_experimental": false,
+			"runtime_identifier":"minecraft:arrow"
+		},
+        "component_groups": {
+            "rift:commit_disappear": {
+                "minecraft:instant_despawn": {}
+            }
+        },
+        "components": {
+            "minecraft:physics": {},
+            "minecraft:projectile": {
+                "anchor": 1,
+                "gravity": 0.05,
+                "hit_sound": "bow.hit",
+                "offset": [
+                    0,
+                    -0.1,
+                    0
+                ],
+                "on_hit": {
+                    "definition_event": {
+                        "event_trigger": {
+                            "event": "rift:foo",
+                            "target": "self"
+                        }
+                    },
+                    "impact_damage": {
+                        "damage": 7,
+                        "destroy_on_hit": false,
+                        "knockback": true,
+                        "power_multiplier": 0.97,
+                        "semi_random_diff_damage": false
+                    },
+                    "stick_in_ground": {
+                        "shake_time": 0.35
+                    }
+                },
+                "power": 3,
+                "should_bounce": true,
+                "stop_on_hurt": true
+            },
+            "minecraft:pushable": {
+                "is_pushable": false,
+                "is_pushable_by_piston": true
+            },
+            "minecraft:entity_sensor": {
+                "event_filters": {
+                    "all_of": [
+                        {
+                            "test": "is_family",
+                            "subject": "other",
+                            "value": "player"
+                        },
+                        {
+                            "test": "on_ground",
+                            "subject": "self",
+                            "value": true
+                        }
+                    ]
+                },
+                "minimum_count": 1,
+                "relative_range": false,
+                "sensor_range": 0.7,
+                "event": "rift:give"
+            },
+            "minecraft:conditional_bandwidth_optimization": {
+                "default_values": {
+                    "max_dropped_ticks": 10,
+                    "max_optimized_distance": 16,
+                    "use_motion_prediction_hints": true
+                }
+            }
+        },
+        "events": {
+            "rift:give": {
+                "add": {
+                    "component_groups": [
+                        "rift:commit_disappear"
+                    ]
+                },
+                "run_command": {
+                    "command": [
+                        "playsound random.pop @p",
+                        "tag @a[c=1] add triceratopsSpear"
+                    ]
+                }
+            }
+        }
+    }
+}
