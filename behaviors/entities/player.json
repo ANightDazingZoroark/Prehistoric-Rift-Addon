@@ -703,24 +703,196 @@
 						"event": "rift:not_hard_mode",
 						"target": "self"
 					},
-					{
-						"filters": {
-							"test": "has_tag",
-							"subject": "self",
-							"value": "climbMount"
-						},
-						"event": "rift:riding_climber",
-						"target": "self"
-					},
-					{
-						"filters": {
-							"test": "has_tag",
-							"subject": "self",
-							"value": "nClimbMount"
-						},
-						"event": "rift:not_riding_climber",
-						"target": "self"
-					}
+                    {
+                        "filters": {
+                            "test": "in_water_or_rain",
+                            "subject": "self",
+                            "value": true
+                        },
+                        "event": "rift:in_cold_area",
+                        "target": "self"
+                    },
+                    {
+                        "filters": {
+                            "test": "is_altitude",
+                            "subject": "self",
+                            "operator": ">=",
+                            "value": 128
+                        },
+                        "event": "rift:in_cold_area",
+                        "target": "self"
+                    },
+                    {
+                        "filters": {
+                            "all_of": [
+                                {
+                                    "test": "is_underground",
+                                    "subject": "self",
+                                    "value": true
+                                },
+                                {
+                                    "test": "is_altitude",
+                                    "subject": "self",
+                                    "operator": "<=",
+                                    "value": 32
+                                }
+                            ]
+                        },
+                        "event": "rift:in_warm_area",
+                        "target": "self"
+                    },
+                    {
+                        "filters": {
+                            "all_of": [
+                                {
+                                    "test": "is_temperature_type",
+                                    "value": "warm"
+                                },
+                                {
+                                    "any_of": [
+                                        {
+                                            "test": "is_underground",
+                                            "subject": "self",
+                                            "value": false
+                                        },
+                                        {
+                                            "test": "is_altitude",
+                                            "subject": "self",
+                                            "operator": ">",
+                                            "value": 32
+                                        }
+                                    ]
+                                },
+                                {
+                                    "test": "is_altitude",
+                                    "subject": "self",
+                                    "operator": "<",
+                                    "value": 128
+                                },
+                                {
+                                    "test": "in_water_or_rain",
+                                    "subject": "self",
+                                    "value": false
+                                }
+                            ]
+                        },
+                        "event": "rift:in_warm_area",
+                        "target": "self"
+                    },
+                    {
+                        "filters": {
+                            "all_of": [
+                                {
+                                    "test": "is_temperature_type",
+                                    "value": "cold"
+                                },
+                                {
+                                    "any_of": [
+                                        {
+                                            "test": "is_underground",
+                                            "subject": "self",
+                                            "value": false
+                                        },
+                                        {
+                                            "test": "is_altitude",
+                                            "subject": "self",
+                                            "operator": ">",
+                                            "value": 32
+                                        }
+                                    ]
+                                },
+                                {
+                                    "test": "is_altitude",
+                                    "subject": "self",
+                                    "operator": "<",
+                                    "value": 128
+                                },
+                                {
+                                    "test": "in_water_or_rain",
+                                    "subject": "self",
+                                    "value": false
+                                }
+                            ]
+                        },
+                        "event": "rift:in_cold_area",
+                        "target": "self"
+                    },
+                    {
+                        "filters": {
+                            "all_of": [
+                                {
+                                    "test": "is_temperature_type",
+                                    "value": "ocean"
+                                },
+                                {
+                                    "any_of": [
+                                        {
+                                            "test": "is_underground",
+                                            "subject": "self",
+                                            "value": false
+                                        },
+                                        {
+                                            "test": "is_altitude",
+                                            "subject": "self",
+                                            "operator": ">",
+                                            "value": 32
+                                        }
+                                    ]
+                                },
+                                {
+                                    "test": "is_altitude",
+                                    "subject": "self",
+                                    "operator": "<",
+                                    "value": 128
+                                },
+                                {
+                                    "test": "in_water_or_rain",
+                                    "subject": "self",
+                                    "value": false
+                                }
+                            ]
+                        },
+                        "event": "rift:in_cold_area",
+                        "target": "self"
+                    },
+                    {
+                        "filters": {
+                            "all_of": [
+                                {
+                                    "test": "is_temperature_type",
+                                    "value": "mild"
+                                },
+                                {
+                                    "any_of": [
+                                        {
+                                            "test": "is_underground",
+                                            "subject": "self",
+                                            "value": false
+                                        },
+                                        {
+                                            "test": "is_altitude",
+                                            "subject": "self",
+                                            "operator": ">",
+                                            "value": 32
+                                        }
+                                    ]
+                                },
+                                {
+                                    "test": "is_altitude",
+                                    "subject": "self",
+                                    "operator": "<",
+                                    "value": 128
+                                },
+                                {
+                                    "test": "in_water_or_rain",
+                                    "subject": "self",
+                                    "value": false
+                                }
+                            ]
+                        },
+                        "event": "rift:in_neutral_area",
+                        "target": "self"
+                    }
 				]
 			},
 			"minecraft:scheduler": {
@@ -2885,6 +3057,33 @@
             "rift:stop_triceratops_shield_cooldown": {
                 "set_property": {
                     "rift:triceratops_shield_cooldown": false
+                }
+            },
+            "rift:in_warm_area": {
+                "run_command": {
+                    "command": [
+                        "tag @s add warmBiome",
+                        "tag @s remove coldBiome",
+                        "tag @s remove neutralBiome"
+                    ]
+                }
+            },
+            "rift:in_cold_area": {
+                "run_command": {
+                    "command": [
+                        "tag @s add coldBiome",
+                        "tag @s remove warmBiome",
+                        "tag @s remove neutralBiome"
+                    ]
+                }
+            },
+            "rift:in_neutral_area": {
+                "run_command": {
+                    "command": [
+                        "tag @s add neutralBiome",
+                        "tag @s remove warmBiome",
+                        "tag @s remove coldBiome"
+                    ]
                 }
             },
             "rift:start_bleeding": {

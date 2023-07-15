@@ -100,6 +100,13 @@ world.afterEvents.entityHurt.subscribe((ev) => {
     if (attacker.getComponent('equipment_inventory').getEquipmentSlot('mainhand').typeId == 'rift:baryonyx_dagger') {
         attacked.addEffect(EffectTypes.get("poison"), 200)
     }
+    if (attacker.getComponent('equipment_inventory').getEquipmentSlot('mainhand').typeId == 'rift:dimetrodon_dagger' && attacker.hasTag('warmBiome')) {
+        attacked.addEffect(EffectTypes.get("weakness"), 400, { amplifier: 2 })
+        attacked.addEffect(EffectTypes.get("slowness"), 400, { amplifier: 2 })
+    }
+    if (attacker.getComponent('equipment_inventory').getEquipmentSlot('mainhand').typeId == 'rift:dimetrodon_dagger' && attacker.hasTag('coldBiome')) {
+        attacked.setOnFire(5, true)
+    }
     if (attackingProjectile.typeId == 'rift:thrown_triceratops_spear' && triceratopsSpearVul.includes(attacked.typeId)) {
         attacked.applyDamage(7)
         let remDurability = parseInt(ev.entity.getTags()[0].split('')[1])
