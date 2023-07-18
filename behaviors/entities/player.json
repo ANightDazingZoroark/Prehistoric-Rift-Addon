@@ -549,6 +549,45 @@
 					]
 				}
             },
+            "rift:wearing_baryonyx_vest": {
+				"minecraft:mob_effect": {
+					"effect_range": 2,
+					"mob_effect": "poison",
+					"effect_time": 45,
+					"entity_filter": {
+						"all_of": [
+							{
+								"test": "in_water",
+								"subject": "self",
+								"value": true
+							},
+							{
+								"test": "in_water",
+								"subject": "other",
+								"value": true
+							},
+							{
+								"test": "has_mob_effect",
+								"subject": "other",
+								"operator": "!=",
+								"value": "poison"
+							},
+							{
+								"test": "has_component",
+								"subject": "other",
+								"operator": "!=",
+								"value": "minecraft:is_tamed"
+							},
+                            {
+                                "test": "is_family",
+                                "subject": "other",
+                                "operator": "!=",
+                                "value": "inanimate"
+                            }
+						]
+					}
+				}
+            },
 			"rift:no_warning": {
 			  	"minecraft:is_ignited": {}
 			}
@@ -3060,6 +3099,20 @@
             "rift:stop_triceratops_shield_cooldown": {
                 "set_property": {
                     "rift:triceratops_shield_cooldown": false
+                }
+            },
+            "rift:on_wear_baryonyx_vest": {
+                "add": {
+                    "component_groups": [
+                        "rift:wearing_baryonyx_vest"
+                    ]
+                }
+            },
+            "rift:on_stop_baryonyx_vest": {
+                "remove": {
+                    "component_groups": [
+                        "rift:wearing_baryonyx_vest"
+                    ]
                 }
             },
             "rift:in_warm_area": {
