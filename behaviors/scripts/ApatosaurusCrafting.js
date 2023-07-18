@@ -45,16 +45,16 @@ function mainBothGui(entity, hitEntity) {
     })
 }
 
-world.afterEvents.entityHit.subscribe(({ hitEntity, entity }) => {
+world.afterEvents.entityHurt.subscribe((ev) => {
     try {
-        if (hitEntity.typeId == 'rift:apatosaurus' && hitEntity.hasTag('hasCraftingTable') && !hitEntity.hasTag('hasFurnace')) {
-            mainCraftingTableGui(entity)
+        if (ev.hurtEntity.typeId == 'rift:apatosaurus' && ev.hurtEntity.hasTag('hasCraftingTable') && !ev.hurtEntity.hasTag('hasFurnace')) {
+            mainCraftingTableGui(ev.damageSource.damagingEntity)
         }
-        else if (hitEntity.typeId == 'rift:apatosaurus' && !hitEntity.hasTag('hasCraftingTable') && hitEntity.hasTag('hasFurnace')) {
-            mainFurnaceGui(entity, hitEntity)
+        else if (ev.hurtEntity.typeId == 'rift:apatosaurus' && !ev.hurtEntity.hasTag('hasCraftingTable') && ev.hurtEntity.hasTag('hasFurnace')) {
+            mainFurnaceGui(ev.damageSource.damagingEntity, ev.hurtEntity)
         }
-        else if (hitEntity.typeId == 'rift:apatosaurus' && hitEntity.hasTag('hasCraftingTable') && hitEntity.hasTag('hasFurnace')) {
-            mainBothGui(entity, hitEntity)
+        else if (ev.hurtEntity.typeId == 'rift:apatosaurus' && ev.hurtEntity.hasTag('hasCraftingTable') && ev.hurtEntity.hasTag('hasFurnace')) {
+            mainBothGui(ev.damageSource.damagingEntity, ev.hurtEntity)
         }
     }
     catch (e) {}

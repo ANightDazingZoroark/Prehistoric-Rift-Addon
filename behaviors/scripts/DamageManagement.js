@@ -1,4 +1,4 @@
-import { ItemStack, ItemTypes, world } from "@minecraft/server"
+import { EffectTypes, ItemStack, ItemTypes, world } from "@minecraft/server"
 
 let saurophaganaxFood = [
     'minecraft:blaze',
@@ -479,11 +479,11 @@ world.afterEvents.entityHurt.subscribe((event) => {
         event.hurtEntity.runCommandAsync(`ride @s evict_riders`)
     }
     if (event.damageSource.damagingEntity.typeId == 'rift:dimetrodon' && event.damageSource.damagingEntity.getComponent('is_charged')) {
-        event.hurtEntity.addEffect(MinecraftEffectTypes.weakness, 400, { amplifier: 2 })
-        event.hurtEntity.addEffect(MinecraftEffectTypes.slowness, 400, { amplifier: 2 })
+        event.hurtEntity.addEffect(EffectTypes.get("weakness"), 400, { amplifier: 2 })
+        event.hurtEntity.addEffect(EffectTypes.get("slowness"), 400, { amplifier: 2 })
     }
     if (event.damageSource.damagingEntity.typeId == 'rift:sarcosuchus' && event.damageSource.damagingEntity.hasTag('powered')) {
-        event.hurtEntity.addEffect(MinecraftEffectTypes.slowness, 600, { amplifier: 2 })
+        event.hurtEntity.addEffect(EffectTypes.get("slowness"), 600, { amplifier: 2 })
     }
     if (event.damageSource.damagingEntity.typeId == 'rift:anomalocaris') {
         event.damageSource.damagingEntity.getComponent('health').setCurrent(damagingEntity.getComponent('health').current + 4)
@@ -495,6 +495,6 @@ world.afterEvents.entityHurt.subscribe((event) => {
         event.hurtEntity.dimension.spawnEntity('rift:direwolf_explosion', event.hurtEntity.location)
     }
     if (event.damageSource.damagingEntity.typeId == 'rift:baryonyx' && event.damageSource.damagingEntity.hasTag('forcedClaw')) {
-        event.hurtEntity.addEffect(MinecraftEffectTypes.poison, 200)
+        event.hurtEntity.addEffect(EffectTypes.get("poison"), 200)
     }
 })

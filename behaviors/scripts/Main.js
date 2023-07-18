@@ -10,4 +10,4 @@ import { system, world } from "@minecraft/server"
 
 world.afterEvents.playerSpawn.subscribe(ev => ev.player.triggerEvent(`rift:remove_warning`))
 
-system.events.beforeWatchdogTerminate.subscribe(ev => ev.cancel = true)
+system.beforeEvents.watchdogTerminate.subscribe(ev => ev.cancel = true)
