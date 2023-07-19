@@ -1040,20 +1040,17 @@
                 }
             }
         },
-        "controller.animation.infused_armor_effects": {
+        "controller.animation.alpha_hide_armor_effects": {
             "initial_state": "default",
             "states": {
                 "default": {
                     "transitions": [
                         {
-                            "alphaHide": "query.is_item_name_any('slot.armor.head', 'rift:alpha_hide_helmet') && query.is_item_name_any('slot.armor.chest', 'rift:alpha_hide_chestplate') && query.is_item_name_any('slot.armor.legs', 'rift:alpha_hide_leggings') && query.is_item_name_any('slot.armor.feet', 'rift:alpha_hide_boots')"
-                        },
-                        {
-                            "baryonyxVest": "query.is_item_name_any('slot.armor.chest', 'rift:baryonyx_vest')"
+                            "wearing": "query.is_item_name_any('slot.armor.head', 'rift:alpha_hide_helmet') && query.is_item_name_any('slot.armor.chest', 'rift:alpha_hide_chestplate') && query.is_item_name_any('slot.armor.legs', 'rift:alpha_hide_leggings') && query.is_item_name_any('slot.armor.feet', 'rift:alpha_hide_boots')"
                         }
                     ]
                 },
-                "alphaHide": {
+                "wearing": {
                     "animations": [
                         "animWearingAlphaHideArmor"
                     ],
@@ -1062,8 +1059,20 @@
                             "default": "!query.is_item_name_any('slot.armor.head', 'rift:alpha_hide_helmet') || !query.is_item_name_any('slot.armor.chest', 'rift:alpha_hide_chestplate') || !query.is_item_name_any('slot.armor.legs', 'rift:alpha_hide_leggings') || !query.is_item_name_any('slot.armor.feet', 'rift:alpha_hide_boots')"
                         }
                     ]
+                }
+            }
+        },
+        "controller.animation.baryonyx_vest_effects": {
+            "initial_state": "default",
+            "states": {
+                "default": {
+                    "transitions": [
+                        {
+                            "wearing": "query.is_item_name_any('slot.armor.chest', 'rift:baryonyx_vest')"
+                        }
+                    ]
                 },
-                "baryonyxVest": {
+                "wearing": {
                     "transitions": [
                         {
                             "default": "!query.is_item_name_any('slot.armor.chest', 'rift:baryonyx_vest')"
@@ -1074,6 +1083,50 @@
                     ],
                     "on_exit": [
                         "@s rift:on_stop_baryonyx_vest"
+                    ]
+                }
+            }
+        },
+        "controller.animation.sarcosuchus_boots_effects": {
+            "initial_state": "default",
+            "states": {
+                "default": {
+                    "transitions": [
+                        {
+                            "wearingLand": "query.is_item_name_any('slot.armor.feet', 'rift:sarcosuchus_boots') && !query.is_in_water"
+                        },
+                        {
+                            "wearingWater": "query.is_item_name_any('slot.armor.feet', 'rift:sarcosuchus_boots') && query.is_in_water"
+                        }
+                    ],
+                    "on_entry": [
+                        "@s rift:on_stop_sarcosuchus_boots"
+                    ]
+                },
+                "wearingLand": {
+                    "transitions": [
+                        {
+                            "default": "!query.is_item_name_any('slot.armor.feet', 'rift:sarcosuchus_boots')"
+                        },
+                        {
+                            "wearingWater": "query.is_in_water"
+                        }
+                    ],
+                    "on_entry": [
+                        "@s rift:on_wear_sarcosuchus_boots_land"
+                    ]
+                },
+                "wearingWater": {
+                    "transitions": [
+                        {
+                            "default": "!query.is_item_name_any('slot.armor.feet', 'rift:sarcosuchus_boots')"
+                        },
+                        {
+                            "wearingLand": "!query.is_in_water"
+                        }
+                    ],
+                    "on_entry": [
+                        "@s rift:on_wear_sarcosuchus_boots_water"
                     ]
                 }
             }

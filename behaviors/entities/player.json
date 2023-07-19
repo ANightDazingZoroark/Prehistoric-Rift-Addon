@@ -1,5 +1,5 @@
 {
-	"format_version": "1.17.0",
+	"format_version": "1.18.20",
 	"minecraft:entity": {
 		"description": {
 			"identifier": "minecraft:player",
@@ -62,7 +62,9 @@
                 "contUseGunAbilities": "controller.animation.use_gun_abilities",
                 "contCavernBossMusic": "controller.animation.cavern_boss_music",
                 "contInfusedToolsEffects": "controller.animation.infused_tools_effects",
-                "contInfusedArmorEffects": "controller.animation.infused_armor_effects",
+                "contAlphaHideArmorEffects": "controller.animation.alpha_hide_armor_effects",
+                "contBaryonyxVestEffects": "controller.animation.baryonyx_vest_effects",
+                "contSarcosuchusBootsEffects": "controller.animation.sarcosuchus_boots_effects",
                 "contTriceratopsShieldCooldown": "controller.animation.triceratops_shield_cooldown",
                 // "contCardinalFacing": "controller.animation.cardinal_facing",
 				"animAbilitySwitchCooldown": "animation.command_staff_switch_cooldown",
@@ -149,7 +151,9 @@
                     "contUseGunAbilities",
                     "contCavernBossMusic",
                     "contInfusedToolsEffects",
-                    "contInfusedArmorEffects",
+                    "contAlphaHideArmorEffects",
+                    "contBaryonyxVestEffects",
+                    "contSarcosuchusBootsEffects",
                     "contTriceratopsShieldCooldown"
 					// "contCardinalFacing"
 				]
@@ -588,6 +592,30 @@
 					}
 				}
             },
+            "rift:default_movement": {
+                "minecraft:movement": {
+                    "value": 0.1
+                },
+                "minecraft:underwater_movement": {
+                    "value": 0.02
+                }
+            },
+            "rift:sarcosuchus_boots_land_movement": {
+                "minecraft:movement": {
+                    "value": 0.01
+                },
+                "minecraft:underwater_movement": {
+                    "value": 0.15
+                }
+            },
+            "rift:sarcosuchus_boots_water_movement": {
+                "minecraft:movement": {
+                    "value": 0.1
+                },
+                "minecraft:underwater_movement": {
+                    "value": 0.15
+                }
+            },
 			"rift:no_warning": {
 			  	"minecraft:is_ignited": {}
 			}
@@ -613,6 +641,9 @@
 			"minecraft:movement": {
 				"value": 0.1
 			},
+            "minecraft:underwater_movement": {
+                "value": 0.02
+            },
 			"minecraft:hurt_on_condition": {
 				"damage_conditions": [
 					{
@@ -627,16 +658,28 @@
 					}
 				]
 			},
-			"minecraft:attack": {
-				"damage": 1
-			},
-			"minecraft:player.saturation": {
-				"value": 20
-			},
-			"minecraft:player.exhaustion": {
-				"value": 0,
-				"max": 4
-			},
+            "minecraft:attack": {
+                "damage": 1
+            },
+            "minecraft:exhaustion_values": {
+                "heal": 6,
+                "jump": 0.05,
+                "sprint_jump": 0.2,
+                "mine": 0.005,
+                "attack": 0.1,
+                "damage": 0.1,
+                "walk": 0.0,
+                "sprint": 0.1,
+                "swim": 0.01
+            },
+            "minecraft:player.saturation": {
+                "value": 5,
+                "max": 20
+            },
+            "minecraft:player.exhaustion": {
+                "value": 0,
+                "max": 20
+            },
 			"minecraft:player.level": {
 				"value": 0,
 				"max": 24791
@@ -655,7 +698,9 @@
 				"always_show": true,
 				"allow_name_tag_renaming": false
 			},
-			"minecraft:physics": {},
+            "minecraft:physics": {
+                "push_towards_closest_space": true
+            },
 			"minecraft:pushable": {
 				"is_pushable": false,
 				"is_pushable_by_piston": true
@@ -692,7 +737,7 @@
 					}
 				]
 			},
-			"minecraft:scaffolding_climber": {},
+			"minecraft:block_climber": {},
 			"minecraft:environment_sensor": {
 				"triggers": [
 					{
@@ -3112,6 +3157,45 @@
                 "remove": {
                     "component_groups": [
                         "rift:wearing_baryonyx_vest"
+                    ]
+                }
+            },
+            "rift:on_wear_sarcosuchus_boots_land": {
+                "add": {
+                    "component_groups": [
+                        "rift:sarcosuchus_boots_land_movement"
+                    ]
+                },
+                "remove": {
+                    "component_groups": [
+                        "rift:default_movement",
+                        "rift:sarcosuchus_boots_water_movement"
+                    ]
+                }
+            },
+            "rift:on_wear_sarcosuchus_boots_water": {
+                "add": {
+                    "component_groups": [
+                        "rift:sarcosuchus_boots_water_movement"
+                    ]
+                },
+                "remove": {
+                    "component_groups": [
+                        "rift:default_movement",
+                        "rift:sarcosuchus_boots_land_movement"
+                    ]
+                }
+            },
+            "rift:on_stop_sarcosuchus_boots": {
+                "add": {
+                    "component_groups": [
+                        "rift:default_movement"
+                    ]
+                },
+                "remove": {
+                    "component_groups": [
+                        "rift:sarcosuchus_boots_land_movement",
+                        "rift:sarcosuchus_boots_water_movement"
                     ]
                 }
             },
