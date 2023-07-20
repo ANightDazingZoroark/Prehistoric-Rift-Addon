@@ -962,14 +962,8 @@
                             "climbingPick": "query.get_equipped_item_name('main_hand') == 'climbing_pick'"
                         },
                         {
-                            "triceratopsShield": "(query.get_equipped_item_name('main_hand') == 'triceratops_shield' || query.get_equipped_item_name('off_hand') == 'triceratops_shield') && query.is_sprinting && query.property('rift:triceratops_shield_cooldown') == false"
-                        },
-                        {
                             "tenontosaurusCharmer": "query.get_equipped_item_name('main_hand') == 'tenontosaurus_charmer' || query.get_equipped_item_name('off_hand') == 'tenontosaurus_charmer'"
                         }
-                    ],
-                    "on_entry": [
-                        "/effect @s speed 0"
                     ]
                 },
                 "utahraptorDagger": {
@@ -1011,6 +1005,28 @@
                         "/effect @s levitation 0"
                     ]
                 },
+                "tenontosaurusCharmer": {
+                    "animations": [
+                        "animHoldingTenontosaurusCharmer"
+                    ],
+                    "transitions": [
+                        {
+                            "default": "query.get_equipped_item_name('main_hand') != 'tenontosaurus_charmer' && query.get_equipped_item_name('off_hand') != 'tenontosaurus_charmer'"
+                        }
+                    ]
+                }
+            }
+        },
+        "controller.animation.infused_shields_effects": {
+            "initial_state": "default",
+            "states": {
+                "default": {
+                    "transitions": [
+                        {
+                            "triceratopsShield": "(query.get_equipped_item_name('main_hand') == 'triceratops_shield' || query.get_equipped_item_name('off_hand') == 'triceratops_shield') && query.is_sprinting && query.property('rift:triceratops_shield_cooldown') == false"
+                        }
+                    ]
+                },
                 "triceratopsShield": {
                     "animations": [
                         "animTriceratopsShieldUseUntilCooldown"
@@ -1025,17 +1041,8 @@
                         "@s rift:on_use_triceratops_shield"
                     ],
                     "on_exit": [
-                        "@s rift:on_stop_use_triceratops_shield"
-                    ]
-                },
-                "tenontosaurusCharmer": {
-                    "animations": [
-                        "animHoldingTenontosaurusCharmer"
-                    ],
-                    "transitions": [
-                        {
-                            "default": "query.get_equipped_item_name('main_hand') != 'tenontosaurus_charmer' && query.get_equipped_item_name('off_hand') != 'tenontosaurus_charmer'"
-                        }
+                        "@s rift:on_stop_use_triceratops_shield",
+                        "/effect @s speed 0"
                     ]
                 }
             }
@@ -1127,6 +1134,31 @@
                     ],
                     "on_entry": [
                         "@s rift:on_wear_sarcosuchus_boots_water"
+                    ]
+                }
+            }
+        },
+        "controller.animation.sprinter_boots_effects": {
+            "initial_state": "default",
+            "states": {
+                "default": {
+                    "transitions": [
+                        {
+                            "wearing": "query.is_item_name_any('slot.armor.feet', 'rift:sprinter_boots') && query.is_sprinting"
+                        }
+                    ]
+                },
+                "wearing": {
+                    "transitions": [
+                        {
+                            "default": "!query.is_item_name_any('slot.armor.feet', 'rift:sprinter_boots') || !query.is_sprinting"
+                        }
+                    ],
+                    "on_entry": [
+                        "/effect @s speed 69420666 2 true"
+                    ],
+                    "on_exit": [
+                        "/effect @s speed 0"
                     ]
                 }
             }
