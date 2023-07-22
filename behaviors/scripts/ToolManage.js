@@ -81,6 +81,19 @@ world.afterEvents.dataDrivenEntityTriggerEvent.subscribe((ev) => {
         }
         catch (e) {}
     }
+
+    if (ev.id == 'rift:reduce_ankylosaurus_chestplate_durability') {
+        const chest = ev.entity.getComponent('equipment_inventory').getEquipment('chest')
+        const durability = chest.getComponent('durability')
+        durability.damage += 10
+        if (durability.damage < durability.maxDurability) {
+            ev.entity.runCommandAsync('replaceitem entity @s[hasitem={item=rift:ankylosaurus_chestplate, location=slot.armor.chest}] slot.armor.chest 0 rift:ankylosaurus_chestplate 1 '+durability.damage)
+        }
+        else {
+            ev.entity.getComponent('equipment_inventory').setEquipment('chest')
+            ev.entity.runCommandAsync('playsound random.break @a[r=3]')
+        }
+    }
 })
 
 world.afterEvents.entityHurt.subscribe((ev) => {
@@ -107,6 +120,9 @@ world.afterEvents.entityHurt.subscribe((ev) => {
     if (attacker.getComponent('equipment_inventory').getEquipmentSlot('mainhand').typeId == 'rift:dimetrodon_dagger' && attacker.hasTag('coldBiome')) {
         attacked.setOnFire(5, true)
     }
+    if (attacked.getComponent('equipment_inventory').getEquipmentSlot('chest').typeId == 'rift:ankylosaurus_chestplate') {
+        attacker.applyDamage(2)
+    }
     if (attackingProjectile.typeId == 'rift:thrown_triceratops_spear' && triceratopsSpearVul.includes(attacked.typeId)) {
         attacked.applyDamage(7)
         let remDurability = parseInt(ev.entity.getTags()[0].split('')[1])
@@ -127,7 +143,7 @@ world.afterEvents.dataDrivenEntityTriggerEvent.subscribe((ev) => {
     if (ev.id == 'rift:give') {
         let spear = new ItemStack(ItemTypes.get('rift:triceratops_spear'), 1)
         spear.getComponent('durability').damage += parseInt(ev.entity.getTags()[0].split('')[1])
-        world.getDimension('overworld').spawnItem(spear, ev.entity.location)
+        ev.entity.dimension.spawnItem(spear, ev.entity.location)
         ev.entity.triggerEvent('rift:commit_disappear')
     }
 })

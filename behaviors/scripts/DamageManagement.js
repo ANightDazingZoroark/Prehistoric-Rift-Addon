@@ -146,32 +146,32 @@ function getPlaceCoords(entity) {
 
 world.afterEvents.entityHurt.subscribe((event) => {
     if ((event.damageSource.damagingEntity.typeId == 'minecraft:player' || event.damageSource.damagingEntity.hasTag('tamed')) && event.hurtEntity.typeId == 'minecraft:cod' && event.hurtEntity.getComponent('health').current <= 0) {
-        world.getDimension('overworld').runCommandAsync('loot spawn '+getPlaceCoords(event.hurtEntity.location)+' loot "entities/fish"')
+        event.hurtEntity.dimension.runCommandAsync('loot spawn '+getPlaceCoords(event.hurtEntity.location)+' loot "entities/fish"')
     }
     if ((event.damageSource.damagingEntity.typeId == 'minecraft:player' || event.damageSource.damagingEntity.hasTag('tamed')) && event.hurtEntity.typeId == 'minecraft:salmon' && event.hurtEntity.getComponent('health').current <= 0) {
         switch (event.damageSource.damagingEntity.getComponent('variant').value) {
             case 0:
-                world.getDimension('overworld').runCommandAsync('loot spawn '+getPlaceCoords(event.hurtEntity.location)+' loot "entities/salmon_normal"')
+                event.hurtEntity.dimension.runCommandAsync('loot spawn '+getPlaceCoords(event.hurtEntity.location)+' loot "entities/salmon_normal"')
                 break
             case 1:
-                world.getDimension('overworld').runCommandAsync('loot spawn '+getPlaceCoords(event.hurtEntity.location)+' loot "entities/salmon_normal"')
+                event.hurtEntity.dimension.runCommandAsync('loot spawn '+getPlaceCoords(event.hurtEntity.location)+' loot "entities/salmon_normal"')
                 break
             case 2:
-                world.getDimension('overworld').runCommandAsync('loot spawn '+getPlaceCoords(event.hurtEntity.location)+' loot "entities/salmon_large"')
+                event.hurtEntity.dimension.runCommandAsync('loot spawn '+getPlaceCoords(event.hurtEntity.location)+' loot "entities/salmon_large"')
                 break
         }
     }
     if ((event.damageSource.damagingEntity.typeId == 'minecraft:player' || event.damageSource.damagingEntity.hasTag('tamed')) && event.hurtEntity.typeId == 'minecraft:tropicalfish' && event.hurtEntity.getComponent('health').current <= 0) {
-        world.getDimension('overworld').runCommandAsync('loot spawn '+getPlaceCoords(event.hurtEntity.location)+' loot "entities/tropicalfish"')
+        event.hurtEntity.dimension.runCommandAsync('loot spawn '+getPlaceCoords(event.hurtEntity.location)+' loot "entities/tropicalfish"')
     }
     if ((event.damageSource.damagingEntity.typeId == 'minecraft:player' || event.damageSource.damagingEntity.hasTag('tamed')) && event.hurtEntity.typeId == 'minecraft:pufferfish' && event.hurtEntity.getComponent('health').current <= 0) {
-        world.getDimension('overworld').runCommandAsync('loot spawn '+getPlaceCoords(event.hurtEntity.location)+' loot "entities/pufferfish"')
+        event.hurtEntity.dimension.runCommandAsync('loot spawn '+getPlaceCoords(event.hurtEntity.location)+' loot "entities/pufferfish"')
     }
     if ((event.damageSource.damagingEntity.typeId == 'minecraft:player' || event.damageSource.damagingEntity.hasTag('tamed')) && event.hurtEntity.typeId == 'rift:coelacanth' && event.hurtEntity.getComponent('health').current <= 0) {
-        world.getDimension('overworld').runCommandAsync('loot spawn '+getPlaceCoords(event.hurtEntity.location)+' loot "entities/coelacanth.loot"')
+        event.hurtEntity.dimension.runCommandAsync('loot spawn '+getPlaceCoords(event.hurtEntity.location)+' loot "entities/coelacanth.loot"')
     }
     if ((event.damageSource.damagingEntity.typeId == 'minecraft:player' || event.damageSource.damagingEntity.hasTag('tamed')) && event.hurtEntity.typeId == 'rift:megapiranha' && event.hurtEntity.getComponent('health').current <= 0) {
-        world.getDimension('overworld').runCommandAsync('loot spawn '+getPlaceCoords(event.hurtEntity.location)+' loot "entities/megapiranha.loot"')
+        event.hurtEntity.dimension.runCommandAsync('loot spawn '+getPlaceCoords(event.hurtEntity.location)+' loot "entities/megapiranha.loot"')
     }
 
     if (event.damageSource.damagingEntity.typeId == 'rift:tyrannosaurus' && event.damageSource.damagingEntity.hasTag('tamed') && event.hurtEntity.getComponent('health').current <= 0) {

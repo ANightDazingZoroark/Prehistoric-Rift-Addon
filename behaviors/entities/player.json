@@ -68,6 +68,7 @@
                 "contSarcosuchusBootsEffects": "controller.animation.sarcosuchus_boots_effects",
                 "contSprinterBootsEffects": "controller.animation.sprinter_boots_effects",
                 "contWaterBreatherEffects": "controller.animation.water_breather_effects",
+                "contAnkylosaurusChestplateEffects": "controller.animation.ankylosaurus_chestplate_effects",
                 "contTriceratopsShieldCooldown": "controller.animation.triceratops_shield_cooldown",
                 // "contCardinalFacing": "controller.animation.cardinal_facing",
 				"animAbilitySwitchCooldown": "animation.command_staff_switch_cooldown",
@@ -160,6 +161,7 @@
                     "contSarcosuchusBootsEffects",
                     "contSprinterBootsEffects",
                     "contWaterBreatherEffects",
+                    "contAnkylosaurusChestplateEffects",
                     "contTriceratopsShieldCooldown"
 					// "contCardinalFacing"
 				]
@@ -598,6 +600,29 @@
 					}
 				}
             },
+            "rift:wearing_anlylosaurus_chestplate": {
+				"minecraft:area_attack": {
+					"damage_range": 1,
+					"damage_per_tick": 5,
+					"cause": "entity_attack",
+					"entity_filter": {
+                        "all_of": [
+							{
+								"test": "is_family",
+								"subject": "other",
+								"operator": "!=",
+								"value": "inanimate"
+							},
+							{
+								"test": "has_component",
+								"subject": "other",
+								"operator": "!=",
+								"value": "minecraft:is_tamed"
+							}
+                        ]
+					}
+                }
+            },
             "rift:default_movement": {
                 "minecraft:movement": {
                     "value": 0.1
@@ -620,6 +645,22 @@
                 },
                 "minecraft:underwater_movement": {
                     "value": 0.15
+                }
+            },
+            "rift:anlylosaurus_chestplate_movement": {
+                "minecraft:movement": {
+                    "value": 0.08
+                },
+                "minecraft:underwater_movement": {
+                    "value": 0.01
+                }
+            },
+            "rift:anlylosaurus_chestplate_sneaking_movement": {
+                "minecraft:movement": {
+                    "value": 0.0
+                },
+                "minecraft:underwater_movement": {
+                    "value": 0.0
                 }
             },
 			"rift:no_warning": {
@@ -1432,6 +1473,27 @@
                                 ]
                             },
                             "event": "rift:reduce_triceratops_shield_durability"
+						},
+                        "deals_damage": false
+					},
+                    {
+						"on_damage": {
+							"filters": {
+                                "all_of": [
+                                    {
+                                        "test": "is_sneaking",
+                                        "subject": "self",
+                                        "value": true
+                                    },
+                                    {
+                                        "test": "has_equipment",
+                                        "subject": "self",
+                                        "domain": "chest",
+                                        "value": "rift:ankylosaurus_chestplate"
+                                    }
+                                ]
+                            },
+                            "event": "rift:reduce_ankylosaurus_chestplate_durability"
 						},
                         "deals_damage": false
 					}
@@ -3129,6 +3191,7 @@
 			},
             "rift:reduce_climbing_pick_durability": {},
             "rift:reduce_triceratops_shield_durability": {},
+            "rift:reduce_ankylosaurus_chestplate_durability": {},
             "rift:reduce_tenontosaurus_charmer_durability": {},
             "rift:on_use_triceratops_shield": {
                 "add": {
@@ -3200,6 +3263,52 @@
                 },
                 "remove": {
                     "component_groups": [
+                        "rift:sarcosuchus_boots_land_movement",
+                        "rift:sarcosuchus_boots_water_movement"
+                    ]
+                }
+            },
+            "rift:on_wear_ankylosaurus_chestplate": {
+                "add": {
+                    "component_groups": [
+                        "rift:anlylosaurus_chestplate_movement"
+                    ]
+                },
+                "remove": {
+                    "component_groups": [
+                        "rift:default_movement",
+                        "rift:anlylosaurus_chestplate_sneaking_movement",
+                        "rift:wearing_anlylosaurus_chestplate",
+                        "rift:sarcosuchus_boots_land_movement",
+                        "rift:sarcosuchus_boots_water_movement"
+                    ]
+                }
+            },
+            "rift:on_stop_ankylosaurus_chestplate": {
+                "add": {
+                    "component_groups": [
+                        "rift:default_movement"
+                    ]
+                },
+                "remove": {
+                    "component_groups": [
+                        "rift:anlylosaurus_chestplate_movement",
+                        "rift:anlylosaurus_chestplate_sneaking_movement",
+                        "rift:wearing_anlylosaurus_chestplate"
+                    ]
+                }
+            },
+            "rift:on_wear_ankylosaurus_chestplate_sneaking": {
+                "add": {
+                    "component_groups": [
+                        "rift:anlylosaurus_chestplate_sneaking_movement",
+                        "rift:wearing_anlylosaurus_chestplate"
+                    ]
+                },
+                "remove": {
+                    "component_groups": [
+                        "rift:default_movement",
+                        "rift:anlylosaurus_chestplate_movement",
                         "rift:sarcosuchus_boots_land_movement",
                         "rift:sarcosuchus_boots_water_movement"
                     ]

@@ -19,47 +19,47 @@ world.beforeEvents.itemUseOn.subscribe(data => {
         switch (data.block.typeId) {
             case 'minecraft:oak_log':
                 system.run(() => {
-                    world.getDimension('overworld').spawnItem(new ItemStack(ItemTypes.get('rift:oak_thatch'), 2), location)
+                    data.block.dimension.spawnItem(new ItemStack(ItemTypes.get('rift:oak_thatch'), 2), location)
                 })
                 break
             case 'minecraft:spruce_log':
                 system.run(() => {
-                    world.getDimension('overworld').spawnItem(new ItemStack(ItemTypes.get('rift:spruce_thatch'), 2), location)
+                    data.block.dimension.spawnItem(new ItemStack(ItemTypes.get('rift:spruce_thatch'), 2), location)
                 })
                 break
             case 'minecraft:birch_log':
                 system.run(() => {
-                    world.getDimension('overworld').spawnItem(new ItemStack(ItemTypes.get('rift:birch_thatch'), 2), location)
+                    data.block.dimension.spawnItem(new ItemStack(ItemTypes.get('rift:birch_thatch'), 2), location)
                 })
                 break
             case 'minecraft:jungle_log':
                 system.run(() => {
-                    world.getDimension('overworld').spawnItem(new ItemStack(ItemTypes.get('rift:jungle_thatch'), 2), location)
+                    data.block.dimension.spawnItem(new ItemStack(ItemTypes.get('rift:jungle_thatch'), 2), location)
                 })
                 break
             case 'minecraft:acacia_log':
                 system.run(() => {
-                    world.getDimension('overworld').spawnItem(new ItemStack(ItemTypes.get('rift:acacia_thatch'), 2), location)
+                    data.block.dimension.spawnItem(new ItemStack(ItemTypes.get('rift:acacia_thatch'), 2), location)
                 })
                 break
             case 'minecraft:dark_oak_log':
                 system.run(() => {
-                    world.getDimension('overworld').spawnItem(new ItemStack(ItemTypes.get('rift:dark_oak_thatch'), 2), location)
+                    data.block.dimension.spawnItem(new ItemStack(ItemTypes.get('rift:dark_oak_thatch'), 2), location)
                 })
                 break
             case 'minecraft:mangrove_log':
                 system.run(() => {
-                    world.getDimension('overworld').spawnItem(new ItemStack(ItemTypes.get('rift:mangrove_thatch'), 2), location)
+                    data.block.dimension.spawnItem(new ItemStack(ItemTypes.get('rift:mangrove_thatch'), 2), location)
                 })
                 break
             case 'minecraft:crimson_stem':
                 system.run(() => {
-                    world.getDimension('overworld').spawnItem(new ItemStack(ItemTypes.get('rift:crimson_thatch'), 2), location)
+                    data.block.dimension.spawnItem(new ItemStack(ItemTypes.get('rift:crimson_thatch'), 2), location)
                 })
                 break
             case 'minecraft:warped_stem':
                 system.run(() => {
-                    world.getDimension('overworld').spawnItem(new ItemStack(ItemTypes.get('rift:warped_thatch'), 2), location)
+                    data.block.dimension.spawnItem(new ItemStack(ItemTypes.get('rift:warped_thatch'), 2), location)
                 })
                 break
         }

@@ -41,13 +41,13 @@ world.afterEvents.blockBreak.subscribe(data => {
     if (ores.includes(data.brokenBlockPermutation.type.id) && Math.floor(Math.random() * 8) == 0) {
         let spawnNum = Math.floor(Math.random() * 3) + 2
         for (let x = 0; x < spawnNum; x++) {
-            world.getDimension('overworld').spawnEntity('rift:palaeocastor', data.block.location)
+            data.block.dimension.spawnEntity('rift:palaeocastor', data.block.location)
         }
-        world.getDimension('overworld').runCommandAsync(`fill `+Math.trunc((data.block.location.x-1).toString())+` `+Math.trunc((data.block.location.y-1).toString())+` `+Math.trunc((data.block.location.z-1).toString())+` `+Math.trunc((data.block.location.x+1).toString())+` `+Math.trunc((data.block.location.y+1).toString())+` `+Math.trunc((data.block.location.z+1).toString())+` air 0 destroy`)
+        data.block.dimension.runCommandAsync(`fill `+Math.trunc((data.block.location.x-1).toString())+` `+Math.trunc((data.block.location.y-1).toString())+` `+Math.trunc((data.block.location.z-1).toString())+` `+Math.trunc((data.block.location.x+1).toString())+` `+Math.trunc((data.block.location.y+1).toString())+` `+Math.trunc((data.block.location.z+1).toString())+` air 0 destroy`)
     }
 
     //grass fiber from tall plants
     if (tallPlants.includes(data.brokenBlockPermutation.type.id) && Math.floor(Math.random() * 4) == 0) {
-        world.getDimension('overworld').spawnItem(new ItemStack(ItemTypes.get('rift:grass_fiber'), 1), data.block.location)
+        data.block.dimension.spawnItem(new ItemStack(ItemTypes.get('rift:grass_fiber'), 1), data.block.location)
     }
 })

@@ -1100,10 +1100,10 @@
                 "default": {
                     "transitions": [
                         {
-                            "wearingLand": "query.is_item_name_any('slot.armor.feet', 'rift:sarcosuchus_boots') && !query.is_in_water"
+                            "wearingLand": "query.is_item_name_any('slot.armor.feet', 'rift:sarcosuchus_boots') && !query.is_in_water && !query.is_item_name_any('slot.armor.chest', 'rift:ankylosaurus_chestplate')"
                         },
                         {
-                            "wearingWater": "query.is_item_name_any('slot.armor.feet', 'rift:sarcosuchus_boots') && query.is_in_water"
+                            "wearingWater": "query.is_item_name_any('slot.armor.feet', 'rift:sarcosuchus_boots') && query.is_in_water && !query.is_item_name_any('slot.armor.chest', 'rift:ankylosaurus_chestplate')"
                         }
                     ],
                     "on_entry": [
@@ -1113,7 +1113,7 @@
                 "wearingLand": {
                     "transitions": [
                         {
-                            "default": "!query.is_item_name_any('slot.armor.feet', 'rift:sarcosuchus_boots')"
+                            "default": "!query.is_item_name_any('slot.armor.feet', 'rift:sarcosuchus_boots') || query.is_item_name_any('slot.armor.chest', 'rift:ankylosaurus_chestplate')"
                         },
                         {
                             "wearingWater": "query.is_in_water"
@@ -1126,7 +1126,7 @@
                 "wearingWater": {
                     "transitions": [
                         {
-                            "default": "!query.is_item_name_any('slot.armor.feet', 'rift:sarcosuchus_boots')"
+                            "default": "!query.is_item_name_any('slot.armor.feet', 'rift:sarcosuchus_boots') || query.is_item_name_any('slot.armor.chest', 'rift:ankylosaurus_chestplate')"
                         },
                         {
                             "wearingLand": "!query.is_in_water"
@@ -1144,14 +1144,14 @@
                 "default": {
                     "transitions": [
                         {
-                            "wearing": "query.is_item_name_any('slot.armor.feet', 'rift:sprinter_boots') && query.is_sprinting"
+                            "wearing": "query.is_item_name_any('slot.armor.feet', 'rift:sprinter_boots') && query.is_sprinting && !query.is_item_name_any('slot.armor.chest', 'rift:ankylosaurus_chestplate')"
                         }
                     ]
                 },
                 "wearing": {
                     "transitions": [
                         {
-                            "default": "!query.is_item_name_any('slot.armor.feet', 'rift:sprinter_boots') || !query.is_sprinting"
+                            "default": "!query.is_item_name_any('slot.armor.feet', 'rift:sprinter_boots') || !query.is_sprinting || query.is_item_name_any('slot.armor.chest', 'rift:ankylosaurus_chestplate')"
                         }
                     ],
                     "on_entry": [
@@ -1184,6 +1184,47 @@
                     ],
                     "on_exit": [
                         "/effect @s water_breathing 0"
+                    ]
+                }
+            }
+        },
+        "controller.animation.ankylosaurus_chestplate_effects": {
+            "initial_state": "default",
+            "states": {
+                "default": {
+                    "transitions": [
+                        {
+                            "wearing": "query.is_item_name_any('slot.armor.chest', 'rift:ankylosaurus_chestplate')"
+                        }
+                    ],
+                    "on_entry": [
+                        "@s rift:on_stop_ankylosaurus_chestplate"
+                    ]
+                },
+                "wearing": {
+                    "transitions": [
+                        {
+                            "default": "!query.is_item_name_any('slot.armor.chest', 'rift:ankylosaurus_chestplate')"
+                        },
+                        {
+                            "wearingSneaking": "query.is_sneaking"
+                        }
+                    ],
+                    "on_entry": [
+                        "@s rift:on_wear_ankylosaurus_chestplate"
+                    ]
+                },
+                "wearingSneaking": {
+                    "transitions": [
+                        {
+                            "default": "!query.is_item_name_any('slot.armor.chest', 'rift:ankylosaurus_chestplate')"
+                        },
+                        {
+                            "wearing": "!query.is_sneaking"
+                        }
+                    ],
+                    "on_entry": [
+                        "@s rift:on_wear_ankylosaurus_chestplate_sneaking"
                     ]
                 }
             }
