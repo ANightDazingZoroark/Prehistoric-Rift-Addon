@@ -1,4 +1,3 @@
-import { MinecraftBlockTypes } from "@minecraft/server"
 import { BlockPermutation, world } from "@minecraft/server"
 import { ActionFormData, ModalFormData } from "@minecraft/server-ui"
 import * as guiEntry from "./JournalEntries"
