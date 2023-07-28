@@ -54,7 +54,7 @@ let recipes = [
             "BCB"
         ],
         catalysts: [
-            "rift:ankylosaurus_mace"
+            "rift:ankylosaurus_club"
         ],
         result: "rift:ankylosaurus_chestplate"
     },
@@ -338,11 +338,123 @@ let recipes = [
     }
 ]
 
+function interpretInput(panel) {
+    let input = []
+    for (let x = 1; x <= 9; x++) {
+        input.push(slot(panel, x))
+    }
+    return input
+}
+
+function interpretCatalystInput(panel) {
+    let catalysts = []
+    for (let x = 10; x <= 12; x++) {
+        if (slot(panel, x) != "minecraft:air") {
+            catalysts.push(slot(panel, x))
+        }
+    }
+    catalysts.sort()
+    return catalysts
+}
+
+function interpretRecipe(recipe) {
+    let resultRecipe = []
+    for (const pattern of recipe.pattern) {
+        for (let x = 0; x < pattern.length; x++) {
+            if (pattern.charAt(x) == 'B') {
+                resultRecipe.push("rift:alpha_bone")
+            }
+            else if (pattern.charAt(x) == 'C') {
+                resultRecipe.push("minecraft:copper_ingot")
+            }
+            else if (pattern.charAt(x) == 'G') {
+                resultRecipe.push("minecraft:goat_horn")
+            }
+            else if (pattern.charAt(x) == 'R') {
+                resultRecipe.push("minecraft:redstone")
+            }
+            else {
+                resultRecipe.push("minecraft:air")
+            }
+        }
+    }
+    return resultRecipe
+}
+
+function interpretCatalystRecipe(recipe) {
+    let catalysts = []
+    for (const c of recipe.catalysts) {
+        catalysts.push(c)
+    }
+    catalysts.sort()
+    return catalysts
+}
+
+function slot(panel, num) {
+    try {        
+        switch (num) {
+            //fuel
+            case 0:
+                return panel.getItem(0).typeId
+            //crafting grid
+            case 1:
+                return panel.getItem(1).typeId
+            case 2:
+                return panel.getItem(2).typeId
+            case 3:
+                return panel.getItem(3).typeId
+            case 4:
+                return panel.getItem(8).typeId
+            case 5:
+                return panel.getItem(9).typeId
+            case 6:
+                return panel.getItem(10).typeId
+            case 7:
+                return panel.getItem(15).typeId
+            case 8:
+                return panel.getItem(16).typeId
+            case 9:
+                return panel.getItem(17).typeId
+            //catalysts
+            case 10:
+                return panel.getItem(4).typeId
+            case 11:
+                return panel.getItem(11).typeId
+            case 12:
+                return panel.getItem(18).typeId
+            //output
+            case 13:
+                return panel.getItem(5).typeId
+        }
+    }
+    catch (e) {
+        return "minecraft:air"
+    }
+}
+
+function arrayEquals(a, b) {
+    return Array.isArray(a) &&
+        Array.isArray(b) &&
+        a.length === b.length &&
+        a.every((val, index) => val === b[index]);
+}
+
+function craft(panel) {
+    // if (arrayEquals(interpretInput(panel), interpretRecipe(recipes[15])) && arrayEquals(interpretCatalystInput(panel), interpretCatalystRecipe(recipes[15]))) {
+    //     console.warn('hi')
+    // }
+    for (const obj in recipes) {
+        if (arrayEquals(interpretInput(panel), interpretRecipe(obj)) && arrayEquals(interpretCatalystInput(panel), interpretCatalystRecipe(recipes))) {
+            console.warn('hi')
+        }
+    }
+}
+
 system.runInterval(() => {
     for (const entity of world.getDimension('overworld').getEntities({ type: "rift:infusion_table" })) {
         const panel = entity.getComponent('inventory').container
-        if (panel.getItem(0).typeId == 'rift:blighted_shard') {
-            console.warn('hi')
+        if (slot(panel, 0) == 'rift:blighted_shard') {
+            craft(panel)
         }
     }
 })
