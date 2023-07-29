@@ -340,9 +340,44 @@ let recipes = [
 
 function interpretInput(panel) {
     let input = []
-    for (let x = 1; x <= 9; x++) {
-        input.push(slot(panel, x))
+    let removeIndex = []
+    //setting up
+    for (let x = 0; x < 3; x++) {
+        input.push("")
+        for (let y = 0; y < 3; y++) {
+            if (slot(panel, (x * 3) + y + 1) == "rift:alpha_bone") {
+                input[x] = input[x].concat("B")
+            }
+            else if (slot(panel, (x * 3) + y + 1) == "minecraft:copper_ingot") {
+                input[x] = input[x].concat("C")
+            }
+            else if (slot(panel, (x * 3) + y + 1) == "minecraft:goat_horn") {
+                input[x] = input[x].concat("G")
+            }
+            else if (slot(panel, (x * 3) + y + 1) == "minecraft:redstone") {
+                input[x] = input[x].concat("R")
+            }
+            else if (slot(panel, (x * 3) + y + 1) == "minecraft:air") {
+                input[x] = input[x].concat(" ")
+            }
+            else {
+                input[x] = input[x].concat("!")
+            }
+        }
     }
+    //remove excess empty slots
+    ///by row
+    for (let x = 0; x < 3; x++) {
+        if (input[x] == "   ") {
+            removeIndex.push(x)
+        }
+    }
+    for (let x = removeIndex.length - 1; x >= 0; x--) {
+        input.splice(removeIndex[x], 1)
+    }
+    ///by column
+    ///aaaaaaaaaaaaaaaaaaaaaaaaaaaa
+    ///how tf do i do this
     return input
 }
 
@@ -358,27 +393,7 @@ function interpretCatalystInput(panel) {
 }
 
 function interpretRecipe(recipe) {
-    let resultRecipe = []
-    for (const pattern of recipe.pattern) {
-        for (let x = 0; x < pattern.length; x++) {
-            if (pattern.charAt(x) == 'B') {
-                resultRecipe.push("rift:alpha_bone")
-            }
-            else if (pattern.charAt(x) == 'C') {
-                resultRecipe.push("minecraft:copper_ingot")
-            }
-            else if (pattern.charAt(x) == 'G') {
-                resultRecipe.push("minecraft:goat_horn")
-            }
-            else if (pattern.charAt(x) == 'R') {
-                resultRecipe.push("minecraft:redstone")
-            }
-            else {
-                resultRecipe.push("minecraft:air")
-            }
-        }
-    }
-    return resultRecipe
+    return recipe.pattern
 }
 
 function interpretCatalystRecipe(recipe) {
@@ -440,14 +455,13 @@ function arrayEquals(a, b) {
 }
 
 function craft(panel) {
-    // if (arrayEquals(interpretInput(panel), interpretRecipe(recipes[15])) && arrayEquals(interpretCatalystInput(panel), interpretCatalystRecipe(recipes[15]))) {
-    //     console.warn('hi')
+    // for (const obj in recipes) {
+    //     if (arrayEquals(interpretInput(panel), interpretRecipe(obj)) && arrayEquals(interpretCatalystInput(panel), interpretCatalystRecipe(recipes))) {
+    //         console.warn('hi')
+    //     }
     // }
-    for (const obj in recipes) {
-        if (arrayEquals(interpretInput(panel), interpretRecipe(obj)) && arrayEquals(interpretCatalystInput(panel), interpretCatalystRecipe(recipes))) {
-            console.warn('hi')
-        }
-    }
+    console.warn(interpretInput(panel))
+    // console.warn(interpretRecipe(recipes[0]))
 }
 
 system.runInterval(() => {

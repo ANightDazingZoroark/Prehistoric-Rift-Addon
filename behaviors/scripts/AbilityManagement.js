@@ -16,7 +16,7 @@ world.afterEvents.dataDrivenEntityTriggerEvent.subscribe(data => {
         }, 1000)
     }
     if (data.id == 'rift:force_go_down') {
-        data.entity.setVelocity({
+        data.entity.applyImpulse({
             x: 0,
             y: -1,
             z: 0
