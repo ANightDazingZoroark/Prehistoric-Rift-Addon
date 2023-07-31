@@ -485,10 +485,13 @@ function craft(panel) {
         let finalinput = []
         interpretInput(panel).forEach(v => finalinput.push(...v.split('')))
         let fullinput = finalinput.map(v => { return v === ' ' ? 'minecraft:air' : reference[v] })
-        // console.warn(order(fullinput, fullrecipe,"minecraft:air") || order(fullinput, smallrecipe, "minecraft:air") || order(fullinput, smallestrecipe, "minecraft:air"))
-        if (order(fullinput, fullrecipe,"minecraft:air") || order(fullinput, smallrecipe, "minecraft:air") || order(fullinput, smallestrecipe, "minecraft:air")) {
+        if ((order(fullinput, fullrecipe,"minecraft:air") || order(fullinput, smallrecipe, "minecraft:air") || order(fullinput, smallestrecipe, "minecraft:air")) && arrayEquals(interpretCatalystInput(panel), interpretCatalystRecipe(recipes[obj]))) {
+            console.warn(obj)
             console.warn('yes')
             break
+        }
+        else {
+            console.warn('no')
         }
     }
 }
