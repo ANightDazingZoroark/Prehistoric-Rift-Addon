@@ -1,10 +1,13 @@
 import { ItemStack, ItemTypes, MinecraftBlockTypes, system, world } from "@minecraft/server"
 
+let reference = {
+    B: "rift:alpha_bone",
+    C: "minecraft:copper_ingot",
+    G: "minecraft:goat_horn",
+    R: "minecraft:redstone"
+}
+
 let recipes = [
-    //B is for alpha bones
-    //C is for copper ingot
-    //G is for goat horn
-    //R is for redstone
     {
         pattern: [
             "B B",
@@ -339,45 +342,31 @@ let recipes = [
 ]
 
 function interpretInput(panel) {
-    let input = []
-    let removeIndex = []
-    //setting up
-    for (let x = 0; x < 3; x++) {
-        input.push("")
+    let input = ["", "", ""]
+    for (let x = 0; x < input.length; x++) {
         for (let y = 0; y < 3; y++) {
-            if (slot(panel, (x * 3) + y + 1) == "rift:alpha_bone") {
-                input[x] = input[x].concat("B")
-            }
-            else if (slot(panel, (x * 3) + y + 1) == "minecraft:copper_ingot") {
-                input[x] = input[x].concat("C")
-            }
-            else if (slot(panel, (x * 3) + y + 1) == "minecraft:goat_horn") {
-                input[x] = input[x].concat("G")
-            }
-            else if (slot(panel, (x * 3) + y + 1) == "minecraft:redstone") {
-                input[x] = input[x].concat("R")
-            }
-            else if (slot(panel, (x * 3) + y + 1) == "minecraft:air") {
-                input[x] = input[x].concat(" ")
-            }
-            else {
-                input[x] = input[x].concat("!")
+            switch(slot(panel, (x * 3) + y + 1)) {
+                case "rift:alpha_bone":
+                    input[x] = input[x].concat("B")
+                    break
+                case "minecraft:copper_ingot":
+                    input[x] = input[x].concat("C")
+                    break
+                case "minecraft:goat_horn":
+                    input[x] = input[x].concat("G")
+                    break
+                case "minecraft:redstone":
+                    input[x] = input[x].concat("R")
+                    break
+                case "minecraft:air": 
+                    input[x] = input[x].concat(" ")
+                    break
+                default:
+                    input[x] = input[x].concat("!")
+                    break
             }
         }
     }
-    //remove excess empty slots
-    ///by row
-    for (let x = 0; x < 3; x++) {
-        if (input[x] == "   ") {
-            removeIndex.push(x)
-        }
-    }
-    for (let x = removeIndex.length - 1; x >= 0; x--) {
-        input.splice(removeIndex[x], 1)
-    }
-    ///by column
-    ///aaaaaaaaaaaaaaaaaaaaaaaaaaaa
-    ///how tf do i do this
     return input
 }
 
@@ -390,10 +379,6 @@ function interpretCatalystInput(panel) {
     }
     catalysts.sort()
     return catalysts
-}
-
-function interpretRecipe(recipe) {
-    return recipe.pattern
 }
 
 function interpretCatalystRecipe(recipe) {
@@ -454,14 +439,58 @@ function arrayEquals(a, b) {
         a.every((val, index) => val === b[index]);
 }
 
+function order(largerArray, smallerArray, nonOverlappingValue) {
+    let smallerIndex = 0
+    for (let i = 0; i < largerArray.length; i++) {
+        if (largerArray[i] === smallerArray[smallerIndex]) {
+            smallerIndex++
+        } 
+        else if (largerArray[i] === nonOverlappingValue) {
+            continue
+        } 
+        else {
+            smallerIndex = 0
+        }
+        if (smallerIndex === smallerArray.length) {
+            for (let j = i + 1; j < largerArray.length; j++) {
+                if (largerArray[j] !== nonOverlappingValue) {
+                    return false
+                }
+            }
+            return true
+        }
+    }
+    return false
+}
+
 function craft(panel) {
-    // for (const obj in recipes) {
-    //     if (arrayEquals(interpretInput(panel), interpretRecipe(obj)) && arrayEquals(interpretCatalystInput(panel), interpretCatalystRecipe(recipes))) {
-    //         console.warn('hi')
-    //     }
-    // }
-    console.warn(interpretInput(panel))
-    // console.warn(interpretRecipe(recipes[0]))
+    // let final = []
+    // recipes[0].pattern.forEach(v => final.push(...v.split("")));
+    // let fullrecipe = final.map(v => { return v === " " ? "minecraft:air" : reference[v] })
+    // let smallrecipe = [fullrecipe[0], fullrecipe[1], fullrecipe[3], fullrecipe[4] ]
+    // let smallestrecipe = [fullrecipe[0]];
+
+    // let finalinput = []
+    // interpretInput(panel).forEach(v => finalinput.push(...v.split('')))
+    // let fullinput = finalinput.map(v => { return v === ' ' ? 'minecraft:air' : reference[v] })
+    // console.warn(order(fullinput, fullrecipe,"minecraft:air") || order(fullinput, smallrecipe, "minecraft:air") || order(fullinput, smallestrecipe, "minecraft:air"))
+    
+    for (const obj in recipes) {
+        let final = []
+        recipes[obj].pattern.forEach(v => final.push(...v.split("")));
+        let fullrecipe = final.map(v => { return v === " " ? "minecraft:air" : reference[v] })
+        let smallrecipe = [fullrecipe[0], fullrecipe[1], fullrecipe[3], fullrecipe[4] ]
+        let smallestrecipe = [fullrecipe[0]];
+
+        let finalinput = []
+        interpretInput(panel).forEach(v => finalinput.push(...v.split('')))
+        let fullinput = finalinput.map(v => { return v === ' ' ? 'minecraft:air' : reference[v] })
+        // console.warn(order(fullinput, fullrecipe,"minecraft:air") || order(fullinput, smallrecipe, "minecraft:air") || order(fullinput, smallestrecipe, "minecraft:air"))
+        if (order(fullinput, fullrecipe,"minecraft:air") || order(fullinput, smallrecipe, "minecraft:air") || order(fullinput, smallestrecipe, "minecraft:air")) {
+            console.warn('yes')
+            break
+        }
+    }
 }
 
 system.runInterval(() => {
