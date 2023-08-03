@@ -440,19 +440,17 @@ function arrayEquals(a, b) {
 }
 
 function order(largerArray, smallerArray, nonOverlappingValue) {
-    let smallerIndex = 0
-    for (let i = 0; i < largerArray.length; i++) {
-        if (largerArray[i] === smallerArray[smallerIndex]) {
-            smallerIndex++
-        } 
-        else if (largerArray[i] === nonOverlappingValue) {
-            continue
-        } 
-        else {
-            smallerIndex = 0
+    for (let i = 0; i <= largerArray.length - smallerArray.length; i++) {
+        let match = true
+        for (let j = 0; j < smallerArray.length; j++) {
+            if (largerArray[i + j] !== smallerArray[j] && largerArray[i + j] !== nonOverlappingValue) {
+                match = false
+                break
+            }
         }
-        if (smallerIndex === smallerArray.length) {
-            for (let j = i + 1; j < largerArray.length; j++) {
+        if (match) {
+            let startIndex = i + smallerArray.length;
+            for (let j = startIndex; j < largerArray.length; j++) {
                 if (largerArray[j] !== nonOverlappingValue) {
                     return false
                 }
@@ -469,8 +467,8 @@ function craft(panel) {
         let final = []
         recipes[obj].pattern.forEach(v => final.push(...v.split("")));
         let fullrecipe = final.map(v => { return v === " " ? "minecraft:air" : reference[v] })
-        let smallrecipe = [fullrecipe[0], fullrecipe[1], fullrecipe[3], fullrecipe[4] ]
-        let smallestrecipe = [fullrecipe[0]];
+        let smallrecipe = [fullrecipe[0], fullrecipe[1], fullrecipe[3], fullrecipe[4]]
+        let smallestrecipe = [fullrecipe[0]]
 
         let finalinput = []
         interpretInput(panel).forEach(v => finalinput.push(...v.split('')))
