@@ -391,7 +391,7 @@ function interpretCatalystRecipe(recipe) {
 }
 
 function slot(panel, num) {
-    try {        
+    try {
         switch (num) {
             //fuel
             case 0:
@@ -464,17 +464,7 @@ function order(largerArray, smallerArray, nonOverlappingValue) {
 }
 
 function craft(panel) {
-    // let final = []
-    // recipes[0].pattern.forEach(v => final.push(...v.split("")));
-    // let fullrecipe = final.map(v => { return v === " " ? "minecraft:air" : reference[v] })
-    // let smallrecipe = [fullrecipe[0], fullrecipe[1], fullrecipe[3], fullrecipe[4] ]
-    // let smallestrecipe = [fullrecipe[0]];
-
-    // let finalinput = []
-    // interpretInput(panel).forEach(v => finalinput.push(...v.split('')))
-    // let fullinput = finalinput.map(v => { return v === ' ' ? 'minecraft:air' : reference[v] })
-    // console.warn(order(fullinput, fullrecipe,"minecraft:air") || order(fullinput, smallrecipe, "minecraft:air") || order(fullinput, smallestrecipe, "minecraft:air"))
-    
+    let fail = 0
     for (const obj in recipes) {
         let final = []
         recipes[obj].pattern.forEach(v => final.push(...v.split("")));
@@ -486,13 +476,32 @@ function craft(panel) {
         interpretInput(panel).forEach(v => finalinput.push(...v.split('')))
         let fullinput = finalinput.map(v => { return v === ' ' ? 'minecraft:air' : reference[v] })
         if ((order(fullinput, fullrecipe,"minecraft:air") || order(fullinput, smallrecipe, "minecraft:air") || order(fullinput, smallestrecipe, "minecraft:air")) && arrayEquals(interpretCatalystInput(panel), interpretCatalystRecipe(recipes[obj]))) {
-            console.warn(obj)
-            console.warn('yes')
             break
         }
         else {
-            console.warn('no')
+            fail++
         }
+    }
+    if (fail < recipes.length && slot(panel, 13) == 'rift:empty_slot') {
+        panel.setItem(5, new ItemStack(ItemTypes.get(recipes[fail].result), 1))
+    }
+    else if (fail < recipes.length && slot(panel, 13) == 'minecraft:air') {
+        let slots = [1, 2, 3, 4, 8, 9, 10, 11, 15, 16, 17, 18]
+        for (const x in slots) {
+            try {
+                if (panel.getItem(slots[x]).amount > 1) {
+                    panel.setItem(slots[x], new ItemStack(ItemTypes.get(panel.getItem(slots[x]).typeId), panel.getItem(slots[x]).amount - 1))
+                }
+                else {
+                    panel.setItem(slots[x])
+                }
+            }
+            catch (e) {}
+        }
+        panel.setItem(5, new ItemStack(ItemTypes.get('rift:empty_slot'), 1))
+    }
+    else if (fail >= recipes.length) {
+        panel.setItem(5, new ItemStack(ItemTypes.get('rift:empty_slot'), 1))
     }
 }
 
