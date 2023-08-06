@@ -367,6 +367,60 @@ function interpretInput(panel) {
             }
         }
     }
+
+    //edit rows
+    if (input[1] == "   ") {
+        if ((input[0] == "   " && input[2] != "   ") || (input[0] != "   " && input[2] == "   ")) {
+            input = input.filter(function (x) {
+                return x != "   "
+            })
+        }
+    }
+    else {
+        const remove = [0, 2]
+        for (let i = remove.length - 1; i >= 0; i--) {
+            if (input[remove[i]] == "   ") {
+                input.splice(remove[i], 1)
+            }
+        }
+    }
+    //edit columns
+    let remove = []
+    for (let a = 0; a < input.length; a++) {
+        input[a] = input[a].split("")
+    }
+
+    for (let x = 0; x < input[0].length; x++) {
+        let tempRemCount = 0
+        for (let y = 0; y < input.length; y++) {
+            if (input[y][x] == " ") {
+                tempRemCount++
+            }
+        }
+        if (tempRemCount >= input.length) {
+            remove.push(x)
+        }
+    }
+    
+    if (remove.includes(1) && remove.length > 1) {
+        for (let i = 0; i < input.length; i++) {
+            for (let j = remove.length - 1; j >= 0; j--) {
+                input[i].splice(remove[j], 1)
+            }
+        }
+    }
+    else if (!remove.includes(1)) {
+        for (let i = 0; i < input.length; i++) {
+            for (let j = remove.length - 1; j >= 0; j--) {
+                input[i].splice(remove[j], 1)
+            }
+        }
+    }
+    
+    for (let i = 0; i< input.length; i++) {
+        input[i] = input[i].join("")
+    }
+
     return input
 }
 
@@ -439,46 +493,23 @@ function arrayEquals(a, b) {
         a.every((val, index) => val === b[index]);
 }
 
-function order(largerArray, smallerArray, nonOverlappingValue) {
-    for (let i = 0; i <= largerArray.length - smallerArray.length; i++) {
-        let match = true
-        for (let j = 0; j < smallerArray.length; j++) {
-            if (largerArray[i + j] !== smallerArray[j] && largerArray[i + j] !== nonOverlappingValue) {
-                match = false
-                break
-            }
-        }
-        if (match) {
-            let startIndex = i + smallerArray.length;
-            for (let j = startIndex; j < largerArray.length; j++) {
-                if (largerArray[j] !== nonOverlappingValue) {
-                    return false
-                }
-            }
-            return true
-        }
-    }
-    return false
-}
-
 function craft(panel) {
     let fail = 0
     for (const obj in recipes) {
         let final = []
-        recipes[obj].pattern.forEach(v => final.push(...v.split("")));
+        recipes[obj].pattern.forEach(v => final.push(...v.split("")))
         let fullrecipe = final.map(v => { return v === " " ? "minecraft:air" : reference[v] })
-        let smallrecipe = [fullrecipe[0], fullrecipe[1], fullrecipe[3], fullrecipe[4]]
-        let smallestrecipe = [fullrecipe[0]]
 
         let finalinput = []
         interpretInput(panel).forEach(v => finalinput.push(...v.split('')))
         let fullinput = finalinput.map(v => { return v === ' ' ? 'minecraft:air' : reference[v] })
-        if ((order(fullinput, fullrecipe,"minecraft:air") || order(fullinput, smallrecipe, "minecraft:air") || order(fullinput, smallestrecipe, "minecraft:air")) && arrayEquals(interpretCatalystInput(panel), interpretCatalystRecipe(recipes[obj]))) {
+        if (arrayEquals(fullrecipe, fullinput) && arrayEquals(interpretCatalystInput(panel), interpretCatalystRecipe(recipes[obj]))) {
             break
         }
         else {
             fail++
         }
+            
     }
     if (fail < recipes.length && slot(panel, 13) == 'rift:empty_slot') {
         panel.setItem(5, new ItemStack(ItemTypes.get(recipes[fail].result), 1))
