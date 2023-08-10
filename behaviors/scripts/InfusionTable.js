@@ -384,6 +384,7 @@ function interpretInput(panel) {
             }
         }
     }
+    
     //edit columns
     let remove = []
     for (let a = 0; a < input.length; a++) {
@@ -515,7 +516,7 @@ function craft(panel) {
         panel.setItem(5, new ItemStack(ItemTypes.get(recipes[fail].result), 1))
     }
     else if (fail < recipes.length && slot(panel, 13) == 'minecraft:air') {
-        let slots = [1, 2, 3, 4, 8, 9, 10, 11, 15, 16, 17, 18]
+        let slots = [0, 1, 2, 3, 4, 8, 9, 10, 11, 15, 16, 17, 18]
         for (const x in slots) {
             try {
                 if (panel.getItem(slots[x]).amount > 1) {
