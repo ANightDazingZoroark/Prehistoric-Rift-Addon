@@ -14,7 +14,9 @@
                     6, //wooden dark oak
                     7, //wooden crimson
                     8, //wooden warped
-                    9 //wooden mangrove
+                    9, //wooden mangrove
+                    10,//wooden cherry
+                    11 //wooden bamboo
                 ],
                 "rift:facing_direction": [
                     0,
@@ -378,6 +380,64 @@
                     },
                     "minecraft:loot": "loot_tables/blocks/wooden furniture mangrove.loot.json"
                 }
+            },
+            {
+                "condition": "query.block_property('rift:chair_type') == 10",
+                "components": {
+                    "minecraft:material_instances": {
+                        "*": {
+                            "texture": "wooden_chair_cherry",
+                            "render_method": "alpha_test"
+                        }
+                    },
+                    "minecraft:entity_collision": {
+                        "origin": [
+                            -5,
+                            0,
+                            -5
+                        ],
+                        "size": [
+                            9,
+                            8,
+                            9
+                        ]
+                    },
+                    "minecraft:destroy_time": 0.8,
+                    "minecraft:on_interact": {
+                        "condition": "!query.is_riding && query.is_sneaking",
+                        "event": "sit_down"
+                    },
+                    "minecraft:loot": "loot_tables/blocks/wooden furniture mangrove.loot.json"
+                }
+            },
+            {
+                "condition": "query.block_property('rift:chair_type') == 11",
+                "components": {
+                    "minecraft:material_instances": {
+                        "*": {
+                            "texture": "wooden_chair_bamboo",
+                            "render_method": "alpha_test"
+                        }
+                    },
+                    "minecraft:entity_collision": {
+                        "origin": [
+                            -5,
+                            0,
+                            -5
+                        ],
+                        "size": [
+                            9,
+                            8,
+                            9
+                        ]
+                    },
+                    "minecraft:destroy_time": 0.8,
+                    "minecraft:on_interact": {
+                        "condition": "!query.is_riding && query.is_sneaking",
+                        "event": "sit_down"
+                    },
+                    "minecraft:loot": "loot_tables/blocks/wooden furniture mangrove.loot.json"
+                }
             }
         ],
         "components": {
@@ -516,6 +576,30 @@
                         "condition": "query.get_equipped_item_name('main_hand') == 'mangrove_planks'",
                         "set_block_property": {
                             "rift:chair_type": "9"
+                        },
+                        "run_command": {
+                            "command": [
+                                "playsound block.saw_sounds @a[r=2]"
+                            ]
+                        },
+                        "decrement_stack": {}
+                    },
+                    {
+                        "condition": "query.get_equipped_item_name('main_hand') == 'cherry_planks'",
+                        "set_block_property": {
+                            "rift:chair_type": "10"
+                        },
+                        "run_command": {
+                            "command": [
+                                "playsound block.saw_sounds @a[r=2]"
+                            ]
+                        },
+                        "decrement_stack": {}
+                    },
+                    {
+                        "condition": "query.get_equipped_item_name('main_hand') == 'bamboo_planks'",
+                        "set_block_property": {
+                            "rift:chair_type": "11"
                         },
                         "run_command": {
                             "command": [
