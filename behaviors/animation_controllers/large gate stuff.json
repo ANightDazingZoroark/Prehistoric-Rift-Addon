@@ -7,18 +7,367 @@
                 "default": {
                     "transitions": [
                         {
-                            "setRotation": "(1.0)"
+                            "hitboxOneDir1": "query.body_y_rotation >= -45 && query.body_y_rotation <= 45"
+                        },
+                        {
+                            "hitboxTwoDir1": "query.body_y_rotation > 45 && query.body_y_rotation < 135"
+                        },
+                        {
+                            "hitboxThreeDir1": "(query.body_y_rotation >= 135 && query.body_y_rotation <= 180) || (query.body_y_rotation <= -135 && query.body_y_rotation >= -180)"
+                        },
+                        {
+                            "hitboxFourDir1": "query.body_y_rotation < -45 && query.body_y_rotation > -135"
                         }
                     ]
                 },
-                "setRotation": {
+
+                "hitboxOneDir1": {
                     "transitions": [
                         {
-                            "default": "(0.0)"
+                            "hitboxOneDir2": "query.mark_variant == 1"
+                        },
+                        {
+                            "hitboxOneDir3": "query.mark_variant == 2"
+                        },
+                        {
+                            "hitboxOneDir4": "query.mark_variant == 3"
                         }
                     ],
                     "on_entry": [
-                        "/tp @s ~ ~ ~ 0"
+                        "/execute as @s[tag=isPhantom] run fill ~ ~ ~ ~+3 ~+3 ~ barrier",
+                        "@s rift:to_hitbox_one",
+                        "/say hi"
+                    ],
+                    "on_exit": [
+                        "/fill ~ ~ ~ ~+3 ~+3 ~ air"
+                    ]
+                },
+                "hitboxOneDir2": {
+                    "transitions": [
+                        {
+                            "hitboxOneDir1": "query.mark_variant == 0"
+                        },
+                        {
+                            "hitboxOneDir3": "query.mark_variant == 2"
+                        },
+                        {
+                            "hitboxOneDir4": "query.mark_variant == 3"
+                        }
+                    ],
+                    "on_entry": [
+                        "/execute as @s[tag=isPhantom] run fill ~ ~ ~ ~ ~+3 ~-3 barrier",
+                        "@s rift:to_hitbox_two"
+                    ],
+                    "on_exit": [
+                        "/fill ~ ~ ~ ~ ~+3 ~-3 air"
+                    ]
+                },
+                "hitboxOneDir3": {
+                    "transitions": [
+                        {
+                            "hitboxOneDir1": "query.mark_variant == 0"
+                        },
+                        {
+                            "hitboxOneDir2": "query.mark_variant == 1"
+                        },
+                        {
+                            "hitboxOneDir4": "query.mark_variant == 3"
+                        }
+                    ],
+                    "on_entry": [
+                        "/execute as @s[tag=isPhantom] run fill ~ ~ ~ ~-3 ~+3 ~ barrier",
+                        "@s rift:to_hitbox_three"
+                    ],
+                    "on_exit": [
+                        "/fill ~ ~ ~ ~-3 ~+3 ~ air"
+                    ]
+                },
+                "hitboxOneDir4": {
+                    "transitions": [
+                        {
+                            "hitboxOneDir1": "query.mark_variant == 0"
+                        },
+                        {
+                            "hitboxOneDir2": "query.mark_variant == 1"
+                        },
+                        {
+                            "hitboxOneDir3": "query.mark_variant == 2"
+                        }
+                    ],
+                    "on_entry": [
+                        "/execute as @s[tag=isPhantom] run fill ~ ~ ~ ~ ~+3 ~+3 barrier",
+                        "@s rift:to_hitbox_four"
+                    ],
+                    "on_exit": [
+                        "/fill ~ ~ ~ ~ ~+3 ~+3 air"
+                    ]
+                },
+
+                "hitboxTwoDir1": {
+                    "transitions": [
+                        {
+                            "hitboxTwoDir2": "query.mark_variant == 1"
+                        },
+                        {
+                            "hitboxTwoDir3": "query.mark_variant == 2"
+                        },
+                        {
+                            "hitboxTwoDir4": "query.mark_variant == 3"
+                        }
+                    ],
+                    "on_entry": [
+                        "/execute as @s[tag=isPhantom] run fill ~ ~ ~ ~ ~+3 ~-3 barrier",
+                        "@s rift:to_hitbox_two"
+                    ],
+                    "on_exit": [
+                        "/fill ~ ~ ~ ~ ~+3 ~-3 air"
+                    ]
+                },
+                "hitboxTwoDir2": {
+                    "transitions": [
+                        {
+                            "hitboxTwoDir1": "query.mark_variant == 0"
+                        },
+                        {
+                            "hitboxTwoDir3": "query.mark_variant == 2"
+                        },
+                        {
+                            "hitboxTwoDir4": "query.mark_variant == 3"
+                        }
+                    ],
+                    "on_entry": [
+                        "/execute as @s[tag=isPhantom] run fill ~ ~ ~ ~-3 ~+3 ~ barrier",
+                        "@s rift:to_hitbox_three"
+                    ],
+                    "on_exit": [
+                        "/fill ~ ~ ~ ~-3 ~+3 ~ air"
+                    ]
+                },
+                "hitboxTwoDir3": {
+                    "transitions": [
+                        {
+                            "hitboxTwoDir1": "query.mark_variant == 0"
+                        },
+                        {
+                            "hitboxTwoDir2": "query.mark_variant == 1"
+                        },
+                        {
+                            "hitboxTwoDir4": "query.mark_variant == 3"
+                        }
+                    ],
+                    "on_entry": [
+                        "/execute as @s[tag=isPhantom] run fill ~ ~ ~ ~ ~+3 ~+3 barrier",
+                        "@s rift:to_hitbox_four"
+                    ],
+                    "on_exit": [
+                        "/fill ~ ~ ~ ~ ~+3 ~+3 air"
+                    ]
+                },
+                "hitboxTwoDir4": {
+                    "transitions": [
+                        {
+                            "hitboxTwoDir1": "query.mark_variant == 0"
+                        },
+                        {
+                            "hitboxTwoDir2": "query.mark_variant == 1"
+                        },
+                        {
+                            "hitboxTwoDir3": "query.mark_variant == 2"
+                        }
+                    ],
+                    "on_entry": [
+                        "/execute as @s[tag=isPhantom] run fill ~ ~ ~ ~+3 ~+3 ~ barrier",
+                        "@s rift:to_hitbox_one"
+                    ],
+                    "on_exit": [
+                        "/fill ~ ~ ~ ~+3 ~+3 ~ air"
+                    ]
+                },
+
+                "hitboxThreeDir1": {
+                    "transitions": [
+                        {
+                            "hitboxThreeDir2": "query.mark_variant == 1"
+                        },
+                        {
+                            "hitboxThreeDir3": "query.mark_variant == 2"
+                        },
+                        {
+                            "hitboxThreeDir4": "query.mark_variant == 3"
+                        }
+                    ],
+                    "on_entry": [
+                        "/execute as @s[tag=isPhantom] run fill ~ ~ ~ ~-3 ~+3 ~ barrier",
+                        "@s rift:to_hitbox_three"
+                    ],
+                    "on_exit": [
+                        "/fill ~ ~ ~ ~-3 ~+3 ~ air"
+                    ]
+                },
+                "hitboxThreeDir2": {
+                    "transitions": [
+                        {
+                            "hitboxThreeDir1": "query.mark_variant == 0"
+                        },
+                        {
+                            "hitboxThreeDir3": "query.mark_variant == 2"
+                        },
+                        {
+                            "hitboxThreeDir4": "query.mark_variant == 3"
+                        }
+                    ],
+                    "on_entry": [
+                        "/execute as @s[tag=isPhantom] run fill ~ ~ ~ ~ ~+3 ~+3 barrier",
+                        "@s rift:to_hitbox_four"
+                    ],
+                    "on_exit": [
+                        "/fill ~ ~ ~ ~ ~+3 ~+3 air"
+                    ]
+                },
+                "hitboxThreeDir3": {
+                    "transitions": [
+                        {
+                            "hitboxThreeDir1": "query.mark_variant == 0"
+                        },
+                        {
+                            "hitboxThreeDir2": "query.mark_variant == 1"
+                        },
+                        {
+                            "hitboxThreeDir4": "query.mark_variant == 3"
+                        }
+                    ],
+                    "on_entry": [
+                        "/execute as @s[tag=isPhantom] run fill ~ ~ ~ ~+3 ~+3 ~ barrier",
+                        "@s rift:to_hitbox_one"
+                    ],
+                    "on_exit": [
+                        "/fill ~ ~ ~ ~+3 ~+3 ~ air"
+                    ]
+                },
+                "hitboxThreeDir4": {
+                    "transitions": [
+                        {
+                            "hitboxThreeDir1": "query.mark_variant == 0"
+                        },
+                        {
+                            "hitboxThreeDir2": "query.mark_variant == 1"
+                        },
+                        {
+                            "hitboxThreeDir3": "query.mark_variant == 2"
+                        }
+                    ],
+                    "on_entry": [
+                        "/execute as @s[tag=isPhantom] run fill ~ ~ ~ ~ ~+3 ~-3 barrier",
+                        "@s rift:to_hitbox_two"
+                    ],
+                    "on_exit": [
+                        "/fill ~ ~ ~ ~ ~+3 ~-3 air"
+                    ]
+                },
+
+                "hitboxFourDir1": {
+                    "transitions": [
+                        {
+                            "hitboxFourDir2": "query.mark_variant == 1"
+                        },
+                        {
+                            "hitboxFourDir3": "query.mark_variant == 2"
+                        },
+                        {
+                            "hitboxFourDir4": "query.mark_variant == 3"
+                        }
+                    ],
+                    "on_entry": [
+                        "/execute as @s[tag=isPhantom] run fill ~ ~ ~ ~ ~+3 ~+3 barrier",
+                        "@s rift:to_hitbox_four"
+                    ],
+                    "on_exit": [
+                        "/fill ~ ~ ~ ~ ~+3 ~+3 air"
+                    ]
+                },
+                "hitboxFourDir2": {
+                    "transitions": [
+                        {
+                            "hitboxFourDir1": "query.mark_variant == 0"
+                        },
+                        {
+                            "hitboxFourDir3": "query.mark_variant == 2"
+                        },
+                        {
+                            "hitboxFourDir4": "query.mark_variant == 3"
+                        }
+                    ],
+                    "on_entry": [
+                        "/execute as @s[tag=isPhantom] run fill ~ ~ ~ ~+3 ~+3 ~ barrier",
+                        "@s rift:to_hitbox_one"
+                    ],
+                    "on_exit": [
+                        "/fill ~ ~ ~ ~+3 ~+3 ~ air"
+                    ]
+                },
+                "hitboxFourDir3": {
+                    "transitions": [
+                        {
+                            "hitboxFourDir1": "query.mark_variant == 0"
+                        },
+                        {
+                            "hitboxFourDir2": "query.mark_variant == 1"
+                        },
+                        {
+                            "hitboxFourDir4": "query.mark_variant == 3"
+                        }
+                    ],
+                    "on_entry": [
+                        "/execute as @s[tag=isPhantom] run fill ~ ~ ~ ~ ~+3 ~-3 barrier",
+                        "@s rift:to_hitbox_two"
+                    ],
+                    "on_exit": [
+                        "/fill ~ ~ ~ ~ ~+3 ~-3 air"
+                    ]
+                },
+                "hitboxFourDir4": {
+                    "transitions": [
+                        {
+                            "hitboxFourDir1": "query.mark_variant == 0"
+                        },
+                        {
+                            "hitboxFourDir2": "query.mark_variant == 1"
+                        },
+                        {
+                            "hitboxFourDir3": "query.mark_variant == 2"
+                        }
+                    ],
+                    "on_entry": [
+                        "/execute as @s[tag=isPhantom] run fill ~ ~ ~ ~-3 ~+3 ~ barrier",
+                        "@s rift:to_hitbox_three"
+                    ],
+                    "on_exit": [
+                        "/fill ~ ~ ~ ~ ~+3 ~-3 air"
+                    ]
+                }
+            }
+        },
+        "controller.animation.gate_add_phantom_tag": {
+            "initial_state": "default",
+            "states": {
+                "default": {
+                    "transitions": [
+                        {
+                            "isPhantom": "query.variant > 0"
+                        }
+                    ]
+                },
+                "isPhantom": {
+                    "transitions": [
+                        {
+                            "default": "query.variant == 0"
+                        }
+                    ],
+                    "on_entry": [
+                        "/tag @s add isPhantom"
+                    ],
+                    "on_exit": [
+                        "/tag @s remove isPhantom"
                     ]
                 }
             }
