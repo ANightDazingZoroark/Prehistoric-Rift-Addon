@@ -7,7 +7,7 @@
             "is_summonable": true,
             "is_experimental": false,
             "animations": {
-                "contSetRotation": "controller.animation.gate_set_rotation"
+                "contSetRotation": "controller.animation.large_gate_set_rotation"
             },
             "scripts": {
                 "animate": [
@@ -16,11 +16,29 @@
             }
         },
         "component_groups": {
-            //north
+            //directions
             "rift:direction_one": {
                 "minecraft:mark_variant": {
                     "value": 0
-                },
+                }
+            },
+            "rift:direction_two": {
+                "minecraft:mark_variant": {
+                    "value": 1
+                }
+            },
+            "rift:direction_three": {
+                "minecraft:mark_variant": {
+                    "value": 2
+                }
+            },
+            "rift:direction_four": {
+                "minecraft:mark_variant": {
+                    "value": 3
+                }
+            },
+            //hitboxes
+            "rift:hitbox_one": {
                 "minecraft:custom_hit_test": {
                     "hitboxes": [
                         {
@@ -46,11 +64,7 @@
                     ]
                 }
             },
-            //east
-            "rift:direction_two": {
-                "minecraft:mark_variant": {
-                    "value": 1
-                },
+            "rift:hitbox_two": {
                 "minecraft:custom_hit_test": {
                     "hitboxes": [
                         {
@@ -61,26 +75,22 @@
                         {
                             "width": 1,
                             "height": 4,
-                            "pivot": [0, 2, -1]
+                            "pivot": [0, 2, 1]
                         },
                         {
                             "width": 1,
                             "height": 4,
-                            "pivot": [0, 2, -2]
+                            "pivot": [0, 2, 2]
                         },
                         {
                             "width": 1,
                             "height": 4,
-                            "pivot": [0, 2, -3]
+                            "pivot": [0, 2, 3]
                         }
                     ]
                 }
             },
-            //south
-            "rift:direction_three": {
-                "minecraft:mark_variant": {
-                    "value": 2
-                },
+            "rift:hitbox_three": {
                 "minecraft:custom_hit_test": {
                     "hitboxes": [
                         {
@@ -106,11 +116,7 @@
                     ]
                 }
             },
-            //west
-            "rift:direction_four": {
-                "minecraft:mark_variant": {
-                    "value": 3
-                },
+            "rift:hitbox_four": {
                 "minecraft:custom_hit_test": {
                     "hitboxes": [
                         {
@@ -121,17 +127,17 @@
                         {
                             "width": 1,
                             "height": 4,
-                            "pivot": [0, 2, 1]
+                            "pivot": [0, 2, -1]
                         },
                         {
                             "width": 1,
                             "height": 4,
-                            "pivot": [0, 2, 2]
+                            "pivot": [0, 2, -2]
                         },
                         {
                             "width": 1,
                             "height": 4,
-                            "pivot": [0, 2, 3]
+                            "pivot": [0, 2, -3]
                         }
                     ]
                 }
@@ -205,6 +211,7 @@
                 }
             },
             "rift:commit_despawn": {
+                "minecraft:is_ignited": {},
                 "minecraft:instant_despawn": {}
             },
             "rift:is_built": {
@@ -212,6 +219,30 @@
             }
         },
         "components": {
+            "minecraft:custom_hit_test": {
+                "hitboxes": [
+                    {
+                        "width": 1,
+                        "height": 4,
+                        "pivot": [0, 2, 0]
+                    },
+                    {
+                        "width": 1,
+                        "height": 4,
+                        "pivot": [1, 2, 0]
+                    },
+                    {
+                        "width": 1,
+                        "height": 4,
+                        "pivot": [2, 2, 0]
+                    },
+                    {
+                        "width": 1,
+                        "height": 4,
+                        "pivot": [3, 2, 0]
+                    }
+                ]
+            },
             "minecraft:type_family": {
 				"family": [
 					"inanimate"
@@ -299,6 +330,11 @@
                                         "value": 0
                                     },
                                     {
+                                        "test": "is_mark_variant",
+                                        "subject": "self",
+                                        "value": 0
+                                    },
+                                    {
                                         "test": "has_equipment",
                                         "subject": "other",
                                         "domain": "hand",
@@ -306,7 +342,85 @@
                                     }
                                 ]
                             },
-                            "event": "rift:rotate",
+                            "event": "rift:to_direction_two",
+                            "target": "self"
+                        }
+                    },
+                    {
+                        "on_interact": {
+                            "filters": {
+                                "all_of": [
+                                    {
+                                        "test": "is_variant",
+                                        "subject": "self",
+                                        "value": 0
+                                    },
+                                    {
+                                        "test": "is_mark_variant",
+                                        "subject": "self",
+                                        "value": 1
+                                    },
+                                    {
+                                        "test": "has_equipment",
+                                        "subject": "other",
+                                        "domain": "hand",
+                                        "value": "rift:furniture_tool"
+                                    }
+                                ]
+                            },
+                            "event": "rift:to_direction_three",
+                            "target": "self"
+                        }
+                    },
+                    {
+                        "on_interact": {
+                            "filters": {
+                                "all_of": [
+                                    {
+                                        "test": "is_variant",
+                                        "subject": "self",
+                                        "value": 0
+                                    },
+                                    {
+                                        "test": "is_mark_variant",
+                                        "subject": "self",
+                                        "value": 2
+                                    },
+                                    {
+                                        "test": "has_equipment",
+                                        "subject": "other",
+                                        "domain": "hand",
+                                        "value": "rift:furniture_tool"
+                                    }
+                                ]
+                            },
+                            "event": "rift:to_direction_four",
+                            "target": "self"
+                        }
+                    },
+                    {
+                        "on_interact": {
+                            "filters": {
+                                "all_of": [
+                                    {
+                                        "test": "is_variant",
+                                        "subject": "self",
+                                        "value": 0
+                                    },
+                                    {
+                                        "test": "is_mark_variant",
+                                        "subject": "self",
+                                        "value": 3
+                                    },
+                                    {
+                                        "test": "has_equipment",
+                                        "subject": "other",
+                                        "domain": "hand",
+                                        "value": "rift:furniture_tool"
+                                    }
+                                ]
+                            },
+                            "event": "rift:to_direction_one",
                             "target": "self"
                         }
                     },
@@ -398,86 +512,117 @@
                     ]
                 }
             },
-            "rift:rotate": {
-                "sequence": [
-                    {},
-                    {
-                        "filters": {
-                            "test": "is_mark_variant",
-                            "subject": "self",
-                            "value": 0
-                        },
-                        "add": {
-                            "component_groups": [
-                                "rift:direction_two"
-                            ]
-                        },
-                        "remove": {
-                            "component_groups": [
-                                "rift:direction_one",
-                                "rift:direction_three",
-                                "rift:direction_four"
-                            ]
-                        }
-                    },
-                    {
-                        "filters": {
-                            "test": "is_mark_variant",
-                            "subject": "self",
-                            "value": 1
-                        },
-                        "add": {
-                            "component_groups": [
-                                "rift:direction_three"
-                            ]
-                        },
-                        "remove": {
-                            "component_groups": [
-                                "rift:direction_one",
-                                "rift:direction_two",
-                                "rift:direction_four"
-                            ]
-                        }
-                    },
-                    {
-                        "filters": {
-                            "test": "is_mark_variant",
-                            "subject": "self",
-                            "value": 2
-                        },
-                        "add": {
-                            "component_groups": [
-                                "rift:direction_four"
-                            ]
-                        },
-                        "remove": {
-                            "component_groups": [
-                                "rift:direction_one",
-                                "rift:direction_two",
-                                "rift:direction_three"
-                            ]
-                        }
-                    },
-                    {
-                        "filters": {
-                            "test": "is_mark_variant",
-                            "subject": "self",
-                            "value": 3
-                        },
-                        "add": {
-                            "component_groups": [
-                                "rift:direction_one"
-                            ]
-                        },
-                        "remove": {
-                            "component_groups": [
-                                "rift:direction_two",
-                                "rift:direction_three",
-                                "rift:direction_four"
-                            ]
-                        }
-                    }
-                ]
+            "rift:to_direction_one": {
+                "add": {
+                    "component_groups": [
+                        "rift:direction_one"
+                    ]
+                },
+                "remove": {
+                    "component_groups": [
+                        "rift:direction_two",
+                        "rift:direction_three",
+                        "rift:direction_four"
+                    ]
+                }
+            },
+            "rift:to_direction_two": {
+                "add": {
+                    "component_groups": [
+                        "rift:direction_two"
+                    ]
+                },
+                "remove": {
+                    "component_groups": [
+                        "rift:direction_one",
+                        "rift:direction_three",
+                        "rift:direction_four"
+                    ]
+                }
+            },
+            "rift:to_direction_three": {
+                "add": {
+                    "component_groups": [
+                        "rift:direction_three"
+                    ]
+                },
+                "remove": {
+                    "component_groups": [
+                        "rift:direction_one",
+                        "rift:direction_two",
+                        "rift:direction_four"
+                    ]
+                }
+            },
+            "rift:to_direction_four": {
+                "add": {
+                    "component_groups": [
+                        "rift:direction_four"
+                    ]
+                },
+                "remove": {
+                    "component_groups": [
+                        "rift:direction_one",
+                        "rift:direction_two",
+                        "rift:direction_three"
+                    ]
+                }
+            },
+            "rift:to_hitbox_one": {
+                "add": {
+                    "component_groups": [
+                        "rift:hitbox_one"
+                    ]
+                },
+                "remove": {
+                    "component_groups": [
+                        "rift:hitbox_two",
+                        "rift:hitbox_three",
+                        "rift:hitbox_four"
+                    ]
+                }
+            },
+            "rift:to_hitbox_two": {
+                "add": {
+                    "component_groups": [
+                        "rift:hitbox_two"
+                    ]
+                },
+                "remove": {
+                    "component_groups": [
+                        "rift:hitbox_one",
+                        "rift:hitbox_three",
+                        "rift:hitbox_four"
+                    ]
+                }
+            },
+            "rift:to_hitbox_three": {
+                "add": {
+                    "component_groups": [
+                        "rift:hitbox_three"
+                    ]
+                },
+                "remove": {
+                    "component_groups": [
+                        "rift:hitbox_one",
+                        "rift:hitbox_two",
+                        "rift:hitbox_four"
+                    ]
+                }
+            },
+            "rift:to_hitbox_four": {
+                "add": {
+                    "component_groups": [
+                        "rift:hitbox_four"
+                    ]
+                },
+                "remove": {
+                    "component_groups": [
+                        "rift:hitbox_one",
+                        "rift:hitbox_two",
+                        "rift:hitbox_three"
+                    ]
+                }
             },
             "rift:build": {
                 "sequence": [
@@ -528,243 +673,39 @@
                                 "rift:is_phantom"
                             ]
                         }
-                    },
-                    {
-                        "filters": {
-                            "test": "is_mark_variant",
-                            "subject": "self",
-                            "value": 0
-                        },
-                        "run_command": {
-                            "command": [
-                                "fill ~ ~ ~ ~+3 ~+3 ~ barrier"
-                            ]
-                        }
-                    },
-                    {
-                        "filters": {
-                            "test": "is_mark_variant",
-                            "subject": "self",
-                            "value": 1
-                        },
-                        "run_command": {
-                            "command": [
-                                "fill ~ ~ ~ ~ ~+3 ~-3 barrier"
-                            ]
-                        }
-                    },
-                    {
-                        "filters": {
-                            "test": "is_mark_variant",
-                            "subject": "self",
-                            "value": 2
-                        },
-                        "run_command": {
-                            "command": [
-                                "fill ~ ~ ~ ~-3 ~+3 ~ barrier"
-                            ]
-                        }
-                    },
-                    {
-                        "filters": {
-                            "test": "is_mark_variant",
-                            "subject": "self",
-                            "value": 3
-                        },
-                        "run_command": {
-                            "command": [
-                                "fill ~ ~ ~ ~ ~+3 ~+3 barrier"
-                            ]
-                        }
                     }
                 ]
             },
             "rift:open_door": {
-                "sequence": [
-                    {
-                        "add": {
-                            "component_groups": [
-                                "rift:is_opened"
-                            ]
-                        },
-                        "run_command": {
-                            "command": [
-                                "playsound random.door_open @a[r=8]"
-                            ]
-                        }
-                    },
-                    {
-                        "filters": {
-                            "test": "is_mark_variant",
-                            "subject": "self",
-                            "value": 0
-                        },
-                        "run_command": {
-                            "command": [
-                                "fill ~ ~ ~ ~+3 ~+3 ~ air"
-                            ]
-                        }
-                    },
-                    {
-                        "filters": {
-                            "test": "is_mark_variant",
-                            "subject": "self",
-                            "value": 1
-                        },
-                        "run_command": {
-                            "command": [
-                                "fill ~ ~ ~ ~ ~+3 ~-3 air"
-                            ]
-                        }
-                    },
-                    {
-                        "filters": {
-                            "test": "is_mark_variant",
-                            "subject": "self",
-                            "value": 2
-                        },
-                        "run_command": {
-                            "command": [
-                                "fill ~ ~ ~ ~-3 ~+3 ~ air"
-                            ]
-                        }
-                    },
-                    {
-                        "filters": {
-                            "test": "is_mark_variant",
-                            "subject": "self",
-                            "value": 3
-                        },
-                        "run_command": {
-                            "command": [
-                                "fill ~ ~ ~ ~ ~+3 ~+3 air"
-                            ]
-                        }
-                    }
-                ]
+                "add": {
+                    "component_groups": [
+                        "rift:is_opened"
+                    ]
+                },
+                "run_command": {
+                    "command": [
+                        "playsound random.door_open @a[r=8]"
+                    ]
+                }
             },
             "rift:close_door": {
-                "sequence": [
-                    {
-                        "remove": {
-                            "component_groups": [
-                                "rift:is_opened"
-                            ]
-                        },
-                        "run_command": {
-                            "command": [
-                                "playsound random.door_close @a[r=8]"
-                            ]
-                        }
-                    },
-                    {
-                        "filters": {
-                            "test": "is_mark_variant",
-                            "subject": "self",
-                            "value": 0
-                        },
-                        "run_command": {
-                            "command": [
-                                "fill ~ ~ ~ ~+3 ~+3 ~ barrier"
-                            ]
-                        }
-                    },
-                    {
-                        "filters": {
-                            "test": "is_mark_variant",
-                            "subject": "self",
-                            "value": 1
-                        },
-                        "run_command": {
-                            "command": [
-                                "fill ~ ~ ~ ~ ~+3 ~-3 barrier"
-                            ]
-                        }
-                    },
-                    {
-                        "filters": {
-                            "test": "is_mark_variant",
-                            "subject": "self",
-                            "value": 2
-                        },
-                        "run_command": {
-                            "command": [
-                                "fill ~ ~ ~ ~-3 ~+3 ~ barrier"
-                            ]
-                        }
-                    },
-                    {
-                        "filters": {
-                            "test": "is_mark_variant",
-                            "subject": "self",
-                            "value": 3
-                        },
-                        "run_command": {
-                            "command": [
-                                "fill ~ ~ ~ ~ ~+3 ~+3 barrier"
-                            ]
-                        }
-                    }
-                ]
+                "remove": {
+                    "component_groups": [
+                        "rift:is_opened"
+                    ]
+                },
+                "run_command": {
+                    "command": [
+                        "playsound random.door_close @a[r=8]"
+                    ]
+                }
             },
             "rift:break_door": {
-                "sequence": [
-                    {
-                        "add": {
-                            "component_groups": [
-                                "rift:drop_item_delay"
-                            ]
-                        }
-                    },
-                    {
-                        "filters": {
-                            "test": "is_mark_variant",
-                            "subject": "self",
-                            "value": 0
-                        },
-                        "run_command": {
-                            "command": [
-                                "fill ~ ~ ~ ~+3 ~+3 ~ air"
-                            ]
-                        }
-                    },
-                    {
-                        "filters": {
-                            "test": "is_mark_variant",
-                            "subject": "self",
-                            "value": 1
-                        },
-                        "run_command": {
-                            "command": [
-                                "fill ~ ~ ~ ~ ~+3 ~-3 air"
-                            ]
-                        }
-                    },
-                    {
-                        "filters": {
-                            "test": "is_mark_variant",
-                            "subject": "self",
-                            "value": 2
-                        },
-                        "run_command": {
-                            "command": [
-                                "fill ~ ~ ~ ~-3 ~+3 ~ air"
-                            ]
-                        }
-                    },
-                    {
-                        "filters": {
-                            "test": "is_mark_variant",
-                            "subject": "self",
-                            "value": 3
-                        },
-                        "run_command": {
-                            "command": [
-                                "fill ~ ~ ~ ~ ~+3 ~+3 air"
-                            ]
-                        }
-                    }
-                ]
+                "add": {
+                    "component_groups": [
+                        "rift:drop_item_delay"
+                    ]
+                }
             },
             "rift:commit_disappear": {
                 "add": {
