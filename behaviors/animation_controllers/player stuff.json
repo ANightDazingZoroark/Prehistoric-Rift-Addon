@@ -22,7 +22,7 @@
                     ],
                     "on_entry": [
                         "/tag @e[type=rift:apatosaurus, c=1] add apatoAddRiders",
-                        "/execute as @e[type=rift:apatosaurus, c=1] run tellraw @p[c=1] {\"rawtext\":[{\"text\":\"Picked up passengers\"}]}"
+                        "/execute as @e[type=rift:apatosaurus, c=1] run tellraw @p[c=1] {\"rawtext\":[{\"translate\":\"reminder.passengers_picked_up.text\"}]}"
                     ]
                 },
                 "limboOne": {
@@ -46,7 +46,7 @@
                     ],
                     "on_entry": [
                         "/tag @e[type=rift:apatosaurus, c=1] add apatoRemoveRiders",
-                        "/execute as @e[type=rift:apatosaurus, c=1] run tellraw @p[c=1] {\"rawtext\":[{\"text\":\"Removed passengers\"}]}"
+                        "/execute as @e[type=rift:apatosaurus, c=1] run tellraw @p[c=1] {\"rawtext\":[{\"translate\":\"reminder.passengers_removed.text\"}]}"
                     ]
                 },
                 "limboTwo": {
@@ -150,12 +150,12 @@
                 "hovering": {
                     "on_entry": [
                         "/event entity @e[tag=waterMountHasRider, c=1, tag=tamed] rift:swim_to_float",
-                        "/tellraw @p {\"rawtext\":[{\"text\":\"Enabled hover mode\"}]}",
+						"/tellraw @p {\"rawtext\":[{\"translate\":\"reminder.hover_mode_enabled.text\"}]}",
                         "/effect @e[c=1, tag=waterMountHasRider, tag=tamed] levitation 0 0",
                         "/effect @e[c=1, tag=waterMountHasRider, tag=tamed] slow_falling 0 0"
                     ],
                     "on_exit": [
-                        "/tellraw @p {\"rawtext\":[{\"text\":\"Disabled hover mode\"}]}",
+						"/tellraw @p {\"rawtext\":[{\"translate\":\"reminder.hover_mode_disabled.text\"}]}",
                         "/event entity @e[tag=waterMountHasRider, c=1, tag=tamed] rift:float_to_swim"
                     ],
                     "transitions": [
@@ -248,14 +248,14 @@
                 "hovering": {
                     "on_entry": [
                         "/event entity @e[tag=flyingMountHasRider, c=1, tag=tamed] rift:fly_to_hover",
-                        "/tellraw @p {\"rawtext\":[{\"text\":\"Enabled hover mode\"}]}",
+						"/tellraw @p {\"rawtext\":[{\"translate\":\"reminder.hover_mode_enabled.text\"}]}",
                         "/event entity @e[tag=flyingMountHasRider, c=1, tag=tamed] rift:fly_to_hover",
                         "/execute as @e[tag=flyingMountHasRider, c=1, tag=tamed] positioned as @e[tag=flyingMountHasRider, c=1, tag=tamed] run tp @s ~ ~ ~",
                         "/effect @e[tag=flyingMountHasRider, c=1, tag=tamed] levitation 0 0",
                         "/effect @e[tag=flyingMountHasRider, c=1, tag=tamed] slow_falling 0 0"
                     ],
                     "on_exit": [
-                        "/tellraw @p {\"rawtext\":[{\"text\":\"Disabled hover mode\"}]}",
+						"/tellraw @p {\"rawtext\":[{\"translate\":\"reminder.hover_mode_disabled.text\"}]}",
                         "/event entity @e[tag=flyingMountHasRider, c=1, tag=tamed] rift:hover_to_fly"
                     ],
                     "transitions": [
@@ -283,7 +283,7 @@
                         }
                     ],
                     "on_entry": [
-                        "/tellraw @p {\"rawtext\":[{\"text\":\"Not enough energy to fly!\"}]}",
+						"/tellraw @p {\"rawtext\":[{\"translate\":\"reminder.insufficient_energy_flight.text\"}]}",
                         "/effect @e[tag=flyingMountHasRider, c=1, tag=tamed] levitation 0"
                     ]
                 }
@@ -360,13 +360,13 @@
                         }
                     ],
                     "on_entry": [
-                        "/tellraw @a {\"rawtext\":[{\"text\":\"Raptor Raid event has started!\"}]}",
+						"/tellraw @a {\"rawtext\":[{\"translate\":\"mob_event.raptor_raid_start.text\"}]}",
                         "/playsound raid.horn @a",
-                        "/title @a title Raptor Raid!",
-                        "/title @a subtitle Utahraptors are on the hunt, and you are the prey!"
+                        "/titleraw @a title {\"rawtext\":[{\"translate\":\"mob_event.raptor_raid.text\"}]}",
+                        "/titleraw @a subtitle {\"rawtext\":[{\"translate\":\"mob_event.raptor_raid_description.text\"}]}"
                     ],
                     "on_exit": [
-                        "/tellraw @a {\"rawtext\":[{\"text\":\"Raptor Raid is no longer spawning mobs!\"}]}"
+						"/tellraw @a {\"rawtext\":[{\"translate\":\"mob_event.raptor_raid_end.text\"}]}"
                     ]
                 },
                 "piranhaSwarm": {
@@ -379,13 +379,13 @@
                         }
                     ],
                     "on_entry": [
-                        "/tellraw @a {\"rawtext\":[{\"text\":\"Piranha Swarm event has started!\"}]}",
+						"/tellraw @a {\"rawtext\":[{\"translate\":\"mob_event.piranha_swarm_start.text\"}]}",
                         "/playsound raid.horn @a",
-                        "/title @a title Piranha Swarm!",
-                        "/title @a subtitle Megapiranhas are rising from the aquifers below!"
+                        "/titleraw @a title {\"rawtext\":[{\"translate\":\"mob_event.piranha_swarm.text\"}]}",
+                        "/titleraw @a subtitle {\"rawtext\":[{\"translate\":\"mob_event.piranha_swarm_description.text\"}]}"
                     ],
                     "on_exit": [
-                        "/tellraw @a {\"rawtext\":[{\"text\":\"Piranha Swarm is no longer spawning mobs!\"}]}"
+						"/tellraw @a {\"rawtext\":[{\"translate\":\"mob_event.piranha_swarm_end.text\"}]}"
                     ]
                 },
                 "wolfHunt": {
@@ -398,13 +398,13 @@
                         }
                     ],
                     "on_entry": [
-                        "/tellraw @a {\"rawtext\":[{\"text\":\"Wolf Hunt event has started!\"}]}",
+						"/tellraw @a {\"rawtext\":[{\"translate\":\"mob_event.wolf_hunt_start.text\"}]}",
                         "/playsound raid.horn @a",
-                        "/title @a title Wolf Hunt!",
-                        "/title @a subtitle Wolves are out on the prowl, in search of prey!"
+                        "/titleraw @a title {\"rawtext\":[{\"translate\":\"mob_event.wolf_hunt.text\"}]}",
+                        "/titleraw @a subtitle {\"rawtext\":[{\"translate\":\"mob_event.wolf_hunt_description.text\"}]}"
                     ],
                     "on_exit": [
-                        "/tellraw @a {\"rawtext\":[{\"text\":\"Wolf Hunt is no longer spawning mobs!\"}]}"
+						"/tellraw @a {\"rawtext\":[{\"translate\":\"mob_event.wolf_hunt_end.text\"}]}"
                     ]
                 },
                 "herbivoreStampede": {
@@ -417,13 +417,13 @@
                         }
                     ],
                     "on_entry": [
-                        "/tellraw @a {\"rawtext\":[{\"text\":\"Herbivore Stampede event has started!\"}]}",
+						"/tellraw @a {\"rawtext\":[{\"translate\":\"mob_event.herbivore_stampede_start.text\"}]}",
                         "/playsound raid.horn @a",
-                        "/title @a title Herbivore Stampede!",
-                        "/titleraw @a subtitle {\"rawtext\": [{\"text\": \"Enraged herbivores are out \nto take out their anger!\"}]}"
+                        "/titleraw @a title {\"rawtext\":[{\"translate\":\"mob_event.herbivore_stampede.text\"}]}",
+                        "/titleraw @a subtitle {\"rawtext\":[{\"translate\":\"mob_event.herbivore_stampede_description.text\"}]}"
                     ],
                     "on_exit": [
-                        "/tellraw @a {\"rawtext\":[{\"text\":\"Herbivore Stampede is no longer spawning mobs!\"}]}"
+						"/tellraw @a {\"rawtext\":[{\"translate\":\"mob_event.herbivore_stampede_end.text\"}]}"
                     ]
                 },
                 "theFlood": {
@@ -436,14 +436,13 @@
                         }
                     ],
                     "on_entry": [
-                        "/tellraw @a {\"rawtext\":[{\"text\":\"The Flood event has started!\"}]}",
+						"/tellraw @a {\"rawtext\":[{\"translate\":\"mob_event.the_flood_start.text\"}]}",
                         "/playsound raid.horn @a",
-                        "/title @a title The Flood!",
-                        "/titleraw @a subtitle {\"rawtext\": [{\"text\": \"Downpour and river monsters!\"}]}",
-                        "/weather thunder 1000"
+                        "/titleraw @a title {\"rawtext\":[{\"translate\":\"mob_event.the_flood.text\"}]}",
+                        "/titleraw @a subtitle {\"rawtext\":[{\"translate\":\"mob_event.the_flood_description.text\"}]}"
                     ],
                     "on_exit": [
-                        "/tellraw @a {\"rawtext\":[{\"text\":\"Herbivore Stampede is no longer spawning mobs!\"}]}"
+						"/tellraw @a {\"rawtext\":[{\"translate\":\"mob_event.the_flood_end.text\"}]}"
                     ]
                 },
                 "limbo": {
@@ -612,7 +611,7 @@
 				"default": {
                     "transitions": [
                         {
-                            "riding": "query.is_riding && ((query.get_ride -> query.owner_identifier) == 'rift:tyrannosaurus' || (query.get_ride -> query.owner_identifier) == 'rift:stegosaurus' || (query.get_ride -> query.owner_identifier) == 'rift:triceratops' || (query.get_ride -> query.owner_identifier) == 'rift:utahraptor' || (query.get_ride -> query.owner_identifier) == 'rift:apatosaurus' || (query.get_ride -> query.owner_identifier) == 'rift:parasaurolophus' || (query.get_ride -> query.owner_identifier) == 'rift:sarcosuchus' || (query.get_ride -> query.owner_identifier) == 'rift:anomalocaris' || (query.get_ride -> query.owner_identifier) == 'rift:saruophaganax' || (query.get_ride -> query.owner_identifier) == 'rift:direwolf' || (query.get_ride -> query.owner_identifier) == 'rift:megaloceros' || (query.get_ride -> query.owner_identifier) == 'rift:baryonyx' || (query.get_ride -> query.owner_identifier) == 'rift:ankylosaurus' || (query.get_ride -> query.owner_identifier) == 'rift:dilophosaurus' || (query.get_ride -> query.owner_identifier) == 'rift:gallimimus' || (query.get_ride -> query.owner_identifier) == 'rift:cavern_boss' || (query.get_ride -> query.owner_identifier) == 'rift:direbear')"
+                            "riding": "query.is_riding && ((query.get_ride -> query.owner_identifier) == 'rift:tyrannosaurus' || (query.get_ride -> query.owner_identifier) == 'rift:stegosaurus' || (query.get_ride -> query.owner_identifier) == 'rift:triceratops' || (query.get_ride -> query.owner_identifier) == 'rift:utahraptor' || (query.get_ride -> query.owner_identifier) == 'rift:apatosaurus' || (query.get_ride -> query.owner_identifier) == 'rift:parasaurolophus' || (query.get_ride -> query.owner_identifier) == 'rift:sarcosuchus' || (query.get_ride -> query.owner_identifier) == 'rift:anomalocaris' || (query.get_ride -> query.owner_identifier) == 'rift:saruophaganax' || (query.get_ride -> query.owner_identifier) == 'rift:direwolf' || (query.get_ride -> query.owner_identifier) == 'rift:megaloceros' || (query.get_ride -> query.owner_identifier) == 'rift:baryonyx' || (query.get_ride -> query.owner_identifier) == 'rift:ankylosaurus' || (query.get_ride -> query.owner_identifier) == 'rift:dilophosaurus' || (query.get_ride -> query.owner_identifier) == 'rift:gallimimus' || (query.get_ride -> query.owner_identifier) == 'rift:direbear' || (query.get_ride -> query.owner_identifier) == 'rift:pteranodon')"
                         }
                     ]
                 },
@@ -623,7 +622,7 @@
                         }
                     ],
                     "on_entry": [
-                        "/tellraw @p {\"rawtext\":[{\"text\":\"Equip a command staff to be able to use this creature's ability, a harvest staff to make this creature harvest items from certain nearby blocks, or a command console to use the weapons on the back of this creature (if there are)!\"}]}"
+						"/tellraw @p {\"rawtext\":[{\"translate\":\"reminder.can_use_command_staff.text\"}]}"
                     ]
                 }
             }
@@ -634,7 +633,7 @@
 				"default": {
                     "transitions": [
                         {
-                            "riding": "query.is_riding && query.get_equipped_item_name('main_hand') == 'command_staff' && ((query.get_ride -> query.owner_identifier) == 'rift:tyrannosaurus' || (query.get_ride -> query.owner_identifier) == 'rift:stegosaurus' || (query.get_ride -> query.owner_identifier) == 'rift:triceratops' || (query.get_ride -> query.owner_identifier) == 'rift:utahraptor' || (query.get_ride -> query.owner_identifier) == 'rift:apatosaurus' || (query.get_ride -> query.owner_identifier) == 'rift:parasaurolophus' || (query.get_ride -> query.owner_identifier) == 'rift:sarcosuchus' || (query.get_ride -> query.owner_identifier) == 'rift:anomalocaris' || (query.get_ride -> query.owner_identifier) == 'rift:saruophaganax' || (query.get_ride -> query.owner_identifier) == 'rift:direwolf' || (query.get_ride -> query.owner_identifier) == 'rift:megaloceros' || (query.get_ride -> query.owner_identifier) == 'rift:baryonyx')"
+                            "riding": "query.is_riding && query.get_equipped_item_name('main_hand') == 'command_staff' && ((query.get_ride -> query.owner_identifier) == 'rift:tyrannosaurus' || (query.get_ride -> query.owner_identifier) == 'rift:stegosaurus' || (query.get_ride -> query.owner_identifier) == 'rift:triceratops' || (query.get_ride -> query.owner_identifier) == 'rift:utahraptor' || (query.get_ride -> query.owner_identifier) == 'rift:apatosaurus' || (query.get_ride -> query.owner_identifier) == 'rift:parasaurolophus' || (query.get_ride -> query.owner_identifier) == 'rift:sarcosuchus' || (query.get_ride -> query.owner_identifier) == 'rift:anomalocaris' || (query.get_ride -> query.owner_identifier) == 'rift:saruophaganax' || (query.get_ride -> query.owner_identifier) == 'rift:direwolf' || (query.get_ride -> query.owner_identifier) == 'rift:megaloceros' || (query.get_ride -> query.owner_identifier) == 'rift:baryonyx' || (query.get_ride -> query.owner_identifier) == 'rift:ankylosaurus' || (query.get_ride -> query.owner_identifier) == 'rift:dilophosaurus' || (query.get_ride -> query.owner_identifier) == 'rift:gallimimus' || (query.get_ride -> query.owner_identifier) == 'rift:direbear' || (query.get_ride -> query.owner_identifier) == 'rift:pteranodon')"
                         }
                     ]
                 },
@@ -645,7 +644,7 @@
                         }
                     ],
                     "on_entry": [
-                        "/tellraw @p {\"rawtext\":[{\"text\":\"Right click/tap and hold once to activate an ability, and right click and hold/tap and hold for a long time, then release to change the ability to be used.\"}]}"
+						"/tellraw @p {\"rawtext\":[{\"translate\":\"reminder.command_staff_instructions.text\"}]}"
                     ]
                 }
             }
