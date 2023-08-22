@@ -143,6 +143,9 @@ let weakerThanStone = [
     "minecraft:soul_sand",
     "minecraft:soul_soil",
     "minecraft:mangrove_roots",
+    "minecraft:bamboo",
+    "minecraft:bamboo_block",
+    "minecraft:stripped_block",
     
     "rift:oak_thatch_block",
     "rift:spruce_thatch_block",
@@ -153,6 +156,7 @@ let weakerThanStone = [
     "rift:crimson_thatch_block",
     "rift:warped_thatch_block",
     "rift:mangrove_thatch_block",
+    "rift:cherry_thatch_block",
     "rift:wooden_chair",
     "rift:wooden_table",
     "rift:glass_table",

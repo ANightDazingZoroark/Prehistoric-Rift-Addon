@@ -78,6 +78,7 @@ let affectedByBola = [
     'minecraft:bat',
     'minecraft:bee',
     'minecraft:blaze',
+    'minecraft:camel',
     'minecraft:cat',
     'minecraft:cave_spider',
     'minecraft:chicken',
@@ -765,7 +766,6 @@ world.afterEvents.entityHurt.subscribe((event) => {
     }
     if (event.damageSource.damagingEntity.typeId == 'rift:sarcosuchus' && event.damageSource.damagingEntity.hasTag('powered')) {
         event.hurtEntity.addEffect(EffectTypes.get("slowness"), 600, { amplifier: 2 })
-        console.warn('oof')
     }
     if (event.damageSource.damagingEntity.typeId == 'rift:anomalocaris') {
         event.damageSource.damagingEntity.getComponent('health').setCurrent(event.damageSource.damagingEntity.getComponent('health').current + 4)
@@ -786,12 +786,15 @@ world.afterEvents.entityHurt.subscribe((event) => {
     if (event.damageSource.damagingEntity.typeId == 'rift:ankylosaurus' && !event.damageSource.damagingEntity.hasTag('sheared')) {
         event.hurtEntity.applyKnockback(event.damageSource.damagingEntity.getViewDirection().x, event.damageSource.damagingEntity.getViewDirection().z, 5, 0.25)
     }
-    if (event.damageSource.damagingProjectile.typeId == 'rift:dilophosaurus_spit') {
-        event.hurtEntity.addEffect(EffectTypes.get("poison"), 200)
-        event.hurtEntity.addEffect(EffectTypes.get("blindness"), 200)
-        event.hurtEntity.addEffect(EffectTypes.get("slowness"), 200, { amplifier: 2 })
-        event.damageSource.damagingProjectile.triggerEvent('rift:commit_disappear')
+    try {
+        if (event.damageSource.damagingProjectile.typeId == 'rift:dilophosaurus_spit') {
+            event.hurtEntity.addEffect(EffectTypes.get("poison"), 200)
+            event.hurtEntity.addEffect(EffectTypes.get("blindness"), 200)
+            event.hurtEntity.addEffect(EffectTypes.get("slowness"), 200, { amplifier: 2 })
+            event.damageSource.damagingProjectile.triggerEvent('rift:commit_disappear')
+        }
     }
+    catch (e) {}
     if (event.hurtEntity.typeId == 'rift:tenontosaurus' && event.hurtEntity.getComponent('is_tamed') && event.hurtEntity.hasTag('ridden')) {
         event.damageSource.damagingEntity.addTag('tenontoTamedTarget')
         event.hurtEntity.runCommandAsync(`event entity @e[r=24, tag=!tamed, tag=hypnotizedTamed] rift:attack_for_tenontosaurus`)
@@ -819,14 +822,22 @@ world.afterEvents.entityHurt.subscribe((event) => {
         event.hurtEntity.triggerEvent('rift:start_bleeding')
     }
 
-    if (!event.hurtEntity.hasTag('inWater') && affectedByBola.includes(event.hurtEntity.typeId) && event.damageSource.damagingProjectile.typeId == 'rift:bola_projectile') {
-        event.hurtEntity.triggerEvent('rift:stop_being_affected_by_bola')
-        event.hurtEntity.triggerEvent('rift:affected_by_bola')
+    try {
+        if (!event.hurtEntity.hasTag('inWater') && affectedByBola.includes(event.hurtEntity.typeId) && event.damageSource.damagingProjectile.typeId == 'rift:bola_projectile') {
+            event.hurtEntity.triggerEvent('rift:stop_being_affected_by_bola')
+            event.hurtEntity.triggerEvent('rift:affected_by_bola')
+            event.damageSource.damagingProjectile.triggerEvent('rift:commit_disappear')
+        }
     }
-    if (!event.hurtEntity.hasTag('inWater') && event.hurtEntity.typeId == 'rift:direwolf' && !event.hurtEntity.hasTag('ignited') && event.damageSource.damagingProjectile.typeId == 'rift:bola_projectile') {
-        event.hurtEntity.triggerEvent('rift:stop_being_affected_by_bola')
-        event.hurtEntity.triggerEvent('rift:affected_by_bola')
+    catch (e) {}
+    try {
+        if (!event.hurtEntity.hasTag('inWater') && event.hurtEntity.typeId == 'rift:direwolf' && !event.hurtEntity.hasTag('ignited') && event.damageSource.damagingProjectile.typeId == 'rift:bola_projectile') {
+            event.hurtEntity.triggerEvent('rift:stop_being_affected_by_bola')
+            event.hurtEntity.triggerEvent('rift:affected_by_bola')
+            event.damageSource.damagingProjectile.triggerEvent('rift:commit_disappear')
+        }
     }
+    catch (e) {}
 
     if (event.hurtEntity.typeId == 'rift:cavern_boss' && event.hurtEntity.getComponent('health').current <= 0) {
         event.hurtEntity.runCommandAsync("tag @a[r=16] add bossOutroMusic")
@@ -838,6 +849,6 @@ world.afterEvents.entityHurt.subscribe((event) => {
 
     if (saurophaganaxFood.includes(event.hurtEntity.typeId) && event.damageSource.damagingProjectile.typeId == 'rift:saurophaganax_light_blaster_light') {
         event.hurtEntity.kill()
-        event.damageSource.damagingProjectile.triggerEvent('rift:affected_by_bola')
+        event.damageSource.damagingProjectile.triggerEvent('rift:commit_disappear')
     }
 })
