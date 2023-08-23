@@ -57,6 +57,11 @@ world.beforeEvents.itemUseOn.subscribe(data => {
                     data.block.dimension.spawnItem(new ItemStack(ItemTypes.get('rift:cherry_thatch'), 2), location)
                 })
                 break
+            case 'minecraft:bamboo_block':
+                system.run(() => {
+                    data.block.dimension.spawnItem(new ItemStack(ItemTypes.get('rift:bamboo_thatch'), 2), location)
+                })
+                break
             case 'minecraft:crimson_stem':
                 system.run(() => {
                     data.block.dimension.spawnItem(new ItemStack(ItemTypes.get('rift:crimson_thatch'), 2), location)

@@ -40,6 +40,7 @@ let weakerThanStone = [
     "minecraft:mangrove_planks",
     "minecraft:cherry_planks",
     "minecraft:bamboo_planks",
+    "minecraft:bamboo_mosaic",
 
     "minecraft:wooden_slab",
     "minecraft:crimson_slab",
@@ -47,12 +48,8 @@ let weakerThanStone = [
     "minecraft:mangrove_slab",
     "minecraft:cherry_slab",
     "minecraft:bamboo_slab",
+    "minecraft:bamboo_mosaic_slab",
     "minecraft:double_wooden_slab",
-    "minecraft:double_crimson_slab",
-    "minecraft:double_warped_slab",
-    "minecraft:double_mangrove_slab",
-    "minecraft:double_cherry_slab",
-    "minecraft:double_bamboo_slab",
     
     "minecraft:oak_stairs",
     "minecraft:spruce_stairs",
@@ -65,6 +62,7 @@ let weakerThanStone = [
     "minecraft:mangrove_stairs",
     "minecraft:cherry_stairs",
     "minecraft:bamboo_stairs",
+    "minecraft:bamboo_mosaic_stairs",
 
     "minecraft:wooden_door",
     "minecraft:spruce_door",
@@ -145,7 +143,7 @@ let weakerThanStone = [
     "minecraft:mangrove_roots",
     "minecraft:bamboo",
     "minecraft:bamboo_block",
-    "minecraft:stripped_block",
+    "minecraft:stripped_bamboo_block",
     
     "rift:oak_thatch_block",
     "rift:spruce_thatch_block",
@@ -157,6 +155,7 @@ let weakerThanStone = [
     "rift:warped_thatch_block",
     "rift:mangrove_thatch_block",
     "rift:cherry_thatch_block",
+    "rift:bamboo_thatch_block",
     "rift:wooden_chair",
     "rift:wooden_table",
     "rift:glass_table",
