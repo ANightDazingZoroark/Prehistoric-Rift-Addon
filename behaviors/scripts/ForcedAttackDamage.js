@@ -15,7 +15,7 @@ function damageOutput(entity, value) {
     return value
 }
 
-world.beforeEvents.dataDrivenEntityTriggerEvent.subscribe(data => {
+world.afterEvents.dataDrivenEntityTriggerEvent.subscribe(data => {
     if (data.id == 'rift:using_forced_attack') {
         switch (data.entity.typeId) {
             case 'rift:tyrannosaurus':

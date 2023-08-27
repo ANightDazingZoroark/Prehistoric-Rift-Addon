@@ -535,9 +535,18 @@ function craft(panel) {
     }
 }
 
-system.runInterval(() => {
-    for (const entity of world.getDimension('overworld').getEntities({ type: "rift:infusion_table" })) {
-        const panel = entity.getComponent('inventory').container
+// system.runInterval(() => {
+//     for (const entity of world.getDimension('overworld').getEntities({ type: "rift:infusion_table" })) {
+//         const panel = entity.getComponent('inventory').container
+//         if (slot(panel, 0) == 'rift:blighted_shard') {
+//             craft(panel)
+//         }
+//     }
+// })
+
+world.afterEvents.dataDrivenEntityTriggerEvent.subscribe((ev) => {
+    if (ev.entity.typeId == 'rift:infusion_table' && ev.id == 'rift:be_useable') {
+        const panel = ev.entity.getComponent('inventory').container
         if (slot(panel, 0) == 'rift:blighted_shard') {
             craft(panel)
         }

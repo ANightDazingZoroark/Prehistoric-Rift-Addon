@@ -32,7 +32,8 @@ world.afterEvents.dataDrivenEntityTriggerEvent.subscribe(data => {
                 if (data.entity.getComponent('healable').getFeedItems().map(x => x.item).includes(data.entity.getComponent('inventory').container.getItem(j).typeId)) {
                     try {
                         for (let k = 0; k < Object.keys(data.entity.getComponent('healable').getFeedItems()).length; k++) {
-                            data.entity.getComponent('health').setCurrent(data.entity.getComponent('health').current + data.entity.getComponent('healable').getFeedItems()[k].healAmount)
+                            let health = data.entity.getComponent('health')
+                            health.setCurrentValue(health.currentValue + data.entity.getComponent('healable').getFeedItems()[k].healAmount)
                             clearEntity(data.entity, data.entity.getComponent('healable').getFeedItems()[k].item, 0, 1)
                             try {
                                 switch (data.entity.getComponent('inventory').container.getItem(j).typeId) {
