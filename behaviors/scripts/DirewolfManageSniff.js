@@ -1,4 +1,4 @@
-import { world } from "@minecraft/server"
+import { Vector, world } from "@minecraft/server"
 import { ActionFormData } from "@minecraft/server-ui"
 
 function sniffMainGui(hitEntity, entity) {
@@ -81,11 +81,11 @@ function manualSniffGui(hitEntity, entity) {
                     for(let x = -12; x < 13; x++) {
                         for (let y = -4; y < 16; y++) {
                             for (let z = -12; z < 13; z++) {
-                                if (hitEntity.dimension.getBlock(new BlockLocation(Math.trunc(hitEntity.location.x+x), Math.trunc(hitEntity.location.y+y), Math.trunc(hitEntity.location.z+z))).typeId == 'minecraft:chest') {
-                                    world.getDimension('overworld').spawnEntity('rift:direwolf_alert_icon', new BlockLocation(Math.trunc(hitEntity.location.x+x), Math.trunc(hitEntity.location.y+y), Math.trunc(hitEntity.location.z+z))).nameTag = ''
+                                if (hitEntity.dimension.getBlock(new Vector(Math.trunc(hitEntity.location.x+x), Math.trunc(hitEntity.location.y+y), Math.trunc(hitEntity.location.z+z))).typeId == 'minecraft:chest') {
+                                    world.getDimension('overworld').spawnEntity('rift:direwolf_alert_icon', new Vector(Math.trunc(hitEntity.location.x+x), Math.trunc(hitEntity.location.y+y), Math.trunc(hitEntity.location.z+z))).nameTag = ''
                                 }
-                                if (hitEntity.dimension.getBlock(new BlockLocation(Math.trunc(hitEntity.location.x+x), Math.trunc(hitEntity.location.y+y), Math.trunc(hitEntity.location.z+z))).typeId == 'minecraft:trapped_chest') {
-                                    world.getDimension('overworld').spawnEntity('rift:direwolf_alert_icon', new BlockLocation(Math.trunc(hitEntity.location.x+x), Math.trunc(hitEntity.location.y+y), Math.trunc(hitEntity.location.z+z))).nameTag = ''
+                                if (hitEntity.dimension.getBlock(new Vector(Math.trunc(hitEntity.location.x+x), Math.trunc(hitEntity.location.y+y), Math.trunc(hitEntity.location.z+z))).typeId == 'minecraft:trapped_chest') {
+                                    world.getDimension('overworld').spawnEntity('rift:direwolf_alert_icon', new Vector(Math.trunc(hitEntity.location.x+x), Math.trunc(hitEntity.location.y+y), Math.trunc(hitEntity.location.z+z))).nameTag = ''
                                 }
                             }
                         }
@@ -132,25 +132,25 @@ function changeCommandStaffSniffGui(hitEntity, entity) {
     })
 }
 
-world.afterEvents.entityHurt.subscribe((ev) => {
+world.afterEvents.entityHitEntity.subscribe((ev) => {
     try {
-        if (ev.hurtEntity.typeId == 'rift:direwolf' && ev.hurtEntity.getComponent('is_tamed') && !ev.hurtEntity.getComponent('is_baby')) {
-            sniffMainGui(ev.hurtEntity, ev.damageSource.damagingEntity)
+        if (ev.hitEntity.typeId == 'rift:direwolf' && ev.hitEntity.getComponent('is_tamed') && !ev.hitEntity.getComponent('is_baby')) {
+            sniffMainGui(ev.hitEntity, ev.damagingEntity)
         }
     }
     catch (e) {}
 })
 
-world.beforeEvents.dataDrivenEntityTriggerEvent.subscribe(data => {
+world.afterEvents.dataDrivenEntityTriggerEvent.subscribe(data => {
     if (data.id == 'rift:use_chest_sniff') {
         for (let x = -12; x < 13; x++) {
             for (let y = -4; y < 16; y++) {
                 for (let z = -12; z < 13; z++) {
-                    if (data.entity.dimension.getBlock(new BlockLocation(Math.trunc(data.entity.location.x+x), Math.trunc(data.entity.location.y+y), Math.trunc(data.entity.location.z+z))).typeId == 'minecraft:chest') {
-                        world.getDimension('overworld').spawnEntity('rift:direwolf_alert_icon', new BlockLocation(Math.trunc(data.entity.location.x+x), Math.trunc(data.entity.location.y+y), Math.trunc(data.entity.location.z+z))).nameTag = ''
+                    if (data.entity.dimension.getBlock(new Vector(Math.trunc(data.entity.location.x+x), Math.trunc(data.entity.location.y+y), Math.trunc(data.entity.location.z+z))).typeId == 'minecraft:chest') {
+                        data.entity.dimension.spawnEntity('rift:direwolf_alert_icon', new Vector(Math.trunc(data.entity.location.x+x), Math.trunc(data.entity.location.y+y), Math.trunc(data.entity.location.z+z))).nameTag = ''
                     }
-                    if (data.entity.dimension.getBlock(new BlockLocation(Math.trunc(data.entity.location.x+x), Math.trunc(data.entity.location.y+y), Math.trunc(data.entity.location.z+z))).typeId == 'minecraft:trapped_chest') {
-                        world.getDimension('overworld').spawnEntity('rift:direwolf_alert_icon', new BlockLocation(Math.trunc(data.entity.location.x+x), Math.trunc(data.entity.location.y+y), Math.trunc(data.entity.location.z+z))).nameTag = ''
+                    if (data.entity.dimension.getBlock(new Vector(Math.trunc(data.entity.location.x+x), Math.trunc(data.entity.location.y+y), Math.trunc(data.entity.location.z+z))).typeId == 'minecraft:trapped_chest') {
+                        data.entity.dimension.spawnEntity('rift:direwolf_alert_icon', new Vector(Math.trunc(data.entity.location.x+x), Math.trunc(data.entity.location.y+y), Math.trunc(data.entity.location.z+z))).nameTag = ''
                     }
                 }
             }

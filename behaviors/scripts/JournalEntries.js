@@ -2,7 +2,7 @@ import { ActionFormData } from "@minecraft/server-ui"
 
 export const guiTutorialEntry = new ActionFormData()
 .title('How to Use')
-.body("To fill up the journal, you need to insert this journal in a journal enscriber, then you need to place a tribute item to add the entry of that creature to this journal.\n\nNote that each player will access different entries depending on what they unlocked through this method.")
+.body("To fill up the journal, you need to insert this journal in a journal enscriber, then you need to place a tribute item to add the entry of that creature to this journal.\n\nNote that each player will access different entries depending on what they unlocked through this method, no matter where the journal came from.")
 .button('Return to Index')
 
 export const guiAnimalsEntry = new ActionFormData()
@@ -57,7 +57,7 @@ export const guiDirebearEntry = new ActionFormData()
 
 export const guiDirewolfEntry = new ActionFormData()
 .title('Direwolf')
-.body("\n\n\n\n\n\n\n\n\n\n\n\n\nDiet: Carnivore\nBehavior: Neutral\nReaction to Fire: Fear (normal), Aggravation (werewolf form)\nTaming Tier: Tier 2\nFavorite Treats: Flesh Treat\n\nFar more vicious than the regular wolf. Packs are far deadlier because one of the members will boost the damage and speed of all the others.\n\nTheir keen sense of smell lets them identify what mobs might be nearby. There's no way to mask your scent, as far as my knowledge is concerned.\n\nThe best part about them as a mount is that there's no need for a saddle! If you're out in the snowy areas all by yourself you can just kill a couple creatures and tame a Direwolf to help out! Too bad they can't carry chests.\n\nI've seen certain Direwolves transform into giant monstrous forms at night. In such a state, they are more powerful and have access to more powerful abilities, such as their destructive blows and ability to break blocks. You can tell if they can do so by seeing if they emit particles by day.")
+.body("\n\n\n\n\n\n\n\n\n\n\n\n\nDiet: Carnivore\nBehavior: Neutral\nReaction to Fire: Fear (normal), Indifferent (werewolf form)\nTaming Tier: Tier 2\nFavorite Treats: Flesh Treat\n\nFar more vicious than the regular wolf. Packs are far deadlier because one of the members will boost the damage and speed of all the others.\n\nTheir keen sense of smell lets them identify what mobs might be nearby. There's no way to mask your scent, as far as my knowledge is concerned.\n\nThe best part about them as a mount is that there's no need for a saddle! If you're out in the snowy areas all by yourself you can just kill a couple creatures and tame a Direwolf to help out! Too bad they can't carry chests.\n\nI've seen certain Direwolves transform into giant monstrous forms at night. In such a state, they are more powerful and have access to more powerful abilities, such as their destructive blows and ability to break blocks. You can tell if they can do so by seeing if they emit particles by day.")
 .button('Return to Index')
 
 export const guiDodoEntry = new ActionFormData()
@@ -137,7 +137,7 @@ export const guiTriceratopsEntry = new ActionFormData()
 
 export const guiTyrannosaurusEntry = new ActionFormData()
 .title('Tyrannosaurus')
-.body("\n\n\n\n\n\n\n\n\n\n\nDiet: Carnivore\nBehavior: Hostile\nReaction to Fire: Aggravation\nTaming Tier: Tier 3\nFavorite Treats: Flesh Treat, Carrion Treat\n\nThe strongest creature ever brought about by the Rift. No need for help from others or weird gimmicks. Just pure raw strength, power, and bulk. This creature is basically the gold standard for being powerful.\n\nI'm not sure if that's an exaggeration really. All known methods to kill a mob work on a Tyrannosaurus as well, but are just more time consuming expensive.\n\nThey don't seem to be hostile all the time. There's times when they will just peacefully walk around.\n\nThe knockback roar they emit when hurt is quite a pain, able to hurl back mobs and even break blocks.")
+.body("\n\n\n\n\n\n\n\n\n\n\nDiet: Carnivore\nBehavior: Hostile\nReaction to Fire: Indifferent\nTaming Tier: Tier 3\nFavorite Treats: Flesh Treat, Carrion Treat\n\nThe strongest creature ever brought about by the Rift. No need for help from others or weird gimmicks. Just pure raw strength, power, and bulk. This creature is basically the gold standard for being powerful.\n\nI'm not sure if that's an exaggeration really. All known methods to kill a mob work on a Tyrannosaurus as well, but are just more time consuming expensive.\n\nThey don't seem to be hostile all the time. There's times when they will just peacefully walk around.\n\nThe knockback roar they emit when hurt is quite a pain, able to hurl back mobs and even break blocks.")
 .button('Return to Index')
 
 export const guiUtahraptorEntry = new ActionFormData()
