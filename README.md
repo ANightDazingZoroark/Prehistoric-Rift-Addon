@@ -1,3 +1,5 @@
+# THIS ADDON HAS BEEN DISCONTINUED AND IS CURRENTLY BEING MOVED TO JAVA EDITION. GO TO [THE REPO FOR THE JAVA PORT](https://github.com/ANightDazingZoroark/Prehistoric-Rift-Mod/) INSTEAD
+
 # Prehistoric-Rift-Addon
 [![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/I2I5C4GCI)
 
