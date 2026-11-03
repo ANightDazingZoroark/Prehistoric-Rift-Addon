@@ -8,9 +8,10 @@ A Minecraft Bedrock Addon that aims to add dinosaurs and expand upon gameplay. A
 Feel free to join the addon's Discord server as well: https://discord.gg/qVWaKRMCRc
 
 # Credits and More
-The addon itself and the assets used are under the Creative Commons Zero v1.0 Universal License. 
+The addon itself is under the Creative Commons Zero v1.0 Universal License.
 
 The following assets are excempt from the Creative Commons Zero v1.0 Universal License, with credits to their original creators listed
+* ANightDazingZoroark (creature models, textures, various items)
 * Vivek (various tribute items, new exotic meats, new command staff)
 * Professor Squiggles (Utahraptor Claw, Harvest Staff, various journal drawings)
 * Koda Soda (apatosaurus platform, various journal drawings)
